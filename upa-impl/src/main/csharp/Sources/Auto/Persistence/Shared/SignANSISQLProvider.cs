@@ -1,0 +1,43 @@
+/*********************************************************
+ *********************************************************
+ **   DO NOT EDIT                                       **
+ **                                                     **
+ **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   BY UPA PORTABLE GENERATOR                         **
+ **   (c) vpc                                           **
+ **                                                     **
+ *********************************************************
+ ********************************************************/
+
+
+
+namespace Net.Vpc.Upa.Impl.Persistence.Shared
+{
+
+
+    /**
+     * Created by IntelliJ IDEA.
+     * User: root
+     * Date: 22 mai 2003
+     * Time: 17:17:34
+     * To change this template use Options | File Templates.
+     */
+    public class SignANSISQLProvider : Net.Vpc.Upa.Impl.Persistence.Shared.ANSIFunctionSQLProvider {
+
+        public SignANSISQLProvider()  : base(typeof(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSign)){
+
+        }
+
+
+        public override string Simplify(string functionName, string[] @params, System.Collections.Generic.IDictionary<string , object> context) {
+            if (@params.Length != 1) {
+                throw new System.ArgumentException ("function '" + functionName + "' requieres 1 argument.\n Error near " + functionName + "(" + Net.Vpc.Upa.Impl.Util.Strings.Format(@params) + ")");
+            } else {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder("Sign(");
+                sb.Append(@params[0]);
+                sb.Append(")");
+                return sb.ToString();
+            }
+        }
+    }
+}

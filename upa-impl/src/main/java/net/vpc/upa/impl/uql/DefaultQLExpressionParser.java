@@ -1,0 +1,34 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.impl.uql;
+
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import net.vpc.upa.QLExpressionParser;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
+
+/**
+ *
+ * @author vpc
+ */
+public class DefaultQLExpressionParser implements QLExpressionParser {
+
+    public Expression parse(Reader text) throws UPAException {
+        return new UQLParser(text).Any();
+    }
+
+    public Expression parse(String reader) throws UPAException {
+        return new UQLParser(new StringReader(reader)).Any();
+    }
+    
+    public Expression parse(InputStream inputStream) throws UPAException {
+        return new UQLParser(inputStream).Any();
+    }
+
+}

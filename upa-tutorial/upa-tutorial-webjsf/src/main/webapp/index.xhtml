@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        Hello from Facelets
+        <br />
+        <h:form id="form">
+            <h:outputLabel value="#{myBean.value}"/>
+            <p:dataTable value="#{myBean.customerList}" var="c">
+                <p:column headerText="Id">
+                    <h:outputLabel value="#{c.customerId}"/>
+                </p:column>
+                <p:column headerText="Name">
+                    <h:outputLabel value="#{c.name}"/>
+                </p:column>
+                <p:column headerText="Birth Date">
+                    <h:outputLabel value="#{c.birthDate}"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton action="wcustomerDialog.show()"/>
+            <p:dialog id="customerDialog" widgetVar="wcustomerDialog">
+                <h:panelGrid id="display" columns="2" cellpadding="4">  
+                    <h:outputText value="Name:" />  
+                    <h:outputText value="#{myBean.selectedCustomer.name}" />  
+
+                    <h:outputText value="Year:" />  
+                    <p:calendar value="#{myBean.selectedCustomer.birthDate}" id="cal" showButtonPanel="true"/>  
+                </h:panelGrid>  
+                <p:commandButton actionListener="#{myBean.addCustomer}" action="customerDialog.hide()"/>
+            </p:dialog>
+            
+            
+            <h:link outcome="faces/desktop.xhtml" value="dektop" />
+        </h:form>
+    </h:body>
+</html>
+

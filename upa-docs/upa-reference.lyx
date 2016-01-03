@@ -1,0 +1,1147 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass book
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 1cm
+\rightmargin 1cm
+\bottommargin 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+UPA Reference Documentation
+\end_layout
+
+\begin_layout Author
+by Taha Ben Salah
+\end_layout
+
+\begin_layout Part*
+Preface
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Introduction
+\end_layout
+
+\begin_layout Chapter
+Présentation
+\end_layout
+
+\begin_layout Section
+Why a new Persistence Framework
+\end_layout
+
+\begin_layout Standard
+UPA is mostly like other existing ORM frameworks (Hibernate, MyBatis) and
+ Specifications (JPA) although it follows a slightly new approach : dealing
+ with deeper control on data model : UPA makes finally possible altering
+ database schema in a clean object oriented manner and thus helps providing
+ Untructured Data Model manipulable via structured and unstructured Classes.
+ Although UPA is firstly implemented in the Java Programming Language, it
+ has been designed to be as portable as possible to other object oriented
+ plateforms and progrmaming languages.
+\end_layout
+
+\begin_layout Section
+Common Features
+\end_layout
+
+\begin_layout Subsection
+Vendor Neural Persistence Layer
+\end_layout
+
+\begin_layout Standard
+UPA helps you build a persistence layer that is vendor neutral and any persisten
+ce provider can be used.
+ Although, UPA provides a reference implementation that is particularly
+ performant and ready to use.
+ 
+\end_layout
+
+\begin_layout Subsection
+Pluggable Providers
+\end_layout
+
+\begin_layout Standard
+UPA supports pluggable, third party persistence providers as it is defined
+ as an API with a reference implementation 
+\end_layout
+
+\begin_layout Subsection
+Inside/Outside containers
+\end_layout
+
+\begin_layout Standard
+UPA application can run outside the container also.
+ So, developers can use UPA capabilities in desktop applications also.
+ 
+\end_layout
+
+\begin_layout Subsection
+Annotations based meta-data
+\end_layout
+
+\begin_layout Standard
+No need to write deployment descriptors.
+ Annotations based meta-data very similar of JPA’s are supported Besides,
+ annotations defaults can be used in model class, which saves a lot of developme
+nt time 
+\end_layout
+
+\begin_layout Subsection
+Standardized ORM
+\end_layout
+
+\begin_layout Standard
+Provides clean, easy, and standardized object-relational mapping 
+\end_layout
+
+\begin_layout Subsection
+Query language
+\end_layout
+
+\begin_layout Standard
+UPQL is very powerfully query language provided by UPA providing abstraction
+ layer over the persistence model.
+ UPQL makes it possible to avoid specific RDBMS dialects.
+ 
+\end_layout
+
+\begin_layout Subsection
+Model generation
+\end_layout
+
+\begin_layout Standard
+UPA application can also be configured to generate database schema based
+ on persistence model 
+\end_layout
+
+\begin_layout Subsection
+Bottom Up / Top Down
+\end_layout
+
+\begin_layout Standard
+[TRANSLATE ME] Fonctionnement en mode Top Down (génération de la base par
+ l’application, recommandé) et Bottom Up (La base de données est supposée
+ existante)
+\end_layout
+
+\begin_layout Subsection
+Transaction Management
+\end_layout
+
+\begin_layout Standard
+[TRANSLATE ME] Gestion de transactions avec des niveau de propagation paramétrab
+le (REQUIRED , MANDATORY, SUPPORTS,…)
+\end_layout
+
+\begin_layout Subsubsection
+Portability
+\end_layout
+
+\begin_layout Standard
+It is also very easy to switch to most performing persistence provider.
+ You can easily move to any commercial persistence providers when needed
+ 
+\end_layout
+
+\begin_layout Subsection
+Intuitive
+\end_layout
+
+\begin_layout Standard
+UPA is very simple to apprehend for developers that have already worked
+ especially with JPA and JPA annotations.
+\end_layout
+
+\begin_layout Section
+UPA Unique Features
+\end_layout
+
+\begin_layout Subsection
+Reflexion API
+\end_layout
+
+\begin_layout Standard
+Large applications need better reflexion mechanisms to handle general purpose
+ use cases.
+ This feature enables developers to be aware of used data model at runtime
+ : entities, fields, datatypes, ...
+ 
+\end_layout
+
+\begin_layout Subsection
+Dynamic data definition and alteration
+\end_layout
+
+\begin_layout Standard
+One unique feature is to enable at runtime data structure alteration by
+ creating new entities or altering existing entities by introducing new
+ fields, removing some fields etc.
+ This feature makes UPA helpful for dynamic model based applications that
+ usually uses vertical tables (columns as rows) which are of very little
+ performance.
+ 
+\end_layout
+
+\begin_layout Subsection
+Comprehensive model structuring
+\end_layout
+
+\begin_layout Standard
+UPA provides a special model structuring beyond traditional persistence
+ units organized as simple entities of fields.
+ With new concepts of "package", "module", "entity","section" and "field"
+ concepts , software architects can enforce their application modularity
+ by organizing their data model according to their business model and helps
+ creating real application fragments.
+ 
+\end_layout
+
+\begin_layout Subsection
+Generated & Formula fields
+\end_layout
+
+\begin_layout Standard
+UPA supports natively customizable formula fields.
+ Formula fields are fields for which values are generated according to custom
+ expressions and conditions.
+ Formula field can be used either for generated identifiers or any other
+ field.
+ Generated identifiers may be of any type (not only integers).
+ Other usage of Formula fields include total fields, special incremental
+ fields such as line indices in invoice.
+ 
+\end_layout
+
+\begin_layout Subsection
+Ready to use Entity Patterns
+\end_layout
+
+\begin_layout Standard
+UPA supports natively Tree Entities for entities referencing them selves
+ with full optimized deep searching.
+ Singleton entities are also supported in a very clean manner mapped as
+ a single row table.
+ Union Entities is another pattern that makes is possible to uniformize
+ search and updates from distinct entities.
+ 
+\end_layout
+
+\begin_layout Subsection
+Uniform persistence context access
+\end_layout
+
+\begin_layout Standard
+The API can be used in the very same way from Java desktop application,
+ Web containers, EJB containers, Spring container, .Net Destop applications,
+ ASP.Net Web Forms applications, ASP.Net Web MVC applications.
+ 
+\end_layout
+
+\begin_layout Subsection
+Shared Model
+\end_layout
+
+\begin_layout Standard
+The very same persistence model can be used on multiple database schemas
+ at the same time.
+ Therefore Entity classes are not attached to a specific persistence unit
+ and can be mutualized.
+ Besides, the same classes can be used for mapping different tables in the
+ same schema at the entity definition time.
+ Even better, generic classes can be specified at search time to hold informatio
+n of some existing entities.
+ One example is to use a generic class holder "NamedEntity" (with solely
+ id and name) to use for all drop down components.
+ 
+\end_layout
+
+\begin_layout Subsection
+Dynamic Lazy/Partial loading
+\end_layout
+
+\begin_layout Standard
+UPA enables the runtime selection of needed fields/relations for retrieval.
+ this is obviously helpful for performance tuning.
+ In most cases, listing entities does not require retrieval of all information.
+ However entity editing should handle all updatable fields.
+ 
+\end_layout
+
+\begin_layout Subsection
+Very flexible persistence processing
+\end_layout
+
+\begin_layout Standard
+Entities may be configured to retrieve information from one table, insert
+ to a second table delete using a stored procedure and update using a custom
+ Java class for instance.
+ Rich 
+\end_layout
+
+\begin_layout Subsection
+Callback System
+\end_layout
+
+\begin_layout Standard
+UPA defines a rich set of Callback mechanisms.
+ Callbacks are available both on Data updates and Data Structure alteration.
+ Data Callbacks enables soft trigger implementations for handling all of
+ inserts, updates and delete operations.
+ Data Structure Callbacks makes it possible to capture Data Structure changes
+ and perform even extra alteration when needed.
+ 
+\end_layout
+
+\begin_layout Subsection
+Portable support for custom and complex datatypes
+\end_layout
+
+\begin_layout Standard
+UPA supports all common data types, besides it provides a portable manner
+ to extend supported types with new custom/complex ones.
+ This features is similar to Embedded/Embeddable features in JPA although
+ it provides a more extensible manner.
+ 
+\end_layout
+
+\begin_layout Subsection
+Designed to work equally on Java and .Net platforms
+\end_layout
+
+\begin_layout Standard
+UPA is designed to work with major Object Oriented languages although the
+ very first implementation it provides is with Java(c) and C# (c).
+ Design consideration imposes some restrictions to language advanced features
+ but provides betted concepts understanding, a cleaner implementation and
+ perhaps makes it more intuitive at its usage.
+ 
+\end_layout
+
+\begin_layout Subsection
+Soft learning curve
+\end_layout
+
+\begin_layout Standard
+UPA provide better performance and a softer learning curve, we have made
+ the choice to make UPQL nearer to SQL than to JPQL.
+ UPA have also native support of views defined using the very same UPQL
+ language.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Section
+Common Features
+\end_layout
+
+\begin_layout Subsection
+Database Portability
+\end_layout
+
+\begin_layout Plain Layout
+Indépendance par rapport au modèle de stockage (entre autres support de
+ Oracle, SQL Server et MySQL) 
+\end_layout
+
+\begin_layout Subsection
+Comprehensive mapping
+\end_layout
+
+\begin_layout Plain Layout
+Support de Table, des Vues et des Vues matérialisées (soft)
+\end_layout
+
+\begin_layout Subsection
+Querying language UQL
+\end_layout
+
+\begin_layout Plain Layout
+Requêtes standard (indépendante du dialecte de la base de données)
+\end_layout
+
+\begin_layout Section
+Unique Features
+\end_layout
+
+\begin_layout Subsection
+View Support
+\end_layout
+
+\begin_layout Plain Layout
+NAtive support for view written in the UQL
+\end_layout
+
+\begin_layout Subsection
+Query Table Support (Union)
+\end_layout
+
+\begin_layout Plain Layout
+Support des tables union aka Héritage (par exemple manipulation des pièces
+ qu’elles soient facture, bon d’achat ou devis pareillement, avec le même
+ écran tout en stockant dans des tables distinctes)
+\end_layout
+
+\begin_layout Subsection
+Tree Table Support
+\end_layout
+
+\begin_layout Plain Layout
+Support des tables arborescentes (Famille/Sous-Famille) avec un niveau d’imbrica
+tion infini
+\end_layout
+
+\begin_layout Subsection
+Multi Tenant
+\end_layout
+
+\begin_layout Plain Layout
+Multi-base : Possibilité de manipuler en parallèle plusieurs bases de données
+ ayant ou n’ayant pas le même schéma tout en présentant des écrans homogènes.
+\end_layout
+
+\begin_layout Subsection
+Custom Storage
+\end_layout
+
+\begin_layout Plain Layout
+Ouverture du modèle de stockage : Possibilité de définir des modèles de
+ stockage hétérogène (lecture d’une table et écriture dans une autre ou
+ écriture par une procédure stockée)
+\end_layout
+
+\begin_layout Subsection
+Custom Validation
+\end_layout
+
+\begin_layout Plain Layout
+Support de types standard avec un niveau de validation fin (chaines, adresses
+ mail, entier dans une plage, …)
+\end_layout
+
+\begin_layout Subsection
+Type based persistence
+\end_layout
+
+\begin_layout Plain Layout
+Support de types complexes (multi-champs) par exemple le type quotient (numérate
+ur et dénominateur)
+\end_layout
+
+\begin_layout Subsection
+Calculated, Formula Fields support
+\end_layout
+
+\begin_layout Plain Layout
+Support de champs formules : définition des expressions à la volée.
+ Par exemple, il suffit de définir que le champ TTC est une formule sur
+ les champs HT et la valeur de la taxe.
+ Où alors on pourra définir le champ « Total » d’une facture comme étant
+ la somme de tous les champs « montant » des lignes (dans un modèle Maître-Détai
+l)
+\end_layout
+
+\begin_layout Subsection
+Comprehensive organization
+\end_layout
+
+\begin_layout Plain Layout
+Catalog, Schema, Module, Entity, Sectioin, CompoundField, Field
+\end_layout
+
+\begin_layout Subsection
+Unstructured Model
+\end_layout
+
+\begin_layout Plain Layout
+Par exemple rajouter les champs « date dernière modif et user dernière modif »
+ à toutes les entités en même temps.
+\end_layout
+
+\begin_layout Subsection
+Comprehensive Relation Management
+\end_layout
+
+\begin_layout Plain Layout
+Gestion poussées des relations (type composition, association rigide, associatio
+n souple, …)
+\end_layout
+
+\begin_layout Subsection
+Extended operation set
+\end_layout
+
+\begin_layout Plain Layout
+Save : Insertion/mise à jour 
+\end_layout
+
+\begin_layout Plain Layout
+Delete : en cascade avec un mode simulation qui permet de détecter de l’alerter
+ l’utilisateur sur les nombre d’enregistrements qui seront supprimés) 
+\end_layout
+
+\begin_layout Plain Layout
+Rename : changement du code 
+\end_layout
+
+\begin_layout Plain Layout
+Clone : faire une copie de l’enregistrement 
+\end_layout
+
+\begin_layout Plain Layout
+Création à la volée de champs, et d’entités (avec toute sa structuration)
+ et donc de l’écran de saisie associé 
+\end_layout
+
+\begin_layout Subsection
+Dynamic entity strcuture alteration
+\end_layout
+
+\begin_layout Subsection
+Security
+\end_layout
+
+\begin_layout Plain Layout
+over operations, over columns and over rows (entities)
+\end_layout
+
+\begin_layout Subsection
+Query
+\end_layout
+
+\begin_layout Plain Layout
+Recherche Multi critères 
+\end_layout
+
+\begin_layout Plain Layout
+Recherche sur tous les champs y compris les formules 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Tutorial
+\end_layout
+
+\begin_layout Section
+First App
+\end_layout
+
+\begin_layout Subsection
+maven dependency
+\end_layout
+
+\begin_layout Standard
+The easiest way to use UPA is via Maven integration.
+ You just need to add 2 dependencies :
+\end_layout
+
+\begin_layout Standard
+1- upa-api dependecncy which includes all UPA features regardeless of it's
+ implementation (as UPA is an API)
+\end_layout
+
+\begin_layout Standard
+2-upa-impl : this is the default implementation of upa-api.
+\end_layout
+
+\begin_layout Standard
+3- any supported jdbc driver.
+ one can start with "derby" <dependency> <groupid>net.vpc.upa</groupid> <artifacti
+d>upa-api</artifactid> <version>1.2.0</version> </dependency> <dependency>
+ <groupid>net.vpc.upa</groupid> <artifactid>upa-impl</artifactid> <version>1.2.0</ve
+rsion> </dependency> <dependency> <groupid>derbyclient</groupid> <artifactid>der
+byclient</artifactid> <version>1.2.0</version> </dependency>
+\end_layout
+
+\begin_layout Standard
+create file META-INF/upa.xml
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{language=false}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout LyX-Code
+
+<dependency>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<groupid>net.vpc.upa</groupid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<artifactid>upa-api</artifactid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<version>1.2.0</version>
+\end_layout
+
+\begin_layout LyX-Code
+
+</dependency>
+\end_layout
+
+\begin_layout LyX-Code
+
+<dependency>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<groupid>net.vpc.upa</groupid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<artifactid>upa-impl</artifactid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<version>1.2.0</version>
+\end_layout
+
+\begin_layout LyX-Code
+
+</dependency>
+\end_layout
+
+\begin_layout LyX-Code
+
+<dependency>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<groupid>derbyclient</groupid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<artifactid>derbyclient</artifactid>
+\end_layout
+
+\begin_layout LyX-Code
+
+	<version>10.10.1.1</version>
+\end_layout
+
+\begin_layout LyX-Code
+
+</dependency>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Configuration File
+\end_layout
+
+\begin_layout Standard
+UPA needs a simple configuration file to help defining database connection
+ parameters and scannable classes.
+\end_layout
+
+\begin_layout Standard
+This file should be named "upa.xml" and should be located in classpath exactly
+ at "/META-INF/upa.xml".
+ Using Maven, this is actually needed to be put under "$PROJECT_ROOT/src/main/re
+sources/META-INF/upa.xml"
+\end_layout
+
+\begin_layout Standard
+Note that connection is defined with a some how special connection string
+ : Its definitely not a JDBC String.
+ We will discuss later this choice.
+ Just remember for now that connection string will always have that form.
+ The fist word in the connection string is actually the RDBMS type.
+ Here is derby database.
+ the second word defines the driver type.
+ Here we will use derby's default driver (network).
+ the database name is "upatutorial".
+ This database and all needed Tables will be created by UPA(structure=true).
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{language=false}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+<?xml version="1.0" encoding="UTF-8"?>
+\end_layout
+
+\begin_layout Plain Layout
+
+<upa version="1.0">
+\end_layout
+
+\begin_layout Plain Layout
+
+<persistencegroup>
+\end_layout
+
+\begin_layout Plain Layout
+
+<persistenceunit>
+\end_layout
+
+\begin_layout Plain Layout
+
+<connection>
+\end_layout
+
+\begin_layout Plain Layout
+
+<connectionstring>derby:default://localhost/upatutorial;structure=create</connec
+tionstring>                 <username>me</username>
+\end_layout
+
+\begin_layout Plain Layout
+
+<password>never</password>
+\end_layout
+
+\begin_layout Plain Layout
+
+</connection>
+\end_layout
+
+\begin_layout Plain Layout
+
+</persistenceunit>
+\end_layout
+
+\begin_layout Plain Layout
+
+</persistencegroup>
+\end_layout
+
+\begin_layout Plain Layout
+
+</upa>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Model Class
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+package net.vpc.upa.tutorial.model;
+\end_layout
+
+\begin_layout Plain Layout
+
+import net.vpc.upa.config.*;
+\end_layout
+
+\begin_layout Plain Layout
+
+@Entity
+\end_layout
+
+\begin_layout Plain Layout
+
+public class Customer {
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Id @Sequence
+\end_layout
+
+\begin_layout Plain Layout
+
+	private int customerId;
+\end_layout
+
+\begin_layout Plain Layout
+
+	private String name;
+\end_layout
+
+\begin_layout Plain Layout
+
+	private java.sql.Date birthDate;
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int getCustomerId() {return customerId;}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void setCustomerId(int customerId) {this.customerId = customerId;}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public String getName() {return name;}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void setName(String name) {this.name = name;}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public java.sql.Date getBirthDate() {return birthDate;}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void setBirthDate(java.sql.Date birthDate) {this.birthDate = birthDate;}
+\end_layout
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+DAL
+\end_layout
+
+\begin_layout Standard
+From any class now, you just have to call UPA for insertion, update, delete
+ of query.
+ All we have to do is call UPA, get the default Persistence Unit (Actually
+ a session to the connexion to the database) that make use of the verbosely
+ available features.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public void saveCustomer(Customer customer){
+\end_layout
+
+\begin_layout Plain Layout
+
+	PersistenceUnit pu=UPA.getPersistenceUnit();
+\end_layout
+
+\begin_layout Plain Layout
+
+	pu.insertOrUpdate(customer); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+public List<Customer> findAllCustomers() {
+\end_layout
+
+\begin_layout Plain Layout
+
+	PersistenceUnit pu=UPA.getPersistenceUnit();
+\end_layout
+
+\begin_layout Plain Layout
+
+	return pu.createQueryBuilder(Customer.class).getEntityList();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+public void deleteCustomer(int customerId) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	PersistenceUnit pu=UPA.getPersistenceUnit();
+\end_layout
+
+\begin_layout Plain Layout
+
+	pu.delete(Customer.class, customerId);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For ones that are familiar to JPA, note that in delete function we ne more
+ need to pass the whole object, the ID is very sufficient.
+ One can also use the "merge/persist" methods to stick with JPA vocabulary.
+\end_layout
+
+\begin_layout Part
+Reference
+\end_layout
+
+\begin_layout Chapter
+Configuration
+\end_layout
+
+\begin_layout Chapter
+API
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Génération automatique des écrans sur la base de la structuration établie
+ Possibilité de personnaliser (au développement) l’écran Support des multi
+ sélecteurs : Sélection d’une entrée par code Sélection d’une entrée par
+ liste Sélection d’une entrée par recherche Sélection d’une entrée par Arbre
+ (pur les tables arborescentes) Support des multi écrans: définir plusieurs
+ écrans pour la même entité Navigation entre écrans (passage en suivant
+ les relations) Support des écrans Maitre-Détail Définition de filtres persistan
+ts : stocker la recherche en tant que filtre invokable à la demande Mode
+ verrouillage d’écran Gestion de la sécurité (au niveau action UI ou action
+ métier) Création à la volée de l’écran de saisie associé à une nouvelle
+ entité Usage des thèmes paramétrables en mode desktop (reprise en mode
+ WEB).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Indépendance par rapport au modèle de stockage (entre autres support de
+ Oracle, SQL Server et MySQL) Support de Table, des Vues et des Vues matérialisé
+es (soft) Multi-base : Possibilité de manipuler en parallèle plusieurs bases
+ de données ayant ou n’ayant pas le même schéma tout en présentant des écrans
+ homogènes.
+ Ouverture du modèle de stockage : Possibilité de définir des modèles de
+ stockage hétérogène (lecture d’une table et écriture dans une autre ou
+ écriture par une procédure stockée) Requêtes standard (indépendante du
+ dialecte de la base de données) Support de types standard avec un niveau
+ de validation fin (chaines, adresses mail, entier dans une plage, …) Support
+ de types complexes (multi-champs) par exemple le type quotient (numérateur
+ et dénominateur) Support de champs formules : définition des expressions
+ à la volée.
+ Par exemple, il suffit de définir que le champ TTC est une formule sur
+ les champs HT et la valeur de la taxe.
+ Où alors on pourra définir le champ « Total » d’une facture comme étant
+ la somme de tous les champs « montant » des lignes (dans un modèle Maître-Détai
+l) Organisation très souple : Application : plusieurs bases Base : plusieurs
+ modules Module : plusieurs entités Entité : formé de plusieurs sections,
+ peut être défini sur la base d’éléments natifs de type Table Vue, Union
+ de plusieurs Tables, Procédures stockées Section : un regroupement de plusieurs
+ sous sections ou plusieurs champs permet à la fois d’organiser structurellement
+ les données mais aussi visuellement puisque le générateur d’écran se base
+ sur cette organisation pour définir le layout.
+ Champ Composé : un champ composé est un champ qui est manipulé de façon
+ entière par l’utilisateur (par exemple champ adresse) mais qui est stocké
+ comme étant plusieurs champs dans la base.
+ Champs Simple : correspond typiquement à une colonne de la base de données
+ mais pourrait correspondre à une formule ou à un traitement plus complexe
+ personnalisé par le développeur.
+ Personnalisation: Champs, Entités,… invisibles (à l’insertion, à l’édition,
+ les deux) Champs, Entités,… lecture seule (à l’insertion, à l’édition,
+ les deux) Champs, Entités,… système Modélisation transversale Par exemple
+ rajouter les champs « date dernière modif et user dernière modif » à toutes
+ les entités en même temps.
+ Gestion d’événements « Soft  Trigger/ Hard Trigger» Personnalisation des
+ traitements sur événement Evénements pré/post insertion/mise à jour/suppression
+/validation (des formules) Fonctionnement en mode Top Down (génération de
+ la base par l’application, recommandé) et Bottom Up (La base de données
+ est supposée existante) Modèle d’archive/restauration automatique (si top
+ down) Support des tables arborescentes (Famille/Sous-Famille) avec un niveau
+ d’imbrication infini Support des tables union aka Héritage (par exemple
+ manipulation des pièces qu’elles soient facture, bon d’achat ou devis pareillem
+ent, avec le même écran tout en stockant dans des tables distinctes) Gestion
+ poussées des relations (type composition, association rigide, association
+ souple, …) Support des opérations Save : Insertion/mise à jour Delete :
+ en cascade avec un mode simulation qui permet de détecter de l’alerter
+ l’utilisateur sur les nombre d’enregistrements qui seront supprimés) Rename :
+ changement du code Clone : faire une copie de l’enregistrement Création
+ à la volée de champs, et d’entités (avec toute sa structuration) et donc
+ de l’écran de saisie associé Support de Java et C# Trace automatique des
+ opérations Usage des thèmes paramétrable en mode desktop (reprise en mode
+ WEB).
+ Gestion de transactions avec des niveau de propagation paramétrable (REQUIRED ,
+ MANDATORY, SUPPORTS,…)
+\end_layout
+
+\begin_layout Plain Layout
+Support des types simple et types complexes Support des « Unité » ou des
+ préfixes de champs Gestion de la vaidation (mask de saisie, validation
+ coté serveur) Gestion poussées des relations (type composition, association
+ rigide, association souple, …) Support des opérations Save : Insertion/mise
+ à jour Delete : en cascade avec un mode simulation qui permet de détecter
+ de l’alerter l’utilisateur sur les nombre d’enregistrements qui seront
+ supprimés) Rename : changement du code Clone : faire une copie de l’enregistrem
+ent Recherche Multi critères Recherche sur tous les champs y compris les
+ formules Opérateurs standard (égale, inférieur, commence par, …) qui dépendent
+ du type Navigation entre les enregistrements Gestion de la sécurité Création
+ à la volée de champs, et d’entités (avec toute sa structuration) et donc
+ de l’écran de saisie associé Support de Java.
+ C# en cours Trace automatique des opérations 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

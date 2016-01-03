@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.vpc.upa.upa-tutorial</groupId>
+    <artifactId>upa-tutorial</artifactId>
+    <version>1.2.0</version>
+    <name>net.vpc.upa.upa-tutorial</name>
+    <packaging>pom</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <upa-api.version>1.2.0.21</upa-api.version>
+        <upa-impl.version>1.2.0.21.0</upa-impl.version>
+        <upa-web.version>1.0.0.0.6</upa-web.version>
+    </properties>
+    <modules>
+        <module>upa-tutorial-business</module>
+        <module>upa-tutorial-dal</module>
+        <module>upa-tutorial-desktop</module>
+        <module>upa-tutorial-webjsf</module>
+    </modules>
+</project>

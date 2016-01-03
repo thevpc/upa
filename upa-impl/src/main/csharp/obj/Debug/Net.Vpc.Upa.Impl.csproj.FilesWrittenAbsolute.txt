@@ -1,0 +1,4 @@
+/home/vpc/Data/xprojects/net/vpc/upa/upa-impl/src/main/csharp/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/home/vpc/Data/xprojects/net/vpc/upa/upa-impl/src/main/csharp/bin/Debug/log4net.dll
+/home/vpc/Data/xprojects/net/vpc/upa/upa-impl/src/main/csharp/bin/Debug/Net.Vpc.Upa.dll
+/home/vpc/Data/xprojects/net/vpc/upa/upa-impl/src/main/csharp/bin/Debug/Net.Vpc.Upa.dll.mdb

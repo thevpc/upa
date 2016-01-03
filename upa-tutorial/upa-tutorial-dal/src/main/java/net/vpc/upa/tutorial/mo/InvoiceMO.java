@@ -1,0 +1,39 @@
+package net.vpc.upa.tutorial.mo;
+
+import net.vpc.upa.FormulaType;
+import net.vpc.upa.config.*;
+import net.vpc.upa.tutorial.model.Invoice;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/15/12 9:43 PM
+ */
+@Entity(entityType = Invoice.class,path = "Tutorial/Sell")
+public class InvoiceMO {
+    @Id
+    @Sequence(format = "{datepart(year,currentDate())}/{#}"
+            ,initialValue=1,
+            allocationSize=1)
+    private FieldDesc invoiceId;
+
+    private FieldDesc date;
+
+    //@ManyToOne no explicit need to add this annotation!
+    private FieldDesc customer;
+
+    @Formula(value="Coalesce((Select Sum(x.priceTaxFree) "
+            + "From InvoiceDetail x "
+            + "Where "
+            + "x.invoiceId=this.invoiceId),0)"
+            ,type = FormulaType.UPDATE
+    )
+    private FieldDesc totalTaxFree;
+    
+    
+    @Formula("Coalesce((Select Sum(x.priceTaxFree*(1+x.vat)) From InvoiceDetail x Where x.invoiceId=this.invoiceId),0)")
+    private FieldDesc totalIncludingTax;
+
+    //this field is ignored!
+    @Ignore
+    private FieldDesc details;
+}

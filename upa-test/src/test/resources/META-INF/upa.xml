@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upa version="1.0">
+    <!--<configure/>-->
+    <!--<include url="" file="" resource=""/>-->
+    <!--<persistenceGroup>-->
+
+        <!--<persistenceUnit>-->
+        <!--<connection>-->
+        <!--<connectionString>derby:embedded://testdb/a/db1;structure=create</connectionString>-->
+        <!--</connection>-->
+        <!--</persistenceUnit>-->
+
+<!--        <persistenceUnit name="sample" start="true">
+            <connection>
+                <connectionString>derby:embedded://testdb/sample;structure=create</connectionString>
+                <userName>upatest</userName>
+                <password type="plain">upatest</password>
+            </connection>
+
+            <property name="persistenceName">UPA_*</property>
+        <property name="simpleName">simpleValue</property>
+        <configure types=""/>
+        <configure types="net.vpc.upa.test.**"/>
+    </persistenceUnit>-->
+    <!--        <persistenceUnit name="noconfig" start="false">
+        <connection>
+            <connectionString>derby:embedded://testdb/noconfig;structure=create</connectionString>
+            <userName>upatest</userName>
+            <password type="plain">upatest</password>
+        </connection>
+        <configure types="net.vpc.upa.test.**"/>
+    </persistenceUnit>-->
+    <!--        <persistenceUnit name="partial" start="false" >
+        <connection>
+            <connectionString>derby:embedded://testdb/partial;structure=create</connectionString>
+            <connectionString>derby:default://localhost/upatest;structure=create</connectionString>
+            <userName>upatest</userName>
+            <password type="plain">upatest</password>
+        </connection>
+        <property name="persistenceName">UPA_*</property>
+        <configure/>
+    </persistenceUnit>-->
+    <!--</persistenceGroup>-->
+</upa>

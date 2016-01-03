@@ -1,0 +1,25 @@
+﻿<Properties StartupItem="upa-impl/src/main/csharp/Net.Vpc.Upa.Impl.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="upa-impl/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceStore.cs">
+    <Files>
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/DefaultUPAContextLoader.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Event/SingleDataInterceptorSupport.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Event/SingleEntityObjectEventCallback.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Extension/HierarchicalRelationshipDataInterceptor.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceStore.cs" Line="1041" Column="10" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Annotationparser/DecorationEntityDescriptorResolver.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Decorations/AbstractDecoration.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Decorations/AnnotationDecoration.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Decorations/DefaultDecorationFilter.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/URLAnnotationStrategySupport.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Annotationparser/EntityInfo.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/BeanAdapterRecord.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/DefaultPersistenceUnit.cs" Line="1" Column="1" />
+      <File FileName="upa-impl/src/main/csharp/Sources/Auto/Config/Annotationparser/FieldInfo.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

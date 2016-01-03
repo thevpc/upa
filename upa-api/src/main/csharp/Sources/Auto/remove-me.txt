@@ -1,0 +1,21 @@
+PersistenceGroup                   : Une instance par application
+    PersistenceUnit                : Une instance par connexion aux données
+        Package                    : Module applicatif
+            Package
+            Entity                 : Une ou plusieurs Tables (en général Une table)
+                Section            : Lot de données dans une entité avec une cohesion forte
+                    Section
+                    CompoundField  : plusieurs colonnes dans la base (@Embedded Embeddable)
+                        PrimitiveField : Champs simples ==> une colonne dans la base
+                    PrimitiveField
+                CompoundField
+                PrimitiveField
+
+
+
+Field : CompoundField ou PrimitiveField
+
+
+
+Bulk Insert / Bulk Update/Bulk Delete/Synchronize (from to file/table ...)
+Soft checking of foreign keys

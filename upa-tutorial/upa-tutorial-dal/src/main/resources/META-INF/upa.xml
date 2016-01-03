@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upa version="1.0">
+    <connection>
+        <connectionString>derby:default://localhost/upatutorial;structure=create</connectionString>
+        <userName>me</userName>
+        <password>never</password>
+    </connection>
+    <property name="persistenceName">upa_{object_name}</property>
+<!--    <decorations>
+        <import package="net.*"/>
+        <type name="Customer">
+            <Entity name="TheClient">
+                <modifiers>
+                    PRIVATE
+                </modifiers>
+                <config>
+                    <Config persistenceUnit="A"/>
+                </config>
+            </Entity>
+        </type>
+        
+        
+        <decoration type="Customer">
+            <Entity name="TheClient">
+                <modifiers>
+                    <array>
+                        <item>PRIVATE</item>
+                        <item>PRIVATE</item>
+                    </array>
+                </modifiers>
+                <config>
+                    <decoration type="Customer">
+                        <Config persistenceUnit="A"/>
+                    </decoration>
+                </config>
+            </Entity>
+        </decoration>
+        
+         <decoration type="Customer">
+             @Entity(modifiers={PRIVATE},
+             config=@Config(persistenceUnit="A")
+             )
+        </decoration>
+    </decorations>-->
+</upa>
