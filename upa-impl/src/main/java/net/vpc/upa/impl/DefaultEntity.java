@@ -2081,6 +2081,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
+    @Override
     public RemoveTrace remove(RemoveOptions options)
             throws UPAException {
         Expression expression = objToExpression(options);

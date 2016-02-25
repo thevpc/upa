@@ -1,0 +1,10 @@
+/upa-api/target/
+/upa-impl/target/
+/upa-web/target/
+/upa-portable/target/
+/upa-test/target/
+/upa-tutorial/upa-tutorial-dal/target/
+/upa-tutorial/upa-tutorial-business/target/
+/upa-tutorial/upa-tutorial-desktop/target/
+/upa-tutorial/upa-tutorial-webjsf/target/
+/upa-vfs/target/

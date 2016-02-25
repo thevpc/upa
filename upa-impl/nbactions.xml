@@ -34,4 +34,12 @@
                 <exec.executable>${profiler.java}</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-site</actionName>
+            <displayName>site deploy</displayName>
+            <goals>
+                <goal>site</goal>
+                <goal>deploy</goal>
+            </goals>
+        </action>
     </actions>

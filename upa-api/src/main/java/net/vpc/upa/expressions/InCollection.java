@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -34,13 +34,13 @@
  */
 package net.vpc.upa.expressions;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class InCollection extends DefaultExpression
         implements Cloneable {
+
     private static final long serialVersionUID = 1L;
 
     private Expression left;
@@ -57,11 +57,9 @@ public class InCollection extends DefaultExpression
 //    public InCollection(String left,DataPrimitiveType type,Collection collection) {
 //        this(new Var(left,type),collection);
 //    }
-
 //    public InCollection(String left,DataPrimitiveType type,Object[] collection) {
 //        this(new Var(left,type),collection!=null ? Arrays.asList(collection) : null);
 //    }
-
     public InCollection(Expression[] left, List<Expression> collection) {
         this(new Uplet(left), collection);
     }
@@ -134,13 +132,16 @@ public class InCollection extends DefaultExpression
 //        }
 //        return integrated ? '(' + sb.toString() + ')' : sb.toString();
 //    }
-
     public int getRightSize() {
         return right.size();
     }
 
     public Expression getRight(int i) {
         return right.get(i);
+    }
+
+    public Expression[] getRight() {
+        return right.toArray(new Expression[right.size()]);
     }
 
     @Override
@@ -151,6 +152,5 @@ public class InCollection extends DefaultExpression
         }
         return o;
     }
-
 
 }

@@ -257,7 +257,8 @@ public class DefaultEntityShield implements EntityShield {
         Entity p = entity.getParentEntity();
         if (p != null) {
             Expression ss = entity.childToParentExpression(condition);
-            p.getShield().checkRemove(ss, recurse);
+//            p.getShield().checkRemove(ss, recurse);
+            p.getShield().checkUpdate(p.getBuilder().createRecord(),ss);
         }
         checkVeto(VetoableOperation.checkDelete, condition, recurse);
     }

@@ -110,6 +110,7 @@ import net.vpc.upa.expressions.XOr;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledExpandableExpression;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.expressions.IdEnumerationExpression;
+import net.vpc.upa.expressions.InCollection;
 import net.vpc.upa.impl.uql.expression.KeyExpression;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
@@ -186,6 +187,7 @@ public class ExpressionTranslationManager {
         register0(DateTrunc.class, new DateTruncExpressionTranslator(this));
         register0(QLFunctionExpression.class, new QLFunctionExpressionExpressionTranslator(this));
         register0(InSelection.class, new InSelectionExpressionTranslator(this));
+        register0(InCollection.class, new InCollectionExpressionTranslator(this));
         register0(IsHierarchyDescendent.class, new IsHierarchyDescendentExpressionTranslator(this));
     }
 
