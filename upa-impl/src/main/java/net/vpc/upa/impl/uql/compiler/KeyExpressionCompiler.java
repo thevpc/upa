@@ -7,7 +7,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdExpression;
 
 import java.util.List;
 import net.vpc.upa.PersistenceUnit;
@@ -23,7 +23,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
 
     @Override
     public DefaultCompiledExpression translateExpression(Object x, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) throws UPAException {
-        KeyExpression o = (KeyExpression) x;
+        IdExpression o = (IdExpression) x;
         DefaultCompiledExpression ret = null;
 
         Entity entity = null;
@@ -59,7 +59,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
             throw new IllegalArgumentException("Key enumeration must by associated to and entity");
         }
 
-        Key key = entity.getBuilder().idToKey(o.getKey());
+        Key key = entity.getBuilder().idToKey(o.getId());
         Object[] values = key.getValue();
         Entity entity1 = o.getEntity();
         List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getPrimaryFields());

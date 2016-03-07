@@ -17,7 +17,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -44,8 +44,8 @@ public abstract class SingleEntityObjectEventCallback extends DefaultCallback {
 
     protected Iterable<Object> resolveIdList(EntityEvent event, Expression whereExpression) throws UPAException {
         EntityExecutionContext executionContext = event.getContext();
-        if (whereExpression instanceof KeyExpression) {
-            return Arrays.asList(((KeyExpression) whereExpression).getKey());
+        if (whereExpression instanceof IdExpression) {
+            return Arrays.asList(((IdExpression) whereExpression).getId());
         } else {
             if (!executionContext.isSet("ALL_KEYS")) {
                 List<Object> idList = event.getEntity().createQueryBuilder().setExpression(whereExpression).getIdList();

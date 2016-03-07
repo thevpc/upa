@@ -20,6 +20,7 @@ public enum CallbackType {
     ON_MOVE,
     ON_ALTER,
     ON_START,
+    ON_UPDATE_FORMULAS,
     ON_CLOSE,
 
     //Persistence Unit Events

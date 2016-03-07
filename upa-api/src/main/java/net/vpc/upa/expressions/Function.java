@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -33,6 +33,9 @@
  * ====================================================================
  */
 package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
@@ -65,6 +68,8 @@ public abstract class Function extends DefaultExpression {
 
     public abstract Expression getArgument(int index);
 
+    public abstract void setArgument(int index, Expression e);
+
     public Expression[] getArguments() {
         int max = getArgumentsCount();
         Expression[] p = new Expression[max];
@@ -72,6 +77,25 @@ public abstract class Function extends DefaultExpression {
             p[i] = getArgument(i);
         }
         return p;
+    }
+
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> all = new ArrayList<TaggedExpression>();
+        Expression[] arr = getArguments();
+        for (int i = 0; i < arr.length; i++) {
+            Expression e = arr[i];
+            if (e != null) {
+                all.add(new TaggedExpression(e, new IndexedTag("arg", i)));
+            }
+        }
+        return all;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        int n = ((IndexedTag) tag).getIndex();
+        setArgument(n, e);
     }
 
     @Override

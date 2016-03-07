@@ -82,6 +82,12 @@ public class MonthEnd extends Function {
         expressions.add(count);
     }
 
+    @Override
+    public void setArgument(int index, Expression e) {
+        expressions.set(index, e);
+    }
+    
+
 //    public String toSQL(boolean integrated, PersistenceUnit database) {
 //        return "i2v("+e.toSQL(true, database)+")";
 //    }

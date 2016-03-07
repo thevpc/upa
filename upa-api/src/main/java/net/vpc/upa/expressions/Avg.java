@@ -48,6 +48,15 @@ public final class Avg extends Function
         this.expression = expression;
     }
 
+    @Override
+    public void setArgument(int index, Expression e) {
+        if(index==0){
+            this.expression=e;
+        }else{
+            throw new IllegalArgumentException();
+        }
+    }
+
     public int size() {
         return 1;
     }

@@ -34,6 +34,9 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: root
@@ -45,6 +48,21 @@ public class CurrentTime extends Function {
     private static final long serialVersionUID = 1L;
 
     public CurrentTime() {
+    }
+
+    @Override
+    public void setArgument(int index, Expression e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<TaggedExpression> getChildren() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

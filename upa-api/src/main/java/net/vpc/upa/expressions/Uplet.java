@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -34,21 +34,35 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: root
- * Date: 10 juin 2003
- * Time: 16:29:33
- * To change this template use Options | File Templates.
+ * Created by IntelliJ IDEA. User: root Date: 10 juin 2003 Time: 16:29:33 To
+ * change this template use Options | File Templates.
  */
 public class Uplet extends DefaultExpression {
+
     private static final long serialVersionUID = 1L;
     private Expression[] expressions;
 
     public Uplet(Expression[] expressions) {
         super();
         this.expressions = expressions;
+    }
+
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> all = new ArrayList<TaggedExpression>();
+        for (int i = 0; i < expressions.length; i++) {
+            all.add(new TaggedExpression(expressions[i], new IndexedTag("#", i)));
+        }
+        return all;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        expressions[((IndexedTag) tag).getIndex()] = e;
     }
 
 //    public String toSQL(boolean flag, PersistenceUnit database) {
@@ -67,8 +81,6 @@ public class Uplet extends DefaultExpression {
 //        }
 //        return sql.toSQL(flag, database);
 //    }
-
-
     public Expression[] getExpressions() {
         return expressions;
     }

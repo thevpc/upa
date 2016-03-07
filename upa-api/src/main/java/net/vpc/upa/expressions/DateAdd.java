@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -35,13 +35,11 @@
 package net.vpc.upa.expressions;
 
 /**
- * Created by IntelliJ IDEA.
- * User: root
- * Date: 22 mai 2003
- * Time: 12:07:34
- * To change this template use Options | File Templates.
+ * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
+ * change this template use Options | File Templates.
  */
 public class DateAdd extends Function {
+
     private static final long serialVersionUID = 1L;
     private DatePartType type;
     private Expression count;
@@ -89,10 +87,28 @@ public class DateAdd extends Function {
     }
 
     @Override
+    public void setArgument(int index, Expression e) {
+        switch (index) {
+            case 0: {
+                type = (DatePartType) ((Cst) e).getValue();
+                break;
+            }
+            case 1: {
+                count = e;
+                break;
+            }
+            case 2: {
+                date = e;
+                break;
+            }
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
+    @Override
     public Expression copy() {
         DateAdd o = new DateAdd(type, count.copy(), date.copy());
         return o;
     }
-
 
 }

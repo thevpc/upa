@@ -814,8 +814,14 @@ public class DefaultPersistenceStore implements PersistenceStore {
         sb.append('\t');
         EntityExecutionContext context = createContext(ContextOperation.FIND);
         sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
+        if(defaultObject==null && !cr.getTargetType().isNullable()){
+            defaultObject=cr.getTargetType().getDefaultValue();
+            if(defaultObject==null){
+                defaultObject=cr.getTargetType().getDefaultNonNullValue();
+            }
+        }
         if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
-            sb.append(" Default ").append(sqlManager.getSQL(new CompiledLiteral(field.getDefaultValue(), cr), context, new DefaultExpressionDeclarationList(null)));
+            sb.append(" Default ").append(sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), context, new DefaultExpressionDeclarationList(null)));
         }
 
         if (!cr.getTargetType().isNullable()) {

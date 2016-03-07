@@ -89,6 +89,20 @@ public class DateTrunc extends Function {
     }
 
     @Override
+    public void setArgument(int index, Expression e) {
+        switch (index) {
+            case 0: {
+                type = (DatePartType) ((Cst) e).getValue();
+                break;
+            }
+            case 1: {
+                value = e;
+                break;
+            }
+        }
+        throw new IndexOutOfBoundsException();
+    }
+    @Override
     public Expression copy() {
         DateTrunc o = new DateTrunc(type, value.copy());
         return o;

@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -38,13 +38,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: root
- * Date: 22 mai 2003
- * Time: 10:07:06
- * To change this template use Options | File Templates.
+ * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
+ * change this template use Options | File Templates.
  */
 public class If extends Function implements Cloneable {
+
     private static final long serialVersionUID = 1L;
     private final int EXPECT_CONDITION = 0;
     private final int EXPECT_VALUE = 1;
@@ -68,10 +66,15 @@ public class If extends Function implements Cloneable {
         state = EXPECT_VALUE;
     }
 
+    @Override
+    public void setArgument(int index, Expression e) {
+        params.set(index, e);
+        state = VALID;
+    }
+
 //    public If Then(Object value){
 //        return Then(Litteral.toExpression(value));
 //    }
-
     public If Then(Expression value) {
         if (state == EXPECT_VALUE) {
             add(value);
@@ -87,7 +90,6 @@ public class If extends Function implements Cloneable {
 //    public If Else(Object value){
 //        return Else(Litteral.toExpression(value));
 //    }
-
     public If Else(Expression value) {
         if (state == EXPECT_CONDITION) {
             add(value);
@@ -103,7 +105,6 @@ public class If extends Function implements Cloneable {
 //    public If ElseIf(String condition){
 //        return ElseIf(new UserExpression(condition));
 //    }
-
     public If ElseIf(Expression condition) {
         if (state == EXPECT_CONDITION) {
             add(condition);

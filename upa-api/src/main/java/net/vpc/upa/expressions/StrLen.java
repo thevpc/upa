@@ -50,6 +50,15 @@ public class StrLen extends Function {
     }
 
     @Override
+    public void setArgument(int index, Expression e) {
+        if(index==0){
+            this.value=e;
+        }else{
+            throw new ArrayIndexOutOfBoundsException();
+        }
+    }
+
+    @Override
     public Expression copy() {
         StrLen o = new StrLen(value.copy());
         return o;

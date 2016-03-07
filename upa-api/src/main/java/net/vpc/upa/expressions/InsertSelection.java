@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -35,13 +35,16 @@
 package net.vpc.upa.expressions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            StatementExpression, Select, SQLContext
-
 public class InsertSelection extends DefaultEntityStatement
         implements UpdateStatement, Cloneable {
+
     private static final long serialVersionUID = 1L;
+    private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
+    private static final DefaultTag SELECTION = new DefaultTag("SELECTION");
     private QueryStatement selection;
     private ArrayList<Var> fields;
     private EntityName entity;
@@ -52,6 +55,32 @@ public class InsertSelection extends DefaultEntityStatement
         fields = new ArrayList<Var>(1);
     }
 
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        if (entity != null) {
+            list.add(new TaggedExpression(entity, ENTITY));
+        }
+        for (int i = 0; i < fields.size(); i++) {
+            list.add(new TaggedExpression(fields.get(i), new IndexedTag("FIELD", i)));
+        }
+        if (selection != null) {
+            list.add(new TaggedExpression(selection, SELECTION));
+        }
+        return list;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        if (ENTITY.equals(tag)) {
+            this.entity = (EntityName) e;
+        } else if (SELECTION.equals(tag)) {
+            this.selection = (QueryStatement) e;
+        } else {
+            IndexedTag ii = (IndexedTag) tag;
+            fields.set(ii.getIndex(), (Var) e);
+        }
+    }
 
     public InsertSelection(InsertSelection other) {
         this();
@@ -148,7 +177,6 @@ public class InsertSelection extends DefaultEntityStatement
 //        }
 //        return query;
 //    }
-
     public int countFields() {
         return fields.size();
     }

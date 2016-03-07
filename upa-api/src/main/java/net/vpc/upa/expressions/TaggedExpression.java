@@ -1,0 +1,33 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.expressions;
+
+import java.util.List;
+
+/**
+ *
+ * @author vpc
+ */
+public final class TaggedExpression {
+
+    private Expression expression;
+
+    private ExpressionTag tag;
+
+    public TaggedExpression(Expression expression, ExpressionTag tag) {
+        this.expression = expression;
+        this.tag = tag;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public ExpressionTag getTag() {
+        return tag;
+    }
+
+}

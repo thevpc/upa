@@ -6,35 +6,45 @@
  * To change template for new class use
  * Code Style | Class Templates options (Tools | IDE Options).
  */
-package net.vpc.upa.impl.uql.expression;
+package net.vpc.upa.expressions;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.vpc.upa.Entity;
-import net.vpc.upa.expressions.DefaultExpression;
-import net.vpc.upa.expressions.Expression;
 
-public class KeyExpression extends DefaultExpression implements Cloneable {
+public class IdExpression extends DefaultExpression implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private Object key;
+    private Object id;
     private String entityName;
     private String alias;
     private Entity entity;
 
-    public KeyExpression(Entity entity, Object key, String alias) {
-        if (key == null) {
+    public IdExpression(Entity entity, Object id, String alias) {
+        if (id == null) {
             throw new IllegalArgumentException("Key could not be null");
         }
 //        entity.getIdType().cast(key);
-        this.key = key;
+        this.id = id;
         entityName = entity.getName();
         this.alias = alias;
         this.entity = entity;
     }
 
-    public Object getKey() {
-        return key;
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        return list;
     }
 
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        throw new IllegalArgumentException("Insupported");
+    }
+
+    public Object getId() {
+        return id;
+    }
 
     public Entity getEntity() {
         return entity;//PersistenceUnitFilter.getPersistenceUnit().getEntity(entityName);
@@ -50,19 +60,19 @@ public class KeyExpression extends DefaultExpression implements Cloneable {
 
     @Override
     public Expression copy() {
-        KeyExpression o = new KeyExpression(entity, key, alias);
+        IdExpression o = new IdExpression(entity, id, alias);
         return o;
     }
 
     @Override
     public String toString() {
-        return "Key("+entityName+","+alias+","+key+")";
+        return "Key(" + entityName + "," + alias + "," + id + ")";
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + (this.key != null ? this.key.hashCode() : 0);
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
         hash = 97 * hash + (this.entityName != null ? this.entityName.hashCode() : 0);
         hash = 97 * hash + (this.alias != null ? this.alias.hashCode() : 0);
         hash = 97 * hash + (this.entity != null ? this.entity.hashCode() : 0);
@@ -77,8 +87,8 @@ public class KeyExpression extends DefaultExpression implements Cloneable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final KeyExpression other = (KeyExpression) obj;
-        if (this.key != other.key && (this.key == null || !this.key.equals(other.key))) {
+        final IdExpression other = (IdExpression) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }
         if ((this.entityName == null) ? (other.entityName != null) : !this.entityName.equals(other.entityName)) {
@@ -92,5 +102,5 @@ public class KeyExpression extends DefaultExpression implements Cloneable {
         }
         return true;
     }
-    
+
 }

@@ -337,7 +337,6 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
     public void onMoveEntity(EntityEvent event) {
     }
 
-
     public void onDropField(FieldEvent event) throws UPAException {
     }
 
@@ -413,4 +412,14 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
     public void onPreClose(PersistenceUnitEvent event) {
 
     }
+
+    @Override
+    public void onPreUpdateFormulas(PersistenceUnitEvent event) {
+    }
+
+    @Override
+    public void onUpdateFormulas(PersistenceUnitEvent event) {
+
+    }
+
 }

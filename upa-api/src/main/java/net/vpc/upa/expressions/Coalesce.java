@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -34,12 +34,12 @@
  */
 package net.vpc.upa.expressions;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Coalesce extends Function
         implements Cloneable {
+
     private static final long serialVersionUID = 1L;
 
     private ArrayList<Expression> elements;
@@ -53,6 +53,11 @@ public final class Coalesce extends Function
         for (Expression expression : expressions) {
             add(expression);
         }
+    }
+
+    @Override
+    public void setArgument(int index, Expression e) {
+        elements.set(index, e);
     }
 
     public Coalesce(Expression expression1, Expression expression2) {
@@ -95,8 +100,9 @@ public final class Coalesce extends Function
         boolean valid = false;
         for (int i = 0; i < max; i++) {
             Expression e = get(i);
-            if (e.isValid())
+            if (e.isValid()) {
                 valid = true;
+            }
         }
 
         return valid;
@@ -120,7 +126,6 @@ public final class Coalesce extends Function
 //        sb.append(')');
 //        return sb.toString();
 //    }
-
     public Expression copy() {
         Coalesce o = new Coalesce();
         o.elements = new ArrayList<Expression>();

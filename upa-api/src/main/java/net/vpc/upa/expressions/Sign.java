@@ -34,6 +34,9 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: root
@@ -51,6 +54,15 @@ public class Sign extends Function {
 
     public Expression getValue() {
         return value;
+    }
+
+    @Override
+    public void setArgument(int index, Expression e) {
+        if(index==0){
+            this.value=e;
+        }else{
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 
     @Override

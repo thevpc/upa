@@ -7,8 +7,8 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
-import net.vpc.upa.impl.uql.expression.KeyCollectionExpression;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdCollectionExpression;
+import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.UPAUtils;
 
 import java.util.HashMap;
@@ -315,7 +315,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             try {
                 List<Record> list = getSourceRole().getEntity().createQuery(new Select().uplet(lvar, "lvar").where(sourceCondition)).getRecordList();
                 int j = 0;
-                KeyCollectionExpression inCollection = new KeyCollectionExpression(rvar);
+                IdCollectionExpression inCollection = new IdCollectionExpression(rvar);
                 for (Record r : list) {
                     j++;
                     if (j > tuningMaxInline) {
@@ -338,8 +338,8 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         //Key Rkey=getTargetTable().getKeyForExpression(targetCondition);
         Field[] sourceFields = getSourceRole().getFields().toArray(new Field[getSourceRole().getFields().size()]);
         Field[] targetFields = getTargetRole().getFields().toArray(new Field[getTargetRole().getFields().size()]);
-        if (targetCondition instanceof KeyExpression) {
-            Key Rkey = targetRole.getEntity().getBuilder().idToKey(((KeyExpression) targetCondition).getKey());
+        if (targetCondition instanceof IdExpression) {
+            Key Rkey = targetRole.getEntity().getBuilder().idToKey(((IdExpression) targetCondition).getId());
             if (sourceFields.length == 1) {
                 Var lvar = (sourceAlias == null) ? new Var(sourceFields[0].getName()) : new Var(new Var(sourceAlias), sourceFields[0].getName());
                 return new Equals(lvar, new Literal(Rkey.getValue()[0], targetFields[0].getDataType()));
@@ -363,7 +363,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             try {
                 List<Record> list = getTargetRole().getEntity().createQuery(new Select().uplet(rvar, "rval").where(targetCondition)).getRecordList();
                 int j = 0;
-                KeyCollectionExpression inCollection = new KeyCollectionExpression(lvar);
+                IdCollectionExpression inCollection = new IdCollectionExpression(lvar);
                 for (Record r : list) {
                     j++;
                     if (j > tuningMaxInline) {

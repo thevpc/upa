@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -34,15 +34,18 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.Collections;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
 import java.util.Date;
+import java.util.List;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            Expression
 public final class Literal extends DefaultExpression
         implements Cloneable {
+
     public static final Literal IONE = new Literal(1);
     public static final Literal IZERO = new Literal(0);
     public static final Literal DZERO = new Literal(0.0);
@@ -112,9 +115,15 @@ public final class Literal extends DefaultExpression
 //        }
     }
 
-//    public String toSQL(boolean integrated, PersistenceUnit database) {
-//        return database.getPersistenceManager().literal(value);
-//    }
+    @Override
+    public List<TaggedExpression> getChildren() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     public static boolean isNull(Expression e) {
         return e == null || ((e instanceof Literal) && (((Literal) e).value == null));

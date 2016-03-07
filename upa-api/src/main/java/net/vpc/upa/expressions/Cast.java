@@ -68,6 +68,15 @@ public class Cast extends Function {
     }
 
     @Override
+    public void setArgument(int index, Expression e) {
+        if (index == 0) {
+            this.value = e;
+        } else {
+            this.targetType = (DataType) ((Cst) e).getValue();
+        }
+    }
+
+    @Override
     public Expression getArgument(int index) {
         switch (index) {
             case 0:

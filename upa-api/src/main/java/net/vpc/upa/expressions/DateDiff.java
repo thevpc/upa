@@ -94,6 +94,26 @@ public class DateDiff extends Function {
         }
         throw new IndexOutOfBoundsException();
     }
+    
+    
+    @Override
+    public void setArgument(int index, Expression e) {
+        switch (index) {
+            case 0: {
+                type = (DatePartType) ((Cst) e).getValue();
+                break;
+            }
+            case 1: {
+                start = e;
+                break;
+            }
+            case 2: {
+                end = e;
+                break;
+            }
+        }
+        throw new IndexOutOfBoundsException();
+    }
 
     @Override
     public Expression copy() {

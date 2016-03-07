@@ -73,7 +73,7 @@ public class UpdateSQLProvider extends AbstractSQLProvider {
                     sb.append(sqlManager.getSQL(new CompiledVar(ev.getName()), context, declarations)).append(".");
                 }
                 sb.append(sqlManager.getSQL(new CompiledVar(primField), context, declarations));
-                sb.append("=").append(sqlManager.getSQL(fieldValue, context, declarations));
+                sb.append("=").append("(").append(sqlManager.getSQL(fieldValue, context, declarations)).append(")");
             }
         }
         if (o.getCondition()!=null && o.getCondition().isValid()) {

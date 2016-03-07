@@ -64,7 +64,11 @@ public class ExpressionCompilerConfig {
         if (aliasToEntityContext == null) {
             aliasToEntityContext = new HashMap<String, String>();
         }
-        aliasToEntityContext.put(alias, entityName);
+        if(entityName==null){
+            aliasToEntityContext.remove(alias);
+        }else{
+            aliasToEntityContext.put(alias, entityName);
+        }
         return this;
     }
 

@@ -42,6 +42,7 @@ public class InCollection extends DefaultExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
+    private static final DefaultTag LEFT = new DefaultTag("LEFT");
 
     private Expression left;
     protected List<Expression> right;
@@ -78,10 +79,31 @@ public class InCollection extends DefaultExpression
         }
     }
 
-    public int size() {
-        return 2;
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        if (left != null) {
+            list.add(new TaggedExpression(left, LEFT));
+        }
+        for (int i = 0; i < right.size(); i++) {
+            Expression r = right.get(i);
+            list.add(new TaggedExpression(r, new IndexedTag("RIGTH", i)));
+        }
+        return list;
     }
 
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        if (tag.equals(LEFT)) {
+            this.left = e;
+        } else {
+            right.set(((IndexedTag) tag).getIndex(), e);
+        }
+    }
+
+//    public int size() {
+//        return 2;
+//    }
     public Expression getLeft() {
         return left;
     }

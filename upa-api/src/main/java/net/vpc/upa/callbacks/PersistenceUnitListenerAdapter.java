@@ -98,4 +98,16 @@ public abstract class PersistenceUnitListenerAdapter implements PersistenceUnitL
     public void onReset(PersistenceUnitEvent event) {
 
     }
+
+    @Override
+    public void onPreUpdateFormulas(PersistenceUnitEvent event) {
+    
+    }
+
+    @Override
+    public void onUpdateFormulas(PersistenceUnitEvent event) {
+    
+    }
+
+    
 }

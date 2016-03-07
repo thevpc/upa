@@ -4,7 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.expressions.IdEnumerationExpression;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.CastConverter;
 import net.vpc.upa.impl.util.ConvertedList;
 
@@ -309,7 +309,7 @@ public class DefaultEntityConverter implements EntityConverter {
             return null;
         }
         //        keyExpression.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
-        return new KeyExpression(entity, key, entityAlias);
+        return new IdExpression(entity, key, entityAlias);
     }
 
     public Expression keyToExpression(Key key, String entityAlias) {

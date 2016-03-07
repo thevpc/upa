@@ -32,9 +32,9 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.uql.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.expression.KeyCollectionExpression;
+import net.vpc.upa.expressions.IdCollectionExpression;
 import net.vpc.upa.expressions.IdEnumerationExpression;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataType;
@@ -446,7 +446,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (countCompoundFields) {
                     index++;
                 }
-            } else { // field
+            } else // field
+            {
                 if (!countFieldsInCompoundFields
                         && entityPart.getParent() instanceof CompoundField) {
                     //
@@ -812,29 +813,27 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 fmc.add(FieldModifier.SELECT);
                 if (selectFormula == null) {
                     fmc.add(FieldModifier.SELECT_DEFAULT);
+                } else if (selectFormula instanceof ExpressionFormula) {
+                    if (fmc.contains(UserFieldModifier.LIVE)) {
+                        fmc.add(FieldModifier.SELECT_LIVE);
+                    } else if (fmc.contains(UserFieldModifier.COMPILED)) {
+                        fmc.add(FieldModifier.SELECT_COMPILED);
+                    } else {
+                        fmc.add(FieldModifier.SELECT_DEFAULT);
+                    }
+                } else if (selectFormula instanceof Sequence) {
+                    if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
+                        throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
+                    }
+                    fmc.add(FieldModifier.SELECT_DEFAULT);
                 } else {
-                    if (selectFormula instanceof ExpressionFormula) {
-                        if (fmc.contains(UserFieldModifier.LIVE)) {
-                            fmc.add(FieldModifier.SELECT_LIVE);
-                        } else if (fmc.contains(UserFieldModifier.COMPILED)) {
-                            fmc.add(FieldModifier.SELECT_COMPILED);
-                        } else {
-                            fmc.add(FieldModifier.SELECT_DEFAULT);
-                        }
-                    } else if (selectFormula instanceof Sequence) {
-                        if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                            throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
-                        }
+                    if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
+                        throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
+                    }
+                    if (f.getDataType() instanceof EntityType) {
                         fmc.add(FieldModifier.SELECT_DEFAULT);
                     } else {
-                        if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                            throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
-                        }
-                        if (f.getDataType() instanceof EntityType) {
-                            fmc.add(FieldModifier.SELECT_DEFAULT);
-                        } else {
-                            fmc.add(FieldModifier.SELECT_CUSTOM);
-                        }
+                        fmc.add(FieldModifier.SELECT_CUSTOM);
                     }
                 }
             }
@@ -852,16 +851,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (persistFormula instanceof Sequence) {
                         fmc.add(FieldModifier.PERSIST_SEQUENCE);
                     }
-                    final Set<Field> usedFields = findUsedFields(persistFormula);
-                    for (Field field : usedFields) {
-                        Set<Field> c = (Set<Field>) field.getProperties().getObject(UPDATE_DEPENDENT_FIELDS);
-                        if (c == null) {
-                            c = new HashSet<Field>();
-                            field.getProperties().setObject(UPDATE_DEPENDENT_FIELDS, c);
-                        }
-                        c.add(f);
-                    }
-                    f.getProperties().setObject(UPDATE_USED_FIELDS, usedFields);
                 }
             }
 
@@ -878,16 +867,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (updateFormula instanceof Sequence) {
                         fmc.add(FieldModifier.UPDATE_SEQUENCE);
                     }
-                    final Set<Field> usedFields = findUsedFields(updateFormula);
-                    for (Field field : usedFields) {
-                        Set<Field> c = (Set<Field>) field.getProperties().getObject(UPDATE_DEPENDENT_FIELDS);
-                        if (c == null) {
-                            c = new HashSet<Field>();
-                            field.getProperties().setObject(UPDATE_DEPENDENT_FIELDS, c);
-                        }
-                        c.add(f);
-                    }
-                    f.getProperties().setObject(UPDATE_USED_FIELDS, usedFields);
                 }
             }
 
@@ -945,6 +924,48 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
             }
         }
+    }
+
+    private void commitFieldExpressionModelChanges(Field f) {
+        FieldModifierHelper fmc = new FieldModifierHelper(f.getUserModifiers(), f.getUserExcludeModifiers());
+        if (!fmc.contains(UserFieldModifier.TRANSIENT)) {
+            Formula persistFormula = f.getPersistFormula();
+            Formula updateFormula = f.getUpdateFormula();
+//            Formula selectFormula = f.getSelectFormula();
+
+            if (persistFormula != null) {
+                final Set<Field> usedFields = findUsedFields(persistFormula);
+                for (Field field : usedFields) {
+                    Set<Field> c = (Set<Field>) field.getProperties().getObject(PERSIST_DEPENDENT_FIELDS);
+                    if (c == null) {
+                        c = new HashSet<Field>();
+                        field.getProperties().setObject(PERSIST_DEPENDENT_FIELDS, c);
+                    }
+                    c.add(f);
+                }
+                f.getProperties().setObject(PERSIST_USED_FIELDS, usedFields);
+            }
+            if (updateFormula != null) {
+                final Set<Field> usedFields = findUsedFields(updateFormula);
+                for (Field field : usedFields) {
+                    Set<Field> c = (Set<Field>) field.getProperties().getObject(UPDATE_DEPENDENT_FIELDS);
+                    if (c == null) {
+                        c = new HashSet<Field>();
+                        field.getProperties().setObject(UPDATE_DEPENDENT_FIELDS, c);
+                    }
+                    c.add(f);
+                }
+                f.getProperties().setObject(PERSIST_USED_FIELDS, usedFields);
+            }
+        }
+    }
+
+    public void commitExpressionModelChanges() throws UPAException {
+        List<Field> fs = getFields();
+        for (Field f : fs) {
+            commitFieldExpressionModelChanges(f);
+        }
+        //should do the same with filters
     }
 
     public void commitModelChanges() throws UPAException {
@@ -1190,14 +1211,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
                 triggerAnonymousNameIndex++;
             }
-        } else {
-            if (triggers.containsKey(triggerName)) {
-                throw new ObjectAlreadyExistsException(null, "Entity Trigger " + triggerName);
-            }
-//            if (pu.getAllTriggers().containsKey(triggerName)) {
-//                throw new ObjectAlreadyExistsException(null, "Entity Trigger " + triggerName);
-//            }
-        }
+        } else if (triggers.containsKey(triggerName)) {
+            throw new ObjectAlreadyExistsException(null, "Entity Trigger " + triggerName);
+        } //            if (pu.getAllTriggers().containsKey(triggerName)) {
+        //                throw new ObjectAlreadyExistsException(null, "Entity Trigger " + triggerName);
+        //            }
 
         final DefaultTrigger triggerObject = new DefaultTrigger();
         triggerObject.setEntity(this);
@@ -1472,31 +1490,29 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (found != null) {
                 throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", part.getName());
             }
-        } else {
-            if (parent instanceof Section) {
-                Section s = (Section) parent;
-                boolean found = false;
-                try {
-                    s.getPart(part.getName());
-                    found = true;
-                } catch (Exception e) {
-                    //
-                }
-                if (found) {
-                    throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", parent.getName());
-                }
-            } else if (parent instanceof CompoundField) {
-                CompoundField s = (CompoundField) parent;
-                boolean found = false;
-                try {
-                    s.getField(part.getName());
-                    found = true;
-                } catch (Exception e) {
-                    //
-                }
-                if (found) {
-                    throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", parent.getName());
-                }
+        } else if (parent instanceof Section) {
+            Section s = (Section) parent;
+            boolean found = false;
+            try {
+                s.getPart(part.getName());
+                found = true;
+            } catch (Exception e) {
+                //
+            }
+            if (found) {
+                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", parent.getName());
+            }
+        } else if (parent instanceof CompoundField) {
+            CompoundField s = (CompoundField) parent;
+            boolean found = false;
+            try {
+                s.getField(part.getName());
+                found = true;
+            } catch (Exception e) {
+                //
+            }
+            if (found) {
+                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", parent.getName());
             }
         }
     }
@@ -1841,16 +1857,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
                 c = e;
             }
-        } else {
-            if (fieldFilter.acceptDynamic()) {
-                e = new ArrayList<Field>(c);
-                for (DynamicField df : getDynamicFields()) {
-                    if (fieldFilter.accept(df)) {
-                        e.add(df);
-                    }
+        } else if (fieldFilter.acceptDynamic()) {
+            e = new ArrayList<Field>(c);
+            for (DynamicField df : getDynamicFields()) {
+                if (fieldFilter.accept(df)) {
+                    e.add(df);
                 }
-                c = e;
             }
+            c = e;
         }
         return c;
     }
@@ -2159,8 +2173,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                         removeInfo.addTrace(trace);
                         r.getSourceRole().getEntity().remove(
                                 RemoveOptions.forExpression(((new InSelection(new Var(r.getSourceRole().getField(0).getName()),
-                                                (new Select()).from(r.getTargetRole().getEntity().getName())
-                                                .field(new Var(masterField.getName())).where(expression)))))
+                                        (new Select()).from(r.getTargetRole().getEntity().getName())
+                                        .field(new Var(masterField.getName())).where(expression)))))
                                 .setFollowLinks(true)
                                 .setSimulate(simulate)
                                 .setRemoveTrace(removeInfo)
@@ -2181,7 +2195,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 for (int x = 0; x < lvars.length; x++) {
                     lvars[x] = new Var(rel.getSourceRole().getField(x).getName());
                 }
-                KeyCollectionExpression inCollection = new KeyCollectionExpression(lvars);
+                IdCollectionExpression inCollection = new IdCollectionExpression(lvars);
                 for (Object key : keys) {
 
                     inCollection.add(((Object) (getBuilder().idToKey(key).getValue())));
@@ -2782,10 +2796,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             Expression expression = getBuilder().idToExpression(getBuilder().recordToId(updates), getName());
             if (condition == null || !condition.isValid()) {
                 condition = expression;
-            } else {
-                if (!expression.equals(condition)) {
-                    condition = new And(condition, expression);
-                }
+            } else if (!expression.equals(condition)) {
+                condition = new And(condition, expression);
             }
         }
 
@@ -3013,8 +3025,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public Expression simplifyExpression(Expression e) throws UPAException {
-        if (tuningMaxInline <= 0 || e == null || (e instanceof KeyExpression)
-                || (e instanceof KeyCollectionExpression)
+        if (tuningMaxInline <= 0 || e == null || (e instanceof IdExpression)
+                || (e instanceof IdCollectionExpression)
                 || (e instanceof IdEnumerationExpression)) {
             return e;
         } else {

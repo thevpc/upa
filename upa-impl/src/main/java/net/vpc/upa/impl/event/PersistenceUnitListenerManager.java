@@ -839,7 +839,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onModelChanged(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -857,7 +857,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onStorageChanged(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -875,7 +875,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onClear(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -893,7 +893,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onClose(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -911,7 +911,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onReset(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -929,7 +929,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onStart(event);
             }
-            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -965,4 +965,23 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         List<Callback> callbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, phase);
         return callbacks.toArray(new Callback[callbacks.size()]);
     }
+
+    public void fireOnUpdateFormulas(PersistenceUnitEvent event, EventPhase phase) {
+        if (phase == EventPhase.BEFORE) {
+            for (PersistenceUnitListener listener : persistenceUnitListeners) {
+                listener.onPreUpdateFormulas(event);
+            }
+            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+                invoker.invoke(event);
+            }
+        } else {
+            for (PersistenceUnitListener listener : persistenceUnitListeners) {
+                listener.onUpdateFormulas(event);
+            }
+            for (Callback invoker : getCallbackPostInvokers(CallbackType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+                invoker.invoke(event);
+            }
+        }
+    }
+
 }

@@ -205,6 +205,11 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     @Override
+    public Boolean getBoolean() throws UPAException {
+        return exec().getBoolean();
+    }
+
+    @Override
     public String getString() throws UPAException {
         return exec().getString();
     }

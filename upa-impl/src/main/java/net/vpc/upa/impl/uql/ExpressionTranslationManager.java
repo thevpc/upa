@@ -111,7 +111,7 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledExpandableExpression;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.expressions.IdEnumerationExpression;
 import net.vpc.upa.expressions.InCollection;
-import net.vpc.upa.impl.uql.expression.KeyExpression;
+import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 
@@ -131,7 +131,7 @@ public class ExpressionTranslationManager {
         this.expressionManager = expressionManager;
         register0(DefaultCompiledExpression.class, new CompiledExpressionToExpressionCompiler());
         register0(IdEnumerationExpression.class, new IdEnumerationExpressionCompiler());
-        register0(KeyExpression.class, new KeyExpressionCompiler());
+        register0(IdExpression.class, new KeyExpressionCompiler());
         register0(And.class, new AndExpressionTranslator(this));
         register0(Or.class, new OrExpressionTranslator(this));
         register0(Plus.class, new PlusExpressionTranslator(this));

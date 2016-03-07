@@ -408,6 +408,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //            cache_relationsByName.put(r.getName(), r);
         }
 
+        for (Entity entity : getEntities()) {
+            if (entity instanceof DefaultEntity) {
+                ((DefaultEntity) entity).commitExpressionModelChanges();
+            }
+        }
+
         List<OnHoldCommitAction> model = commitModelActions;
         if (model.size() > 0) {
 
@@ -504,7 +510,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //    public Map<String, Trigger> getAllTriggers() {
 //        return allTriggers;
 //    }
-
     //    protected void checkEntityNames(String name, String shortName) {
 //        if (name == null) {
 //            throw new NullPointerException("Name could not be null");
@@ -681,13 +686,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
                 detailEntityFieldName = baseField.getName();
                 manyToOneField = baseField;
                 detailUpdateType = RelationshipUpdateType.COMPOSED;
-            } else {
-                if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
-                    if (relationDescriptor.getMappedTo().length > 1) {
-                        throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
-                    }
-                    detailEntityFieldName = getEntity(detailEntityName).getField(relationDescriptor.getMappedTo()[0]).getName();
+            } else if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
+                if (relationDescriptor.getMappedTo().length > 1) {
+                    throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                 }
+                detailEntityFieldName = getEntity(detailEntityName).getField(relationDescriptor.getMappedTo()[0]).getName();
             }
         } else {
             detailUpdateType = RelationshipUpdateType.FLAT;
@@ -712,10 +715,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             String expression = ff.getExpression();
             if (Strings.isNullOrEmpty(expression)) {
                 filter = null;
-            } else {
-                if (ff.getParameters().isEmpty()) {
-                    filter = getExpressionManager().parseExpression(expression);
-                }
+            } else if (ff.getParameters().isEmpty()) {
+                filter = getExpressionManager().parseExpression(expression);
             }
         }
         if (name == null) {
@@ -742,10 +743,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             if (PlatformUtils.isUndefinedValue(RelationshipUpdateType.class, detailUpdateType)) {
                 detailUpdateType = RelationshipUpdateType.FLAT;
             }
-        } else {
-            if (PlatformUtils.isUndefinedValue(RelationshipUpdateType.class, detailUpdateType)) {
-                detailUpdateType = RelationshipUpdateType.COMPOSED;
-            }
+        } else if (PlatformUtils.isUndefinedValue(RelationshipUpdateType.class, detailUpdateType)) {
+            detailUpdateType = RelationshipUpdateType.COMPOSED;
         }
 
         Relationship r = getFactory().createObject(Relationship.class);
@@ -995,8 +994,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public void updateFormulas()
             throws UPAException {
+        PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
+        persistenceUnitListenerManager.fireOnUpdateFormulas(event, EventPhase.BEFORE);
         List<Entity> entities = getEntities(new DefaultEntityFilter().setAcceptValidatable(true));
         updateFormulas(entities.toArray(new Entity[entities.size()]));
+        persistenceUnitListenerManager.fireOnUpdateFormulas(event, EventPhase.AFTER);
     }
 
     @Override

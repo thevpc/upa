@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -43,6 +43,8 @@ import java.util.Map;
 //            StatementExpression, And, Expression, Litteral,
 //            Equals, Var, SQLContext
 public final class Update extends DefaultEntityStatement implements UpdateStatement {
+    private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
+    private static final DefaultTag COND = new DefaultTag("COND");
 
     private static final long serialVersionUID = 1L;
     private List<VarVal> fields;
@@ -54,10 +56,38 @@ public final class Update extends DefaultEntityStatement implements UpdateStatem
         fields = new ArrayList<VarVal>();
     }
 
-    //    public Update from(String extraFrom) {
-//        this.extraFrom = extraFrom;
-//        return this;
-//    }
+     @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        if (entity != null) {
+            list.add(new TaggedExpression(entity, ENTITY));
+        }
+        for (int i = 0; i < fields.size(); i++) {
+            list.add(new TaggedExpression(fields.get(i).getVar(), new IndexedTag("VAR", i)));
+            list.add(new TaggedExpression(fields.get(i).getVal(), new IndexedTag("VAL", i)));
+        }
+        if (COND != null) {
+            list.add(new TaggedExpression(condition, COND));
+        }
+        return list;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        if (ENTITY.equals(tag)) {
+            this.entity = (EntityName) e;
+        }else if (COND.equals(tag)) {
+            this.condition = e;
+        } else {
+            IndexedTag ii = (IndexedTag) tag;
+            if (ii.getName().equals("VAR")) {
+                fields.get(ii.getIndex()).setVar((Var) e);
+            } else {
+                fields.get(ii.getIndex()).setVal(e);
+            }
+        }
+    }
+
     public Map<Var, Expression> getUpdatesMapping() {
         Map<Var, Expression> m = new HashMap<Var, Expression>();
         for (VarVal f : fields) {

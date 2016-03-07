@@ -34,6 +34,9 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -57,6 +60,16 @@ public class Param extends DefaultExpression {
         this.unspecified = false;
         this.object = object;
         this.name = name;
+    }
+
+    @Override
+    public List<TaggedExpression> getChildren() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public String getName() {

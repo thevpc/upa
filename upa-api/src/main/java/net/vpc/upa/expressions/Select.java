@@ -39,6 +39,9 @@ import java.util.List;
 public class Select extends DefaultEntityStatement
         implements QueryStatement, Cloneable, NameOrSelect {
 
+    private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
+    private static final DefaultTag WEHRE = new DefaultTag("WEHRE");
+    private static final DefaultTag HAVING = new DefaultTag("HAVING");
     private static final long serialVersionUID = 1L;
     //    public static final String SEPARATORS = " \n\t*+-/()[],;\\%";
     private int top = -1;
@@ -67,6 +70,66 @@ public class Select extends DefaultEntityStatement
         group = new GroupCriteria();
         order = new Order();
         top = -1;
+    }
+
+    @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+
+//    private Expression where;
+//    private Expression having;
+//    private Order order;
+        if (queryEntity != null) {
+            list.add(new TaggedExpression(queryEntity, ENTITY));
+        }
+        for (int i = 0; i < fields.size(); i++) {
+            list.add(new TaggedExpression(fields.get(i).getExpression(), new IndexedTag("FIELD", i)));
+        }
+        for (int i = 0; i < joinsEntities.size(); i++) {
+            JoinCriteria get = joinsEntities.get(i);
+            list.add(new TaggedExpression(get.getEntity(), new IndexedTag("JOIN_ENTITY", i)));
+            list.add(new TaggedExpression(get.getCondition(), new IndexedTag("JOIN_COND", i)));
+        }
+        if (where != null) {
+            list.add(new TaggedExpression(where, WEHRE));
+        }
+        for (int i = 0; i < group.size(); i++) {
+            Expression ee = group.getGroupAt(i);
+            list.add(new TaggedExpression(ee, new IndexedTag("GROUP", i)));
+        }
+        if (having != null) {
+            list.add(new TaggedExpression(having, HAVING));
+        }
+        for (int i = 0; i < order.size(); i++) {
+            Expression ee = order.getOrderAt(i);
+            list.add(new TaggedExpression(ee, new IndexedTag("ORDER", i)));
+        }
+        return list;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        if (ENTITY.equals(tag)) {
+            this.queryEntity = (NameOrSelect) e;
+        } else if (WEHRE.equals(tag)) {
+            this.where = e;
+        } else if (HAVING.equals(tag)) {
+            this.having = e;
+        } else {
+            IndexedTag ii = (IndexedTag) tag;
+            String en = ii.getName();
+            if (en.equals("FIELD")) {
+                fields.get(ii.getIndex()).setExpression(e);
+            } else if (en.equals("JOIN_ENTITY")) {
+                joinsEntities.get(ii.getIndex()).setEntity((NameOrSelect) e);
+            } else if (en.equals("JOIN_COND")) {
+                joinsEntities.get(ii.getIndex()).setCondition(e);
+            } else if (en.equals("GROUP")) {
+                group.setGroupAt(ii.getIndex(), e);
+            } else if (en.equals("ORDER")) {
+                order.setOrderAt(ii.getIndex(), e);
+            }
+        }
     }
 
     public Select field(Expression expression) {

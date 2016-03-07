@@ -13,7 +13,7 @@ import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.expression.KeyCollectionExpression;
+import net.vpc.upa.expressions.IdCollectionExpression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.Collection;
@@ -108,7 +108,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
             return;
         }
         executioncontext.remove(name + ":toUpdate");
-        KeyCollectionExpression inColl = null;
+        IdCollectionExpression inColl = null;
         if (!collection.isEmpty()) {
             inColl = createInCollection(event.getEntity(), collection);
             afterUpdateHelper(event, inColl);
@@ -136,21 +136,21 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
         return entity.createQueryBuilder().setExpression(translateExpression(expression)).getKeyList();
     }
 
-    private KeyCollectionExpression createInCollection(Entity entity, Collection<Key> collection) throws UPAException {
+    private IdCollectionExpression createInCollection(Entity entity, Collection<Key> collection) throws UPAException {
         List<Field> pfs = entity.getPrimaryFields();
         Var[] v = new Var[pfs.size()];
         for (int i = 0; i < pfs.size(); i++) {
             v[i] = new Var(new Var(pfs.get(i).getEntity().getName()), pfs.get(i).getName());
         }
         if (pfs.size() == 1) {
-            KeyCollectionExpression inColl = new KeyCollectionExpression(v[0]);
+            IdCollectionExpression inColl = new IdCollectionExpression(v[0]);
             //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
             for (Key k : collection) {
                 inColl.add(new Literal(k.getObject(), pfs.get(0).getDataType()));
             }
             return inColl;
         } else {
-            KeyCollectionExpression inColl = new KeyCollectionExpression(v);
+            IdCollectionExpression inColl = new IdCollectionExpression(v);
             //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
             for (Key k : collection) {
                 Literal[] l = new Literal[pfs.size()];

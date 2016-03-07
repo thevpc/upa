@@ -59,5 +59,9 @@ public interface PersistenceUnitListener {
     public void onPreClose(PersistenceUnitEvent event);
 
     public void onClose(PersistenceUnitEvent event);
+    
+    public void onPreUpdateFormulas(PersistenceUnitEvent event);
+
+    public void onUpdateFormulas(PersistenceUnitEvent event);
 
 }

@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -37,11 +37,11 @@
  */
 package net.vpc.upa.expressions;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Order implements Serializable, Cloneable {
+
     private ArrayList<OrderItem> fields = new ArrayList<OrderItem>(1);
 
     public Order() {
@@ -98,6 +98,23 @@ public class Order implements Serializable, Cloneable {
 //    public void setOrderAt(int index,Expression expression) {
 //        fields.get(index).expression=expression;
 //    }
+    public Order setOrderAt(int index, boolean asc) {
+        OrderItem o = fields.get(index);
+        fields.set(index, new OrderItem(o.getExpression(), asc));
+        return this;
+    }
+
+    public Order setOrderAt(int index, Expression e, boolean asc) {
+        OrderItem o = fields.get(index);
+        fields.set(index, new OrderItem(e, asc));
+        return this;
+    }
+
+    public Order setOrderAt(int index, Expression e) {
+        OrderItem o = fields.get(index);
+        fields.set(index, new OrderItem(e, o.isAsc()));
+        return this;
+    }
 
     public Expression getOrderAt(int index) {
         return fields.get(index).getExpression();
@@ -145,6 +162,4 @@ public class Order implements Serializable, Cloneable {
 //        }
 //        return sb.toString();
 //    }
-
-
 }

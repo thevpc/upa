@@ -24,6 +24,11 @@ public abstract class AbstractQuery implements Query {
     }
 
     @Override
+    public Boolean getBoolean() throws UPAException {
+        return (Boolean) getSingleValue();
+    }
+
+    @Override
     public String getString() throws UPAException {
         return (String) getSingleValue();
     }

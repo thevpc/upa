@@ -40,8 +40,16 @@ public final class Sum extends Function implements Cloneable {
     private Expression expression;
 
     public Sum(Expression expression) {
-        this.expression = null;
         this.expression = expression;
+    }
+
+    @Override
+    public void setArgument(int index, Expression e) {
+        if (index == 0) {
+            this.expression = e;
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 
     public int size() {

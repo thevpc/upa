@@ -33,6 +33,11 @@ public class QLFunctionExpression extends Function {
     }
 
     @Override
+    public void setArgument(int index, Expression e) {
+        arguments[index] = e;
+    }
+
+    @Override
     public Expression copy() {
         return new QLFunctionExpression(name, arguments);
     }

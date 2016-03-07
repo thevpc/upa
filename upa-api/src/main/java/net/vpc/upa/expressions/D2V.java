@@ -47,6 +47,15 @@ public class D2V extends Function {
 //        return "d2v("+e.toSQL(true, database)+")";
 //    }
 
+    @Override
+    public void setArgument(int index, Expression e) {
+        if (index == 0) {
+            this.value = e;
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+    }
+
     public Expression getValue() {
         return value;
     }

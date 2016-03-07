@@ -46,6 +46,8 @@ public interface Query extends Closeable {
 
     public Date getDate() throws UPAException;
 
+    public Boolean getBoolean() throws UPAException;
+
     public String getString() throws UPAException;
 
     public Number getNumber() throws UPAException;

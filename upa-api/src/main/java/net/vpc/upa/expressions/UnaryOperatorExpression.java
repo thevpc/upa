@@ -34,8 +34,12 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class UnaryOperatorExpression extends DefaultExpression
         implements Cloneable {
+    private static final DefaultTag EXPR = new DefaultTag("Expr");
     private static final long serialVersionUID = 1L;
     private String operatorString;
     private UnaryOperator unaryOperator;
@@ -47,10 +51,30 @@ public abstract class UnaryOperatorExpression extends DefaultExpression
         this.expression = expression;
     }
 
+
+ @Override
+    public List<TaggedExpression> getChildren() {
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        if (expression != null) {
+            list.add(new TaggedExpression(expression, EXPR));
+        }
+        return list;
+    }
+
+    @Override
+    public void setChild(Expression e, ExpressionTag tag) {
+        if (tag.equals(EXPR)) {
+            this.expression = e;
+        } else {
+            throw new IllegalArgumentException("Insupported");
+        }
+    }
+
     public int size() {
         return 1;
     }
 
+    @Override
     public boolean isValid() {
         return expression.isValid();
     }
