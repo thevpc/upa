@@ -34,7 +34,10 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         EntityExecutionContext executionContext = event.getContext();
         Relationship r = relation;
         List<Field> fs = r.getSourceRole().getFields();
-        Expression cond = new And(new Equals(new Var(fs.get(0).getName()), Literal.NULL), event.getFilterExpression());
+        Expression cond = new Equals(new Var(fs.get(0).getName()), Literal.NULL);
+        if(event.getFilterExpression()!=null){
+            cond = new And(cond, event.getFilterExpression());
+        }
         List<Object> keys = relation.getSourceRole().getEntity().createQueryBuilder().setExpression(cond).getIdList();
         for (Object key : keys) {
             support.validatePathField(key, executionContext);

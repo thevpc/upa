@@ -6,10 +6,11 @@ import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
 
 /**
-* @author Taha BEN SALAH <taha.bensalah@gmail.com>
-* @creationdate 1/8/13 2:27 PM
-*/
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 1/8/13 2:27 PM
+ */
 class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityPart> {
+
     private DefaultSection defaultSection;
 
     public DefaultSectionPrivateAddItemInterceptor(DefaultSection defaultSection) {
@@ -19,6 +20,7 @@ class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityP
     @Override
     public void before(EntityPart child, int index) {
         EntityPart oldParent = child.getParent();
+//        ((DefaultEntity) defaultSection.getEntity()).beforePartAdded(defaultSection, child, index);
         if (oldParent != null && oldParent != defaultSection) {
             if (oldParent instanceof Section) {
                 Section x = (Section) oldParent;
@@ -34,5 +36,6 @@ class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityP
 
     @Override
     public void after(EntityPart entityItem, int index) {
+//        ((DefaultEntity) defaultSection.getEntity()).afterPartAdded(defaultSection, entityItem, index);
     }
 }

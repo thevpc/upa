@@ -81,7 +81,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     private List<EntityPart> items = new ArrayList<EntityPart>();
     private Map<String, EntityPart> itemsByName = new HashMap<String, EntityPart>();
     private Map<String, Trigger> triggers = new HashMap<String, Trigger>();
-    private Map<String, Field> fieldsMap = new LinkedHashMap<String, Field>();
+    Map<String, Field> fieldsMap = new LinkedHashMap<String, Field>();
     //    private List<Field> fieldsList = new ArrayList<Field>();
     //    private HashList mappedCompoundFields;
     private Field mainRendererField;
@@ -1528,9 +1528,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         //reset fieldsByFilter
         fieldsByFilter.clear();
-        if (item instanceof Field) {
-            fieldsMap.put(getPersistenceUnit().getNamingStrategy().getUniformValue(item.getName()), (Field) item);
-        }
     }
 
     //    public PrimitiveField addField(String name, FlagSet<UserFieldModifier> modifiers, Formula alias, Object defaultValue,
@@ -1549,10 +1546,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    public PrimitiveField createField(String name, FlagSet<UserFieldModifier> modifiers, String formula, Object defaultValue, DataType type) throws UPAException {
 //        return createField(name, modifiers, formula == null ? null : new ExpressionFormula(formula), defaultValue, type);
 //    }
+    @Override
     public Field getMainField() throws UPAException {
         return mainRendererField;
     }
 
+    @Override
     public String getMainFieldValue(Object o) throws UPAException {
         Field mf = getMainField();
         if (mf == null) {
@@ -1565,6 +1564,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return String.valueOf(v);
     }
 
+    @Override
     public EntityNavigator getNavigator() throws UPAException {
         if (navigator == null) {
             navigator = createNavigator();

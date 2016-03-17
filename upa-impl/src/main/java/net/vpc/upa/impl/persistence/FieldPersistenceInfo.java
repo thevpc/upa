@@ -44,6 +44,54 @@ public class FieldPersistenceInfo {
         return newValue;
     }
 
+    public RebuildExpressionInfo rebuildExpression(ExpressionFormula persistFormula) {
+        Expression e = ((ExpressionFormula) persistFormula).getExpression();
+        RebuildExpressionInfo rr = new RebuildExpressionInfo();
+        rr.initialFormula=((ExpressionFormula) persistFormula);
+        Expression e0 = e;
+        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
+        config.setExpandEntityFilter(false);
+        //this is needed not to fire "this" alias usage exception
+        config.setThisAlias("this");
+        config.bindAliastoEntity("this", field.getEntity().getName());
+        DefaultCompiledExpression ce = null;
+        final ExpressionManager expressionManager = field.getEntity().getPersistenceUnit().getExpressionManager();
+        try {
+            ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
+        } catch (IllegalArgumentException ex) {
+            if (ex.getMessage().startsWith("No enclosing Select found for")) {
+                Select ss = new Select();
+                ss.field(e).from(field.getEntity().getName(), "this2");
+
+                Expression w = null;
+                for (Field primaryField : field.getEntity().getPrimaryFields()) {
+                    Expression pfe = new Equals(new UserExpression("this." + primaryField.getName()), new UserExpression("this2." + primaryField.getName()));
+                    if (w == null) {
+                        w = pfe;
+                    } else {
+                        w = new And(w, pfe);
+                    }
+                }
+                ExpressionVisitor expressionVisitor = new ThisRenamerVisitor(expressionManager, "this2");
+                ss.visit(expressionVisitor);
+                ss.where(w);
+                e = ss;
+            } else {
+                throw ex;
+            }
+            //throw new IllegalArgumentException("No enclosing Select found for " + v)
+        }
+        if (ce == null) {
+            ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
+            rr.compiledExpression = ce;
+            rr.rebuiltFormula = (new ExpressionFormula(e));
+        }else{
+            rr.compiledExpression=ce;
+        }
+        rr.expression=e;
+        return rr;
+    }
+
     public void synchronize() {
         if (field.getDataType() instanceof EntityType) {
             EntityType t = (EntityType) field.getDataType();
@@ -70,50 +118,15 @@ public class FieldPersistenceInfo {
                 persistFormulaPass = 0;
                 postPersistFormula = false;
             } else if (persistFormula instanceof ExpressionFormula) {
-                Expression e = ((ExpressionFormula) persistFormula).getExpression();
-                Expression e0 = e;
-                ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-                config.setExpandEntityFilter(false);
-                //this is needed not to fire "this" alias usage exception
-                config.setThisAlias("this");
-                config.bindAliastoEntity("this", field.getEntity().getName());
-                DefaultCompiledExpression ce = null;
-                final ExpressionManager expressionManager = field.getEntity().getPersistenceUnit().getExpressionManager();
-                try {
-                    ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
-                } catch (IllegalArgumentException ex) {
-                    if (ex.getMessage().startsWith("No enclosing Select found for")) {
-                        Select ss = new Select();
-                        ss.field(e).from(field.getEntity().getName(), "this2");
-
-                        Expression w = null;
-                        for (Field primaryField : field.getEntity().getPrimaryFields()) {
-                            Expression pfe = new Equals(new UserExpression("this." + primaryField.getName()), new UserExpression("this2." + primaryField.getName()));
-                            if (w == null) {
-                                w = pfe;
-                            } else {
-                                w = new And(w, pfe);
-                            }
-                        }
-                        ExpressionVisitor expressionVisitor = new ThisRenamerVisitor(expressionManager,"this2");
-                        ss.visit(expressionVisitor);
-                        ss.where(w);
-                        e = ss;
-                    } else {
-                        throw ex;
-                    }
-                    //throw new IllegalArgumentException("No enclosing Select found for " + v)
+                RebuildExpressionInfo re = rebuildExpression((ExpressionFormula) persistFormula);
+                if (re.rebuiltFormula != null) {
+                    field.setPersistFormula(re.rebuiltFormula);
                 }
-                if (ce == null) {
-                    ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
-                    field.setPersistFormula(new ExpressionFormula(e));
-                }
-
-                List<DefaultCompiledExpression> complex = ce.findExpressionsList(CompiledExpressionHelper.THIS_VAR_FILTER);
+                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionHelper.THIS_VAR_FILTER);
                 persistFormulaPass = field.getPersistFormulaOrder();
                 if (complex.isEmpty() && persistFormulaPass == 0) {
-                    insertExpression = e;
-                    persistFieldPersister = updateFieldPersister(persistFieldPersister, new ExpressionFieldPersister(field.getName(), e));
+                    insertExpression = re.expression;
+                    persistFieldPersister = updateFieldPersister(persistFieldPersister, new ExpressionFieldPersister(field.getName(), re.expression));
                     postPersistFormula = false;
                 } else {
                     postPersistFormula = true;
@@ -131,11 +144,15 @@ public class FieldPersistenceInfo {
                 updateFormulaPass = 0;
                 postUpdateFormula = false;
             } else if (updateFormula instanceof ExpressionFormula) {
-                final Expression e = ((ExpressionFormula) updateFormula).getExpression();
+                RebuildExpressionInfo re = rebuildExpression((ExpressionFormula) persistFormula);
+                if (re.rebuiltFormula != null) {
+                    field.setUpdateFormula(re.rebuiltFormula);
+                }
+//                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionHelper.THIS_VAR_FILTER);
                 updateFormulaPass = field.getUpdateFormulaOrder();
-                if (updateFormulaPass == 0) {
-                    updateExpression = e;
-                    updateFieldPersister = updateFieldPersister(updateFieldPersister, new ExpressionFieldPersister(field.getName(), e));
+                if (/*complex.isEmpty() && */updateFormulaPass == 0) {
+                    updateExpression = re.expression;
+                    updateFieldPersister = updateFieldPersister(updateFieldPersister, new ExpressionFieldPersister(field.getName(), re.expression));
                     postUpdateFormula = false;
                 } else {
                     postUpdateFormula = true;
@@ -157,6 +174,5 @@ public class FieldPersistenceInfo {
             }
         }
     }
-
 
 }

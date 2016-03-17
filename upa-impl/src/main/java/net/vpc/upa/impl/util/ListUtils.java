@@ -13,7 +13,7 @@ import net.vpc.upa.UPAObjectListener;
  */
 public class ListUtils {
 
-    public static <T extends UPAObject> void add(List<T> items, T child, int index, UPAObject newParent, UPAObject propertyChangeSupport, ItemInterceptor<T> interceptor) {
+    public static <T extends UPAObject> void add(List<T> items, T child, int index, UPAObject newParent, UPAObject obj, ItemInterceptor<T> interceptor) {
         if (index < 0) {
             index = items.size() + index + 1;
         }
@@ -26,7 +26,7 @@ public class ListUtils {
         if (interceptor != null) {
             interceptor.before(child, index);
         }
-        UPAObjectListener[] objectListeners = propertyChangeSupport.getObjectListeners();
+        UPAObjectListener[] objectListeners = obj.getObjectListeners();
         for (UPAObjectListener li : objectListeners) {
             li.itemAdded(child, index, newParent, EventPhase.BEFORE);
         }

@@ -87,10 +87,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     }
                     throw new EntityAlreadyExistsException(entity.getName(), s1, s2);
                 }
+                addHandlers(object);
                 fireOnCreateEntity(entity, position, phase);
             } else {
                 model.registerEntity(entity, parentModule);
-                addHandlers(object);
                 fireOnCreateEntity(entity, position, phase);
 
                 EntityDescriptor entityInfo = entity.getEntityDescriptor();
@@ -167,10 +167,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 if (model.containsField(field)) {
                     throw new ObjectAlreadyExistsException("Field already exists", s);
                 }
+                addHandlers(object);
                 fireFieldAdded(field, position, phase);
             } else {
                 model.registerField(field);
-                addHandlers(object);
                 if (field.getDataType() instanceof SerializableOrEntityType) {
                     FieldSerializableOrEntityProcessor p = new FieldSerializableOrEntityProcessor(field.getPersistenceUnit(), field);
                     p.process();
@@ -185,10 +185,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 if (model.containsIndex(index, parentEntity)) {
                     throw new ObjectAlreadyExistsException("Index already exists", s);
                 }
+                addHandlers(object);
                 fireOnCreateIndex(index, position, phase);
             } else {
                 model.registerIndex(index, parentEntity);
-                addHandlers(object);
                 fireOnCreateIndex(index, position, phase);
             }
         } else if (object instanceof Section) {
@@ -200,10 +200,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 if (model.containsSection(section)) {
                     throw new ObjectAlreadyExistsException("Section already exists", s);
                 }
+                addHandlers(object);
                 fireOnCreateSection(section, position, phase);
             } else {
                 model.registerSection(section);
-                addHandlers(object);
                 fireOnCreateSection(section, position, phase);
             }
         } else if (object instanceof Package) {
@@ -219,10 +219,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 if (model.containsPackage(module, parentModule)) {
                     throw new ObjectAlreadyExistsException("Package already exists", s);
                 }
+                addHandlers(object);
                 fireOnCreatePackage(module, parentModule, position, phase);
             } else {
                 model.registerPackage(module, parentModule);
-                addHandlers(object);
                 fireOnCreatePackage(module, parentModule, position, phase);
             }
         } else if (object instanceof Relationship) {
@@ -232,10 +232,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 if (model.containsRelationship(relation)) {
                     throw new ObjectAlreadyExistsException("Relationship already exists", s);
                 }
+                addHandlers(object);
                 fireOnCreateRelationship(relation, position, phase);
             } else {
                 model.registerRelationship(relation);
-                addHandlers(object);
                 fireOnCreateRelationship(relation, position, phase);
             }
         } else {

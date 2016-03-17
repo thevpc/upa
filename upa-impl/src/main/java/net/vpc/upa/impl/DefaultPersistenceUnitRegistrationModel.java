@@ -133,10 +133,11 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public void registerField(Field item) {
-        Entity entity = item.getEntity();
+        DefaultEntity entity = (DefaultEntity)item.getEntity();
         Package module = entity.getParent();
         String s = (module == null ? "/" : module.getPath() + "/") + entity.getName() + "/" + item.getName();
         fields.put(s, item);
+        entity.fieldsMap.put(entity.getPersistenceUnit().getNamingStrategy().getUniformValue(item.getName()), (Field) item);
     }
 
     public void unregisterField(Field item) {
