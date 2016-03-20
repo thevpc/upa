@@ -6,22 +6,23 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
-* @author Taha BEN SALAH <taha.bensalah@gmail.com>
-* @creationdate 1/8/13 2:20 AM
-*/
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 1/8/13 2:20 AM
+ */
 class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
-    private final QueryResult result;
-    private MergedRecordList records;
 
-    public QueryResultUpdaterPropertyChangeListener(MergedRecordList records, QueryResult result) {
+    private final QueryResult result;
+    private final MergedRecordList records;
+    private final TypeInfo typeInfo;
+
+    public QueryResultUpdaterPropertyChangeListener(MergedRecordList records, TypeInfo typeInfo, QueryResult result) {
         this.records = records;
         this.result = result;
+        this.typeInfo = typeInfo;
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        Integer i = records.nameToIndex.get(evt.getPropertyName());
-        if (i != null) {
-            result.write(i, evt.getNewValue());
-        }
+        int index = typeInfo.fields.get(evt.getPropertyName()).index;
+        result.write(index, evt.getNewValue());
     }
 }

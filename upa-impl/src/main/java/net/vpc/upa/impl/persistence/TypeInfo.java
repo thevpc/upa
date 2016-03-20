@@ -28,7 +28,7 @@ class TypeInfo {
     Class entityType;
     EntityBuilder entityFactory;
     EntityBuilder entityConverter;
-    Map<String, FieldInfo> setterToProp = new HashMap<String, FieldInfo>();
+    Map<String, FieldInfo> fields = new HashMap<String, FieldInfo>();
 
     public TypeInfo(String binding, Entity entity) {
         this.binding = binding;
@@ -38,8 +38,10 @@ class TypeInfo {
             this.bindingName = binding.substring(dotPos + 1);
         }
         this.entity = entity;
-        entityFactory = entity.getBuilder();
-        entityConverter = entity.getBuilder();
-        entityType = entity.getEntityType();
+        if (entity != null) {
+            entityFactory = entity.getBuilder();
+            entityConverter = entity.getBuilder();
+            entityType = entity.getEntityType();
+        }
     }
 }

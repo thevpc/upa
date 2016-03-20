@@ -35,6 +35,7 @@
 package net.vpc.upa.callbacks;
 
 import net.vpc.upa.Entity;
+import net.vpc.upa.EventPhase;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -44,10 +45,16 @@ public class TriggerEvent extends UPAEvent {
 
     private Entity entity;
     private Trigger trigger;
+    private EventPhase phase;
 
-    public TriggerEvent(Trigger trigger, Entity entity) {
+    public TriggerEvent(Trigger trigger, Entity entity, EventPhase phase) {
         this.entity = entity;
         this.trigger = trigger;
+        this.phase = phase;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public Entity getEntity() {

@@ -52,7 +52,7 @@ public class SingleEntityQueryResult<R> extends QueryResultIteratorList<R> {
                 t.leadField = f;
             }
             f.setterMethodName = PlatformUtils.setterName(nativeField.getName());
-            t.setterToProp.put(f.setterMethodName, f);
+            t.fields.put(f.setterMethodName, f);
 //            fieldInfos0.add(f);
             index++;
         }

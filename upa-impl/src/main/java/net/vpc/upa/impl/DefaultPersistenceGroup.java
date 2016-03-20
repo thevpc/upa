@@ -170,8 +170,7 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
             if (persistenceUnits.containsKey(name)) {
                 throw new PersistenceUnitAlreadyExistsException(name);
             }
-            PersistenceUnitEvent event = new PersistenceUnitEvent(persistenceUnit, this);
-            listeners.fireOnCreatePersistenceUnit(event, EventPhase.BEFORE);
+            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.BEFORE));
 
             persistenceUnits.put(name, persistenceUnit);
 
@@ -179,7 +178,7 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
             if (oldPersistenceUnit == null) {
                 setPersistenceUnit(persistenceUnit.getName());
             }
-            listeners.fireOnCreatePersistenceUnit(event, EventPhase.AFTER);
+            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
         }
         log.log(Level.FINE, "Create PersistenceUnit {0}/{1}", new Object[]{getName(), persistenceUnit.getName()});
         return persistenceUnit;
@@ -198,12 +197,11 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
             if (!persistenceUnit.isClosed()) {
                 persistenceUnit.close();
             }
-            PersistenceUnitEvent event = new PersistenceUnitEvent(persistenceUnit, this);
-            listeners.fireOnDropPersistenceUnit(event, EventPhase.BEFORE);
+            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.BEFORE));
 
             persistenceUnits.remove(name);
 
-            listeners.fireOnDropPersistenceUnit(event, EventPhase.AFTER);
+            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
         }
 
     }

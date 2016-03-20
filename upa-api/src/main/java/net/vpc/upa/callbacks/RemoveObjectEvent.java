@@ -31,6 +31,7 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -42,8 +43,8 @@ public class RemoveObjectEvent extends RemoveEvent {
 
     private Object objectId;
 
-    public RemoveObjectEvent(Object objectId, Expression filterExpression, EntityExecutionContext entityExecutionContext) {
-        super(filterExpression, entityExecutionContext);
+    public RemoveObjectEvent(Object objectId, Expression filterExpression, EntityExecutionContext entityExecutionContext,EventPhase phase) {
+        super(filterExpression, entityExecutionContext,phase);
         this.objectId = objectId;
     }
 

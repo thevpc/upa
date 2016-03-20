@@ -27,7 +27,7 @@ public class UpdateObjectEventCallback extends SingleEntityObjectEventCallback {
     public Object invoke(Object... arguments) {
         UpdateEvent ev = (UpdateEvent) arguments[0];
         for (Object id : resolveIdList(ev, ev.getFilterExpression())) {
-            UpdateObjectEvent oe = new UpdateObjectEvent(id, ev.getUpdatesRecord(), ev.getFilterExpression(), ev.getContext());
+            UpdateObjectEvent oe = new UpdateObjectEvent(id, ev.getUpdatesRecord(), ev.getFilterExpression(), ev.getContext(),getPhase());
             invokeSingle(oe);
         }
         return null;

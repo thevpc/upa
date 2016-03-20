@@ -161,7 +161,19 @@ public interface Field extends EntityPart {
 
     public DataTypeTransform getTypeTransform();
 
+    /**
+     * value of the field for the given instance
+     * @param instance object instance
+     * @return value of the field
+     */
     public Object getValue(Object instance);
+    
+    /**
+     * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
+     * @param instance instance to get value on
+     * @return displayable value
+     */
+    public Object getMainValue(Object instance);
 
     public void setValue(Object instance, Object value);
 }

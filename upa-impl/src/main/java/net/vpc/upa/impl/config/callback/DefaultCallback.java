@@ -7,6 +7,7 @@ import net.vpc.upa.ObjectType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+import net.vpc.upa.EventPhase;
 
 /**
  * Created by vpc on 7/25/15.
@@ -19,6 +20,7 @@ public class DefaultCallback implements Callback {
     private CallbackType callbackType;
     private ObjectType objectType;
     private Map<String, Object> configuration;
+    private EventPhase phase;
 
     public DefaultCallback(Object o, Method m, CallbackType callbackType, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
         this.converter = converter;
@@ -27,6 +29,11 @@ public class DefaultCallback implements Callback {
         this.objectType = objectType;
         this.callbackType = callbackType;
         this.configuration = configuration;
+        this.phase = callbackType.name().startsWith("ON_PRE_") ? EventPhase.BEFORE : EventPhase.AFTER;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public Map<String, Object> getConfiguration() {

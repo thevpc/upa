@@ -27,7 +27,7 @@ public class RemoveObjectEventCallback extends SingleEntityObjectEventCallback {
     public Object invoke(Object... arguments) {
         RemoveEvent ev = (RemoveEvent) arguments[0];
         for (Object id : resolveIdList(ev, ev.getFilterExpression())) {
-            RemoveObjectEvent oe = new RemoveObjectEvent(id, ev.getFilterExpression(), ev.getContext());
+            RemoveObjectEvent oe = new RemoveObjectEvent(id, ev.getFilterExpression(), ev.getContext(),getPhase());
             invokeSingle(oe);
         }
         return null;

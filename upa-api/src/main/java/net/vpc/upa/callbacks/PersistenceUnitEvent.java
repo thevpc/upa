@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 
@@ -45,10 +46,16 @@ public class PersistenceUnitEvent extends UPAEvent {
 
     private PersistenceUnit persistenceUnit;
     private PersistenceGroup persistenceGroup;
+    private EventPhase phase;
 
-    public PersistenceUnitEvent(PersistenceUnit persistenceUnit,PersistenceGroup persistenceGroup) {
+    public PersistenceUnitEvent(PersistenceUnit persistenceUnit, PersistenceGroup persistenceGroup, EventPhase phase) {
         this.persistenceUnit = persistenceUnit;
         this.persistenceGroup = persistenceGroup;
+        this.phase = phase;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public PersistenceUnit getPersistenceUnit() {

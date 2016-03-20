@@ -27,7 +27,7 @@ public class UpdateFormulaObjectEventCallback extends SingleEntityObjectEventCal
     public Object invoke(Object... arguments) {
         UpdateFormulaEvent ev = (UpdateFormulaEvent) arguments[0];
         for (Object id : resolveIdList(ev, ev.getFilterExpression())) {
-            UpdateFormulaObjectEvent oe = new UpdateFormulaObjectEvent(id, ev.getUpdates(), ev.getFilterExpression(), ev.getContext());
+            UpdateFormulaObjectEvent oe = new UpdateFormulaObjectEvent(id, ev.getUpdates(), ev.getFilterExpression(), ev.getContext(),getPhase());
             invokeSingle(oe);
         }
         return null;

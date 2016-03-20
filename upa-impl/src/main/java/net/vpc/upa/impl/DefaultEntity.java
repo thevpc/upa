@@ -126,7 +126,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         userIncludeModifiers = FlagSets.noneOf(EntityModifier.class);
         userExcludeModifiers = FlagSets.noneOf(EntityModifier.class);
         effectiveModifiers = FlagSets.noneOf(EntityModifier.class);
-        recordListenerSupport = new RecordListenerSupport(this);
         entityFactory = new DefaultEntityBuilder(this);
         entityFactory.setEntityConverter(new DefaultEntityConverter(this));
         indexes = new ArrayList<Index>();
@@ -206,6 +205,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return effectiveModifiers;
     }
 
+    @Override
     public void setModifiers(FlagSet<EntityModifier> effectiveModifiers) {
         this.effectiveModifiers = effectiveModifiers;
     }
@@ -223,6 +223,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         extensionManager = factory.createObject(DefaultEntityExtensionManager.class);
         tuningMaxInline = getPersistenceUnit().getProperties().getInt(Relationship.class.getName() + ".maxInline", 10);
         entityOperationManager = factory.createObject(EntityOperationManager.class);
+        recordListenerSupport = new RecordListenerSupport(this, ((DefaultPersistenceUnit) persistenceUnit).getPersistenceUnitListenerManager());
         addTrigger(null, cache_isEmpty_Listener);
     }
 
@@ -447,8 +448,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     index++;
                 }
             } else // field
-            {
-                if (!countFieldsInCompoundFields
+             if (!countFieldsInCompoundFields
                         && entityPart.getParent() instanceof CompoundField) {
                     //
                 } else if (!countFieldsInSections
@@ -457,7 +457,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 } else {
                     index++;
                 }
-            }
         }
         return -1;
     }
@@ -1919,7 +1918,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     protected boolean isCheckSecurity() throws UPAException {
-        Session currentSession = getPersistenceUnit().getPersistenceGroup().getCurrentSession();
+        Session currentSession = getPersistenceUnit().getCurrentSession();
         return (currentSession == null) || !getPersistenceUnit().isSystemSession(currentSession);
     }
 

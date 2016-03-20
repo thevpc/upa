@@ -28,13 +28,14 @@ public class PersistenceGroupListenerManager {
         this.group = group;
     }
 
-    public void fireOnCreatePersistenceUnit(PersistenceUnitEvent event, EventPhase phase) {
+    public void fireOnCreatePersistenceUnit(PersistenceUnitEvent event) {
+        EventPhase phase=event.getPhase();
         PersistenceUnitDefinitionListener[] interceptorList = getPersistenceUnitDefinitionListeners();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitDefinitionListener listener : interceptorList) {
                 listener.onPreCreatePersistenceUnit(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_CREATE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_PRE_CREATE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
@@ -47,13 +48,14 @@ public class PersistenceGroupListenerManager {
         }
     }
 
-    public void fireOnDropPersistenceUnit(PersistenceUnitEvent event, EventPhase phase) {
+    public void fireOnDropPersistenceUnit(PersistenceUnitEvent event) {
+        EventPhase phase=event.getPhase();
         PersistenceUnitDefinitionListener[] interceptorList = getPersistenceUnitDefinitionListeners();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitDefinitionListener listener : interceptorList) {
                 listener.onPreDropPersistenceUnit(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_PRE_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.Record;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -47,8 +48,8 @@ public class PersistObjectEvent extends EntityEvent {
     private Record objectRecord;
     private Object objectValue;
 
-    public PersistObjectEvent(Object objectId, Record objectRecord, EntityExecutionContext entityExecutionContext) {
-        super(entityExecutionContext);
+    public PersistObjectEvent(Object objectId, Record objectRecord, EntityExecutionContext entityExecutionContext,EventPhase phase) {
+        super(entityExecutionContext,phase);
         this.objectId = objectId;
         this.objectRecord = objectRecord;
     }

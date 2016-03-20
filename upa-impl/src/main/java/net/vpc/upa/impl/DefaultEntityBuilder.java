@@ -76,11 +76,18 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public void setProperty(Object entityObject, String property, Object value) throws UPAException {
+        if(entityObject instanceof Record){
+            ((Record)entityObject).setObject(property,value);
+            return;
+        }
         entityFactory.setProperty(entityObject, property, value);
     }
 
     @Override
     public Object getProperty(Object entityObject, String property) throws UPAException {
+        if(entityObject instanceof Record){
+            return ((Record)entityObject).getObject(property);
+        }
         return entityFactory.getProperty(entityObject, property);
     }
 

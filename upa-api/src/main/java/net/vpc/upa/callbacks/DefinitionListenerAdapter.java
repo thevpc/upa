@@ -40,16 +40,8 @@ import net.vpc.upa.exceptions.UPAException;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/27/12 11:15 PM
  */
-public class DefinitionListenerAdapter implements DefinitionListener
-        , PackageDefinitionListener
-        , SectionDefinitionListener
-        , EntityDefinitionListener
-        , FieldDefinitionListener
-        , IndexDefinitionListener
-        , TriggerDefinitionListener
-        , RelationshipDefinitionListener
-        , PersistenceUnitDefinitionListener
-        , PersistenceGroupDefinitionListener {
+public class DefinitionListenerAdapter //        implements DefinitionListener, PackageDefinitionListener, SectionDefinitionListener, EntityDefinitionListener, FieldDefinitionListener, IndexDefinitionListener, TriggerDefinitionListener, RelationshipDefinitionListener, PersistenceUnitDefinitionListener, PersistenceGroupDefinitionListener 
+{
 
     public void onPreCreateEntity(EntityEvent event) {
     }
@@ -57,13 +49,11 @@ public class DefinitionListenerAdapter implements DefinitionListener
     public void onCreateEntity(EntityEvent event) {
     }
 
-
     public void onPreDropEntity(EntityEvent event) {
     }
 
     public void onDropEntity(EntityEvent event) {
     }
-
 
     public void onPreMoveEntity(EntityEvent event) {
     }
@@ -183,6 +173,14 @@ public class DefinitionListenerAdapter implements DefinitionListener
     }
 
     public void onDropPersistenceGroup(PersistenceGroupEvent event) {
+    }
+
+    public void onPreInitEntity(EntityEvent event) {
+
+    }
+
+    public void onInitEntity(EntityEvent event) {
+
     }
 
 }

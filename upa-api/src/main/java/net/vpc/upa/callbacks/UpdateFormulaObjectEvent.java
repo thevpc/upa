@@ -31,6 +31,7 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.Record;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -43,8 +44,8 @@ public class UpdateFormulaObjectEvent extends UpdateFormulaEvent {
 
     private Object objectId;
 
-    public UpdateFormulaObjectEvent(Object objectId, Record updates, Expression filterExpression, EntityExecutionContext entityExecutionContext) {
-        super(updates, filterExpression, entityExecutionContext);
+    public UpdateFormulaObjectEvent(Object objectId, Record updates, Expression filterExpression, EntityExecutionContext entityExecutionContext,EventPhase phase) {
+        super(updates, filterExpression, entityExecutionContext,phase);
         this.objectId = objectId;
     }
 

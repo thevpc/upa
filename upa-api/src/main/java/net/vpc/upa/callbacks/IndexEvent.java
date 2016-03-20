@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.Index;
 import net.vpc.upa.PersistenceUnit;
 
@@ -42,12 +43,19 @@ import net.vpc.upa.PersistenceUnit;
  * @creationdate 11/27/12 9:52 PM
  */
 public class IndexEvent extends UPAEvent {
+
     private PersistenceUnit persistenceUnit;
     private Index index;
+    private EventPhase phase;
 
-    public IndexEvent(Index index, PersistenceUnit persistenceUnit) {
+    public IndexEvent(Index index, PersistenceUnit persistenceUnit, EventPhase phase) {
         this.persistenceUnit = persistenceUnit;
         this.index = index;
+        this.phase = phase;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public PersistenceUnit getPersistenceUnit() {

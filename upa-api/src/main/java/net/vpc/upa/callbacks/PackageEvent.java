@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -38,26 +38,34 @@ import net.vpc.upa.Package;
 import net.vpc.upa.PersistenceUnit;
 
 import java.io.Serializable;
+import net.vpc.upa.EventPhase;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/27/12 9:52 PM
  */
 public class PackageEvent extends UPAEvent {
+
     private PersistenceUnit persistenceUnit;
     private int index;
     private int oldIndex;
     private Package item;
     private Package parent;
     private Package oldParent;
+    private EventPhase phase;
 
-    public PackageEvent(Package item, PersistenceUnit persistenceUnit, Package parent, int index, Package oldParent, int oldIndex) {
+    public PackageEvent(Package item, PersistenceUnit persistenceUnit, Package parent, int index, Package oldParent, int oldIndex, EventPhase phase) {
         this.persistenceUnit = persistenceUnit;
         this.item = item;
         this.parent = parent;
         this.index = index;
         this.oldParent = oldParent;
         this.oldIndex = oldIndex;
+        this.phase = phase;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public PersistenceUnit getPersistenceUnit() {

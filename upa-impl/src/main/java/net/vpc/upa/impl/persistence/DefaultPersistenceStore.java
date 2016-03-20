@@ -125,7 +125,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         commitManager.init(persistenceUnit, this);
     }
 
-    public MarshallManager getMarshallManager() {
+    public final MarshallManager getMarshallManager() {
         return marshallManager;
     }
 
@@ -383,7 +383,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     }
 
     private Session getSession() throws UPAException {
-        return getPersistenceUnit().getPersistenceGroup().getCurrentSession();
+        return getPersistenceUnit().getCurrentSession();
     }
 
     //    private void checkConnection()
@@ -771,6 +771,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     }
 
     //    @Override
+    @Override
     public UConnection getConnection() throws UPAException {
         Session session = getSession();
         UConnection connection = session.getParam(persistenceUnit, UConnection.class, SessionParams.CONNECTION, null);
@@ -1336,6 +1337,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         return nativeSQL.getResultCount();
     }
 
+    @Override
     public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException {
         QueryScript script = new QueryScript();
         List<Entity> entities = persistenceUnit.getEntities();
@@ -1454,7 +1456,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //        return script;
 //    }
     protected void requireTransaction() throws UPAException {
-        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
+        Session currentSession = persistenceUnit.getCurrentSession();
         if (currentSession != null) {
             Transaction transaction = currentSession.getParam(persistenceUnit, Transaction.class, SessionParams.TRANSACTION, null);
             if (transaction != null) {
@@ -1863,7 +1865,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public void revalidateModel() throws UPAException {
     }
 
-    public SQLManager getSqlManager() {
+    public final SQLManager getSqlManager() {
         return sqlManager;
     }
 

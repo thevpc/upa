@@ -58,6 +58,15 @@ import net.vpc.upa.config.OnUpdate;
 import net.vpc.upa.config.OnUpdateFormula;
 import net.vpc.upa.config.SecurityContext;
 import net.vpc.upa.config.DecorationValue;
+import net.vpc.upa.config.OnPreAlter;
+import net.vpc.upa.config.OnPreCreate;
+import net.vpc.upa.config.OnPreDrop;
+import net.vpc.upa.config.OnPreInitialize;
+import net.vpc.upa.config.OnPrePersist;
+import net.vpc.upa.config.OnPreRemove;
+import net.vpc.upa.config.OnPreReset;
+import net.vpc.upa.config.OnPreUpdate;
+import net.vpc.upa.config.OnPreUpdateFormula;
 import net.vpc.upa.impl.config.decorations.SimpleDecoration;
 import net.vpc.upa.impl.util.OrderedIem;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -393,15 +402,24 @@ public class URLAnnotationStrategySupport {
                             net.vpc.upa.config.Transactional.class,
                             net.vpc.upa.config.Hierarchy.class,
                             net.vpc.upa.config.Callback.class,
+                            OnPreAlter.class,
                             OnAlter.class,
+                            OnPreCreate.class,
                             OnCreate.class,
+                            OnPreDrop.class,
                             OnDrop.class,
+                            OnPreRemove.class,
                             OnRemove.class,
+                            OnPrePersist.class,
+                            OnPrePersist.class,
                             OnPersist.class,
-                            OnRemove.class,
+                            OnPreUpdate.class,
                             OnUpdate.class,
+                            OnPreUpdateFormula.class,
                             OnUpdateFormula.class,
+                            OnPreInitialize.class,
                             OnInitialize.class,
+                            OnPreReset.class,
                             OnReset.class,
                             net.vpc.upa.config.UnionEntity.class,
                             net.vpc.upa.config.UnionEntityEntry.class,
@@ -426,77 +444,12 @@ public class URLAnnotationStrategySupport {
                 for (Method m : PlatformUtils.getAllConcreteMethods(t)) {
                     Decoration[] mdecos = newrepo.getMethodDecorations(m);
                     for (Decoration mdeco : mdecos) {
-                        CallbackType type = PlatformUtils.getUndefinedValue(CallbackType.class);
-                        Map<String, Object> conf = new HashMap<String, Object>();
-                        if (mdeco.isName(OnAlter.class)) {
-                            type = CallbackType.ON_UPDATE;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnCreate.class)) {
-                            type = CallbackType.ON_CREATE;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnDrop.class)) {
-                            type = CallbackType.ON_DROP;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnPersist.class)) {
-                            type = CallbackType.ON_PERSIST;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnUpdate.class)) {
-                            type = CallbackType.ON_UPDATE;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnRemove.class)) {
-                            type = CallbackType.ON_REMOVE;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnReset.class)) {
-                            type = CallbackType.ON_RESET;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(OnInitialize.class)) {
-                            type = CallbackType.ON_INITIALIZE;
-                            conf.put("before", at.getBoolean("before"));
-                            conf.put("after", at.getBoolean("after"));
-                            conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-                        } else if (mdeco.isName(net.vpc.upa.config.Function.class)) {
-                            type = CallbackType.ON_EVAL;
-                            String functionName = at.getString("name");
-                            Class returnType = at.getType("returnType");
-                            if (!Strings.isNullOrEmpty(functionName)) {
-                                conf.put("functionName", functionName);
-                            }
-                            if (returnType != null && !PlatformUtils.isVoid(returnType)) {
-                                conf.put("returnType", returnType);
-                            }
+                        if (listener != null) {
+                            listener.persistenceUnitItemScanned(new ScanEvent(
+                                    persistenceUnit.getPersistenceGroup().getContext(),
+                                    persistenceUnit.getPersistenceGroup(), persistenceUnit, Object.class, t,
+                                    new DecoratedMethodScan(mdeco, m)));
                         }
-                        if (type != null) {
-                            Object instance = null;
-                            if (!PlatformUtils.isStatic(m)) {
-                                instance = persistenceUnit.getFactory().getSingleton(t);
-                            }
-                            net.vpc.upa.Callback cb = persistenceUnit.getPersistenceGroup().getContext().createCallback(
-                                    instance,
-                                    m,
-                                    type,
-                                    conf
-                            );
-                            persistenceUnit.addCallback(cb);
-                        }
-
-                        listener.persistenceUnitItemScanned(new ScanEvent(
-                                persistenceUnit.getPersistenceGroup().getContext(),
-                                persistenceUnit.getPersistenceGroup(), persistenceUnit, Callback.class, t, at));
-
                     }
                 }
                 if (isPersistenceUnitItemDefinitionListener(t)) {

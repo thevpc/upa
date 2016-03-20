@@ -422,4 +422,14 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 
     }
 
+    @Override
+    public void onInitEntity(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onPreInitEntity(EntityEvent event) {
+
+    }
+
 }

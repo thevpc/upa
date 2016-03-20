@@ -15,11 +15,5 @@ public @interface OnUpdateFormula {
 
     boolean trackSystemObjects() default false;
 
-    boolean before() default false;
-
-    boolean after() default true;
-
-    boolean veto() default false;
-
     Config config() default @Config();
 }

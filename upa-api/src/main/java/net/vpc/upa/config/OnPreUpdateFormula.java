@@ -8,9 +8,10 @@ import java.lang.annotation.Target;
 /**
  * Created by vpc on 7/25/15.
  */
-@Target(value=ElementType.METHOD)
-@Retention(value=RetentionPolicy.RUNTIME)
-public @interface OnReset {
+@Target(value = ElementType.METHOD)
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface OnPreUpdateFormula {
+
     String name() default "";
 
     boolean trackSystemObjects() default false;

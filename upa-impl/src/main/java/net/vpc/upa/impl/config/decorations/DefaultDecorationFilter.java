@@ -68,7 +68,7 @@ public class DefaultDecorationFilter implements DecorationFilter {
                         break;
                     }
                     case METHOD: {
-                        fieldsAnnotations.add(c.getName());
+                        methodsAnnotations.add(c.getName());
                         break;
                     }
                 }

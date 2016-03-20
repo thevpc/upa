@@ -10,6 +10,8 @@ import net.vpc.upa.types.DataTypeTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.EnumType;
 
 public abstract class AbstractField extends AbstractUPAObject implements Field, Comparable<Object> {
 
@@ -473,7 +475,23 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     @Override
+    public Object getMainValue(Object instance) {
+        Object v = getValue(instance);
+        if (v != null) {
+            DataType d = (DataType) getDataType();
+            if (d instanceof EntityType) {
+                EntityType ed = (EntityType) d;
+                v = ed.getRelationship().getTargetEntity().getBuilder().getMainValue(v);
+            }
+        }
+        return v;
+    }
+
+    @Override
     public Object getValue(Object instance) {
+        if (instance instanceof Record) {
+            return ((Record) instance).getObject(getName());
+        }
         return getEntity().getBuilder().getProperty(instance, getName());
     }
 

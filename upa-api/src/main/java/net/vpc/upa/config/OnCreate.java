@@ -19,9 +19,5 @@ public @interface OnCreate {
 
     boolean trackSystemObjects() default false;
 
-    boolean before() default false;
-
-    boolean after() default true;
-
     Config config() default @Config();
 }

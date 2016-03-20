@@ -81,6 +81,32 @@ public class DefaultQuery extends AbstractQuery {
         return nativeSQL.getResultCount();
     }
 
+    protected String resolveAliasName() {
+        String aliasName = null;
+        if (query instanceof CompiledUnion) {
+            List<CompiledQueryStatement> queryStatements = ((CompiledUnion) query).getQueryStatements();
+            if (queryStatements.isEmpty()) {
+                throw new IllegalArgumentException("Empty Union");
+            }
+            List<ExpressionDeclaration> declarations = queryStatements.get(0).getExportedDeclarations();
+            for (ExpressionDeclaration d : declarations) {
+                if (d.getReferrerType() == DecObjectType.ENTITY) {
+                    aliasName = d.getValidName();
+                    break;
+                }
+            }
+        } else { // select
+            List<ExpressionDeclaration> declarations = query.getExportedDeclarations();
+            for (ExpressionDeclaration d : declarations) {
+                if (d.getReferrerType() == DecObjectType.ENTITY) {
+                    aliasName = d.getValidName();
+                    break;
+                }
+            }
+        }
+        return aliasName;
+    }
+
     @Override
     public <R2> List<R2> getEntityList() throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
@@ -90,28 +116,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getEntityList();
         }
         try {
-            String aliasName = null;
-            if (query instanceof CompiledUnion) {
-                List<CompiledQueryStatement> queryStatements = ((CompiledUnion) query).getQueryStatements();
-                if (queryStatements.isEmpty()) {
-                    throw new IllegalArgumentException("Empty Union");
-                }
-                List<ExpressionDeclaration> declarations = queryStatements.get(0).getExportedDeclarations();
-                for (ExpressionDeclaration d : declarations) {
-                    if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        aliasName = d.getValidName();
-                        break;
-                    }
-                }
-            } else { // select
-                List<ExpressionDeclaration> declarations = query.getExportedDeclarations();
-                for (ExpressionDeclaration d : declarations) {
-                    if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        aliasName = d.getValidName();
-                        break;
-                    }
-                }
-            }
+            String aliasName = resolveAliasName();
             NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
             SingleEntityQueryResult<R2> r = new SingleEntityQueryResult<R2>(nativeSQL, aliasName);
             allResults.add(r);
@@ -181,7 +186,7 @@ public class DefaultQuery extends AbstractQuery {
         }
         try {
             NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            MergedRecordList r = new MergedRecordList(nativeSQL, context.getPersistenceUnit());
+            MergedRecordList r = new MergedRecordList(nativeSQL, resolveAliasName());
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -193,6 +198,7 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
+    @Override
     public <T> List<T> getValueList(int index) throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
@@ -217,6 +223,7 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
+    @Override
     public <T> List<T> getValueList(String name) throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
@@ -357,7 +364,7 @@ public class DefaultQuery extends AbstractQuery {
     protected NativeSQL createNativeSQL(String key, FieldFilter fieldFilter) {
         NativeSQL s = precompiledNativeSQLMap.get(key);
         if (s == null) {
-            s = puManager.nativeSQL(query, fieldFilter, context,hints);
+            s = puManager.nativeSQL(query, fieldFilter, context, hints);
             precompiledNativeSQLMap.put(key, s);
         }
         return s;

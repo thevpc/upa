@@ -8,8 +8,11 @@ import net.vpc.upa.impl.util.EntityBeanAdapter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.EntityType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -62,7 +65,19 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         }
         R obj = createObject();
         Record ur = getRecord(obj, true);
-        ur.setAll(unstructuredRecord);
+        for (String k : unstructuredRecord.keySet()) {
+            Object o=unstructuredRecord.getObject(k);
+            if(o instanceof Record){
+                Field f = nfo.getEntity().findField(k);
+                DataType dt = f.getDataType();
+                if(dt instanceof EntityType){
+                    Entity oe = ((EntityType)dt).getRelationship().getTargetEntity();
+                    o = oe.getBuilder().recordToEntity((Record)o);
+                }
+            }
+            ur.setObject(k, o);
+        }
+//        ur.setAll(unstructuredRecord);
         return obj;
     }
 

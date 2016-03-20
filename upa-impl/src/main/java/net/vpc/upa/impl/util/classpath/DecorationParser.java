@@ -147,13 +147,6 @@ public class DecorationParser {
 //    }
     public void parse() throws IOException, ClassNotFoundException, URISyntaxException {
         for (Class type : urls) {
-            try {
-                if (type.getName().toLowerCase().contains("lockinfo")) {
-                    System.out.println("unexpected configureType of " + type.getName());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             visit(type, decorationFilter);
         }
     }

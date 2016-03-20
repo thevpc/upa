@@ -390,8 +390,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     protected void commitModelChanges() throws UPAException {
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
-        persistenceUnitListenerManager.fireOnModelChanged(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnModelChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         for (Entity entity : getEntities()) {
             entity.commitModelChanges();
             List<EntityExtension> extensionList = entity.getExtensions();
@@ -424,7 +423,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             }
             model.clear();
 
-            persistenceUnitListenerManager.fireOnModelChanged(event, EventPhase.AFTER);
+            persistenceUnitListenerManager.fireOnModelChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
         }
     }
 
@@ -876,8 +875,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void reset() throws UPAException {
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, getPersistenceGroup());
-        persistenceUnitListenerManager.fireOnReset(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
         List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
@@ -890,7 +888,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         getPersistenceStore().setNativeConstraintsEnabled(this, true);
         updateFormulas();
 
-        persistenceUnitListenerManager.fireOnReset(event, EventPhase.AFTER);
+        persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
 
     @Override
@@ -899,8 +897,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
         EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CLEAR);
 
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, getPersistenceGroup());
-        persistenceUnitListenerManager.fireOnClear(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
         for (Entity entity : ops) {
             entity.clearCore(context);
@@ -910,7 +907,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             entity.initialize();
         }
         getPersistenceStore().setNativeConstraintsEnabled(this, true);
-        persistenceUnitListenerManager.fireOnClear(event, EventPhase.AFTER);
+        persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
 
     @Override
@@ -994,11 +991,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public void updateFormulas()
             throws UPAException {
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
-        persistenceUnitListenerManager.fireOnUpdateFormulas(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         List<Entity> entities = getEntities(new DefaultEntityFilter().setAcceptValidatable(true));
         updateFormulas(entities.toArray(new Entity[entities.size()]));
-        persistenceUnitListenerManager.fireOnUpdateFormulas(event, EventPhase.AFTER);
+        persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
     }
 
     @Override
@@ -1149,11 +1145,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
         beginTransaction(TransactionType.REQUIRED);
         try {
-            PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
-            persistenceUnitListenerManager.fireOnStart(event, EventPhase.BEFORE);
+            persistenceUnitListenerManager.fireOnStart(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
             commitStructureModification();
 
-            persistenceUnitListenerManager.fireOnStart(event, EventPhase.AFTER);
+            persistenceUnitListenerManager.fireOnStart(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
             commitTransaction();
             setLastStartSucceeded(true);
         } catch (RuntimeException ex) {
@@ -1871,6 +1866,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         entityManager.persist(objectOrRecord);
     }
 
+    @Override
     public void persist(Object objectOrRecord) throws UPAException {
         if (!checkSession()) {
             sessionAwarePU.persist(objectOrRecord);
@@ -1896,13 +1892,22 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public void remove(Object objectOrRecord) throws UPAException {
+    public void merge(String entityName, Object objectOrRecord) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.remove(objectOrRecord);
+            sessionAwarePU.merge(objectOrRecord);
             return;
         }
+        Entity entityManager = getEntity(entityName);
+        entityManager.merge(objectOrRecord);
+    }
+
+    @Override
+    public RemoveTrace remove(Object objectOrRecord) throws UPAException {
+        if (!checkSession()) {
+            return sessionAwarePU.remove(objectOrRecord);
+        }
         Entity entityManager = getEntity(objectOrRecord.getClass());
-        entityManager.remove(objectOrRecord);
+        return entityManager.remove(objectOrRecord);
     }
 
     @Override
@@ -1940,6 +1945,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         getEntity(entityName).update(objectOrRecord);
     }
 
+    @Override
     public void updatePartial(Object objectOrRecord) throws UPAException {
         if (!checkSession()) {
             sessionAwarePU.updatePartial(objectOrRecord);
@@ -1948,6 +1954,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         getEntity(objectOrRecord.getClass()).updatePartial(objectOrRecord);
     }
 
+    @Override
     public void updatePartial(String entityName, Object objectOrRecord) throws UPAException {
         if (!checkSession()) {
             sessionAwarePU.updatePartial(entityName, objectOrRecord);
@@ -2077,6 +2084,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return createQueryBuilder(entityType).setId(id).getRecord();
     }
 
+    @Override
+    public Record findRecordById(String entityName, Object id) throws UPAException {
+        return createQueryBuilder(entityName).setId(id).getRecord();
+    }
+
     //////////////////////////////////////
     // TRANSACTIONS
     //////////////////////////////////////
@@ -2112,10 +2124,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         throw new UPAException(new I18NString("Unexpected"));
     }
 
+    @Override
     public Session getCurrentSession() throws UPAException {
         return getPersistenceGroup().getCurrentSession();
     }
 
+    @Override
     public void commitTransaction() throws UPAException {
         Session currentSession = getCurrentSession();
         TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
@@ -2147,8 +2161,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         currentSession.popContext();
     }
 
+    @Override
     public void rollbackTransaction() throws UPAException {
-        Session currentSession = getPersistenceGroup().getCurrentSession();
+        Session currentSession = getCurrentSession();
         TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
         Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
         Transaction t = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
@@ -2211,9 +2226,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         commitModelChanges();
         getPersistenceStore().revalidateModel();
         boolean someCommit = false;
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
         EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
-        persistenceUnitListenerManager.fireOnStorageChanged(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnStorageChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
 
         List<OnHoldCommitAction> model = commitStorageActions;
         Collections.sort(model, new OnHoldCommitActionComparator());
@@ -2240,7 +2254,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             entity.initialize();
         }
 
-        persistenceUnitListenerManager.fireOnStorageChanged(event, EventPhase.AFTER);
+        persistenceUnitListenerManager.fireOnStorageChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
         this.structureModification = false;
     }
 
@@ -2248,13 +2262,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     public void close() throws UPAException {
         EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CLOSE);
 
-        PersistenceUnitEvent event = new PersistenceUnitEvent(this, persistenceGroup);
-
-        persistenceUnitListenerManager.fireOnClose(event, EventPhase.BEFORE);
+        persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         getDefaulPackage().close();
         closed = true;
 
-        persistenceUnitListenerManager.fireOnClose(event, EventPhase.AFTER);
+        persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
     }
 
     @Override
@@ -2276,6 +2288,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return registrationModel.getIndexes(entityName);
     }
 
+    @Override
     public ImportExportManager getImportExportManager() {
         if (importExportManager == null) {
             ImportExportManager m = getFactory().createObject(ImportExportManager.class);
@@ -2330,10 +2343,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return typeTransformFactory;
     }
 
+    @Override
     public void setTypeTransformFactory(DataTypeTransformFactory typeTransformFactory) {
         this.typeTransformFactory = typeTransformFactory;
     }
 
+    @Override
     public void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel) {
         if (isStarted()) {
             throw new UPAException("PersisteneUnitAreadyStarted");
@@ -2341,14 +2356,17 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         this.persistenceNameConfig = nameStrategyModel == null ? new PersistenceNameConfig(UPAContextConfig.XML_ORDER) : nameStrategyModel;
     }
 
+    @Override
     public PersistenceNameConfig getPersistenceNameConfig() {
         return persistenceNameConfig;
     }
 
+    @Override
     public boolean isAutoStart() {
         return autoStart;
     }
 
+    @Override
     public void setAutoStart(boolean value) {
         if (isStarted()) {
             throw new UPAException("AlreadyStarted");
@@ -2356,38 +2374,47 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         this.autoStart = value;
     }
 
+    @Override
     public void addContextAnnotationStrategyFilter(ScanFilter filter) {
         filters.add(filter);
     }
 
+    @Override
     public void removeContextAnnotationStrategyFilter(ScanFilter filter) {
         filters.remove(filter);
     }
 
+    @Override
     public ScanFilter[] getContextAnnotationStrategyFilters() {
         return filters.toArray(new ScanFilter[filters.size()]);
     }
 
+    @Override
     public ConnectionConfig[] getConnectionConfigs() {
         return connectionConfigs.toArray(new ConnectionConfig[connectionConfigs.size()]);
     }
 
+    @Override
     public ConnectionConfig[] getRootConnectionConfigs() {
         return rootConnectionConfigs.toArray(new ConnectionConfig[rootConnectionConfigs.size()]);
     }
 
+    @Override
     public void addConnectionConfig(ConnectionConfig connectionConfig) {
         connectionConfigs.add(connectionConfig);
     }
 
+    @Override
     public void removeConnectionConfig(int index) {
         connectionConfigs.remove(index);
     }
 
+    @Override
     public void addRootConnectionConfig(ConnectionConfig connectionConfig) {
         rootConnectionConfigs.add(connectionConfig);
     }
 
+    @Override
     public void removeRootConnectionConfig(int index) {
         rootConnectionConfigs.remove(index);
     }
@@ -2404,12 +2431,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return persistenceUnitListenerManager;
     }
 
+    @Override
     public UserPrincipal getUserPrincipal() {
-        Session currentSession = getCurrentSession();
-        if (currentSession == null) {
-            return null;
-        }
-        return currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+        return getUserPrincipal(getCurrentSession());
     }
 
     public UserPrincipal getUserPrincipal(Session currentSession) {
@@ -2419,6 +2443,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
     }
 
+    @Override
     public void login(String login, String credentials) {
         Session currentSession = getCurrentSession();
         UserPrincipal p = getSecurityManager().login(login, credentials);
@@ -2426,6 +2451,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         currentSession.setParam(this, SessionParams.USER_PRINCIPAL, p);
     }
 
+    @Override
     public void loginPrivileged(String login) {
         Session currentSession = getCurrentSession();
         UserPrincipal p = getSecurityManager().loginPrivileged(login);
@@ -2436,8 +2462,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         }
     }
 
+    @Override
     public void logout() {
-        Session currentSession = getPersistenceGroup().getCurrentSession();
+        Session currentSession = getCurrentSession();
         UserPrincipal user = currentSession.getImmediateParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
         if (user != null) {
             currentSession.popContext();
@@ -2454,6 +2481,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public Key createKey(Object... keyValues) throws UPAException {
         return keyValues == null ? null : new DefaultKey(keyValues);
+    }
+
+    @Override
+    public Callback addCallback(CallbackConfig callbackConfig) {
+        Callback c = getPersistenceGroup().getContext().createCallback(callbackConfig);
+        addCallback(c);
+        return c;
     }
 
     @Override
@@ -2494,5 +2528,4 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         }
         return persistenceUnitListenerManager.getCurrentCallbacks(callbackType, objectType, name, system, phase);
     }
-
 }

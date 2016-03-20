@@ -1,11 +1,9 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.util.PlatformMethodProxy;
 import net.vpc.upa.impl.util.PlatformMethodProxyEvent;
 import net.vpc.upa.persistence.QueryResult;
 
-import java.lang.reflect.Method;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -25,7 +23,7 @@ class SingleEntityQueryResultParseMethodInterceptor implements PlatformMethodPro
     @Override
     public Object intercept(PlatformMethodProxyEvent<Object> event) throws Throwable {
         String name = event.getMethodName();
-        FieldInfo prop = singleEntityQueryResult.setterToProp.get(name);
+        FieldInfo prop = singleEntityQueryResult.fields.get(name);
         if (prop == null) {
             return event.invokeBase(ret, event.getArguments());
         } else {

@@ -108,6 +108,7 @@ public class DefaultEntitySecurityManager implements EntitySecurityManager {
         return isAllowedKey(field.getEntity(), "Update");
     }
 
+    @Override
     public Expression getEntityFilter(Entity entity) throws UPAException {
         return null;
     }

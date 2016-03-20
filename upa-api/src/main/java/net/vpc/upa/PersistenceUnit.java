@@ -160,10 +160,10 @@ public interface PersistenceUnit extends Closeable {
     boolean containsEntity(String entityName) throws UPAException;
 
     /**
-     * @param source    source to be parsed
-     * @param listener  listener to track scanned items or null
+     * @param source source to be parsed
+     * @param listener listener to track scanned items or null
      * @param configure if true process configuration (add entities,
-     *                  functions...)
+     * functions...)
      * @throws UPAException
      */
     void scan(ScanSource source, ScanListener listener, boolean configure) throws UPAException;
@@ -273,14 +273,14 @@ public interface PersistenceUnit extends Closeable {
 
     /**
      * @param definitionListener
-     * @param trackSystem        when true system entities are also tracked
+     * @param trackSystem when true system entities are also tracked
      */
     public void addDefinitionListener(DefinitionListener definitionListener, boolean trackSystem);
 
     /**
      * @param entityName
      * @param definitionListener
-     * @param trackSystem        when true system entities are also tracked
+     * @param trackSystem when true system entities are also tracked
      */
     public void addDefinitionListener(String entityName, DefinitionListener definitionListener, boolean trackSystem);
 
@@ -364,7 +364,6 @@ public interface PersistenceUnit extends Closeable {
     // Triggers
     //
     //////////////////////////////////////////////////////////////////
-
     /**
      * if entityNamePattern is a simple Entity name of an existing name call
      * entity.addTrigger if not postpone creation for all entities verifying
@@ -373,7 +372,7 @@ public interface PersistenceUnit extends Closeable {
      * @param triggerName
      * @param interceptor
      * @param entityNamePattern
-     * @param system            if true include system entities
+     * @param system if true include system entities
      * @throws UPAException
      */
     void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) throws UPAException;
@@ -383,11 +382,8 @@ public interface PersistenceUnit extends Closeable {
     List<Trigger> getTriggers(String entityName) throws UPAException;
 
 //    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) throws UPAException;
-
 //    void removePersistenceUnitTrigger(String triggerName) throws UPAException;
-
 //    List<PersistenceUnitTrigger> getPersistenceUnitTriggers() throws UPAException;
-
     boolean isTriggersEnabled() throws UPAException;
 
     void setTriggersEnabled(boolean triggersEnabled) throws UPAException;
@@ -395,19 +391,23 @@ public interface PersistenceUnit extends Closeable {
     //////////////////////////////////////////////////////////////////////
     public ConnectionProfile getConnectionProfile() throws UPAException;
 
+    public void persist(String entityName, Object objectOrRecord) throws UPAException;
+
     public void persist(Object objectOrRecord) throws UPAException;
 
-    public void remove(Object objectOrRecord) throws UPAException;
+    public RemoveTrace remove(String entityName, Object objectOrRecord) throws UPAException;
+
+    public RemoveTrace remove(Object objectOrRecord) throws UPAException;
 
     public void merge(Object objectOrRecord) throws UPAException;
+
+    public void merge(String entityName, Object objectOrRecord) throws UPAException;
 
     public boolean save(Object objectOrRecord) throws UPAException;
 
     public boolean save(String entityName, Object objectOrRecord) throws UPAException;
 
     public void update(Object objectOrRecord) throws UPAException;
-
-    public void persist(String entityName, Object objectOrRecord) throws UPAException;
 
     public void update(String entityName, Object objectOrRecord) throws UPAException;
 
@@ -435,8 +435,6 @@ public interface PersistenceUnit extends Closeable {
     //////// REMOVE
     public RemoveTrace remove(Class entityType, Object object) throws UPAException;
 
-    public RemoveTrace remove(String entityName, Object object) throws UPAException;
-
     public RemoveTrace remove(Class entityType, RemoveOptions options) throws UPAException;
 
     public RemoveTrace remove(String entityName, RemoveOptions options) throws UPAException;
@@ -462,6 +460,8 @@ public interface PersistenceUnit extends Closeable {
     public List<Record> findAllRecords(String entityName) throws UPAException;
 
     public Record findRecordById(Class entityType, Object id) throws UPAException;
+
+    public Record findRecordById(String entityName, Object id) throws UPAException;
 
     public QueryBuilder createQueryBuilder(Class entityType) throws UPAException;
 
@@ -560,6 +560,8 @@ public interface PersistenceUnit extends Closeable {
     public Session getCurrentSession() throws UPAException;
 
     public Key createKey(Object... keyValues) throws UPAException;
+
+    public Callback addCallback(CallbackConfig callbackConfig);
 
     public void addCallback(Callback callback);
 

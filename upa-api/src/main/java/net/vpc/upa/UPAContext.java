@@ -161,7 +161,9 @@ public interface UPAContext {
 
     public void setProperties(Map<String, Object> properties);
 
-    public Callback createCallback(Object instance, Method m, CallbackType callbackType, Map<String, Object> configuration);
+    public Callback createCallback(CallbackConfig callbackConfig);
+
+    public Callback addCallback(CallbackConfig callbackConfig);
 
     public void addCallback(Callback callback);
 

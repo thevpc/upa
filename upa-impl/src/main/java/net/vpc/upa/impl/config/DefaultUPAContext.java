@@ -464,7 +464,7 @@ public class DefaultUPAContext implements UPAContext {
         }
         properties.put(TransactionType.class.getName(),
                 PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)
-                        ? TransactionType.REQUIRED : transactionType
+                ? TransactionType.REQUIRED : transactionType
         );
         beginInvocation(properties);
     }
@@ -507,15 +507,13 @@ public class DefaultUPAContext implements UPAContext {
         }
         if (error == null) {
             persistenceUnit.commitTransaction();
-        } else {
-            if (transactionCreated) {
-                try {
-                    persistenceUnit.rollbackTransaction();
-                } catch (Throwable e2) {
-                    //errors in rollback are ignored but traced
-                    log.log(Level.SEVERE, "Invocation Error", error);
-                    log.log(Level.SEVERE, "Rollback Error", e2);
-                }
+        } else if (transactionCreated) {
+            try {
+                persistenceUnit.rollbackTransaction();
+            } catch (Throwable e2) {
+                //errors in rollback are ignored but traced
+                log.log(Level.SEVERE, "Invocation Error", error);
+                log.log(Level.SEVERE, "Rollback Error", e2);
             }
         }
         if (sessionCreated) {
@@ -559,12 +557,14 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     @Override
-    public Callback createCallback(
-            Object instance,
-            Method m,
-            CallbackType callbackType,
-            Map<String, Object> configuration
-    ) {
+    public Callback createCallback(CallbackConfig callbackConfig) {
+        Object instance = callbackConfig.getInstance();
+        Method m = callbackConfig.getMethod();
+        CallbackType callbackType = callbackConfig.getCallbackType();
+        Map<String, Object> configuration = callbackConfig.getConfiguration();
+        if (configuration == null) {
+            configuration = new HashMap<String, Object>();
+        }
         ObjectType objectType = PlatformUtils.getUndefinedValue(ObjectType.class);
         if (PlatformUtils.isUndefinedValue(ObjectType.class, objectType)) {
             for (Class<?> parameterType : m.getParameterTypes()) {
@@ -622,6 +622,7 @@ public class DefaultUPAContext implements UPAContext {
             case ENTITY: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_PERSIST:
                     case ON_PERSIST: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistEvent.class, 0, false)
@@ -633,6 +634,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_UPDATE:
                     case ON_UPDATE: {
                         boolean obj = false;
                         boolean formula = false;
@@ -693,30 +695,29 @@ public class DefaultUPAContext implements UPAContext {
                                         implicitArguments
                                 ), configuration);
                             }
+                        } else if (formula) {
+                            InvokeArgument[] apiArguments = new InvokeArgument[]{
+                                new PosInvokeArgument("event", UpdateFormulaEvent.class, 0, false)
+                            };
+                            InvokeArgument[] implicitArguments = new InvokeArgument[]{};
+                            return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
+                                    methodArguments,
+                                    apiArguments,
+                                    implicitArguments
+                            ), configuration);
                         } else {
-                            if (formula) {
-                                InvokeArgument[] apiArguments = new InvokeArgument[]{
-                                    new PosInvokeArgument("event", UpdateFormulaEvent.class, 0, false)
-                                };
-                                InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                                return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
-                                        methodArguments,
-                                        apiArguments,
-                                        implicitArguments
-                                ), configuration);
-                            } else {
-                                InvokeArgument[] apiArguments = new InvokeArgument[]{
-                                    new PosInvokeArgument("event", UpdateEvent.class, 0, false)
-                                };
-                                InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                                return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
-                                        methodArguments,
-                                        apiArguments,
-                                        implicitArguments
-                                ), configuration);
-                            }
+                            InvokeArgument[] apiArguments = new InvokeArgument[]{
+                                new PosInvokeArgument("event", UpdateEvent.class, 0, false)
+                            };
+                            InvokeArgument[] implicitArguments = new InvokeArgument[]{};
+                            return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
+                                    methodArguments,
+                                    apiArguments,
+                                    implicitArguments
+                            ), configuration);
                         }
                     }
+                    case ON_PRE_REMOVE:
                     case ON_REMOVE: {
                         boolean obj = false;
                         boolean found = false;
@@ -758,8 +759,11 @@ public class DefaultUPAContext implements UPAContext {
                             ), configuration);
                         }
                     }
+                    case ON_PRE_RESET:
                     case ON_RESET:
+                    case ON_PRE_CLEAR:
                     case ON_CLEAR:
+                    case ON_PRE_INITIALIZE:
                     case ON_INITIALIZE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", EntityEvent.class, 0, false)
@@ -771,6 +775,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", EntityEvent.class, 0, false)
@@ -782,6 +787,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", EntityEvent.class, 0, false)
@@ -793,6 +799,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", EntityEvent.class, 0, false)
@@ -804,6 +811,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_MOVE:
                     case ON_MOVE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", EntityEvent.class, 0, false)
@@ -815,11 +823,27 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_UPDATE_FORMULAS:
+                    case ON_UPDATE_FORMULAS: {
+                        InvokeArgument[] apiArguments = new InvokeArgument[]{
+                            new PosInvokeArgument("event", UpdateFormulaEvent.class, 0, false)
+                        };
+                        InvokeArgument[] implicitArguments = new InvokeArgument[]{};
+                        return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
+                                methodArguments,
+                                apiArguments,
+                                implicitArguments
+                        ), configuration);
+                    }
+                    default: {
+                        throw new UPAException("Unsupported", "EntityCallback", callbackType);
+                    }
                 }
             }
             case FIELD: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FieldEvent.class, 0, false)
@@ -831,6 +855,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FieldEvent.class, 0, false)
@@ -842,6 +867,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_MOVE:
                     case ON_MOVE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FieldEvent.class, 0, false)
@@ -853,6 +879,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FieldEvent.class, 0, false)
@@ -872,6 +899,7 @@ public class DefaultUPAContext implements UPAContext {
             case SECTION: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", SectionEvent.class, 0, false)
@@ -883,6 +911,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", SectionEvent.class, 0, false)
@@ -894,6 +923,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_MOVE:
                     case ON_MOVE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", SectionEvent.class, 0, false)
@@ -905,6 +935,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", SectionEvent.class, 0, false)
@@ -924,6 +955,7 @@ public class DefaultUPAContext implements UPAContext {
             case PACKAGE: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PackageEvent.class, 0, false)
@@ -935,6 +967,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PackageEvent.class, 0, false)
@@ -946,6 +979,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_MOVE:
                     case ON_MOVE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PackageEvent.class, 0, false)
@@ -957,6 +991,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PackageEvent.class, 0, false)
@@ -976,6 +1011,7 @@ public class DefaultUPAContext implements UPAContext {
             case PERSISTENCE_GROUP: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
@@ -987,6 +1023,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
@@ -998,6 +1035,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_MOVE:
                     case ON_MOVE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
@@ -1009,6 +1047,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
@@ -1028,6 +1067,7 @@ public class DefaultUPAContext implements UPAContext {
             case PERSISTENCE_UNIT: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
@@ -1039,6 +1079,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
@@ -1050,6 +1091,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_ALTER:
                     case ON_ALTER: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
@@ -1061,7 +1103,20 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_START:
                     case ON_START: {
+                        InvokeArgument[] apiArguments = new InvokeArgument[]{
+                            new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
+                        };
+                        InvokeArgument[] implicitArguments = new InvokeArgument[]{};
+                        return new DefaultCallback(instance, m, callbackType, objectType, DefaultMethodArgumentsConverter.create(
+                                methodArguments,
+                                apiArguments,
+                                implicitArguments
+                        ), configuration);
+                    }
+                    case ON_PRE_UPDATE_FORMULAS:
+                    case ON_UPDATE_FORMULAS: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
@@ -1080,6 +1135,7 @@ public class DefaultUPAContext implements UPAContext {
             case TRIGGER: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", TriggerEvent.class, 0, false)
@@ -1091,6 +1147,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", TriggerEvent.class, 0, false)
@@ -1110,6 +1167,7 @@ public class DefaultUPAContext implements UPAContext {
             case FUNCTION: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CREATE:
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FunctionEvent.class, 0, false)
@@ -1121,6 +1179,7 @@ public class DefaultUPAContext implements UPAContext {
                                 implicitArguments
                         ), configuration);
                     }
+                    case ON_PRE_DROP:
                     case ON_DROP: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", FunctionEvent.class, 0, false)
@@ -1138,9 +1197,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         Map<String, Object> configuration2 = new HashMap<String, Object>();
-                        if (configuration != null) {
-                            configuration2.putAll(configuration);
-                        }
+                        configuration2.putAll(configuration);
                         if (!configuration2.containsKey("functionName")) {
                             configuration2.put("functionName", m.getName());
                         }
@@ -1152,7 +1209,7 @@ public class DefaultUPAContext implements UPAContext {
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
-                        ), configuration);
+                        ), configuration2);
                     }
                     default: {
                         throw new UPAException("Unsupported", "FunctionCallback", callbackType);
@@ -1162,6 +1219,7 @@ public class DefaultUPAContext implements UPAContext {
             case CONTEXT: {
                 InvokeArgument[] methodArguments = createArguments(m);
                 switch (callbackType) {
+                    case ON_PRE_CLOSE:
                     case ON_CLOSE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                             new PosInvokeArgument("event", ContextEvent.class, 0, false)
@@ -1181,6 +1239,13 @@ public class DefaultUPAContext implements UPAContext {
 
         }
         throw new IllegalArgumentException("Unsupported Callback for " + objectType + " with " + callbackType);
+    }
+
+    @Override
+    public Callback addCallback(CallbackConfig callbackConfig) {
+        Callback c = createCallback(callbackConfig);
+        addCallback(c);
+        return c;
     }
 
     @Override

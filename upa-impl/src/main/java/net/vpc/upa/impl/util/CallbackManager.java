@@ -25,16 +25,9 @@ public class CallbackManager {
         if (conf == null) {
             conf = new HashMap<String, Object>();
         }
-        boolean fireBefore = true;
-        boolean fireAfter = true;
+        boolean fireBefore = callback.getCallbackType().name().startsWith("ON_PRE_");
         boolean trackSystemObjects = true;
         String nameFilter = null;
-        if (conf.containsKey("before")) {
-            fireBefore = (Boolean) conf.get("before");
-        }
-        if (conf.containsKey("after")) {
-            fireBefore = (Boolean) conf.get("after");
-        }
         if (conf.containsKey("trackSystemObjects")) {
             trackSystemObjects = (Boolean) conf.get("trackSystemObjects");
         }
@@ -50,9 +43,7 @@ public class CallbackManager {
                 this.before.put(k, ss);
             }
             ss.add(callback);
-        }
-
-        if (fireAfter) {
+        } else {
             CallbackInvokerKey k = new CallbackInvokerKey(callback.getCallbackType(), callback.getObjectType(), nameFilter, trackSystemObjects);
             List<Callback> ss = this.after.get(k);
             if (ss == null) {

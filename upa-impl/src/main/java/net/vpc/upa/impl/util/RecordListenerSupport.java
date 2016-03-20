@@ -16,6 +16,11 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.Callback;
+import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventPhase;
+import net.vpc.upa.ObjectType;
+import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -27,9 +32,11 @@ public class RecordListenerSupport {
 
 //    private List<EntityListener> listeners;
     private Entity entity;
+    private PersistenceUnitListenerManager persistenceUnitListenerManager;
 
-    public RecordListenerSupport(Entity entity) {
+    public RecordListenerSupport(Entity entity, PersistenceUnitListenerManager persistenceUnitListenerManager) {
         this.entity = entity;
+        this.persistenceUnitListenerManager = persistenceUnitListenerManager;
     }
 
     public void fireBeforePersist(Object objectId, Record record, EntityExecutionContext context) throws UPAException {
@@ -45,7 +52,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new PersistEvent(objectId, record, context);
+                        event = new PersistEvent(objectId, record, context, EventPhase.BEFORE);
                     }
                     event.setTrigger(et);
                     li.onPrePersist(event);
@@ -58,6 +65,16 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".firePreInsertTable> " + t.toString());
             }
         }
+        if (event == null) {
+            event = new PersistEvent(objectId, record, context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_PERSIST,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
+
 //        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
 //            for (EntityListener t : listeners) {
 //                if (event == null) {
@@ -86,7 +103,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new PersistEvent(objectId, record, context);
+                        event = new PersistEvent(objectId, record, context, EventPhase.AFTER);
                     }
                     event.setTrigger(et);
                     li.onPersist(event);
@@ -98,6 +115,15 @@ public class RecordListenerSupport {
                 }
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".firePostInsertTable> " + t.toString());
             }
+        }
+        if (event == null) {
+            event = new PersistEvent(objectId, record, context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_PERSIST,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
         }
 //        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
 //            for (EntityListener t : listeners) {
@@ -127,7 +153,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new UpdateEvent(updates, condition, context);
+                        event = new UpdateEvent(updates, condition, context, EventPhase.BEFORE);
                     }
 
                     li.onPreUpdate(event);
@@ -140,19 +166,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            for (EntityListener t : listeners) {
-//                if (event == null) {
-//                    event = new UpdateEvent(updates, condition, context);
-//                }
-//                try {
-//                    t.onPreUpdate(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new UpdateEvent(updates, condition, context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_UPDATE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterUpdate(Record updates, Expression condition,
@@ -168,7 +190,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new UpdateEvent(updates, condition, context);
+                        event = new UpdateEvent(updates, condition, context, EventPhase.AFTER);
                     }
 
                     li.onUpdate(event);
@@ -180,23 +202,19 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new UpdateEvent(updates, condition, context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onUpdate(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new UpdateEvent(updates, condition, context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_UPDATE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireBeforeRemove(Expression condition,
-                                 EntityExecutionContext context) throws UPAException {
+            EntityExecutionContext context) throws UPAException {
 //        Object methodExecId = Math.random();
 //        Log.method_enter(methodExecId, getName(), condition);
 //        entity.preDeleteTable(condition, context);
@@ -208,7 +226,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new RemoveEvent(condition, context);
+                        event = new RemoveEvent(condition, context, EventPhase.BEFORE);
                     }
 
                     li.onPreRemove(event);
@@ -221,23 +239,19 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeRemove> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new RemoveEvent(condition, context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onPreRemove(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), condition);
+        if (event == null) {
+            event = new RemoveEvent(condition, context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_REMOVE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterRemove(Expression condition,
-                                EntityExecutionContext context) throws UPAException {
+            EntityExecutionContext context) throws UPAException {
 //        Object methodExecId = Math.random();
 //        Log.method_enter(methodExecId, getName(), condition);
 //        entity.postDeleteTable(condition, context);
@@ -249,7 +263,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new RemoveEvent(condition, context);
+                        event = new RemoveEvent(condition, context, EventPhase.AFTER);
                     }
 
                     li.onRemove(event);
@@ -261,19 +275,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterRemove> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new RemoveEvent(condition, context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onRemove(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), condition);
+        if (event == null) {
+            event = new RemoveEvent(condition, context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_REMOVE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireBeforeFormulasUpdate(Record updates, Expression condition,
@@ -289,7 +299,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new UpdateFormulaEvent(updates, condition, context);
+                        event = new UpdateFormulaEvent(updates, condition, context, EventPhase.BEFORE);
                     }
 
                     li.onPreUpdateFormula(event);
@@ -303,19 +313,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new UpdateFormulaEvent(updates, condition, context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onPreUpdateFormula(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new UpdateFormulaEvent(updates, condition, context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_UPDATE_FORMULAS,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterFormulasUpdate(Record updates, Expression condition,
@@ -331,7 +337,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new UpdateFormulaEvent(updates, condition, context);
+                        event = new UpdateFormulaEvent(updates, condition, context, EventPhase.AFTER);
                     }
 
                     li.onUpdateFormula(event);
@@ -343,19 +349,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new UpdateFormulaEvent(updates, condition, context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onUpdateFormula(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new UpdateFormulaEvent(updates, condition, context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_UPDATE_FORMULAS,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireBeforeInitialize(EntityExecutionContext context) throws UPAException {
@@ -370,7 +372,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.BEFORE);
                     }
 
                     li.onPreInitialize(event);
@@ -382,19 +384,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onPreInitialize(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_INITIALIZE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterInitialize(EntityExecutionContext context) throws UPAException {
@@ -409,7 +407,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.AFTER);
                     }
 
                     li.onInitialize(event);
@@ -421,19 +419,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onInitialize(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_INITIALIZE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireBeforeClear(EntityExecutionContext context) throws UPAException {
@@ -448,7 +442,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.BEFORE);
                     }
 
                     li.onPreClear(event);
@@ -460,19 +454,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onPreClear(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_CLEAR,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterClear(EntityExecutionContext context) throws UPAException {
@@ -487,7 +477,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.AFTER);
                     }
 
                     li.onClear(event);
@@ -499,19 +489,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onClear(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_CLEAR,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireBeforeReset(EntityExecutionContext context) throws UPAException {
@@ -526,7 +512,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.BEFORE);
                     }
 
                     li.onPreReset(event);
@@ -538,19 +524,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onPreReset(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.BEFORE);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
+                CallbackType.ON_PRE_RESET,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
     public void fireAfterReset(EntityExecutionContext context) throws UPAException {
@@ -565,7 +547,7 @@ public class RecordListenerSupport {
                 try {
                     EntityListener li = t.getListener();
                     if (event == null) {
-                        event = new EntityEvent(context);
+                        event = new EntityEvent(context, EventPhase.AFTER);
                     }
 
                     li.onReset(event);
@@ -577,31 +559,15 @@ public class RecordListenerSupport {
 //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
             }
         }
-//        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
-//            if (event == null) {
-//                event = new EntityEvent(context);
-//            }
-//            for (EntityListener t : listeners) {
-//                try {
-//                    t.onReset(event);
-//                } catch (Exception e) {
-//                    log.log(Level.SEVERE, "Error", e);
-//                }
-//            }
-//        }
-//        Log.method_exit(methodExecId, getName(), updates, condition);
+        if (event == null) {
+            event = new EntityEvent(context, EventPhase.AFTER);
+        }
+        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+                CallbackType.ON_RESET,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
     }
 
-//    public void addEntityListener(EntityListener listener) {
-//        if (listeners == null) {
-//            listeners = new ArrayList<EntityListener>(5);
-//        }
-//        listeners.add(listener);
-//    }
-//
-//    public void removeEntityListener(EntityListener listener) {
-//        if (listeners != null) {
-//            listeners.remove(listener);
-//        }
-//    }
 }

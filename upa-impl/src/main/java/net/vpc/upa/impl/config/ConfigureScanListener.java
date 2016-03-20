@@ -5,6 +5,7 @@
  */
 package net.vpc.upa.impl.config;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Callback;
+import net.vpc.upa.CallbackConfig;
 import net.vpc.upa.CallbackType;
 import net.vpc.upa.EntityDescriptor;
 import net.vpc.upa.EntitySecurityManager;
@@ -36,6 +38,16 @@ import net.vpc.upa.config.OnRemove;
 import net.vpc.upa.config.OnReset;
 import net.vpc.upa.config.OnUpdate;
 import net.vpc.upa.config.Decoration;
+import net.vpc.upa.config.OnPreAlter;
+import net.vpc.upa.config.OnPreCreate;
+import net.vpc.upa.config.OnPreDrop;
+import net.vpc.upa.config.OnPreInitialize;
+import net.vpc.upa.config.OnPrePersist;
+import net.vpc.upa.config.OnPreRemove;
+import net.vpc.upa.config.OnPreReset;
+import net.vpc.upa.config.OnPreUpdate;
+import net.vpc.upa.config.OnPreUpdateFormula;
+import net.vpc.upa.config.OnUpdateFormula;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.EqualsStringFilter;
 import net.vpc.upa.impl.util.SimpleEntityFilter;
@@ -164,76 +176,8 @@ public class ConfigureScanListener implements ScanListener {
             }
             persistenceUnit.getExpressionManager().addFunction(n, dt, f);
         } else if (Callback.class.equals(event.getContract())) {
-            DecoratedMethodScan dms = (DecoratedMethodScan) event.getUserObject();
-            Decoration at = dms.getDecoration();
-//                net.vpc.upa.config.FunctionDefinition d = type.getAnnotation();
-            CallbackType callbackType = PlatformUtils.getUndefinedValue(CallbackType.class);
-            Map<String, Object> conf = new HashMap<String, Object>();
-            if (at.isName(OnAlter.class)) {
-                callbackType = CallbackType.ON_UPDATE;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnCreate.class)) {
-                callbackType = CallbackType.ON_CREATE;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnDrop.class)) {
-                callbackType = CallbackType.ON_DROP;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnPersist.class)) {
-                callbackType = CallbackType.ON_PERSIST;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnUpdate.class)) {
-                callbackType = CallbackType.ON_UPDATE;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnRemove.class)) {
-                callbackType = CallbackType.ON_REMOVE;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnReset.class)) {
-                callbackType = CallbackType.ON_RESET;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(OnInitialize.class)) {
-                callbackType = CallbackType.ON_INITIALIZE;
-                conf.put("before", at.getBoolean("before"));
-                conf.put("after", at.getBoolean("after"));
-                conf.put("trackSystemObjects", at.getBoolean("trackSystemObjects"));
-            } else if (at.isName(net.vpc.upa.config.Function.class)) {
-                callbackType = CallbackType.ON_EVAL;
-                String functionName = at.getString("name");
-                Class returnType = at.getType("returnType");
-                if (!Strings.isNullOrEmpty(functionName)) {
-                    conf.put("functionName", functionName);
-                }
-                if (returnType != null && !PlatformUtils.isVoid(returnType)) {
-                    conf.put("returnType", returnType);
-                }
-            }
-            if (callbackType != null) {
-                Object instance = null;
-                if (!PlatformUtils.isStatic(dms.getMethod())) {
-                    instance = persistenceUnit.getFactory().getSingleton(event.getVisitedType());
-                }
-                net.vpc.upa.Callback cb = persistenceUnit.getPersistenceGroup().getContext().createCallback(
-                        instance,
-                        dms.getMethod(),
-                        callbackType,
-                        conf
-                );
-                persistenceUnit.addCallback(cb);
-            }
-
+            Callback callbackType = (Callback) persistenceUnit.getFactory().createObject(event.getVisitedType());
+            persistenceUnit.addCallback(callbackType);
         } else if (EntitySecurityManager.class.equals(event.getContract())) {
             Decoration d = (Decoration) event.getUserObject();
             EntitySecurityManager secu = (EntitySecurityManager) persistenceUnit.getFactory().createObject(event.getVisitedType());
@@ -241,6 +185,90 @@ public class ConfigureScanListener implements ScanListener {
                     new EqualsStringFilter(d.getString("entity"), false, false),
                     true
             ), new SecurityManagerEntityConfigurator(secu));
+        } else if (event.getUserObject() instanceof DecoratedMethodScan) {
+            DecoratedMethodScan dms = (DecoratedMethodScan) event.getUserObject();
+            Decoration callbackDecoration = dms.getDecoration();
+            configureMethodCallback(type, dms.getMethod(), callbackDecoration, persistenceUnit);
+        }
+    }
+
+    public static void configureMethodCallback(Class type, Method method, Decoration methodDecoration, PersistenceUnit persistenceUnit) {
+        CallbackType callbackType = PlatformUtils.getUndefinedValue(CallbackType.class);
+        Map<String, Object> conf = new HashMap<String, Object>();
+        if (methodDecoration.isName(OnAlter.class)) {
+            callbackType = CallbackType.ON_ALTER;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreAlter.class)) {
+            callbackType = CallbackType.ON_PRE_ALTER;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnCreate.class)) {
+            callbackType = CallbackType.ON_CREATE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreCreate.class)) {
+            callbackType = CallbackType.ON_PRE_CREATE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnDrop.class)) {
+            callbackType = CallbackType.ON_DROP;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreDrop.class)) {
+            callbackType = CallbackType.ON_PRE_DROP;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPersist.class)) {
+            callbackType = CallbackType.ON_PERSIST;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPrePersist.class)) {
+            callbackType = CallbackType.ON_PRE_PERSIST;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreUpdate.class)) {
+            callbackType = CallbackType.ON_PRE_UPDATE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnUpdate.class)) {
+            callbackType = CallbackType.ON_UPDATE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnRemove.class)) {
+            callbackType = CallbackType.ON_REMOVE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreRemove.class)) {
+            callbackType = CallbackType.ON_PRE_REMOVE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnReset.class)) {
+            callbackType = CallbackType.ON_RESET;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreReset.class)) {
+            callbackType = CallbackType.ON_PRE_RESET;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnInitialize.class)) {
+            callbackType = CallbackType.ON_INITIALIZE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreInitialize.class)) {
+            callbackType = CallbackType.ON_PRE_INITIALIZE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnPreUpdateFormula.class)) {
+            callbackType = CallbackType.ON_PRE_UPDATE_FORMULAS;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(OnUpdateFormula.class)) {
+            callbackType = CallbackType.ON_UPDATE_FORMULAS;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+        } else if (methodDecoration.isName(net.vpc.upa.config.Function.class)) {
+            callbackType = CallbackType.ON_EVAL;
+            String functionName = methodDecoration.getString("name");
+            Class returnType = methodDecoration.getType("returnType");
+            if (!Strings.isNullOrEmpty(functionName)) {
+                conf.put("functionName", functionName);
+            }
+            if (returnType != null && !PlatformUtils.isVoid(returnType)) {
+                conf.put("returnType", returnType);
+            }
+        }
+        if (callbackType != null) {
+            Object instance = null;
+            if (!PlatformUtils.isStatic(method)) {
+                instance = persistenceUnit.getFactory().getSingleton(type);
+            }
+            persistenceUnit.addCallback(new CallbackConfig(instance,
+                    method,
+                    callbackType,
+                    conf));
         }
     }
 
