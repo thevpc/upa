@@ -11,6 +11,7 @@ import net.vpc.upa.impl.util.ConvertedList;
 import java.util.List;
 import java.util.Map;
 import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.EntityType;
 
 /**
@@ -176,7 +177,13 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     public Object getMainProperty(Object entityValue) throws UPAException {
-        return getProperty(entityValue, entity.getMainField().getName());
+        Field mf = entity.getMainField();
+        Object v = getProperty(entityValue, mf.getName());
+        if(v!=null && mf.getDataType() instanceof EntityType && !UPAUtils.isSimpleFieldType(v.getClass())){
+            Entity t = ((EntityType)mf.getDataType()).getRelationship().getTargetEntity();
+            return t.getMainFieldValue(v);
+        }
+        return v;
     }
 
 //    public Object entityToProperty(Object entityValue, String propertyName) throws UPAException {
