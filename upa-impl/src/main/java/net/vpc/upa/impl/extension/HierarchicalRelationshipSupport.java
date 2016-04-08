@@ -328,7 +328,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             entityAlias = entity.getName();
         }
         expr = new Equals(new Var(new Var(entityAlias), mainFieldName), mainFieldValue);
-        Key entityToKey = parent == null ? null : entity.getBuilder().entityToKey(parent);
+        Key entityToKey = parent == null ? null : entity.getBuilder().objectToKey(parent);
         List<Field> primaryFields = detailRole.getFields();
         for (int index = 0; index < primaryFields.size(); index++) {
             Field field = primaryFields.get(index);

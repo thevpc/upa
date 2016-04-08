@@ -76,8 +76,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        if(entityObject instanceof Record){
-            ((Record)entityObject).setObject(property,value);
+        if (entityObject instanceof Record) {
+            ((Record) entityObject).setObject(property, value);
             return;
         }
         entityFactory.setProperty(entityObject, property, value);
@@ -85,8 +85,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Object getProperty(Object entityObject, String property) throws UPAException {
-        if(entityObject instanceof Record){
-            return ((Record)entityObject).getObject(property);
+        if (entityObject instanceof Record) {
+            return ((Record) entityObject).getObject(property);
         }
         return entityFactory.getProperty(entityObject, property);
     }
@@ -122,12 +122,12 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record entityToRecord(Object entityValue) throws UPAException {
+    public Record objectToRecord(Object entityValue) throws UPAException {
         return entityConverter.entityToRecord(entityValue);
     }
 
     @Override
-    public Record entityToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException {
+    public Record objectToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException {
         return entityConverter.entityToRecord(entityValue);
     }
 
@@ -137,7 +137,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public <R> R recordToEntity(Record entityRecord) throws UPAException {
+    public <R> R recordToObject(Record entityRecord) throws UPAException {
         return entityConverter.recordToEntity(entityRecord);
     }
 
@@ -152,12 +152,12 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Object entityToId(Object entityValue) throws UPAException {
+    public Object objectToId(Object entityValue) throws UPAException {
         return entityConverter.entityToId(entityValue);
     }
 
     @Override
-    public Key entityToKey(Object entityValue) throws UPAException {
+    public Key objectToKey(Object entityValue) throws UPAException {
         return entityConverter.entityToKey(entityValue);
     }
 
@@ -172,7 +172,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Object keyToEntity(Key recordKey) throws UPAException {
+    public Object keyToObject(Key recordKey) throws UPAException {
         return entityConverter.keyToEntity(recordKey);
     }
 
@@ -187,7 +187,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public void setEntityId(Object entityObject, Object entityId) throws UPAException {
+    public void setObjectId(Object entityObject, Object entityId) throws UPAException {
         entityConverter.setEntityId(entityObject, entityId);
     }
 
@@ -197,7 +197,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Expression entityToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException {
+    public Expression objectToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException {
         return entityConverter.entityToExpression(entityValue, ignoreUnspecified, entityAlias);
     }
 
@@ -230,4 +230,40 @@ public class DefaultEntityBuilder implements EntityBuilder {
     public QualifiedRecord createQualifiedRecord(Record record) throws UPAException {
         return new DefaultQualifiedRecord(entity, record);
     }
+
+    @Override
+    public Record createInitializedRecord() {
+        Object o = createObject();
+        Record r = createRecord();
+        r.setAll(objectToRecord(o, false));
+        for (Field field : entity.getFields()) {
+            if(field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))){
+                r.remove(field.getName());//even if defined in
+            }else{
+                Object df = field.getDefaultValue();
+                if (df != null) {
+                    r.setObject(field.getName(), df);
+                }
+            }
+        }
+        return r;
+    }
+
+    @Override
+    public <R> R createInitializedObject() {
+        Object o = createObject();
+        Record r = DefaultEntityBuilder.this.objectToRecord(o, false);
+        for (Field field : entity.getFields()) {
+            Object df = field.getDefaultValue();
+            if(field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))){
+                //do nothing
+            }else{
+                if (df != null) {
+                    r.setObject(field.getName(), df);
+                }
+            }
+        }
+        return recordToObject(r);
+    }
+
 }

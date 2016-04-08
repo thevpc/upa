@@ -97,7 +97,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
             }
             Expression expr = null;
             expr = new Equals(new Var(new Var(entity.getName()), mainFieldName), values.get(mainFieldName));
-            Key entityToKey = parent == null ? null : entity.getBuilder().entityToKey(parent);
+            Key entityToKey = parent == null ? null : entity.getBuilder().objectToKey(parent);
             List<Field> primaryFields = detailRole.getFields();
             for (int index = 0; index < primaryFields.size(); index++) {
                 Field field = primaryFields.get(index);

@@ -72,7 +72,7 @@ public class DefaultImportDataManager implements ImportDataManager {
         Record oldValue = null;
         if (config.getMode() != ImportDataMode.ADD) {
             Object o = defaultFinder.getImportEntityFinder(entity).findEntity(entity, row);
-            oldValue = entity.getBuilder().entityToRecord(o, false);
+            oldValue = entity.getBuilder().objectToRecord(o, false);
         }
         Object entityValue = null;
         switch (config.getMode()) {
@@ -80,10 +80,10 @@ public class DefaultImportDataManager implements ImportDataManager {
                 if (oldValue != null) {
                     oldValue.setAll(rec);
                     entity.update(oldValue);
-                    entityValue = entity.getBuilder().recordToEntity(oldValue);
+                    entityValue = entity.getBuilder().recordToObject(oldValue);
                 } else {
                     entity.persist(rec);
-                    entityValue = entity.getBuilder().recordToEntity(rec);
+                    entityValue = entity.getBuilder().recordToObject(rec);
                 }
                 break;
             }
@@ -91,14 +91,14 @@ public class DefaultImportDataManager implements ImportDataManager {
                 if (oldValue != null) {
                     oldValue.setAll(rec);
                     entity.update(oldValue);
-                    entityValue = entity.getBuilder().recordToEntity(oldValue);
+                    entityValue = entity.getBuilder().recordToObject(oldValue);
                 }
                 break;
             }
             case ADD: {
                 if (oldValue == null) {
                     entity.persist(rec);
-                    entityValue = entity.getBuilder().recordToEntity(rec);
+                    entityValue = entity.getBuilder().recordToObject(rec);
                 }
                 break;
             }

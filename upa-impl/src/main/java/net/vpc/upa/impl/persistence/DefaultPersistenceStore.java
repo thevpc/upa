@@ -694,7 +694,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 Field oldField = (Field) ei.getOldReferrer();
                 if (oldField.getDataType() instanceof EntityType) {
                     EntityType et = (EntityType) oldField.getDataType();
-                    objectValue = et.getRelationship().getTargetEntity().getBuilder().entityToId(objectValue);
+                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 }
             }
             values.add(new DefaultParameter(e.getName(), objectValue, ei.getTypeTransform()));

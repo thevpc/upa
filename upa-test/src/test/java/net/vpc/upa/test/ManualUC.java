@@ -44,7 +44,7 @@ public class ManualUC {
         entityManager.addField("extra", null, null, null, null,IntType.DEFAULT,-1);
         sm.commitStructureModification();
 
-        Client c = entityManager.createEntity();
+        Client c = entityManager.createObject();
         int key = entityManager.nextId();
         log.info("Next Id is " + key);
         c.setId(key);
@@ -56,7 +56,7 @@ public class ManualUC {
         log.info("Found " + found0);
         found0.setString("firstName", "Alia");
 
-        Client c2 = entityManager.getBuilder().recordToEntity(found0);
+        Client c2 = entityManager.getBuilder().recordToObject(found0);
 
         assertEquals(c2.getFirstName(), "Alia");
 
@@ -65,7 +65,7 @@ public class ManualUC {
         Record found = sm.createQueryBuilder(Client.class).setId(key).getRecord();
 
         Assert.assertNotNull(found);
-        assertEquals(entityManager.getBuilder().recordToEntity(found), c2);
+        assertEquals(entityManager.getBuilder().recordToObject(found), c2);
 
         sm.remove(key);
 

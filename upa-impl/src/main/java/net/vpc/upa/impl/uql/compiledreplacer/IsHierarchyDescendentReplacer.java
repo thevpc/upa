@@ -77,7 +77,7 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                 if (treeEntity == null) {
                     treeEntity = rr;
                 }
-                ((CompiledParam) c).setObject(rr.getBuilder().entityToId(co));
+                ((CompiledParam) c).setObject(rr.getBuilder().objectToId(co));
             }
 //            Object co = ((CompiledParam) c).getEffectiveDataType();
         }
@@ -101,7 +101,7 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                 if (treeEntity == null) {
                     treeEntity = rr;
                 }
-                ((CompiledParam) p).setObject(rr.getBuilder().entityToId(co));
+                ((CompiledParam) p).setObject(rr.getBuilder().objectToId(co));
                 if (rr.getPrimaryFields().size() > 1) {
                     throw new IllegalArgumentException("Not supported");
                 }

@@ -78,7 +78,7 @@ public class SingleEntityQueryResult<R> extends QueryResultIteratorList<R> {
             if (typeInfo.leadPrimaryField == null) {
 //                Object leadVal = result.read(typeInfo.leadField.index);
                 Object entityObject = typeInfo.entityFactory.createObject();
-                Record entityRecord = typeInfo.entityConverter.entityToRecord(entityObject, true);
+                Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
                 typeInfo.entityObject = entityObject;
                 typeInfo.entityRecord = entityRecord;
                 for (FieldInfo f : typeInfo.infos) {
@@ -89,7 +89,7 @@ public class SingleEntityQueryResult<R> extends QueryResultIteratorList<R> {
                 if (leadPK != null) {
                     //create new instances
                     Object entityObject = typeInfo.entityFactory.createObject();
-                    Record entityRecord = typeInfo.entityConverter.entityToRecord(entityObject, true);
+                    Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
                     typeInfo.entityObject = entityObject;
                     typeInfo.entityRecord = entityRecord;
                     for (FieldInfo f : typeInfo.infos) {

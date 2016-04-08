@@ -529,7 +529,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                     return null;
                 }
                 EntityBuilder targetConverter = getTargetRole().getEntity().getBuilder();
-                return targetConverter.entityToKey(targetEntityVal);
+                return targetConverter.objectToKey(targetEntityVal);
             }
             case FLAT: {
                 List<Field> relFields = getSourceRole().getFields();

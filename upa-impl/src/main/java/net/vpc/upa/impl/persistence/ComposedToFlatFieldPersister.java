@@ -32,7 +32,7 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
 
     public void beforePersist(Record record, EntityExecutionContext context) throws UPAException {
         Object o = record.getObject(field.getName());
-        Key key = relationshipTargetConverter.entityToKey(o);
+        Key key = relationshipTargetConverter.objectToKey(o);
         if (key == null) {
             for (Field ff : flatFields) {
                 record.setObject(ff.getName(), ff.getUnspecifiedValueDecoded());

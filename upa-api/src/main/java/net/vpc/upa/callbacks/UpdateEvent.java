@@ -61,7 +61,7 @@ public class UpdateEvent extends EntityEvent {
 
     public Object getUpdatesObject() {
         if (updatesObject == null && updatesRecord != null) {
-            updatesObject = getContext().getEntity().getBuilder().recordToEntity(updatesRecord);
+            updatesObject = getContext().getEntity().getBuilder().recordToObject(updatesRecord);
         }
         return updatesObject;
     }

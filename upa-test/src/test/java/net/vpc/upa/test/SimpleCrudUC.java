@@ -32,7 +32,7 @@ public class SimpleCrudUC {
         Session s=sm.openSession();
         sm.beginTransaction(TransactionType.REQUIRED);
         Entity entityManager = sm.getEntity("Client");
-        Client c=entityManager.createEntity();
+        Client c=entityManager.createObject();
         int key = entityManager.nextId();
         log.info("Next Id is " + key);
         c.setId(key);
@@ -44,7 +44,7 @@ public class SimpleCrudUC {
         log.info("Found " + found0);
         found0.setString("firstName","Alia");
 
-        Client c2 = entityManager.getBuilder().recordToEntity(found0);
+        Client c2 = entityManager.getBuilder().recordToObject(found0);
 
         assertEquals(c2.getFirstName(),"Alia");
 

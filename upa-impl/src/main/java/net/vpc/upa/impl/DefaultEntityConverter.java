@@ -254,7 +254,7 @@ public class DefaultEntityConverter implements EntityConverter {
                     case EQ: {
                         if (field.getDataType() instanceof EntityType) {
                             EntityType et = (EntityType) field.getDataType();
-                            Key foreignKey = et.getRelationship().getTargetRole().getEntity().getBuilder().entityToKey(value);
+                            Key foreignKey = et.getRelationship().getTargetRole().getEntity().getBuilder().objectToKey(value);
                             Expression b = null;
                             int i = 0;
                             for (Field df : et.getRelationship().getSourceRole().getFields()) {

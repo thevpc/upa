@@ -64,7 +64,7 @@ public class PersistEvent extends EntityEvent {
 
     public Object getPersistedObject() {
         if (persistedObject == null && persistedRecord != null) {
-            persistedObject = getContext().getEntity().getBuilder().recordToEntity(persistedRecord);
+            persistedObject = getContext().getEntity().getBuilder().recordToObject(persistedRecord);
         }
         return persistedObject;
     }

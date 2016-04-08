@@ -51,7 +51,7 @@ public class ExportUC {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 
             Entity entityManager = pu.getEntity("Client");
-            Client c = entityManager.createEntity();
+            Client c = entityManager.createObject();
             c.setFirstName("Ahmed");
             c.setLastName("Gharbi");
 

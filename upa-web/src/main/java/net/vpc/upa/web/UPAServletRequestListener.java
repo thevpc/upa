@@ -38,7 +38,7 @@ public class UPAServletRequestListener implements ServletRequestListener, Servle
         try {
             PersistenceUnit persistenceUnit = UPA.getPersistenceUnit();
             persistenceUnit.commitTransaction();
-            persistenceUnit.getPersistenceGroup().getCurrentSession().close();
+            persistenceUnit.getCurrentSession().close();
         } catch (Exception e) {
             log.log(Level.SEVERE, "Error destroying Request", e);
         }

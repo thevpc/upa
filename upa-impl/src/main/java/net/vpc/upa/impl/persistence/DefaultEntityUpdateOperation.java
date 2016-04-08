@@ -33,7 +33,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
                         if (value instanceof Record) {
                             k = masterEntity.getBuilder().recordToKey((Record) value);
                         } else {
-                            k = masterEntity.getBuilder().entityToKey(value);
+                            k = masterEntity.getBuilder().objectToKey(value);
                         }
                         int x = 0;
                         for (Field fk : e.getRelationship().getSourceRole().getFields()) {

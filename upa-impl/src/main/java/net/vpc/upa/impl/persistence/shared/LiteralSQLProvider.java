@@ -32,13 +32,13 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
             Field oldField = (Field) ei.getOldReferrer();
             if (oldField.getDataType() instanceof EntityType) {
                 EntityType et = (EntityType) oldField.getDataType();
-                objectValue = et.getRelationship().getTargetEntity().getBuilder().entityToId(objectValue);
+                objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
             }
         }else if (ei.getReferrer() != null && ei.getReferrer() instanceof Field) {
             Field field = (Field) ei.getReferrer();
             if (field.getDataType() instanceof EntityType) {
                 EntityType et = (EntityType) field.getDataType();
-                objectValue = et.getRelationship().getTargetEntity().getBuilder().entityToId(objectValue);
+                objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 List<Field> tf = et.getRelationship().getTargetEntity().getPrimaryFields();
                 if(tf.size()!=1){
                     throw new IllegalArgumentException("Unsupported");

@@ -47,6 +47,10 @@ public interface EntityBuilder {
 
     public Record createRecord();
 
+    public Record createInitializedRecord();
+
+    public <R> R createInitializedObject();
+
     public <R> R createObject();
 
     public <R> Record getRecord(R entity);
@@ -96,7 +100,7 @@ public interface EntityBuilder {
      * @return entityToRecord(r, false)
      * @throws UPAException
      */
-    Record entityToRecord(Object entityValue) throws UPAException;
+    Record objectToRecord(Object entityValue) throws UPAException;
 
     /**
      * Record value representation of the given entity. updates to the record
@@ -108,35 +112,35 @@ public interface EntityBuilder {
      * @return entityToRecord(r, false)
      * @throws UPAException
      */
-    Record entityToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException;
+    Record objectToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException;
 
     Object getMainValue(Object entityValue) throws UPAException;
 
-    <R> R recordToEntity(Record entityRecord) throws UPAException;
+    <R> R recordToObject(Record entityRecord) throws UPAException;
 
     <R> R idToEntity(Object entityId) throws UPAException;
 
     Record idToRecord(Object entityId) throws UPAException;
 
-    Object entityToId(Object entityValue) throws UPAException;
+    Object objectToId(Object entityValue) throws UPAException;
 
-    Key entityToKey(Object entityValue) throws UPAException;
+    Key objectToKey(Object entityValue) throws UPAException;
 
     Object recordToId(Record entityRecord) throws UPAException;
 
     Key recordToKey(Record entityRecord) throws UPAException;
 
-    Object keyToEntity(Key recordKey) throws UPAException;
+    Object keyToObject(Key recordKey) throws UPAException;
 
     Record keyToRecord(Key recordKey) throws UPAException;
 
     public void setRecordId(Record entityRecord, Object entityId) throws UPAException;
 
-    public void setEntityId(Object entityObject, Object entityId) throws UPAException;
+    public void setObjectId(Object entityObject, Object entityId) throws UPAException;
 
     public Expression recordToExpression(Record entityRecord, String entityAlias) throws UPAException;
 
-    public Expression entityToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException;
+    public Expression objectToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException;
 
     //    public Expression idToExpression(Object key) throws UPAException;
     public Expression idToExpression(Object entityId, String alias) throws UPAException;
@@ -150,6 +154,5 @@ public interface EntityBuilder {
     public QualifiedRecord createQualifiedRecord() throws UPAException;
 
     public QualifiedRecord createQualifiedRecord(Record record) throws UPAException;
-
 
 }

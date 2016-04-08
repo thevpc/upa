@@ -1556,7 +1556,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (mf == null) {
             return null;
         }
-        Object v = getBuilder().entityToRecord(o, false).getObject(mf.getName());
+        Object v = getBuilder().objectToRecord(o, false).getObject(mf.getName());
         if (v == null) {
             return null;
         }
@@ -1912,7 +1912,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             getShield().checkClone(oldId, newId);
         }
         Object o = createQueryBuilder().setId(oldId).setFieldFilter(COPY_ON_CLONE).getEntity();
-        getBuilder().setEntityId(o, newId);
+        getBuilder().setObjectId(o, newId);
         persist(o);
         return o;
     }
@@ -1931,7 +1931,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        boolean transactionSucceeded = false;
 //        try {
         Object o = createQueryBuilder().setId(oldId).setFieldFilter(COPY_ON_RENAME).getEntity();
-        Record ur = getBuilder().entityToRecord(o, false);
+        Record ur = getBuilder().objectToRecord(o, false);
         getBuilder().setRecordId(ur, newId);
         // insert(o, false);
         Object[] newIdValues = getBuilder().idToKey(newId).getValue();
@@ -2081,7 +2081,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         List<Field> mf = r.getTargetRole().getFields();
         if (sf != null) {
             EntityBuilder tb = r.getTargetEntity().getBuilder();
-            return tb.idToExpression(tb.entityToId(child.getObject(sf.getName())), null);
+            return tb.idToExpression(tb.objectToId(child.getObject(sf.getName())), null);
         } else if (df.size() == 1) {
             return new Equals(new Var(mf.get(0).getName()), child.getObject(df.get(0).getName()));
         } else {
@@ -2321,8 +2321,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        recordListenerSupport.fireAfterReset(context);
 //    }
     public Expression getUnicityExpressionForPersist(Object entity) throws UPAException {
-        Object key = getBuilder().entityToId(entity);
-        Record urecord = getBuilder().entityToRecord(entity, false);
+        Object key = getBuilder().objectToId(entity);
+        Record urecord = getBuilder().objectToRecord(entity, false);
         List<Index> uniqueIndexes = getIndexes(true);
         if (uniqueIndexes.isEmpty()) {
             return getBuilder().idToExpression(key, null);
@@ -2554,7 +2554,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 break;
             }
             case OBJECT: {
-                expr = builder.idToExpression(builder.entityToId(idOrExpression.getRemoveCondition()), null);
+                expr = builder.idToExpression(builder.objectToId(idOrExpression.getRemoveCondition()), null);
                 break;
             }
             case RECORD: {
@@ -2563,7 +2563,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 break;
             }
             case PROTOTYPE: {
-                expr = builder.entityToExpression(idOrExpression.getRemoveCondition(), true, null);
+                expr = builder.objectToExpression(idOrExpression.getRemoveCondition(), true, null);
                 break;
             }
             case RECORD_PROTOTYPE: {
@@ -3242,7 +3242,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
-    public <R> R createEntity() {
+    public <R> R createObject() {
         return getBuilder().createObject();
     }
 

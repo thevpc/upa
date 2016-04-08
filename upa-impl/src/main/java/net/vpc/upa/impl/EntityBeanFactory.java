@@ -72,7 +72,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
                 DataType dt = f.getDataType();
                 if(dt instanceof EntityType){
                     Entity oe = ((EntityType)dt).getRelationship().getTargetEntity();
-                    o = oe.getBuilder().recordToEntity((Record)o);
+                    o = oe.getBuilder().recordToObject((Record)o);
                 }
             }
             ur.setObject(k, o);

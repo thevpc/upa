@@ -323,7 +323,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public Record createRecord() throws UPAException;
 
-    public <R> R createEntity() throws UPAException;
+    public <R> R createObject() throws UPAException;
 
     /**
      * adds anonymous trigger

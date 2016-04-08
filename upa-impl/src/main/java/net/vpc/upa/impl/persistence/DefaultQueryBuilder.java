@@ -174,7 +174,7 @@ public final class DefaultQueryBuilder implements QueryBuilder {
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getPrototype() != null) {
-            Expression e = entity.getBuilder().entityToExpression(getPrototype(), true, entityName);
+            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, entityName);
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getRecordPrototype() != null) {
