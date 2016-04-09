@@ -6,7 +6,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-impl</artifactId>
     <name>net.vpc.upa.upa-impl</name>
-    <version>1.2.0.21.0</version>
+    <version>1.2.0.22.0</version>
     <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
     <properties>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-api</artifactId>
-            <version>1.2.0.21</version>
+            <version>1.2.0.22</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
