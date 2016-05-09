@@ -14,8 +14,7 @@ import net.vpc.upa.TransactionManager;
 public class DefaultTransactionManager implements TransactionManager {
 
     @Override
-    public Transaction createTransaction(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore) throws UPAException {
-        UConnection connection = persistenceStore.getConnection();
+    public Transaction createTransaction(UConnection connection,PersistenceUnit persistenceUnit, PersistenceStore persistenceStore) throws UPAException {
         if (connection == null) {
             throw new IllegalStateException("No Active Connection Found");
         }

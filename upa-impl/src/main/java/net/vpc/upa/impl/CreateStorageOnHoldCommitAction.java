@@ -6,6 +6,7 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.exceptions.NoSuchPersistenceUnitException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
 import net.vpc.upa.persistence.StructureStrategy;
 
@@ -24,29 +25,30 @@ class CreateStorageOnHoldCommitAction implements OnHoldCommitAction {
     }
 
     @Override
-    public void commitStorage(PersistenceStore persistenceStore) throws UPAException {
+    public void commitStorage(EntityExecutionContext context) throws UPAException {
+        PersistenceStore persistenceStore=context.getPersistenceStore();
         StructureStrategy option = persistenceStore.getConnectionProfile().getStructureStrategy();
         switch (option) {
             case DROP: {
                 if (!persistenceStore.isCreatedStorage()) {
-                    persistenceStore.createStorage();
+                    persistenceStore.createStorage(context);
                 } else {
-                    persistenceStore.dropStorage();
-                    persistenceStore.dropStorage();
-                    persistenceStore.createStorage();
+                    persistenceStore.dropStorage(context);
+                    persistenceStore.dropStorage(context);
+                    persistenceStore.createStorage(context);
                 }
                 break;
             }
             case CREATE:
             case SYNCHRONIZE: {
                 if (!persistenceStore.isCreatedStorage()) {
-                    persistenceStore.createStorage();
+                    persistenceStore.createStorage(context);
                 }
                 break;
             }
             case MANDATORY: {
                 if (!persistenceStore.isCreatedStorage()) {
-                    throw new NoSuchPersistenceUnitException(persistenceStore.getPersistenceUnit().getName());
+                    throw new NoSuchPersistenceUnitException(context.getPersistenceUnit().getName());
                 }
                 //                        if (!isValidPersistenceUnit()) {
                 //                            throw new NoSuchPersistenceUnitException(getName(), null);

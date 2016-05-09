@@ -48,7 +48,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             }
         }
         u.where(condition);
-        return context.getPersistenceStore().executeUpdate(u, context);
+        return context.getPersistenceStore().executeNonQuery(u, context);
     }
 
     public Query createQuery(Entity e, Update query, EntityExecutionContext context) throws UPAException {

@@ -99,8 +99,8 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 //        return "replace(space("+width+"-len("+expr+")),' ','0')+"+expr;
 //    }
     @Override
-    public String getFieldDeclaration(PrimitiveField field) throws UPAException {
-        String s = super.getFieldDeclaration(field);
+    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
+        String s = super.getFieldDeclaration(field,executionContext);
         Entity table = field.getEntity();
         if (field.isId() && field.getPersistFormula() instanceof Sequence) {
             Sequence seq = (Sequence) field.getPersistFormula();

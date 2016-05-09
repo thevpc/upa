@@ -12,7 +12,10 @@ import net.vpc.upa.types.I18NString;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
@@ -27,6 +30,7 @@ public class DefaultUConnection implements UConnection {
     private Connection connection;
     private MarshallManager marshallManager;
     private CloseListenerSupport support;
+    private Map<String, Object> properties;
     private boolean closed = false;
     private static final Logger log = Logger.getLogger(DefaultUConnection.class.getName());
 
@@ -61,7 +65,7 @@ public class DefaultUConnection implements UConnection {
                     for (int i = 0; i < types.length; i++) {
                         try {
                             types[i] = new IdentityDataTypeTransform(
-                                    TypesFactory.forPlatformType(Class.forName(metaData.getColumnClassName(i+1)))
+                                    TypesFactory.forPlatformType(Class.forName(metaData.getColumnClassName(i + 1)))
                             );
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(DefaultUConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,6 +308,36 @@ public class DefaultUConnection implements UConnection {
             }
         }
         return retConn;
+    }
+
+    @Override
+    public Object getProperty(String name) throws UPAException {
+        if (properties == null) {
+            return null;
+        }
+        return properties.get(name);
+    }
+
+    @Override
+    public Map<String, Object> getProperties() throws UPAException {
+        if (properties == null) {
+            return Collections.EMPTY_MAP;
+        }
+        return Collections.unmodifiableMap(properties);
+    }
+
+    @Override
+    public void setProperty(String name, Object value) throws UPAException {
+        if (value == null) {
+            if (properties != null) {
+                properties.remove(name);
+            }
+        } else {
+            if (properties == null) {
+                properties = new HashMap<String, Object>();
+            }
+            properties.put(name, value);
+        }
     }
 
     @Override

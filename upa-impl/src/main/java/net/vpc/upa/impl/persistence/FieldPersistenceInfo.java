@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.impl.uql.util.ThisRenamerVisitor;
 import java.util.List;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -14,6 +15,7 @@ import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.impl.uql.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.persistence.PersistenceStore;
@@ -72,8 +74,7 @@ public class FieldPersistenceInfo {
                         w = new And(w, pfe);
                     }
                 }
-                ExpressionVisitor expressionVisitor = new ThisRenamerVisitor(expressionManager, "this2");
-                ss.visit(expressionVisitor);
+                UQLUtils.replaceThisVar(ss, "this2", expressionManager);
                 ss.where(w);
                 e = ss;
             } else {

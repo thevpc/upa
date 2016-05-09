@@ -707,7 +707,7 @@ public class ExpressionValidationManager {
                 if (thisAlias != null) {
                     v.setName(thisAlias);
                 } else {
-                    throw new IllegalArgumentException("Incountered this alias but never declared");
+//                    throw new IllegalArgumentException("Incountered this alias but never declared");
                 }
                 ExpressionDeclaration declaration = getDeclaration(v.getName(), v, config);
                 if (declaration != null) {
@@ -718,7 +718,7 @@ public class ExpressionValidationManager {
                         }
                     }
                 }
-                throw new IllegalArgumentException("this alias named '" + v.getName() + "' is not declared");
+                throw new IllegalArgumentException("'this' alias is not declared");
             }
             //check if field
             List<ExpressionDeclaration> values = getDeclarations(null, v, config);

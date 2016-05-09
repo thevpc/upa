@@ -14,14 +14,18 @@ import net.vpc.upa.persistence.ConnectionConfig;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class PUUtils {
-
+    private static final String TYPE="mysql";
     public static PersistenceUnit createTestPersistenceUnit(Class clz) {
         String puId = clz == null ? "test" : clz.getName();
         PersistenceGroup grp = UPA.getPersistenceGroup();
         PersistenceUnit pu = grp.addPersistenceUnit(puId);
 //        pu.scan(null);
         final ConnectionConfig cc = new ConnectionConfig();
-        cc.setConnectionString("derby:default://localhost/upatest;structure=create;userName=upatest;password=upatest");
+        if("mysql".equals(TYPE)){
+            cc.setConnectionString("mysql:default://localhost/UPA_TEST;structure=create;userName=root;password=''");
+        }else{
+            cc.setConnectionString("derby:default://localhost/upatest;structure=create;userName=upatest;password=upatest");
+        }
         pu.addConnectionConfig(cc);
         if (clz != null) {
             String namePrefix = clz.getSimpleName();

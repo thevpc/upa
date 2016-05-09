@@ -34,7 +34,7 @@ public class IndexStructureCommit extends StructureCommit {
         DefaultPersistenceStore persistenceUnitManager = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (!persistenceUnitManager.isView(index.getEntity())) {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-            UConnection b = persistenceUnitManager.getConnection();
+            UConnection b = executionContext.getConnection();
             if(status== PersistenceState.DIRTY){
                 b.executeNonQuery(persistenceUnitManager.getDropIndexStatement(index), null, null);
             }

@@ -35,7 +35,7 @@ public class RelationshipStructureCommit extends StructureCommit {
 
         log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
         if (!relation.isTransient() && persistenceUnitManager.isReferencingSupported()) {
-            UConnection b = executionContext.getPersistenceStore().getConnection();
+            UConnection b = executionContext.getConnection();
             b.executeNonQuery(persistenceUnitManager.getCreateRelationshipStatement(relation), null, null);
         }
     }

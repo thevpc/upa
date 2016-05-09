@@ -10,6 +10,7 @@ import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.persistence.PersistenceStore;
 
 import java.util.Set;
+import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -45,7 +46,8 @@ public class DefaultOnHoldCommitAction implements OnHoldCommitAction {
     }
 
     @Override
-    public void commitStorage(PersistenceStore persistenceStore) throws UPAException {
+    public void commitStorage(EntityExecutionContext context) throws UPAException {
+        PersistenceStore persistenceStore=context.getPersistenceStore();
         //should verify if not yet stored
         switch (object.getPersistenceState()) {
             case VALID: {

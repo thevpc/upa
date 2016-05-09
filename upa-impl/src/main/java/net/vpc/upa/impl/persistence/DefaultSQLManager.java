@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.shared.*;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -18,11 +17,9 @@ public class DefaultSQLManager implements SQLManager {
 
     private ClassMap<SQLProvider> sqlProviders = new ClassMap<SQLProvider>();
     private MarshallManager marshallManager;
-    private PersistenceUnit persistenceUnit;
 
-    public DefaultSQLManager(PersistenceUnit persistenceUnit, MarshallManager marshallManager) {
+    public DefaultSQLManager(MarshallManager marshallManager) {
         this.marshallManager = marshallManager;
-        this.persistenceUnit = persistenceUnit;
         register0(new BinaryOperatorExpressionSQLProvider());
         register0(new PlusExpressionSQLProvider());
         register0(new VarSQLProvider());

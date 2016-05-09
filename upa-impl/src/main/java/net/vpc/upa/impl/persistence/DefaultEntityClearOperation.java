@@ -17,7 +17,7 @@ public class DefaultEntityClearOperation implements EntityClearOperation {
             return 0;
         }
         Delete stmt = (new Delete()).from(entity.getName());
-        return context.getPersistenceStore().executeUpdate(stmt, context);
+        return context.getPersistenceStore().executeNonQuery(stmt, context);
     }
 
 }

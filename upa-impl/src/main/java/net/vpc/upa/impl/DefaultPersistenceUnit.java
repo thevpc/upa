@@ -37,6 +37,7 @@ import java.util.*;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
 
 //import net.vpc.upa.impl.util.ListUtils;
 public class DefaultPersistenceUnit implements PersistenceUnit {
@@ -879,7 +880,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
         List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
-        EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.RESET);
+        EntityExecutionContext context = createContext(ContextOperation.RESET);
         clear();
         for (Entity entity : ops) {
             entity.initialize();
@@ -895,7 +896,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     public void clear() throws UPAException {
         List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
-        EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CLEAR);
+        EntityExecutionContext context = createContext(ContextOperation.CLEAR);
 
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
@@ -1122,7 +1123,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         }
 
         this.persistenceStore = validPersistenceStore;
-        this.persistenceStore.init(this, isReadOnly(), connectionProfile);
+        this.persistenceStore.init(this, isReadOnly(), connectionProfile, getPersistenceNameConfig());
 //        this.persistenceStore.setResources(getResources());
 //        for (PersistenceUnitListener schemaDataListener : getPersistenceUnitListeners()) {
 //            schemaDataListener.persistenceStoreChanged(this, old, persistenceStore);
@@ -1230,7 +1231,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //        }
 //        return false;
 //    }
-    public void dropStorage() throws UPAException {
+    public void dropStorage(EntityExecutionContext context) throws UPAException {
     }
 
     //    protected void createSchemaStructure() throws UPAException {
@@ -2006,7 +2007,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (entityName != null) {
             return getEntity(entityName).createQuery(query);
         }
-        return getPersistenceStore().createQuery(query, getPersistenceStore().createContext(ContextOperation.FIND));
+        return getPersistenceStore().createQuery(query, createContext(ContextOperation.FIND));
     }
 
     @Override
@@ -2080,6 +2081,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
+    public boolean existsById(String entityName, Object id) throws UPAException {
+        return createQueryBuilder(entityName).setId(id).getIdList().size() > 0;
+    }
+
+    @Override
     public Record findRecordById(Class entityType, Object id) throws UPAException {
         return createQueryBuilder(entityType).setId(id).getRecord();
     }
@@ -2114,7 +2120,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             }
             case REQUIRED: {
                 if (currentTransaction == null) {
-                    Transaction transaction = transactionManager.createTransaction(this, persistenceStore);
+                    Transaction transaction = transactionManager.createTransaction(getConnection(), this, persistenceStore);
                     transaction.begin();
                     currentSession.setParam(this, SessionParams.TRANSACTION, transaction);
                 }
@@ -2226,13 +2232,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         commitModelChanges();
         getPersistenceStore().revalidateModel();
         boolean someCommit = false;
-        EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        EntityExecutionContext context = createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
         persistenceUnitListenerManager.fireOnStorageChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
 
         List<OnHoldCommitAction> model = commitStorageActions;
         Collections.sort(model, new OnHoldCommitActionComparator());
         for (OnHoldCommitAction next : model) {
-            next.commitStorage(persistenceStore);
+            next.commitStorage(context);
             someCommit = true;
         }
         model.clear();
@@ -2260,7 +2266,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void close() throws UPAException {
-        EntityExecutionContext context = getPersistenceStore().createContext(ContextOperation.CLOSE);
+        EntityExecutionContext context = createContext(ContextOperation.CLOSE);
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         getDefaulPackage().close();
@@ -2527,5 +2533,55 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             return all.toArray(new Callback[all.size()]);
         }
         return persistenceUnitListenerManager.getCurrentCallbacks(callbackType, objectType, name, system, phase);
+    }
+
+    @Override
+    public UConnection getConnection() throws UPAException {
+        Session session = getCurrentSession();
+        UConnection connection = session.getParam(this, UConnection.class, SessionParams.CONNECTION, null);
+        if (connection == null) {
+            connection = getPersistenceStore().createConnection();
+            session.setParam(this, SessionParams.CONNECTION, connection);
+            session.addSessionListener(new CloseOnContextPopSessionListener(this, connection));
+        }
+        return connection;
+    }
+
+    @Override
+    public void setIdentityConstraintsEnabled(Entity entity, boolean enable) {
+        EntityExecutionContext context = createContext(ContextOperation.COMMIT_STORAGE);
+        getPersistenceStore().setIdentityConstraintsEnabled(entity, enable, context);
+    }
+
+    public UConnection getMetadataConnection() throws UPAException {
+        Session session = getCurrentSession();
+        UConnection connection = session.getParam(this, UConnection.class, SessionParams.METADATA_CONNECTION, null);
+        if (connection == null) {
+            connection = session.getParam(this, UConnection.class, SessionParams.CONNECTION, null);
+        }
+        if (connection == null) {
+            connection = getPersistenceStore().createConnection();
+            session.setParam(this, SessionParams.CONNECTION, connection);
+            session.addSessionListener(new CloseOnContextPopSessionListener(this, connection));
+        }
+        return connection;
+    }
+
+    public EntityExecutionContext createContext(ContextOperation operation) throws UPAException {
+//        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
+        EntityExecutionContext context = null;
+//        if (currentSession != null) {
+//            context = currentSession.getParam(persistenceUnit, ExecutionContext.class, SessionParams.EXECUTION_CONTEXT, null);
+//            if (context
+//                    == null) {
+//                context = persistenceUnit.getFactory().createObject(ExecutionContext.class, null);
+//                currentSession.setParam(persistenceUnit, SessionParams.EXECUTION_CONTEXT, context);
+//            }
+//        } else {
+//            context = persistenceUnit.getFactory().createObject(ExecutionContext.class, null);
+//        }
+        context = getFactory().createObject(EntityExecutionContext.class);
+        context.initPersistenceUnit(this, getPersistenceStore(), operation);
+        return context;
     }
 }

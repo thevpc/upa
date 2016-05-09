@@ -41,7 +41,7 @@ public class DefaultQuery extends AbstractQuery {
     private DefaultResultMetaData metadata;
     private QueryResult result;
 //    private NativeSQL nativeSQL;
-    private DefaultPersistenceStore puManager;
+    private DefaultPersistenceStore store;
     private boolean lazyListLoadingEnabled = true;
     private Map<String, Object> hints = new HashMap<String, Object>();
     private static final FieldFilter ID = Fields.regular().and(Fields.byModifiersAllOf(FieldModifier.ID));
@@ -62,7 +62,7 @@ public class DefaultQuery extends AbstractQuery {
         this.context = context;
         this.query = (CompiledEntityStatement) query.copy();
         this.defaultEntity = defaultEntity;
-        puManager = (DefaultPersistenceStore) context.getPersistenceStore();
+        store = (DefaultPersistenceStore) context.getPersistenceStore();
     }
 
     public int executeNonQuery() {
@@ -308,7 +308,7 @@ public class DefaultQuery extends AbstractQuery {
                 List<ExpressionDeclaration> declarations = queryStatements.get(0).getExportedDeclarations();
                 for (ExpressionDeclaration d : declarations) {
                     if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        entity = puManager.getPersistenceUnit().getEntity((String) d.getReferrerName());
+                        entity = context.getPersistenceUnit().getEntity((String) d.getReferrerName());
                         break;
                     }
                 }
@@ -316,7 +316,7 @@ public class DefaultQuery extends AbstractQuery {
                 List<ExpressionDeclaration> declarations = query.getExportedDeclarations();
                 for (ExpressionDeclaration d : declarations) {
                     if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        entity = puManager.getPersistenceUnit().getEntity((String) d.getReferrerName());
+                        entity = context.getPersistenceUnit().getEntity((String) d.getReferrerName());
                         break;
                     }
                 }
@@ -364,7 +364,7 @@ public class DefaultQuery extends AbstractQuery {
     protected NativeSQL createNativeSQL(String key, FieldFilter fieldFilter) {
         NativeSQL s = precompiledNativeSQLMap.get(key);
         if (s == null) {
-            s = puManager.nativeSQL(query, fieldFilter, context, hints);
+            s = store.nativeSQL(query, fieldFilter, context, hints);
             precompiledNativeSQLMap.put(key, s);
         }
         return s;
@@ -420,7 +420,7 @@ public class DefaultQuery extends AbstractQuery {
     public ResultMetaData getMetaData() throws UPAException {
         if (metadata == null) {
             DefaultResultMetaData m = new DefaultResultMetaData();
-            CompiledEntityStatement query2 = (CompiledEntityStatement) puManager.getPersistenceUnit().getExpressionManager().compileExpression(query, new ExpressionCompilerConfig().setValidate(true));
+            CompiledEntityStatement query2 = (CompiledEntityStatement) context.getPersistenceUnit().getExpressionManager().compileExpression(query, new ExpressionCompilerConfig().setValidate(true));
             if (query2 instanceof CompiledQueryStatement) {
                 final CompiledQueryStatement qs = (CompiledQueryStatement) query2;
                 for (int i = 0; i < qs.countFields(); i++) {

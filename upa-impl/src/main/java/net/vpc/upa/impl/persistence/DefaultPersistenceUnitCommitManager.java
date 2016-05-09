@@ -7,6 +7,7 @@ import net.vpc.upa.persistence.*;
 
 import java.util.*;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.persistence.commit.EntityImplicitViewStructureCommit;
 import net.vpc.upa.impl.persistence.commit.EntityPKStructureCommit;
 import net.vpc.upa.impl.persistence.commit.EntityStructureCommit;
@@ -53,7 +54,7 @@ public class DefaultPersistenceUnitCommitManager {
     }
 
     private UConnection getConnection(EntityExecutionContext executionContext) {
-        return executionContext.getPersistenceStore().getConnection();
+        return executionContext.getConnection();
     }
 
     public void alterPersistenceUnitAddObject(UPAObject object) throws UPAException {
@@ -97,7 +98,7 @@ public class DefaultPersistenceUnitCommitManager {
     }
 
     public boolean commitStructure() throws UPAException {
-        EntityExecutionContext context = persistenceStore.createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        EntityExecutionContext context = ((DefaultPersistenceUnit)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
         Collections.sort(storage, structureCommitComparator);
         boolean someCommit = false;
         for (StructureCommit next : storage) {

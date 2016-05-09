@@ -319,6 +319,22 @@ public class DefaultEntityConverter implements EntityConverter {
         return new IdExpression(entity, key, entityAlias);
     }
 
+    @Override
+    public Expression objectToIdExpression(Object entityOrRecord, String alias) throws UPAException {
+        if(entityOrRecord==null){
+            return null;
+        }
+        Record r = null;
+        if(entityOrRecord instanceof Record){
+            r=(Record)entityOrRecord;
+        }
+        r = entityToRecord(entityOrRecord);
+        Key k = recordToKey(r);
+        return keyToExpression(k, alias);
+    }
+    
+    
+
     public Expression keyToExpression(Key key, String entityAlias) {
         Object id = keyToId(key);
         return idToExpression(id, entityAlias);

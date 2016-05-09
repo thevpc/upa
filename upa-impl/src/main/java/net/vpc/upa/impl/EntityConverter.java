@@ -48,9 +48,9 @@ public interface EntityConverter {
      * Record value representation of the given entity. updates to the record
      * are recorded to the provided value
      *
-     * @param entityValue       entity value
+     * @param entityValue entity value
      * @param ignoreUnspecified when true primitive number type zeros and
-     *                          boolean type false values are reported as null (not included in record)
+     * boolean type false values are reported as null (not included in record)
      * @return entityToRecord(r, false)
      * @throws UPAException
      */
@@ -90,6 +90,8 @@ public interface EntityConverter {
 
     //    public Expression idToExpression(Object key) throws UPAException;
     public Expression idToExpression(Object entityId, String alias) throws UPAException;
+
+    public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException;
 
     public Expression keyToExpression(Key recordKey, String alias) throws UPAException;
 

@@ -448,7 +448,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     index++;
                 }
             } else // field
-             if (!countFieldsInCompoundFields
+            {
+                if (!countFieldsInCompoundFields
                         && entityPart.getParent() instanceof CompoundField) {
                     //
                 } else if (!countFieldsInSections
@@ -457,6 +458,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 } else {
                     index++;
                 }
+            }
         }
         return -1;
     }
@@ -2650,7 +2652,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public EntityExecutionContext createContext(ContextOperation contextOperation) {
-        EntityExecutionContext context = getEntityOperationManager().getPersistenceStore().createContext(contextOperation);
+        EntityExecutionContext context = ((DefaultPersistenceUnit) getPersistenceUnit()).createContext(contextOperation);
         context.initEntity(this, entityOperationManager);
         return context;
     }
@@ -3408,6 +3410,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public <T> T findById(Object id) throws UPAException {
         return getPersistenceUnit().findById(getName(), id);
+    }
+
+    @Override
+    public boolean existsById(Object id) throws UPAException {
+        return getPersistenceUnit().existsById(getName(), id);
     }
 
     public <T> List<T> findAll() throws UPAException {

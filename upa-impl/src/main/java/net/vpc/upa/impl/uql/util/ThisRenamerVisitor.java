@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.uql.util;
 
 import net.vpc.upa.ExpressionManager;
 import net.vpc.upa.expressions.Expression;
@@ -17,7 +17,7 @@ import net.vpc.upa.expressions.Var;
  *
  * @author vpc
  */
-class ThisRenamerVisitor implements ExpressionVisitor {
+public class ThisRenamerVisitor implements ExpressionVisitor {
 
     private ExpressionManager expressionManager;
     private String thisName;

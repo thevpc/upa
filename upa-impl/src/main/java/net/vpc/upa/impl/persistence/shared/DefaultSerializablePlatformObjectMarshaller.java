@@ -1,5 +1,6 @@
-package net.vpc.upa.impl.persistence.specific.derby;
+package net.vpc.upa.impl.persistence.shared;
 
+import net.vpc.upa.impl.persistence.specific.derby.*;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.IOUtils;
@@ -14,10 +15,10 @@ import java.sql.SQLException;
 * @creationdate 11/22/12 10:03 PM
 */
 @PortabilityHint(target = "C#", name = "suppress")
-public class DerbySerializablePlatformObjectMarshaller
+public class DefaultSerializablePlatformObjectMarshaller
         extends SimpleTypeMarshaller {
 
-    public DerbySerializablePlatformObjectMarshaller() {
+    public DefaultSerializablePlatformObjectMarshaller() {
     }
 
     public Object read(int index, ResultSet resultSet)

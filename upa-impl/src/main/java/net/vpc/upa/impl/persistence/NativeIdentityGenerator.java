@@ -15,30 +15,45 @@ import net.vpc.upa.persistence.FieldPersister;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class NativeIdentityGenerator implements FieldPersister {
+
     private Field field;
+    String identityConstraintsEnabledProperty;
 
     public NativeIdentityGenerator(Field field) {
         this.field = field;
+        identityConstraintsEnabledProperty = "IdentityConstraintsEnabled." + field.getEntity().getName();
     }
 
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException{
+    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException {
+        if (Boolean.FALSE.equals(context.getConnection().getProperty(identityConstraintsEnabledProperty))) {
+            return;
+        }
         context.addGeneratedValue(field.getName(), field.getDataType());
         //manual id values are ignored
         record.remove(field.getName());
     }
 
     public void afterPersist(Record record, EntityExecutionContext context) {
-        record.setObject(field.getName(),context.getGeneratedValue(field.getName()).getValue());
+        if (Boolean.FALSE.equals(context.getConnection().getProperty(identityConstraintsEnabledProperty))) {
+            return;
+        }
+        record.setObject(field.getName(), context.getGeneratedValue(field.getName()).getValue());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         NativeIdentityGenerator that = (NativeIdentityGenerator) o;
 
-        if (!field.equals(that.field)) return false;
+        if (!field.equals(that.field)) {
+            return false;
+        }
 
         return true;
     }

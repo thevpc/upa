@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <upa version="1.0">
     <connection>
-        <connectionString>derby:default://localhost/upatutorial;structure=create</connectionString>
+        <connectionString>derby://localhost/upatutorial;structure=create</connectionString>
         <userName>me</userName>
         <password>never</password>
     </connection>

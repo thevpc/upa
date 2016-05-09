@@ -126,7 +126,11 @@ public class SelectSQLProvider extends AbstractSQLProvider {
             for (int i = 0; i < o.countFields(); i++) {
                 CompiledQueryField fi = o.getField(i);
                 DefaultCompiledExpression e = fi.getExpression();
+                boolean fieldIsSelect=e instanceof CompiledSelect;
                 valueString = sqlManager.getSQL(e, context, declarations);
+                if(fieldIsSelect){
+                    valueString="("+valueString+")";
+                }
                 aliasString = fi.getAlias();
                 if (started) {
                     sb.append(",");

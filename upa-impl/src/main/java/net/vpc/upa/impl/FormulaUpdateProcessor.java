@@ -32,6 +32,8 @@ public class FormulaUpdateProcessor {
     private Expression expr;
     private EntityExecutionContext context;
     private List<Object> keysToUpdate = null;
+    boolean isUpdateComplexValuesStatementSupported;
+    boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
 
     public FormulaUpdateProcessor(boolean onPersist, List<Field> fields, Expression expr, EntityExecutionContext context, Entity entity, EntityOperationManager epm) {
         this.entityOperationManager = epm;
@@ -43,6 +45,8 @@ public class FormulaUpdateProcessor {
         for (Field field : fields) {
             addField(field);
         }
+        isUpdateComplexValuesStatementSupported = persistenceUnit.getPersistenceStore().getProperties().getBoolean("isUpdateComplexValuesStatementSupported", false);
+        isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.getPersistenceStore().getProperties().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
     }
 
     private static Expression getFieldExpression(Field field, boolean forPersist) {
@@ -78,24 +82,16 @@ public class FormulaUpdateProcessor {
                 pass = passArray[ValidationPassType.CUSTOM_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.CUSTOM_VALIDATION);
                 size++;
             }
-        } else {
-            if (!entityOperationManager.getPersistenceStore().isComplexSelectSupported()) {
-                Expression fe = getFieldExpression(f, onPersist);
+        } else if (!entityOperationManager.getPersistenceStore().isComplexSelectSupported()) {
+            Expression fe = getFieldExpression(f, onPersist);
 
-                DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe);
-                List<DefaultCompiledExpression> found = ce.findExpressionsList(CompiledExpressionHelper.QUERY_STATEMENT_FILTER);
-                if (found.size() > 0) {
-                    pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
-                    if (pass == null) {
-                        pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.ITERATIVE_VALIDATION);
-                        size++;
-                    }
-                } else {
-                    pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()];
-                    if (pass == null) {
-                        pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.DEFAULT_VALIDATION);
-                        size++;
-                    }
+            DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe);
+            List<DefaultCompiledExpression> found = ce.findExpressionsList(CompiledExpressionHelper.QUERY_STATEMENT_FILTER);
+            if (found.size() > 0) {
+                pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
+                if (pass == null) {
+                    pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.ITERATIVE_VALIDATION);
+                    size++;
                 }
             } else {
                 pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()];
@@ -103,6 +99,12 @@ public class FormulaUpdateProcessor {
                     pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.DEFAULT_VALIDATION);
                     size++;
                 }
+            }
+        } else {
+            pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()];
+            if (pass == null) {
+                pass = passArray[ValidationPassType.DEFAULT_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.DEFAULT_VALIDATION);
+                size++;
             }
         }
         pass.fields.add(f);
@@ -296,7 +298,7 @@ public class FormulaUpdateProcessor {
 //                        }
         return x;
     }
-
+    
     protected int validateDefault(Collection<Field> fields, Expression expression) throws UPAException {
         // System.out.println("DEFAULT_VALIDATION = " +
         // validationPass.pass+" : "+ validationPass.fields);
@@ -313,34 +315,146 @@ public class FormulaUpdateProcessor {
             return entity.updateCore(u, expression, context);
         } catch (UPAException ex) {
 //            Log.bug(ex);
-            Select sb0 = new Select();
-            for (Field f : fields) {
-                Expression fieldExpression = getFieldExpression(f, onPersist);
-                sb0.field(fieldExpression, f.getName() + "Expression");
-                Expression validExpression = fieldExpression;
-                if (forceExpressionTypeCasting || (fieldExpression instanceof Literal && ((Literal) fieldExpression).getValue() == null)) {
-                    validExpression = new Cast(fieldExpression, f.getDataType());
-                }
-                sb0.field(validExpression, f.getName() + "CastExpression");
-            }
-            sb0.from(entity.getName());
-            sb0.setWhere(expression);
-
-//            Log.bug("Values to update are : ");
-            for (Record ur : entity.createQuery(sb0).getRecordList()) {
-                for (Map.Entry<String, Object> entry : ur.toMap().entrySet()) {
-                    //Log.bug(entry.getKey() + " : " + entry.getValue());
-                }
-            }
+//            Select sb0 = new Select();
+//            for (Field f : fields) {
+//                Expression fieldExpression = getFieldExpression(f, onPersist);
+//                sb0.field(fieldExpression, f.getName() + "Expression");
+//                Expression validExpression = fieldExpression;
+//                if (forceExpressionTypeCasting || (fieldExpression instanceof Literal && ((Literal) fieldExpression).getValue() == null)) {
+//                    validExpression = new Cast(fieldExpression, f.getDataType());
+//                }
+//                sb0.field(validExpression, f.getName() + "CastExpression");
+//            }
+//            sb0.from(entity.getName());
+//            sb0.setWhere(expression);
+//
+////            Log.bug("Values to update are : ");
+//            for (Record ur : entity.createQuery(sb0).getRecordList()) {
+//                for (Map.Entry<String, Object> entry : ur.toMap().entrySet()) {
+//                    //Log.bug(entry.getKey() + " : " + entry.getValue());
+//                }
+//            }
             throw ex;
         }
-//                        if (monitor != null) {
-//                            if (monitor.isStopped()) {
-//                                return;
-//                            }
-//                            monitor.progress(String.valueOf(validationPass.pass),
-//                                    "Passe " + (validationPass.pass + 1), null);
-//                        }
     }
+
+//    private static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
+//    private static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
+//
+//    protected int validateDefault(Collection<Field> fields, Expression expression) throws UPAException {
+//        EntityBuilder eb = entity.getBuilder();
+//        // System.out.println("DEFAULT_VALIDATION = " +
+//        // validationPass.pass+" : "+ validationPass.fields);
+////        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
+////        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
+//        Record u = eb.createRecord();
+//        LinkedHashMap<String, Expression> selectBasedFields = new LinkedHashMap<String, Expression>();
+//
+//        if (isUpdateComplexValuesIncludingUpdatedTableSupported) {
+//            //no test to do!
+//            for (Field field : fields) {
+//                Expression fieldExpression = getFieldExpression(field, onPersist);
+//                Expression validExpression = fieldExpression;
+//                if (forceExpressionTypeCasting || (fieldExpression instanceof Literal && ((Literal) fieldExpression).getValue() == null)) {
+//                    validExpression = new Cast(fieldExpression, field.getDataType());
+//                }
+//                u.setObject(field.getName(), validExpression);
+//            }
+//        } else {
+//            for (Field field : fields) {
+//                Expression fieldExpression = getFieldExpression(field, onPersist);
+//                Expression validExpression = fieldExpression;
+//                String complexSelectKey = onPersist ? COMPLEX_SELECT_PERSIST : COMPLEX_SELECT_MERGE;
+//                String complexSelectString = field.getProperties().getString(complexSelectKey, null);
+//                boolean complexSelect = false;
+//                if (complexSelectString == null) {
+//                    for (Expression s : fieldExpression.findAll(new TypeExpressionFilter(Select.class))) {
+//                        Select ss = (Select) s;
+//                        if (isUpdateComplexValuesStatementSupported) {
+//                            if (ss.getEntity() != null) {
+//                                boolean meFound = false;
+//                                String ssentityName = ss.getEntityName();
+//                                if (ssentityName != null && ssentityName.equals(entity.getName())) {
+//                                    meFound = true;
+//                                }
+//                                if (!meFound) {
+//                                    for (JoinCriteria join : ss.getJoins()) {
+//                                        String jentityName = join.getEntityName();
+//                                        if (jentityName != null && jentityName.equals(entity.getName())) {
+//                                            meFound = true;
+//                                        }
+//                                    }
+//                                }
+//                                if (meFound) {
+//                                    complexSelect = true;
+//                                }
+//                            }
+//                        } else {
+//                            complexSelect = true;
+//                        }
+//                    }
+//                    field.getProperties().setString(complexSelectKey, String.valueOf(complexSelect));
+//                } else {
+//                    complexSelect = Boolean.valueOf(complexSelectString);
+//                }
+//
+//                if (forceExpressionTypeCasting || (fieldExpression instanceof Literal && ((Literal) fieldExpression).getValue() == null)) {
+//                    validExpression = new Cast(fieldExpression, field.getDataType());
+//                }
+//                if (complexSelect) {
+//                    selectBasedFields.put(field.getName(), validExpression);
+//                } else {
+//                    u.setObject(field.getName(), validExpression);
+//                }
+//            }
+//        }
+//        int count=0;
+//        if (u.size() > 0) {
+//            try {
+//                count= entity.updateCore(u, expression, context);
+//            } catch (UPAException ex) {
+////            Log.bug(ex);
+//                Select sb0 = new Select();
+//                for (Field f : fields) {
+//                    Expression fieldExpression = getFieldExpression(f, onPersist);
+//                    sb0.field(fieldExpression, f.getName() + "Expression");
+//                    Expression validExpression = fieldExpression;
+//                    if (forceExpressionTypeCasting || (fieldExpression instanceof Literal && ((Literal) fieldExpression).getValue() == null)) {
+//                        validExpression = new Cast(fieldExpression, f.getDataType());
+//                    }
+//                    sb0.field(validExpression, f.getName() + "CastExpression");
+//                }
+//                sb0.from(entity.getName());
+//                sb0.setWhere(expression);
+//
+////            Log.bug("Values to update are : ");
+//                for (Record ur : entity.createQuery(sb0).getRecordList()) {
+//                    for (Map.Entry<String, Object> entry : ur.toMap().entrySet()) {
+//                        //Log.bug(entry.getKey() + " : " + entry.getValue());
+//                    }
+//                }
+//                throw ex;
+//            }
+//        }
+//        int count2=0;
+//        if (selectBasedFields.size() > 0) {
+//            Select s = new Select().from(entity.getName(),"this");
+//            for (Field primaryField : entity.getPrimaryFields()) {
+//                s.field(primaryField.getName());
+//            }
+//            for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {
+//                s.field(f.getValue(), f.getKey());
+//            }
+//            s.where(expression);
+//            for (Record record : entity.getPersistenceUnit().createQuery(s).getRecordList()) {
+//                for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {
+//                    u.setObject(f.getKey(),record.getObject(f.getKey()));
+//                }
+//                Expression exprId=eb.objectToIdExpression(record, "this");
+//                count2+= entity.updateCore(u, exprId, context);
+//            }
+//        }
+//        return Math.max(count, count2);
+//    }
 
 }

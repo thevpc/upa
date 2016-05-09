@@ -109,7 +109,9 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             case LIKE:{
-                s=leftValue+" Like "+rightValue+" {escape '*'} ";
+                //escape seems to be not supported with '*' wildcard
+                //s=leftValue+" Like "+rightValue+" {escape '*'} ";
+                s=leftValue+" Like "+rightValue+" ";
                 break;
             }
             default:{

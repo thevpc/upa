@@ -202,6 +202,10 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
+    public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException {
+        return entityConverter.objectToIdExpression(objectOrRecord, alias);
+    }
+    @Override
     public Expression idToExpression(Object entityId, String alias) throws UPAException {
         return entityConverter.idToExpression(entityId, alias);
     }

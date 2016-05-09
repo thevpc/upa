@@ -35,15 +35,15 @@ public class VarSQLProvider extends AbstractSQLProvider {
             sb.append(persistenceStore.getValidIdentifier(name));
         } else if (referrer instanceof Entity) {
             Entity entity = (Entity) referrer;
-            if ("this".equals(o.getName())) {
-                throw new IllegalArgumentException("Unexpected this alias");
+//            if ("this".equals(o.getName())) {
+//                throw new IllegalArgumentException("Unexpected this alias");
 //                //this must be resolved to the ancestor alias
 //                ExpressionDeclarationList declarationList = o.getDeclarationList();
 //                name = persistenceManager.getPersistenceName(declarationList.getValue(null).getName(), PersistenceNameStrategyNames.ALIAS);
-            } else {
+//            } else {
                 String name = persistenceStore.getPersistenceName(o.getName(), PersistenceNameType.ALIAS);
                 sb.append(persistenceStore.getValidIdentifier(name));
-            }
+//            }
         } else {
             String name = persistenceStore.getPersistenceName(o.getName(), PersistenceNameType.ALIAS);
             sb.append(persistenceStore.getValidIdentifier(name));

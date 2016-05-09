@@ -25,10 +25,14 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) {
         CompiledTypeName o = (CompiledTypeName) oo;
-        return getSqlTypeName(o.getTypeTransform().getTargetType());
+        return getSqlTypeName(o.getTypeTransform().getTargetType(),qlContext);
     }
 
-    public String getSqlTypeName(DataType datatype) {
+    public String getSqlTypeName(DataType datatype,EntityExecutionContext qlContext) {
+        String databaseProductVersion = qlContext.getPersistenceStore().getProperties().getString("databaseProductVersion");
+        if(databaseProductVersion==null){
+            databaseProductVersion="";
+        }
         Class platformType = datatype.getPlatformType();
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
@@ -36,7 +40,8 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
             if (length <= 0) {
                 length = 255;
             }
-            return length >= 255 ? "BLOB" : "VARCHAR(" + length + ")";
+            
+            return length > 255 ? "BLOB" : "VARCHAR(" + length + ")";
         }
         if (PlatformUtils.isInt32(platformType)) {
             return "INT";

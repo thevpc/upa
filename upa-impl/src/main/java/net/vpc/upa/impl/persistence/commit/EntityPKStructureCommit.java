@@ -38,7 +38,7 @@ public class EntityPKStructureCommit extends StructureCommit {
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (entity.getPrimaryFields().size() > 0) {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-            UConnection b = store.getConnection();
+            UConnection b = executionContext.getConnection();
             for (PrimitiveField primaryField : entity.getPrimitiveFields(DefaultEntity.ID)) {
                 ColumnDesc cd = store.loadColumnDesc(primaryField, b.getPlatformConnection());
                 if (cd.isNullable()!=null && cd.isNullable()) {
@@ -50,7 +50,7 @@ public class EntityPKStructureCommit extends StructureCommit {
     }
 
     @Override
-    protected PersistenceState getObjectStatus() {
-        return getPersistenceUnitCommitManager().getPersistenceUnitManager().getPersistenceState(getObject(), getTypedObject().getSpec());
+    protected PersistenceState getObjectStatus(net.vpc.upa.persistence.EntityExecutionContext entityExecutionContext) {
+        return getPersistenceUnitCommitManager().getPersistenceUnitManager().getPersistenceState(getObject(), getTypedObject().getSpec(), entityExecutionContext);
     }
 }

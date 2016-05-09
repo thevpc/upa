@@ -79,7 +79,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 insert.set(key, valueExpression);
             }
         }
-        context.getPersistenceStore().executeUpdate(insert, context);
+        context.getPersistenceStore().executeNonQuery(insert, context);
     }
 
     public Query createQuery(Entity e, Insert query, EntityExecutionContext context) throws UPAException {

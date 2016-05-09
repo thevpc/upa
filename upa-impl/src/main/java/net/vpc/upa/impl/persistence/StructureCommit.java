@@ -24,13 +24,13 @@ public abstract class StructureCommit {
         this.typedObject = new ObjectAndType(cls, spec);
     }
 
-    protected PersistenceState getObjectStatus() {
-        return persistenceUnitCommitManager.persistenceStore.getPersistenceState(object, typedObject.getSpec());
+    protected PersistenceState getObjectStatus(net.vpc.upa.persistence.EntityExecutionContext entityExecutionContext) {
+        return persistenceUnitCommitManager.persistenceStore.getPersistenceState(object, typedObject.getSpec(), entityExecutionContext);
     }
 
     public boolean commit(EntityExecutionContext executionContext) throws UPAException {
         StructureStrategy option = persistenceUnitCommitManager.persistenceStore.getConnectionProfile().getStructureStrategy();
-        PersistenceState status = getObjectStatus();
+        PersistenceState status = getObjectStatus(executionContext);
         switch (option) {
             case DROP:
             case CREATE:
@@ -46,7 +46,7 @@ public abstract class StructureCommit {
                         try {
                             persist(executionContext, status);
                         } catch (Exception e) {
-                            PersistenceState s2 = getObjectStatus();
+                            PersistenceState s2 = getObjectStatus(null);
                             try {
                                 persist(executionContext, status);
                             } catch (Exception e2) {

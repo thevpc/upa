@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import net.vpc.upa.filters.Fields;
+import net.vpc.upa.persistence.EntityExecutionContext;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class OraclePersistenceStore extends DefaultPersistenceStore {
@@ -24,6 +25,8 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     public OraclePersistenceStore() {
         Properties map = getProperties();
         map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
+        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
+        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
         map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
         map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);
         map.setBoolean("isReferencingSupported", Boolean.TRUE);
@@ -77,8 +80,8 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public String getFieldDeclaration(PrimitiveField field) throws UPAException {
-        String s = super.getFieldDeclaration(field);
+    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
+        String s = super.getFieldDeclaration(field,entityPersistenceContext);
 //        if (field.isAutoIncrement()) {
         //throw new IllegalArgumentException("Not yet supported");
         //s += " IDENTITY(" + field.getAutoIncrement().getSeed() + "," + field.getAutoIncrement().getIncrement() + ")";
@@ -87,7 +90,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public void dropStorage() throws UPAException {
+    public void dropStorage(EntityExecutionContext context) throws UPAException {
     }
 
     @Override

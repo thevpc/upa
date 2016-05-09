@@ -28,8 +28,8 @@ public class PrimitiveFieldStructureCommit extends StructureCommit {
         super(persistenceUnitCommitManager, object, PrimitiveField.class, null);
     }
 
-    protected PersistenceState getObjectStatus() {
-        return getPersistenceUnitCommitManager().getPersistenceUnitManager().getPersistenceState(object, typedObject.getSpec());
+    protected PersistenceState getObjectStatus(net.vpc.upa.persistence.EntityExecutionContext entityExecutionContext) {
+        return getPersistenceUnitCommitManager().getPersistenceUnitManager().getPersistenceState(object, typedObject.getSpec(), entityExecutionContext);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class PrimitiveFieldStructureCommit extends StructureCommit {
         PrimitiveField field = (PrimitiveField) object;
         DefaultPersistenceStore persistenceUnitManager = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-        String q=persistenceUnitManager.getAlterTableAddColumnStatement(field);
-        UConnection b = persistenceUnitManager.getConnection();
+        String q=persistenceUnitManager.getAlterTableAddColumnStatement(field, executionContext);
+        UConnection b = executionContext.getConnection();
         b.executeNonQuery(q, null, null);
 
     }

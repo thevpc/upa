@@ -37,7 +37,7 @@ public class ViewStructureCommit extends StructureCommit {
         Entity entityManager = (Entity) object;
         DefaultPersistenceStore persistenceUnitManager = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-        UConnection b = persistenceUnitManager.getConnection();
+        UConnection b = executionContext.getConnection();
 
         List<ViewEntityExtension> specSupport = entityManager.getExtensions(ViewEntityExtension.class);
         for (ViewEntityExtension ss : specSupport) {

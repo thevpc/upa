@@ -35,7 +35,7 @@ public class EntityImplicitViewStructureCommit extends StructureCommit {
         DefaultPersistenceStore persistenceUnitManager = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (persistenceUnitManager.isViewSupported() && entity.needsView()) {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-            UConnection b = persistenceUnitManager.getConnection();
+            UConnection b = executionContext.getConnection();
             b.executeNonQuery(persistenceUnitManager.getCreateImplicitViewStatement(entity, executionContext), null, null);
         }
 

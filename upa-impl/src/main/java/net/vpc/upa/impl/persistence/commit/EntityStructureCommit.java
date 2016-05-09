@@ -34,7 +34,7 @@ public class EntityStructureCommit extends StructureCommit {
         DefaultPersistenceStore persistenceUnitManager = (DefaultPersistenceStore) executionContext.getPersistenceStore();
 
         log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
-        UConnection b = persistenceUnitManager.getConnection();
-        b.executeNonQuery(persistenceUnitManager.getCreateTableStatement(entity), null, null);
+        UConnection b = executionContext.getConnection();
+        b.executeNonQuery(persistenceUnitManager.getCreateTableStatement(entity,executionContext), null, null);
     }
 }

@@ -62,13 +62,7 @@ public class ConnectionProfileParser {
         return found;
     }
 
-    public static void main(String[] args) {
-        ConnectionProfileParser cp=new ConnectionProfileParser();
-        DefaultConnectionProfileData d = cp.parseDefaultConnectionProfileData("derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8");
-        System.out.println(d);
-    }
-
-    protected DefaultConnectionProfileData parseDefaultConnectionProfileData(String connectionString){
+    public DefaultConnectionProfileData parseDefaultConnectionProfileData(String connectionString){
         //"derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8"
 
         /**
@@ -190,6 +184,21 @@ public class ConnectionProfileParser {
                                 }
                                 setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
                                 i = k;
+                            }else if (chars[i] == '\'') {
+                                StringBuilder v = new StringBuilder();
+                                int k = i + 1;
+                                while (k < chars.length) {
+                                    if (chars[k] == '\\') {
+                                        k++;
+                                        v.append(chars[k]);
+                                    } else if (chars[k] == '\'') {
+                                        break;
+                                    } else {
+                                        v.append(chars[k]);
+                                    }
+                                }
+                                setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
+                                i = k;
                             } else {
                                 int e = params.indexOf(';', i);
                                 if (e < 0) {
@@ -216,7 +225,7 @@ public class ConnectionProfileParser {
             }
             return profile;
         }
-        throw new IllegalArgumentException("expected product:driver://info");
+        throw new IllegalArgumentException("invalid connection string. Expected 'product:driver://info' Found : "+connectionString);
     }
 
     protected void setParam(DefaultConnectionProfile d, String propertyName, String propertyValue, Properties parameters, String connectionStringPropertyName) {

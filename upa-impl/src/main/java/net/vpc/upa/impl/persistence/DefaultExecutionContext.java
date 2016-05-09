@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.Session;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public class DefaultExecutionContext extends DefaultProperties implements EntityExecutionContext {
@@ -35,6 +36,16 @@ public class DefaultExecutionContext extends DefaultProperties implements Entity
     @Override
     public PersistenceUnit getPersistenceUnit() {
         return persistenceUnit;
+    }
+
+    @Override
+    public UConnection getConnection() {
+        return getPersistenceUnit().getConnection();
+    }
+
+    @Override
+    public Session getSession() {
+        return getPersistenceUnit().getCurrentSession();
     }
 
     public Entity getEntity() {

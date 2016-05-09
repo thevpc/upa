@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import net.vpc.upa.Properties;
-import net.vpc.upa.expressions.Param;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.shared.NullValANSISQLProvider;
 
@@ -13,50 +13,218 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import net.vpc.upa.CustomDefaultObject;
+import net.vpc.upa.Entity;
+import net.vpc.upa.ExpressionFormula;
+import net.vpc.upa.Field;
+import net.vpc.upa.FieldModifier;
+import net.vpc.upa.Index;
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.Sequence;
+import net.vpc.upa.SequenceStrategy;
+import static net.vpc.upa.SequenceStrategy.AUTO;
+import static net.vpc.upa.SequenceStrategy.IDENTITY;
+import static net.vpc.upa.SequenceStrategy.SEQUENCE;
+import static net.vpc.upa.SequenceStrategy.UNSPECIFIED;
 import net.vpc.upa.exceptions.DriverNotFoundException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.QueryStatement;
+import net.vpc.upa.expressions.Select;
+import net.vpc.upa.expressions.Var;
+import net.vpc.upa.filters.Fields;
+import net.vpc.upa.impl.DefaultPersistenceUnit;
+import net.vpc.upa.impl.persistence.NativeIdentityGenerator;
+import net.vpc.upa.impl.persistence.NavigatorIdentityGenerator;
+import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorInt;
+import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorString;
+import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.UpdateSQLProvider;
+import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ConnectionOption;
 import net.vpc.upa.persistence.ConnectionProfile;
+import net.vpc.upa.persistence.ContextOperation;
+import net.vpc.upa.persistence.EntityExecutionContext;
+import net.vpc.upa.persistence.FieldPersister;
+import net.vpc.upa.persistence.UConnection;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
-    private List<Param> queryParameters;
-
     public MySQLPersistenceStore() {
         Properties map = getProperties();
-        map.setBoolean("isComplexSelectSupported", Boolean.FALSE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);
-        map.setBoolean("isReferencingSupported", Boolean.TRUE);
-        map.setBoolean("isViewSupported", Boolean.FALSE);
+        map.setBoolean("isComplexSelectSupported", true);
+        map.setBoolean("isUpdateComplexValuesStatementSupported", true);
+        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+        map.setBoolean("isFromClauseInUpdateStatementSupported", true);
+        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
+        map.setBoolean("isReferencingSupported", true);
+        map.setBoolean("isViewSupported", true);
+        map.setBoolean("isTopSupported", true);
         getSqlManager().register(new MySQLCoalesceSQLProvider());
+        getSqlManager().register(new CastANSISQLProvider());
+        getSqlManager().register(new MySQLConcatSQLProvider());
+        getSqlManager().register(new MySQLDateAddSQLProvider());
+        getSqlManager().register(new MySQLDateDiffSQLProvider());
         getSqlManager().register(new MySQLDatePartSQLProvider());
-        getSqlManager().register(new MySQLIfSQLProvider());
-        getSqlManager().register(new MySQLCastSQLProvider());
-        getSqlManager().register(new MySQLLenSQLProvider());
         getSqlManager().register(new MySQLI2VSQLProvider());
         getSqlManager().register(new MySQLD2VSQLProvider());
+        getSqlManager().register(new MySQLDecodeSQLProvider());
+        getSqlManager().register(new MySQLIfSQLProvider());
+        getSqlManager().register(new SignANSISQLProvider());
+        getSqlManager().register(new MySQLStrLenSQLProvider());
+        getSqlManager().register(new MySQLCurrentTimeSQLProvider());
+        getSqlManager().register(new MySQLCurrentTimestampSQLProvider());
+        getSqlManager().register(new MySQLCurrentDateSQLProvider());
         getSqlManager().register(new NullValANSISQLProvider());
         getSqlManager().register(new MySQLTypeNameSQLProvider());
         getSqlManager().register(new MySQLSelectSQLProvider());
+
+        getSqlManager().register(new MySQLCastSQLProvider());
+        getSqlManager().register(new MySQLUpdateSQLProvider());
     }
 
     @Override
     protected Set<String> getCustomReservedKeywords() {
         String resourcePath = null;
         /**
-         * @PortabilityHint(target="C#",name="replace") resourcePath = "Persistence.MySQLKeywords.txt";
+         * @PortabilityHint(target="C#",name="replace") resourcePath =
+         * "Persistence.MySQLKeywords.txt";
          */
         resourcePath = "net/vpc/upa/impl/persistence/MySQLKeywords.txt";
         return UPAUtils.loadLinesSet(resourcePath);
     }
 
+    public String getDefaultProfile() {
+        return "";//DatabaseProduct.PROFILE_DERBY_EMBEDDED;
+    }
+
+    @Override
+    public Set<String> getSupportedDrivers() {
+        LinkedHashSet<String> valid = new LinkedHashSet<String>();
+        valid.add(DRIVER_TYPE_EMBEDDED);
+        return valid;
+    }
+
+    @Override
+    public FieldPersister createPersistSequenceGenerator(Field field) throws UPAException {
+        return createSequenceGenerator(field, true);
+    }
+
+    @Override
+    public FieldPersister createUpdateSequenceGenerator(Field field) throws UPAException {
+        return createSequenceGenerator(field, true);
+    }
+
+    private boolean isNativeIdentity(Field field) throws UPAException {
+        if (field.getPersistFormula() instanceof Sequence) {
+            Sequence sequence = (Sequence) field.getPersistFormula();
+            SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
+            switch (strategy) {
+                case UNSPECIFIED:
+                case AUTO:
+                case IDENTITY: {
+                    DataType d = (field.getDataType());
+                    Class platformType = d.getPlatformType();
+                    if (PlatformUtils.isAnyInteger(platformType) && field.isId()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public FieldPersister createSequenceGenerator(Field field, boolean insert) throws UPAException {
+        Sequence sequence = insert ? (Sequence) field.getPersistFormula() : (Sequence) field.getUpdateFormula();
+        SequenceStrategy strategy = SequenceStrategy.AUTO;
+        String g = null;
+        String f = null;
+
+        if (sequence != null) {
+            g = sequence.getGroup();
+            strategy = sequence.getStrategy();
+            f = sequence.getFormat();
+        }
+        switch (strategy) {
+            case UNSPECIFIED:
+            case AUTO:
+            case IDENTITY: {
+                DataType d = (field.getDataType());
+                Class platformType = d.getPlatformType();
+                boolean ofIntegerType = PlatformUtils.isAnyInteger(platformType);
+                if (ofIntegerType && f != null) {
+                    log.log(Level.WARNING, "Field {0} defines a sequence format but it has an integer type. Format is ignored", field);
+                }
+                if (ofIntegerType) {
+                    if (field.isId() && g == null) {
+                        return insert ? new NativeIdentityGenerator(field) : new NavigatorIdentityGenerator();
+                    } else {
+                        return new TableSequenceIdentityGeneratorInt(field, sequence);
+                    }
+                } else if (String.class.equals(platformType)) {
+                    return new TableSequenceIdentityGeneratorString(field, sequence);
+                } else {
+                    throw new UPAException("UnsupportedGeneratedValueTypeException", field, platformType);
+                }
+            }
+            case SEQUENCE: {
+                return new TableSequenceIdentityGeneratorString(field, sequence);
+            }
+            case TABLE: {
+                return new TableSequenceIdentityGeneratorString(field, sequence);
+            }
+            default: {
+                throw new UPAException("UnsupportedGeneratedValueStrategyException", field);
+            }
+        }
+    }
+
+    @Override
+    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
+        DataTypeTransform cr = UPAUtils.getTypeTransformOrIdentity(field);
+        Object defaultObject = field.getDefaultObject();
+        StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
+        sb.append('\t');
+        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+        EntityExecutionContext context = pu.createContext(ContextOperation.FIND);
+        sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
+        if (isNativeIdentity(field)) {
+            sb.append(" PRIMARY KEY AUTO_INCREMENT  ");
+        } else {
+            if (defaultObject == null && !cr.getTargetType().isNullable()) {
+                defaultObject = cr.getTargetType().getDefaultValue();
+                if (defaultObject == null) {
+                    defaultObject = cr.getTargetType().getDefaultNonNullValue();
+                }
+            }
+            if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
+                sb.append(" Default ").append(getSqlManager().getSQL(new CompiledLiteral(defaultObject, cr), context, new DefaultExpressionDeclarationList(null)));
+            }
+
+            if (!cr.getTargetType().isNullable()) {
+                sb.append(" Not Null");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
     public Connection createNativeCustomNativeConnection(ConnectionProfile p) throws UPAException {
+        return createCustomNativeConnection(p, true);
+    }
+
+    public Connection createCustomNativeConnection(ConnectionProfile p, boolean create) throws UPAException {
         try {
             String connectionDriver = p.getConnectionDriver();
             if (connectionDriver == null || connectionDriver.trim().isEmpty()) {
@@ -115,27 +283,145 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     }
 
     /**
-     * MSQL always names primary Key "PRIMARY" regardless of constraintsName
-     *
-     * @param tableName
-     * @param constraintsName
+     * @param table
      * @return
      */
-    @PortabilityHint(target = "C#", name = "ignore")
     @Override
-    protected boolean pkConstraintsExists(String tableName, String constraintsName) {
+    public String getDisableIdentityConstraintsStatement(Entity table) {
+        return null;
+    }
+
+    @Override
+    public String getEnableIdentityConstraintsStatement(Entity table) {
+        return null;
+    }
+
+    @Override
+    public boolean isCreatedStorage() throws UPAException {
+        try {
+            UConnection c = null;
+            try {
+                c = createConnection();
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
+            }
+            return true;
+        } catch (Exception ignored) {
+            //
+        }
+        return false;
+    }
+
+    @Override
+    public String getCreateIndexStatement(Index index) throws UPAException {
+        StringBuilder sb = new StringBuilder("Create");
+        //how is cluster supported ?
+//        switch(index.getDataType()){
+//        	case CLUSTERED:{
+//        		sb.append(" CLUSTERED");
+//        		break;
+//        	}
+//        	case NON_CLUSTERED:{
+//        		sb.append(" NON_CLUSTERED");
+//        		break;
+//        	}
+//        }
+        if (index.isUnique()) {
+            sb.append(" Unique ");
+        }
+        sb.append(" Index ");
+        sb.append(getValidIdentifier(getIndexName(index)));
+        sb.append(" On ");
+        sb.append(getValidIdentifier(getTableName(index.getEntity())));
+        sb.append("(");
+        boolean first = true;
+        List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(
+                Fields.regular().and(Fields.byList(index.getFields())));
+        for (PrimitiveField field : primitiveFields) {
+            if (first) {
+                first = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(getValidIdentifier(getColumnName(field)));
+        }
+        sb.append(")");
+        return (sb.toString());
+    }
+
+    @Override
+    public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager)));
+        sb.append("(");
+        List<PrimitiveField> keys = entityManager.getPrimitiveFields();
+        for (int i = 0; i < keys.size(); i++) {
+            PrimitiveField field = keys.get(i);
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append(getValidIdentifier(getColumnName(field)));
+        }
+        sb.append(")");
+        sb.append(" As ").append("\n\t");
+        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
+        sb.append(getSqlManager().getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
+        return (sb.toString());
+    }
+
+    @Override
+    public String getCreateImplicitViewStatement(Entity table, EntityExecutionContext executionContext) throws UPAException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Create View ").append(getValidIdentifier(getImplicitViewName(table)));
+        sb.append("(");
+        List<PrimitiveField> keys = table.getPrimitiveFields();
+        for (int i = 0; i < keys.size(); i++) {
+            PrimitiveField field = keys.get(i);
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append(getValidIdentifier(getColumnName(field)));
+        }
+        sb.append(")");
+        sb.append(" As ").append("\n");
+
+        Select s = new Select();
+        for (PrimitiveField key : keys) {
+            if (key.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
+                Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
+                s.field(expression, getColumnName(key));
+            } else if (!key.getModifiers().contains(FieldModifier.TRANSIENT)) {
+                s.field(new Var(new Var(table.getName()), key.getName()));
+            }
+        }
+        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+
+        EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
+        sb.append(getSqlManager().getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
+        return (sb.toString());
+    }
+
+    @PortabilityHint(target = "C#", name = "ignore")
+    protected boolean pkConstraintsExists(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             try {
-                Connection connection = getConnection().getMetadataAccessibleConnection();
+                Connection connection = entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getPrimaryKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
                 while (rs.next()) {
                     String n = rs.getString("PK_NAME");
-                    //n should be "PRIMARY"
-                    //if PK exists than it is the one desire!
-                    return true;
+                    String expectedName = getIdentifierStoreTranslator().translateIdentifier(constraintsName);
+                    if (expectedName.equals(n) || "PRIMARY".equals(n)) {
+                        return true;
+                    } else {
+                        log.log(Level.WARNING, "Found Conflicting PK Constraints " + n + " instead of " + expectedName);
+                        return true;
+                    }
                 }
             } finally {
                 if (rs != null) {
@@ -147,100 +433,4 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         return false;
     }
-
-//    @Override
-//    public NativeSQL nativeSQL(CompiledExpression expression, ExecutionContext qlContext, Map<String,DataType> generatedKeys) throws UPAException{
-//        expression=getPersistenceUnit().compileExpression(expression);
-//        String query = getSQL(expression, qlContext);
-//        HashMap context = new HashMap(3);
-//        query = getParser().simplify(query, context);
-//        NativeSQL nativeSQL = new DefaultNativeSQL(NativeStatementType.SELECT);
-//        SQLToken token = SQLToken.getForewardTokenAt(query, 0, false);
-//        if ("INSERT".equalsIgnoreCase(token.getValue())) {
-//            List<Param> values = ExpressionUtils.findExpressionsList(expression, new ExpressionFilter() {
-//                @Override
-//                public boolean accept(Expression e) {
-//                    return e instanceof Param;
-//                }
-//            });
-//            //TODO val list may be split according to query composition
-//            SQLToken t = SQLToken.findForwardToken(query.toUpperCase(), token.getEnd(), "SELECT", 2, 0, false);
-//            if (t == null) {
-//                nativeSQL.addNativeStatement(new ReturnStatement(query, values,generatedKeys));
-//            }
-//            else {
-//                nativeSQL.addNativeStatement(new InsertIntoSelectNativeStatement(query, values));
-//            }
-//        } else {
-//            List<Param> values = ExpressionUtils.findExpressionsList(expression, new ExpressionFilter() {
-//                @Override
-//                public boolean accept(Expression e) {
-//                    return e instanceof Param;
-//                }
-//            });
-//            nativeSQL.addNativeStatement(new ReturnStatement(simplifyQuery(query, 0, query.length(), nativeSQL), values,generatedKeys));
-//        }
-//        return nativeSQL;
-//    }
-//    public static String simplifyQuery(String query, int startIndex, int endIndex, NativeSQL nativeSQL) {
-////        System.out.println("simplifyExpression (\n" + query.substring(startIndex,endIndex)+"\n,startIndex="+startIndex+",endIndex="+endIndex+")");
-//        StringBuilder sb = new StringBuilder();
-//        for (int index = startIndex; index >= startIndex && index < endIndex; ) {
-//            SQLToken t = SQLToken.getForewardTokenAt(query, index, true);
-//            if (t == null) {
-//                index = -1;
-//                break;
-//            }
-//            if (t.accept(SQLToken.PAR)) {
-//                sb.append('(');
-//                sb.append(simplifyQuery(query, t.getStart() + 1, t.getEnd() - 1, nativeSQL));
-//                sb.append(')');
-//                index = t.getEnd();
-//            } else {
-//                sb.append(t.getValue());
-//                index = t.getEnd();
-//            }
-//        }
-//
-//        String returned = null;
-//        SQLToken lastToken = SQLToken.getForewardTokenAt(query, endIndex, true);
-//        SQLToken firstToken = SQLToken.getForewardTokenAt(query, startIndex, true);
-//        if (firstToken != null && firstToken.accept(SQLToken.KEYWORD) && "SELECT".equals(firstToken.getValue().toUpperCase())) {
-//            SQLToken nextToken = lastToken;
-//            SQLToken previousToken = firstToken;
-//            boolean isVar = false;
-//            do {
-//                if (nextToken != null) {
-//                    nextToken = SQLToken.nextToken(query, nextToken, true);
-//                    if (nextToken != null && (nextToken.accept(SQLToken.OPERATOR) || nextToken.accept(SQLToken.SEPARATOR))) {
-//                        isVar = true;
-//                        break;
-//                    }
-//                    if (nextToken != null && (!nextToken.accept(SQLToken.PAR) && !nextToken.accept(SQLToken.WHITE) && !nextToken.accept(SQLToken.VAR) || nextToken.accept(SQLToken.KEYWORD))) {
-//                        nextToken = null;
-//                    }
-//                }
-//                if (previousToken == null) {
-//                    continue;
-//                }
-//                previousToken = SQLToken.previousToken(query, previousToken, true);
-//                if (previousToken != null && (previousToken.accept(SQLToken.OPERATOR) || previousToken.accept(SQLToken.SEPARATOR))) {
-//                    isVar = true;
-//                    break;
-//                }
-//                if (previousToken != null && (!previousToken.accept(SQLToken.PAR) && !previousToken.accept(SQLToken.WHITE) && !previousToken.accept(SQLToken.VAR) || previousToken.accept(SQLToken.KEYWORD))) {
-//                    previousToken = null;
-//                }
-//            } while (nextToken != null || previousToken != null);
-//            if (isVar) {
-//                String computation = "VAR" + UUID.randomUUID().toString();
-//                nativeSQL.addNativeStatement(new ComputeStatement(computation, sb.toString(), null));
-//                return '{' + computation + '}';
-//            }
-//            returned = sb.toString();
-//        } else {
-//            returned = sb.toString();
-//        }
-//        return returned;
-//    }
 }
