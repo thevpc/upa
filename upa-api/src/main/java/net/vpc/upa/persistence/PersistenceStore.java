@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -39,6 +39,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.EntityStatement;
 
 import java.util.Set;
+import net.vpc.upa.expressions.NonQueryStatement;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 1:24 AM To change
@@ -58,12 +59,12 @@ public interface PersistenceStore {
 //    public static String DB_NATIVE_QUERY_LOG = "DB_NATIVE_QUERY";
 //    public static String DB_NATIVE_UPDATE_LOG = "DB_NATIVE_UPDATE";
     boolean isAccessible(ConnectionProfile connectionProfile);
-    
+
     public String getValidIdentifier(String s);
-    
+
     void checkAccessible(ConnectionProfile connectionProfile);
 
-    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection) throws UPAException;
+    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection,PersistenceNameConfig nameConfig) throws UPAException;
 
     Set<String> getSupportedDrivers();
 
@@ -73,9 +74,9 @@ public interface PersistenceStore {
 
     FieldPersister createUpdateSequenceGenerator(Field field) throws UPAException;
 
-    void createStorage() throws UPAException;
+    void createStorage(EntityExecutionContext context) throws UPAException;
 
-    void dropStorage() throws UPAException;
+    void dropStorage(EntityExecutionContext context) throws UPAException;
 
     Properties getProperties();
 
@@ -101,11 +102,9 @@ public interface PersistenceStore {
 
     public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException;
 
-    public int executeUpdate(EntityStatement query, EntityExecutionContext qlContext) throws UPAException;
+    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
 
     public boolean isReservedKeyword(String name);
-
-    public EntityExecutionContext createContext(ContextOperation operation) throws UPAException;
 
     void setNativeConstraintsEnabled(PersistenceUnit database, boolean enable) throws UPAException;
 
@@ -131,7 +130,7 @@ public interface PersistenceStore {
 
     public String getPersistenceName(String name, PersistenceNameType spec) throws UPAException;
 
-    public PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec) throws UPAException;
+    public PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) throws UPAException;
 
     public boolean isView(Entity entity);
 
@@ -143,8 +142,6 @@ public interface PersistenceStore {
 
     public boolean commitStorage() throws UPAException;
 
-    public PersistenceUnit getPersistenceUnit();
-
     public void revalidateModel() throws UPAException;
 
     /**
@@ -155,11 +152,5 @@ public interface PersistenceStore {
      */
     public UConnection createConnection() throws UPAException;
 
-    /**
-     * create a connection and associate it to current session
-     *
-     * @return
-     * @throws UPAException
-     */
-    public UConnection getConnection() throws UPAException;
+    public void setIdentityConstraintsEnabled(Entity entity, boolean enable,EntityExecutionContext context);
 }

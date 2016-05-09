@@ -42,7 +42,8 @@ import java.util.Map;
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            StatementExpression, And, Expression, Litteral,
 //            Equals, Var, SQLContext
-public final class Update extends DefaultEntityStatement implements UpdateStatement {
+public final class Update extends DefaultEntityStatement implements NonQueryStatement {
+
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
     private static final DefaultTag COND = new DefaultTag("COND");
 
@@ -56,7 +57,7 @@ public final class Update extends DefaultEntityStatement implements UpdateStatem
         fields = new ArrayList<VarVal>();
     }
 
-     @Override
+    @Override
     public List<TaggedExpression> getChildren() {
         List<TaggedExpression> list = new ArrayList<TaggedExpression>();
         if (entity != null) {
@@ -76,7 +77,7 @@ public final class Update extends DefaultEntityStatement implements UpdateStatem
     public void setChild(Expression e, ExpressionTag tag) {
         if (ENTITY.equals(tag)) {
             this.entity = (EntityName) e;
-        }else if (COND.equals(tag)) {
+        } else if (COND.equals(tag)) {
             this.condition = e;
         } else {
             IndexedTag ii = (IndexedTag) tag;
@@ -172,6 +173,10 @@ public final class Update extends DefaultEntityStatement implements UpdateStatem
         return this;
     }
 
+    public void removeFieldAt(int index) {
+        fields.remove(index);
+    }
+
     public Update where(Expression condition) {
         this.condition = condition;
         return this;
@@ -185,6 +190,10 @@ public final class Update extends DefaultEntityStatement implements UpdateStatem
         return fields.size();
     }
 
+    public VarVal getVarVal(int i) {
+        return fields.get(i);
+    }
+    
     public Var getField(int i) {
         return fields.get(i).getVar();
     }

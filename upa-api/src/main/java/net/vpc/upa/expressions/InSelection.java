@@ -102,4 +102,24 @@ public final class InSelection extends DefaultExpression
         return new InSelection(left2, (Select) query.copy());
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb=new StringBuilder();
+        if(left.length==1){
+            sb.append(left[0]);
+        }else{
+            sb.append("(");
+            for (int i = 0; i < left.length; i++) {
+                if(i>0){
+                    sb.append(", ");
+                }
+                sb.append(left[i]);
+            }
+            sb.append(")");
+        }
+        sb.append(" in (").append(query).append(")");
+        return sb.toString();
+    }
+    
+
 }

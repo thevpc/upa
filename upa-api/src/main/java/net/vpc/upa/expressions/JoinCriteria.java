@@ -49,6 +49,13 @@ public class JoinCriteria implements Serializable, Cloneable {
         return type;
     }
 
+    public String getEntityName() {
+        if(entity instanceof EntityName){
+            return ((EntityName)entity).getName();
+        }
+        return null;
+    }
+    
     public NameOrSelect getEntity() {
         return entity;
     }

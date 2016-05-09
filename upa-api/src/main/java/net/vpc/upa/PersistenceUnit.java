@@ -454,6 +454,8 @@ public interface PersistenceUnit extends Closeable {
     public <T> T findById(Class entityType, Object id) throws UPAException;
 
     public <T> T findById(String entityName, Object id) throws UPAException;
+    
+    public boolean existsById(String entityName, Object id) throws UPAException;
 
     public List<Record> findAllRecords(Class entityType) throws UPAException;
 
@@ -568,4 +570,9 @@ public interface PersistenceUnit extends Closeable {
     public void removeCallback(Callback callback);
 
     public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, EventPhase phase);
+
+    public UConnection getConnection() throws UPAException;
+    
+    public void setIdentityConstraintsEnabled(Entity entity, boolean enable) ;
+    
 }

@@ -77,6 +77,11 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
         return null;
     }
 
+    @Override
+    public String getEntityAlias() {
+        return null;
+    }
+
     //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnit database) {
 //        throw new IllegalArgumentException("Unsupported");

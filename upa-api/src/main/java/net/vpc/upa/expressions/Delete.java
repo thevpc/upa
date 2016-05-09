@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Delete extends DefaultEntityStatement
-        implements Cloneable, UpdateStatement {
+        implements Cloneable, NonQueryStatement {
 
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
     private static final DefaultTag COND = new DefaultTag("COND");

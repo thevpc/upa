@@ -143,6 +143,8 @@ public interface EntityBuilder {
     public Expression objectToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException;
 
     //    public Expression idToExpression(Object key) throws UPAException;
+    public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException;
+
     public Expression idToExpression(Object entityId, String alias) throws UPAException;
 
     public Expression keyToExpression(Key recordKey, String alias) throws UPAException;

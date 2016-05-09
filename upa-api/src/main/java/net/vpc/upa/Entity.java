@@ -392,6 +392,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //     */
 //    void setCompositionRelationship(Relationship compositionRelation) throws UPAException;
     public <T> T findById(Object id) throws UPAException;
+    public boolean existsById(Object id) throws UPAException;
 
     public <T> T findByMainField(Object mainFieldValue) throws UPAException;
 

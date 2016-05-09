@@ -40,7 +40,7 @@ import java.util.List;
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            StatementExpression, Select, SQLContext
 public class InsertSelection extends DefaultEntityStatement
-        implements UpdateStatement, Cloneable {
+        implements NonQueryStatement, Cloneable {
 
     private static final long serialVersionUID = 1L;
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
@@ -193,4 +193,10 @@ public class InsertSelection extends DefaultEntityStatement
     public boolean isValid() {
         return entity != null && fields.size() > 0 && selection.isValid();
     }
+
+    @Override
+    public String getEntityAlias() {
+        return null;
+    }
+
 }

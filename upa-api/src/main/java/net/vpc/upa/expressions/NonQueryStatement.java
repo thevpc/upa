@@ -41,5 +41,6 @@ package net.vpc.upa.expressions;
  * Time: 12:30 AM
  * To change this template use File | Settings | File Templates.
  */
-public interface UpdateStatement extends EntityStatement {
+public interface NonQueryStatement extends EntityStatement {
+    
 }

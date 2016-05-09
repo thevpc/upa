@@ -41,6 +41,7 @@ import net.vpc.upa.types.DataTypeTransform;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -63,4 +64,10 @@ public interface UConnection {
     public Connection getMetadataAccessibleConnection() throws UPAException;
 
     public Connection getPlatformConnection() throws UPAException;
+
+    public Object getProperty(String name) throws UPAException;
+
+    public Map<String, Object> getProperties() throws UPAException;
+
+    public void setProperty(String name, Object value) throws UPAException;
 }

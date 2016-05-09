@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Insert extends DefaultEntityStatement implements UpdateStatement, Cloneable {
+public class Insert extends DefaultEntityStatement implements NonQueryStatement, Cloneable {
 
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
     private static final long serialVersionUID = 1L;
@@ -199,4 +199,10 @@ public class Insert extends DefaultEntityStatement implements UpdateStatement, C
     public boolean isValid() {
         return entity != null && fields.size() > 0;
     }
+
+    @Override
+    public String getEntityAlias() {
+        return null;
+    }
+    
 }

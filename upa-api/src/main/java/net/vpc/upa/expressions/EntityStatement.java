@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -34,10 +34,11 @@
  */
 package net.vpc.upa.expressions;
 
-
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            Expression, SQLContext
-
 public interface EntityStatement extends Expression {
+
     public String getEntityName();
+
+    public String getEntityAlias();
 }
