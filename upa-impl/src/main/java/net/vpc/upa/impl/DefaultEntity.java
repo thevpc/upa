@@ -761,8 +761,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (selectFormula instanceof ExpressionFormula) {
                         ExpressionFormula ef = (ExpressionFormula) selectFormula;
                         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(ef.getExpression());
-                        List<DefaultCompiledExpression> expressionsList = compiledExpression.findExpressionsList(CompiledExpressionHelper.SELECT_FILTER);
-                        complexFormula = expressionsList.size() > 0;
+                        complexFormula = compiledExpression.findFirstExpression(CompiledExpressionHelper.SELECT_FILTER)!=null;
                     } else {
                         complexFormula = true;
                     }
@@ -989,51 +988,46 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 _effectiveModifiers = _effectiveModifiers.add(EntityModifier.VALIDATE_UPDATE);
             }
         }
-        if (includedModifiers.contains(EntityModifier.TRANSIENT)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.TRANSIENT);
+        for (EntityModifier entityModifier : new EntityModifier[]{
+                EntityModifier.TRANSIENT
+                ,EntityModifier.LOCK
+                ,EntityModifier.CLEAR
+                ,EntityModifier.PRIVATE
+                ,EntityModifier.SYSTEM
+            }) {
+            if (includedModifiers.contains(entityModifier)) {
+                _effectiveModifiers = _effectiveModifiers.add(entityModifier);
+            }
+        }
+        for (EntityModifier entityModifier : new EntityModifier[]{
+                EntityModifier.PERSIST
+                ,EntityModifier.UPDATE
+                ,EntityModifier.REMOVE
+                ,EntityModifier.CLONE
+                ,EntityModifier.RENAME
+                ,EntityModifier.NAVIGATE
+            }) {
+            if (includedModifiers.contains(entityModifier) || !excludedModifiers.contains(entityModifier)) {
+                _effectiveModifiers = _effectiveModifiers.add(entityModifier);
+            }
         }
 
 //        if (m.contains(EntityModifier.GENERATED_ID) && !m.contains(EntityModifier.NO_GENERATED_ID)) {
 //            effectiveModifiers = effectiveModifiers.add(EntityModifier.GENERATED_ID);
 //        }
-        if (includedModifiers.contains(EntityModifier.LOCK)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.LOCK);
-        }
-
-        if (includedModifiers.contains(EntityModifier.PRIVATE)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.PRIVATE);
-        }
 
 //        if (includedModifiers.contains(EntityModifier.RESET)) {
 //            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.RESET);
 //        }
-        if (includedModifiers.contains(EntityModifier.SYSTEM)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.SYSTEM);
-        }
-
-        if (includedModifiers.contains(EntityModifier.PERSIST) || !excludedModifiers.contains(EntityModifier.PERSIST)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.PERSIST);
-        }
-
-        if (includedModifiers.contains(EntityModifier.UPDATE) || !excludedModifiers.contains(EntityModifier.UPDATE)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.UPDATE);
-        }
-
-        if (includedModifiers.contains(EntityModifier.REMOVE) || !excludedModifiers.contains(EntityModifier.REMOVE)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.REMOVE);
-        }
-
-        if (includedModifiers.contains(EntityModifier.CLONE) || !excludedModifiers.contains(EntityModifier.CLONE)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.CLONE);
-        }
-
-        if (includedModifiers.contains(EntityModifier.RENAME) || !excludedModifiers.contains(EntityModifier.RENAME)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.RENAME);
-        }
 
         List<Field> primaries = getPrimaryFields();
-        if (includedModifiers.contains(EntityModifier.NAVIGATE) || (!excludedModifiers.contains(EntityModifier.NAVIGATE) && primaries.size() > 0)) {
-            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.NAVIGATE);
+        if(primaries.size() == 0){
+            if(_effectiveModifiers.contains(EntityModifier.NAVIGATE)){
+                if(includedModifiers.contains(EntityModifier.NAVIGATE)){
+                    log.log(Level.SEVERE, "NAVIGATE modifier ignored for "+getName()+" as no primary field was found.");
+                }
+                _effectiveModifiers=_effectiveModifiers.remove(EntityModifier.NAVIGATE);
+            }
         }
 
         if (mainRendererField == null) {
@@ -1082,28 +1076,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         setModifiers(_effectiveModifiers);
-//
-//        EnumSet<EntityModifier> remain = m.clone();
-//        remain.remove(EntityModifier.PERSIST);
-//        remain.remove(EntityModifier.NO_PERSIST);
-//        remain.remove(EntityModifier.UPDATE);
-//        remain.remove(EntityModifier.NO_UPDATE);
-//        remain.remove(EntityModifier.DELETE);
-//        remain.remove(EntityModifier.NO_DELETE);
-//        remain.remove(EntityModifier.CLONE);
-//        remain.remove(EntityModifier.NO_CLONE);
-//        remain.remove(EntityModifier.RENAME);
-//        remain.remove(EntityModifier.NO_RENAME);
-//        remain.remove(EntityModifier.NAVIGATE);
-//        remain.remove(EntityModifier.NO_NAVIGATE);
-//        remain.remove(EntityModifier.VALIDATE_INSERT);
-//        remain.remove(EntityModifier.NO_VALIDATE_INSERT);
-//        remain.remove(EntityModifier.VALIDATE_UPDATE);
-//        remain.remove(EntityModifier.NO_VALIDATE_UPDATE);
-//        remain.remove(EntityModifier.USER_ID);
-//        remain.remove(EntityModifier.NO_USER_ID);
-//        remain.remove(EntityModifier.GENERATED_ID);
-//        remain.remove(EntityModifier.NO_GENERATED_ID);
 
         //if (!Utils.getBoolean(PersistenceUnitFilter.class, "productionMode", false)) {
         checkIntegrity();
@@ -2438,7 +2410,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         LinkedHashSet<Field> persistWithDefaultValue = new LinkedHashSet<Field>(getFields(FIELD_FILTER_PERSIST_WITH_DEFAULT_VALUE));
         LinkedHashSet<Field> emptySet = new LinkedHashSet<Field>();
         DefaultRecord persistentRecord = new DefaultRecord();
-        for (Map.Entry<String, Object> entry : record.toMap().entrySet()) {
+        for (Map.Entry<String, Object> entry : record.entrySet()) {
             Object value = entry.getValue();
             String key = entry.getKey();
 
@@ -2502,6 +2474,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public void merge(Object objectOrRecord) throws UPAException {
         update(objectOrRecord);
+    }
+
+    public void updatePartial(Object objectOrRecord,String... fields) throws UPAException {
+        updatePartial(objectOrRecord,new HashSet(Arrays.asList(fields)),false);
+    }
+
+    public void updatePartial(Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified) throws UPAException {
+        update(getBuilder().getRecord(objectOrRecord, fields,ignoreUnspecified,true));
     }
 
     public void updatePartial(Object objectOrRecord) throws UPAException {
@@ -2815,7 +2795,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             Record fieldNamesToUpdateMap = getBuilder().createRecord();
             Set<String> cancelUpdates = new HashSet<String>();
             //copy all but primary fields
-            for (Map.Entry<String, Object> ee : updates.toMap().entrySet()) {
+            for (Map.Entry<String, Object> ee : updates.entrySet()) {
                 String fieldName = ee.getKey();
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
@@ -2841,7 +2821,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
         } else {
             Record fieldNamesToUpdateMap = getBuilder().createRecord();
-            for (Map.Entry<String, Object> ee : updates.toMap().entrySet()) {
+            for (Map.Entry<String, Object> ee : updates.entrySet()) {
                 String fieldName = ee.getKey();
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
@@ -3106,7 +3086,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public void setEntityType(Class entityType) {
         this.entityType = entityType;
         if (Record.class.isAssignableFrom(entityType)) {
-            entityFactory.setEntityFactory(new EntitySubclassUnstructuredFactory(entityType, getPersistenceUnit().getFactory()));
+            entityFactory.setEntityFactory(new EntitySubclassUnstructuredFactory(entityType, getPersistenceUnit().getFactory(),this));
         } else {
             EntityBeanAdapter recordTypeBeanAdapter = new EntityBeanAdapter(entityType, this);
             entityFactory.setEntityFactory(new EntityBeanFactory(recordTypeBeanAdapter, entityType, getPersistenceUnit().getFactory()));
@@ -3420,6 +3400,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public <T> List<T> findAll() throws UPAException {
         return getPersistenceUnit().findAll(getName());
     }
+
+    @Override
+    public <T> List<T> findAllIds() throws UPAException {
+        return getPersistenceUnit().findAllIds(getName());
+    }
+    
 
     public List<Record> findAllRecords(Object id) throws UPAException {
         return getPersistenceUnit().findAllRecords(getName());

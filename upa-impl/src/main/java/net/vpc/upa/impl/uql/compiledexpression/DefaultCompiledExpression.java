@@ -37,7 +37,7 @@ public interface DefaultCompiledExpression extends Cloneable, java.io.Serializab
 
     public abstract DataTypeTransform getEffectiveDataType();
 
-    public abstract void setDataType(DataTypeTransform type);
+    public abstract void setTypeTransform(DataTypeTransform type);
 
     public DefaultCompiledExpression setClientProperty(String name, Object value);
 
@@ -48,6 +48,7 @@ public interface DefaultCompiledExpression extends Cloneable, java.io.Serializab
     public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer);
 
     public <T extends CompiledExpression> List<T> findExpressionsList(CompiledExpressionFilter filter);
+    public <T extends CompiledExpression> T findFirstExpression(CompiledExpressionFilter filter);
 
 //    public void setDeclarationList(ExpressionDeclarationList declarationList);
     /**

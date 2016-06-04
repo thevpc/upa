@@ -38,7 +38,9 @@ package net.vpc.upa.bulk;
  *
  * @author vpc
  */
-public interface DataSerializer {
+public interface DataRowConverter {
 
-    DataRow objecttoRow(Object o, DataColumn[] columns);
+    DataColumn[] getColumns();
+
+    Object[] objectToRow(Object o);
 }

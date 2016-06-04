@@ -8,6 +8,7 @@ import net.vpc.upa.impl.util.EntityBeanAdapter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -50,23 +51,24 @@ public class EntityBeanFactory extends AbstractEntityFactory {
     }
 
     @Override
-    public <R> Record getRecord(R entity, boolean ignoreUnspecified) {
-        if(entity instanceof Record){
-            return (Record)entity;
+    public Record getRecord(Object object, boolean ignoreUnspecified) {
+        if(object instanceof Record){
+            return (Record) object;
         }
-        return new BeanAdapterRecord(type.cast(entity), nfo, ignoreUnspecified);
+        return new BeanAdapterRecord(type.cast(object), nfo, ignoreUnspecified);
     }
 
+
     @Override
-    public <R> R getEntity(Record unstructuredRecord) {
-        if (unstructuredRecord instanceof BeanAdapterRecord) {
-            BeanAdapterRecord g = (BeanAdapterRecord) unstructuredRecord;
+    public <R> R getEntity(Record record) {
+        if (record instanceof BeanAdapterRecord) {
+            BeanAdapterRecord g = (BeanAdapterRecord) record;
             return (R) g.userObject();
         }
         R obj = createObject();
         Record ur = getRecord(obj, true);
-        for (String k : unstructuredRecord.keySet()) {
-            Object o=unstructuredRecord.getObject(k);
+        for (String k : record.keySet()) {
+            Object o= record.getObject(k);
             if(o instanceof Record){
                 Field f = nfo.getEntity().findField(k);
                 DataType dt = f.getDataType();
@@ -82,12 +84,17 @@ public class EntityBeanFactory extends AbstractEntityFactory {
     }
 
     @Override
-    public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        nfo.setProperty(entityObject, property, value);
+    public void setProperty(Object object, String property, Object value) throws UPAException {
+        nfo.setProperty(object, property, value);
     }
 
     @Override
-    public Object getProperty(Object entityObject, String property) throws UPAException {
-        return nfo.getProperty(entityObject, property);
+    public Object getProperty(Object object, String property) throws UPAException {
+        return nfo.getProperty(object, property);
+    }
+
+    @Override
+    protected Entity getEntity() {
+        return nfo.getEntity();
     }
 }

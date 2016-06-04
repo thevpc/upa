@@ -21,7 +21,7 @@ class ExpansionVisitTracker {
     }
 
     public ExpansionVisitTracker(int navigationDepth) {
-        this.navigationDepth = navigationDepth<=0?2:navigationDepth;
+        this.navigationDepth = navigationDepth<0?2:navigationDepth;
     }
 
     public boolean nextVisit(String entity) {
@@ -63,4 +63,10 @@ class ExpansionVisitTracker {
         r.navigationDepth = navigationDepth;
         return r;
     }
+
+    @Override
+    public String toString() {
+        return "ExpansionVisitTracker{maxEntityDepth=" + maxEntityDepth + ", navigationDepth=" + navigationDepth+ ", map=" + map + '}';
+    }
+    
 }

@@ -17,7 +17,6 @@ import net.vpc.upa.FieldModifier;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.BinaryOperator;
-import net.vpc.upa.expressions.Select;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -38,7 +37,6 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVarVal;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendentReplacer;
 import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
 import net.vpc.upa.impl.util.Strings;
@@ -102,7 +100,7 @@ public class ExpressionValidationManager {
                         throw new IllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
                     }
                     if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
-                        vv.setDataType(UPAUtils.getTypeTransformOrIdentity(f));
+                        vv.setTypeTransform(UPAUtils.getTypeTransformOrIdentity(f));
                     } else {
                         //ignore
                     }
@@ -121,7 +119,7 @@ public class ExpressionValidationManager {
                         throw new IllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
                     }
                     if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
-                        vv.setDataType(UPAUtils.getTypeTransformOrIdentity(f));
+                        vv.setTypeTransform(UPAUtils.getTypeTransformOrIdentity(f));
                     } else {
                         //ignore
                     }
@@ -267,7 +265,7 @@ public class ExpressionValidationManager {
 
     private void expandFields(CompiledSelect qs, ExpressionCompilerConfig config) {
         Map<String, Object> hints = config.getHints();
-        int navigationDepth = 0;
+        int navigationDepth = -1;
         if (hints != null && hints.containsKey("navigationDepth")) {
             navigationDepth = (Integer) hints.get("navigationDepth");
         }
@@ -329,12 +327,10 @@ public class ExpressionValidationManager {
                     CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
                     if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                         expandLiveFormulaField(qs, ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
+                    } else if (ef.getDataType() instanceof EntityType) {
+                        expandManyToOneField(qs, ef, pp == null ? null : pp.getName(), null, config.getExpandFieldFilter(), visitedEntities);
                     } else {
-                        if (ef.getDataType() instanceof EntityType) {
-                            expandManyToOneField(qs, ef, pp == null ? null : pp.getName(), null, config.getExpandFieldFilter(), visitedEntities);
-                        } else {
-                            qs.addField(f);
-                        }
+                        qs.addField(f);
                     }
                 } else {
                     qs.addField(f);
@@ -385,8 +381,7 @@ public class ExpressionValidationManager {
         for (Field field : e.getFields(Fields.as(fieldFilter).and(READABLE))) {
             if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                 expandLiveFormulaField(qs, field, e, entityAlias, binding);
-            } else {
-                if (field.getDataType() instanceof EntityType) {
+            } else if (field.getDataType() instanceof EntityType) {
 //                EntityType et = (EntityType) field.getDataType();
 //                if (field.isId()) {
 //                    for (Field rf : et.getRelationship().getSourceRole().getFields()) {
@@ -396,24 +391,33 @@ public class ExpressionValidationManager {
 //                        qs.addField(vv, rf.getName()).setBinding(binding);
 //                    }
 //                }
-                    ExpansionVisitTracker c = visitedEntities.copy();
-                    expandManyToOneField(qs, field, entityAlias, binding, fieldFilter, c);
-                } else {
-                    CompiledVar vv = new CompiledVar(entityAlias, e);
-                    vv.setChild(new CompiledVar(field));
-                    //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                    qs.addField(vv, field.getName()).setBinding(binding);
-                }
+                ExpansionVisitTracker c = visitedEntities.copy();
+                expandManyToOneField(qs, field, entityAlias, binding, fieldFilter, c);
+            } else {
+                CompiledVar vv = new CompiledVar(entityAlias, e);
+                vv.setChild(new CompiledVar(field));
+                //binding = (binding == null ? "" : (binding + ".")) + field.getName();
+                qs.addField(vv, field.getName()).setBinding(binding);
             }
         }
     }
 
     private void expandManyToOneField(CompiledSelect qs, Field field, String entityAlias, String binding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
-        Relationship rel = ((EntityType) field.getDataType()).getRelationship();
+        EntityType entityType = (EntityType) field.getDataType();
+        Relationship rel = entityType.getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
         ExpansionVisitTracker dived = visitedEntities.dive();
         if (dived == null || !dived.nextVisit(masterEntity.getName())) {
             //should add only ids
+            List<Field> otherFields = entityType.getRelationship().getSourceRole().getFields();
+            for (Field f : otherFields) {
+                if (!(f.getDataType() instanceof EntityType)) {
+                    CompiledVar vv = new CompiledVar(entityAlias, field.getEntity());
+                    vv.setChild(new CompiledVar(f));
+                    //binding = (binding == null ? "" : (binding + ".")) + field.getName();
+                    qs.addField(vv, f.getName()).setBinding(binding);
+                }
+            }
             return;
         }
         BindingJoinInfo d = addBindingJoin(qs, field, entityAlias, (Strings.isNullOrEmpty(binding) ? field.getName() : (binding + "." + field.getName())));
@@ -523,8 +527,8 @@ public class ExpressionValidationManager {
         if (d != null) {
             return v;
         }
-        if (v.getObject() != null) {
-            v.setDataType(IdentityDataTypeTransform.forNativeType(v.getObject().getClass()));
+        if (v.getValue() != null) {
+            v.setTypeTransform(IdentityDataTypeTransform.forNativeType(v.getValue().getClass()));
             d = getValidDataType(v);
             if (d != null) {
                 return v;
@@ -557,13 +561,13 @@ public class ExpressionValidationManager {
                     if (v == a) {
                         DataTypeTransform d2 = getValidDataType(b);
                         if (d2 != null) {
-                            v.setDataType(d2);
+                            v.setTypeTransform(d2);
                             return v;
                         }
                     } else if (v == b) {
                         DataTypeTransform d2 = getValidDataType(a);
                         if (d2 != null) {
-                            v.setDataType(d2);
+                            v.setTypeTransform(d2);
                             return v;
                         }
                     }
@@ -572,12 +576,12 @@ public class ExpressionValidationManager {
                 case LIKE: {
                     DefaultCompiledExpression a = c.getLeft();
                     DefaultCompiledExpression b = c.getRight();
-                    v.setDataType(IdentityDataTypeTransform.STRING_UNLIMITED);
+                    v.setTypeTransform(IdentityDataTypeTransform.STRING_UNLIMITED);
                     return v;
                 }
                 case OR:
                 case AND: {
-                    v.setDataType(IdentityDataTypeTransform.BOOLEAN);
+                    v.setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
                     return v;
                 }
             }
@@ -585,7 +589,7 @@ public class ExpressionValidationManager {
             CompiledVarVal cvv = (CompiledVarVal) pe;
             if (cvv.getVal() == v) {
                 //it should be the case
-                v.setDataType(cvv.getVar().getTypeTransform());
+                v.setTypeTransform(cvv.getVar().getTypeTransform());
                 return v;
             }
         }

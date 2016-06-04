@@ -126,21 +126,21 @@ public class EntityBeanAdapter {
     }
 
     public Map<String, Object> toMap(Object o, Boolean includeDefaults) throws UPAException {
-        LinkedHashMap<String, Object> set = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         if (includeDefaults == null) {
             for (String k : getFieldNames()) {
                 EntityBeanAttribute e = getAttrAdapter(k);
-                set.put(k, e.getValue(o));
+                map.put(k, e.getValue(o));
             }
         } else {
             for (String k : getFieldNames()) {
                 EntityBeanAttribute e = getAttrAdapter(k);
                 if (includeDefaults == e.isDefaultValue(o)) {
-                    set.put(k, e.getValue(o));
+                    map.put(k, e.getValue(o));
                 }
             }
         }
-        return set;
+        return map;
     }
 
     public <R> R getProperty(Object o, String field) {

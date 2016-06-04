@@ -54,16 +54,18 @@ public abstract class XmlFormatter extends AbstractDataFormatter {
         return containsHeader;
     }
 
-    public void setContainsHeader(boolean containsHeader) {
+    public XmlFormatter setContainsHeader(boolean containsHeader) {
         this.containsHeader = containsHeader;
+        return this;
     }
 
     public boolean isTrimValues() {
         return trimValues;
     }
 
-    public void setTrimValues(boolean trimValues) {
+    public XmlFormatter setTrimValues(boolean trimValues) {
         this.trimValues = trimValues;
+        return this;
     }
 
 }

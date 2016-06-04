@@ -72,6 +72,11 @@ public abstract class AbstractRecord implements Record {
         }
     }
 
+    @Override
+    public Set<Map.Entry<String, Object>> entrySet() {
+        return toMap().entrySet();
+    }
+
     //////////////////////////////////////
 
     /**

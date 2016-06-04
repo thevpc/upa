@@ -46,6 +46,8 @@ import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.PersistenceStore;
 import net.vpc.upa.types.DataType;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -212,6 +214,10 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     public void update(Object objectOrRecord) throws UPAException;
 
     public void merge(Object objectOrRecord) throws UPAException;
+
+    public void updatePartial(Object objectOrRecord,String... fields) throws UPAException ;
+
+    public void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified) throws UPAException ;
 
     public void updatePartial(Object objectOrRecord) throws UPAException;
 
@@ -399,6 +405,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     public <T> T findByField(String fieldName, Object mainFieldValue) throws UPAException;
 
     public <T> List<T> findAll() throws UPAException;
+    
+    public <T> List<T> findAllIds() throws UPAException;
 
     public List<Record> findAllRecords() throws UPAException;
 

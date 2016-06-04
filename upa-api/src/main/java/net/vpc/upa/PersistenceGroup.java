@@ -78,6 +78,7 @@ public interface PersistenceGroup extends Closeable {
     public boolean currentSessionExists();
 
     public Session getCurrentSession() throws UPAException;
+    public Session findCurrentSession() throws UPAException;
 
     public void setCurrentSession(Session session) throws UPAException;
 
@@ -109,4 +110,19 @@ public interface PersistenceGroup extends Closeable {
 
     public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, EventPhase phase);
 
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+
+    public <T> T invoke(Action<T> action) throws UPAException;
+
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+
+    public <T> T invokePrivileged(Action<T> action) throws UPAException;
+
+    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+
+    public void invoke(VoidAction action) throws UPAException;
+
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+
+    public void invokePrivileged(VoidAction action) throws UPAException;
 }

@@ -1,12 +1,16 @@
 package net.vpc.upa.impl.uql.parser;
 
+import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.*;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.persistence.Parameter;
 import net.vpc.upa.persistence.UConnection;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
 import net.vpc.upa.types.DataTypeTransform;
 
 /**
@@ -17,11 +21,13 @@ public class ReturnStatement implements NativeStatement {
     private String query;
     private List<Parameter> queryParameters;
     private List<Parameter> generatedKeys;
+    private Map<String,Object> hints;
 
-    public ReturnStatement(String query, List<Parameter> queryParameters, List<Parameter> generatedKeys) {
+    public ReturnStatement(String query, List<Parameter> queryParameters, List<Parameter> generatedKeys,Map<String,Object> hints) {
         this.query = query;
         this.queryParameters = queryParameters;
         this.generatedKeys = generatedKeys;
+        this.hints = hints;
     }
 
     public void execute(NativeSQL nativeSQL)
@@ -35,8 +41,20 @@ public class ReturnStatement implements NativeStatement {
             case SELECT: {
                 NativeField[] fields = nativeSQL.getFields();
                 DataTypeTransform[] types = new DataTypeTransform[fields.length];
+                boolean noTypeTransform = (hints==null || hints.get("NoTypeTransform")==null)?false:(Boolean) hints.get("NoTypeTransform");
                 for (int i = 0; i < types.length; i++) {
-                    types[i] = fields[i].getTypeTransform();
+                    boolean fieldNoTypeTransform=noTypeTransform;
+                    if(hints!=null) {
+                        if (!noTypeTransform) {
+                            Field field = fields[i].getField();
+                            if(field!=null) {
+                                String fieldKey = "NoTypeTransform." + field.getAbsoluteName();
+                                fieldNoTypeTransform = hints.get(fieldKey) == null ? false : (Boolean) hints.get(fieldKey);
+                            }
+                        }
+                    }
+                    DataTypeTransform baseTransform = fields[i].getTypeTransform();
+                    types[i] = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
                 }
                 nativeSQL.setQueryResult(connection.executeQuery(nativeSQL.getQuery(), types, queryParameters, nativeSQL.isUpdatable()));
                 break;

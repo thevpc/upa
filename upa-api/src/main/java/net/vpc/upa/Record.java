@@ -162,6 +162,8 @@ public interface Record extends Serializable {
     public int size();
 
     public Map<String, Object> toMap();
+    
+    public Set<Map.Entry<String, Object>> entrySet();
 
     public void setAll(Map<String, Object> other, String... keys);
 

@@ -25,6 +25,14 @@ class PersistenceUnitKey {
     }
 
     @Override
+    public String toString() {
+        return "PUKey{" +
+                persistenceUnit +
+                ", '" + key + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         int hash = 5;
         hash = 71 * hash + (this.persistenceUnit != null ? this.persistenceUnit.hashCode() : 0);

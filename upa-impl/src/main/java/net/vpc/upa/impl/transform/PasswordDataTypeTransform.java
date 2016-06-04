@@ -7,6 +7,7 @@ package net.vpc.upa.impl.transform;
 
 import net.vpc.upa.PasswordStrategy;
 import net.vpc.upa.PasswordTransformConfig;
+import net.vpc.upa.UPA;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.DataType;

@@ -224,6 +224,11 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
         return session;
     }
 
+    @Override
+    public Session findCurrentSession() throws UPAException {
+        return getSessionContextProvider().getSession(this);
+    }
+
     public void setCurrentSession(Session session) throws UPAException {
         synchronized (sessions) {
             if (!sessions.contains(session)) {
@@ -335,5 +340,58 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
     public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, EventPhase phase) {
         List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, phase);
         return callbackInvokers.toArray(new Callback[callbackInvokers.size()]);
+    }
+    
+    protected InvokeContext prepareInvokeContext(InvokeContext c) {
+        if(c==null){
+            c=new InvokeContext();
+        }else{
+            c=c.copy();
+        }
+        c.setPersistenceGroup(this);
+        if(c.getPersistenceUnit()!=null && c.getPersistenceUnit().getPersistenceGroup()!=this){
+            c.setPersistenceUnit(null);
+        }
+        return c;
+    }
+
+    @Override
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException {
+        getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException {
+        getContext().invokePrivileged(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public <T> T invoke(Action<T> action) throws UPAException {
+        return getContext().invoke(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public <T> T invokePrivileged(Action<T> action) throws UPAException {
+        return getContext().invokePrivileged(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public void invoke(VoidAction action) throws UPAException {
+        getContext().invoke(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public void invokePrivileged(VoidAction action) throws UPAException {
+        getContext().invokePrivileged(action, prepareInvokeContext(null));
     }
 }

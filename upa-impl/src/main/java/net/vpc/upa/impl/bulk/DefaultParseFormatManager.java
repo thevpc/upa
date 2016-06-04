@@ -40,9 +40,9 @@ public class DefaultParseFormatManager implements ParseFormatManager {
      *
      * @return
      */
-    public DataSerializer createDefaultDataSerializer() {
+    public DataRowConverter createDefaultDataSerializer() {
         try {
-            return getFactory().createObject(DataSerializer.class);
+            return getFactory().createObject(DataRowConverter.class);
         } catch (Exception e) {
             //ignore;
         }
@@ -123,7 +123,7 @@ public class DefaultParseFormatManager implements ParseFormatManager {
     public TextFixedWidthFormatter createTextFixedWidthFormatter(Object target) throws IOException {
         TextFixedWidthFormatter t = getFactory().createObject(TextFixedWidthFormatter.class);
         t.configure(target);
-        t.setDataSerializer(createDefaultDataSerializer());
+        t.setDataRowConverter(createDefaultDataSerializer());
         return t;
     }
 
@@ -136,7 +136,7 @@ public class DefaultParseFormatManager implements ParseFormatManager {
     public TextCSVFormatter createTextCSVFormatter(Object target) throws IOException {
         TextCSVFormatter t = getFactory().createObject(TextCSVFormatter.class);
         t.configure(target);
-        t.setDataSerializer(createDefaultDataSerializer());
+        t.setDataRowConverter(createDefaultDataSerializer());
         return t;
     }
 
@@ -149,7 +149,7 @@ public class DefaultParseFormatManager implements ParseFormatManager {
     public SheetFormatter createSheetFormatter(Object target) throws IOException {
         SheetFormatter t = getFactory().createObject(SheetFormatter.class);
         t.configure(target);
-        t.setDataSerializer(createDefaultDataSerializer());
+        t.setDataRowConverter(createDefaultDataSerializer());
         return t;
     }
 
@@ -157,7 +157,7 @@ public class DefaultParseFormatManager implements ParseFormatManager {
     public XmlFormatter createXmlFormatter(Object target) throws IOException {
         XmlFormatter t = getFactory().createObject(XmlFormatter.class);
         t.configure(target);
-        t.setDataSerializer(createDefaultDataSerializer());
+        t.setDataRowConverter(createDefaultDataSerializer());
         return t;
     }
 

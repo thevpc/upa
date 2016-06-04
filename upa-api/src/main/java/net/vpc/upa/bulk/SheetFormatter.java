@@ -59,48 +59,54 @@ public abstract class SheetFormatter extends AbstractDataFormatter {
         return writeHeader;
     }
 
-    public void setWriteHeader(boolean writeHeader) {
+    public SheetFormatter setWriteHeader(boolean writeHeader) {
         this.writeHeader = writeHeader;
+        return this;
     }
 
     public boolean isTrimValues() {
         return trimValues;
     }
 
-    public void setTrimValues(boolean trimValues) {
+    public SheetFormatter setTrimValues(boolean trimValues) {
         this.trimValues = trimValues;
+        return this;
     }
 
     public int getSheetIndex() {
         return sheetIndex;
     }
 
-    public void setSheetIndex(int sheetIndex) {
+    public SheetFormatter setSheetIndex(int sheetIndex) {
         this.sheetIndex = sheetIndex;
+        return this;
     }
 
     public String getSheetName() {
         return sheetName;
     }
 
-    public void setSheetName(String sheetName) {
+    public SheetFormatter setSheetName(String sheetName) {
         this.sheetName = sheetName;
+        return this;
     }
 
     public int getSkipRows() {
         return skipRows;
     }
 
-    public void setSkipRows(int skipRows) {
+    public SheetFormatter setSkipRows(int skipRows) {
         this.skipRows = skipRows;
+        return this;
     }
 
     public SheetContentType getContentType() {
         return contentType;
     }
 
-    public void setContentType(SheetContentType contentType) {
+    public SheetFormatter setContentType(SheetContentType contentType) {
         this.contentType = contentType;
+        return this;
     }
 
     public abstract boolean isSupported(SheetContentType contentType);

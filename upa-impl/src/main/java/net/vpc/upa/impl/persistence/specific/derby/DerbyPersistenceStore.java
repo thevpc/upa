@@ -3,7 +3,6 @@ package net.vpc.upa.impl.persistence.specific.derby;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.CreatePersistenceUnitException;
 import net.vpc.upa.exceptions.DatabaseNotFoundException;
-import net.vpc.upa.exceptions.DriverNotFoundException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
@@ -12,9 +11,7 @@ import net.vpc.upa.expressions.Var;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.ConstantDataMarshallerFactory;
 import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.TypeMarshallerUtils;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
@@ -26,7 +23,6 @@ import net.vpc.upa.types.*;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -245,13 +241,8 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 userDir = System.getProperty("user.dir");
                 log.log(Level.FINE, "Using Derby Embedded at {0}", (file.isAbsolute() ? file.getPath() : userDir + "/" + file.getPath()));
                 String driverClass = "org.apache.derby.jdbc.EmbeddedDriver";
-                try {
-                    PlatformUtils.forName(driverClass);
-                } catch (Exception cls) {
-                    throw new DriverNotFoundException(driverClass);
-                }
                 log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
-                return DriverManager.getConnection(url, userName, password);
+                return createPlatformConnection(driverClass, url, userName, password, properties);
             }
             if (DRIVER_TYPE_DEFAULT.equalsIgnoreCase(connectionDriver)) {
                 String url = "jdbc:derby://";
@@ -281,21 +272,16 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 }
                 String driverClass = "org.apache.derby.jdbc.ClientDriver";
                 log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
-                try {
-                    PlatformUtils.forName(driverClass);
-                } catch (Exception cls) {
-                    throw new DriverNotFoundException(driverClass);
-                }
-                return DriverManager.getConnection(url, userName, password);
+                return createPlatformConnection(driverClass, url, userName, password, properties);
             }
         } catch (UPAException e) {
-            throw e;
-        } catch (SQLException e) {
-            //Database '/data/me/xprojects/net/vpc/apps/pm/./dbname' not found.
-            if (e.getErrorCode() == 40000) {
-                throw new DatabaseNotFoundException(e, p.getProperties().get(ConnectionOption.DATABASE_NAME));
+            if(e.getCause() instanceof SQLException){
+                int c = ((SQLException) e.getCause()).getErrorCode();
+                if (c == 40000) {
+                    throw new DatabaseNotFoundException(e, p.getProperties().get(ConnectionOption.DATABASE_NAME));
+                }
             }
-            throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));
+            throw e;
         } catch (Exception e) {
             //
             throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));

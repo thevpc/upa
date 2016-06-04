@@ -64,7 +64,7 @@ public class CompiledQLFunctionExpressionSimplifier implements CompiledExpressio
             return ((CompiledLiteral) o).getValue();
         }
         if (o instanceof CompiledParam) {
-            return ((CompiledParam) o).getObject();
+            return ((CompiledParam) o).getValue();
         }
         return o;
     }

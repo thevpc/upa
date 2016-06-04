@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-import net.vpc.upa.types.TypesFactory;
 import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigInteger;
@@ -17,11 +16,11 @@ public final class CompiledBitAnd extends CompiledBinaryOperatorExpression
         Class t = left.getTypeTransform().getSourceType().getPlatformType();
         Class r = left.getTypeTransform().getSourceType().getPlatformType();
         if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.BIGINT);
+            setTypeTransform(IdentityDataTypeTransform.BIGINT);
         }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.LONG);
+            setTypeTransform(IdentityDataTypeTransform.LONG);
         }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.INT);
+            setTypeTransform(IdentityDataTypeTransform.INT);
         }
     }
 
@@ -30,11 +29,11 @@ public final class CompiledBitAnd extends CompiledBinaryOperatorExpression
         Class t = left.getTypeTransform().getSourceType().getPlatformType();
         Class r = left.getTypeTransform().getSourceType().getPlatformType();
         if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.BIGINT);
+            setTypeTransform(IdentityDataTypeTransform.BIGINT);
         }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.LONG);
+            setTypeTransform(IdentityDataTypeTransform.LONG);
         }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.INT);
+            setTypeTransform(IdentityDataTypeTransform.INT);
         }
     }
 }

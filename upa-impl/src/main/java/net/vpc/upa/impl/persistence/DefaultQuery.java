@@ -16,11 +16,7 @@ import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.ResultMetaData;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.logging.Logger;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
@@ -224,6 +220,20 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     @Override
+    public <T> Set<T> getValueSet(int index) throws UPAException {
+        HashSet<T> set = new HashSet<T>();
+        set.addAll(this.<T>getValueList(index));
+        return set;
+    }
+
+    @Override
+    public <T> Set<T> getValueSet(String name) throws UPAException {
+        HashSet<T> set = new HashSet<T>();
+        set.addAll(this.<T>getValueList(name));
+        return set;
+    }
+
+    @Override
     public <T> List<T> getValueList(String name) throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
@@ -275,6 +285,13 @@ public class DefaultQuery extends AbstractQuery {
         } catch (SQLException e) {
             throw new FindException(e, new I18NString("FindFailed"));
         }
+    }
+
+    @Override
+    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
+        HashSet<T> set = new HashSet<T>();
+        set.addAll(getTypeList(type,fields));
+        return set;
     }
 
     @Override
@@ -338,6 +355,20 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
+    @Override
+    public <K> Set<K> getIdSet() throws UPAException {
+        HashSet<K> set = new HashSet<K>();
+        set.addAll(this.<K>getIdList());
+        return set;
+    }
+
+    @Override
+    public Set<Key> getKeySet() throws UPAException {
+        HashSet<Key> set = new HashSet<Key>();
+        set.addAll(this.getKeyList());
+        return set;
+    }
+
     public Entity getDefaultEntity() {
         if (defaultEntity == null) {
             throw new IllegalArgumentException("No Default Entity is associated to this Find Query");
@@ -386,7 +417,7 @@ public class DefaultQuery extends AbstractQuery {
             throw new IllegalArgumentException("Parameter not found " + name);
         }
         for (CompiledParam p : params) {
-            p.setObject(value);
+            p.setValue(value);
             p.setUnspecified(false);
         }
         return this;
@@ -411,7 +442,7 @@ public class DefaultQuery extends AbstractQuery {
         if (p == null) {
             throw new IllegalArgumentException("Parameter not found " + index);
         }
-        p.setObject(value);
+        p.setValue(value);
         p.setUnspecified(false);
         return this;
     }

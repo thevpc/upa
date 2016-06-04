@@ -1,11 +1,11 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
-import net.vpc.upa.Properties;
+
+import net.vpc.upa.*;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.shared.NullValANSISQLProvider;
 
@@ -13,21 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import net.vpc.upa.CustomDefaultObject;
-import net.vpc.upa.Entity;
-import net.vpc.upa.ExpressionFormula;
-import net.vpc.upa.Field;
-import net.vpc.upa.FieldModifier;
-import net.vpc.upa.Index;
-import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.PrimitiveField;
-import net.vpc.upa.Sequence;
-import net.vpc.upa.SequenceStrategy;
-import static net.vpc.upa.SequenceStrategy.AUTO;
-import static net.vpc.upa.SequenceStrategy.IDENTITY;
-import static net.vpc.upa.SequenceStrategy.SEQUENCE;
-import static net.vpc.upa.SequenceStrategy.UNSPECIFIED;
-import net.vpc.upa.exceptions.DriverNotFoundException;
+
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
@@ -41,7 +27,6 @@ import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorInt;
 import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorString;
 import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.UpdateSQLProvider;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
@@ -261,20 +246,10 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 url += "?zeroDateTimeBehavior=convertToNull";
                 String driverClass = "com.mysql.jdbc.Driver";
                 log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
-                try {
-                    PlatformUtils.forName(driverClass);
-                } catch (Exception cls) {
-                    throw new DriverNotFoundException(driverClass);
-                }
-                return DriverManager.getConnection(url, userName, password);
+                return createPlatformConnection(driverClass, url, userName, password, properties);
             }
         } catch (UPAException e) {
             throw e;
-        } catch (SQLException e) {
-//            if (e.getErrorCode() == 40000) {
-//                throw new DatabaseNotFoundException(e, p.getProperties().get(ConnectionOption.DATABASE_NAME));
-//            }
-            throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));
         } catch (Exception e) {
             //
             throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));
@@ -432,5 +407,25 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "PK Constraints " + tableName + "." + constraintsName);
         }
         return false;
+    }
+
+    public String getDropRelationshipStatement(Relationship relation) throws UPAException {
+        StringBuilder sb = new StringBuilder();
+        Entity table = relation.getSourceRole().getEntity();
+        sb.append("Alter Table ").append(getValidIdentifier(getTableName(table))).append(" Drop FOREIGN KEY ").append(getValidIdentifier(getRelationshipName(relation)));
+        return (sb.toString());
+    }
+
+    //    @Override
+    public String getDropTablePKConstraintStatement(Entity entity) throws UPAException {
+        StringBuilder sb = new StringBuilder();
+        if (!entity.getShield().isTransient()) {
+            List<Field> pk = entity.getFields(ID);
+            if (pk.size() > 0) {
+                sb.append("Alter Table ").append(getValidIdentifier(getTableName(entity))).append(" Drop PRIMARY KEY ").append(getValidIdentifier(getTablePKName(entity)));
+                return (sb.toString());
+            }
+        }
+        return null;
     }
 }

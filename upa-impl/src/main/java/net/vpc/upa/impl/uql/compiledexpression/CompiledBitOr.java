@@ -16,11 +16,11 @@ public final class CompiledBitOr extends CompiledBinaryOperatorExpression
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();
         if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.BIGINT);
+            setTypeTransform(IdentityDataTypeTransform.BIGINT);
         }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.LONG);
+            setTypeTransform(IdentityDataTypeTransform.LONG);
         }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.INT);
+            setTypeTransform(IdentityDataTypeTransform.INT);
         }
     }
 
@@ -29,11 +29,11 @@ public final class CompiledBitOr extends CompiledBinaryOperatorExpression
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();
         if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.BIGINT);
+            setTypeTransform(IdentityDataTypeTransform.BIGINT);
         }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.LONG);
+            setTypeTransform(IdentityDataTypeTransform.LONG);
         }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setDataType(IdentityDataTypeTransform.INT);
+            setTypeTransform(IdentityDataTypeTransform.INT);
         }
     }
 }

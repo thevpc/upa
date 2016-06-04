@@ -123,9 +123,9 @@ public class FieldPersistenceInfo {
                 if (re.rebuiltFormula != null) {
                     field.setPersistFormula(re.rebuiltFormula);
                 }
-                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionHelper.THIS_VAR_FILTER);
+                boolean complex = re.compiledExpression.findFirstExpression(CompiledExpressionHelper.THIS_VAR_FILTER)!=null;
                 persistFormulaPass = field.getPersistFormulaOrder();
-                if (complex.isEmpty() && persistFormulaPass == 0) {
+                if (!complex && persistFormulaPass == 0) {
                     insertExpression = re.expression;
                     persistFieldPersister = updateFieldPersister(persistFieldPersister, new ExpressionFieldPersister(field.getName(), re.expression));
                     postPersistFormula = false;

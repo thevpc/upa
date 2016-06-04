@@ -41,7 +41,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
             userValueFound = true;
             userValue = value;
         } else if (value instanceof Param) {
-            Object o = ((Param) value).getObject();
+            Object o = ((Param) value).getValue();
 //            if (o instanceof String) {
             userValue = o;
             userValueFound = true;
@@ -132,7 +132,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
             userValueFound = true;
             userValue = value;
         } else if (value instanceof Param) {
-            Object o = ((Param) value).getObject();
+            Object o = ((Param) value).getValue();
 //            if (o instanceof String) {
             userValue = o;
             userValueFound = true;

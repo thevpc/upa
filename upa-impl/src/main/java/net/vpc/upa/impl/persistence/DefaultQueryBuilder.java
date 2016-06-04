@@ -7,11 +7,7 @@ import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
 import net.vpc.upa.persistence.ResultMetaData;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -195,6 +191,11 @@ public final class DefaultQueryBuilder implements QueryBuilder {
             query.setParameter(e.getKey().intValue(), e.getValue());
         }
         query.setUpdatable(this.isUpdatable());
+        if (hints != null) {
+            for (Map.Entry<String, Object> h : hints.entrySet()) {
+                query.setHint(h.getKey(), h.getValue());
+            }
+        }
 //        }
         return query;
     }
@@ -279,12 +280,26 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return exec().getValueList(index);
     }
 
+    @Override
+    public <T> Set<T> getValueSet(int index) throws UPAException {
+        return exec().getValueSet(index);
+    }
+
+    @Override
+    public <T> Set<T> getValueSet(String name) throws UPAException {
+        return exec().getValueSet(name);
+    }
+
     public <T> List<T> getValueList(String name) throws UPAException {
         return exec().getValueList(name);
     }
 
     public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException {
         return exec().getTypeList(type, fields);
+    }
+
+    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
+        return exec().getTypeSet(type, fields);
     }
 
     public <R> R getSingleEntity() throws UPAException {
@@ -394,4 +409,13 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return this;
     }
 
+    @Override
+    public <K> Set<K> getIdSet() throws UPAException {
+        return exec().getIdSet();
+    }
+
+    @Override
+    public Set<Key> getKeySet() throws UPAException {
+        return exec().getKeySet();
+    }
 }

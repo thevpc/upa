@@ -1,7 +1,8 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.types.I18NString;
+import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.Closeable;
 import net.vpc.upa.Field;
@@ -15,31 +16,17 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.ScanSource;
-import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.config.BaseScanSource;
-import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledDifferent;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEquals;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVarVal;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.EntityType;
-import net.vpc.upa.types.FileData;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -486,36 +473,43 @@ public class UPAUtils {
             CompiledVarOrMethod v = ((CompiledVarVal) e).getVar();
             return resolveExprTypeInfo(v);
         }
-        if (e instanceof CompiledLiteral) {
-            if (byBrother) {
-                DefaultCompiledExpression p = e.getParentExpression();
-                if ((p instanceof CompiledEquals) || (p instanceof CompiledDifferent)) {
-                    DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(e);
-                    return resolveExprTypeInfo(o, false);
-                }
-            } else {
-                ExprTypeInfo ii = new ExprTypeInfo();
-                ii.setTransform(e.getTypeTransform());
-                return ii;
-            }
-        }
-        if (e instanceof CompiledParam) {
+        DataTypeTransform typeTransform = e.getTypeTransform();
+        if (e instanceof CompiledParam || e instanceof CompiledLiteral) {
             DefaultCompiledExpression p = e.getParentExpression();
             if (p instanceof CompiledVarVal) {
                 return resolveExprTypeInfo(p);
-            } else if ((p instanceof CompiledEquals) || (p instanceof CompiledDifferent)) {
-                DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(e);
-                if (byBrother) {
-                    return resolveExprTypeInfo(o, false);
-                } else {
-                    ExprTypeInfo ii = new ExprTypeInfo();
-                    ii.setTransform(e.getTypeTransform());
-                    return ii;
+            } else {
+                Object object = (e instanceof CompiledParam)? ((CompiledParam) e).getValue():((CompiledLiteral) e).getValue();
+                DataType sourceType = typeTransform.getSourceType();
+                DataTypeTransform bestType=typeTransform;
+                if (
+                        (p instanceof CompiledBinaryOperatorExpression)
+                        && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())
+                        ) {
+                    DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(e);
+                    if (byBrother) {
+                        return resolveExprTypeInfo(o, false);
+                    }
                 }
+                if(object!=null
+                        //too generic
+                        && (
+                        typeTransform.equals(IdentityDataTypeTransform.OBJECT)
+                                //or specified type is not accurate
+                                || !sourceType.isInstance(object))
+                        )
+                {
+
+                    bestType = IdentityDataTypeTransform.forNativeType(object.getClass());
+                }
+                ExprTypeInfo ii = new ExprTypeInfo();
+                ii.setTransform(bestType);
+                return ii;
             }
         }
         ExprTypeInfo ii = new ExprTypeInfo();
-        ii.setTransform(e.getTypeTransform());
+        DataTypeTransform tt = typeTransform;
+        ii.setTransform(tt);
         return ii;
 
     }

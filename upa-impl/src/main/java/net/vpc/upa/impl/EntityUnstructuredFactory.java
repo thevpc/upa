@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Entity;
 import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 
@@ -8,8 +9,9 @@ import net.vpc.upa.exceptions.UPAException;
  * @creationdate 8/27/12 1:51 AM
  */
 public class EntityUnstructuredFactory extends AbstractEntityFactory {
-
-    public EntityUnstructuredFactory() {
+    private Entity entity;
+    public EntityUnstructuredFactory(Entity entity) {
+        this.entity=entity;
     }
 
     public Record createRecord() {
@@ -21,22 +23,26 @@ public class EntityUnstructuredFactory extends AbstractEntityFactory {
         return (R) (Object)new DefaultRecord();
     }
 
-    public <R> Record getRecord(R entity, boolean ignoreUnspecified) {
-        //double cast is needed in c#
-        return (Record) (Object)entity;
+    public Record getRecord(Object object, boolean ignoreUnspecified) {
+        return (Record) object;
     }
 
     @Override
-    public <R> R getEntity(Record unstructuredRecord) {
-        return (R) unstructuredRecord;
+    public <R> R getEntity(Record record) {
+        return (R) record;
     }
 
-    public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        ((Record) entityObject).setObject(property, value);
+    public void setProperty(Object object, String property, Object value) throws UPAException {
+        ((Record) object).setObject(property, value);
     }
 
-    public Object getProperty(Object entityObject, String property) throws UPAException {
-        return ((Record) entityObject).getObject(property);
+    public Object getProperty(Object object, String property) throws UPAException {
+        return ((Record) object).getObject(property);
+    }
+
+    @Override
+    protected Entity getEntity() {
+        return entity;
     }
 
 }

@@ -45,7 +45,7 @@ public class CompiledQLFunctionExpressionSQLProvider implements SQLProvider {
             return ((CompiledLiteral) o).getValue();
         }
         if (o instanceof CompiledParam) {
-            return ((CompiledParam) o).getObject();
+            return ((CompiledParam) o).getValue();
         }
         throw new IllegalArgumentException("Unable to evaluate type " + o.getClass() + " :: " + o);
     }

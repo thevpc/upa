@@ -55,7 +55,7 @@
 //        log.info("Found " + found0);
 //        found0.setString("firstName","Alia");
 //
-//        Client c2 = entityManager.getConverter().recordToEntity(found0);
+//        Client c2 = entityManager.getConverter().recordToObject(found0);
 //
 //        assertEquals(c2.getFirstName(),"Alia");
 //
@@ -64,7 +64,7 @@
 //        Record found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
 //
 //        Assert.assertNotNull(found);
-//        Assert.assertEquals(found, entityManager.getConverter().entityToRecord(c2));
+//        Assert.assertEquals(found, entityManager.getConverter().objectToRecord(c2));
 //
 //        sm.delete(key);
 //

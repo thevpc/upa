@@ -10,11 +10,11 @@ public final class CompiledLessEqualThan extends CompiledBinaryOperatorExpressio
 
     public CompiledLessEqualThan(DefaultCompiledExpression left, Object right) {
         super(BinaryOperator.LE, left, right);
-        setDataType(IdentityDataTypeTransform.BOOLEAN);
+        setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }
 
     public CompiledLessEqualThan(DefaultCompiledExpression left, DefaultCompiledExpression right) {
         super(BinaryOperator.LE, left, right);
-        setDataType(IdentityDataTypeTransform.BOOLEAN);
+        setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }
 }

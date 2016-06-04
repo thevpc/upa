@@ -12,6 +12,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 import java.util.Map;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
+import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Query;
 import net.vpc.upa.types.EntityType;
 
@@ -52,8 +53,9 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
 //        }
 //    };
     public void insert(Entity entity, Record originalRecord, Record record, EntityExecutionContext context) throws UPAException {
+        PersistenceUnit pu = context.getPersistenceUnit();
         Insert insert = new Insert().into(entity.getName());
-        for (Map.Entry<String, Object> entry : record.toMap().entrySet()) {
+        for (Map.Entry<String, Object> entry : record.entrySet()) {
             Object value = entry.getValue();
             String key = entry.getKey();
             Field field = entity.findField(key);
@@ -61,7 +63,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
             if ((field.getDataType() instanceof EntityType)) {
                 EntityType e = (EntityType) field.getDataType();
                 if (e.isUpdatable()) {
-                    Entity masterEntity = context.getPersistenceUnit().getEntity(e.getReferencedEntityName());
+                    Entity masterEntity = pu.getEntity(e.getReferencedEntityName());
                     Key k = null;
                     if (value instanceof Record) {
                         k = masterEntity.getBuilder().recordToKey((Record) value);

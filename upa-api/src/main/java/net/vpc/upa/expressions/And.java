@@ -48,4 +48,14 @@ public final class And extends BinaryOperatorExpression
         super(BinaryOperator.AND, left, right);
     }
 
+    public static Expression create(Expression left, Expression right) {
+        if(left==null){
+            return right;
+        }
+        if(right==null){
+            return left;
+        }
+        return new And(left,right);
+    }
+
 }

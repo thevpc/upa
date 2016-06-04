@@ -34,12 +34,24 @@
  */
 package net.vpc.upa.bulk;
 
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.filters.EntityFilter;
+import net.vpc.upa.filters.FieldFilter;
+
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface ImportExportManager extends ParseFormatManager {
 
-    public void importEntity(Class entityType, DataReader dataIterator, ImportDataConfig config);
+    public DataRowConverter createEntityConverter(String entityName,FieldFilter filter);
+
+//    public void importEntity(Class entityType, DataReader dataIterator, ImportDataConfig config);
 
     public void importEntity(String entityName, DataReader dataIterator, ImportDataConfig config);
+    
+    public void importObjectById(String entityName, int sourceId, PersistenceUnit source, ImportPersistenceUnitListener listener);
+
+    public void importEntity(String entityName, PersistenceUnit source, boolean deleteExisting, ImportPersistenceUnitListener listener);
+
+    public void importEntities(PersistenceUnit source, EntityFilter filter, boolean deleteExisting, ImportPersistenceUnitListener listener) ;
 }

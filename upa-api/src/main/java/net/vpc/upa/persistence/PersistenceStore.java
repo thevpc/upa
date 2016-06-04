@@ -106,7 +106,7 @@ public interface PersistenceStore {
 
     public boolean isReservedKeyword(String name);
 
-    void setNativeConstraintsEnabled(PersistenceUnit database, boolean enable) throws UPAException;
+    void setNativeConstraintsEnabled(PersistenceUnit persistenceUnit, boolean enable) throws UPAException;
 
     public boolean isComplexSelectSupported();
 

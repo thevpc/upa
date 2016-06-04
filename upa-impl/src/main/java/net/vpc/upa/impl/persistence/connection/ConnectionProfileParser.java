@@ -67,7 +67,7 @@ public class ConnectionProfileParser {
 
         /**
          * @PortabilityHint(target="C#",name="replace")
-         * var match = System.Text.RegularExpressions.Regex.Match(connectionString, "^([^:#]+)(#([^:]+))?(:([^:#]+)(#([^:]+))?)?://((([^/:]+)(:([^/:]+))?)/)?([^;]*)([;](.*))$");
+         * var match = System.Text.RegularExpressions.Regex.Match(connectionString, "^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;]*)([;](.*))?$");
          * if (match!=null){
          *   DefaultConnectionProfileData d = new DefaultConnectionProfileData();
          *   d.databaseProductName = match.Groups[1].Value;
@@ -82,7 +82,7 @@ public class ConnectionProfileParser {
          * }
          */
         {
-            Pattern pattern = Pattern.compile("^([^:#]+)(#([^:]+))?(:([^:#]+)(#([^:]+))?)?://((([^/:]+)(:([^/:]+))?)/)?([^;]*)([;](.*))$");
+            Pattern pattern = Pattern.compile("^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;]*)([;](.*))?$");
             Matcher matcher = pattern.matcher(connectionString);
             boolean matchFound = matcher.find();
             if (matchFound) {

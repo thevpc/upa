@@ -37,6 +37,7 @@ import net.vpc.upa.persistence.ResultMetaData;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:07 PM To change
@@ -74,7 +75,11 @@ public interface Query extends Closeable {
 
     <K> List<K> getIdList() throws UPAException;
 
+    <K> Set<K> getIdSet() throws UPAException;
+
     List<Key> getKeyList() throws UPAException;
+
+    Set<Key> getKeySet() throws UPAException;
 
     public List<MultiRecord> getMultiRecordList() throws UPAException;
 
@@ -82,9 +87,15 @@ public interface Query extends Closeable {
 
     public <T> List<T> getValueList(int index) throws UPAException;
 
+    public <T> Set<T> getValueSet(int index) throws UPAException;
+
+    public <T> Set<T> getValueSet(String name) throws UPAException ;
+
     public <T> List<T> getValueList(String name) throws UPAException;
 
     public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
+
+    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException ;
 
     public ResultMetaData getMetaData() throws UPAException;
 

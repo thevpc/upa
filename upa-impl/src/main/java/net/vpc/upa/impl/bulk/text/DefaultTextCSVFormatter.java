@@ -38,15 +38,15 @@ public class DefaultTextCSVFormatter extends TextCSVFormatter {
     public DataWriter createWriter() throws IOException {
         if (target instanceof File) {
             DefaultTextCSVWriter w = new DefaultTextCSVWriter(this, new FileWriter((File) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof OutputStream) {
             DefaultTextCSVWriter w = new DefaultTextCSVWriter(this, new OutputStreamWriter((OutputStream) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof Writer) {
             DefaultTextCSVWriter w = new DefaultTextCSVWriter(this, ((Writer) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else {
             throw new UPAException(new I18NString("InvalidTarget")

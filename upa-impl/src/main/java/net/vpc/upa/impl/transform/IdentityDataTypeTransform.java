@@ -68,4 +68,7 @@ public final class IdentityDataTypeTransform implements DataTypeTransform {
     public static IdentityDataTypeTransform forNativeType(Class clazz) {
         return new IdentityDataTypeTransform(TypesFactory.forPlatformType(clazz));
     }
+    public static IdentityDataTypeTransform forDataType(DataType sourceType) {
+        return new IdentityDataTypeTransform(sourceType);
+    }
 }

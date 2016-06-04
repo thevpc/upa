@@ -100,7 +100,7 @@ public class KeyBeanFactory implements KeyFactory {
                 Entity ee = entity.getPersistenceUnit().findEntity(idType);
                 if (ee != null) {
                     //check assume this is the id of the entity ee
-                    id=ee.getBuilder().idToEntity(id);
+                    id=ee.getBuilder().idToObject(id);
                 }
             }
             return createKey(new Object[]{id});

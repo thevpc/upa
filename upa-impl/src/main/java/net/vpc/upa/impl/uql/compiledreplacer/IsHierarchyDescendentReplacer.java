@@ -71,13 +71,13 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                 }
             }
         } else if (c instanceof CompiledParam) {
-            Object co = ((CompiledParam) c).getObject();
+            Object co = ((CompiledParam) c).getValue();
             if (co != null && persistenceUnit.containsEntity(co.getClass())) {
                 Entity rr = persistenceUnit.getEntity(co.getClass());
                 if (treeEntity == null) {
                     treeEntity = rr;
                 }
-                ((CompiledParam) c).setObject(rr.getBuilder().objectToId(co));
+                ((CompiledParam) c).setValue(rr.getBuilder().objectToId(co));
             }
 //            Object co = ((CompiledParam) c).getEffectiveDataType();
         }
@@ -95,17 +95,17 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                 }
             }
         } else if (p instanceof CompiledParam) {
-            Object co = ((CompiledParam) p).getObject();
+            Object co = ((CompiledParam) p).getValue();
             if (co != null && persistenceUnit.containsEntity(co.getClass())) {
-                Entity rr = persistenceUnit.getEntity(co.getClass());
+                Entity rr = persistenceUnit.findEntity(co.getClass());
                 if (treeEntity == null) {
                     treeEntity = rr;
                 }
-                ((CompiledParam) p).setObject(rr.getBuilder().objectToId(co));
+                ((CompiledParam) p).setValue(rr.getBuilder().objectToId(co));
                 if (rr.getPrimaryFields().size() > 1) {
                     throw new IllegalArgumentException("Not supported");
                 }
-                ((CompiledParam) p).setDataType(UPAUtils.getTypeTransformOrIdentity(rr.getPrimaryFields().get(0)));
+                ((CompiledParam) p).setTypeTransform(UPAUtils.getTypeTransformOrIdentity(rr.getPrimaryFields().get(0)));
             }
 //            Object co = ((CompiledParam) c).getEffectiveDataType();
         }

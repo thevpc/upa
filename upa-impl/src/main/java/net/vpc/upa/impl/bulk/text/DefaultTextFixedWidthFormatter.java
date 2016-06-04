@@ -41,15 +41,15 @@ public class DefaultTextFixedWidthFormatter extends TextFixedWidthFormatter {
     public DataWriter createWriter() throws IOException {
         if (target instanceof File) {
             DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, new FileWriter((File) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof OutputStream) {
             DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, new OutputStreamWriter((OutputStream) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof Writer) {
             DefaultTextFixedWidthWriter w = new DefaultTextFixedWidthWriter(this, ((Writer) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else {
             throw new UPAException(new I18NString("InvalidTarget")
@@ -78,7 +78,7 @@ public class DefaultTextFixedWidthFormatter extends TextFixedWidthFormatter {
 
     public DataWriter format(Writer writer) throws IOException {
         DefaultTextFixedWidthWriter d = new DefaultTextFixedWidthWriter(this, writer);
-        d.setDataSerializer(getDataSerializer());
+        d.setDataRowConverter(getDataRowConverter());
         return d;
     }
 }

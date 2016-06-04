@@ -6,7 +6,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.Field;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**
@@ -39,7 +38,7 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
     public void setReferrer(Object referrer) {
         this.referrer = referrer;
         if (this.referrer instanceof Field) {
-            this.setDataType(UPAUtils.getTypeTransformOrIdentity((Field) referrer));
+            this.setTypeTransform(UPAUtils.getTypeTransformOrIdentity((Field) referrer));
         }
     }
 

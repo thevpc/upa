@@ -4,10 +4,11 @@
  */
 package net.vpc.upa.impl.bulk;
 
-import net.vpc.upa.bulk.DataSerializer;
+import net.vpc.upa.bulk.DataRowConverter;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.DataWriter;
+import net.vpc.upa.exceptions.UPAException;
 
 /**
  *
@@ -21,7 +22,7 @@ public abstract class AbstractDataWriter implements DataWriter {
     protected boolean headerSupported;
     protected long rowIndex;
     protected boolean started;
-    protected DataSerializer dataSerializer;
+    protected DataRowConverter dataRowConverter;
 
     public AbstractDataWriter(DataColumn columnPrototype, boolean headerSupported, DataColumn[] parserColumns) {
         this.parserColumns = parserColumns;
@@ -29,24 +30,30 @@ public abstract class AbstractDataWriter implements DataWriter {
         this.headerSupported = headerSupported;
     }
 
-    public DataSerializer getDataSerializer() {
-        return dataSerializer;
+    public DataRowConverter getDataRowConverter() {
+        return dataRowConverter;
     }
 
-    public void setDataSerializer(DataSerializer dataSerializer) {
-        this.dataSerializer = dataSerializer;
+    public void setDataRowConverter(DataRowConverter dataRowConverter) {
+        this.dataRowConverter = dataRowConverter;
     }
 
     public void writeObject(Object row) {
-        DataSerializer os = getDataSerializer();
+        DataRowConverter os = getDataRowConverter();
         if (os == null) {
-            throw new IllegalArgumentException("Missing ObjectSerializer");
+            throw new IllegalArgumentException("Missing DataRowConverter");
         }
-        DataRow r = os.objecttoRow(row, parserColumns);
-        writeRow(r.getValues());
+        writeRow(os.objectToRow(row));
     }
 
     public void startDocument() {
+        if(dataRowConverter!=null){
+            DataColumn[] columns = dataRowConverter.getColumns();
+            if(columns==null){
+                columns=new DataColumn[0];
+            }
+            this.parserColumns=columns;
+        }
         if (headerSupported) {
             Object[] r = new Object[parserColumns.length];
             for (int i = 0; i < r.length; i++) {
@@ -65,6 +72,21 @@ public abstract class AbstractDataWriter implements DataWriter {
             }
             writeRow(r);
         }
+
+    }
+
+    protected DataRow createRow(Object[] values){
+        if(parserColumns.length!=values.length){
+            if(parserColumns.length>values.length){
+                //complete with nulls
+                Object[] values2=new Object[parserColumns.length];
+                System.arraycopy(values,0,values2,0,values.length);
+                values=values2;
+            }else{
+                throw new UPAException("InvalidRowLength");
+            }
+        }
+        return new DefaultDataRow(parserColumns,values);
     }
 
     public void writeRow(Object[] values) {
@@ -72,7 +94,7 @@ public abstract class AbstractDataWriter implements DataWriter {
             started = true;
             startDocument();
         }
-        DataRow row = new DefaultDataRow(parserColumns, values);
+        DataRow row = createRow(values);
         startRow(row);
         for (int i = 0; i < values.length; i++) {
             Object v = values[i];

@@ -12,13 +12,11 @@ import net.vpc.upa.types.I18NString;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.util.Strings;
 import net.vpc.upa.types.TypesFactory;
 
 /**
@@ -27,29 +25,40 @@ import net.vpc.upa.types.TypesFactory;
  */
 public class DefaultUConnection implements UConnection {
 
+    private static Set<String> _conn_attr_based_wrappers=new HashSet<String>(Arrays.asList(
+            "org.apache.tomcat.dbcp.dbcp.PoolableConnection",
+            "org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper",
+            "org.apache.commons.dbcp.PoolableConnection",
+            "org.apache.commons.dbcp.PoolingDataSource$PoolGuardConnectionWrapper"
+    ));
+
+    private String name;
+    private String nameDebugString;
     private Connection connection;
+    private Connection metadataAccessibleConnection;
     private MarshallManager marshallManager;
     private CloseListenerSupport support;
     private Map<String, Object> properties;
     private boolean closed = false;
     private static final Logger log = Logger.getLogger(DefaultUConnection.class.getName());
 
-    public DefaultUConnection(Connection connection, MarshallManager marshallManager) {
+    public DefaultUConnection(String name,Connection connection, MarshallManager marshallManager) {
+        this.name = name;
         this.connection = connection;
         this.marshallManager = marshallManager;
         this.support = new CloseListenerSupport();
+        nameDebugString=Strings.isNullOrEmpty(name)?"[]":("["+name+"]");
     }
 
     public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
         }
+        long startTime =System.currentTimeMillis();
+        SQLException error=null;
         try {
             try {
-//                long startTime = System.currentTimeMillis();
-                if (log.isLoggable(Level.FINE)) {
-                    log.log(Level.FINE, "executeQuery {0} :: parameters = {1}", new Object[]{query, queryParameters});
-                }
+
 
                 PreparedStatement s = null;
                 /**
@@ -94,9 +103,16 @@ public class DefaultUConnection implements UConnection {
 //        Log.log(PersistenceUnitManager.DB_PRE_NATIVE_QUERY_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
                 return new DefaultQueryResult(s.executeQuery(), s, marshallers, types);
             } catch (SQLException ee) {
-                log.log(Level.SEVERE, "[Error] executeQuery " + query + " :: parameters = " + queryParameters, ee);
+                error=ee;
                 throw ee;
             } finally {
+                if (log.isLoggable(Level.FINE)) {
+                    if(error!=null) {
+                        log.log(Level.SEVERE, nameDebugString+" [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
+                    }else {
+                        log.log(Level.FINE, "{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}", new Object[]{nameDebugString,query, queryParameters,(System.currentTimeMillis()-startTime)});
+                    }
+                }
 //                long endTime = System.currentTimeMillis();
 //            Log.log(PersistenceUnitManager.DB_NATIVE_QUERY_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+"] "+debug+" :=" + currentQuery);
             }
@@ -109,12 +125,11 @@ public class DefaultUConnection implements UConnection {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
         }
+        SQLException error=null;
         int count = -1;
         boolean gen = generatedKeys != null && generatedKeys.size() > 0;
 //        Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "executeNonQuery {0}" + ((queryParameters != null && !queryParameters.isEmpty())
-                    ? "\n\tqueryParameters={1}" : ""), new Object[]{query, queryParameters});
         }
         long startTime = System.currentTimeMillis();
         try {
@@ -151,11 +166,18 @@ public class DefaultUConnection implements UConnection {
                 }
             }
         } catch (SQLException ee) {
-            log.log(Level.SEVERE, "[Error] executeNonQuery " + query + " :: parameters = " + queryParameters, ee);
+            error=ee;
 //            Log.log(PersistenceUnitManager.DB_ERROR_LOG,"[Error] "+currentQueryInfo+" :=" + currentQuery);
             throw createUPAException(ee, "ExecuteUpdateFailedException", query);
         } finally {
-            long endTime = System.currentTimeMillis();
+            if (log.isLoggable(Level.FINE)) {
+                if(error!=null) {
+                    log.log(Level.SEVERE, nameDebugString+" [Error] executeNonQuery " + query + " :: parameters = " + queryParameters, error);
+                }else {
+                    log.log(Level.FINE, "{0} executeNonQuery {1}" + ((queryParameters != null && !queryParameters.isEmpty())
+                            ? "\n\tqueryParameters={2}" : "")+" ;; time = {3}", new Object[]{nameDebugString,query, queryParameters,(System.currentTimeMillis()-startTime)});
+                }
+            }
 //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);
         }
         return count;
@@ -179,9 +201,9 @@ public class DefaultUConnection implements UConnection {
 //                    }
                 } catch (UPAException sqle) {
                     errorsCount++;
-                    log.log(Level.SEVERE, "[Error] executeNonQuery @" + i + " : " + script.getStatement(i) /*+ " :: parameters = " + queryParameters*/, sqle);
+                    log.log(Level.SEVERE, nameDebugString+" [Error] executeNonQuery @" + i + " : " + script.getStatement(i) /*+ " :: parameters = " + queryParameters*/, sqle);
 //                    log.log(Level.SEVERE,"Error @" + i + " : " + script.getStatement(i));
-                    log.log(Level.SEVERE, "Error @{0} : {1}", new Object[]{i, script.getStatement(i)});
+                    log.log(Level.SEVERE, "{0} Error @{1} : {2}", new Object[]{nameDebugString,i, script.getStatement(i)});
                     if (exitOnError) {
                         throw sqle;
                     }
@@ -276,38 +298,30 @@ public class DefaultUConnection implements UConnection {
         closed = true;
         support.afterClose(this);
     }
-
     @Override
     public Connection getMetadataAccessibleConnection() throws UPAException {
-        Connection retConn = connection;
-        while (true) {
-            if (retConn.getClass().getName().equals("org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper")) {
-                Field f;
-                try {
-                    f = retConn.getClass().getSuperclass().getDeclaredField("_conn");
-                    f.setAccessible(true);
-                    retConn = (Connection) f.get(retConn);
-                } catch (Exception ex) {
-                    log.log(Level.SEVERE, "Unable to rerive MetadataAccessibleConnection from dbcp PoolGuardConnectionWrapper", ex);
-                    retConn = connection;
+        if(metadataAccessibleConnection==null) {
+            Connection retConn = connection;
+            while (true) {
+                String connClassName = retConn.getClass().getName();
+                if (_conn_attr_based_wrappers.contains(connClassName)) {
+                    Field f;
+                    try {
+                        f = retConn.getClass().getSuperclass().getDeclaredField("_conn");
+                        f.setAccessible(true);
+                        retConn = (Connection) f.get(retConn);
+                    } catch (Exception ex) {
+                        log.log(Level.SEVERE, "Unable to retrieve MetadataAccessibleConnection from Pool Type " + connClassName + "", ex);
+                        retConn = connection;
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else if (retConn.getClass().getName().equals("org.apache.tomcat.dbcp.dbcp.PoolableConnection")) {
-                Field f;
-                try {
-                    f = retConn.getClass().getSuperclass().getDeclaredField("_conn");
-                    f.setAccessible(true);
-                    retConn = (Connection) f.get(retConn);
-                } catch (Exception ex) {
-                    log.log(Level.SEVERE, "Unable to rerive MetadataAccessibleConnection from dbcp PoolableConnection", ex);
-                    retConn = connection;
-                    break;
-                }
-            } else {
-                break;
             }
+            metadataAccessibleConnection=retConn;
         }
-        return retConn;
+        return metadataAccessibleConnection;
     }
 
     @Override

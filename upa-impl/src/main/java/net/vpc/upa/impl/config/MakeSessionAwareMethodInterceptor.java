@@ -1,8 +1,10 @@
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.Action;
 import net.vpc.upa.MethodFilter;
 import net.vpc.upa.UPA;
 import net.vpc.upa.UPAContext;
+import net.vpc.upa.exceptions.ExecutionException;
 import net.vpc.upa.impl.util.PlatformMethodProxy;
 import net.vpc.upa.impl.util.PlatformMethodProxyEvent;
 
@@ -27,23 +29,23 @@ public class MakeSessionAwareMethodInterceptor<T> implements PlatformMethodProxy
     }
 
     @Override
-    public Object intercept(PlatformMethodProxyEvent<T> event) throws Throwable {
+    public Object intercept(final PlatformMethodProxyEvent<T> event) throws Throwable {
         if (methodFilter == null || methodFilter.accept(event.getMethod())) {
             HashMap<String, Object> properties = new HashMap<String, Object>();
-            UPAContext context = UPA.getContext();
-            context.beginInvocation(event.getMethod(), properties);
-            Object ret = null;
-            Throwable error = null;
             try {
-                ret = event.invokeBase(instance, event.getArguments());
-            } catch (Throwable e) {
-                error = e;
+                return UPA.getContext().invoke(new Action<Object>() {
+                    @Override
+                    public Object run() {
+                        try {
+                            return event.invokeBase(instance, event.getArguments());
+                        } catch (Throwable ex) {
+                            throw new ExecutionException(ex);
+                        }
+                    }
+                });
+            }catch(ExecutionException e){
+                throw e.getCause();
             }
-            context.endInvocation(error, properties);
-            if (error != null) {
-                throw error;
-            }
-            return ret;
         } else {
             return event.invokeBase(instance, event.getArguments());
         }

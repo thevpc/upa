@@ -879,22 +879,25 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
         List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
-        getPersistenceStore().setNativeConstraintsEnabled(this, false);
-        EntityExecutionContext context = createContext(ContextOperation.RESET);
         clear();
         for (Entity entity : ops) {
             entity.initialize();
         }
-
-        getPersistenceStore().setNativeConstraintsEnabled(this, true);
         updateFormulas();
 
         persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
 
+     public void clear() throws UPAException {
+         clear(null);
+    }
+     
     @Override
-    public void clear() throws UPAException {
-        List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
+    public void clear(EntityFilter entityFilter) throws UPAException {
+        if(entityFilter==null){
+            entityFilter=new DefaultEntityFilter().setAcceptClear(true);
+        }
+        List<Entity> ops = getEntities(entityFilter);
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
         EntityExecutionContext context = createContext(ContextOperation.CLEAR);
 
@@ -902,10 +905,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
         for (Entity entity : ops) {
             entity.clearCore(context);
-        }
-        List<Entity> entities1 = getEntities();
-        for (Entity entity : entities1) {
-            entity.initialize();
         }
         getPersistenceStore().setNativeConstraintsEnabled(this, true);
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
@@ -1460,7 +1459,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //        MacroManager macroManager = application.getMacroManager();
 //        macroManager.registerMacro(new DBMacro(this));
 //        dbMacroHelper = new DBMacroHelper(macroManager);
-//        getResources().loadBundle("org.vpc.database.resources.PersistenceUnitFilter");
+//        getResources().loadBundle("net.vpc.database.resources.PersistenceUnitFilter");
 //    }
     @Override
     public void addPersistenceUnitListener(PersistenceUnitListener listener) {
@@ -1836,6 +1835,22 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return registrationModel.containsEntity(entityType);
     }
 
+    public Entity getEntity(Object entityType) throws UPAException {
+        if(entityType instanceof String){
+            return getEntity((String) entityType);
+        }
+        if(entityType instanceof QualifiedRecord){
+            return ((QualifiedRecord) entityType).getEntity();
+        }
+        if(entityType instanceof Class){
+            return getEntity((Class) entityType);
+        }
+        if(entityType instanceof Record){
+            throw new UPAException("UnableToResolveEntityFromRecord");
+        }
+        return getEntity(entityType.getClass());
+    }
+
     public Entity getEntity(Class entityType) throws UPAException {
         return registrationModel.getEntity(entityType);
     }
@@ -1873,7 +1888,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             sessionAwarePU.persist(objectOrRecord);
             return;
         }
-        Entity entityManager = getEntity(objectOrRecord.getClass());
+        Entity entityManager = getEntity(objectOrRecord);
         entityManager.persist(objectOrRecord);
     }
 
@@ -1888,7 +1903,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             sessionAwarePU.merge(objectOrRecord);
             return;
         }
-        Entity entityManager = getEntity(objectOrRecord.getClass());
+        Entity entityManager = getEntity(objectOrRecord);
         entityManager.merge(objectOrRecord);
     }
 
@@ -1907,7 +1922,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (!checkSession()) {
             return sessionAwarePU.remove(objectOrRecord);
         }
-        Entity entityManager = getEntity(objectOrRecord.getClass());
+        Entity entityManager = getEntity(objectOrRecord);
         return entityManager.remove(objectOrRecord);
     }
 
@@ -1916,7 +1931,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (!checkSession()) {
             return sessionAwarePU.save(objectOrRecord);
         }
-        Entity entityManager = getEntity(objectOrRecord.getClass());
+        Entity entityManager = getEntity(objectOrRecord);
         return entityManager.save(objectOrRecord);
     }
 
@@ -1934,7 +1949,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             sessionAwarePU.update(objectOrRecord);
             return;
         }
-        getEntity(objectOrRecord.getClass()).update(objectOrRecord);
+        getEntity(objectOrRecord).update(objectOrRecord);
     }
 
     @Override
@@ -1947,12 +1962,52 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
+    public void updatePartial(String entityName, Object objectOrRecord, String... fields) throws UPAException {
+        //
+        if (!checkSession()) {
+            sessionAwarePU.updatePartial(entityName,objectOrRecord,fields);
+            return;
+        }
+        getEntity(entityName).updatePartial(objectOrRecord,fields);
+    }
+
+    @Override
+    public void updatePartial(String entityName, Object objectOrRecord, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
+        //
+        if (!checkSession()) {
+            sessionAwarePU.updatePartial(entityName,objectOrRecord,fields,ignoreUnspecified);
+            return;
+        }
+        getEntity(entityName).updatePartial(objectOrRecord,fields,ignoreUnspecified);
+    }
+
+    @Override
+    public void updatePartial(Object objectOrRecord, String... fields) throws UPAException {
+        //
+        if (!checkSession()) {
+            sessionAwarePU.updatePartial(objectOrRecord);
+            return;
+        }
+        getEntity(objectOrRecord).updatePartial(objectOrRecord,fields);
+    }
+
+    @Override
+    public void updatePartial(Object objectOrRecord, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
+        //
+        if (!checkSession()) {
+            sessionAwarePU.updatePartial(objectOrRecord,fields,ignoreUnspecified);
+            return;
+        }
+        getEntity(objectOrRecord).updatePartial(objectOrRecord,fields,ignoreUnspecified);
+    }
+
+    @Override
     public void updatePartial(Object objectOrRecord) throws UPAException {
         if (!checkSession()) {
             sessionAwarePU.updatePartial(objectOrRecord);
             return;
         }
-        getEntity(objectOrRecord.getClass()).updatePartial(objectOrRecord);
+        getEntity(objectOrRecord).updatePartial(objectOrRecord);
     }
 
     @Override
@@ -2058,6 +2113,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
                 .getEntityList();
     }
 
+    @Override
+    public <T> List<T> findAllIds(String entityName) throws UPAException {
+        return createQueryBuilder(entityName)
+                //                .setOrder(getEntity(entityName).getListOrder())
+                .getIdList();
+    }
+
     public List<Record> findAllRecords(Class entityType) throws UPAException {
         return createQueryBuilder(entityType)
                 .setOrder(getEntity(entityType).getListOrder())
@@ -2099,7 +2161,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     // TRANSACTIONS
     //////////////////////////////////////
     @Override
-    public void beginTransaction(TransactionType transactionType) throws UPAException {
+    public boolean beginTransaction(TransactionType transactionType) throws UPAException {
         checkStart();
         Session currentSession = getCurrentSession();
         currentSession.pushContext();
@@ -2113,18 +2175,19 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
                 if (currentTransaction == null) {
                     throw new TransactionException(new I18NString("TransactionMandatoryException"));
                 }
-                return;
+                return false;
             }
             case SUPPORTS: {
-                return;
+                return false;
             }
             case REQUIRED: {
                 if (currentTransaction == null) {
                     Transaction transaction = transactionManager.createTransaction(getConnection(), this, persistenceStore);
                     transaction.begin();
                     currentSession.setParam(this, SessionParams.TRANSACTION, transaction);
+                    return true;
                 }
-                return;
+                return false;
             }
         }
         throw new UPAException(new I18NString("Unexpected"));
@@ -2475,6 +2538,17 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (user != null) {
             currentSession.popContext();
         } else {
+            user = currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+            if (user != null) {
+                while (true) {
+                    currentSession.popContext();
+                    user = currentSession.getImmediateParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+                    if (user != null) {
+                        break;
+                    }
+                }
+                return;
+            }
             throw new UnsupportedOperationException("Invalid Logout");
         }
     }
@@ -2584,4 +2658,56 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         context.initPersistenceUnit(this, getPersistenceStore(), operation);
         return context;
     }
+
+    protected InvokeContext prepareInvokeContext(InvokeContext c) {
+        if(c==null){
+            c=new InvokeContext();
+        }else{
+            c=c.copy();
+        }
+        c.setPersistenceGroup(getPersistenceGroup());
+        c.setPersistenceUnit(this);
+        return c;
+    }
+
+    @Override
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return getPersistenceGroup().getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return getPersistenceGroup().getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException {
+        getPersistenceGroup().getContext().invoke(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException {
+        getPersistenceGroup().getContext().invokePrivileged(action, prepareInvokeContext(invokeContext));
+    }
+
+    @Override
+    public <T> T invoke(Action<T> action) throws UPAException {
+        return getPersistenceGroup().getContext().invoke(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public <T> T invokePrivileged(Action<T> action) throws UPAException {
+        return getPersistenceGroup().getContext().invokePrivileged(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public void invoke(VoidAction action) throws UPAException {
+        getPersistenceGroup().getContext().invoke(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public void invokePrivileged(VoidAction action) throws UPAException {
+        getPersistenceGroup().getContext().invokePrivileged(action, prepareInvokeContext(null));
+    }
+
 }

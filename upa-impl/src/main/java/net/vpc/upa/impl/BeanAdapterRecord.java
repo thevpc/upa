@@ -97,11 +97,11 @@ public class BeanAdapterRecord extends AbstractRecord {
         if (ignoreUnspecified) {
             includeDefaults = false;
         }
-        LinkedHashSet<String> s = new LinkedHashSet<String>(nfo.keySet(userObject, includeDefaults));
-        if (extra != null) {
-            s.addAll(extra.keySet());
+        Set<String> keySet = nfo.keySet(userObject, includeDefaults);
+        if (extra != null && extra.size()>0) {
+            keySet.addAll(extra.keySet());
         }
-        return s;
+        return keySet;
     }
 
     @Override
@@ -115,11 +115,11 @@ public class BeanAdapterRecord extends AbstractRecord {
         if (ignoreUnspecified) {
             includeDefaults = false;
         }
-        HashMap<String, Object> map = new HashMap<String, Object>(nfo.toMap(userObject, includeDefaults));
-        if (extra != null) {
-            map.putAll(extra);
+        Map<String, Object> m = nfo.toMap(userObject, includeDefaults);
+        if (extra != null && extra.size()>0) {
+            m.putAll(extra);
         }
-        return map;
+        return m;
     }
 
     @Override

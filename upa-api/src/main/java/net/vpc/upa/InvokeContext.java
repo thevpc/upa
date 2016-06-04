@@ -1,19 +1,19 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
  *    Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
  *
  * Copyright (C) 2014-2015 Taha BEN SALAH
  *
@@ -40,11 +40,14 @@ import java.io.Serializable;
  *
  * @author vpc
  */
-public class InvokeContext implements Serializable{
+public class InvokeContext implements Serializable, Cloneable {
+
     private String login;
     private String credentials;
     private boolean privileged;
-    private TransactionType transactionType=TransactionType.REQUIRED;
+    private TransactionType transactionType = TransactionType.REQUIRED;
+    private PersistenceGroup persistenceGroup;
+    private PersistenceUnit persistenceUnit;
 
     public String getLogin() {
         return login;
@@ -77,5 +80,29 @@ public class InvokeContext implements Serializable{
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
     }
-    
+
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceGroup;
+    }
+
+    public void setPersistenceGroup(PersistenceGroup persistenceGroup) {
+        this.persistenceGroup = persistenceGroup;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
+        this.persistenceUnit = persistenceUnit;
+    }
+
+    public InvokeContext copy() {
+        try {
+            return (InvokeContext) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            throw new IllegalArgumentException("Never");
+        }
+    }
+
 }

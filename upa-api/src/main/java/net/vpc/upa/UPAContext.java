@@ -131,7 +131,7 @@ public interface UPAContext {
      * @param properties non null Map to be shared between beginInvocation and
      * endInvocation
      */
-    public void beginInvocation(Method method, Map<String, Object> properties);
+//    public void beginInvocation(Method method, Map<String, Object> properties);
 
     /**
      * prepare UPA context for method invocation. This will prepare session and
@@ -140,7 +140,7 @@ public interface UPAContext {
      * @param properties non null Map to be shared between beginInvocation and
      * endInvocation
      */
-    public void beginInvocation(Map<String, Object> properties);
+//    public void beginInvocation(Map<String, Object> properties);
 
     /**
      * finalize method invocation and catch error if not null
@@ -149,7 +149,7 @@ public interface UPAContext {
      * @param properties non null Map to be shared between beginInvocation and
      * endInvocation
      */
-    public void endInvocation(Throwable error, Map<String, Object> properties);
+//    public void endInvocation(Throwable error, Map<String, Object> properties);
 
     public void addScanFilter(ScanFilter filter);
 
@@ -170,4 +170,6 @@ public interface UPAContext {
     public void removeCallback(Callback callback);
 
     public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase);
+
+    public Properties getThreadProperties();
 }

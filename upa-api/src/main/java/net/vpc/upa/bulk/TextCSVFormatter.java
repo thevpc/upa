@@ -60,63 +60,71 @@ public abstract class TextCSVFormatter extends AbstractDataFormatter {
         return containsHeader;
     }
 
-    public void setContainsHeader(boolean containsHeader) {
+    public TextCSVFormatter setContainsHeader(boolean containsHeader) {
         this.containsHeader = containsHeader;
+        return this;
     }
 
     public String getSeparators() {
         return separators;
     }
 
-    public void setSeparators(String separators) {
+    public TextCSVFormatter setSeparators(String separators) {
         this.separators = separators;
+        return this;
     }
 
     public boolean isSupportsDoubleQuote() {
         return supportsDoubleQuote;
     }
 
-    public void setSupportsDoubleQuote(boolean supportsDoubleQuote) {
+    public TextCSVFormatter setSupportsDoubleQuote(boolean supportsDoubleQuote) {
         this.supportsDoubleQuote = supportsDoubleQuote;
+        return this;
     }
 
     public boolean isSupportsSimpleQuote() {
         return supportsSimpleQuote;
     }
 
-    public void setSupportsSimpleQuote(boolean supportsSimpleQuote) {
+    public TextCSVFormatter setSupportsSimpleQuote(boolean supportsSimpleQuote) {
         this.supportsSimpleQuote = supportsSimpleQuote;
+        return this;
     }
 
     public boolean isSupportsBackSlash() {
         return supportsBackSlash;
     }
 
-    public void setSupportsBackSlash(boolean supportsBackSlash) {
+    public TextCSVFormatter setSupportsBackSlash(boolean supportsBackSlash) {
         this.supportsBackSlash = supportsBackSlash;
+        return this;
     }
 
     public boolean isTrimValues() {
         return trimValues;
     }
 
-    public void setTrimValues(boolean trimValues) {
+    public TextCSVFormatter setTrimValues(boolean trimValues) {
         this.trimValues = trimValues;
+        return this;
     }
 
     public String getNewLine() {
         return newLine;
     }
 
-    public void setNewLine(String newLine) {
+    public TextCSVFormatter setNewLine(String newLine) {
         this.newLine = newLine;
+        return this;
     }
 
     public int getSkipRows() {
         return skipRows;
     }
 
-    public void setSkipRows(int skipRows) {
+    public TextCSVFormatter setSkipRows(int skipRows) {
         this.skipRows = skipRows;
+        return this;
     }
 }

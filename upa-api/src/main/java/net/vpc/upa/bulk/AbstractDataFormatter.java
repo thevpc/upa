@@ -39,14 +39,15 @@ package net.vpc.upa.bulk;
  * @author vpc
  */
 public abstract class AbstractDataFormatter implements DataFormatter{
-    private DataSerializer dataSerializer;
+    private DataRowConverter dataRowConverter;
 
-    public DataSerializer getDataSerializer() {
-        return dataSerializer;
+    public DataRowConverter getDataRowConverter() {
+        return dataRowConverter;
     }
 
-    public void setDataSerializer(DataSerializer dataSerializer) {
-        this.dataSerializer = dataSerializer;
+    public DataFormatter setDataRowConverter(DataRowConverter dataRowConverter) {
+        this.dataRowConverter = dataRowConverter;
+        return this;
     }
     
 }

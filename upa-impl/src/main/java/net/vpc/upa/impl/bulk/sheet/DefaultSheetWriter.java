@@ -85,11 +85,20 @@ public class DefaultSheetWriter extends AbstractDataWriter {
         this.columnIndex = 0;
     }
 
+    private SheetColumn getColumn(DataColumn[] cols,int i){
+        if(cols==null || i>=cols.length){
+            return null;
+        }
+        return (SheetColumn) cols[i];
+    }
+
     @Override
     protected void writeCell(long rowIndex, DataRow row, int cellIndex, Object cell0) {
-        SheetColumn cc = (SheetColumn) row.getColumns()[cellIndex];
-        if (cc.getSkippedColumns() > 0) {
-            columnIndex += cc.getSkippedColumns();
+        SheetColumn cc = getColumn(row.getColumns(),cellIndex);
+        if(cc!=null) {
+            if (cc.getSkippedColumns() > 0) {
+                columnIndex += cc.getSkippedColumns();
+            }
         }
         Cell cell = this.row.createCell(columnIndex);
 //        String address = new CellReference(cell).formatAsString();

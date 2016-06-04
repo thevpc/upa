@@ -44,9 +44,9 @@ public interface DataFormatter extends Closeable {
 
     void configure(Object target) throws IOException;
 
-    public void setDataSerializer(DataSerializer dataSerializer);
+    public DataFormatter setDataRowConverter(DataRowConverter dataRowConverter);
 
-    public DataSerializer getDataSerializer();
+    public DataRowConverter getDataRowConverter();
 
     DataWriter createWriter() throws IOException;
 //    DataWriter format(OutputStream outputStream) throws IOException;

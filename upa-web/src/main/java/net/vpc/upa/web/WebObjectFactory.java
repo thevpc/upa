@@ -86,7 +86,6 @@ public class WebObjectFactory implements ObjectFactory {
         }
     }
 
-    @Override
     public <T> T getSingleton(Class<T> type) {
         String typeName = type.getName();
         if (singletons.containsKey(typeName)) {
@@ -102,7 +101,6 @@ public class WebObjectFactory implements ObjectFactory {
         }
     }
 
-    @Override
     public <T> T getSingleton(String typeName) {
         if (singletons.containsKey(typeName)) {
             return (T) singletons.get(typeName);

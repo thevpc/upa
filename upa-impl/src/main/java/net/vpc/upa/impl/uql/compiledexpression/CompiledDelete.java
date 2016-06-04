@@ -107,7 +107,7 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
         }
         if (other.condition != null) {
             if (condition == null) {
-                where(condition.copy());
+                where(other.condition.copy());
             } else {
                 where(new CompiledAnd(condition, other.condition.copy()));
             }

@@ -54,11 +54,11 @@ public class DefaultSheetFormatter extends SheetFormatter {
         }
         if (target instanceof File) {
             DefaultSheetWriter w = new DefaultSheetWriter(this, (File) target);
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof OutputStream) {
             DefaultSheetWriter w = new DefaultSheetWriter(this, (OutputStream) target);
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else {
             throw new UPAException(new I18NString("InvalidTarget")

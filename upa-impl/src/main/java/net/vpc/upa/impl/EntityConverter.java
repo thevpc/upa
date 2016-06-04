@@ -14,17 +14,17 @@ import java.util.List;
 public interface EntityConverter {
 
     /**
-     * transforms entity id to a Record key representation of the given entity
+     * transforms object id to a Record key representation of the given object
      * id. Updates to the record are NOT recorded to the provided value and vice
      * versa
      *
-     * @param entityId entity id
+     * @param id entity id
      * @return key representation
      */
-    Key idToKey(Object entityId) throws UPAException;
+    Key idToKey(Object id) throws UPAException;
 
     /**
-     * transforms record key to a entity id representation of the given record
+     * transforms record key to a object id representation of the given record
      * key. Updates to the record are NOT recorded to the provided value and
      * vice versa
      *
@@ -34,68 +34,68 @@ public interface EntityConverter {
     Object keyToId(Key recordKey) throws UPAException;
 
     /**
-     * transforms entity value to a Record value representation of the given
-     * entity value. Updates to the record are recorded to the provided value
+     * transforms object value to a Record value representation of the given
+     * object value. Updates to the record are recorded to the provided value
      * and vice versa
      *
-     * @param entityValue entity value
-     * @return entityToRecord(r, false)
+     * @param object object value
+     * @return objectToRecord(r, false)
      * @throws UPAException
      */
-    Record entityToRecord(Object entityValue) throws UPAException;
+    Record objectToRecord(Object object) throws UPAException;
 
     /**
      * Record value representation of the given entity. updates to the record
      * are recorded to the provided value
      *
-     * @param entityValue entity value
+     * @param object entity value
      * @param ignoreUnspecified when true primitive number type zeros and
      * boolean type false values are reported as null (not included in record)
-     * @return entityToRecord(r, false)
+     * @return objectToRecord(r, false)
      * @throws UPAException
      */
-    Record entityToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException;
+    Record objectToRecord(Object object, boolean ignoreUnspecified) throws UPAException;
 
-    Object getMainProperty(Object entityValue) throws UPAException;
+    Object getMainProperty(Object object) throws UPAException;
 
-    <R> R recordToEntity(Record entityRecord) throws UPAException;
+    <R> R recordToObject(Record record) throws UPAException;
 
-    <R> R idToEntity(Object entityId) throws UPAException;
+    <R> R idToObject(Object id) throws UPAException;
 
-    Record idToRecord(Object entityId) throws UPAException;
+    Record idToRecord(Object id) throws UPAException;
 
-    Object entityToId(Object entityValue) throws UPAException;
+    Object objectToId(Object object) throws UPAException;
 
-    Key entityToKey(Object entityValue) throws UPAException;
+    Key objectToKey(Object object) throws UPAException;
 
-    Object recordToId(Record entityRecord) throws UPAException;
+    Object recordToId(Record record) throws UPAException;
 
-    Key recordToKey(Record entityRecord) throws UPAException;
+    Key recordToKey(Record record) throws UPAException;
 
-    Object keyToEntity(Key recordKey) throws UPAException;
+    Object keyToObject(Key key) throws UPAException;
 
-    Record keyToRecord(Key recordKey) throws UPAException;
+    Record keyToRecord(Key key) throws UPAException;
 
-    public void setRecordId(Record entityRecord, Object entityId) throws UPAException;
+    public void setRecordId(Record record, Object id) throws UPAException;
 
-    public void setEntityId(Object entityObject, Object entityId) throws UPAException;
+    public void setObjectId(Object object, Object id) throws UPAException;
 
-    public void setProperty(Object entityObject, String property, Object value) throws UPAException;
+    public void setProperty(Object object, String property, Object value) throws UPAException;
 
-    public Object getProperty(Object entityObject, String property) throws UPAException;
+    public Object getProperty(Object object, String property) throws UPAException;
 
-    public Expression recordToExpression(Record entityRecord, String entityAlias) throws UPAException;
+    public Expression recordToExpression(Record record, String alias) throws UPAException;
 
-    public Expression entityToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException;
+    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException;
 
     //    public Expression idToExpression(Object key) throws UPAException;
-    public Expression idToExpression(Object entityId, String alias) throws UPAException;
+    public Expression idToExpression(Object id, String alias) throws UPAException;
 
     public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException;
 
     public Expression keyToExpression(Key recordKey, String alias) throws UPAException;
 
-    public <K> Expression idListToExpression(List<K> entityIdList, String alias) throws UPAException;
+    public <K> Expression idListToExpression(List<K> idList, String alias) throws UPAException;
 
-    public Expression keyListToExpression(List<Key> entityIdList, String alias) throws UPAException;
+    public Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException;
 }

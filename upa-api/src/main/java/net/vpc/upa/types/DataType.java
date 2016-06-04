@@ -217,7 +217,7 @@ public class DataType implements Cloneable {
     }
 
     public boolean isAssignableFrom(DataType type) {
-        return this.equals(type);
+        return this.getClass().isAssignableFrom(type.getClass());
     }
 
     public boolean isInstance(Object object) {

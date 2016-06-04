@@ -177,17 +177,12 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
                 //force cursors
                 //url+=";SelectMethod=cursor";
                 String driverClass = "net.sourceforge.jtds.jdbc.Driver";
-                try {
-                    PlatformUtils.forName(driverClass);
-                } catch (Exception cls) {
-                    throw new DriverNotFoundException(driverClass);
-                }
-                return DriverManager.getConnection(url, properties.get(ConnectionOption.USER_NAME), properties.get(ConnectionOption.PASSWORD));
+                String user = properties.get(ConnectionOption.USER_NAME);
+                String password = properties.get(ConnectionOption.PASSWORD);
+                return createPlatformConnection(driverClass, url, user, password, properties);
             }
         } catch (UPAException e) {
             throw e;
-        } catch (SQLException e) {
-            throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));
         } catch (Exception e) {
             //
             throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));

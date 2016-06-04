@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-import net.vpc.upa.types.TypesFactory;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
@@ -11,11 +10,11 @@ public final class CompiledLessThan extends CompiledBinaryOperatorExpression
 
     public CompiledLessThan(DefaultCompiledExpression left, Object right) {
         super(BinaryOperator.LT, left, right);
-        setDataType(IdentityDataTypeTransform.BOOLEAN);
+        setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }
 
     public CompiledLessThan(DefaultCompiledExpression left, DefaultCompiledExpression right) {
         super(BinaryOperator.LT, left, right);
-        setDataType(IdentityDataTypeTransform.BOOLEAN);
+        setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }
 }

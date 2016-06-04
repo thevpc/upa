@@ -249,7 +249,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
     public UserPrincipal login(String login, String credentials) throws UPAException {
         PersistenceGroupSecurityManager s = UPA.getPersistenceGroup().getPersistenceGroupSecurityManager();
         if (s == null) {
-            throw new IllegalArgumentException("Unsupported");
+            throw new UPAException("MissingPersistenceGroupSecurityManager");
         }
         return s.login(login, credentials);
     }
@@ -258,7 +258,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
     public UserPrincipal loginPrivileged(String login) throws UPAException {
         PersistenceGroupSecurityManager s = UPA.getPersistenceGroup().getPersistenceGroupSecurityManager();
         if (s == null) {
-            throw new IllegalArgumentException("Unsupported");
+            throw new UPAException("MissingPersistenceGroupSecurityManager");
         }
         return s.loginPrivileged(login);
     }

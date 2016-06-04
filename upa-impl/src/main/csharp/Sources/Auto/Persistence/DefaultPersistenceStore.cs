@@ -609,7 +609,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (IsView(table)) {
                 return null;
             } else if (relation.GetRelationshipType() != Net.Vpc.Upa.RelationshipType.TRANSIENT) {
-                sb.Append("Alter Table ").Append(GetValidIdentifier(GetTableName(table))).Append(" Drop Constraint ").Append(GetValidIdentifier(GetRelationshipName(relation)));
+                sb.Append("Alter Table ").Append(GetValidIdentifier(GetTableName(table))).Append(" Drop FOREIGN KEY ").Append(GetValidIdentifier(GetRelationshipName(relation)));
                 return (sb.ToString());
             }
             return null;
@@ -620,7 +620,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (!entity.GetShield().IsTransient()) {
                 System.Collections.Generic.IList<Net.Vpc.Upa.Field> pk = entity.GetFields(ID);
                 if ((pk).Count > 0) {
-                    sb.Append("Alter Table ").Append(GetValidIdentifier(GetTableName(entity))).Append(" Drop Constraint ").Append(GetValidIdentifier(GetTablePKName(entity)));
+                    sb.Append("Alter Table ").Append(GetValidIdentifier(GetTableName(entity))).Append(" Drop PRIMARY KEY ").Append(GetValidIdentifier(GetTablePKName(entity)));
                     return (sb.ToString());
                 }
             }

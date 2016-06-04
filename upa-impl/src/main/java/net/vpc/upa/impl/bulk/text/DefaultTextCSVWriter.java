@@ -10,6 +10,9 @@ package net.vpc.upa.impl.bulk.text;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.vpc.upa.PortabilityHint;
 
 import net.vpc.upa.bulk.DataColumn;
@@ -33,6 +36,8 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
     boolean supportsDoubleQuote;
     boolean trimValues;
     private String newLine;
+    private String validSeparator;
+    private char preferredEscapeChar='"';
 
     public DefaultTextCSVWriter(TextCSVFormatter p, Writer writer) {
         super(new TextCSVColumn(), p.isContainsHeader(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]));
@@ -43,6 +48,15 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
         supportsSimpleQuote = p.isSupportsSimpleQuote();
         supportsDoubleQuote = p.isSupportsDoubleQuote();
         trimValues = p.isTrimValues();
+        if(supportsDoubleQuote) {
+            preferredEscapeChar = '"';
+        }else if(supportsSimpleQuote){
+            preferredEscapeChar='\'';
+        }else if(supportsBackSlash){
+            preferredEscapeChar='\\';
+        }else{
+            preferredEscapeChar = '"';
+        }
     }
 
     @Override
@@ -51,6 +65,11 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
         if (nl == null) {
             nl = PlatformUtils.getSystemLineSeparator();
         }
+        String separator = p.getSeparators();
+        if (separator == null) {
+            separator = ";";
+        }
+        validSeparator=separator;
         newLine = nl;
         if (p.getSkipRows() > 0) {
             write(newLine);
@@ -63,20 +82,40 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
         //do nothing
     }
 
+
     @Override
     protected void writeCell(long rowIndex, DataRow row, int cellIndex, Object cell) {
         if (cellIndex > 0) {
-            String separator = p.getSeparators();
-            if (separator == null) {
-                separator = ";";
-            }
-            write(separator);
+            write(validSeparator);
         }
-        String charsString = cell == null ? "" : String.valueOf(cell);
+        String cellString = cell == null ? "" : String.valueOf(cell);
         if (trimValues) {
-            charsString = charsString.trim();
+            cellString = cellString.trim();
         }
-        char[] chars = charsString.toCharArray();
+        boolean needEscape=false;
+        boolean needEscapeSep=false;
+        boolean needEscapeBackSlash=false;
+        boolean needEscapeDblQuote=false;
+        boolean needEscapeSimpleQuote=false;
+
+        char[] chars = cellString.toCharArray();
+
+        for (char c : chars) {
+            for (char c2 : validSeparator.toCharArray()) {
+                if(c==c2){
+                    needEscapeSep=true;
+                    break;
+                }
+            }
+            switch (c){
+                case '\\':{needEscapeBackSlash=true;break;}
+                case '\n':{needEscapeBackSlash=true;break;}
+                case '\'':{needEscapeSimpleQuote=true;break;}
+                case '\"':{needEscapeDblQuote=true;break;}
+            }
+        }
+        needEscape=(needEscapeBackSlash || needEscapeDblQuote || needEscapeSimpleQuote || needEscapeSep);
+
         StringBuilder s = new StringBuilder();
         boolean escape = false;
         boolean smpQuotes = false;
@@ -84,48 +123,85 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
         for (char c : chars) {
             switch (c) {
                 case '\\': {
-                    if (supportsBackSlash) {
+//                    if (supportsBackSlash) {
                         if (escape) {
                             s.append(c);
                         } else {
                             escape = true;
                         }
-                    } else {
-                        s.append(c);
-                    }
+//                    } else {
+//                        s.append(c);
+//                    }
                     break;
                 }
                 case '\'': {
-                    if (escape) {
-                        s.append(c);
-                    } else {
-                        escape = true;
-                        if (smpQuotes) {
-                            smpQuotes = false;
-                        } else {
-                            if (supportsSimpleQuote && !dblQuotes) {
-                                smpQuotes = true;
-                            } else {
-                                s.append(c);
-                            }
+                    if(preferredEscapeChar=='"'){
+                        if(needEscape) {
+                            s.append(c);
+                        }else{
+                            s.append('\\').append(c);
                         }
+                    }else if(preferredEscapeChar=='\''){
+                        s.append('\\').append(c);
+                    }else if(preferredEscapeChar=='\\'){
+                        s.append('\\').append(c);
+                    }else{
+                        s.append(c);
                     }
                     break;
                 }
                 case '"': {
-                    if (escape) {
-                        s.append(c);
-                    } else {
-                        escape = true;
-                        if (dblQuotes) {
-                            dblQuotes = false;
-                        } else {
-                            if (supportsDoubleQuote && !smpQuotes) {
-                                dblQuotes = true;
-                            } else {
-                                s.append(c);
-                            }
+                    if(preferredEscapeChar=='"'){
+                        s.append('\\').append(c);
+                    }else if(preferredEscapeChar=='\''){
+                        if(needEscape) {
+                            s.append(c);
+                        }else{
+                            s.append('\\').append(c);
                         }
+                    }else if(preferredEscapeChar=='\\'){
+                        s.append('\\').append(c);
+                    }else{
+                        s.append(c);
+                    }
+
+//                    if (escape) {
+//                        s.append(c);
+//                    } else {
+//                        escape = true;
+//                        if (dblQuotes) {
+//                            dblQuotes = false;
+//                        } else {
+//                            if (supportsDoubleQuote && !smpQuotes) {
+//                                dblQuotes = true;
+//                            } else {
+//                                s.append(c);
+//                            }
+//                        }
+//                    }
+                    break;
+                }
+                case '\n': {
+                    s.append("\\n");
+                    break;
+                }
+                case '\r': {
+                    s.append("\\r");
+                    break;
+                }
+                case '\t': {
+                    if(needEscapeSep){
+                        s.append("\\t");
+                    }else{
+                        s.append(c);
+                    }
+                    break;
+                }
+                case ' ': {
+                    if(needEscapeSep){
+                        s.append("\\ ");
+                    }else{
+                        s.append(c);
                     }
                     break;
                 }
@@ -133,6 +209,10 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
                     s.append(c);
                 }
             }
+        }
+        if(needEscape){
+            s.insert(0, '\"');
+            s.append('\"');
         }
         write(s);
     }

@@ -50,6 +50,7 @@ import net.vpc.upa.types.I18NString;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Persistence Unit is this template use File | Settings | File Templates.
@@ -237,7 +238,9 @@ public interface PersistenceUnit extends Closeable {
 
     void setDBConfigModel(DBConfigModel dbConfigModel) throws UPAException;
 
-    void clear(/*ProgressListener progressListener, ProgressEvent event*/) throws UPAException;
+    public void clear(EntityFilter entityFilter) throws UPAException ;
+    
+    void clear() throws UPAException;
 
     @Deprecated
     void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
@@ -411,6 +414,15 @@ public interface PersistenceUnit extends Closeable {
 
     public void update(String entityName, Object objectOrRecord) throws UPAException;
 
+
+    public void updatePartial(String entityName, Object objectOrRecord,String... fields) throws UPAException ;
+
+    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified) throws UPAException ;
+
+    public void updatePartial(Object objectOrRecord,String... fields) throws UPAException ;
+
+    public void updatePartial(Object objectOrRecord,Set<String> fields,boolean ignoreUnspecified) throws UPAException ;
+
     public void updatePartial(Object objectOrRecord) throws UPAException;
 
     public void updatePartial(String entityName, Object objectOrRecord) throws UPAException;
@@ -443,6 +455,8 @@ public interface PersistenceUnit extends Closeable {
 
     public <T> List<T> findAll(String entityName) throws UPAException;
 
+    public <T> List<T> findAllIds(String entityName) throws UPAException;
+
     public <T> T findByMainField(Class entityType, Object mainFieldValue) throws UPAException;
 
     public <T> T findByMainField(String entityName, Object mainFieldValue) throws UPAException;
@@ -454,7 +468,7 @@ public interface PersistenceUnit extends Closeable {
     public <T> T findById(Class entityType, Object id) throws UPAException;
 
     public <T> T findById(String entityName, Object id) throws UPAException;
-    
+
     public boolean existsById(String entityName, Object id) throws UPAException;
 
     public List<Record> findAllRecords(Class entityType) throws UPAException;
@@ -473,7 +487,13 @@ public interface PersistenceUnit extends Closeable {
 
     public Query createQuery(String query) throws UPAException;
 
-    public void beginTransaction(TransactionType transactionType) throws UPAException;
+    /**
+     *
+     * @param transactionType
+     * @return true if a transaction has been created
+     * @throws UPAException
+     */
+    public boolean beginTransaction(TransactionType transactionType) throws UPAException;
 
     public void commitTransaction() throws UPAException;
 
@@ -572,7 +592,23 @@ public interface PersistenceUnit extends Closeable {
     public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, EventPhase phase);
 
     public UConnection getConnection() throws UPAException;
-    
-    public void setIdentityConstraintsEnabled(Entity entity, boolean enable) ;
-    
+
+    public void setIdentityConstraintsEnabled(Entity entity, boolean enable);
+
+
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+
+    public <T> T invoke(Action<T> action) throws UPAException;
+
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+
+    public <T> T invokePrivileged(Action<T> action) throws UPAException;
+
+    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+
+    public void invoke(VoidAction action) throws UPAException;
+
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+
+    public void invokePrivileged(VoidAction action) throws UPAException;
 }

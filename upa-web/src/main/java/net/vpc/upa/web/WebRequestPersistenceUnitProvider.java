@@ -16,13 +16,11 @@ import net.vpc.upa.PersistenceUnitProvider;
  */
 public class WebRequestPersistenceUnitProvider implements PersistenceUnitProvider {
 
-    @Override
     public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup) {
         String p = getRequestMap().get(String.valueOf(System.identityHashCode(persistenceGroup)));
         return p == null ? null : persistenceGroup.getPersistenceUnit(p);
     }
 
-    @Override
     public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit) {
         String k = String.valueOf(System.identityHashCode(persistenceGroup));
         if (persistenceUnit == null) {

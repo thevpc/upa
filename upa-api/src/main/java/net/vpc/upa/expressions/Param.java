@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class Param extends DefaultExpression {
     private static final long serialVersionUID = 1L;
-    private Object object;
+    private Object value;
     private String name;
     private boolean unspecified;
 
@@ -56,9 +56,9 @@ public class Param extends DefaultExpression {
         this.name = name;
     }
 
-    public Param(String name, Object object) {
+    public Param(String name, Object value) {
         this.unspecified = false;
-        this.object = object;
+        this.value = value;
         this.name = name;
     }
 
@@ -76,21 +76,21 @@ public class Param extends DefaultExpression {
         return name;
     }
 
-    public Object getObject() {
-        return object;
+    public Object getValue() {
+        return value;
     }
 
     public boolean isUnspecified() {
         return unspecified;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     @Override
     public Expression copy() {
-        Param o = unspecified ? new Param(name) : new Param(name, object);
+        Param o = unspecified ? new Param(name) : new Param(name, value);
         return o;
     }
 
@@ -102,7 +102,7 @@ public class Param extends DefaultExpression {
         if (isUnspecified()) {
             return ":" + getName();
         }
-        return ":" + getName() + "(=" + getObject() + ")";
+        return ":" + getName() + "(=" + getValue() + ")";
     }
 
 }

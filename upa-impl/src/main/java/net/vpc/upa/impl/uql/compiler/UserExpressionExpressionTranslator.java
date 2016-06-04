@@ -34,7 +34,7 @@ public class UserExpressionExpressionTranslator implements ExpressionTranslator 
         List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
         for (CompiledParam e : cvalues) {
             if (v.containsParameter(e.getName())) {
-                e.setObject(v.getParameter(e.getName()));
+                e.setValue(v.getParameter(e.getName()));
                 e.setUnspecified(false);
             }
         }

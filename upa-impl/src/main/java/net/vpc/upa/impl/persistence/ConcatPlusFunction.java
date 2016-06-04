@@ -1,6 +1,6 @@
-//package org.vpc.database.persistence;
+//package net.vpc.database.persistence;
 //
-//import org.vpc.database.parser.Function;
+//import net.vpc.database.parser.Function;
 //import net.vpc.lib.pheromone.ariana.util.StringFormatter;
 //
 //

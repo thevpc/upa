@@ -27,19 +27,19 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public <R> R idToEntity(Object k) throws UPAException {
-        if (k == null) {
+    public <R> R idToObject(Object id) throws UPAException {
+        if (id == null) {
             return null;
         }
         R r = entity.getBuilder().createObject();
-        Record ur = entityToRecord(r, true);
+        Record ur = objectToRecord(r, true);
         List<Field> primaryFields = entity.getPrimaryFields();
-        if (k == null) {
+        if (id == null) {
             for (Field aF : primaryFields) {
                 ur.setObject(aF.getName(), null);
             }
         } else {
-            Object[] uk = entity.getBuilder().getKey(k).getValue();
+            Object[] uk = entity.getBuilder().getKey(id).getValue();
             for (int i = 0; i < primaryFields.size(); i++) {
                 ur.setObject(primaryFields.get(i).getName(), uk[i]);
             }
@@ -48,8 +48,8 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public Record idToRecord(Object k) throws UPAException {
-        if (k == null) {
+    public Record idToRecord(Object id) throws UPAException {
+        if (id == null) {
             return null;
         }
         Record ur = entity.getBuilder().createRecord();
@@ -59,7 +59,7 @@ public class DefaultEntityConverter implements EntityConverter {
 //                ur.setObject(aF.getName(), null);
 //            }
 //        } else {
-        Object[] uk = entity.getBuilder().getKey(k).getValue();
+        Object[] uk = entity.getBuilder().getKey(id).getValue();
         for (int i = 0; i < primaryFields.size(); i++) {
             ur.setObject(primaryFields.get(i).getName(), uk[i]);
         }
@@ -68,11 +68,11 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public Object entityToId(Object r) throws UPAException {
-        if (r == null) {
+    public Object objectToId(Object object) throws UPAException {
+        if (object == null) {
             return null;
         }
-        return recordToId(entityToRecord(r, true));
+        return recordToId(objectToRecord(object, true));
     }
 
     @Override
@@ -95,11 +95,11 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public Key entityToKey(Object r) throws UPAException {
-        if (r == null) {
+    public Key objectToKey(Object object) throws UPAException {
+        if (object == null) {
             return null;
         }
-        return recordToKey(entityToRecord(r, true));
+        return recordToKey(objectToRecord(object, true));
     }
 
     @Override
@@ -122,26 +122,26 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public Object keyToEntity(Key uk) throws UPAException {
-        if (uk == null) {
+    public Object keyToObject(Key key) throws UPAException {
+        if (key == null) {
             return null;
         }
-        return entity.getBuilder().getEntity(keyToRecord(uk));
+        return entity.getBuilder().getEntity(keyToRecord(key));
     }
 
     @Override
-    public Record keyToRecord(Key k) throws UPAException {
-        if (k == null) {
+    public Record keyToRecord(Key key) throws UPAException {
+        if (key == null) {
             return null;
         }
         Record ur = entity.getBuilder().createRecord();
         List<Field> primaryFields = entity.getPrimaryFields();
-        if (k == null) {
+        if (key == null) {
             for (Field aF : primaryFields) {
                 ur.setObject(aF.getName(), null);
             }
         } else {
-            Object[] uk = k.getValue();
+            Object[] uk = key.getValue();
             for (int i = 0; i < primaryFields.size(); i++) {
                 ur.setObject(primaryFields.get(i).getName(), uk[i]);
             }
@@ -150,11 +150,11 @@ public class DefaultEntityConverter implements EntityConverter {
     }
 
     @Override
-    public Key idToKey(Object entityId) throws UPAException {
-        if (entityId == null) {
+    public Key idToKey(Object id) throws UPAException {
+        if (id == null) {
             return null;
         }
-        return entity.getBuilder().getKey(entityId);
+        return entity.getBuilder().getKey(id);
     }
 
     @Override
@@ -165,20 +165,20 @@ public class DefaultEntityConverter implements EntityConverter {
         return entity.getBuilder().getId(uk);
     }
 
-    public Record entityToRecord(Object entityValue) throws UPAException {
-        return entityToRecord(entityValue, false);
+    public Record objectToRecord(Object object) throws UPAException {
+        return objectToRecord(object, false);
     }
 
-    public Record entityToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException {
-        if (entityValue == null) {
+    public Record objectToRecord(Object object, boolean ignoreUnspecified) throws UPAException {
+        if (object == null) {
             return null;
         }
-        return entity.getBuilder().getRecord(entityValue, ignoreUnspecified);
+        return entity.getBuilder().getRecord(object, ignoreUnspecified);
     }
 
-    public Object getMainProperty(Object entityValue) throws UPAException {
+    public Object getMainProperty(Object object) throws UPAException {
         Field mf = entity.getMainField();
-        Object v = getProperty(entityValue, mf.getName());
+        Object v = getProperty(object, mf.getName());
         if(v!=null && mf.getDataType() instanceof EntityType && !UPAUtils.isSimpleFieldType(v.getClass())){
             Entity t = ((EntityType)mf.getDataType()).getRelationship().getTargetEntity();
             return t.getMainFieldValue(v);
@@ -191,22 +191,22 @@ public class DefaultEntityConverter implements EntityConverter {
 //    }
 //
 //    public Object entityToProperty(Object entityValue, String propertyName, boolean ignoreUnspecified) throws UPAException {
-//        Record rec = entityToRecord(entityValue, ignoreUnspecified);
+//        Record rec = objectToRecord(entityValue, ignoreUnspecified);
 //        return rec == null ? null : rec.getObject(propertyName);
 //    }
     @Override
-    public <R> R recordToEntity(Record ur) throws UPAException {
-        if (ur == null) {
+    public <R> R recordToObject(Record record) throws UPAException {
+        if (record == null) {
             return null;
         }
-        return entity.getBuilder().getEntity(ur);
+        return entity.getBuilder().getEntity(record);
     }
 
-    public void setRecordId(Record r, Object id) throws UPAException {
+    public void setRecordId(Record record, Object id) throws UPAException {
         List<Field> f = entity.getPrimaryFields();
         if (id == null) {
             for (Field aF : f) {
-                r.remove(aF.getName());
+                record.remove(aF.getName());
             }
             return;
         }
@@ -216,39 +216,39 @@ public class DefaultEntityConverter implements EntityConverter {
                 throw new RuntimeException("key " + id + " could not denote for entity " + entity.getName() + " ; got " + uk.length + " elements instread of " + f.size());
             }
             for (int i = 0; i < f.size(); i++) {
-                r.setObject(f.get(i).getName(), uk[i]);
+                record.setObject(f.get(i).getName(), uk[i]);
             }
         }
     }
 
-    public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        entity.getBuilder().setProperty(entityObject, property, value);
+    public void setProperty(Object object, String property, Object value) throws UPAException {
+        entity.getBuilder().setProperty(object, property, value);
     }
 
-    public Object getProperty(Object entityObject, String property) throws UPAException {
-        return entity.getBuilder().getProperty(entityObject, property);
+    public Object getProperty(Object object, String property) throws UPAException {
+        return entity.getBuilder().getProperty(object, property);
     }
 
-    public void setEntityId(Object entity, Object id) throws UPAException {
-        setRecordId(entityToRecord(entity, true), id);
+    public void setObjectId(Object object, Object id) throws UPAException {
+        setRecordId(objectToRecord(object, true), id);
     }
 
-    public Expression entityToExpression(Object obj, boolean ignoreUnspecified, String entityAlias) throws UPAException {
-        return recordToExpression(entityToRecord(obj, ignoreUnspecified), entityAlias);
+    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException {
+        return recordToExpression(objectToRecord(object, ignoreUnspecified), alias);
     }
 
-    public Expression recordToExpression(Record record, String entityAlias) throws UPAException {
+    public Expression recordToExpression(Record record, String alias) throws UPAException {
         if (record == null) {
             return null;
         }
         Expression a = null;
-        for (Map.Entry<String, Object> entry : record.toMap().entrySet()) {
+        for (Map.Entry<String, Object> entry : record.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             Field field = entity.getField(key);
             if (!field.isUnspecifiedValue(value)) {
                 Expression e = null;
-                Var p = new Var(Strings.isNullOrEmpty(entityAlias) ? entity.getName() : entityAlias);
+                Var p = new Var(Strings.isNullOrEmpty(alias) ? entity.getName() : alias);
                 switch (field.getSearchOperator()) {
                     case DEFAULT:
                     case EQ: {
@@ -311,12 +311,12 @@ public class DefaultEntityConverter implements EntityConverter {
 //    public Expression idToExpression(Object key) throws UPAException {
 //        return idToExpression(key, null);
 //    }
-    public Expression idToExpression(Object key, String entityAlias) {
-        if (key == null) {
+    public Expression idToExpression(Object id, String entityAlias) {
+        if (id == null) {
             return null;
         }
         //        keyExpression.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
-        return new IdExpression(entity, key, entityAlias);
+        return new IdExpression(entity, id, entityAlias);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class DefaultEntityConverter implements EntityConverter {
         if(entityOrRecord instanceof Record){
             r=(Record)entityOrRecord;
         }
-        r = entityToRecord(entityOrRecord);
+        r = objectToRecord(entityOrRecord);
         Key k = recordToKey(r);
         return keyToExpression(k, alias);
     }

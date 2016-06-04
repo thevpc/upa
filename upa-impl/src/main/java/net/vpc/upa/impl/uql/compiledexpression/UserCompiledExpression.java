@@ -32,7 +32,7 @@ public class UserCompiledExpression extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public void setDataType(DataTypeTransform type) {
+    public void setTypeTransform(DataTypeTransform type) {
         this.type = type;
     }
 

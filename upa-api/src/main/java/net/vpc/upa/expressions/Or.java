@@ -46,4 +46,15 @@ public final class Or extends BinaryOperatorExpression
     public Or(Expression left, Expression right) {
         super(BinaryOperator.OR, left, right);
     }
+
+
+    public static Expression create(Expression left, Expression right) {
+        if(left==null){
+            return right;
+        }
+        if(right==null){
+            return left;
+        }
+        return new Or(left,right);
+    }
 }

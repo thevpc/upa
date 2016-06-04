@@ -27,14 +27,14 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
 
         if (String.class.equals(t) || String.class.equals(r)) {
             //
-            setDataType(IdentityDataTypeTransform.STRING);
+            setTypeTransform(IdentityDataTypeTransform.STRING);
         } else {
 
             /**
              * @PortabilityHint(target="C#",name="suppress")
              */
             if (BigDecimal.class.equals(t) || BigDecimal.class.equals(r)) {
-                setDataType(IdentityDataTypeTransform.BIGDECIMAL);
+                setTypeTransform(IdentityDataTypeTransform.BIGDECIMAL);
             }
             if (BigInteger.class.equals(t) || BigInteger.class.equals(r)) {
                 if (Double.class.equals(t) || Double.class.equals(r)) {
@@ -43,25 +43,25 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
                      * SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
                      *
                      */
-                    setDataType(IdentityDataTypeTransform.BIGDECIMAL);
+                    setTypeTransform(IdentityDataTypeTransform.BIGDECIMAL);
                 } else if (Float.class.equals(t) || Float.class.equals(r)) {
                     /**
                      * @PortabilityHint(target="C#",name="replace")
                      * SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
                      *
                      */
-                    setDataType(IdentityDataTypeTransform.BIGDECIMAL);
+                    setTypeTransform(IdentityDataTypeTransform.BIGDECIMAL);
                 } else {
-                    setDataType(IdentityDataTypeTransform.BIGINT);
+                    setTypeTransform(IdentityDataTypeTransform.BIGINT);
                 }
             } else if (Double.class.equals(t) || Double.class.equals(r)) {
-                setDataType(IdentityDataTypeTransform.DOUBLE);
+                setTypeTransform(IdentityDataTypeTransform.DOUBLE);
             } else if (Float.class.equals(t) || Float.class.equals(r)) {
-                setDataType(IdentityDataTypeTransform.FLOAT);
+                setTypeTransform(IdentityDataTypeTransform.FLOAT);
             } else if (Long.class.equals(t) || Long.class.equals(r)) {
-                setDataType(IdentityDataTypeTransform.LONG);
+                setTypeTransform(IdentityDataTypeTransform.LONG);
             } else if (Integer.class.equals(t) || Integer.class.equals(r)) {
-                setDataType(IdentityDataTypeTransform.INT);
+                setTypeTransform(IdentityDataTypeTransform.INT);
             } else {
                 throw new IllegalArgumentException("Unsupported types");
             }

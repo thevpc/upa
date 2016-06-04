@@ -33,15 +33,15 @@ public class DefaultXmlFormatter extends XmlFormatter {
     public DataWriter createWriter() throws IOException {
         if (target instanceof File) {
             DefaultXmlWriter w = new DefaultXmlWriter(this, new FileWriter((File) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof OutputStream) {
             DefaultXmlWriter w = new DefaultXmlWriter(this, new OutputStreamWriter((OutputStream) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else if (target instanceof Writer) {
             DefaultXmlWriter w = new DefaultXmlWriter(this, ((Writer) target));
-            w.setDataSerializer(getDataSerializer());
+            w.setDataRowConverter(getDataRowConverter());
             return w;
         } else {
             throw new UPAException(new I18NString("InvalidTarget")

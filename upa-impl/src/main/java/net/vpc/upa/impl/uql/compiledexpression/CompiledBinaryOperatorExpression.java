@@ -30,9 +30,9 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
             rightType = right.getTypeTransform();
         }
         if (leftType == null && rightType != null) {
-            left.setDataType(rightType);
+            left.setTypeTransform(rightType);
         } else if (rightType == null && leftType != null) {
-            right.setDataType(leftType);
+            right.setTypeTransform(leftType);
         }
         this.operator = operator;
         prepareChildren(left, right);
@@ -236,5 +236,8 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
                 throw new IllegalArgumentException("Not Supported Yet");
             }
         }
+    }
+    public boolean isSameOperandsType(){
+        return true;
     }
 }

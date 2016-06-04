@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
 
@@ -32,9 +31,6 @@ public class CompiledVar extends CompiledVarOrMethod {
     public CompiledVar(String name, Object referrer) {
         setName(name);
         setReferrer(referrer);
-        if("AcademicCoursePlan.coursePlanId".equals(toString())){
-            System.out.println("Why");
-        }
     }
 
     @Override

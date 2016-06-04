@@ -12,41 +12,41 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public class CompiledParam extends DefaultCompiledExpressionImpl {
 
-    private Object object;
+    private Object value;
     private String name;
     private boolean unspecified = true;
     private static final long serialVersionUID = 1L;
 
-    public CompiledParam(Object object, String name, DataTypeTransform type, boolean unspecified) {
-        this.object = object;
+    public CompiledParam(Object value, String name, DataTypeTransform type, boolean unspecified) {
+        this.value = value;
         this.name = name;
         this.unspecified = unspecified;
         if (type == null) {
-            if (object == null) {
-                setDataType(IdentityDataTypeTransform.OBJECT);
+            if (value == null) {
+                setTypeTransform(IdentityDataTypeTransform.OBJECT);
             } else {
-                setDataType(IdentityDataTypeTransform.forNativeType(object.getClass()));
+                setTypeTransform(IdentityDataTypeTransform.forNativeType(value.getClass()));
             }
         } else {
-            setDataType(type);
+            setTypeTransform(type);
         }
     }
 
     @Override
-    public void setDataType(DataTypeTransform type) {
-        super.setDataType(type); //To change body of generated methods, choose Tools | Templates.
+    public void setTypeTransform(DataTypeTransform type) {
+        super.setTypeTransform(type); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object getObject() {
-        return object;
+    public Object getValue() {
+        return value;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setObject(Object object) {
-        this.object = object;
+    public void setValue(Object value) {
+        this.value = value;
     }
 
     public boolean isUnspecified() {
@@ -59,7 +59,7 @@ public class CompiledParam extends DefaultCompiledExpressionImpl {
 
     @Override
     public DefaultCompiledExpression copy() {
-        CompiledParam o = new CompiledParam(object, name, getTypeTransform(), unspecified);
+        CompiledParam o = new CompiledParam(value, name, getTypeTransform(), unspecified);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;
@@ -80,7 +80,7 @@ public class CompiledParam extends DefaultCompiledExpressionImpl {
 
     @Override
     public String toString() {
-        return ('{' + name + "=" + (unspecified ? "?" : object) + '}');
+        return ('{' + name + "=" + (unspecified ? "?" : value) + '}');
     }
 
     @Override

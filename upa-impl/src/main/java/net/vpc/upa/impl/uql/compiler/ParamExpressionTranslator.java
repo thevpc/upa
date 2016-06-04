@@ -30,7 +30,7 @@ public class ParamExpressionTranslator implements ExpressionTranslator {
         if (v == null) {
             return null;
         }
-        CompiledParam s = new CompiledParam(v.isUnspecified() ? null : v.getObject(), v.getName(), null, v.isUnspecified());
+        CompiledParam s = new CompiledParam(v.isUnspecified() ? null : v.getValue(), v.getName(), null, v.isUnspecified());
         //        s.setDeclarationList(declarations);
         return s;
     }

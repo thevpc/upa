@@ -10,6 +10,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author vpc
@@ -55,6 +56,18 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
+    public <R> R copyObject(R r) {
+        return recordToObject(copyRecord(objectToRecord(r)));
+    }
+    
+    @Override
+    public Record copyRecord(Record rec) {
+        Record r = createRecord();
+        r.setAll(rec);
+        return r;
+    }
+
+    @Override
     public <R> R createObject() {
         return entityFactory.createObject();
     }
@@ -62,6 +75,11 @@ public class DefaultEntityBuilder implements EntityBuilder {
     @Override
     public <R> Record getRecord(R entity, boolean ignoreUnspecified) {
         return entityFactory.getRecord(entity, ignoreUnspecified);
+    }
+
+    @Override
+    public Record getRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
+        return entityFactory.getRecord(entity, fields,ignoreUnspecified,ensureIncludeIds);
     }
 
     @Override
@@ -122,92 +140,93 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record objectToRecord(Object entityValue) throws UPAException {
-        return entityConverter.entityToRecord(entityValue);
+    public Record objectToRecord(Object objectValue) throws UPAException {
+        return entityConverter.objectToRecord(objectValue);
     }
 
     @Override
-    public Record objectToRecord(Object entityValue, boolean ignoreUnspecified) throws UPAException {
-        return entityConverter.entityToRecord(entityValue);
+    public Record objectToRecord(Object objectValue, boolean ignoreUnspecified) throws UPAException {
+        return entityConverter.objectToRecord(objectValue);
     }
 
     @Override
-    public Object getMainValue(Object entityValue) throws UPAException {
-        return entityConverter.getMainProperty(entityValue);
+    public Object getMainValue(Object objectValue) throws UPAException {
+        return entityConverter.getMainProperty(objectValue);
     }
 
     @Override
-    public <R> R recordToObject(Record entityRecord) throws UPAException {
-        return entityConverter.recordToEntity(entityRecord);
+    public <R> R recordToObject(Record record) throws UPAException {
+        return entityConverter.recordToObject(record);
     }
 
     @Override
-    public <R> R idToEntity(Object entityId) throws UPAException {
-        return entityConverter.idToEntity(entityId);
+    public <R> R idToObject(Object objectId) throws UPAException {
+        return entityConverter.idToObject(objectId);
     }
 
     @Override
-    public Record idToRecord(Object entityId) throws UPAException {
-        return entityConverter.idToEntity(entityId);
+    public Record idToRecord(Object objectId) throws UPAException {
+        return entityConverter.idToObject(objectId);
     }
 
     @Override
-    public Object objectToId(Object entityValue) throws UPAException {
-        return entityConverter.entityToId(entityValue);
+    public Object objectToId(Object objectValue) throws UPAException {
+        return entityConverter.objectToId(objectValue);
     }
 
     @Override
-    public Key objectToKey(Object entityValue) throws UPAException {
-        return entityConverter.entityToKey(entityValue);
+    public Key objectToKey(Object objectValue) throws UPAException {
+        return entityConverter.objectToKey(objectValue);
     }
 
     @Override
-    public Object recordToId(Record entityRecord) throws UPAException {
-        return entityConverter.recordToId(entityRecord);
+    public Object recordToId(Record record) throws UPAException {
+        return entityConverter.recordToId(record);
     }
 
     @Override
-    public Key recordToKey(Record entityRecord) throws UPAException {
-        return entityConverter.recordToKey(entityRecord);
+    public Key recordToKey(Record record) throws UPAException {
+        return entityConverter.recordToKey(record);
     }
 
     @Override
-    public Object keyToObject(Key recordKey) throws UPAException {
-        return entityConverter.keyToEntity(recordKey);
+    public Object keyToObject(Key key) throws UPAException {
+        return entityConverter.keyToObject(key);
     }
 
     @Override
-    public Record keyToRecord(Key recordKey) throws UPAException {
-        return entityConverter.keyToRecord(recordKey);
+    public Record keyToRecord(Key key) throws UPAException {
+        return entityConverter.keyToRecord(key);
     }
 
     @Override
-    public void setRecordId(Record entityRecord, Object entityId) throws UPAException {
-        entityConverter.setRecordId(entityRecord, entityId);
+    public void setRecordId(Record record, Object id) throws UPAException {
+        entityConverter.setRecordId(record, id);
     }
 
     @Override
-    public void setObjectId(Object entityObject, Object entityId) throws UPAException {
-        entityConverter.setEntityId(entityObject, entityId);
+    public void setObjectId(Object object, Object id) throws UPAException {
+        entityConverter.setObjectId(object, id);
     }
 
     @Override
-    public Expression recordToExpression(Record entityRecord, String entityAlias) throws UPAException {
-        return entityConverter.recordToExpression(entityRecord, entityAlias);
+    public Expression recordToExpression(Record record, String alias) throws UPAException {
+        return entityConverter.recordToExpression(record, alias);
     }
 
     @Override
-    public Expression objectToExpression(Object entityValue, boolean ignoreUnspecified, String entityAlias) throws UPAException {
-        return entityConverter.entityToExpression(entityValue, ignoreUnspecified, entityAlias);
+    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException {
+        return entityConverter.objectToExpression(object, ignoreUnspecified, alias);
     }
 
     @Override
     public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException {
         return entityConverter.objectToIdExpression(objectOrRecord, alias);
     }
+
     @Override
-    public Expression idToExpression(Object entityId, String alias) throws UPAException {
-        return entityConverter.idToExpression(entityId, alias);
+    public Expression idToExpression(Object id, String alias) throws UPAException {
+        return entityConverter.idToExpression(id, alias);
     }
 
     @Override
@@ -221,8 +240,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Expression keyListToExpression(List<Key> idList, String alias) throws UPAException {
-        return entityConverter.keyListToExpression(idList, alias);
+    public Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException {
+        return entityConverter.keyListToExpression(keyList, alias);
     }
 
     @Override
@@ -241,9 +260,9 @@ public class DefaultEntityBuilder implements EntityBuilder {
         Record r = createRecord();
         r.setAll(objectToRecord(o, false));
         for (Field field : entity.getFields()) {
-            if(field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))){
+            if (field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))) {
                 r.remove(field.getName());//even if defined in
-            }else{
+            } else {
                 Object df = field.getDefaultValue();
                 if (df != null) {
                     r.setObject(field.getName(), df);
@@ -259,12 +278,10 @@ public class DefaultEntityBuilder implements EntityBuilder {
         Record r = DefaultEntityBuilder.this.objectToRecord(o, false);
         for (Field field : entity.getFields()) {
             Object df = field.getDefaultValue();
-            if(field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))){
+            if (field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))) {
                 //do nothing
-            }else{
-                if (df != null) {
-                    r.setObject(field.getName(), df);
-                }
+            } else if (df != null) {
+                r.setObject(field.getName(), df);
             }
         }
         return recordToObject(r);

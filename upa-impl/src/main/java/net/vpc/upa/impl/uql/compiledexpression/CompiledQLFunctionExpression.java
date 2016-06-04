@@ -22,7 +22,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
             protectedAddArgument(a);
         }
         this.handler = handler;
-        setDataType(type);
+        setTypeTransform(type);
 //        prepareChildren(arguments);
     }
 
@@ -65,7 +65,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
             return ((CompiledLiteral)o).getValue();
         }
         if(o instanceof CompiledParam){
-            return ((CompiledParam)o).getObject();
+            return ((CompiledParam)o).getValue();
         }
         throw new IllegalArgumentException("Unable to evaluate type "+o.getClass()+" :: "+o);
     }

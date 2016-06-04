@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.Properties;
 import net.vpc.upa.callbacks.RelationshipEvent;
 import net.vpc.upa.callbacks.IndexEvent;
 import net.vpc.upa.callbacks.UpdateEvent;
@@ -72,6 +73,7 @@ public class DefaultUPAContext implements UPAContext {
     private UPAContextConfig bootstratContextConfig;
     private InvokeContext emptyInvokeContext = new InvokeContext();
     private UPAContextListenerManager listeners;
+    private ThreadLocal<Properties> threadProperties=new ThreadLocal<Properties>();
 
     public DefaultUPAContext() {
         listeners = new UPAContextListenerManager(this);
@@ -265,18 +267,29 @@ public class DefaultUPAContext implements UPAContext {
         if (invokeContext == null) {
             invokeContext = emptyInvokeContext;
         }
-        PersistenceGroup persistenceGroup = UPA.getPersistenceGroup();
-        Session s = null;
-        if (persistenceGroup.currentSessionExists()) {
-            s = persistenceGroup.getCurrentSession();
+        PersistenceGroup persistenceGroup = null;
+        if(invokeContext.getPersistenceGroup()!=null){
+            persistenceGroup=invokeContext.getPersistenceGroup();
+        }else if(invokeContext.getPersistenceUnit()!=null){
+            persistenceGroup=invokeContext.getPersistenceUnit().getPersistenceGroup();
         }
+        if(persistenceGroup==null){
+            persistenceGroup=UPA.getPersistenceGroup();
+        }
+        Session s = persistenceGroup.findCurrentSession();
         boolean sessionCreated = false;
         boolean loginCreated = false;
         if (s == null) {
             s = persistenceGroup.openSession();
             sessionCreated = true;
         }
-        PersistenceUnit pu = persistenceGroup.getPersistenceUnit();
+        PersistenceUnit pu = null;
+        if(invokeContext.getPersistenceUnit()!=null){
+            pu=invokeContext.getPersistenceUnit();
+        }
+        if(pu==null){
+            pu=persistenceGroup.getPersistenceUnit();
+        }
         if (invokeContext.getLogin() != null) {
             pu.login(invokeContext.getLogin(), invokeContext.getCredentials());
             loginCreated = true;
@@ -287,17 +300,20 @@ public class DefaultUPAContext implements UPAContext {
             transactionCreated = true;
         }
         T ret = null;
+        Throwable anyErr=null;
         try {
             ret = action.run();
             if (transactionCreated) {
                 pu.commitTransaction();
             }
         } catch (UPAException e) {
+            anyErr=e;
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
             throw e;
         } catch (Throwable e) {
+            anyErr=e;
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
@@ -318,38 +334,54 @@ public class DefaultUPAContext implements UPAContext {
         if (invokeContext == null) {
             invokeContext = emptyInvokeContext;
         }
-        PersistenceGroup persistenceGroup = UPA.getPersistenceGroup();
-        Session s = null;
-        if (persistenceGroup.currentSessionExists()) {
-            s = persistenceGroup.getCurrentSession();
+        PersistenceGroup persistenceGroup = null;
+        PersistenceGroup _persistenceGroup = invokeContext.getPersistenceGroup();
+        if(_persistenceGroup !=null){
+            persistenceGroup= _persistenceGroup;
+        }else if(invokeContext.getPersistenceUnit()!=null){
+            persistenceGroup=invokeContext.getPersistenceUnit().getPersistenceGroup();
         }
+        if(persistenceGroup==null){
+            persistenceGroup=UPA.getPersistenceGroup();
+        }
+        Session s = persistenceGroup.findCurrentSession();
         boolean sessionCreated = false;
         boolean loginCreated = false;
         if (s == null) {
             s = persistenceGroup.openSession();
             sessionCreated = true;
         }
-        PersistenceUnit pu = persistenceGroup.getPersistenceUnit();
+        PersistenceUnit pu = null;
+        if(invokeContext.getPersistenceUnit()!=null){
+            pu=invokeContext.getPersistenceUnit();
+        }
+        if(pu==null){
+            pu=persistenceGroup.getPersistenceUnit();
+        }
         pu.loginPrivileged(invokeContext.getLogin());
 
         loginCreated = true;
         boolean transactionCreated = false;
         if (invokeContext.getTransactionType() != null) {
-            pu.beginTransaction(invokeContext.getTransactionType());
-            transactionCreated = true;
+            transactionCreated =pu.beginTransaction(invokeContext.getTransactionType());
         }
         T ret = null;
+        Throwable anyErr=null;
         try {
             ret = action.run();
             if (transactionCreated) {
                 pu.commitTransaction();
             }
         } catch (UPAException e) {
+            anyErr=e;
+            e.printStackTrace();
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
             throw e;
         } catch (Throwable e) {
+            anyErr=e;
+            e.printStackTrace();
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
@@ -364,6 +396,7 @@ public class DefaultUPAContext implements UPAContext {
         }
         return ret;
     }
+    
 
     @Override
     public <T> T invoke(Action<T> action) throws UPAException {
@@ -377,7 +410,7 @@ public class DefaultUPAContext implements UPAContext {
 
     @Override
     public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException {
-        invoke(new VoidActionAdapter(action), null);
+        invoke(new VoidActionAdapter(action), invokeContext);
     }
 
     @Override
@@ -387,7 +420,7 @@ public class DefaultUPAContext implements UPAContext {
 
     @Override
     public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException {
-        invokePrivileged(new VoidActionAdapter(action), null);
+        invokePrivileged(new VoidActionAdapter(action), invokeContext);
     }
 
     @Override
@@ -426,106 +459,106 @@ public class DefaultUPAContext implements UPAContext {
         return closeListeners.toArray(new CloseListener[closeListeners.size()]);
     }
 
-    public void beginInvocation(Method method, Map<String, Object> properties) {
-        TransactionType transactionType = PlatformUtils.getUndefinedValue(TransactionType.class);
-        Decoration r = decorationRepository.getMethodDecoration(method, Transactional.class.getName());
-        if (r != null) {
-            transactionType = TransactionType.valueOf(r.getString("value"));
-        }
-        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
-            r = decorationRepository.getMethodDecoration(method, "javax.ejb.TransactionAttribute");
-            if (r != null) {
-                try {
-                    transactionType = TransactionType.valueOf(r.getString("value"));
-                } catch (Exception e) {
-                    //not all types are supported, so ignore...
-                }
-            }
-        }
+//    public void beginInvocation(Method method, Map<String, Object> properties) {
+//        TransactionType transactionType = PlatformUtils.getUndefinedValue(TransactionType.class);
+//        Decoration r = decorationRepository.getMethodDecoration(method, Transactional.class.getName());
+//        if (r != null) {
+//            transactionType = TransactionType.valueOf(r.getString("value"));
+//        }
+//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//            r = decorationRepository.getMethodDecoration(method, "javax.ejb.TransactionAttribute");
+//            if (r != null) {
+//                try {
+//                    transactionType = TransactionType.valueOf(r.getString("value"));
+//                } catch (Exception e) {
+//                    //not all types are supported, so ignore...
+//                }
+//            }
+//        }
+//
+//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), Transactional.class);
+//            if (r != null) {
+//                transactionType = TransactionType.valueOf(r.getString("value"));
+//            }
+//        }
+//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), "javax.ejb.TransactionAttribute");
+//            if (r != null) {
+//                try {
+//                    transactionType = TransactionType.valueOf(r.getString("value"));
+//                } catch (Exception e) {
+//                    //not all types are supported, so ignore...
+//                }
+//            }
+//        }
+//        if (properties == null) {
+//            properties = new HashMap<String, Object>();
+//        }
+//        properties.put(TransactionType.class.getName(),
+//                PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)
+//                ? TransactionType.REQUIRED : transactionType
+//        );
+//        beginInvocation(properties);
+//    }
 
-        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
-            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), Transactional.class);
-            if (r != null) {
-                transactionType = TransactionType.valueOf(r.getString("value"));
-            }
-        }
-        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
-            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), "javax.ejb.TransactionAttribute");
-            if (r != null) {
-                try {
-                    transactionType = TransactionType.valueOf(r.getString("value"));
-                } catch (Exception e) {
-                    //not all types are supported, so ignore...
-                }
-            }
-        }
-        if (properties == null) {
-            properties = new HashMap<String, Object>();
-        }
-        properties.put(TransactionType.class.getName(),
-                PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)
-                ? TransactionType.REQUIRED : transactionType
-        );
-        beginInvocation(properties);
-    }
+//    public void beginInvocation(Map<String, Object> properties) {
+//        Session s = null;
+//        PersistenceGroup persistenceGroup = getPersistenceGroup();
+//        try {
+//            s = persistenceGroup.getCurrentSession();
+//        } catch (CurrentSessionNotFoundException ignore) {
+//            //ignore
+//        }
+//        boolean sessionCreated = false;
+//        if (s == null) {
+//            s = persistenceGroup.openSession();
+//            sessionCreated = true;
+//        }
+//        TransactionType transactionType = (TransactionType) properties.get(TransactionType.class.getName());
+//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//            transactionType = TransactionType.REQUIRED;
+//        }
+//        boolean transactionCreated = false;
+//        PersistenceUnit pu = persistenceGroup.getPersistenceUnit();
+//        pu.beginTransaction(transactionType);
+//        transactionCreated = true;
+//
+//        properties.put("sessionCreated", sessionCreated);
+//        properties.put("transactionCreated", transactionCreated);
+//    }
 
-    public void beginInvocation(Map<String, Object> properties) {
-        Session s = null;
-        PersistenceGroup persistenceGroup = getPersistenceGroup();
-        try {
-            s = persistenceGroup.getCurrentSession();
-        } catch (CurrentSessionNotFoundException ignore) {
-            //ignore
-        }
-        boolean sessionCreated = false;
-        if (s == null) {
-            s = persistenceGroup.openSession();
-            sessionCreated = true;
-        }
-        TransactionType transactionType = (TransactionType) properties.get(TransactionType.class.getName());
-        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
-            transactionType = TransactionType.REQUIRED;
-        }
-        boolean transactionCreated = false;
-        PersistenceUnit pu = persistenceGroup.getPersistenceUnit();
-        pu.beginTransaction(transactionType);
-        transactionCreated = true;
-
-        properties.put("sessionCreated", sessionCreated);
-        properties.put("transactionCreated", transactionCreated);
-    }
-
-    public void endInvocation(Throwable error, Map<String, Object> properties) {
-        PersistenceUnit persistenceUnit = getPersistenceUnit();
-        Boolean sessionCreated = (Boolean) properties.get("sessionCreated");
-        if (sessionCreated == null) {
-            sessionCreated = false;
-        }
-        Boolean transactionCreated = (Boolean) properties.get("transactionCreated");
-        if (transactionCreated == null) {
-            transactionCreated = false;
-        }
-        if (error == null) {
-            persistenceUnit.commitTransaction();
-        } else if (transactionCreated) {
-            try {
-                persistenceUnit.rollbackTransaction();
-            } catch (Throwable e2) {
-                //errors in rollback are ignored but traced
-                log.log(Level.SEVERE, "Invocation Error", error);
-                log.log(Level.SEVERE, "Rollback Error", e2);
-            }
-        }
-        if (sessionCreated) {
-            try {
-                if (sessionCreated) {
-                    getPersistenceGroup().getCurrentSession().close();
-                }
-            } catch (Throwable e) {
-                log.log(Level.SEVERE, "Failed to close session after error", e);
-            }
-        }
-    }
+//    public void endInvocation(Throwable error, Map<String, Object> properties) {
+//        PersistenceUnit persistenceUnit = getPersistenceUnit();
+//        Boolean sessionCreated = (Boolean) properties.get("sessionCreated");
+//        if (sessionCreated == null) {
+//            sessionCreated = false;
+//        }
+//        Boolean transactionCreated = (Boolean) properties.get("transactionCreated");
+//        if (transactionCreated == null) {
+//            transactionCreated = false;
+//        }
+//        if (error == null) {
+//            persistenceUnit.commitTransaction();
+//        } else if (transactionCreated) {
+//            try {
+//                persistenceUnit.rollbackTransaction();
+//            } catch (Throwable e2) {
+//                //errors in rollback are ignored but traced
+//                log.log(Level.SEVERE, "Invocation Error", error);
+//                log.log(Level.SEVERE, "Rollback Error", e2);
+//            }
+//        }
+//        if (sessionCreated) {
+//            try {
+//                if (sessionCreated) {
+//                    getPersistenceGroup().getCurrentSession().close();
+//                }
+//            } catch (Throwable e) {
+//                log.log(Level.SEVERE, "Failed to close session after error", e);
+//            }
+//        }
+//    }
 
     public void addScanFilter(ScanFilter filter) {
         filters.add(filter);
@@ -1266,4 +1299,12 @@ public class DefaultUPAContext implements UPAContext {
         return callbacks.toArray(new Callback[callbacks.size()]);
     }
 
+    public Properties getThreadProperties() {
+        Properties properties = threadProperties.get();
+        if(properties==null){
+            properties=getFactory().createObject(Properties.class);
+            threadProperties.set(properties);
+        }
+        return properties;
+    }
 }

@@ -5,6 +5,7 @@ import net.vpc.upa.exceptions.*;
 import net.vpc.upa.expressions.*;
 
 import java.util.*;
+import java.util.logging.Logger;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -15,6 +16,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
  */
 public class DefaultEntityShield implements EntityShield {
 
+    private static final Logger log = Logger.getLogger(DefaultEntityShield.class.getName());
     private static final FieldFilter PERSISTENT_NON_FORMULA = Fields.byModifiersNoneOf(FieldModifier.PERSIST_FORMULA, FieldModifier.UPDATE_FORMULA, FieldModifier.TRANSIENT);
     private Entity entity;
     private Map<VetoableOperation, List<EntityShieldVeto>> vetoMap = new HashMap<VetoableOperation, List<EntityShieldVeto>>();
@@ -340,6 +342,7 @@ public class DefaultEntityShield implements EntityShield {
         checkVeto(VetoableOperation.checkRename, oldId, newId);
     }
 
+    @Override
     public void checkUpdate(Record updates, Expression condition)
             throws UPAException {
         if (!entity.getPersistenceUnit().getSecurityManager().isAllowedUpdate(entity)) {
@@ -408,7 +411,12 @@ public class DefaultEntityShield implements EntityShield {
         Entity p = entity.getParentEntity();
         if (p != null) {
             Expression ss = entity.childToParentExpression(condition);
-            p.getShield().checkUpdate(null, ss);
+            try{
+                p.getShield().checkUpdate(null, ss);
+            }catch(UpdateRecordKeyNotFoundException ex){
+                log.warning(entity.getName()+"'s parent seems not to be resolvable for condition ("+condition+"): "+ex);
+                //ignore if parent not found!
+            }
         }
         checkVeto(VetoableOperation.checkUpdate, updates, condition);
     }

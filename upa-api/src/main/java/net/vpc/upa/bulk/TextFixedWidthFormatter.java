@@ -57,24 +57,27 @@ public abstract class TextFixedWidthFormatter extends AbstractDataFormatter {
         return writeHeader;
     }
 
-    public void setWriteHeader(boolean writeHeader) {
+    public TextFixedWidthFormatter setWriteHeader(boolean writeHeader) {
         this.writeHeader = writeHeader;
+        return this;
     }
 
     public int getSkipRows() {
         return skipRows;
     }
 
-    public void setSkipRows(int skipRows) {
+    public TextFixedWidthFormatter setSkipRows(int skipRows) {
         this.skipRows = skipRows;
+        return this;
     }
 
     public String getNewLine() {
         return newLine;
     }
 
-    public void setNewLine(String newLine) {
+    public TextFixedWidthFormatter setNewLine(String newLine) {
         this.newLine = newLine;
+        return this;
     }
 
     public abstract DataWriter format(Writer writer) throws IOException;

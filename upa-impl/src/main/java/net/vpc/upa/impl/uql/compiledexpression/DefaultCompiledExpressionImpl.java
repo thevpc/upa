@@ -80,7 +80,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return this.type;
     }
 
-    public void setDataType(DataTypeTransform type) {
+    public void setTypeTransform(DataTypeTransform type) {
         this.type = type;
     }
 
@@ -141,6 +141,27 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
             }
         }
     }
+
+    @Override
+    public <T extends CompiledExpression> T findFirstExpression(CompiledExpressionFilter filter) {
+        if (filter.accept(this)) {
+            //this double casting is needed in C#
+            return ((T) (Object) this);
+        }
+        DefaultCompiledExpression[] subExpressions = getSubExpressions();
+        if (subExpressions != null) {
+            for (DefaultCompiledExpression subExpression : subExpressions) {
+                if (subExpression != null) {
+                    CompiledExpression e = ((DefaultCompiledExpressionImpl) subExpression).findFirstExpression(filter);
+                    if(e!=null){
+                        return (T)e;
+                    }
+                }
+            }
+        }    
+        return null;
+    }
+    
 
     public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer) {
         DefaultCompiledExpression t = (DefaultCompiledExpression) ((filter == null || filter.accept(this)) ? replacer.update(this) : null);

@@ -17,13 +17,11 @@ import net.vpc.upa.PersistenceUnitProvider;
  */
 public class WebSessionPersistenceUnitProvider implements PersistenceUnitProvider, Serializable {
 
-    @Override
     public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup) {
         String r = getSessionMap().get(String.valueOf(System.identityHashCode(persistenceGroup)));
         return r == null ? null : persistenceGroup.getPersistenceUnit(r);
     }
 
-    @Override
     public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit) {
         String k = String.valueOf(System.identityHashCode(persistenceGroup));
         if (persistenceUnit == null) {

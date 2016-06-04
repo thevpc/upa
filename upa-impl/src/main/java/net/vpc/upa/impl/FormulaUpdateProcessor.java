@@ -86,8 +86,8 @@ public class FormulaUpdateProcessor {
             Expression fe = getFieldExpression(f, onPersist);
 
             DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe);
-            List<DefaultCompiledExpression> found = ce.findExpressionsList(CompiledExpressionHelper.QUERY_STATEMENT_FILTER);
-            if (found.size() > 0) {
+            boolean found = ce.findFirstExpression(CompiledExpressionHelper.QUERY_STATEMENT_FILTER)!=null;
+            if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
                 if (pass == null) {
                     pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()] = new ValidationPass(pass1, ValidationPassType.ITERATIVE_VALIDATION);
