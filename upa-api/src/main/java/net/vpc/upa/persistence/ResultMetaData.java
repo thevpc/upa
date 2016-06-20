@@ -37,8 +37,8 @@ package net.vpc.upa.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.DataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

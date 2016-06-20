@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.impl.util.Strings;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -17,6 +18,7 @@ import net.vpc.upa.persistence.ResultMetaData;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
@@ -49,6 +51,8 @@ public class DefaultQuery extends AbstractQuery {
     private List<Object> allResults = new ArrayList<Object>();
     private Map<String, NativeSQL> precompiledNativeSQLMap = new HashMap<String, NativeSQL>();
     private DefaultQuery sessionAwareInstance;
+    private Map<String, Object> parametersByName ;
+    private Map<Integer, Object> parametersByIndex ;
 
     //needed by asm emit
     protected DefaultQuery() {
@@ -114,7 +118,19 @@ public class DefaultQuery extends AbstractQuery {
         try {
             String aliasName = resolveAliasName();
             NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            SingleEntityQueryResult<R2> r = new SingleEntityQueryResult<R2>(nativeSQL, aliasName);
+            String fetchStrategy=(String) nativeSQL.getHints().get(QueryHints.FETCH_STRATEGY);
+            if(Strings.isNullOrEmpty(fetchStrategy)){
+                fetchStrategy="join";
+            }
+            QueryResultLazyList<R2> r=null;
+            if("select".equals(fetchStrategy)) {
+                r = new SingleEntityQueryResultSelectFetchStrategy<R2>(nativeSQL, aliasName);
+            }else if("join".equals(fetchStrategy)){
+                r = new SingleEntityQueryResultJoinFetchStrategy<R2>(nativeSQL, aliasName);
+            }else {
+                log.log(Level.WARNING, "Ignored "+QueryHints.FETCH_STRATEGY+" '"+fetchStrategy+"' possible values are {join,select}");
+                r = new SingleEntityQueryResultJoinFetchStrategy<R2>(nativeSQL, aliasName);
+            }
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -181,8 +197,22 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getRecordList();
         }
         try {
+            String aliasName = resolveAliasName();
             NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            MergedRecordList r = new MergedRecordList(nativeSQL, resolveAliasName());
+            String fetchStrategy=(String) nativeSQL.getHints().get(QueryHints.FETCH_STRATEGY);
+            if(Strings.isNullOrEmpty(fetchStrategy)){
+                fetchStrategy="join";
+            }
+            QueryResultLazyList<Record> r=null;
+            if("select".equals(fetchStrategy)) {
+                r = new RecordQueryResultSelectFetchStrategy(nativeSQL, aliasName);
+            }else if("join".equals(fetchStrategy)){
+                r = new RecordQueryResultJoinFetchStrategy(nativeSQL, aliasName);
+            }else {
+                log.log(Level.WARNING, "Ignored "+QueryHints.FETCH_STRATEGY+" '"+fetchStrategy+"' possible values are {join,select}");
+                r = new RecordQueryResultJoinFetchStrategy(nativeSQL, aliasName);
+            }
+
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -205,7 +235,7 @@ public class DefaultQuery extends AbstractQuery {
         try {
             NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
             if (index < 0 || index > nativeSQL.getFields().length) {
-                throw new ArrayIndexOutOfBoundsException("Invalid inex " + index);
+                throw new ArrayIndexOutOfBoundsException("Invalid index " + index);
             }
             ValueList<T> r = new ValueList<T>(nativeSQL, index);
             allResults.add(r);
@@ -376,11 +406,11 @@ public class DefaultQuery extends AbstractQuery {
         return defaultEntity;
     }
 
-    protected NativeSQL executeQuery(String filterdKey, FieldFilter fieldFilter) {
+    protected NativeSQL executeQuery(String filteredKey, FieldFilter fieldFilter) {
 //        if (result != null) {
 //            throw new FindException("QueryAlreadyExecutedException");
 //        }
-        NativeSQL nativeSQL = createNativeSQL(filterdKey, fieldFilter);
+        NativeSQL nativeSQL = createNativeSQL(filteredKey, fieldFilter);
         DefaultResultMetaData m = new DefaultResultMetaData();
         for (NativeField x : nativeSQL.getFields()) {
             m.addField(x.getName(), x.getTypeTransform(), x.getField());
@@ -393,9 +423,10 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     protected NativeSQL createNativeSQL(String key, FieldFilter fieldFilter) {
+        applyParameters();
         NativeSQL s = precompiledNativeSQLMap.get(key);
         if (s == null) {
-            s = store.nativeSQL(query, fieldFilter, context, hints);
+            s = store.nativeSQL(query, fieldFilter, context.setHints(getHints()));
             precompiledNativeSQLMap.put(key, s);
         }
         return s;
@@ -412,13 +443,25 @@ public class DefaultQuery extends AbstractQuery {
 //        }
     @Override
     public Query setParameter(final String name, Object value) {
-        List<CompiledParam> params = query.findExpressionsList(new CompiledParamFilter(name));
-        if (params.isEmpty()) {
-            throw new IllegalArgumentException("Parameter not found " + name);
+        if(parametersByName ==null){
+            parametersByName =new HashMap<String, Object>();
         }
-        for (CompiledParam p : params) {
-            p.setValue(value);
-            p.setUnspecified(false);
+        parametersByName.put(name, value);
+        return this;
+    }
+
+    @Override
+    public Query removeParameter(final String name) {
+        if(parametersByName !=null) {
+            parametersByName.remove(name);
+        }
+        return this;
+    }
+
+    @Override
+    public Query removeParameter(int index) {
+        if(parametersByIndex !=null) {
+            parametersByIndex.remove(index);
         }
         return this;
     }
@@ -432,18 +475,48 @@ public class DefaultQuery extends AbstractQuery {
         return this;
     }
 
+
+    private Query applyParameters() {
+        if (parametersByName != null) {
+            for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {
+                String name = entry.getKey();
+                Object value = entry.getValue();
+
+                List<CompiledParam> params = query.findExpressionsList(new CompiledParamFilter(name));
+                if (params.isEmpty()) {
+                    throw new IllegalArgumentException("Parameter not found " + name);
+                }
+                for (CompiledParam p : params) {
+                    p.setValue(value);
+                    p.setUnspecified(false);
+                }
+            }
+        }
+        if(parametersByIndex!=null && !parametersByIndex.isEmpty()) {
+            List<CompiledParam> params = query.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
+            for (Map.Entry<Integer, Object> entry : parametersByIndex.entrySet()) {
+                Integer index = entry.getKey();
+                Object value = entry.getValue();
+                if (params.size() <= index) {
+                    throw new IllegalArgumentException("Parameter not found " + index);
+                }
+                CompiledParam p = params.get(index);
+                if (p == null) {
+                    throw new IllegalArgumentException("Parameter not found " + index);
+                }
+                p.setValue(value);
+                p.setUnspecified(false);
+            }
+        }
+        return this;
+    }
+
     @Override
-    public Query setParameter(final int index, Object value) {
-        List<CompiledParam> params = query.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
-        if (params.size() <= index) {
-            throw new IllegalArgumentException("Parameter not found " + index);
+    public Query setParameter(int index, Object value) {
+        if(parametersByIndex==null){
+            parametersByIndex=new HashMap<Integer, Object>();
         }
-        CompiledParam p = params.get(index);
-        if (p == null) {
-            throw new IllegalArgumentException("Parameter not found " + index);
-        }
-        p.setValue(value);
-        p.setUnspecified(false);
+        parametersByIndex.put(index,value);
         return this;
     }
 
@@ -511,8 +584,27 @@ public class DefaultQuery extends AbstractQuery {
         return this;
     }
 
+    @Override
+    public Query setHints(Map<String, Object> hints) {
+        if(hints!=null) {
+            for (Map.Entry<String, Object> e : hints.entrySet()) {
+                setHint(e.getKey(), e.getValue());
+            }
+        }
+        return this;
+    }
+
     public Map<String, Object> getHints() {
         return hints;
+    }
+
+    public Object getHint(String hintName) {
+        return hints==null?null:hints.get(hintName);
+    }
+
+    public Object getHint(String hintName,Object defaultValue) {
+        Object c = hints == null ? null : hints.get(hintName);
+        return c==null?defaultValue:c;
     }
 
 }

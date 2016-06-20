@@ -9,5 +9,7 @@ public interface Callback {
 
     public CallbackType getCallbackType();
 
+    public EventPhase getPhase();
+
     public ObjectType getObjectType();
 }

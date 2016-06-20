@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.vfs;
@@ -62,7 +62,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
 
     protected FileEntry getDirEntry(String path) {
         PersistenceUnit pu = getPersistenceUnit();
-        FileEntry entity = pu.createQueryBuilder(FileEntry.class).addAndField("path", path).getEntity();
+        FileEntry entity = pu.createQueryBuilder(FileEntry.class).byField("path", path).getEntity();
         if (entity == null) {
             if (path.equals("/")) {
                 entity = new FileEntry();
@@ -247,7 +247,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
             return new VFile[0];
         }
         List<FileEntry> childen = getPersistenceUnit().createQueryBuilder(FileEntry.class)
-                .addAndField(
+                .byField(
                         "parentPath", path
                 ).getEntityList();
         List<VFile> ret = new ArrayList<>();

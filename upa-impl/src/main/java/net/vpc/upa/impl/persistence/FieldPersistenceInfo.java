@@ -1,25 +1,19 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.impl.uql.util.ThisRenamerVisitor;
-import java.util.List;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.And;
 import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.ExpressionTag;
-import net.vpc.upa.expressions.ExpressionVisitor;
 import net.vpc.upa.expressions.Select;
-import net.vpc.upa.expressions.TaggedExpression;
 import net.vpc.upa.expressions.UserExpression;
-import net.vpc.upa.expressions.Var;
 import net.vpc.upa.impl.uql.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.persistence.PersistenceStore;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -94,8 +88,8 @@ public class FieldPersistenceInfo {
     }
 
     public void synchronize() {
-        if (field.getDataType() instanceof EntityType) {
-            EntityType t = (EntityType) field.getDataType();
+        if (field.getDataType() instanceof ManyToOneType) {
+            ManyToOneType t = (ManyToOneType) field.getDataType();
             Relationship relation = t.getRelationship();
             if (relation == null) {
                 throw new UPAException("MissingRelationForField", field);

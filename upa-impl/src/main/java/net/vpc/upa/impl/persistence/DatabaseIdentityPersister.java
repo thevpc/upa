@@ -14,12 +14,12 @@ import net.vpc.upa.persistence.FieldPersister;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class NativeIdentityGenerator implements FieldPersister {
+public class DatabaseIdentityPersister implements FieldPersister {
 
     private Field field;
     String identityConstraintsEnabledProperty;
 
-    public NativeIdentityGenerator(Field field) {
+    public DatabaseIdentityPersister(Field field) {
         this.field = field;
         identityConstraintsEnabledProperty = "IdentityConstraintsEnabled." + field.getEntity().getName();
     }
@@ -49,7 +49,7 @@ public class NativeIdentityGenerator implements FieldPersister {
             return false;
         }
 
-        NativeIdentityGenerator that = (NativeIdentityGenerator) o;
+        DatabaseIdentityPersister that = (DatabaseIdentityPersister) o;
 
         if (!field.equals(that.field)) {
             return false;

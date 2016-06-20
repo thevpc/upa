@@ -20,10 +20,10 @@ public class EntitySequenceManager implements SequenceManager {
 
     public synchronized PrivateSequence getOrCreateSequence(String name, String pattern, int initialValue, int increment) throws UPAException {
 //        System.out.println(">>>>>>>>>>>>>>>>>>> getOrCreateSequence("+name+","+pattern+")");
-        PrivateSequence r = entity.createQueryBuilder().setId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
         if (r == null) {
             createSequence(name, pattern, initialValue, increment);
-            r = entity.createQueryBuilder().setId(entity.createId(name, pattern)).getEntity();
+            r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
         }
         return r;
     }
@@ -45,7 +45,7 @@ public class EntitySequenceManager implements SequenceManager {
 
     @Override
     public PrivateSequence getSequence(String name, String pattern) throws UPAException {
-        PrivateSequence r = entity.createQueryBuilder().setId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
         if (r == null) {
             throw new UPAException("Sequence " + pattern + " not found");
         }
@@ -78,13 +78,13 @@ public class EntitySequenceManager implements SequenceManager {
         r.setLocked(true);
         r.setLockUserId(entity.getPersistenceUnit().getUserPrincipal().getName());
         r.setLockDate(new DateTime());
-        entity.updatePartial(r, entity.createId(name, pattern));
+        entity.createUpdateQuery().setValues(r).byId(entity.createId(name, pattern));
         return r.getValue();
     }
 
     @Override
     public synchronized int getCurrentValue(String name, String pattern) throws UPAException {
-        PrivateSequence r = entity.createQueryBuilder().setId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
         if (r == null) {
             return -1;
         }
@@ -118,7 +118,7 @@ public class EntitySequenceManager implements SequenceManager {
                 new Equals(new Var(new Var(entity.getName()),"lockUserId"), new Param("lockUserId", entity.getPersistenceUnit().getUserPrincipal().getName()))));
         QueryBuilder q = null;
         try {
-            q = entity.createQueryBuilder().setExpression(condition);
+            q = entity.createQueryBuilder().byExpression(condition);
             q.setUpdatable(true);
             int oldValue;
             for (PrivateSequence s : q.<PrivateSequence>getEntityList()) {
@@ -154,7 +154,7 @@ public class EntitySequenceManager implements SequenceManager {
         r.setLocked(false);
         r.setLockUserId(null);
         r.setLockDate(null);
-        entity.updatePartial(r, entity.createId(pattern));
+        entity.createUpdateQuery().setValues(r).byId(entity.createId(pattern));
         return v;
     }
 }

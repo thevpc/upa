@@ -16,6 +16,7 @@ import net.vpc.upa.ExpressionManager;
 import net.vpc.upa.FunctionDefinition;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Function;
+import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
@@ -56,21 +57,21 @@ public class DefaultExpressionManager implements ExpressionManager {
         }
     }
 
-    public net.vpc.upa.expressions.CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config) {
+    public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config) {
         if (config == null) {
             config = new ExpressionCompilerConfig();
         }
-        net.vpc.upa.expressions.CompiledExpression qe = translationManager.compileExpression(expression, config);
+        CompiledExpression qe = translationManager.compileExpression(expression, config);
         qe = compileExpression(qe, config);
         return qe;
     }
 
-    public net.vpc.upa.expressions.CompiledExpression compileExpression(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig config) {
+    public CompiledExpression compileExpression(CompiledExpression expression, ExpressionCompilerConfig config) {
         if (config == null) {
             config = new ExpressionCompilerConfig();
         }
         if (config.isValidate() || config.isExpandFields()) {
-            validationManager.validateExpression(expression, config);
+            expression=validationManager.validateExpression(expression, config);
         }
         return expression;
     }

@@ -105,6 +105,10 @@ public interface Query extends Closeable {
 
     Query setParameter(int index, Object value);
 
+    public Query removeParameter(String name) ;
+
+    public Query removeParameter(int index) ;
+
     public void setUpdatable(boolean forUpdate);
 
     public boolean isLazyListLoadingEnabled();
@@ -113,7 +117,14 @@ public interface Query extends Closeable {
 
     public Query setHint(String key, Object value);
 
+    public Query setHints(Map<String, Object> hints);
+
     public Map<String, Object> getHints();
+
+    public Object getHint(String hintName) ;
+
+    public Object getHint(String hintName,Object defaultValue) ;
+
 
     public boolean isUpdatable();
 

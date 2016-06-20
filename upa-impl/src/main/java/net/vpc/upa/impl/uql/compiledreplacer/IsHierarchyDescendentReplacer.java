@@ -28,14 +28,7 @@ import net.vpc.upa.impl.uql.compiledexpression.IsHierarchyDescendentCompiled;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.ByteType;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DoubleType;
-import net.vpc.upa.types.FloatType;
-import net.vpc.upa.types.IntType;
-import net.vpc.upa.types.LongType;
-import net.vpc.upa.types.ShortType;
-import net.vpc.upa.types.StringType;
+import net.vpc.upa.types.*;
 
 /**
  *

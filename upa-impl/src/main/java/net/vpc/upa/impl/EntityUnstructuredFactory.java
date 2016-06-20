@@ -23,12 +23,12 @@ public class EntityUnstructuredFactory extends AbstractEntityFactory {
         return (R) (Object)new DefaultRecord();
     }
 
-    public Record getRecord(Object object, boolean ignoreUnspecified) {
+    public Record objectToRecord(Object object, boolean ignoreUnspecified) {
         return (Record) object;
     }
 
     @Override
-    public <R> R getEntity(Record record) {
+    public <R> R recordToObject(Record record) {
         return (R) record;
     }
 

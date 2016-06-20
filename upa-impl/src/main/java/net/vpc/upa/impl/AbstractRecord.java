@@ -433,6 +433,23 @@ public abstract class AbstractRecord implements Record {
     //////////////////////////////////////
 
 
+    @Override
+    public void setAll(Record other) {
+        if(other!=null) {
+            setAll(other.toMap());
+        }
+    }
+
+    @Override
+    public void setAll(Map<String,Object> other) {
+        if(other!=null) {
+            for (Map.Entry<String, Object> entry : other.entrySet()) {
+                setObject(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+
     /**
      * {@inheritDoc}
      */
@@ -495,5 +512,12 @@ public abstract class AbstractRecord implements Record {
     @Override
     public String toString() {
         return toMap().toString();
+    }
+
+    @Override
+    public Record copy() {
+        DefaultRecord r = new DefaultRecord();
+        r.setAll(this);
+        return r;
     }
 }

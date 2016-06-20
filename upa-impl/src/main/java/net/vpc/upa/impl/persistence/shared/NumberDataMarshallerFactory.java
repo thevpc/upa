@@ -6,9 +6,6 @@ import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/20/12 2:49 AM

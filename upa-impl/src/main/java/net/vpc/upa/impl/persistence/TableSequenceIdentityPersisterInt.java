@@ -14,25 +14,25 @@ import net.vpc.upa.impl.SequenceManager;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class TableSequenceIdentityGeneratorString extends TableSequenceIdentityGenerator {
+public class TableSequenceIdentityPersisterInt extends TableSequenceIdentityPersister {
 
-    public TableSequenceIdentityGeneratorString(Field field, Sequence generatedId) {
+    public TableSequenceIdentityPersisterInt(Field field, Sequence generatedId) {
         super(field, generatedId);
     }
 
-    protected Object getNewValue(SequenceManager sm, String group, Record record) throws UPAException{
-        return  eval(getFormat(), sm.nextValue(getName(), group,getInitialValue(),getAllocationSize()),record);
+    @Override
+    protected Object getNewValue(SequenceManager sm, String group, Record record) throws UPAException {
+        return sm.nextValue(getName(), group,getInitialValue(),getAllocationSize());
     }
 
     @Override
     public boolean equals(Object o) {
-        return super.equals(o) && o.getClass().equals(getClass());
+        return super.equals(o) && o instanceof TableSequenceIdentityPersisterInt;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
+        int hash = 5;
         return hash;
     }
-
 }

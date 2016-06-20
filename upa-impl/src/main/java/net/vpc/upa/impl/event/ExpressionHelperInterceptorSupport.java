@@ -133,7 +133,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
     }
 
     private Collection<Key> createUpdatedCollection(Entity entity, Expression expression) throws UPAException {
-        return entity.createQueryBuilder().setExpression(translateExpression(expression)).getKeyList();
+        return entity.createQueryBuilder().byExpression(translateExpression(expression)).getKeyList();
     }
 
     private IdCollectionExpression createInCollection(Entity entity, Collection<Key> collection) throws UPAException {

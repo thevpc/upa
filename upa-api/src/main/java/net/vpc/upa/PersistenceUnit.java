@@ -49,7 +49,9 @@ import net.vpc.upa.types.DataTypeTransformFactory;
 import net.vpc.upa.types.I18NString;
 
 import java.beans.PropertyChangeListener;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -70,30 +72,30 @@ public interface PersistenceUnit extends Closeable {
 
     public void setAutoScan(boolean autoScan);
 
-    Session openSession() throws UPAException;
+    Session openSession() ;
 
-    ObjectFactory getFactory() throws UPAException;
+    ObjectFactory getFactory() ;
 
-    PersistenceGroup getPersistenceGroup() throws UPAException;
+    PersistenceGroup getPersistenceGroup() ;
 
-    //    void setPersistenceGroup(PersistenceGroup persistenceGroup) throws UPAException;
-    I18NString getTitle() throws UPAException;
+    //    void setPersistenceGroup(PersistenceGroup persistenceGroup) ;
+    I18NString getTitle() ;
 
     //    void add(PersistenceUnitItem part);
-//    void remove(int index) throws UPAException;
-//    void move(int index, int newIndex) throws UPAException;
-//    void move(int index, int newIndex, int count) throws UPAException;
-//    void invalidate() throws UPAException;
-//    List<PersistenceUnitItem> getChildren() throws UPAException;
-//    int indexOf(PersistenceUnitItem child) throws UPAException;
-//    int indexOf(String childName) throws UPAException;
-    Package addPackage(String name, String parentPath) throws UPAException;
+//    void remove(int index) ;
+//    void move(int index, int newIndex) ;
+//    void move(int index, int newIndex, int count) ;
+//    void invalidate() ;
+//    List<PersistenceUnitItem> getChildren() ;
+//    int indexOf(PersistenceUnitItem child) ;
+//    int indexOf(String childName) ;
+    Package addPackage(String name, String parentPath) ;
 
-    Package addPackage(String name, String parentPath, int index) throws UPAException;
+    Package addPackage(String name, String parentPath, int index) ;
 
-    Package addPackage(String name) throws UPAException;
+    Package addPackage(String name) ;
 
-    Package addPackage(String name, int index) throws UPAException;
+    Package addPackage(String name, int index) ;
 
     /**
      * add all modules
@@ -109,31 +111,31 @@ public interface PersistenceUnit extends Closeable {
     public Package getDefaulPackage();
 
     //    DatabaseResources getResources();
-    boolean isReadOnly() throws UPAException;
+    boolean isReadOnly() ;
 
-    void setReadOnly(boolean enable) throws UPAException;
+    void setReadOnly(boolean enable) ;
 
     //    void declareInternEntities();
 //    void declareEntities();
 //    String getDefaultAdapterString();
 //
 //    void setDefaultConnectionString(String defaultAdapterString);
-    String getName() throws UPAException;
+    String getName() ;
 
-    //    void setName(String name) throws UPAException;
-    boolean isLastStartSucceeded() throws UPAException;
+    //    void setName(String name) ;
+    boolean isLastStartSucceeded() ;
 
-    void setLastStartSucceeded(boolean success) throws UPAException;
+    void setLastStartSucceeded(boolean success) ;
 
-    boolean isRecurseDelete() throws UPAException;
+    boolean isRecurseDelete() ;
 
-    boolean isLockablePersistenceUnit() throws UPAException;
+    boolean isLockablePersistenceUnit() ;
 
-    boolean isCaseSensitive() throws UPAException;
+    boolean isCaseSensitive() ;
 
-    void setCaseSensitive(boolean enable) throws UPAException;
+    void setCaseSensitive(boolean enable) ;
 
-    NamingStrategy getNamingStrategy() throws UPAException;
+    NamingStrategy getNamingStrategy() ;
 
     public PersistenceStore getPersistenceStore();
 
@@ -149,64 +151,66 @@ public interface PersistenceUnit extends Closeable {
      *
      * @param descriptor
      * @return
-     * @throws UPAException
+     * @
      */
-    Entity addEntity(Object descriptor) throws UPAException;
+    Entity addEntity(Object descriptor) ;
 
-    //    public Index addIndex(String indexName, String entityName, boolean unique, List<String> fieldNames) throws UPAException;
-    public List<Index> getIndexes() throws UPAException;
+    //    public Index addIndex(String indexName, String entityName, boolean unique, List<String> fieldNames) ;
+    public List<Index> getIndexes() ;
 
-    public List<Index> getIndexes(String entityName) throws UPAException;
+    public List<Index> getIndexes(String entityName) ;
 
-    boolean containsEntity(String entityName) throws UPAException;
+    boolean containsEntity(String entityName) ;
 
     /**
      * @param source source to be parsed
      * @param listener listener to track scanned items or null
      * @param configure if true process configuration (add entities,
      * functions...)
-     * @throws UPAException
+     * @
      */
-    void scan(ScanSource source, ScanListener listener, boolean configure) throws UPAException;
+    void scan(ScanSource source, ScanListener listener, boolean configure) ;
 
-    boolean containsField(String entityName, String fieldName) throws UPAException;
+    boolean containsField(String entityName, String fieldName) ;
 
-    Entity getEntity(String entityName) throws UPAException;
+    Entity getEntity(String entityName) ;
 
     //    <K, R> Entity<K, R> getEntity(String entityName, boolean check);
-    public boolean containsEntity(Class entityType) throws UPAException;
+    public boolean containsEntity(Class entityType) ;
 
-    public Entity findEntity(Class entityType) throws UPAException;
+    public Entity findEntity(Class entityType) ;
 
-    public List<Entity> findEntities(Class entityType) throws UPAException;
+    public List<Entity> findEntities(Class entityType) ;
 
-    public Entity findEntity(String entityName) throws UPAException;
+    public Entity findEntity(String entityName) ;
 
-    public Entity getEntity(Class entityType) throws UPAException;
+    public Entity getEntity(Class entityType) ;
 
-    //    int getExplicitEntitiesCount() throws UPAException;
-    public void addRelationship(RelationshipDescriptor relationDescriptor) throws UPAException;
+    //    int getExplicitEntitiesCount() ;
+    public void addRelationship(RelationshipDescriptor relationDescriptor) ;
 
-    //    public Relationship addRelation(String name, RelationType type, String detailEntityName, String masterEntityName, String detailFieldName, String masterfieldName, RelationUpdateType detailUpdateType, RelationUpdateType masterUpdateType, String[] detailFieldNames, boolean nullable, Expression filter) throws UPAException;
-    void reset() throws UPAException;
+    //    public Relationship addRelation(String name, RelationType type, String detailEntityName, String masterEntityName, String detailFieldName, String masterfieldName, RelationUpdateType detailUpdateType, RelationUpdateType masterUpdateType, String[] detailFieldNames, boolean nullable, Expression filter) ;
+    void reset() ;
 
-    List<Entity> getEntities() throws UPAException;
+    public void reset(Map<String,Object> hints);
 
-    List<Package> getPackages() throws UPAException;
+    List<Entity> getEntities() ;
 
-    List<Entity> getEntities(EntityFilter entityFilter) throws UPAException;
+    List<Package> getPackages() ;
 
-    List<Relationship> getRelationships() throws UPAException;
+    List<Entity> getEntities(EntityFilter entityFilter) ;
 
-    Relationship getRelationship(String name) throws UPAException;
+    List<Relationship> getRelationships() ;
 
-    boolean containsRelationship(String relationName) throws UPAException;
+    Relationship getRelationship(String name) ;
 
-    List<Relationship> getRelationshipsForTarget(Entity entity) throws UPAException;
+    boolean containsRelationship(String relationName) ;
 
-    List<Relationship> getRelationshipsForSource(Entity entity) throws UPAException;
+    List<Relationship> getRelationshipsByTarget(Entity entity) ;
 
-    //    List<Field> findField(String name) throws UPAException;
+    List<Relationship> getRelationshipsBySource(Entity entity) ;
+
+    //    List<Field> findField(String name) ;
     //    public Script getDisableIdentityConstraintsScript() {
     //        Script script = new Script();
     //        for (Iterator iterator = entities.values().iterator(); iterator.hasNext();) {
@@ -217,30 +221,30 @@ public interface PersistenceUnit extends Closeable {
     //        }
     //        return script;
     //    }
-    void installDemoData() throws UPAException;
+    void installDemoData() ;
 
-    void start() throws UPAException;
+    void start() ;
 
     public boolean isSystemSession(Session s);
 
-    String getPersistenceName() throws UPAException;
+    String getPersistenceName() ;
 
-    void setPersistenceName(String persistenceName) throws UPAException;
+    void setPersistenceName(String persistenceName) ;
 
-    //    List<Entity> getAllPersistentEntities() throws UPAException;
+    //    List<Entity> getAllPersistentEntities() ;
 //
-//    List<Entity> getAllViewEntities() throws UPAException;
-    //    boolean checkCreatedSilently() throws UPAException;
-//    boolean checkCreatedPersistenceUnit(boolean ask) throws UPAException;
-    boolean isValidPersistenceUnit() throws UPAException;
+//    List<Entity> getAllViewEntities() ;
+    //    boolean checkCreatedSilently() ;
+//    boolean checkCreatedPersistenceUnit(boolean ask) ;
+    boolean isValidPersistenceUnit() ;
 
-    DBConfigModel getDBConfigModel() throws UPAException;
+    DBConfigModel getDBConfigModel() ;
 
-    void setDBConfigModel(DBConfigModel dbConfigModel) throws UPAException;
+    void setDBConfigModel(DBConfigModel dbConfigModel) ;
 
-    public void clear(EntityFilter entityFilter) throws UPAException ;
+    public void clear(EntityFilter entityFilter,Map<String,Object> hints)  ;
     
-    void clear() throws UPAException;
+    void clear() ;
 
     @Deprecated
     void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
@@ -259,20 +263,20 @@ public interface PersistenceUnit extends Closeable {
     PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
 
     //    DefaultDatabase.LocalizedDatabase getLocalizedDatabase();
-    int getStatus() throws UPAException;
+    int getStatus() ;
 
-    void setStatus(int status) throws UPAException;
+    void setStatus(int status) ;
 
     //--------------------------- PROPERTIES SUPPORT
-    Properties getProperties() throws UPAException;
+    Properties getProperties() ;
 
-    boolean isAskOnCheckCreatedPersistenceUnit() throws UPAException;
+    boolean isAskOnCheckCreatedPersistenceUnit() ;
 
-    void setAskOnCheckCreatedPersistenceUnit(boolean askOnCheckCreatedPersistenceUnit) throws UPAException;
+    void setAskOnCheckCreatedPersistenceUnit(boolean askOnCheckCreatedPersistenceUnit) ;
 
-    public Class getEntityExtensionSupportType(Class entityExtensionType) throws UPAException;
+    public Class getEntityExtensionSupportType(Class entityExtensionType) ;
 
-    public UPASecurityManager getSecurityManager() throws UPAException;
+    public UPASecurityManager getSecurityManager() ;
 
     /**
      * @param definitionListener
@@ -313,12 +317,12 @@ public interface PersistenceUnit extends Closeable {
     //    Application getApplication();
 //
 //    void setApplication(Application application);
-    void addPersistenceUnitListener(PersistenceUnitListener listener) throws UPAException;
+    void addPersistenceUnitListener(PersistenceUnitListener listener) ;
 
-    void removePersistenceUnitListener(PersistenceUnitListener listener) throws UPAException;
+    void removePersistenceUnitListener(PersistenceUnitListener listener) ;
 
     //    List<StructureInterceptor> getRelationListeners(String entityName1, String entityName2);
-    List<PersistenceUnitListener> getPersistenceUnitListeners() throws UPAException;
+    List<PersistenceUnitListener> getPersistenceUnitListeners() ;
 
     //    void saveConfig(Configuration configuration);
 //
@@ -334,31 +338,31 @@ public interface PersistenceUnit extends Closeable {
     //        return configModel;
     //    }
 //    DBMacroHelper getDbMacroHelper();
-    PersistenceStoreFactory getPersistenceStoreFactory() throws UPAException;
+    PersistenceStoreFactory getPersistenceStoreFactory() ;
 
-    void addSQLParameterProcessor(QLParameterProcessor p) throws UPAException;
+    void addSQLParameterProcessor(QLParameterProcessor p) ;
 
-    void removeSQLParameterProcessor(QLParameterProcessor p) throws UPAException;
+    void removeSQLParameterProcessor(QLParameterProcessor p) ;
 
-    I18NStringStrategy getI18NStringStrategy() throws UPAException;
+    I18NStringStrategy getI18NStringStrategy() ;
 
-    public LockInfo getPersistenceUnitLockingInfo() throws UPAException;
+    public LockInfo getPersistenceUnitLockingInfo() ;
 
-    public void lockPersistenceUnit(String id) throws UPAException;
+    public void lockPersistenceUnit(String id) ;
 
-    public void unlockPersistenceUnit(String id) throws UPAException;
+    public void unlockPersistenceUnit(String id) ;
 
-    public LockInfo getLockingInfo(Entity entity) throws UPAException;
+    public LockInfo getLockingInfo(Entity entity) ;
 
-    public void lockEntityManager(Entity entity, String id) throws UPAException;
+    public void lockEntityManager(Entity entity, String id) ;
 
-    public void unlockEntityManager(Entity entity, String id) throws UPAException;
+    public void unlockEntityManager(Entity entity, String id) ;
 
-    public List<LockInfo> getLockingInfo(Entity entity, Expression expression) throws UPAException;
+    public List<LockInfo> getLockingInfo(Entity entity, Expression expression) ;
 
-    public void lockEntities(Entity entity, Expression expression, String id) throws UPAException;
+    public void lockEntities(Entity entity, Expression expression, String id) ;
 
-    public void unlockEntities(Entity entity, Expression expression, String id) throws UPAException;
+    public void unlockEntities(Entity entity, Expression expression, String id) ;
 
     ////////////////////////////////////////
     // LISTENERS
@@ -376,148 +380,170 @@ public interface PersistenceUnit extends Closeable {
      * @param interceptor
      * @param entityNamePattern
      * @param system if true include system entities
-     * @throws UPAException
+     * @
      */
-    void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) throws UPAException;
+    void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) ;
 
-    void dropTrigger(String entityName, String triggerName) throws UPAException;
+    void dropTrigger(String entityName, String triggerName) ;
 
-    List<Trigger> getTriggers(String entityName) throws UPAException;
+    List<Trigger> getTriggers(String entityName) ;
 
-//    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) throws UPAException;
-//    void removePersistenceUnitTrigger(String triggerName) throws UPAException;
-//    List<PersistenceUnitTrigger> getPersistenceUnitTriggers() throws UPAException;
-    boolean isTriggersEnabled() throws UPAException;
+//    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) ;
+//    void removePersistenceUnitTrigger(String triggerName) ;
+//    List<PersistenceUnitTrigger> getPersistenceUnitTriggers() ;
+    boolean isTriggersEnabled() ;
 
-    void setTriggersEnabled(boolean triggersEnabled) throws UPAException;
+    void setTriggersEnabled(boolean triggersEnabled) ;
 
     //////////////////////////////////////////////////////////////////////
-    public ConnectionProfile getConnectionProfile() throws UPAException;
+    public ConnectionProfile getConnectionProfile() ;
 
-    public void persist(String entityName, Object objectOrRecord) throws UPAException;
+    public void persist(String entityName, Object objectOrRecord) ;
+    public void persist(String entity, Object objectOrRecord,Map<String,Object> hints) ;
 
-    public void persist(Object objectOrRecord) throws UPAException;
+    public void persist(Object objectOrRecord) ;
 
-    public RemoveTrace remove(String entityName, Object objectOrRecord) throws UPAException;
+    public RemoveTrace remove(String entityName, Object objectOrRecord) ;
 
-    public RemoveTrace remove(Object objectOrRecord) throws UPAException;
+    public RemoveTrace remove(Object objectOrRecord) ;
 
-    public void merge(Object objectOrRecord) throws UPAException;
+    public UpdateQuery createUpdateQuery(String entityName) ;
 
-    public void merge(String entityName, Object objectOrRecord) throws UPAException;
+    public UpdateQuery createUpdateQuery(Class type) ;
 
-    public boolean save(Object objectOrRecord) throws UPAException;
+    public UpdateQuery createUpdateQuery(Object object) ;
 
-    public boolean save(String entityName, Object objectOrRecord) throws UPAException;
+    public void merge(String entityName,Object objectOrRecord);
 
-    public void update(Object objectOrRecord) throws UPAException;
+    public void merge(Object objectOrRecord) ;
 
-    public void update(String entityName, Object objectOrRecord) throws UPAException;
+    public void update(Object objectOrRecord) ;
+
+    public boolean save(Object objectOrRecord) ;
 
 
-    public void updatePartial(String entityName, Object objectOrRecord,String... fields) throws UPAException ;
+//    public void merge(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
+//    public void merge(String entityName, Object objectOrRecord) ;
+//
+    public boolean save(String entityName, Object objectOrRecord) ;
+//    public boolean save(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
+//
+//
+    public void update(String entityName, Object objectOrRecord) ;
+//    public void update(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
+//
+//
+//    public void updatePartial(String entityName, Object objectOrRecord,String... fields)  ;
+//
+//    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified)  ;
+//
+//    public void updatePartial(String entityName, Object objectOrRecord,Map<String,Object> hints,String... fields)  ;
+//
+//    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
+//
+//    public void updatePartial(Object objectOrRecord,String... fields)  ;
+//
+//    public void updatePartial(Object objectOrRecord,Set<String> fields,boolean ignoreUnspecified)  ;
+//
+//    public void updatePartial(Object objectOrRecord) ;
+//
+//    public void updatePartial(String entityName, Object objectOrRecord) ;
+//    public void updatePartial(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
 
-    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified) throws UPAException ;
+    void updateFormulas() ;
 
-    public void updatePartial(Object objectOrRecord,String... fields) throws UPAException ;
-
-    public void updatePartial(Object objectOrRecord,Set<String> fields,boolean ignoreUnspecified) throws UPAException ;
-
-    public void updatePartial(Object objectOrRecord) throws UPAException;
-
-    public void updatePartial(String entityName, Object objectOrRecord) throws UPAException;
-
-    void updateFormulas() throws UPAException;
-
-    void updateFormulas(Entity[] entities) throws UPAException;
+    public void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException ;
 
     //////////
-    public int updateRecords(String entityName, Record record, Expression condition) throws UPAException;
+//    public int updateRecords(String entityName, Record record, Expression condition) ;
+//    public int updateRecords(String entityName, Record record, Expression condition,Map<String,Object> hints) ;
 
-    public void updateFormulas(String entityName, FieldFilter filter, Expression expr) throws UPAException;
+//    public void updateFormulas(String entityName, FieldFilter filter, Expression expr) ;
+//    public void updateFormulas(String entityName, FieldFilter filter, Expression expr,Map<String,Object> hints) ;
 
-    public void updateFormulasById(String entityName, FieldFilter filter, Object id) throws UPAException;
+//    public void updateFormulasById(String entityName, FieldFilter filter, Object id) ;
+//    public void updateFormulasById(String entityName, FieldFilter filter, Object id,Map<String,Object> hints) ;
 
-    public int updateRecords(Class entityType, Record record, Expression condition) throws UPAException;
+//    public int updateRecords(Class entityType, Record record, Expression condition) ;
 
-    public void updateFormulas(Class entityType, FieldFilter filter, Expression expr) throws UPAException;
+//    public void updateFormulas(Class entityType, FieldFilter filter, Expression expr) ;
 
-    public void updateFormulasById(Class entityType, FieldFilter filter, Object id) throws UPAException;
+//    public void updateFormulasById(Class entityType, FieldFilter filter, Object id) ;
 
     //////// REMOVE
-    public RemoveTrace remove(Class entityType, Object object) throws UPAException;
+    public RemoveTrace remove(Class entityType, Object object) ;
 
-    public RemoveTrace remove(Class entityType, RemoveOptions options) throws UPAException;
+    public RemoveTrace remove(Class entityType, RemoveOptions options) ;
 
-    public RemoveTrace remove(String entityName, RemoveOptions options) throws UPAException;
+    public RemoveTrace remove(String entityName, RemoveOptions options) ;
 
-    public <T> List<T> findAll(Class entityType) throws UPAException;
+    public <T> List<T> findAll(Class entityType) ;
 
-    public <T> List<T> findAll(String entityName) throws UPAException;
+    public <T> List<T> findAll(String entityName) ;
 
-    public <T> List<T> findAllIds(String entityName) throws UPAException;
+    public <T> List<T> findAllIds(String entityName) ;
 
-    public <T> T findByMainField(Class entityType, Object mainFieldValue) throws UPAException;
+    public <T> T findByMainField(Class entityType, Object mainFieldValue) ;
 
-    public <T> T findByMainField(String entityName, Object mainFieldValue) throws UPAException;
+    public <T> T findByMainField(String entityName, Object mainFieldValue) ;
 
-    public <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) throws UPAException;
+    public <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) ;
 
-    public <T> T findByField(String entityName, String fieldName, Object mainFieldValue) throws UPAException;
+    public <T> T findByField(String entityName, String fieldName, Object mainFieldValue) ;
 
-    public <T> T findById(Class entityType, Object id) throws UPAException;
+    public <T> T findById(Class entityType, Object id) ;
 
-    public <T> T findById(String entityName, Object id) throws UPAException;
+    public <T> T findById(String entityName, Object id) ;
 
-    public boolean existsById(String entityName, Object id) throws UPAException;
+    public boolean existsById(String entityName, Object id) ;
 
-    public List<Record> findAllRecords(Class entityType) throws UPAException;
+    public List<Record> findAllRecords(Class entityType) ;
 
-    public List<Record> findAllRecords(String entityName) throws UPAException;
+    public List<Record> findAllRecords(String entityName) ;
 
-    public Record findRecordById(Class entityType, Object id) throws UPAException;
+    public Record findRecordById(Class entityType, Object id) ;
 
-    public Record findRecordById(String entityName, Object id) throws UPAException;
+    public Record findRecordById(String entityName, Object id) ;
 
-    public QueryBuilder createQueryBuilder(Class entityType) throws UPAException;
+    public QueryBuilder createQueryBuilder(Class entityType) ;
 
-    public QueryBuilder createQueryBuilder(String entityName) throws UPAException;
+    public QueryBuilder createQueryBuilder(String entityName) ;
 
-    public Query createQuery(EntityStatement query) throws UPAException;
+    public Query createQuery(EntityStatement query) ;
 
-    public Query createQuery(String query) throws UPAException;
+    public Query createQuery(String query) ;
 
     /**
      *
      * @param transactionType
      * @return true if a transaction has been created
-     * @throws UPAException
+     * @
      */
-    public boolean beginTransaction(TransactionType transactionType) throws UPAException;
+    public boolean beginTransaction(TransactionType transactionType) ;
 
-    public void commitTransaction() throws UPAException;
+    public void commitTransaction() ;
 
-    public void rollbackTransaction() throws UPAException;
+    public void rollbackTransaction() ;
 
-    public boolean isStarted() throws UPAException;
+    public boolean isStarted() ;
 
-    public boolean isValidStructureModificationContext() throws UPAException;
+    public boolean isValidStructureModificationContext() ;
 
-    public boolean isStructureModification() throws UPAException;
+    public boolean isStructureModification() ;
 
-    public void beginStructureModification() throws UPAException;
+    public void beginStructureModification() ;
 
-    public void commitStructureModification() throws UPAException;
+    public void commitStructureModification() ;
 
-    public void close() throws UPAException;
+    public void close() ;
 
-    public boolean isClosed() throws UPAException;
+    public boolean isClosed() ;
 
-    //    public Expression parse(String query) throws UPAException;
+    //    public Expression parse(String query) ;
 //
-//    public net.vpc.upa.expressions.CompiledExpression compile(Expression expression, ExpressionCompilerConfig compilerConfig) throws UPAException;
+//    public net.vpc.upa.expressions.CompiledExpression compile(Expression expression, ExpressionCompilerConfig compilerConfig) ;
 //
-//    public net.vpc.upa.expressions.CompiledExpression compile(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig compilerConfig) throws UPAException;
+//    public net.vpc.upa.expressions.CompiledExpression compile(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig compilerConfig) ;
 //
 //    public QLFunction addQLFunction(String name, DataType type, QLFunctionHandler function);
 //
@@ -579,9 +605,9 @@ public interface PersistenceUnit extends Closeable {
 
     public boolean currentSessionExists();
 
-    public Session getCurrentSession() throws UPAException;
+    public Session getCurrentSession() ;
 
-    public Key createKey(Object... keyValues) throws UPAException;
+    public Key createKey(Object... keyValues) ;
 
     public Callback addCallback(CallbackConfig callbackConfig);
 
@@ -589,26 +615,28 @@ public interface PersistenceUnit extends Closeable {
 
     public void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, EventPhase phase);
+    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system,boolean preparedOnly, EventPhase phase);
 
-    public UConnection getConnection() throws UPAException;
+    public UConnection getConnection() ;
 
     public void setIdentityConstraintsEnabled(Entity entity, boolean enable);
 
 
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invoke(Action<T> action) throws UPAException;
+    public <T> T invoke(Action<T> action) ;
 
-    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invokePrivileged(Action<T> action) throws UPAException;
+    public <T> T invokePrivileged(Action<T> action) ;
 
-    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    public void invoke(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invoke(VoidAction action) throws UPAException;
+    public void invoke(VoidAction action) ;
 
-    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invokePrivileged(VoidAction action) throws UPAException;
+    public void invokePrivileged(VoidAction action) ;
+    
+    public Comparator<Entity> getDependencyComparator() ;
 }

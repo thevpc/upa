@@ -6,7 +6,7 @@ import net.vpc.upa.persistence.QueryResult;
 
 import java.sql.SQLException;
 
-public class SingleEntityKeyList<K> extends QueryResultIteratorList<K> {
+public class SingleEntityKeyList<K> extends QueryResultLazyList<K> {
     private int columns;
     private Entity entity;
     public SingleEntityKeyList(NativeSQL nativeSQL, Entity entity) throws SQLException {

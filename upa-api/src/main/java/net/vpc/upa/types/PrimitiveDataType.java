@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.types;
@@ -9,7 +9,7 @@ package net.vpc.upa.types;
  *
  * @author vpc
  */
-public class PrimitiveDataType extends DataType {
+public class PrimitiveDataType extends DefaultDataType {
 
     public PrimitiveDataType(String name, Class platformType) {
         super(name, platformType);

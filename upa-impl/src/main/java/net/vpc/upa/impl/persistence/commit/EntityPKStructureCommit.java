@@ -40,7 +40,7 @@ public class EntityPKStructureCommit extends StructureCommit {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
             UConnection b = executionContext.getConnection();
             for (PrimitiveField primaryField : entity.getPrimitiveFields(DefaultEntity.ID)) {
-                ColumnDesc cd = store.loadColumnDesc(primaryField, b.getPlatformConnection());
+                ColumnDesc cd = store.loadColumnDesc(primaryField, b.getMetadataAccessibleConnection());
                 if (cd.isNullable()!=null && cd.isNullable()) {
                     b.executeNonQuery(store.getAlterTableAlterColumnNullStatement(primaryField, false), null, null);
                 }

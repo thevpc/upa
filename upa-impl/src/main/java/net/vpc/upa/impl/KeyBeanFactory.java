@@ -1,11 +1,15 @@
 package net.vpc.upa.impl;
 
 import java.util.ArrayList;
+
+import net.vpc.upa.BeanType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
 
 import java.util.List;
-import net.vpc.upa.impl.util.DefaultBeanAdapter;
+import java.util.Set;
+
+import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -14,7 +18,7 @@ import net.vpc.upa.impl.util.DefaultBeanAdapter;
 public class KeyBeanFactory implements KeyFactory {
 
     private boolean isEntityKey;
-    private DefaultBeanAdapter bnfo;
+    private BeanType bnfo;
     private Class idType;
     private String[] fieldNames;
     private Entity entity;
@@ -36,8 +40,8 @@ public class KeyBeanFactory implements KeyFactory {
 //                }
                 this.fieldNames = fn.toArray(new String[fn.size()]);
             } else {
-                bnfo = new DefaultBeanAdapter(idType);
-                List<String> fn = bnfo.getFieldNames();
+                bnfo = PlatformBeanTypeRepository.getInstance().getBeanType(idType);
+                Set<String> fn = bnfo.getPropertyNames();
                 this.fieldNames = fn.toArray(new String[fn.size()]);
             }
         }

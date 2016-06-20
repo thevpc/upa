@@ -19,7 +19,7 @@ import java.util.Map;
  * Time: 6:41 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MultiRecordList extends QueryResultIteratorList<MultiRecord> {
+public class MultiRecordList extends QueryResultLazyList<MultiRecord> {
     private String[] recordName;
     private Entity[] entities;
     Map<String, Map<String, FieldTracking>> setterToProp;

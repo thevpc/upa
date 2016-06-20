@@ -8,6 +8,7 @@ import net.vpc.upa.config.FieldDesc;
 import net.vpc.upa.FormulaType;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.types.*;
 
 import java.lang.reflect.Field;
@@ -19,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.config.StringEncoderType;
 import net.vpc.upa.SearchOperator;
-import net.vpc.upa.impl.SerializableOrEntityType;
 import net.vpc.upa.config.ConfigInfo;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
@@ -413,7 +413,7 @@ class FieldInfo implements FieldDescriptor {
                 SerializableType ttype = new SerializableType(name, nativeClass, nullableOk);
                 overriddenDataType.setValue(ttype);
             } else {
-                SerializableOrEntityType ttype = new SerializableOrEntityType(name, nativeClass, nullableOk);
+                SerializableOrManyToOneType ttype = new SerializableOrManyToOneType(name, nativeClass, nullableOk);
                 overriddenDataType.setValue(ttype);
             }
         }
@@ -591,8 +591,8 @@ class FieldInfo implements FieldDescriptor {
                         throw new IllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
                     if (!f.foreignInfo.isSpecified()) {
-                        EntityType entityType = new EntityType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
-                        f.overriddenDataType.setValue(entityType);
+                        ManyToOneType manyToOneType = new ManyToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
+                        f.overriddenDataType.setValue(manyToOneType);
                     } else {
                         throw new IllegalArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
                     }

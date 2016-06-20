@@ -1,13 +1,12 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.*;
 import net.vpc.upa.callbacks.EntityListener;
 import net.vpc.upa.callbacks.EntityEvent;
 import net.vpc.upa.callbacks.UpdateEvent;
 import net.vpc.upa.callbacks.PersistEvent;
 import net.vpc.upa.callbacks.UpdateFormulaEvent;
 import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Record;
 import net.vpc.upa.callbacks.Trigger;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
@@ -16,10 +15,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.Callback;
-import net.vpc.upa.CallbackType;
-import net.vpc.upa.EventPhase;
-import net.vpc.upa.ObjectType;
+
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
 
 /**
@@ -68,11 +64,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new PersistEvent(objectId, record, context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_PERSIST,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_PERSIST,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_PERSIST,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
 
 //        if (listeners != null && entity.getPersistenceUnit().isTriggersEnabled()) {
@@ -119,7 +121,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new PersistEvent(objectId, record, context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_PERSIST,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -169,11 +171,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new UpdateEvent(updates, condition, context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_UPDATE,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_UPDATE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_UPDATE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
     }
 
@@ -205,7 +213,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new UpdateEvent(updates, condition, context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_UPDATE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -242,11 +250,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new RemoveEvent(condition, context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_REMOVE,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_REMOVE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_REMOVE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
     }
 
@@ -278,7 +292,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new RemoveEvent(condition, context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_REMOVE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -316,11 +330,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new UpdateFormulaEvent(updates, condition, context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_UPDATE_FORMULAS,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_UPDATE_FORMULAS,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_UPDATE_FORMULAS,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
     }
 
@@ -352,7 +372,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new UpdateFormulaEvent(updates, condition, context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_UPDATE_FORMULAS,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -387,11 +407,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_INITIALIZE,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_INITIALIZE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_INITIALIZE,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
     }
 
@@ -422,7 +448,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_INITIALIZE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -457,8 +483,14 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_CLEAR,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_CLEAR,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_CLEAR,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -492,7 +524,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_CLEAR,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
@@ -527,11 +559,17 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPreInvokers(
-                CallbackType.ON_PRE_RESET,
+        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_RESET,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
+        }
+        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_RESET,
+                ObjectType.ENTITY,
+                event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+            invoker.prepare(event);
         }
     }
 
@@ -562,7 +600,7 @@ public class RecordListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getCallbackPostInvokers(
+        for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
                 CallbackType.ON_RESET,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {

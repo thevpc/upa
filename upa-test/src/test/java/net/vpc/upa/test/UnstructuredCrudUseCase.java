@@ -51,7 +51,7 @@
 //        sm.insert(c);
 //
 //        FieldNameFilter fieldFilter = new FieldNameFilter("id", "firstName");
-//        Record found0=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        Record found0=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //        log.info("Found " + found0);
 //        found0.setString("firstName","Alia");
 //
@@ -61,14 +61,14 @@
 //
 //        sm.update(c2);
 //
-//        Record found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        Record found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //
 //        Assert.assertNotNull(found);
 //        Assert.assertEquals(found, entityManager.getConverter().objectToRecord(c2));
 //
 //        sm.delete(key);
 //
-//        found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();
@@ -100,20 +100,20 @@
 //        sm.insertRecord("Client", record);
 //
 //        FieldNameFilter fieldFilter = new FieldNameFilter("id", "firstName");
-//        Record foundRecord=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        Record foundRecord=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //        log.info("Found " + foundRecord);
 //        record.setString("firstName", "Alia");
 //
 //        sm.updateRecord("Client", record);
 //
-//        Record found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        Record found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //
 //        Assert.assertNotNull(found);
 //        Assert.assertEquals(found, record);
 //
 //        sm.delete(key);
 //
-//        found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).getRecord();
+//        found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToRecord();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();

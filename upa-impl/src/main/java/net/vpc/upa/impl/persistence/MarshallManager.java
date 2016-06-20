@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.DataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

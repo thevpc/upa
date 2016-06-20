@@ -29,7 +29,7 @@ public class XLSXWorkbookPart extends XLSXPackagePart {
 
     public List<XLSXSheetPart> getSheets() throws IOException, SAXException, InterruptedException {
         List<XLSXSheetPart> sheets = new ArrayList<XLSXSheetPart>();
-//        for (XLSXPackageRel r : getRelationships()) {
+//        for (XLSXPackageRel r : getManyToOneRelationships()) {
 //            if (r.getType().endsWith("/worksheet")) {
 //                sheets.add((XLSXSheetPart) r.getPart());
 //            }

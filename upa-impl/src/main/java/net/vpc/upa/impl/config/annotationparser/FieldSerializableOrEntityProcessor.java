@@ -13,11 +13,11 @@ import net.vpc.upa.DefaultRelationshipDescriptor;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.impl.SerializableOrEntityType;
+import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.EntityType;
 import net.vpc.upa.types.SerializableType;
 
 /**
@@ -37,8 +37,8 @@ public class FieldSerializableOrEntityProcessor extends DefinitionListenerAdapte
 
     public void process() {
         DataType dataType = field.getDataType();
-        if (dataType instanceof SerializableOrEntityType) {
-            SerializableOrEntityType master = (SerializableOrEntityType) dataType;
+        if (dataType instanceof SerializableOrManyToOneType) {
+            SerializableOrManyToOneType master = (SerializableOrManyToOneType) dataType;
             relationshipTargetEntityType = master.getEntityType();
             if (persistenceUnit.containsEntity(relationshipTargetEntityType)) {
                 Entity tt = persistenceUnit.getEntity(relationshipTargetEntityType);
@@ -53,8 +53,8 @@ public class FieldSerializableOrEntityProcessor extends DefinitionListenerAdapte
     @Override
     public void onModelChanged(PersistenceUnitEvent event) {
         DataType dataType = field.getDataType();
-        if (dataType instanceof SerializableOrEntityType) {
-            SerializableOrEntityType masterDatatype = (SerializableOrEntityType) dataType;
+        if (dataType instanceof SerializableOrManyToOneType) {
+            SerializableOrManyToOneType masterDatatype = (SerializableOrManyToOneType) dataType;
             Class tt = masterDatatype.getEntityType();
             if (PlatformUtils.isSerializable(tt)) {
                 field.setDataType(new SerializableType(masterDatatype.getName(), tt, masterDatatype.isNullable()));
@@ -73,8 +73,8 @@ public class FieldSerializableOrEntityProcessor extends DefinitionListenerAdapte
 
     private void bindRelation(Entity masterEntity) {
         DataType dataType = field.getDataType();
-        if (dataType instanceof SerializableOrEntityType) {
-            field.setDataType(new EntityType(dataType.getName(), dataType.getPlatformType(), masterEntity.getName(), true, dataType.isNullable()));
+        if (dataType instanceof SerializableOrManyToOneType) {
+            field.setDataType(new ManyToOneType(dataType.getName(), dataType.getPlatformType(), masterEntity.getName(), true, dataType.isNullable()));
             field.setTypeTransform(null);
             field.setTypeTransform(new IdentityDataTypeTransform(field.getDataType()));
             DefaultRelationshipDescriptor relationDescriptor = new DefaultRelationshipDescriptor();

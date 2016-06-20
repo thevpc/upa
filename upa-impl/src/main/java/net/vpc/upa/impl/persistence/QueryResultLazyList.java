@@ -2,18 +2,18 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.CloseListener;
-import net.vpc.upa.impl.util.IteratorList;
+import net.vpc.upa.impl.util.LazyList;
 import net.vpc.upa.persistence.QueryResultParser;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/21/12 4:09 PM
  */
-public abstract class QueryResultIteratorList<R>  extends IteratorList<R> implements QueryResultParser<R> {
+public abstract class QueryResultLazyList<R>  extends LazyList<R> implements QueryResultParser<R> {
     NativeSQL nativeSQL;
     private CloseListener closeListener;
 
-    protected QueryResultIteratorList(NativeSQL _nativeSQL) {
+    protected QueryResultLazyList(NativeSQL _nativeSQL) {
         super(null);
         this.nativeSQL = _nativeSQL;
         this.base = new QueryResultReader<R>(nativeSQL.getQueryResult(),this);

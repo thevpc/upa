@@ -12,11 +12,9 @@ import java.beans.PropertyChangeListener;
 class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
 
     private final QueryResult result;
-    private final MergedRecordList records;
     private final TypeInfo typeInfo;
 
-    public QueryResultUpdaterPropertyChangeListener(MergedRecordList records, TypeInfo typeInfo, QueryResult result) {
-        this.records = records;
+    public QueryResultUpdaterPropertyChangeListener(TypeInfo typeInfo, QueryResult result) {
         this.result = result;
         this.typeInfo = typeInfo;
     }

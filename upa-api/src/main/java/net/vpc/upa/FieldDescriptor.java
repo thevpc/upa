@@ -31,10 +31,9 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.types.DataType;
-
 import java.util.Map;
 import net.vpc.upa.types.DataTypeTransformConfig;
+import net.vpc.upa.types.DataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

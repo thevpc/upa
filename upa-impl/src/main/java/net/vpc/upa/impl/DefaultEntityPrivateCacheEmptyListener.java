@@ -10,10 +10,15 @@ import net.vpc.upa.callbacks.UpdateEvent;
  * @creationdate 1/4/13 12:09 AM
  */
 public class DefaultEntityPrivateCacheEmptyListener extends EntityListenerAdapter{
-    private Boolean cache_isEmpty;
+    private DefaultEntityCache cache;
+
+    public DefaultEntityPrivateCacheEmptyListener(DefaultEntityCache cache) {
+        this.cache = cache;
+    }
+
     @Override
     public void onPersist(PersistEvent event) {
-        cache_isEmpty = Boolean.TRUE;
+        cache.isEmpty = Boolean.FALSE;
     }
 
     @Override
@@ -22,10 +27,10 @@ public class DefaultEntityPrivateCacheEmptyListener extends EntityListenerAdapte
 
     @Override
     public void onRemove(RemoveEvent event) {
-        cache_isEmpty = null;
+        cache.isEmpty = null;
     }
 
     private void resetCache(){
-        cache_isEmpty=null;
+        cache.isEmpty=null;
     }
 }

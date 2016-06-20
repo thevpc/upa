@@ -2,7 +2,7 @@ package net.vpc.upa.impl.extension;
 
 import java.util.ArrayList;
 
-import net.vpc.upa.types.StringType;
+import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
@@ -13,11 +13,6 @@ import net.vpc.upa.extensions.HierarchyExtension;
 
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.util.Strings;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DoubleType;
-import net.vpc.upa.types.FloatType;
-import net.vpc.upa.types.IntType;
-import net.vpc.upa.types.LongType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -78,7 +73,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
     public static Relationship getTreeRelationName(Entity e) throws UPAException {
         Relationship r = null;
-        for (Relationship relation : e.getPersistenceUnit().getRelationshipsForSource(e)) {
+        for (Relationship relation : e.getPersistenceUnit().getRelationshipsBySource(e)) {
             if (relation.getTargetRole().getEntity().equals(e)) {
                 if (r != null) {
                     throw new IllegalStateException("Ambiguity in resolving tree relation");
@@ -190,7 +185,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
         Object[] parent_id = new Object[lfs.size()];
         Record values = getEntity()
                 .createQueryBuilder()
-                .setExpression(getEntity().getBuilder().idToExpression(id, null))
+                .byExpression(getEntity().getBuilder().idToExpression(id, null))
                 .setFieldFilter(Fields.regular().and(Fields.byList(lfs)))
                 .getRecord();
         if (values == null) {
@@ -209,7 +204,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
         String path = toStringId(id);
         if (parent_id != null) {
-            Record r = getEntity().createQueryBuilder().setExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), null)).setFieldFilter(Fields.byName(getHierarchyPathField())).getRecord();
+            Record r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), null)).setFieldFilter(Fields.byName(getHierarchyPathField())).getRecord();
             if (r != null) {
                 path = r.getString(getHierarchyPathField()) + getHierarchyPathSeparator() + path;
             }
@@ -221,7 +216,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
     protected void validateChildren(Object key, EntityExecutionContext executionContext)
             throws UPAException {
-        Record r = getEntity().createQueryBuilder().setExpression(getEntity().getBuilder().idToExpression(key, null)).setFieldFilter(Fields.byName(getHierarchyPathField())).getRecord();
+        Record r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(key, null)).setFieldFilter(Fields.byName(getHierarchyPathField())).getRecord();
 
         List<Field> lfs = getTreeRelationship().getSourceRole().getFields();
         Concat concat = new Concat();
@@ -260,7 +255,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             p = p == null ? e : new And(p, e);
         }
         getEntity().updateCore(s, p, executionContext);
-        List<Object> children = getEntity().createQueryBuilder().setExpression(p).getIdList();
+        List<Object> children = getEntity().createQueryBuilder().byExpression(p).getIdList();
         for (Object aChildren : children) {
             validateChildren(aChildren, executionContext);
         }
@@ -268,17 +263,17 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
     public Object findEntityByMainPath(String mainFieldPath) {
         Entity entity = getEntity();
-        return entity.createQueryBuilder().setExpression(createFindEntityByMainPathExpression(mainFieldPath, null)).getEntity();
+        return entity.createQueryBuilder().byExpression(createFindEntityByMainPathExpression(mainFieldPath, null)).getEntity();
     }
 
     public Object findEntityByIdPath(Object[] idPath) throws UPAException {
         Entity entity = getEntity();
-        return entity.createQueryBuilder().setExpression(createFindEntityByIdPathExpression(idPath, null)).getEntity();
+        return entity.createQueryBuilder().byExpression(createFindEntityByIdPathExpression(idPath, null)).getEntity();
     }
 
     public Object findEntityByKeyPath(Key[] keyPath) throws UPAException {
         Entity entity = getEntity();
-        return entity.createQueryBuilder().setExpression(createFindEntityByKeyPathExpression(keyPath, null)).getEntity();
+        return entity.createQueryBuilder().byExpression(createFindEntityByKeyPathExpression(keyPath, null)).getEntity();
     }
 
     public Expression createFindEntityByIdPathExpression(Object[] idPath, String entityAlias) throws UPAException {
@@ -352,14 +347,14 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 //        return getName() + ".provider.recursetree";
 //    }
     public <T> List<T> findDeepChildrenEntityList(Object id, boolean includeId) throws UPAException {
-        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).setExpression(createFindDeepChildrenExpression(getEntity().getName(), id, includeId)).getEntityList();
+        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).byExpression(createFindDeepChildrenExpression(getEntity().getName(), id, includeId)).getEntityList();
     }
 
     public <T> List<T> findImmediateChildrenEntityList(Object id) throws UPAException {
-        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).setExpression(createFindImmediateChildrenExpression(getEntity().getName(), id)).getEntityList();
+        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).byExpression(createFindImmediateChildrenExpression(getEntity().getName(), id)).getEntityList();
     }
 
     public <T> List<T> findRootsEntityList() throws UPAException {
-        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).setExpression(createFindRootsExpression(getEntity().getName())).getEntityList();
+        return treeRelation.getPersistenceUnit().createQueryBuilder(getEntity().getName()).byExpression(createFindRootsExpression(getEntity().getName())).getEntityList();
     }
 }

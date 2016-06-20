@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.event;
@@ -8,9 +8,9 @@ package net.vpc.upa.impl.event;
 import java.lang.reflect.Method;
 import java.util.Map;
 import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventPhase;
 import net.vpc.upa.ObjectType;
-import net.vpc.upa.callbacks.UpdateFormulaEvent;
-import net.vpc.upa.callbacks.UpdateFormulaObjectEvent;
+import net.vpc.upa.callbacks.*;
 import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
 
 /**
@@ -19,8 +19,14 @@ import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
  */
 public class UpdateFormulaObjectEventCallback extends SingleEntityObjectEventCallback {
 
-    public UpdateFormulaObjectEventCallback(Object o, Method m, CallbackType callbackType, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
-        super(o, m, callbackType, objectType, converter,configuration);
+    public UpdateFormulaObjectEventCallback(Object o, Method m, CallbackType callbackType, EventPhase phase, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
+        super(o, m, callbackType, phase,objectType, converter,configuration);
+    }
+
+    @Override
+    public void prepare(UPAEvent event) {
+        RemoveEvent ev = (RemoveEvent) event;
+        resolveIdList(ev, ev.getFilterExpression());
     }
 
     @Override

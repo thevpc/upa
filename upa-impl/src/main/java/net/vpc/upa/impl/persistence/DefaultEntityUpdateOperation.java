@@ -9,7 +9,7 @@ import net.vpc.upa.expressions.Update;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.persistence.EntityUpdateOperation;import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -25,8 +25,8 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             Field f = entity.findField(fieldName);
             if (f != null && UPDATE.accept(f)) {
                 Object value = updates.getObject(fieldName);
-                if ((f.getDataType() instanceof EntityType)) {
-                    EntityType e = (EntityType) f.getDataType();
+                if ((f.getDataType() instanceof ManyToOneType)) {
+                    ManyToOneType e = (ManyToOneType) f.getDataType();
                     if (e.isUpdatable()) {
                         Entity masterEntity = context.getPersistenceUnit().getEntity(e.getReferencedEntityName());
                         Key k = null;

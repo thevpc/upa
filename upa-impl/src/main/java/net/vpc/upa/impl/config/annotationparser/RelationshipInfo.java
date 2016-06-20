@@ -16,8 +16,8 @@ import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.EntityType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -86,8 +86,8 @@ class RelationshipInfo implements RelationshipDescriptor {
         if (isManyToOne()) {
             Class<?> nativeClass = getFieldType();
             if (!UPAUtils.isSimpleFieldType(nativeClass)) {
-                EntityType entityType = new EntityType(name, nativeClass, null, true, nullable);
-                preferredDataType = (entityType);
+                ManyToOneType manyToOneType = new ManyToOneType(name, nativeClass, null, true, nullable);
+                preferredDataType = (manyToOneType);
             }
         }
     }

@@ -74,12 +74,13 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         for (int i = 0; i < other.fields.size(); i++) {
             CompiledVar fvar = other.getField(i);
             Field field = (Field) fvar.getReferrer();
-            set(field, other.getFieldValue(i));
+            DefaultCompiledExpression fieldValue = other.getFieldValue(i);
+            set(field, fieldValue == null ? null : fieldValue.copy());
         }
 
         if (other.condition != null) {
             if (condition == null) {
-                where(condition.copy());
+                where(other.condition.copy());
             } else {
                 where(new CompiledAnd(condition, other.condition.copy()));
             }

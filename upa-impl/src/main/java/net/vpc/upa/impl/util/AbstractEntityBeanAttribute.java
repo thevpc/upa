@@ -11,9 +11,9 @@ abstract class AbstractEntityBeanAttribute implements EntityBeanAttribute {
 
     private String name;
     private Class fieldType;
-    private EntityBeanAdapter entityBeanAdapter;
+    private EntityBeanType entityBeanAdapter;
 
-    AbstractEntityBeanAttribute(EntityBeanAdapter entityBeanAdapter, String name, Class fieldType) {
+    AbstractEntityBeanAttribute(EntityBeanType entityBeanAdapter, String name, Class fieldType) {
         this.entityBeanAdapter = entityBeanAdapter;
         this.name = name;
         this.fieldType = fieldType;

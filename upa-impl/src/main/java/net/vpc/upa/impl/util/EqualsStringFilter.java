@@ -1,15 +1,17 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.util;
+
+import net.vpc.upa.filters.ObjectFilter;
 
 /**
  *
  * @author vpc
  */
-public class EqualsStringFilter implements ObjectFilter<String>{
+public class EqualsStringFilter implements ObjectFilter<String> {
     private String base;
     private boolean nullIsEmpty;
     private boolean ignoreCase;

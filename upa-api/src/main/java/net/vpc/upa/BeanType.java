@@ -32,32 +32,51 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.vpc.upa.filters;
+package net.vpc.upa;
 
-import net.vpc.upa.DynamicField;
-import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.filters.ObjectFilter;
+
+import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vpc
- * Date: 8/15/12
- * Time: 7:22 PM
- * To change this template use File | Settings | File Templates.
+ *
+ * @author vpc
  */
-public class FieldTypeFilter extends AbstractFieldFilter {
-    private Class<? extends Field> type;
+public interface BeanType {
 
-    public FieldTypeFilter(Class<? extends Field> type) {
-        this.type = type;
-    }
+    public Class getPlatformType();
 
-    @Override
-    public boolean acceptDynamic() {
-        return DynamicField.class.isAssignableFrom(type);
-    }
+    public Set<String> getPropertyNames();
 
-    @Override
-    public boolean accept(Field f) {
-        return type.isAssignableFrom(f.getClass());
-    }
+    public Set<String> getPropertyNames(Object o, Boolean includeDefaults) ;
+
+    public Object newInstance();
+
+    public boolean containsProperty(String property);
+
+    public Object getProperty(Object instance,String field);
+
+    public boolean setProperty(Object instance,String property, Object value);
+
+    /**
+     * sets value for the property, if the property exists
+     * @param instance instance to inject into
+     * @param property property to inject into
+     * @param value new value
+     */
+    public void inject(Object instance, String property, Object value);
+
+    public Method getMethod(Class type, String name, Class ret, Class... args);
+
+    public java.lang.reflect.Field findField(String name, ObjectFilter<Field> filter) ;
+
+    public boolean resetToDefaultValue(Object instance, String field) ;
+
+    public boolean isDefaultValue(Object instance, String field) ;
+
+    public Map<String, Object> toMap(Object o, Boolean includeDefaults) ;
 }

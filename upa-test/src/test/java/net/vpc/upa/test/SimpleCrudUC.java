@@ -40,7 +40,7 @@ public class SimpleCrudUC {
 
         sm.persist(c);
 
-        Record found0=sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record found0=sm.createQueryBuilder(Client.class).byId(key).getRecord();
         log.info("Found " + found0);
         found0.setString("firstName","Alia");
 
@@ -50,14 +50,14 @@ public class SimpleCrudUC {
 
         sm.update(c2);
 
-        Client found=sm.createQueryBuilder(Client.class).setId(key).getEntity();
+        Client found=sm.createQueryBuilder(Client.class).byId(key).getEntity();
 
         Assert.assertNotNull(found);
         Assert.assertEquals(found, c2);
 
         sm.remove(key);
 
-        Record foundRecord=sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record foundRecord=sm.createQueryBuilder(Client.class).byId(key).getRecord();
 
         Assert.assertNull(foundRecord);
         sm.commitTransaction();
@@ -89,20 +89,20 @@ public class SimpleCrudUC {
 
         sm.persist(c);
 
-        Record found0=sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record found0=sm.createQueryBuilder(Client.class).byId(key).getRecord();
         log.info("Found " + found0);
         c.setString("firstName", "Alia");
 
         sm.update(c);
 
-        Record found=sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record found=sm.createQueryBuilder(Client.class).byId(key).getRecord();
 
         Assert.assertNotNull(found);
         Assert.assertEquals(found, c);
 
         sm.remove(key);
 
-        found=sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        found=sm.createQueryBuilder(Client.class).byId(key).getRecord();
 
         Assert.assertNull(found);
         sm.commitTransaction();
@@ -134,13 +134,13 @@ public class SimpleCrudUC {
 
         sm.persist(c);
 
-        Client found0= sm.createQueryBuilder(Client.class).setId(key).getEntity();
+        Client found0= sm.createQueryBuilder(Client.class).byId(key).getEntity();
         log.info("Found " + found0);
         c.setFirstName("Alia");
 
         sm.update(c);
 
-        Client found= sm.createQueryBuilder(Client.class).setId(key).getEntity();
+        Client found= sm.createQueryBuilder(Client.class).byId(key).getEntity();
 
         Assert.assertNotNull(found);
         assertEquals(found.getFirstName(),c.getFirstName());
@@ -148,7 +148,7 @@ public class SimpleCrudUC {
 
         sm.remove(key);
 
-        found= sm.createQueryBuilder(Client.class).setId(key).getEntity();
+        found= sm.createQueryBuilder(Client.class).byId(key).getEntity();
 
         Assert.assertNull(found);
         sm.commitTransaction();

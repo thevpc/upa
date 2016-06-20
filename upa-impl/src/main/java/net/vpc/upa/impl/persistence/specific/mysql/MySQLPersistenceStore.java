@@ -21,10 +21,10 @@ import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
-import net.vpc.upa.impl.persistence.NativeIdentityGenerator;
-import net.vpc.upa.impl.persistence.NavigatorIdentityGenerator;
-import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorInt;
-import net.vpc.upa.impl.persistence.TableSequenceIdentityGeneratorString;
+import net.vpc.upa.impl.persistence.DatabaseIdentityPersister;
+import net.vpc.upa.impl.persistence.NavigatorIdentityPersister;
+import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterInt;
+import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterString;
 import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
@@ -38,10 +38,9 @@ import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
-import net.vpc.upa.persistence.UConnection;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
+import net.vpc.upa.types.DataType;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class MySQLPersistenceStore extends DefaultPersistenceStore {
@@ -56,6 +55,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         map.setBoolean("isReferencingSupported", true);
         map.setBoolean("isViewSupported", true);
         map.setBoolean("isTopSupported", true);
+        map.setInt("maxQueryJoinCount", 61);
         getSqlManager().register(new MySQLCoalesceSQLProvider());
         getSqlManager().register(new CastANSISQLProvider());
         getSqlManager().register(new MySQLConcatSQLProvider());
@@ -111,7 +111,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         return createSequenceGenerator(field, true);
     }
 
-    private boolean isNativeIdentity(Field field) throws UPAException {
+    protected boolean isIdentityField(Field field) throws UPAException {
         if (field.getPersistFormula() instanceof Sequence) {
             Sequence sequence = (Sequence) field.getPersistFormula();
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
@@ -153,21 +153,21 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 }
                 if (ofIntegerType) {
                     if (field.isId() && g == null) {
-                        return insert ? new NativeIdentityGenerator(field) : new NavigatorIdentityGenerator();
+                        return insert ? new DatabaseIdentityPersister(field) : new NavigatorIdentityPersister();
                     } else {
-                        return new TableSequenceIdentityGeneratorInt(field, sequence);
+                        return new TableSequenceIdentityPersisterInt(field, sequence);
                     }
                 } else if (String.class.equals(platformType)) {
-                    return new TableSequenceIdentityGeneratorString(field, sequence);
+                    return new TableSequenceIdentityPersisterString(field, sequence);
                 } else {
                     throw new UPAException("UnsupportedGeneratedValueTypeException", field, platformType);
                 }
             }
             case SEQUENCE: {
-                return new TableSequenceIdentityGeneratorString(field, sequence);
+                return new TableSequenceIdentityPersisterString(field, sequence);
             }
             case TABLE: {
-                return new TableSequenceIdentityGeneratorString(field, sequence);
+                return new TableSequenceIdentityPersisterString(field, sequence);
             }
             default: {
                 throw new UPAException("UnsupportedGeneratedValueStrategyException", field);
@@ -182,9 +182,9 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
         DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
-        EntityExecutionContext context = pu.createContext(ContextOperation.FIND);
+        EntityExecutionContext context = pu.createContext(ContextOperation.FIND,executionContext.getHints());
         sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
-        if (isNativeIdentity(field)) {
+        if (isIdentityField(field)) {
             sb.append(" PRIMARY KEY AUTO_INCREMENT  ");
         } else {
             if (defaultObject == null && !cr.getTargetType().isNullable()) {
@@ -205,11 +205,11 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public Connection createNativeCustomNativeConnection(ConnectionProfile p) throws UPAException {
-        return createCustomNativeConnection(p, true);
+    public Connection createCustomPlatformConnection(ConnectionProfile p) throws UPAException {
+        return createCustomPlatformConnection(p, true);
     }
 
-    public Connection createCustomNativeConnection(ConnectionProfile p, boolean create) throws UPAException {
+    public Connection createCustomPlatformConnection(ConnectionProfile p, boolean create) throws UPAException {
         try {
             String connectionDriver = p.getConnectionDriver();
             if (connectionDriver == null || connectionDriver.trim().isEmpty()) {
@@ -271,25 +271,6 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         return null;
     }
 
-    @Override
-    public boolean isCreatedStorage() throws UPAException {
-        try {
-            UConnection c = null;
-            try {
-                c = createConnection();
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-            return true;
-        } catch (Exception ignored) {
-            //
-        }
-        return false;
-    }
-
-    @Override
     public String getCreateIndexStatement(Index index) throws UPAException {
         StringBuilder sb = new StringBuilder("Create");
         //how is cluster supported ?
@@ -373,7 +354,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
 
-        EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(getSqlManager().getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());

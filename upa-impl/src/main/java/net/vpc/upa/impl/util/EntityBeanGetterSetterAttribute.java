@@ -15,9 +15,9 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
     private Method setter;
     private String fieldName;
     private Class fieldType;
-    private EntityBeanAdapter entityBeanAdapter;
+    private EntityBeanType entityBeanAdapter;
 
-    EntityBeanGetterSetterAttribute(EntityBeanAdapter entityBeanAdapter, String fieldName, Class fieldType,Class type) {
+    EntityBeanGetterSetterAttribute(EntityBeanType entityBeanAdapter, String fieldName, Class fieldType,Class type) {
         super(entityBeanAdapter, fieldName, fieldType);
         this.entityBeanAdapter = entityBeanAdapter;
         this.fieldName = fieldName;

@@ -3,11 +3,9 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EntityBuilder;
 import net.vpc.upa.Record;
+import net.vpc.upa.Relationship;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by vpc on 1/4/14.
@@ -17,7 +15,8 @@ class TypeInfo {
     String parentBinding;
     String bindingName;
     String binding;
-    List<FieldInfo> infos = new ArrayList<FieldInfo>();
+    List<FieldInfo> allFields = new ArrayList<FieldInfo>();
+    Set<Relationship> manyToOneRelations = new HashSet<Relationship>();
     FieldInfo[] infosArray;
     FieldInfo leadPrimaryField;
     FieldInfo leadField;

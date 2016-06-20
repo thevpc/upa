@@ -46,12 +46,6 @@ public abstract class StructureCommit {
                         try {
                             persist(executionContext, status);
                         } catch (Exception e) {
-                            PersistenceState s2 = getObjectStatus(null);
-                            try {
-                                persist(executionContext, status);
-                            } catch (Exception e2) {
-                                //
-                            }
                             throw new UPAException(e, new I18NString("CommitFailed"));
                         }
                         object.getProperties().setString("persistence.PersistenceAction", "ADD");

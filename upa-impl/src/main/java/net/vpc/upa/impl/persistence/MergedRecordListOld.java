@@ -17,7 +17,7 @@ import java.util.Map;
  * this template use File | Settings | File Templates.
  */
 @Deprecated
-public class MergedRecordListOld extends QueryResultIteratorList<Record> {
+public class MergedRecordListOld extends QueryResultLazyList<Record> {
 
     private int columns;
     private ObjectFactory factory;

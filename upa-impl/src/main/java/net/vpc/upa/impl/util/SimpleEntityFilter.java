@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.util;
@@ -8,6 +8,7 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EntityModifier;
 import net.vpc.upa.filters.EntityFilter;
+import net.vpc.upa.filters.ObjectFilter;
 
 /**
  *

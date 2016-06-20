@@ -2,70 +2,73 @@ package net.vpc.upa;
 
 import net.vpc.upa.expressions.Expression;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vpc on 7/18/15.
  */
 public final class RemoveOptions {
 
-    private RemoveType removeType;
+    private ConditionType conditionType;
     private Object removeCondition;
     private boolean simulate;
     private RemoveTrace removeTrace;
     private boolean followLinks = true;
     private Relationship followRelationship;
+    private Map<String,Object> hints;
 
     public static RemoveOptions forId(Object expr) {
-        return new RemoveOptions(RemoveType.ID, expr);
+        return new RemoveOptions(ConditionType.ID, expr);
     }
 
     public static <T> RemoveOptions forIdList(List<T> expr) {
-        return new RemoveOptions(RemoveType.ID_LIST, expr);
+        return new RemoveOptions(ConditionType.ID_LIST, expr);
     }
 
     public static RemoveOptions forKey(Key expr) {
-        return new RemoveOptions(RemoveType.KEY, expr);
+        return new RemoveOptions(ConditionType.KEY, expr);
     }
 
     public static RemoveOptions forObject(Object expr) {
-        return new RemoveOptions(RemoveType.OBJECT, expr);
+        return new RemoveOptions(ConditionType.OBJECT, expr);
     }
 
     public static RemoveOptions forPrototype(Object expr) {
         if (expr instanceof Record) {
-            return new RemoveOptions(RemoveType.RECORD_PROTOTYPE, expr);
+            return new RemoveOptions(ConditionType.RECORD_PROTOTYPE, expr);
         } else {
-            return new RemoveOptions(RemoveType.PROTOTYPE, expr);
+            return new RemoveOptions(ConditionType.PROTOTYPE, expr);
         }
     }
 
     public static RemoveOptions forRecord(Record expr) {
-        return new RemoveOptions(RemoveType.RECORD, expr);
+        return new RemoveOptions(ConditionType.RECORD, expr);
     }
 
     public static RemoveOptions forPrototye(Record expr) {
-        return new RemoveOptions(RemoveType.RECORD_PROTOTYPE, expr);
+        return new RemoveOptions(ConditionType.RECORD_PROTOTYPE, expr);
     }
 
     public static RemoveOptions forKeyList(List<Key> expr) {
-        return new RemoveOptions(RemoveType.ID_LIST, expr);
+        return new RemoveOptions(ConditionType.ID_LIST, expr);
     }
 
     public static RemoveOptions forExpressionList(List<Expression> expr) {
-        return new RemoveOptions(RemoveType.EXPRESSION_LIST, expr);
+        return new RemoveOptions(ConditionType.EXPRESSION_LIST, expr);
     }
 
     public static RemoveOptions forExpression(Expression expr) {
-        return new RemoveOptions(RemoveType.EXPRESSION, expr);
+        return new RemoveOptions(ConditionType.EXPRESSION, expr);
     }
 
     public static RemoveOptions forAll() {
-        return new RemoveOptions(RemoveType.EXPRESSION, null);
+        return new RemoveOptions(ConditionType.EXPRESSION, null);
     }
 
-    private RemoveOptions(RemoveType removeType, Object removeCondition) {
-        this.removeType = removeType;
+    private RemoveOptions(ConditionType conditionType, Object removeCondition) {
+        this.conditionType = conditionType;
         this.removeCondition = removeCondition;
     }
 
@@ -105,11 +108,41 @@ public final class RemoveOptions {
         return this;
     }
 
-    public RemoveType getRemoveType() {
-        return removeType;
+    public ConditionType getConditionType() {
+        return conditionType;
     }
 
     public Object getRemoveCondition() {
         return removeCondition;
+    }
+
+    public Map<String, Object> getHints() {
+        return hints;
+    }
+
+    public Map<String, Object> getHints(boolean autoCreate) {
+        if(hints==null && autoCreate){
+            hints=new HashMap<String, Object>();
+        }
+        return hints;
+    }
+
+    public RemoveOptions setHints(Map<String, Object> hints) {
+        this.hints = hints;
+        return this;
+    }
+
+    public RemoveOptions setHint(String name,Object value){
+        if(value==null){
+           if(hints!=null){
+               hints.remove(name);
+           }
+        }else{
+            if(hints==null){
+                hints=new HashMap<String, Object>();
+            }
+            hints.put(name,value);
+        }
+        return this;
     }
 }

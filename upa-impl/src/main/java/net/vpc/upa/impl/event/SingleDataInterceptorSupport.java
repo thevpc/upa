@@ -96,15 +96,6 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
     }
 
     protected Iterable<Object> resolveIdList(EntityEvent event, Expression whereExpression) throws UPAException {
-        EntityExecutionContext executionContext = event.getContext();
-        if (whereExpression instanceof IdExpression) {
-            return Arrays.asList(((IdExpression) whereExpression).getId());
-        } else {
-            if (!executionContext.isSet("ALL_KEYS")) {
-                List<Object> idList = event.getEntity().createQueryBuilder().setExpression(whereExpression).getIdList();
-                executionContext.setObject("ALL_KEYS", idList);
-            }
-            return (List<Object>) executionContext.getObject("ALL_KEYS");
-        }
+        return SingleEntityObjectEventCallback.resolveIdListUtility(event,whereExpression);
     }
 }

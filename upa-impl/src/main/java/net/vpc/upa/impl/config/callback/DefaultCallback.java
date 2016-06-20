@@ -22,14 +22,14 @@ public class DefaultCallback implements Callback {
     private Map<String, Object> configuration;
     private EventPhase phase;
 
-    public DefaultCallback(Object o, Method m, CallbackType callbackType, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
+    public DefaultCallback(Object o, Method m, CallbackType callbackType, EventPhase phase,ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
         this.converter = converter;
         this.instance = o;
         this.method = m;
         this.objectType = objectType;
         this.callbackType = callbackType;
         this.configuration = configuration;
-        this.phase = callbackType.name().startsWith("ON_PRE_") ? EventPhase.BEFORE : EventPhase.AFTER;
+        this.phase = phase;
     }
 
     public EventPhase getPhase() {

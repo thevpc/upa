@@ -128,9 +128,6 @@ public class DefaultUConnection implements UConnection {
         SQLException error=null;
         int count = -1;
         boolean gen = generatedKeys != null && generatedKeys.size() > 0;
-//        Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-        if (log.isLoggable(Level.FINE)) {
-        }
         long startTime = System.currentTimeMillis();
         try {
             PreparedStatement s = null;

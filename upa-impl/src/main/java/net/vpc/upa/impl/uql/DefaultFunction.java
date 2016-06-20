@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.FunctionDefinition;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.Function;
+import net.vpc.upa.types.DataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

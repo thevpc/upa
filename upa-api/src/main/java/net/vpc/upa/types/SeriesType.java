@@ -36,7 +36,7 @@ package net.vpc.upa.types;
 
 import java.util.List;
 
-public abstract class SeriesType extends DataType implements Cloneable {
+public abstract class SeriesType extends DefaultDataType implements Cloneable {
 
     protected SeriesType(String name, Class platformType) {
         super(name, platformType);

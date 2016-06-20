@@ -1,23 +1,21 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.BeanType;
 import net.vpc.upa.Key;
-import net.vpc.upa.impl.util.EntityBeanAdapter;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/27/12 1:51 AM
  */
 public class KeySubclassUnstructuredFactory implements KeyFactory {
-    private Class keyType;
-    private EntityBeanAdapter nfo;
+    private BeanType nfo;
 
-    public KeySubclassUnstructuredFactory(Class keyType, EntityBeanAdapter nfo) {
-        this.keyType = keyType;
+    public KeySubclassUnstructuredFactory(BeanType nfo) {
         this.nfo = nfo;
     }
 
     public Class getIdType() {
-        return keyType;
+        return nfo.getPlatformType();
     }
 
     @Override
@@ -36,7 +34,7 @@ public class KeySubclassUnstructuredFactory implements KeyFactory {
 
     @Override
     public Object getId(Key unstructuredKey) {
-        if(keyType.isInstance(unstructuredKey)){
+        if(nfo.getPlatformType().isInstance(unstructuredKey)){
             return unstructuredKey;
         }
         Key o = (Key) nfo.newInstance();

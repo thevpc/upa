@@ -7,9 +7,9 @@ import net.vpc.upa.NamingStrategy;
 */
 class CaseInsensitiveNamingStrategy implements NamingStrategy {
     public String getUniformValue(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("name should not be null");
-        }
+//        if (name == null) {
+//            throw new IllegalArgumentException("name should not be null");
+//        }
         return name.toUpperCase();
     }
 

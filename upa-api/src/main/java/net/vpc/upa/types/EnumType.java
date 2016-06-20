@@ -64,7 +64,8 @@ public class EnumType extends SeriesType implements Cloneable {
     @Override
     public List<Object> getValues() {
         try {
-            return Arrays.asList((Object[]) enumClass.getDeclaredMethod("values").invoke(null,new Object[0]));
+
+            return Arrays.asList(enumClass.getEnumConstants());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

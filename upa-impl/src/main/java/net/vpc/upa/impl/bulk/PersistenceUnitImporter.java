@@ -1,31 +1,65 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.bulk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.vpc.upa.*;
-import net.vpc.upa.expressions.Delete;
+import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.EntityFilter;
+import net.vpc.upa.QueryHints;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.impl.util.CacheSet;
+import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.bulk.ImportPersistenceUnitListener;
+import net.vpc.upa.types.I18NString;
 
 /**
  *
  * @author vpc
  */
 public class PersistenceUnitImporter {
+    private static final Logger log=Logger.getLogger(PersistenceUnitImporter.class.getName());
+    private static class IdCache {
+        Object id;
+        String entityName;
 
+        public IdCache(Object id, String entityName) {
+            this.id = id;
+            this.entityName = entityName;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof IdCache)) return false;
+
+            IdCache idCache = (IdCache) o;
+
+            if (!id.equals(idCache.id)) return false;
+            return entityName.equals(idCache.entityName);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = id.hashCode();
+            result = 31 * result + entityName.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return entityName+"[" +
+                    id +
+                    ']';
+        }
+    }
     private static class ExecInfo {
 
         EntityFilter filter;
@@ -36,7 +70,8 @@ public class PersistenceUnitImporter {
         SyncStat globalStat = new SyncStat();
         Map<String, SyncStat> stats = new TreeMap<String, SyncStat>();
         List<Entity> entities;
-        Set<String> finishedEntities=new HashSet<String>();
+        Set<String> finishedProcessingEntityNames =new HashSet<String>();
+        CacheSet<IdCache> idCaches=new CacheSet<IdCache>(1000);
         public SyncStat getStat(String entityName){
             SyncStat s = stats.get(entityName);
             if(s==null){
@@ -74,7 +109,7 @@ public class PersistenceUnitImporter {
         ii.listener = listener;
         ii.deleteExisting = deleteExisting;
         ii.entities = source.getEntities(filter);
-
+        Collections.sort(ii.entities,source.getDependencyComparator());
 //        importEntity("Equipment", 0);
 //        importObject(new Obj("Equipment", source.findById("Equipment", 555)), true, true, true, "");
 //        importObject(new Obj("AppUserProfileBinding", source.findById("AppUserProfileBinding", 1)), true, true, true, "");
@@ -115,7 +150,7 @@ public class PersistenceUnitImporter {
             System.out.println(">>\t " + tab_progress + "-" + ((i + 1) + "/" + a.size()) + " : " + de);
             importObjectById(me.getName(), ob, ii);
         }
-        ii.finishedEntities.add(entityName);
+        ii.finishedProcessingEntityNames.add(entityName);
         System.out.println(">>>>>> " + de.getName() + " : " + estat.debugString());
     }
 
@@ -179,7 +214,7 @@ public class PersistenceUnitImporter {
             u.values = new Object[u.properties.length];
             for (int i = 0; i < u.properties.length; i++) {
                 String property = u.properties[i];
-                u.values[i] = entity.getBuilder().getRecord(t, true).getObject(property);
+                u.values[i] = entity.getBuilder().objectToRecord(t, true).getObject(property);
             }
             uniques.add(u);
         }
@@ -191,8 +226,8 @@ public class PersistenceUnitImporter {
         Map<String, Obj> t = new HashMap<String, Obj>();
         EntityBuilder bb = entity.getBuilder();
         for (Field field : entity.getFields()) {
-            if (field.getDataType() instanceof EntityType) {
-                EntityType g = (EntityType) field.getDataType();
+            if (field.getDataType() instanceof ManyToOneType) {
+                ManyToOneType g = (ManyToOneType) field.getDataType();
                 Entity rr = target.getEntity(g.getReferencedEntityName());
                 Object v2 = bb.getProperty(instance, field.getName());
                 if (v2 != null) {
@@ -212,41 +247,61 @@ public class PersistenceUnitImporter {
         return t;
     }
 
+    protected Map<String,Object> configureHints(Entity entity){
+        Map<String,Object> hints=new HashMap<String, Object>();
+        for (Field field : entity.getFields()) {
+            if(field.getTypeTransform() instanceof PasswordDataTypeTransform){
+                hints.put(QueryHints.NO_TYPE_TRANSFORM+"." + field.getAbsoluteName(), true);
+            }
+        }
+        return hints;
+    }
     private Object loadSourceObject(String type, Object id, PersistenceUnit source) {
         Entity entity = source.getEntity(type);
         QueryBuilder queryBuilder = entity.createQueryBuilder();
-        for (Field field : entity.getFields()) {
-            if(field.getTypeTransform() instanceof PasswordDataTypeTransform){
-                queryBuilder.setHint("NoTypeTransform." + field.getAbsoluteName(), true);
-            }
-        }
-        Object reloaded = queryBuilder.setHint("navigationDepth", 1).setId(id).getEntity();
+        queryBuilder.setHints(configureHints(entity));
+        Object reloaded = queryBuilder.byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 1).getEntity();
         return reloaded;
     }
 
     private Object loadTargetObject(String type, Object id, PersistenceUnit target) {
         Entity entity = target.getEntity(type);
-//        Object reloaded = entity.createQueryBuilder().setHint("navigationDepth", 1).setId(id).getEntity();
-        Object reloaded0 = entity.createQueryBuilder().setHint("navigationDepth", 0).setId(id).getRecord();
-//        Object reloaded1 = entity.createQueryBuilder().setHint("navigationDepth", 1).setId(id).getRecord();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
+        Object reloaded0 = entity.createQueryBuilder().byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 0).getRecord();
+//        Object reloaded1 = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).objectToRecord();
         return reloaded0;
     }
 
 //    public Obj reloadSourceObject(Obj oo) {
 //        Entity entity = source.getEntity(oo.name);
 //        Object id = resolveId(entity.getName(), oo.value, source);
-//        Object reloaded = entity.createQueryBuilder().setHint("navigationDepth", 1).setId(id).getEntity();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
 //        return new Obj(oo.name, reloaded);
 //    }
 //
 //    public Obj reloadTargetObject(Obj oo) {
 //        Entity entity = target.getEntity(oo.name);
 //        Object id = resolveId(entity.getName(), oo.value, source);
-//        Object reloaded = entity.createQueryBuilder().setHint("navigationDepth", 1).setId(id).getEntity();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
 //        return new Obj(oo.name, reloaded);
 //    }
     private Object importObjectById(String type, Object id, ExecInfo ii) {
         return importObjectById(type, id, true, true, true, "", ii);
+    }
+
+    private boolean existsById(Entity e,Object id,ExecInfo ii){
+        if(ii.finishedProcessingEntityNames.contains(e.getName())){
+            return true;
+        }
+        IdCache idc = new IdCache(id, e.getName());
+        if(ii.idCaches.contains(idc)){
+            return true;
+        }
+        boolean ok = e.existsById(id);
+        if(ok){
+            ii.idCaches.add(idc);
+        }
+        return ok;
     }
 
     private Object importObjectById(String entityName, Object id, boolean importRelations, boolean allowPersist, boolean allowMerge, String prefix, ExecInfo ii) {
@@ -263,7 +318,7 @@ public class PersistenceUnitImporter {
         for (UniqueValue uniqueValue : resolveUnique(entityName, instance, ii.target)) {
             QueryBuilder b = entity.createQueryBuilder();
             for (int i = 0; i < uniqueValue.properties.length; i++) {
-                b.addAndField(uniqueValue.properties[i], uniqueValue.values[i]);
+                b.byField(uniqueValue.properties[i], uniqueValue.values[i]);
             }
             Object foundObject = b.getEntity();
             Object id2 = resolveId(entityName, foundObject, ii.target);
@@ -275,13 +330,13 @@ public class PersistenceUnitImporter {
             }
         }
         if (persist == null) {
-            persist = !entity.existsById(id);
+            persist = !existsById(entity,id,ii);
         }
 //        if (oldId == null) {
 //            persist = true;
 //        } else if (pf.size() <= 1) {
 //            DataType dt = pf.get(0).getDataType();
-//            if (dt instanceof EntityType) {
+//            if (dt instanceof ManyToOneType) {
 //                persist = !entity.existsById(oldId);
 //            } else if (pf.size() == 1 && pf.get(0).getModifiers().contains(FieldModifier.PERSIST_SEQUENCE)) {
 //                //persist = Objects.equals(dt.getDefaultUnspecifiedValue(), oldId);
@@ -293,7 +348,7 @@ public class PersistenceUnitImporter {
 //        }
         if (persist) {
             if (allowPersist) {
-                if (importRelations) {
+//                if (importRelations) {
                     Map<String, Obj> rels = getNonNullRelations(entityName, instance, ii.target);
                     for (Map.Entry<String, Obj> mm : rels.entrySet()) {
                         Obj or = mm.getValue();
@@ -304,20 +359,26 @@ public class PersistenceUnitImporter {
                         }
                         eb.setProperty(instance, mm.getKey(), n);
                     }
-                }
+//                }
                 try {
                     ii.target.setIdentityConstraintsEnabled(entity, false);
-                    ii.target.persist(entityName, instance);
+                    persistTarget(entityName, instance, ii);
                     ii.target.setIdentityConstraintsEnabled(entity, true);
                     istat.validPersists++;
                     if (ii.listener != null) {
                         ii.listener.objectPersisted(entityName, instance0, instance);
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    log.log(Level.SEVERE, "Failed to persist for import "+entityName+" with Id "+id,ex);
                     istat.erronousPersists++;
                     if (ii.listener != null) {
-                        ii.listener.objectPersistFailed(entityName, instance0, instance, ex);
+                        try {
+                            ii.listener.objectPersistFailed(entityName, instance0, instance, ex);
+                        } catch (RuntimeException e) {
+                            throw e;
+                        } catch (Exception e) {
+                            throw new UPAException(e,new I18NString("ObjectPersistFailed"));
+                        }
                     }
                 }
             }
@@ -327,7 +388,11 @@ public class PersistenceUnitImporter {
                 for (Map.Entry<String, Obj> mm : rels.entrySet()) {
                     Obj or = mm.getValue();
                     Object oldId2 = resolveId(or.name, or.value, ii.target);
-                    Object n = importObjectById(or.name, oldId2, false, true, false, prefix + "\t", ii);
+                    if(or.value!=null && oldId2==null){
+                        Object rr = resolveId(or.name, or.value, ii.target);
+                        throw new UPAException("Unexpected");
+                    }
+                    Object n = oldId2==null?null:importObjectById(or.name, oldId2, false, true, false, prefix + "\t", ii);
                     if (n instanceof Record) {
                         n = ii.target.getEntity(or.name).getBuilder().recordToObject((Record) n);
                     }
@@ -335,16 +400,22 @@ public class PersistenceUnitImporter {
                 }
             }
             try {
-                ii.target.merge(entityName, instance);
+                mergeTarget(entityName, instance, ii);
                 istat.validMerges++;
                 if (ii.listener != null) {
                     ii.listener.objectMerged(entityName, instance0, instance);
                 }
             } catch (Exception ex) {
                 istat.erronousMerges++;
-                ex.printStackTrace();
+                log.log(Level.SEVERE, "Failed to merge for import " + entityName + " with Id " + id, ex);
                 if (ii.listener != null) {
-                    ii.listener.objectMergeFailed(entityName, instance0, instance, ex);
+                    try {
+                        ii.listener.objectMergeFailed(entityName, instance0, instance, ex);
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        throw new UPAException(e,new I18NString("ObjectPersistFailed"));
+                    }
                 }
             }
         } else {
@@ -356,4 +427,12 @@ public class PersistenceUnitImporter {
         return instance;
     }
 
+    protected void mergeTarget(String entityName,Object instance,ExecInfo ii){
+        ii.target.createUpdateQuery(entityName)
+                .setHints(configureHints(ii.target.getEntity(entityName)))
+                .setValues(instance).execute();
+    }
+    protected void persistTarget(String entityName,Object instance,ExecInfo ii){
+        ii.target.persist(entityName, instance,configureHints(ii.target.getEntity(entityName)));
+    }
 }

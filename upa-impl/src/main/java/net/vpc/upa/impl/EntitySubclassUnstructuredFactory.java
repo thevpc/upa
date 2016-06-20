@@ -29,17 +29,17 @@ public class EntitySubclassUnstructuredFactory extends AbstractEntityFactory {
         return (R) createRecord();
     }
 
-    public Record getRecord(Object object, boolean ignoreUnspecified) {
+    public Record objectToRecord(Object object, boolean ignoreUnspecified) {
         return (Record) object;
     }
 
 
     @Override
-    public <R> R getEntity(Record record) {
+    public Object recordToObject(Record record) {
         if (recordType.isInstance(record)) {
-            return (R) record;
+            return record;
         } else {
-            R ur = (R) createRecord();
+            Object ur = createRecord();
             ((Record) ur).setAll(record);
             return ur;
         }

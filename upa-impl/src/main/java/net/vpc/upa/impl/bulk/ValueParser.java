@@ -5,23 +5,7 @@
 package net.vpc.upa.impl.bulk;
 
 import net.vpc.upa.impl.util.DateUtils;
-import net.vpc.upa.types.BooleanType;
-import net.vpc.upa.types.ByteType;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DateTimeType;
-import net.vpc.upa.types.DateType;
-import net.vpc.upa.types.DoubleType;
-import net.vpc.upa.types.EnumType;
-import net.vpc.upa.types.FloatType;
-import net.vpc.upa.types.IntType;
-import net.vpc.upa.types.LongType;
-import net.vpc.upa.types.MonthType;
-import net.vpc.upa.types.ShortType;
-import net.vpc.upa.types.StringType;
-import net.vpc.upa.types.TemporalType;
-import net.vpc.upa.types.TimeType;
-import net.vpc.upa.types.TimestampType;
-import net.vpc.upa.types.YearType;
+import net.vpc.upa.types.*;
 
 /**
  *

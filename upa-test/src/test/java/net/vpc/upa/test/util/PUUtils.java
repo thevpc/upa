@@ -16,15 +16,21 @@ import net.vpc.upa.persistence.ConnectionConfig;
 public class PUUtils {
     private static final String TYPE="mysql";
     public static PersistenceUnit createTestPersistenceUnit(Class clz) {
+        return createTestPersistenceUnit(clz,TYPE);
+    }
+
+    public static PersistenceUnit createTestPersistenceUnit(Class clz,String type) {
         String puId = clz == null ? "test" : clz.getName();
         PersistenceGroup grp = UPA.getPersistenceGroup();
         PersistenceUnit pu = grp.addPersistenceUnit(puId);
 //        pu.scan(null);
         final ConnectionConfig cc = new ConnectionConfig();
-        if("mysql".equals(TYPE)){
+        if("mysql".equals(type)){
             cc.setConnectionString("mysql:default://localhost/UPA_TEST;structure=create;userName=root;password=''");
-        }else{
+        }else if("derby".equals(type)){
             cc.setConnectionString("derby:default://localhost/upatest;structure=create;userName=upatest;password=upatest");
+        }else if("embedded".equals(type)){
+            cc.setConnectionString("derby:embedded://db-embedded/upatest;structure=create;userName=upatest;password=upatest");
         }
         pu.addConnectionConfig(cc);
         if (clz != null) {

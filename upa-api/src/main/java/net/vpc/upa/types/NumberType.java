@@ -36,7 +36,7 @@ package net.vpc.upa.types;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.util:
 //            DataType, ConstraintsException
-public abstract class NumberType extends DataType implements Cloneable {
+public abstract class NumberType extends DefaultDataType implements Cloneable {
     protected NumberType(String name, Class platformType) {
         super(name, platformType);
     }

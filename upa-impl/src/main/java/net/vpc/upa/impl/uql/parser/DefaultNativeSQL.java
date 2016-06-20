@@ -22,6 +22,7 @@ public class DefaultNativeSQL implements NativeSQL {
 //    public static final int UPDATE = 2;
 //    public static final int BATCH = 3;
     private ArrayList<NativeStatement> statements;
+    private Map<String,Object> hints;
     //    private NativeStatementType type;
     private String query;
     private UConnection connection;
@@ -56,12 +57,13 @@ public class DefaultNativeSQL implements NativeSQL {
 //    public NativeSQL() {
 //        this(1);
 //    }
-    public DefaultNativeSQL(NativeStatementType type) {
+    public DefaultNativeSQL(NativeStatementType type,Map<String,Object> hints) {
         statements = new ArrayList<NativeStatement>();
         this.type = type;
 
         execVars = new HashMap<String, Object>();
         parameters = new HashMap<String, String>();
+        this.hints=hints;
 //        formatter = new PropertiesFormatter(PropertyFormat.BRACES, parameters);
     }
 
@@ -353,5 +355,10 @@ public class DefaultNativeSQL implements NativeSQL {
 
     public void setUpdatable(boolean updatable) {
         this.updatable = updatable;
+    }
+
+    @Override
+    public Map<String, Object> getHints() {
+        return hints;
     }
 }

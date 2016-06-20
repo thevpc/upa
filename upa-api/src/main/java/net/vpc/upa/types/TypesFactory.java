@@ -44,9 +44,9 @@ import java.util.Map;
 
 public final class TypesFactory {
 
-    public static final DataType OBJECT = new DataType("OBJECT", Object.class, true);
+    public static final DataType OBJECT = new SerializableType("OBJECT", Object.class, true);
     public static final BooleanType BOOLEAN = BooleanType.BOOLEAN_REF;
-    public static final DataType VOID = new DataType("VOID", Void.TYPE, true);
+    public static final DataType VOID = new SerializableType("VOID", Void.TYPE, true);
     public static final BigIntType BIGINT = BigIntType.DEFAULT;
     public static final IntType INT = IntType.DEFAULT;
     public static final LongType LONG = LongType.DEFAULT;

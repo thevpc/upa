@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.Action;
 import net.vpc.upa.PortabilityHint;
 
 /**
@@ -16,6 +17,19 @@ public class CacheMap<K, V> {
 
     public V get(K key){
         return data.get(key);
+    }
+
+    public V get(K key,Action<V> evaluator){
+        V existingValue = data.get(key);
+        if(existingValue==null && !data.containsKey(key)){
+            existingValue=evaluator.run();
+            data.put(key,existingValue);
+        }
+        return existingValue;
+    }
+
+    public boolean containsKey(K key){
+        return data.containsKey(key);
     }
 
     public void put(K key, V value){

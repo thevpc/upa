@@ -109,6 +109,14 @@ public class AnnotationParserUtils {
             }
             s = s.trim();
             if (s.length() != 0) {
+                if(Character.isLetter(s.charAt(0))){
+                    if("max".equalsIgnoreCase(s) || "maximum".equals(s) || "max_value".equals(s)){
+                        return Integer.MAX_VALUE;
+                    }
+                    if("min".equalsIgnoreCase(s) || "min".equals(s) || "min_value".equals(s)){
+                        return Integer.MIN_VALUE;
+                    }
+                }
                 return Integer.parseInt(s);
             }
         }
@@ -137,6 +145,14 @@ public class AnnotationParserUtils {
             }
             s = s.trim();
             if (s.length() != 0) {
+                if(Character.isLetter(s.charAt(0))){
+                    if("max".equalsIgnoreCase(s) || "maximum".equals(s) || "max_value".equals(s)){
+                        return Short.MAX_VALUE;
+                    }
+                    if("min".equalsIgnoreCase(s) || "min".equals(s) || "min_value".equals(s)){
+                        return Short.MIN_VALUE;
+                    }
+                }
                 return Short.parseShort(s);
             }
         }
@@ -151,6 +167,14 @@ public class AnnotationParserUtils {
             }
             s = s.trim();
             if (s.length() != 0) {
+                if(Character.isLetter(s.charAt(0))){
+                    if("max".equalsIgnoreCase(s) || "maximum".equals(s) || "max_value".equals(s)){
+                        return Long.MAX_VALUE;
+                    }
+                    if("min".equalsIgnoreCase(s) || "min".equals(s) || "min_value".equals(s)){
+                        return Long.MIN_VALUE;
+                    }
+                }
                 return Long.parseLong(s);
             }
         }
@@ -165,6 +189,14 @@ public class AnnotationParserUtils {
             }
             s = s.trim();
             if (s.length() != 0) {
+                if(Character.isLetter(s.charAt(0))){
+                    if("max".equalsIgnoreCase(s) || "maximum".equals(s) || "max_value".equals(s)){
+                        return Double.MAX_VALUE;
+                    }
+                    if("min".equalsIgnoreCase(s) || "min".equals(s) || "min_value".equals(s)){
+                        return Double.MIN_VALUE;
+                    }
+                }
                 return Double.parseDouble(s);
             }
         }
@@ -179,6 +211,14 @@ public class AnnotationParserUtils {
             }
             s = s.trim();
             if (s.length() != 0) {
+                if(Character.isLetter(s.charAt(0))){
+                    if("max".equalsIgnoreCase(s) || "maximum".equals(s) || "max_value".equals(s)){
+                        return Float.MAX_VALUE;
+                    }
+                    if("min".equalsIgnoreCase(s) || "min".equals(s) || "min_value".equals(s)){
+                        return Float.MIN_VALUE;
+                    }
+                }
                 return Float.parseFloat(s);
             }
         }

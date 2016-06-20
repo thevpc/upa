@@ -38,7 +38,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         if(event.getFilterExpression()!=null){
             cond = new And(cond, event.getFilterExpression());
         }
-        List<Object> keys = relation.getSourceRole().getEntity().createQueryBuilder().setExpression(cond).getIdList();
+        List<Object> keys = relation.getSourceRole().getEntity().createQueryBuilder().byExpression(cond).getIdList();
         for (Object key : keys) {
             support.validatePathField(key, executionContext);
             support.validateChildren(key, executionContext);
@@ -47,13 +47,12 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 
     @Override
     public void onPersist(PersistEvent event) throws UPAException {
-        Key parent_key = relation.getKey(event.getPersistedRecord());
-        Object[] parent_id = parent_key == null ? null : parent_key.getValue();
+        Object parent_id = relation.extractId(event.getPersistedRecord());
         String path = support.getHierarchyPathSeparator() + support.toStringId(event.getPersistedId());
         String pathFieldName = support.getHierarchyPathField();
         Entity entity = relation.getSourceRole().getEntity();
         if (parent_id != null) {
-            Record r = entity.createQueryBuilder().setExpression(entity.getBuilder().idToExpression(entity.createId(parent_id), null)).setFieldFilter(Fields.byName(pathFieldName)).getRecord();
+            Record r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(Fields.byName(pathFieldName)).getRecord();
             if (r != null) {
                 path = r.getString(pathFieldName) + path;
             }
@@ -113,18 +112,19 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
             return;
         }
         if (val != null) {
-            Key parent_key = relation.getKey(updates);
-            Entity entity = event.getEntity();
-            Object newKey = (Object) entity.getBuilder().keyToId(parent_key);
-            String k = "recurse";
-            if (!executionContext.isSet(k)) {
-                List<Object> idList = entity.createQueryBuilder().setExpression(event.getFilterExpression()).setOrder(entity.getUpdateFormulasOrder()).getIdList();
-                executionContext.setObject(k, idList);
-            }
-            List<Object> r = (List<Object>) executionContext.getObject("recurse");
-            for (Object aR : r) {
-                if (support.isEqualOrIsParent(aR, newKey)) {
-                    throw new UPAException("RedundancyProblem");
+            Object parentId = relation.extractId(updates);
+            if(parentId!=null) {
+                Entity entity = event.getEntity();
+                String k = "recurse";
+                if (!executionContext.isSet(k)) {
+                    List<Object> idList = entity.createQueryBuilder().byExpression(event.getFilterExpression()).orderBy(entity.getUpdateFormulasOrder()).getIdList();
+                    executionContext.setObject(k, idList);
+                }
+                List<Object> r = (List<Object>) executionContext.getObject("recurse");
+                for (Object aR : r) {
+                    if (support.isEqualOrIsParent(aR, parentId)) {
+                        throw new UPAException("RedundancyProblem");
+                    }
                 }
             }
         }

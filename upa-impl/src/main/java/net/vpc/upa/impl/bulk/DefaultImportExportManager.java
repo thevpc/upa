@@ -139,7 +139,7 @@ public class DefaultImportExportManager implements ImportExportManager {
 
         @Override
         public Object[] objectToRow(Object o) {
-            Record record = entity.getBuilder().getRecord(o, false);
+            Record record = entity.getBuilder().objectToRecord(o, false);
             Object[] vals=new Object[columns.length];
             for (int i = 0; i < vals.length; i++) {
                 vals[i]=record.getObject(fields.get(i).getName());

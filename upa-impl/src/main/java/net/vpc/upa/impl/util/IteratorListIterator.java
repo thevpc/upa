@@ -16,32 +16,32 @@ class IteratorListIterator<T> implements Iterator<T>, ListIterator<T> {
      * Index of element to be returned by subsequent call to next.
      */
     int cursor = -1;
-    private IteratorList<T> iteratorList;
+    private LazyList<T> lazyList;
 
-    IteratorListIterator(IteratorList<T> iteratorList) {
-        this(iteratorList, -1);
+    IteratorListIterator(LazyList<T> lazyList) {
+        this(lazyList, -1);
     }
     
-    IteratorListIterator(IteratorList<T> iteratorList, int cursor) {
-        this.iteratorList = iteratorList;
+    IteratorListIterator(LazyList<T> lazyList, int cursor) {
+        this.lazyList = lazyList;
         this.cursor = cursor;
     }
 
     public boolean hasNext() {
-        iteratorList.ensureLoadTo(cursor+1);
+        lazyList.ensureLoadTo(cursor+1);
 
-        return !iteratorList.end || (cursor+1) < iteratorList.size();
+        return !lazyList.end || (cursor+1) < lazyList.size();
     }
 
     public T next() {
         int i = cursor+1;
-        T next = iteratorList.get(i);
+        T next = lazyList.get(i);
         cursor = i;
         return next;
     }
 
     public void remove() {
-        iteratorList.remove(cursor);
+        lazyList.remove(cursor);
     }
 
     public boolean hasPrevious() {
@@ -50,7 +50,7 @@ class IteratorListIterator<T> implements Iterator<T>, ListIterator<T> {
 
     public T previous() {
         int i = cursor - 1;
-        T previous = iteratorList.get(i);
+        T previous = lazyList.get(i);
         cursor = i;
         return previous;
     }
@@ -64,10 +64,10 @@ class IteratorListIterator<T> implements Iterator<T>, ListIterator<T> {
     }
 
     public void set(T e) {
-        iteratorList.set(cursor, e);
+        lazyList.set(cursor, e);
     }
 
     public void add(T e) {
-        iteratorList.add(e);
+        lazyList.add(e);
     }
 }

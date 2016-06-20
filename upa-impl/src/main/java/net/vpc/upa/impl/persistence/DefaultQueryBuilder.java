@@ -39,11 +39,11 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return entity;
     }
 
-    public QueryBuilder addAndExpression(String expression) {
-        return addAndExpression(expression == null ? null : new UserExpression(expression));
+    public QueryBuilder byExpression(String expression) {
+        return byExpression(expression == null ? null : new UserExpression(expression));
     }
 
-    public QueryBuilder addAndExpression(Expression expression) {
+    public QueryBuilder byExpression(Expression expression) {
         if (this.expression == null) {
             this.expression = expression;
         } else if (expression != null) {
@@ -53,19 +53,17 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public QueryBuilder setExpression(String expression) {
-        this.expression = expression == null ? null : new UserExpression(expression);
+    public QueryBuilder byExpression(Expression expression,boolean applyAndOp) {
+        if(applyAndOp || this.expression == null){
+            this.expression = expression;
+        }else {
+            this.expression = new And(this.expression, expression);
+        }
         return this;
     }
 
     @Override
-    public QueryBuilder setExpression(Expression expression) {
-        this.expression = expression;
-        return this;
-    }
-
-    @Override
-    public QueryBuilder setOrder(Order order) {
+    public QueryBuilder orderBy(Order order) {
         this.order = order;
         return this;
     }
@@ -77,9 +75,9 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public QueryBuilder setId(Object id) {
+    public QueryBuilder byId(Object id) {
         if (id instanceof Key) {
-            setKey((Key) id);
+            byKey((Key) id);
         } else {
             this.id = id;
         }
@@ -87,19 +85,19 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public QueryBuilder setKey(Key key) {
+    public QueryBuilder byKey(Key key) {
         this.key = key;
         return this;
     }
 
     @Override
-    public QueryBuilder setPrototype(Object prototype) {
+    public QueryBuilder byPrototype(Object prototype) {
         this.prototype = prototype;
         return this;
     }
 
     @Override
-    public QueryBuilder setRecordPrototype(Record prototype) {
+    public QueryBuilder byRecordPrototype(Record prototype) {
         this.recordPrototype = prototype;
         return this;
     }
@@ -338,6 +336,22 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return this;
     }
 
+    @Override
+    public Query removeParameter(String name) {
+        if(paramsByName!=null){
+            paramsByName.remove(name);
+        }
+        return this;
+    }
+
+    @Override
+    public Query removeParameter(int index) {
+        if(paramsByIndex!=null){
+            paramsByIndex.remove(index);
+        }
+        return this;
+    }
+
     public boolean isLazyListLoadingEnabled() {
         return lazyListLoadingEnabled;
     }
@@ -378,8 +392,8 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         }
     }
 
-    public QueryBuilder addAndField(String field, Object value) {
-        return addAndExpression(
+    public QueryBuilder byField(String field, Object value) {
+        return byExpression(
                 new Equals(new Var(new Var(entity.getName()), entity.getField(field).getName()),
                         new Param(entity.getField(field).getName(), value))
         );
@@ -396,6 +410,21 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return hints;
     }
 
+    public Object getHint(String hintName) {
+        if (query != null) {
+            return query.getHint(hintName);
+        }
+        return hints==null?null:hints.get(hintName);
+    }
+
+    public Object getHint(String hintName,Object defaultValue) {
+        if (query != null) {
+            return query.getHint(hintName,defaultValue);
+        }
+        Object c = hints == null ? null : hints.get(hintName);
+        return c==null?defaultValue:c;
+    }
+
     @Override
     public QueryBuilder setHint(String key, Object value) {
         if (query != null) {
@@ -405,6 +434,16 @@ public final class DefaultQueryBuilder implements QueryBuilder {
             hints.remove(key);
         } else {
             hints.put(key, value);
+        }
+        return this;
+    }
+
+    @Override
+    public Query setHints(Map<String, Object> hints) {
+        if(hints!=null) {
+            for (Map.Entry<String, Object> e : hints.entrySet()) {
+                setHint(e.getKey(), e.getValue());
+            }
         }
         return this;
     }

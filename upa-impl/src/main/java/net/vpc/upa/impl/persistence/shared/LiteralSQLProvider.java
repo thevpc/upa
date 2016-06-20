@@ -10,7 +10,7 @@ import net.vpc.upa.impl.util.ExprTypeInfo;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -30,14 +30,14 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
         DataTypeTransform d=null;
         if (ei.getOldReferrer() != null) {
             Field oldField = (Field) ei.getOldReferrer();
-            if (oldField.getDataType() instanceof EntityType) {
-                EntityType et = (EntityType) oldField.getDataType();
+            if (oldField.getDataType() instanceof ManyToOneType) {
+                ManyToOneType et = (ManyToOneType) oldField.getDataType();
                 objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
             }
         }else if (ei.getReferrer() != null && ei.getReferrer() instanceof Field) {
             Field field = (Field) ei.getReferrer();
-            if (field.getDataType() instanceof EntityType) {
-                EntityType et = (EntityType) field.getDataType();
+            if (field.getDataType() instanceof ManyToOneType) {
+                ManyToOneType et = (ManyToOneType) field.getDataType();
                 objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 List<Field> tf = et.getRelationship().getTargetEntity().getPrimaryFields();
                 if(tf.size()!=1){

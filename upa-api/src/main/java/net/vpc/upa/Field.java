@@ -36,8 +36,8 @@ package net.vpc.upa;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.DataType;
 
 import java.util.List;
 
@@ -71,7 +71,7 @@ public interface Field extends EntityPart {
 
     public Object getDefaultObject();
 
-    public List<Relationship> getRelationships();
+    public List<Relationship> getManyToOneRelationships();
 
     public void setFormula(String formula);
 
@@ -149,9 +149,7 @@ public interface Field extends EntityPart {
      *
      * @param r
      */
-    public void addTargetRelationship(Relationship r);
 
-    public Relationship[] getTargetRelationships();
 
     public SearchOperator getSearchOperator();
 

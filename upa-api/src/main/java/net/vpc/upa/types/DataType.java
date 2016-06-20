@@ -1,256 +1,73 @@
-/**
- * ==================================================================== 
- * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
- * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
- *
- * Copyright (C) 2014-2015 Taha BEN SALAH
- *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- * ====================================================================
- */
 package net.vpc.upa.types;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@PortabilityHint(target = "C#", name = "partial")
-public class DataType implements Cloneable {
-    //    private DataTypeView null_dataTypeView;
+/**
+ * Created by vpc on 6/17/16.
+ */
+public interface DataType extends Cloneable {
+    Object getDefaultUnspecifiedValue();
 
-    public String unitName;
-    public String name;
-    protected boolean nullable;
-    protected Properties properties;
-    protected Object defaultNonNullValue;
-    protected Object defaultValue;
-    protected Object defaultUnspecifiedValue;
-    protected Class platformType;
-    protected int scale;
-    protected int precision;
-    protected List<TypeValueValidator> valueValidators = new ArrayList<TypeValueValidator>();
-    protected List<TypeValueRewriter> valueRewriters = new ArrayList<TypeValueRewriter>();
-    private final static Map<Class, Object> NULLABLE_DEFAULT_VALUES = new HashMap<Class, Object>();
-    private final static Map<Class, Object> NON_NULLABLE_DEFAULT_VALUES = new HashMap<Class, Object>();
+    void setDefaultUnspecifiedValue(Object defaultUnspecifiedValue);
 
-    static {
-        NULLABLE_DEFAULT_VALUES.put(Short.TYPE, (short) 0);
-        NULLABLE_DEFAULT_VALUES.put(Long.TYPE, 0L);
-        NULLABLE_DEFAULT_VALUES.put(Integer.TYPE, 0);
-        NULLABLE_DEFAULT_VALUES.put(Double.TYPE, 0.0);
-        NULLABLE_DEFAULT_VALUES.put(Float.TYPE, 0.0f);
-        NULLABLE_DEFAULT_VALUES.put(Byte.TYPE, (byte) 0);
-        NULLABLE_DEFAULT_VALUES.put(Character.TYPE, (char) 0);
+    Object getDefaultValue();
 
-        NON_NULLABLE_DEFAULT_VALUES.put(Short.TYPE, (short) 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Long.TYPE, 0L);
-        NON_NULLABLE_DEFAULT_VALUES.put(Integer.TYPE, 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Double.TYPE, 0.0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Float.TYPE, 0.0f);
-        NON_NULLABLE_DEFAULT_VALUES.put(Byte.TYPE, (byte) 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Character.TYPE, (char) 0);
+    void setDefaultValue(Object defaultValue);
 
-        NON_NULLABLE_DEFAULT_VALUES.put(Short.class, (short) 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Long.class, 0L);
-        NON_NULLABLE_DEFAULT_VALUES.put(Integer.class, 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Double.class, 0.0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Float.class, 0.0f);
-        NON_NULLABLE_DEFAULT_VALUES.put(Byte.class, (byte) 0);
-        NON_NULLABLE_DEFAULT_VALUES.put(Character.class, (char) 0);
-    }
+    Object getDefaultNonNullValue();
 
-    public DataType(String name, Class platformType) {
-        this(name, platformType, 0, 0, false);
-    }
+    void setDefaultNonNullValue(Object defaultNonNullValue);
 
-    public DataType(String name, Class platformType, boolean nullable) {
-        this(name, platformType, 0, 0, nullable);
-    }
+    boolean isNullable();
 
-    public DataType(String name, Class platformType, int scale, int precision, boolean nullable) {
-        this.name = name;
-        this.nullable = nullable;
-        this.platformType = platformType;
-        this.scale = scale;
-        this.precision = precision;
-        this.defaultValue = nullable ? NULLABLE_DEFAULT_VALUES.get(platformType) : NON_NULLABLE_DEFAULT_VALUES.get(platformType);
-        this.defaultUnspecifiedValue = NULLABLE_DEFAULT_VALUES.get(platformType);
-        this.defaultNonNullValue = this.defaultValue;
-    }
+    void setNullable(boolean enable);
 
-    public Object getDefaultUnspecifiedValue() {
-        return defaultUnspecifiedValue;
-    }
+    Class getPlatformType();
 
-    public void setDefaultUnspecifiedValue(Object defaultUnspecifiedValue) {
-        this.defaultUnspecifiedValue = defaultUnspecifiedValue;
-    }
+    int getScale();
 
-    public Object getDefaultValue() {
-        return defaultValue;
-    }
+    int getPrecision();
 
-    public void setDefaultValue(Object defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    public Object getDefaultNonNullValue() {
-        return defaultNonNullValue;
-    }
-
-    public void setDefaultNonNullValue(Object defaultNonNullValue) {
-        this.defaultNonNullValue = defaultNonNullValue;
-    }
-
-    public boolean isNullable() {
-        return nullable;
-    }
-
-    public void setNullable(boolean enable) {
-        nullable = enable;
-    }
-
-    public Class getPlatformType() {
-        return platformType;
-    }
-
-    public int getScale() {
-        return scale;
-    }
-
-    public int getPrecision() {
-        return precision;
-    }
-
-    public Object rewrite(Object value, String name, String description) throws ConstraintsException {
-        for (TypeValueRewriter typeValidator : valueRewriters) {
-            value = typeValidator.rewriteValue(value, name, description, this);
-        }
-        return value;
-    }
+    Object rewrite(Object value, String name, String description) throws ConstraintsException;
 
     @PortabilityHint(target = "C#", name = "virtual")
-    public void check(Object value, String name, String description) throws ConstraintsException {
-        if (value == null && !isNullable()) {
-            throw new ConstraintsException("IllegalNull", name, description, value);
-        }
-        for (TypeValueValidator typeValueValidator : valueValidators) {
-            typeValueValidator.validateValue(value, name, description, this);
-        }
-    }
+    void check(Object value, String name, String description) throws ConstraintsException;
 
-    @Override
-    public Object clone() {
-        try {
-            DataType cloned = (DataType) super.clone();
-            cloned.valueValidators = new ArrayList<TypeValueValidator>(valueValidators);
-            cloned.valueRewriters = new ArrayList<TypeValueRewriter>(valueRewriters);
-            return cloned;
-        } catch (Exception e) {
-            throw new RuntimeException(e.toString());
-        }
-    }
+    Object clone();
 
-    public List<TypeValueValidator> getValueValidators() {
-        return new ArrayList<TypeValueValidator>(valueValidators);
-    }
+    List<TypeValueValidator> getValueValidators();
 
-    public DataType addValueValidator(TypeValueValidator validator) {
-        valueValidators.add(validator);
-        return this;
-    }
+    DataType addValueValidator(TypeValueValidator validator);
 
-    public DataType removeValueValidator(TypeValueValidator validator) {
-        valueValidators.remove(validator);
-        return this;
-    }
+    DataType removeValueValidator(TypeValueValidator validator);
 
-    public DataType addValueRewriter(TypeValueRewriter rewriter) {
-        valueRewriters.add(rewriter);
-        return this;
-    }
+    DataType addValueRewriter(TypeValueRewriter rewriter);
 
-    public DataType removeValueReWriter(TypeValueRewriter rewriter) {
-        valueRewriters.remove(rewriter);
-        return this;
-    }
+    DataType removeValueReWriter(TypeValueRewriter rewriter);
 
-    public List<TypeValueRewriter> getValueRewriters() {
-        return new ArrayList<TypeValueRewriter>(valueRewriters);
-    }
+    List<TypeValueRewriter> getValueRewriters();
 
-    public String getUnitName() {
-        return unitName;
-    }
+    String getUnitName();
 
-    public DataType setUnitName(String unitName) {
-        this.unitName = unitName;
-        return this;
-    }
+    DataType setUnitName(String unitName);
 
-    public boolean isAssignableFrom(DataType type) {
-        return this.getClass().isAssignableFrom(type.getClass());
-    }
+    boolean isAssignableFrom(DataType type);
 
-    public boolean isInstance(Object object) {
-        if (object == null) {
-            return true;
-        }
-        return isAssignableFrom(TypesFactory.forPlatformType(object.getClass()));
-    }
+    boolean isInstance(Object object);
 
-    public void cast(DataType type) {
-        if (!isAssignableFrom(type)) {
-            throw new ClassCastException("Expected an expression of type " + this + " but got " + type);
-        }
-    }
+    void cast(DataType type);
 
     @PortabilityHint(target = "C#", name = "virtual")
-    public Object convert(Object value) {
-        return value;
-    }
+    Object convert(Object value);
 
-    public String getName() {
-        return name;
-    }
+    String getName();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    void setName(String name);
 
-    public Properties getProperties() {
-        return properties;
-    }
+    Properties getProperties();
 
-    public void setProperties(Properties properties) {
-        this.properties = properties;
-    }
+    void setProperties(Properties properties);
 }

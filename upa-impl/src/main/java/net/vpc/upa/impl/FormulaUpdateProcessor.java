@@ -161,7 +161,7 @@ public class FormulaUpdateProcessor {
         return ts;
     }
 
-    public void updateFormulasCore() throws UPAException {
+    public long updateFormulasCore() throws UPAException {
 //        Object transaction = getPersistenceUnit().getPersistenceStore().getConnection().tryBeginTransaction();
 //        boolean transactionSucceeded = false;
 //        try {
@@ -177,6 +177,7 @@ public class FormulaUpdateProcessor {
 //                System.out.println("Validate " + getName() + " : max = "
 //                        + monitor.getMax());
 //            }
+        int allUpdates=0;
         for (ValidationPass validationPass : getValidationPasses()) {
             int updates = 0;
             switch (validationPass.type) {
@@ -206,10 +207,12 @@ public class FormulaUpdateProcessor {
                     break;
                 }
             }
+            allUpdates+=updates;
             if (updates == 0) {
                 break;
             }
         }
+        return allUpdates;
 //            transactionSucceeded = true;
 //        } finally {
 //            getPersistenceUnit().getPersistenceManager().getConnection().tryFinalizeTransaction(
@@ -264,7 +267,7 @@ public class FormulaUpdateProcessor {
 
     private List<Object> getKeysToUpdate() {
         if (keysToUpdate == null) {
-            keysToUpdate = entity.createQueryBuilder().setExpression(expr).setOrder(entity.getUpdateFormulasOrder()).getIdList();
+            keysToUpdate = entity.createQueryBuilder().byExpression(expr).orderBy(entity.getUpdateFormulasOrder()).getIdList();
             if (keysToUpdate.isEmpty()) {
                 nothingToValidate = true;
             }

@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.TypesFactory;
 

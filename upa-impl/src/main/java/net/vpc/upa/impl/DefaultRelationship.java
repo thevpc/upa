@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
 import java.util.ArrayList;
-import net.vpc.upa.types.DataType;
+
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -17,7 +17,8 @@ import java.util.Map;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.util.PlatformUtils;
 
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.DataType;
 
 public class DefaultRelationship extends AbstractUPAObject implements Relationship {
 
@@ -108,7 +109,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 
             this.sourceToTargetKeyMap.put(sourceFields[i].getName(), targetFields[i].getName());
             this.targetToSourceKeyMap.put(targetFields[i].getName(), sourceFields[i].getName());
-            targetFields[i].addTargetRelationship(this);
+//            targetFields[i].addManyToOneRelation(this);
             ((AbstractField)sourceFields[i]).setEffectiveModifiers(sourceFields[i].getModifiers().add(FieldModifier.FOREIGN));
 
             ((AbstractField)targetFields[i]).setEffectiveModifiers(targetFields[i].getModifiers().add(FieldModifier.REFERENCED));
@@ -130,16 +131,16 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         if (getSourceRole().getEntityField() != null) {
             Field sourceEntityField = getSourceRole().getEntityField();
             DataType dt = sourceEntityField.getDataType();
-            if (dt instanceof EntityType) {
-                EntityType edt = (EntityType) dt;
+            if (dt instanceof ManyToOneType) {
+                ManyToOneType edt = (ManyToOneType) dt;
                 edt.setRelationship(this);
             }
         }
         if (getTargetRole().getEntityField() != null) {
             Field targetEntityField = getTargetRole().getEntityField();
             DataType dt = targetEntityField.getDataType();
-            if (dt instanceof EntityType) {
-                EntityType edt = (EntityType) dt;
+            if (dt instanceof ManyToOneType) {
+                ManyToOneType edt = (ManyToOneType) dt;
                 edt.setRelationship(this);
             }
         }
@@ -342,12 +343,12 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             Key Rkey = targetRole.getEntity().getBuilder().idToKey(((IdExpression) targetCondition).getId());
             if (sourceFields.length == 1) {
                 Var lvar = (sourceAlias == null) ? new Var(sourceFields[0].getName()) : new Var(new Var(sourceAlias), sourceFields[0].getName());
-                return new Equals(lvar, new Literal(Rkey.getValue()[0], targetFields[0].getDataType()));
+                return new Equals(lvar, new Literal(Rkey==null?null:Rkey.getValue()[0], targetFields[0].getDataType()));
             } else {
                 Expression a = null;
                 for (int i = 0; i < sourceFields.length; i++) {
                     Var lvar = (sourceAlias == null) ? new Var(sourceFields[i].getName()) : new Var(new Var(sourceAlias), sourceFields[i].getName());
-                    Expression rvar = new Literal(Rkey.getObjectAt(i), targetFields[i].getDataType());
+                    Expression rvar = new Literal(Rkey==null?null:Rkey.getObjectAt(i), targetFields[i].getDataType());
                     Expression e = new Equals(lvar, rvar);
                     a = a == null ? e : a;
                 }
@@ -521,7 +522,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         //
     }
 
-    public Key getKey(Record sourceRecord) {
+    public Key extractKey(Record sourceRecord) {
         switch (getSourceRole().getRelationshipUpdateType()) {
             case COMPOSED: {
                 Object targetEntityVal = sourceRecord.getObject(getSourceRole().getEntityField().getName());
@@ -543,6 +544,41 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 }
                 return getTargetRole().getEntity().createKey(keys.toArray());
 
+            }
+        }
+        return null;
+    }
+
+    public Object extractIdByEntityField(Record sourceRecord) {
+        Object targetEntityVal = sourceRecord.getObject(getSourceRole().getEntityField().getName());
+        if (targetEntityVal == null) {
+            return null;
+        }
+        EntityBuilder targetConverter = getTargetRole().getEntity().getBuilder();
+        return targetConverter.objectToId(targetEntityVal);
+    }
+
+    public Object extractIdByForeignFields(Record sourceRecord) {
+        List<Field> relFields = getSourceRole().getFields();
+        ArrayList<Object> keys = new ArrayList<Object>(relFields.size());
+        for (Field field : relFields) {
+            Object keyPart = sourceRecord.getObject(field.getName());
+            if (keyPart == null) {
+                return null;
+            }
+            keys.add(keyPart);
+        }
+        return getTargetRole().getEntity().createId(keys.toArray());
+    }
+
+    public Object extractId(Record sourceRecord) {
+        switch (getSourceRole().getRelationshipUpdateType()) {
+            case COMPOSED: {
+                Object o = extractIdByEntityField(sourceRecord);
+                return o;
+            }
+            case FLAT: {
+                return extractIdByForeignFields(sourceRecord);
             }
         }
         return null;

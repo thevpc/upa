@@ -16,8 +16,8 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.EntityType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,8 +155,8 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         } else {
             Field baseField = detailEntity.getField(relationDescriptor.getBaseField());
             DataType baseFieldType = baseField.getDataType();
-            if (baseFieldType instanceof EntityType) {
-                EntityType et = (EntityType) baseFieldType;
+            if (baseFieldType instanceof ManyToOneType) {
+                ManyToOneType et = (ManyToOneType) baseFieldType;
                 if (et.getReferencedEntityName() == null || et.getReferencedEntityName().isEmpty()) {
                     et.setReferencedEntityName(masterEntity.getName());
                 }
@@ -241,11 +241,11 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             }
         }
         filter = relationDescriptor.getFilter();
-//        if (baseFieldType instanceof EntityType) {
+//        if (baseFieldType instanceof ManyToOneType) {
 //            manyToOneField = baseField;
 //        } else if (detailFieldNames.size() == 1) {
 //            DataType slaveType = slaveField.getDataType();
-//            if (slaveType instanceof EntityType) {
+//            if (slaveType instanceof ManyToOneType) {
 //                manyToOneField = slaveField;
 //            }
 //        }

@@ -1,15 +1,9 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.Callback;
-import net.vpc.upa.CallbackType;
-import net.vpc.upa.EventPhase;
-import net.vpc.upa.ObjectType;
+import net.vpc.upa.*;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by vpc on 7/25/15.
@@ -18,20 +12,21 @@ public class CallbackManager {
 
     Map<CallbackInvokerKey, List<Callback>> before = new HashMap<CallbackInvokerKey, List<Callback>>();
     Map<CallbackInvokerKey, List<Callback>> after = new HashMap<CallbackInvokerKey, List<Callback>>();
+    Map<CallbackInvokerKey, List<PreparedCallback>> preparedAfter = new HashMap<CallbackInvokerKey, List<PreparedCallback>>();
 
     public void addCallback(Callback callback) {
         DefaultCallback dcallback = (DefaultCallback) callback;
         Map<String, Object> conf = dcallback.getConfiguration();
-        if (conf == null) {
-            conf = new HashMap<String, Object>();
-        }
-        boolean fireBefore = callback.getCallbackType().name().startsWith("ON_PRE_");
-        boolean trackSystemObjects = true;
+//        if (conf == null) {
+//            conf = new HashMap<String, Object>();
+//        }
+        boolean fireBefore = callback.getPhase()==EventPhase.BEFORE;
         String nameFilter = null;
-        if (conf.containsKey("trackSystemObjects")) {
+        boolean trackSystemObjects = true;
+        if (conf!=null && conf.containsKey("trackSystemObjects")) {
             trackSystemObjects = (Boolean) conf.get("trackSystemObjects");
         }
-        nameFilter = (String) conf.get("nameFilter");
+        nameFilter = conf==null ?null : (String) conf.get("nameFilter");
         if (Strings.isNullOrEmpty(nameFilter)) {
             nameFilter = null;
         }
@@ -51,6 +46,15 @@ public class CallbackManager {
                 this.after.put(k, ss);
             }
             ss.add(callback);
+            if(callback instanceof PreparedCallback){
+                List<PreparedCallback> sss = this.preparedAfter.get(k);
+                if (sss == null) {
+                    sss = new ArrayList<PreparedCallback>();
+                    this.preparedAfter.put(k, sss);
+                }
+                sss.add((PreparedCallback) callback);
+
+            }
         }
     }
 
@@ -58,23 +62,25 @@ public class CallbackManager {
 
         DefaultCallback dcallback = (DefaultCallback) callback;
         Map<String, Object> conf = dcallback.getConfiguration();
-        if (conf == null) {
-            conf = new HashMap<String, Object>();
-        }
+//        if (conf == null) {
+//            conf = new HashMap<String, Object>();
+//        }
         boolean fireBefore = true;
         boolean fireAfter = true;
         boolean trackSystemObjects = true;
         String nameFilter = null;
-        if (conf.containsKey("before")) {
-            fireBefore = (Boolean) conf.get("before");
+        if(conf!=null) {
+            if (conf.containsKey("before")) {
+                fireBefore = (Boolean) conf.get("before");
+            }
+            if (conf.containsKey("after")) {
+                fireBefore = (Boolean) conf.get("after");
+            }
+            if (conf.containsKey("trackSystemObjects")) {
+                trackSystemObjects = (Boolean) conf.get("trackSystemObjects");
+            }
+            nameFilter = (String) conf.get("nameFilter");
         }
-        if (conf.containsKey("after")) {
-            fireBefore = (Boolean) conf.get("after");
-        }
-        if (conf.containsKey("trackSystemObjects")) {
-            trackSystemObjects = (Boolean) conf.get("trackSystemObjects");
-        }
-        nameFilter = (String) conf.get("nameFilter");
         if (Strings.isNullOrEmpty(nameFilter)) {
             nameFilter = null;
         }
@@ -88,40 +94,83 @@ public class CallbackManager {
         if (ss != null) {
             ss.remove(callback);
         }
+        if(callback instanceof PreparedCallback) {
+            List<PreparedCallback> sss = preparedAfter.get(k);
+            if (sss != null) {
+                sss.remove((PreparedCallback) callback);
+            }
+        }
     }
 
-    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
+    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
         CallbackInvokerKey k = new CallbackInvokerKey(callbackType, objectType, nameFilter, system);
         List<Callback> found = new ArrayList<Callback>();
-        Map<CallbackInvokerKey, List<Callback>> list = phase == EventPhase.AFTER ? this.after : this.before;
-        List<Callback> ss = list.get(k);
-        if (ss != null) {
-            found.addAll(ss);
-        }
-        if (nameFilter != null) {
-            found.addAll(getCallbacks(callbackType, objectType, null, system, phase));
-        } else if (!system) {
-            found.addAll(getCallbacks(callbackType, objectType, null, true, phase));
-        }
-        return found;
-    }
+        if(preparedOnly){
+            Map<CallbackInvokerKey, List<PreparedCallback>> list = null;
+            list=phase == EventPhase.AFTER ? this.preparedAfter : null;
+            List<PreparedCallback> ss = list.get(k);
+            if (ss != null) {
+                found.addAll(ss);
+            }
+            if (nameFilter != null) {
+                found.addAll(getCallbacks(callbackType, objectType, null, system,preparedOnly, phase));
+            }
+            if (!system) {
+                found.addAll(getCallbacks(callbackType, objectType, null, true,preparedOnly, phase));
+            }
+        }else{
+            Map<CallbackInvokerKey, List<Callback>> list = null;
+            list=phase == EventPhase.AFTER ? this.after : this.before;
 
-    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        CallbackInvokerKey k = new CallbackInvokerKey(callbackType, objectType, nameFilter, system);
-        List<Callback> found = new ArrayList<Callback>();
-        for (EventPhase phase : EventPhase.values()) {
-            Map<CallbackInvokerKey, List<Callback>> list = phase == EventPhase.AFTER ? this.after : this.before;
             List<Callback> ss = list.get(k);
             if (ss != null) {
                 found.addAll(ss);
             }
             if (nameFilter != null) {
-                found.addAll(getCallbacks(callbackType, objectType, null, system, phase));
-            } else if (!system) {
-                found.addAll(getCallbacks(callbackType, objectType, null, true, phase));
+                found.addAll(getCallbacks(callbackType, objectType, null, system,preparedOnly, phase));
             }
+            if (!system) {
+                found.addAll(getCallbacks(callbackType, objectType, null, true,preparedOnly, phase));
+            }
+        }
+
+        return found;
+    }
+
+    public List<PreparedCallback> getPostPreparedCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
+        CallbackInvokerKey k = new CallbackInvokerKey(callbackType, objectType, nameFilter, system);
+        List<PreparedCallback> found = new ArrayList<PreparedCallback>();
+        Map<CallbackInvokerKey, List<PreparedCallback>> list = this.preparedAfter;
+        List<PreparedCallback> ss = list.get(k);
+        if (ss != null) {
+            found.addAll(ss);
+        }
+        if (nameFilter != null) {
+            found.addAll(getPostPreparedCallbacks(callbackType, objectType, null, system, phase));
+        }
+
+        if (!system) {
+            found.addAll(getPostPreparedCallbacks(callbackType, objectType, null, true, phase));
         }
         return found;
     }
+
+//    public List<Callback> getCallbacks(CallbackType callbackType, AnyObjectType objectType, String nameFilter, boolean system) {
+//        CallbackInvokerKey k = new CallbackInvokerKey(callbackType, objectType, nameFilter, system);
+//        List<Callback> found = new ArrayList<Callback>();
+//        for (EventPhase phase : EventPhase.values()) {
+//            Map<CallbackInvokerKey, List<Callback>> list = phase == EventPhase.AFTER ? this.after : this.before;
+//            List<Callback> ss = list.get(k);
+//            if (ss != null) {
+//                found.addAll(ss);
+//            }
+//            if (nameFilter != null) {
+//                found.addAll(getCallbacks(callbackType, objectType, null, system, phase));
+//            } else if (!system) {
+//                found.addAll(getCallbacks(callbackType, objectType, null, true, phase));
+//            }
+//        }
+//        return found;
+//    }
 
 }

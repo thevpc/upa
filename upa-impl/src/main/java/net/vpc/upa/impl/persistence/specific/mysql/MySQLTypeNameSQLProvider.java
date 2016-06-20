@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -10,6 +9,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.EnumType;
+import net.vpc.upa.types.DataType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -40,8 +40,25 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
             if (length <= 0) {
                 length = 255;
             }
-            
-            return length > 255 ? "BLOB" : "VARCHAR(" + length + ")";
+            /**
+             * Values in VARCHAR columns are variable-length strings.
+             * The length can be specified as a value from 0 to 255 before MySQL 5.0.3,
+             * and 0 to 65,535 in 5.0.3 and later versions.
+             * The effective maximum length of a VARCHAR in MySQL
+             * 5.0.3 and later is subject to the maximum
+             * row size (65,535 bytes, which is shared among all columns)
+             * and the character set used.
+             */
+                //will consider mysql>=5.0.3
+            if(length<=4096){
+                return "VARCHAR(" + length + ")";
+            }if(length <= 65535) {
+                return "TEXT";
+            }else if(length <= 1677215){
+                return "MEDIUMTEXT";
+            }else {
+                return "LONGTEXT";
+            }
         }
         if (PlatformUtils.isInt32(platformType)) {
             return "INT";

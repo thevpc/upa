@@ -39,7 +39,6 @@ import net.vpc.upa.types.DataType;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

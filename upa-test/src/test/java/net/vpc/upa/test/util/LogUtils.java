@@ -17,7 +17,6 @@ public class LogUtils {
             handler.setLevel(Level.FINE);
             handler.setFormatter(new LogFormatter());
             handler.setFilter(new Filter() {
-                @Override
                 public boolean isLoggable(LogRecord record) {
                     return record.getLoggerName().startsWith("net.vpc.");
                 }

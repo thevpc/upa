@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl;
@@ -12,7 +12,7 @@ import net.vpc.upa.Key;
 import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  *
@@ -21,7 +21,7 @@ import net.vpc.upa.types.EntityType;
 public class EntityTypeFieldPersister implements FieldPersister {
 
     public void prepareFieldForPersist(Field field, Object value, Record userRecord, Record persistentRecord, EntityExecutionContext executionContext, Set<Field> persistNonNullable, Set<Field> persistWithDefaultValue) throws UPAException {
-        EntityType e = (EntityType) field.getDataType();
+        ManyToOneType e = (ManyToOneType) field.getDataType();
         if (e.isUpdatable()) {
             Entity masterEntity = executionContext.getPersistenceUnit().getEntity(e.getReferencedEntityName());
             Key k = null;

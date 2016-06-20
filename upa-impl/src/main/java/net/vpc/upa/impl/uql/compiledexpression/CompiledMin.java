@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
 
 public final class CompiledMin extends CompiledFunction

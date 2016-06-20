@@ -76,7 +76,7 @@
 //        int key = client.getId();
 //
 //        Client foundById = entity.createQueryBuilder().setId(key).getEntity();
-//        Record foundByIdRecord = entity.createQueryBuilder().setId(key).getRecord();
+//        Record foundByIdRecord = entity.createQueryBuilder().setId(key).objectToRecord();
 //        log.info("Found Entity" + foundById);
 //        log.info("Found Record" + foundByIdRecord);
 //        log.info("fullName = " + foundByIdRecord.getString("fullName"));

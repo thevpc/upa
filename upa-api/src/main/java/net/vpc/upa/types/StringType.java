@@ -31,7 +31,7 @@
  */
 package net.vpc.upa.types;
 
-public class StringType extends DataType implements Cloneable {
+public class StringType extends DefaultDataType implements Cloneable {
 
     public static final StringType DEFAULT = new StringType("String", 0, 255, true);
     public static final StringType UNLIMITED = new StringType("String", 0, Integer.MAX_VALUE, true);

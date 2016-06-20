@@ -16,7 +16,7 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -67,7 +67,7 @@ public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
                     // A's id is A.b where b is an entity
                     //TODO fix all cases!
                     if (entity.getPrimaryFields().size() == 1) {
-                        EntityType et = (EntityType) entity.getPrimaryFields().get(0).getDataType();
+                        ManyToOneType et = (ManyToOneType) entity.getPrimaryFields().get(0).getDataType();
                         List<Field> ff = et.getRelationship().getSourceRole().getFields();
                         Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
                         for (int j = 0; j < ff.size(); j++) {

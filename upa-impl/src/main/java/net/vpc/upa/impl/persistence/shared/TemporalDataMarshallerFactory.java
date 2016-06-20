@@ -4,9 +4,6 @@ import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
-import net.vpc.upa.types.*;
-
-import java.sql.Timestamp;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>

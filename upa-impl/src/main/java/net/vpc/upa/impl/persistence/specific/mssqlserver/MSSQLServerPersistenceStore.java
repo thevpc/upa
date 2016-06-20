@@ -110,8 +110,8 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public Connection createNativeCustomNativeConnection(ConnectionProfile p) throws UPAException {
-        log.log(Level.FINE, "createNativeCustomNativeConnection");
+    public Connection createCustomPlatformConnection(ConnectionProfile p) throws UPAException {
+        log.log(Level.FINE, "createCustomPlatformConnection");
         try {
             String connectionDriver = p.getConnectionDriver();
             if (connectionDriver == null || connectionDriver.trim().isEmpty()) {

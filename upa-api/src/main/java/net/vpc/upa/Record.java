@@ -165,7 +165,11 @@ public interface Record extends Serializable {
     
     public Set<Map.Entry<String, Object>> entrySet();
 
+    public void setAll(Map<String, Object> other);
+
     public void setAll(Map<String, Object> other, String... keys);
+
+    public void setAll(Record other);
 
     public void setAll(Record other, String... keys);
 
@@ -184,5 +188,7 @@ public interface Record extends Serializable {
     public void removePropertyChangeListener(PropertyChangeListener listener);
 
     public boolean isEmpty();
+
+    public Record copy();
 
 }

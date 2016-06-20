@@ -55,7 +55,7 @@ public class FieldNameFilter extends AbstractFieldFilter {
         this.acceptedFields = new HashSet<String>(Arrays.asList(acceptedFields));
     }
 
-    public FieldNameFilter(List<String> acceptedFields) {
+    public FieldNameFilter(Collection<String> acceptedFields) {
         this.acceptedFields = new HashSet<String>(acceptedFields);
     }
 

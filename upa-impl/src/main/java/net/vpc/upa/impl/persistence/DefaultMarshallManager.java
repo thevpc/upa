@@ -72,6 +72,7 @@ public class DefaultMarshallManager implements MarshallManager {
         setTypeMarshallerFactory0(BooleanType.class, TypeMarshallerUtils.F_BOOLEAN_FROM_NUMBER);
         setTypeMarshallerFactory0(ListType.class, new ListDataMarshallerFactory());
         setTypeMarshallerFactory0(DataType.class, TypeMarshallerUtils.F_OBJECT);
+        setTypeMarshallerFactory0(SerializableType.class, TypeMarshallerUtils.F_OBJECT);
         setTypeMarshallerFactory0(EnumType.class, new EnumMarshallerFactory());
     }
 

@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.transform;
@@ -9,10 +9,7 @@ import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import net.vpc.upa.PasswordStrategy;
 import net.vpc.upa.PasswordStrategyType;
 import net.vpc.upa.PasswordTransformConfig;
@@ -22,27 +19,7 @@ import net.vpc.upa.SecretStrategyType;
 import net.vpc.upa.config.StringEncoderType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.Strings;
-import net.vpc.upa.types.ByteArrayEncoder;
-import net.vpc.upa.types.ByteArrayEncoderTransformConfig;
-import net.vpc.upa.types.ByteArrayType;
-import net.vpc.upa.types.CharArrayEncoder;
-import net.vpc.upa.types.CharArrayEncoderTransformConfig;
-import net.vpc.upa.types.CustomExpressionDataTypeTransform;
-import net.vpc.upa.types.CustomTypeDataTypeTransform;
-import net.vpc.upa.types.CustomInstanceDataTypeTransform;
-import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.DataTypeTransformFactory;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransformConfig;
-import net.vpc.upa.types.DoubleType;
-import net.vpc.upa.types.EnumType;
-import net.vpc.upa.types.FloatType;
-import net.vpc.upa.types.IntType;
-import net.vpc.upa.types.LongType;
-import net.vpc.upa.types.SecretTransformConfig;
-import net.vpc.upa.types.StringEncoder;
-import net.vpc.upa.types.StringEncoderTransformConfig;
-import net.vpc.upa.types.StringType;
+import net.vpc.upa.types.*;
 
 /**
  *

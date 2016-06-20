@@ -3,6 +3,7 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.filters.ObjectFilter;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.*;
@@ -470,7 +471,7 @@ public class PlatformUtils {
          * return (Object[])Enum.GetValues(enumType);
          */
         try {
-            return ((Object[]) enumType.getDeclaredMethod("values").invoke(null, new Object[0]));
+            return ((Object[]) enumType.getEnumConstants());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -518,6 +519,24 @@ public class PlatformUtils {
             r = r.getSuperclass();
         }
         return null;
+    }
+
+    public static List<Field> findFields(Class clz, String name) {
+        List<Field> all=new ArrayList<Field>();
+        Class r = clz;
+        while (r != null) {
+            Field f = null;
+            try {
+                f = r.getDeclaredField(name);
+            } catch (Exception ex) {
+                //ignore
+            }
+            if (f != null) {
+                all.add(f);
+            }
+            r = r.getSuperclass();
+        }
+        return all;
     }
 
     public static String getterName(String name, Class type) {

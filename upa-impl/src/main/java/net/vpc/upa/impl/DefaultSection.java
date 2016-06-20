@@ -1,6 +1,5 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.NoSuchSectionException;
 import net.vpc.upa.exceptions.UPAException;
@@ -14,6 +13,7 @@ import net.vpc.upa.exceptions.NoSuchEntityItemException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.types.DataType;
 
 public class DefaultSection extends AbstractUPAObject implements Section {
 

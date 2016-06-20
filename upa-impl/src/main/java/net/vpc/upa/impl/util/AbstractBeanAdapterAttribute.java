@@ -22,6 +22,24 @@ abstract class AbstractBeanAdapterAttribute implements BeanAdapterAttribute {
     public Class getFieldType() {
         return fieldType;
     }
+
+
+    @Override
+    public boolean isDefaultValue(Object o) {
+        Object fieldValue = getValue(o);
+        Object fieldDefaultValue = PlatformUtils.DEFAULT_VALUES_BY_TYPE.get(getFieldType());
+        if (fieldDefaultValue == null) {
+            return fieldValue == null;
+        } else {
+            return fieldDefaultValue.equals(fieldValue);
+        }
+    }
+
+    @Override
+    public Object getDefaultValue() {
+        return PlatformUtils.DEFAULT_VALUES_BY_TYPE.get(getFieldType());
+    }
+
     //        @Override
 //        public R getDefaultValue() throws UPAException{
 //            if (entity == null) {

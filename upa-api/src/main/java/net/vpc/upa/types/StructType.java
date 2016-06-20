@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StructType extends DataType implements Cloneable {
+public class StructType extends DefaultDataType implements Cloneable {
     public static final Object OLD_VALUE = new Object();
     private Map<String, DataType> elementsMap = new HashMap<String, DataType>();
     private List<String> elementsList = new ArrayList<String>();

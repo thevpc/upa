@@ -14,7 +14,7 @@ import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Query;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -60,8 +60,8 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
             String key = entry.getKey();
             Field field = entity.findField(key);
             //should process specific entity fields
-            if ((field.getDataType() instanceof EntityType)) {
-                EntityType e = (EntityType) field.getDataType();
+            if ((field.getDataType() instanceof ManyToOneType)) {
+                ManyToOneType e = (ManyToOneType) field.getDataType();
                 if (e.isUpdatable()) {
                     Entity masterEntity = pu.getEntity(e.getReferencedEntityName());
                     Key k = null;

@@ -60,7 +60,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
         }
 
         Key key = entity.getBuilder().idToKey(o.getId());
-        Object[] values = key.getValue();
+        Object[] values = key==null?null:key.getValue();
         Entity entity1 = o.getEntity();
         List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getPrimaryFields());
         for (int i = 0; i < f.size(); i++) {
@@ -70,7 +70,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
             }else{
                 ppp.setChild(new CompiledVar(f.get(i).getName()));
             }
-            CompiledEquals e = new CompiledEquals(ppp, new CompiledLiteral(values[i], UPAUtils.getTypeTransformOrIdentity(f.get(i))));
+            CompiledEquals e = new CompiledEquals(ppp, new CompiledLiteral(values==null?null:values[i], UPAUtils.getTypeTransformOrIdentity(f.get(i))));
             ret = (ret == null) ? e : new CompiledAnd(ret, e);
         }
         if (ret == null) {

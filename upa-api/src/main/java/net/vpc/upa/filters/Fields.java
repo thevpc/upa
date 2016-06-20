@@ -38,7 +38,9 @@ import net.vpc.upa.AccessLevel;
 import net.vpc.upa.FieldModifier;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.types.ManyToOneType;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -131,7 +133,7 @@ public class Fields extends AbstractFieldFilter {
         return as(new FieldNameFilter(acceptedFields));
     }
 
-    public static Fields byName(List<String> acceptedFields) {
+    public static Fields byName(Collection<String> acceptedFields) {
         return as(new FieldNameFilter(acceptedFields));
     }
 
@@ -143,10 +145,18 @@ public class Fields extends AbstractFieldFilter {
         return as(new FieldListFilter(acceptedFields));
     }
 
-    public static Fields byType(Class<? extends Field> type) {
-        return as(new FieldTypeFilter(type));
+    public static Fields byImplType(Class<? extends Field> type) {
+        return as(new FieldImplTypeFilter(type));
     }
 
+
+    public static Fields byDataType(Class type) {
+        return as(new FieldDataTypeFilter(type,true));
+    }
+
+    public static Fields byEntityType() {
+        return byDataType(ManyToOneType.class);
+    }
 
     public Fields byPrimitive() {
         return as(new FieldPrimitiveFilter(base));

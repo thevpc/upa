@@ -8,7 +8,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
 
     public ComposedToFlatFieldPersister(Field field) {
         this.field = field;
-        EntityType t = (EntityType) field.getDataType();
+        ManyToOneType t = (ManyToOneType) field.getDataType();
         Entity master = t.getRelationship().getTargetRole().getEntity();
         RelationshipRole detailRole = t.getRelationship().getSourceRole();
         flatFields = detailRole.getFields();

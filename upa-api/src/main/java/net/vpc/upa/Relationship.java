@@ -36,10 +36,10 @@ package net.vpc.upa;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.types.DataType;
 
 import java.util.Map;
 import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.types.DataType;
 
 //Comparable,
 public interface Relationship extends UPAObject {
@@ -97,7 +97,13 @@ public interface Relationship extends UPAObject {
 
     public boolean isAskForConfirm();
 
-    public Key getKey(Record sourceRecord);
+    public Key extractKey(Record sourceRecord);
+
+    public Object extractId(Record sourceRecord);
+
+    public Object extractIdByEntityField(Record sourceRecord);
+
+    public Object extractIdByForeignFields(Record sourceRecord) ;
 
     public HierarchyExtension getHierarchyExtension();
 

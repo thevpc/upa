@@ -16,7 +16,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Property;
@@ -442,7 +441,7 @@ public class UPAUtils {
     }
 
     public static boolean isSimpleDataType(DataType dataType) {
-        return !(dataType instanceof EntityType);
+        return !(dataType instanceof ManyToOneType);
     }
 
     public static DataTypeTransform resolveDataTypeTransform(DefaultCompiledExpression e) {

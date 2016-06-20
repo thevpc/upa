@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 6:41 AM To change
  * this template use File | Settings | File Templates.
  */
-public class ValueList<T> extends QueryResultIteratorList<T> {
+public class ValueList<T> extends QueryResultLazyList<T> {
     int index;
 
     public ValueList(NativeSQL nativeSQL, int index) throws SQLException, UPAException {

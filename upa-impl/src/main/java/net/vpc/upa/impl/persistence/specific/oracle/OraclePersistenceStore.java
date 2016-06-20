@@ -1,9 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.FileData;
-import net.vpc.upa.types.FileType;
-import net.vpc.upa.types.ImageType;
+import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
@@ -62,7 +59,6 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
 
         getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
         getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
-        getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
 //        DataWrapperUtils.setWrapperFactory(DateType.class, F_DATE);
 //        DataWrapperUtils.setWrapperFactory(NumberType.class, F_NUMBER);
 //        DataWrapperUtils.setWrapperFactory(StringType.class, F_STRING);

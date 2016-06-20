@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
@@ -9,6 +8,7 @@ import net.vpc.upa.persistence.ResultMetaData;
 import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.DataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

@@ -181,6 +181,7 @@ public class ConnectionProfileParser {
                                     } else {
                                         v.append(chars[k]);
                                     }
+                                    k++;
                                 }
                                 setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
                                 i = k;
@@ -196,6 +197,7 @@ public class ConnectionProfileParser {
                                     } else {
                                         v.append(chars[k]);
                                     }
+                                    k++;
                                 }
                                 setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
                                 i = k;

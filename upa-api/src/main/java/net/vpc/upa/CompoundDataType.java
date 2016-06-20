@@ -1,7 +1,5 @@
 package net.vpc.upa;
 
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransform;
 
 /**
  * Created by vpc on 7/18/15.

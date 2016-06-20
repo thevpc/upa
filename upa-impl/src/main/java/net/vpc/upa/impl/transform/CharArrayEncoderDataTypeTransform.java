@@ -1,14 +1,11 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl.transform;
 
-import net.vpc.upa.types.ByteArrayType;
-import net.vpc.upa.types.CharArrayEncoder;
-import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.*;
 
 /**
  *

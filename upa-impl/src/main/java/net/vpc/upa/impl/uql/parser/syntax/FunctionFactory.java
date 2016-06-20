@@ -10,7 +10,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.uql.QLFunctionExpression;
 
 import java.util.List;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  *
@@ -76,7 +76,7 @@ class FunctionFactory {
                 } else if ("boolean".equals(s)) {
                     d = TypesFactory.BOOLEAN;
                 } else {
-                    d = new EntityType(name, null, name, true, true);
+                    d = new ManyToOneType(name, null, name, true, true);
                 }
             } else {
                 throw new IllegalArgumentException("Unupported cast type");

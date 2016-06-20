@@ -1,12 +1,11 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.BeanType;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.impl.util.EntityBeanAdapter;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.*;
-import net.vpc.upa.impl.util.EntityBeanAttribute;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -18,11 +17,13 @@ public class BeanAdapterRecord extends AbstractRecord {
     private boolean ignoreUnspecified;
     private Object userObject;
     private Map<String, Object> extra;
-    private EntityBeanAdapter nfo;
+    private String entityName;
+    private BeanType nfo;
     private PropertyChangeSupport propertyChangeSupport;
 
-    public BeanAdapterRecord(Object userObject, EntityBeanAdapter nfo, boolean ignoreUnspecified) {
+    public BeanAdapterRecord(Object userObject, String entityName,BeanType nfo, boolean ignoreUnspecified) {
         this.userObject = userObject;
+        this.entityName = entityName;
         this.nfo = nfo;
         this.ignoreUnspecified = ignoreUnspecified;
         propertyChangeSupport = new PropertyChangeSupport(this);
@@ -38,7 +39,7 @@ public class BeanAdapterRecord extends AbstractRecord {
         T y = (T) nfo.getProperty(userObject, key);
         //in C# could not compare y == default(y)
         //so cast y to Object to do so
-        if (((Object)y) == null && nfo.getAttrAdapter(key) == null && extra != null) {
+        if (((Object)y) == null && !nfo.containsProperty(key)  && extra != null) {
             y = (T) extra.get(key);
         }
         return y;
@@ -69,9 +70,8 @@ public class BeanAdapterRecord extends AbstractRecord {
     //////////////////////////////////////
     @Override
     public boolean isSet(String key) {
-        EntityBeanAttribute f = nfo.getAttrAdapter(key);
-        if (f != null) {
-            if (!ignoreUnspecified || !f.isDefaultValue(userObject)) {
+        if (nfo.containsProperty(key)) {
+            if (!ignoreUnspecified || !nfo.isDefaultValue(userObject, key)) {
                 return true;
             }
         }
@@ -97,7 +97,7 @@ public class BeanAdapterRecord extends AbstractRecord {
         if (ignoreUnspecified) {
             includeDefaults = false;
         }
-        Set<String> keySet = nfo.keySet(userObject, includeDefaults);
+        Set<String> keySet = nfo.getPropertyNames(userObject, includeDefaults);
         if (extra != null && extra.size()>0) {
             keySet.addAll(extra.keySet());
         }
@@ -148,7 +148,7 @@ public class BeanAdapterRecord extends AbstractRecord {
 
     @Override
     public String toString() {
-        return nfo.getEntity().getName() + toMap().toString();
+        return entityName + toMap().toString();
     }
 
 }

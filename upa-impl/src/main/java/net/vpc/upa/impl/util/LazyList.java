@@ -10,7 +10,7 @@ import java.util.*;
  * this template use File | Settings | File Templates.
  */
 @PortabilityHint(target = "C#", name = "ignore")
-public class IteratorList<T> implements List<T>, Closeable {
+public class LazyList<T> implements List<T>, Closeable {
 
     protected Iterator<T> base;
     private List<T> loaded = new ArrayList<T>();
@@ -18,7 +18,7 @@ public class IteratorList<T> implements List<T>, Closeable {
     boolean end = false;
     private int startIndex = 0;
 
-    public IteratorList(Iterator<T> base) {
+    public LazyList(Iterator<T> base) {
         this.base = base;
     }
 

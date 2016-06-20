@@ -1,31 +1,42 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.BeanType;
 import net.vpc.upa.Entity;
+import net.vpc.upa.PropertyAccessType;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.filters.ObjectFilter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
-import net.vpc.upa.PropertyAccessType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/27/12 12:16 AM
  */
-public class EntityBeanAdapter {
+public class EntityBeanType implements BeanType{
 
-    private Class cls;
+    private BeanType platformBeanType;
     private Map<String, EntityBeanAttribute> fields = new LinkedHashMap<String, EntityBeanAttribute>();
+    private Set<String> propertyNames;
     private Entity entity;
 
-    public EntityBeanAdapter(Class cls, Entity entity) {
-        this.cls = cls;
+    public EntityBeanType(Entity entity) {
+        this.platformBeanType = PlatformBeanTypeRepository.getInstance().getBeanType(entity.getEntityType());
         this.entity = entity;
         try {
-            cls.getConstructor().setAccessible(true);
+            entity.getEntityType().getConstructor().setAccessible(true);
         } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException("Unable to resolve default constructor for type " + cls + " (entity " + entity.getName() + ")", e);
+            throw new IllegalArgumentException("Unable to resolve default constructor for type " + entity.getEntityType() + " (entity " + entity.getName() + ")", e);
         }
+        for (net.vpc.upa.Field field : entity.getFields()) {
+            getAttrAdapter(field.getName());
+        }
+    }
+
+    @Override
+    public Class getPlatformType() {
+        return entity.getEntityType();
     }
 
     public Entity getEntity() {
@@ -33,15 +44,7 @@ public class EntityBeanAdapter {
     }
 
     public Object newInstance() {
-        try {
-            return cls.newInstance();
-        } catch (Exception e) {
-            Throwable c = e.getCause();
-            if (c instanceof RuntimeException) {
-                throw (RuntimeException) c;
-            }
-            throw new RuntimeException(c);
-        }
+        return platformBeanType.newInstance();
     }
 
     public EntityBeanAttribute getAttrAdapter(String field) {
@@ -55,13 +58,13 @@ public class EntityBeanAdapter {
             propertyAccessType = PropertyAccessType.PROPERTY;
         }
         if (propertyAccessType == PropertyAccessType.FIELD) {
-            Field ff = PlatformUtils.findField(cls, f.getName(), BeanFieldFilter.INSTANCE);
+            Field ff = PlatformUtils.findField(entity.getEntityType(), f.getName(), BeanFieldFilter.INSTANCE);
             if (ff != null) {
-                r = new EntityBeanFieldAttribute(this, ff, cls);
+                r = new EntityBeanFieldAttribute(this, ff, entity.getEntityType());
                 fields.put(field, r);
             }
         } else {
-            EntityBeanGetterSetterAttribute a = new EntityBeanGetterSetterAttribute(this, field, f.getDataType().getPlatformType(), cls);
+            EntityBeanGetterSetterAttribute a = new EntityBeanGetterSetterAttribute(this, field, f.getDataType().getPlatformType(), entity.getEntityType());
             if (a.isValid()) {
                 r = a;
                 fields.put(field, r);
@@ -70,10 +73,10 @@ public class EntityBeanAdapter {
         return r;
     }
 
-    public boolean resetToDefaultValue(Object o, String field) throws UPAException {
+    public boolean resetToDefaultValue(Object instance, String field) throws UPAException {
         EntityBeanAttribute attrAdapter = getAttrAdapter(field);
         if (attrAdapter != null) {
-            attrAdapter.setValue(o, attrAdapter.getDefaultValue());
+            attrAdapter.setValue(instance, attrAdapter.getDefaultValue());
             return true;
         } else {
             return false;
@@ -85,37 +88,25 @@ public class EntityBeanAdapter {
         return attrAdapter.isDefaultValue(o);
     }
 
-    public Method getMethod(Class type, String name, Class ret, Class... args) {
-        try {
-            Method method = type.getMethod(name, args);
-            if (ret == null || method.getReturnType().equals(ret)) {
-                return method;
+    public Set<String> getPropertyNames() {
+        if(propertyNames==null) {
+            LinkedHashSet<String> t = new LinkedHashSet<String>();
+            for (net.vpc.upa.Field f : entity.getFields()) {
+                if (getAttrAdapter(f.getName()) != null) {
+                    t.add(f.getName());
+                }
             }
-        } catch (NoSuchMethodException ignored) {
+            propertyNames=t;
         }
-        Class s = type.getSuperclass();
-        if (s != null) {
-            return getMethod(s, name, ret, args);
-        }
-        return null;
+        return Collections.unmodifiableSet(propertyNames);
     }
 
-    public List<String> getFieldNames() {
-        List<String> t = new ArrayList<String>();
-        for (net.vpc.upa.Field f : entity.getFields()) {
-            if (getAttrAdapter(f.getName()) != null) {
-                t.add(f.getName());
-            }
-        }
-        return t;
-    }
-
-    public Set<String> keySet(Object o, Boolean includeDefaults) throws UPAException {
+    public Set<String> getPropertyNames(Object o, Boolean includeDefaults) throws UPAException {
         LinkedHashSet<String> set = new LinkedHashSet<String>();
         if (includeDefaults == null) {
-            set.addAll(getFieldNames());
+            set.addAll(getPropertyNames());
         } else {
-            for (String k : getFieldNames()) {
+            for (String k : getPropertyNames()) {
                 EntityBeanAttribute e = getAttrAdapter(k);
                 if (includeDefaults == e.isDefaultValue(o)) {
                     set.add(k);
@@ -128,12 +119,12 @@ public class EntityBeanAdapter {
     public Map<String, Object> toMap(Object o, Boolean includeDefaults) throws UPAException {
         LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
         if (includeDefaults == null) {
-            for (String k : getFieldNames()) {
+            for (String k : getPropertyNames()) {
                 EntityBeanAttribute e = getAttrAdapter(k);
                 map.put(k, e.getValue(o));
             }
         } else {
-            for (String k : getFieldNames()) {
+            for (String k : getPropertyNames()) {
                 EntityBeanAttribute e = getAttrAdapter(k);
                 if (includeDefaults == e.isDefaultValue(o)) {
                     map.put(k, e.getValue(o));
@@ -143,15 +134,15 @@ public class EntityBeanAdapter {
         return map;
     }
 
-    public <R> R getProperty(Object o, String field) {
+    public Object getProperty(Object o, String field) {
         EntityBeanAttribute attrAdapter = getAttrAdapter(field);
         if (attrAdapter != null) {
-            return (R) attrAdapter.getValue(o);
+            return attrAdapter.getValue(o);
         }
         return null;
     }
 
-    public <R> boolean setProperty(Object o, String field, R value) {
+    public boolean setProperty(Object o, String field, Object value) {
         EntityBeanAttribute attrAdapter = getAttrAdapter(field);
         if (attrAdapter != null) {
             attrAdapter.setValue(o, value);
@@ -160,32 +151,27 @@ public class EntityBeanAdapter {
         return false;
     }
 
-    public <R> R getPropertyDefaultValue(String field) throws UPAException {
-        EntityBeanAttribute attrAdapter = getAttrAdapter(field);
-        return (R) attrAdapter.getDefaultValue();
+    @Override
+    public boolean containsProperty(String property) {
+        return getPropertyNames().contains(property);
     }
 
-    public static boolean isTypeDefaultValue(Class c, Object v) {
-        Object t = PlatformUtils.DEFAULT_VALUES_BY_TYPE.get(c);
-        if (t == null) {
-            return v == null;
+    @Override
+    public void inject(Object instance, String property, Object value) {
+        EntityBeanAttribute a = getAttrAdapter(property);
+        if(a!=null){
+            a.setValue(instance,value);
         }
-        return t.equals(v);
     }
 
-    public static String getterName(Field field) {
-        return PlatformUtils.getterName(field.getName(), field.getType());
+    @Override
+    public Method getMethod(Class type, String name, Class ret, Class... args) {
+        return platformBeanType.getMethod(type, name, ret, args);
     }
 
-    public static String setterName(Field field) {
-        return PlatformUtils.setterName(field.getName());
+    public Field findField(String name, ObjectFilter<Field> filter) {
+        return platformBeanType.findField(name, filter);
     }
 
-    Class getCls() {
-        return cls;
-    }
 
-    Map<String, EntityBeanAttribute> getFields() {
-        return fields;
-    }
 }

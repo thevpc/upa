@@ -34,6 +34,7 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.types.DataType;
@@ -48,9 +49,9 @@ public interface ExpressionManager {
 
     public Expression parseExpression(String expression);
 
-    public net.vpc.upa.expressions.CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
+    public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
 
-    public net.vpc.upa.expressions.CompiledExpression compileExpression(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig config);
+    public CompiledExpression compileExpression(CompiledExpression expression, ExpressionCompilerConfig config);
 
     public FunctionDefinition addFunction(String name, DataType type, Function function);
 

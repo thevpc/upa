@@ -17,7 +17,7 @@ import net.vpc.upa.persistence.FieldPersister;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public abstract class TableSequenceIdentityGenerator implements FieldPersister {
+public abstract class TableSequenceIdentityPersister implements FieldPersister {
 
     private int initialValue = 1;
     private int allocationSize = 50;
@@ -26,7 +26,7 @@ public abstract class TableSequenceIdentityGenerator implements FieldPersister {
     private String name;
     private Field field;
 
-    public TableSequenceIdentityGenerator(Field field, Sequence sequence) {
+    public TableSequenceIdentityPersister(Field field, Sequence sequence) {
         this.initialValue = sequence == null ? 1 : sequence.getInitialValue();
         this.allocationSize = (sequence == null) ? 50 : sequence.getAllocationSize();
         this.name = (sequence == null) ? null : sequence.getName();
@@ -103,11 +103,11 @@ public abstract class TableSequenceIdentityGenerator implements FieldPersister {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TableSequenceIdentityGenerator)) {
+        if (!(o instanceof TableSequenceIdentityPersister)) {
             return false;
         }
 
-        TableSequenceIdentityGenerator that = (TableSequenceIdentityGenerator) o;
+        TableSequenceIdentityPersister that = (TableSequenceIdentityPersister) o;
 
         if (allocationSize != that.allocationSize) {
             return false;

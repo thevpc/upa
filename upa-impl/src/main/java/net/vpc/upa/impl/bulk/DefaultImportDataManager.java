@@ -17,7 +17,7 @@ import net.vpc.upa.bulk.ImportDataConfig;
 import net.vpc.upa.bulk.ImportDataManager;
 import net.vpc.upa.bulk.ImportDataMode;
 import net.vpc.upa.impl.util.Strings;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  *
@@ -51,8 +51,8 @@ public class DefaultImportDataManager implements ImportDataManager {
         for (Map.Entry<String, Object> entry : row.entrySet()) {
             Field f = entity.findField(entry.getKey());
             if (f != null) {
-                if (f.getDataType() instanceof EntityType) {
-                    EntityType et = (EntityType) f.getDataType();
+                if (f.getDataType() instanceof ManyToOneType) {
+                    ManyToOneType et = (ManyToOneType) f.getDataType();
                     Entity master = et.getRelationship().getTargetRole().getEntity();
                     Object value = entry.getValue();
                     if (value!= null && (!(value instanceof String) || !Strings.isNullOrEmpty(String.valueOf(value))))

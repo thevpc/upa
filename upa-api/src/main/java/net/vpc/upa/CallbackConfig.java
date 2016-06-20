@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa;
@@ -18,22 +18,29 @@ public class CallbackConfig {
     private Object instance;
     private Method method;
     private CallbackType callbackType;
+    private EventPhase phase;
     private Map<String, Object> configuration;
 
     public CallbackConfig() {
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType) {
+    public CallbackConfig(Object instance, Method method, CallbackType callbackType,EventPhase phase) {
         this.instance = instance;
         this.method = method;
+        this.phase = phase;
         this.callbackType = callbackType;
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType, Map<String, Object> configuration) {
+    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase,Map<String, Object> configuration) {
         this.instance = instance;
         this.method = method;
         this.callbackType = callbackType;
+        this.phase = phase;
         this.configuration = configuration;
+    }
+
+    public EventPhase getPhase() {
+        return phase;
     }
 
     public Object getInstance() {

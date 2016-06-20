@@ -58,17 +58,12 @@ public interface EntityBuilder {
 
     public Record copyRecord(Record rec);
 
-    public <R> Record getRecord(R entity);
 
-    public Record getRecord(Object entity, Set<String> fields, boolean ignoreUnspecified,boolean ensureIncludeIds);
+    public Record objectToRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
 
-    public <R> Record getRecord(R entity, boolean ignoreUnspecified);
+    public void setProperty(Object entityObject, String property, Object value) ;
 
-    public <R> R getEntity(Record unstructuredRecord);
-
-    public void setProperty(Object entityObject, String property, Object value) throws UPAException;
-
-    public Object getProperty(Object entityObject, String property) throws UPAException;
+    public Object getProperty(Object entityObject, String property) ;
 
     public Key createKey(Object... keyValues);
 
@@ -86,7 +81,7 @@ public interface EntityBuilder {
      * @param entityId entity id
      * @return key representation
      */
-    Key idToKey(Object entityId) throws UPAException;
+    Key idToKey(Object entityId) ;
 
     /**
      * transforms record key to a entity id representation of the given record
@@ -96,7 +91,7 @@ public interface EntityBuilder {
      * @param recordKey record key
      * @return key representation
      */
-    Object keyToId(Key recordKey) throws UPAException;
+    Object keyToId(Key recordKey) ;
 
     /**
      * transforms entity value to a Record value representation of the given
@@ -105,9 +100,9 @@ public interface EntityBuilder {
      *
      * @param objectValue entity value
      * @return entityToRecord(r, false)
-     * @throws UPAException
+     * @
      */
-    Record objectToRecord(Object objectValue) throws UPAException;
+    Record objectToRecord(Object objectValue) ;
 
     /**
      * Record value representation of the given entity. updates to the record
@@ -117,51 +112,50 @@ public interface EntityBuilder {
      * @param ignoreUnspecified when true primitive number type zeros and
      * boolean type false values are reported as null (not included in record)
      * @return objectToRecord(r, false)
-     * @throws UPAException
      */
-    Record objectToRecord(Object objectValue, boolean ignoreUnspecified) throws UPAException;
+    Record objectToRecord(Object objectValue, boolean ignoreUnspecified) ;
 
-    Object getMainValue(Object objectValue) throws UPAException;
+    Object getMainValue(Object objectValue) ;
 
-    <R> R recordToObject(Record record) throws UPAException;
+    <R> R recordToObject(Record record) ;
 
-    <R> R idToObject(Object objectId) throws UPAException;
+    <R> R idToObject(Object objectId) ;
 
-    Record idToRecord(Object objectId) throws UPAException;
+    Record idToRecord(Object objectId) ;
 
-    Object objectToId(Object objectValue) throws UPAException;
+    Object objectToId(Object objectValue) ;
 
-    Key objectToKey(Object objectValue) throws UPAException;
+    Key objectToKey(Object objectValue) ;
 
-    Object recordToId(Record record) throws UPAException;
+    Object recordToId(Record record) ;
 
-    Key recordToKey(Record record) throws UPAException;
+    Key recordToKey(Record record) ;
 
-    Object keyToObject(Key key) throws UPAException;
+    Object keyToObject(Key key) ;
 
-    Record keyToRecord(Key key) throws UPAException;
+    Record keyToRecord(Key key) ;
 
-    public void setRecordId(Record record, Object id) throws UPAException;
+    public void setRecordId(Record record, Object id) ;
 
-    public void setObjectId(Object object, Object id) throws UPAException;
+    public void setObjectId(Object object, Object id) ;
 
-    public Expression recordToExpression(Record record, String alias) throws UPAException;
+    public Expression recordToExpression(Record record, String alias) ;
 
-    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException;
+    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) ;
 
-    //    public Expression idToExpression(Object key) throws UPAException;
-    public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException;
+    //    public Expression idToExpression(Object key) ;
+    public Expression objectToIdExpression(Object objectOrRecord, String alias) ;
 
-    public Expression idToExpression(Object id, String alias) throws UPAException;
+    public Expression idToExpression(Object id, String alias) ;
 
-    public Expression keyToExpression(Key recordKey, String alias) throws UPAException;
+    public Expression keyToExpression(Key recordKey, String alias) ;
 
-    public <K> Expression idListToExpression(List<K> idList, String alias) throws UPAException;
+    public <K> Expression idListToExpression(List<K> idList, String alias) ;
 
-    public Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException;
+    public Expression keyListToExpression(List<Key> keyList, String alias) ;
 
-    public QualifiedRecord createQualifiedRecord() throws UPAException;
+    public QualifiedRecord createQualifiedRecord() ;
 
-    public QualifiedRecord createQualifiedRecord(Record record) throws UPAException;
+    public QualifiedRecord createQualifiedRecord(Record record) ;
 
 }

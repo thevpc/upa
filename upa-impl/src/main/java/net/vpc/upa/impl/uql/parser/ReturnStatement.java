@@ -41,20 +41,8 @@ public class ReturnStatement implements NativeStatement {
             case SELECT: {
                 NativeField[] fields = nativeSQL.getFields();
                 DataTypeTransform[] types = new DataTypeTransform[fields.length];
-                boolean noTypeTransform = (hints==null || hints.get("NoTypeTransform")==null)?false:(Boolean) hints.get("NoTypeTransform");
                 for (int i = 0; i < types.length; i++) {
-                    boolean fieldNoTypeTransform=noTypeTransform;
-                    if(hints!=null) {
-                        if (!noTypeTransform) {
-                            Field field = fields[i].getField();
-                            if(field!=null) {
-                                String fieldKey = "NoTypeTransform." + field.getAbsoluteName();
-                                fieldNoTypeTransform = hints.get(fieldKey) == null ? false : (Boolean) hints.get(fieldKey);
-                            }
-                        }
-                    }
-                    DataTypeTransform baseTransform = fields[i].getTypeTransform();
-                    types[i] = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
+                    types[i] = fields[i].getTypeTransform();
                 }
                 nativeSQL.setQueryResult(connection.executeQuery(nativeSQL.getQuery(), types, queryParameters, nativeSQL.isUpdatable()));
                 break;

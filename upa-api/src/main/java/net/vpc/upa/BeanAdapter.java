@@ -40,11 +40,11 @@ package net.vpc.upa;
  */
 public interface BeanAdapter {
 
-    public Object newInstance();
-
-    public boolean containsProperty(String property);
+    public BeanType getBeanType();
 
     public Object getProperty(String field);
 
     public void setProperty(String property, Object value);
+
+    public void inject(String property, Object value) ;
 }

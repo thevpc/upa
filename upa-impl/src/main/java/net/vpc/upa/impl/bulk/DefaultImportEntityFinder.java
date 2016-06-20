@@ -83,7 +83,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                     Equals e = new Equals(new Var(new Var(entity.getName()), f), values.get(f));
                     expr = (expr == null) ? e : new And(expr, e);
                 }
-                return entity.createQueryBuilder().setExpression(expr).getEntity();
+                return entity.createQueryBuilder().byExpression(expr).getEntity();
             }
             return null;
         } else {
@@ -103,7 +103,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                 Field field = primaryFields.get(index);
                 expr = new And(expr, new Equals(new Var(new Var(entity.getName()), field.getName()), entityToKey == null ? null : entityToKey.getObjectAt(index)));
             }
-            return entity.createQueryBuilder().setExpression(expr).getEntity();
+            return entity.createQueryBuilder().byExpression(expr).getEntity();
         }
     }
 

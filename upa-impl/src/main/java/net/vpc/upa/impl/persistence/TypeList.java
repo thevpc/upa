@@ -1,24 +1,25 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.BeanType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.util.DefaultBeanAdapter;
+import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 import net.vpc.upa.persistence.QueryResult;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Set;
 
-public class TypeList<T> extends QueryResultIteratorList<T> {
+public class TypeList<T> extends QueryResultLazyList<T> {
     private int columns;
-    private DefaultBeanAdapter beanAdapter;
+    private BeanType beanType;
     private String[] fields;
     private String[] fieldsByExpression;
     public TypeList(NativeSQL nativeSQL, Class<T> entity, String[] fields) throws SQLException {
         super(nativeSQL);
         NativeField[] expressions = nativeSQL.getFields();
         this.fields = fields;
-        beanAdapter=new DefaultBeanAdapter(entity);
+        beanType = PlatformBeanTypeRepository.getInstance().getBeanType(entity);
         if(fields==null || fields.length==0){
-            List<String> fieldNames = beanAdapter.getFieldNames();
+            Set<String> fieldNames = beanType.getPropertyNames();
             this.fields=fieldNames.toArray(new String[fieldNames.size()]);
         }
         fieldsByExpression=new String[expressions.length];
@@ -37,11 +38,11 @@ public class TypeList<T> extends QueryResultIteratorList<T> {
 
     @Override
     public T parse(QueryResult result) throws UPAException {
-        T instance = (T) beanAdapter.newInstance();
+        T instance = (T) beanType.newInstance();
         for (int i = 0; i < columns; i++) {
             Object v = result.read(i);
             if(fieldsByExpression[i]!=null){
-                beanAdapter.setProperty(instance, fieldsByExpression[i], v);
+                beanType.setProperty(instance, fieldsByExpression[i], v);
             }
         }
         return instance;

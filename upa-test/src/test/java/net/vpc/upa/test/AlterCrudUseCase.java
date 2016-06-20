@@ -45,7 +45,7 @@
 //        sm.beginTransaction(TransactionType.REQUIRED);
 //        sm.insert(client);
 //
-//        Record clientByKeyRecord=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        Record clientByKeyRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //
 //        log.info("Found " + clientByKeyRecord);
 //        clientByKeyRecord.setString("firstName", "Alia");
@@ -56,7 +56,7 @@
 //
 //        sm.update(clientByKey);
 //
-//        Record clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        Record clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //
 //        Assert.assertNotNull(clientUpdatedRecord);
 //        Client clientUpdated = entityManager.getConverter().recordToObject(clientUpdatedRecord);
@@ -64,7 +64,7 @@
 //
 //        sm.delete(key);
 //
-//        clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //
 //        Assert.assertNull(clientUpdatedRecord);
 //        sm.commitTransaction();
@@ -91,13 +91,13 @@
 //        record.setString("firstName", "Hammadi");
 //
 //        sm.insertRecord("Client", record);
-//        Record found0=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        Record found0=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //        log.info("Found " + found0);
 //        record.setString("firstName", "Alia");
 //
 //        sm.updateRecord("Client",record);
 //
-//        Record found=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        Record found=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //
 //        Assert.assertNotNull(found);
 //        Client foundEntity = entityManager.getConverter().recordToObject(found);
@@ -106,7 +106,7 @@
 //
 //        sm.delete(key);
 //
-//        found=sm.createQueryBuilder("Client").setId(key).getRecord();
+//        found=sm.createQueryBuilder("Client").setId(key).objectToRecord();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();

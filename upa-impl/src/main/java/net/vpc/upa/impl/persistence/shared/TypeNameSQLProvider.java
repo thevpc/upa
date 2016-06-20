@@ -1,12 +1,12 @@
 package net.vpc.upa.impl.persistence.shared;
 
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.types.DataType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change

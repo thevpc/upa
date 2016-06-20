@@ -98,7 +98,7 @@ public class DefaultPersistenceUnitCommitManager {
     }
 
     public boolean commitStructure() throws UPAException {
-        EntityExecutionContext context = ((DefaultPersistenceUnit)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        EntityExecutionContext context = ((DefaultPersistenceUnit)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
         Collections.sort(storage, structureCommitComparator);
         boolean someCommit = false;
         for (StructureCommit next : storage) {

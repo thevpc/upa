@@ -10,7 +10,7 @@ import net.vpc.upa.persistence.PersistenceStore;
 import java.util.*;
 import net.vpc.upa.impl.AbstractField;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.EntityType;
+import net.vpc.upa.types.ManyToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -55,7 +55,7 @@ public class FieldListPersistenceInfo {
             if (fieldPersistenceInfo.updateExpression != null) {
                 updateExpressions.add(fieldPersistenceInfo);
             }
-            if (field.getDataType() instanceof EntityType) {
+            if (field.getDataType() instanceof ManyToOneType) {
                 ((AbstractField) field).setFieldPersister(new EntityTypeFieldPersister());
             } else if (UPAUtils.isPasswordTransform(UPAUtils.getTypeTransformOrIdentity(field))) {
                 ((AbstractField) field).setFieldPersister(new PasswordTypeFieldPersister());

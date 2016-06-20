@@ -59,14 +59,14 @@ import java.io.Serializable;
  *
  *     //this will list all Client name="Hammadi"
  *     //even though id=0, that value will not be used in where clause
- *     List&lt;Client> found=s.find(new QueryBuilder().setPrototype(c)).getEntityList();
+ *     List&lt;Client> found=s.find(new QueryBuilder().byPrototype(c)).getEntityList();
  *
  *
  *     //if the id field is numeric, zero is considered as the default value
  *     s.getEntity(Client.class).getField("id").setUnspecifiedValue(-1);
  *
  *     //this will list all Client having id=0 and name="Hammadi"
- *     List&lt;Client> found2=s.find(new QueryBuilder().setPrototype(c)).getEntityList();
+ *     List&lt;Client> found2=s.find(new QueryBuilder().byPrototype(c)).getEntityList();
  * </pre>
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

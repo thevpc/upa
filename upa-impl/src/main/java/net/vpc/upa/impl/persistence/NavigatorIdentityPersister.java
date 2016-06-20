@@ -14,7 +14,7 @@ import net.vpc.upa.persistence.FieldPersister;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class NavigatorIdentityGenerator implements FieldPersister {
+public class NavigatorIdentityPersister implements FieldPersister {
     public void beforePersist(Record record, EntityExecutionContext context) throws UPAException{
         //K key = entity.getBuilder().recordToId(record);
         Entity entity = context.getEntity();

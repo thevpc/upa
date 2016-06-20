@@ -36,7 +36,7 @@ package net.vpc.upa.types;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.util:
 //            DataType, ConstraintsException
-public abstract class TemporalType extends DataType implements Cloneable {
+public abstract class TemporalType extends DefaultDataType implements Cloneable {
     protected TemporalType(String name, Class platformType) {
         super(name, platformType);
     }

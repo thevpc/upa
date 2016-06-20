@@ -1,14 +1,13 @@
 package net.vpc.upa.impl.persistence.specific.mckoi;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.types.DataType;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.persistence.shared.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.EnumType;
+import net.vpc.upa.types.DataType;
 
 /**
  * Created with IntelliJ IDEA.

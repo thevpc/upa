@@ -4,14 +4,11 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import net.vpc.upa.types.EntityType;
-import net.vpc.upa.types.EnumType;
 
 public abstract class AbstractField extends AbstractUPAObject implements Field, Comparable<Object> {
 
@@ -33,7 +30,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     protected boolean closed;
     protected Object unspecifiedValue = UnspecifiedValue.DEFAULT;
     //    protected PasswordStrategy passwordStrategy;
-    private Relationship[] rightsRelations = new Relationship[0];
+//    private Relationship[] manyToOneRelations = new Relationship[0];
     private AccessLevel persistAccessLevel = AccessLevel.PUBLIC;
     private AccessLevel updateAccessLevel = AccessLevel.PUBLIC;
     private AccessLevel readAccessLevel = AccessLevel.PUBLIC;
@@ -85,9 +82,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return getModifiers().contains(FieldModifier.SUMMARY);
     }
 
-    public List<Relationship> getRelationships() {
+    public List<Relationship> getManyToOneRelationships() {
         List<Relationship> relations = new ArrayList<Relationship>();
-        for (Relationship r : getPersistenceUnit().getRelationshipsForSource(getEntity())) {
+        for (Relationship r : getPersistenceUnit().getRelationshipsBySource(getEntity())) {
             Field entityField = r.getSourceRole().getEntityField();
             if (entityField != null && entityField.equals(this)) {
                 relations.add(r);
@@ -282,29 +279,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         }
     }
 
-    /**
-     * called by PersistenceUnitFilter You should not use it
-     *
-     * @param r relation
-     */
-    public void addTargetRelationship(Relationship r) {
-        int max = rightsRelations.length;
-        for (int i = 0; i < rightsRelations.length; i++) {
-            Relationship relation = rightsRelations[i];
-            if (relation.equals(r)) {
-                return;
-            }
-        }
-        Relationship[] rr = new Relationship[max + 1];
-        System.arraycopy(rightsRelations, 0, rr, 0, max);
-        rr[max] = r;
-        rightsRelations = rr;
-    }
-
-    public Relationship[] getTargetRelationships() {
-        return rightsRelations;
-    }
-
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
@@ -478,9 +452,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     public Object getMainValue(Object instance) {
         Object v = getValue(instance);
         if (v != null) {
-            DataType d = (DataType) getDataType();
-            if (d instanceof EntityType) {
-                EntityType ed = (EntityType) d;
+            DataType d = getDataType();
+            if (d instanceof ManyToOneType) {
+                ManyToOneType ed = (ManyToOneType) d;
                 v = ed.getRelationship().getTargetEntity().getBuilder().getMainValue(v);
             }
         }

@@ -36,6 +36,7 @@ import net.vpc.upa.expressions.Order;
 import net.vpc.upa.filters.FieldFilter;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -45,27 +46,25 @@ public interface QueryBuilder extends Query, Serializable {
 
     public Entity getEntityType();
 
-    public QueryBuilder addAndField(String field, Object value);
+    public QueryBuilder byField(String field, Object value);
 
-    public QueryBuilder addAndExpression(String expression);
+    public QueryBuilder byExpression(String expression);
 
-    public QueryBuilder setExpression(String expression);
+    public QueryBuilder byExpression(Expression expression);
 
-    public QueryBuilder addAndExpression(Expression expression);
+    public QueryBuilder byExpression(Expression expression,boolean applyAndOp);
 
-    public QueryBuilder setExpression(Expression expression);
-
-    public QueryBuilder setOrder(Order order);
+    public QueryBuilder orderBy(Order order);
 
     public QueryBuilder setFieldFilter(FieldFilter fieldFilter);
 
-    public QueryBuilder setId(Object id);
+    public QueryBuilder byId(Object id);
 
-    public QueryBuilder setKey(Key key);
+    public QueryBuilder byKey(Key key);
 
-    public QueryBuilder setPrototype(Object prototype);
+    public QueryBuilder byPrototype(Object prototype);
 
-    public QueryBuilder setRecordPrototype(Record prototype);
+    public QueryBuilder byRecordPrototype(Record prototype);
 
     public Expression getExpression();
 
@@ -85,5 +84,4 @@ public interface QueryBuilder extends Query, Serializable {
 
     public QueryBuilder setEntityAlias(String entityAlias);
     
-    public QueryBuilder setHint(String key, Object value);
 }

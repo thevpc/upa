@@ -40,11 +40,11 @@ package net.vpc.upa.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Properties;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.types.DataType;
 
 import java.util.List;
 import java.util.Map;
 import net.vpc.upa.Session;
+import net.vpc.upa.types.DataType;
 
 public interface EntityExecutionContext extends Properties {
 
@@ -55,6 +55,25 @@ public interface EntityExecutionContext extends Properties {
     public Entity getEntity();
 
     public Map<String, Object> getValues();
+
+    public Map<String, Object> getHints();
+    public Object getHint(String hintName);
+    public Object getHint(String hintName,Object defaultValue);
+
+    public EntityExecutionContext resetHints() ;
+
+    /**
+     * add or remove (if value is null) hint
+     * @param name
+     * @param value
+     */
+    public EntityExecutionContext setHint(String name, Object value) ;
+
+    /**
+     * merges hints
+     * @param hints
+     */
+    public EntityExecutionContext setHints(Map<String, Object> hints) ;
 
     public PersistenceUnit getPersistenceUnit();
 

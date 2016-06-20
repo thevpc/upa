@@ -121,35 +121,6 @@ public interface UPAContext {
 
     public CloseListener[] getCloseListeners();
 
-    /**
-     * prepare UPA context for method invocation. This method is same as
-     * beginInvocation(Map<String, Object> properties) but includes also
-     * annotation configurations for the method to invoke. Actually
-     * beginInvocation does not invoke the given method.
-     *
-     * @param method method to be invoked
-     * @param properties non null Map to be shared between beginInvocation and
-     * endInvocation
-     */
-//    public void beginInvocation(Method method, Map<String, Object> properties);
-
-    /**
-     * prepare UPA context for method invocation. This will prepare session and
-     * transaction Actually beginInvocation does not invoke the given method.
-     *
-     * @param properties non null Map to be shared between beginInvocation and
-     * endInvocation
-     */
-//    public void beginInvocation(Map<String, Object> properties);
-
-    /**
-     * finalize method invocation and catch error if not null
-     *
-     * @param error error if any
-     * @param properties non null Map to be shared between beginInvocation and
-     * endInvocation
-     */
-//    public void endInvocation(Throwable error, Map<String, Object> properties);
 
     public void addScanFilter(ScanFilter filter);
 
@@ -169,7 +140,7 @@ public interface UPAContext {
 
     public void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase);
+    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
 
     public Properties getThreadProperties();
 }

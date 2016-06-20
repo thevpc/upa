@@ -52,7 +52,7 @@ public class ManualUC {
         sm.beginTransaction(TransactionType.REQUIRED);
         sm.persist(c);
 
-        Record found0 = sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record found0 = sm.createQueryBuilder(Client.class).byId(key).getRecord();
         log.info("Found " + found0);
         found0.setString("firstName", "Alia");
 
@@ -62,14 +62,14 @@ public class ManualUC {
 
         sm.update(c2);
 
-        Record found = sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        Record found = sm.createQueryBuilder(Client.class).byId(key).getRecord();
 
         Assert.assertNotNull(found);
         assertEquals(entityManager.getBuilder().recordToObject(found), c2);
 
         sm.remove(key);
 
-        found = sm.createQueryBuilder(Client.class).setId(key).getRecord();
+        found = sm.createQueryBuilder(Client.class).byId(key).getRecord();
 
         Assert.assertNull(found);
         sm.commitTransaction();
@@ -102,20 +102,20 @@ public class ManualUC {
 
         sm.persist("Client", record);
 
-        Record found0 = sm.createQueryBuilder("Client").setId(id).getRecord();
+        Record found0 = sm.createQueryBuilder("Client").byId(id).getRecord();
         log.info("Found " + found0);
         record.setString("firstName", "Alia");
 
         sm.update("Client", record);
 
-        Record found = sm.createQueryBuilder("Client").setId(id).getRecord();
+        Record found = sm.createQueryBuilder("Client").byId(id).getRecord();
         found.retainAll(new HashSet<String>(Arrays.asList("id", "firstName")));
         Assert.assertNotNull(found);
         Assert.assertEquals(found.getString("firstName"), record.getString("firstName"));
 
         sm.remove("Client", RemoveOptions.forId(id));
 
-        found = sm.createQueryBuilder("Client").setId(id).getRecord();
+        found = sm.createQueryBuilder("Client").byId(id).getRecord();
 
         Assert.assertNull(found);
         sm.commitTransaction();

@@ -3,7 +3,7 @@ package net.vpc.upa;
 /**
  * Created by vpc on 7/18/15.
  */
-public enum RemoveType {
+public enum ConditionType {
 
     PROTOTYPE,
     RECORD_PROTOTYPE,

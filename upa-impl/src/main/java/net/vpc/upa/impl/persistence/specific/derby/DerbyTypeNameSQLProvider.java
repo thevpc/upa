@@ -35,12 +35,12 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
         int precision = datatype.getPrecision();
         if (platformType.equals(String.class)) {
             if (length <= 0) {
-                length = 256;
+                length = 255;
             }
-            if (length > 32672) {
-                return "BLOB";//return "NTEXT";
-            } else {
+            if (length <= 32672) {
                 return "VARCHAR(" + length + ")";
+            } else {
+                return "BLOB";//return "NTEXT";
             }
         }
         if (PlatformUtils.isInt32(platformType)) {

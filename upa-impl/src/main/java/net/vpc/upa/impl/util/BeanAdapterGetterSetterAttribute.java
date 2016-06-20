@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.Entity;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -78,6 +80,8 @@ class BeanAdapterGetterSetterAttribute extends AbstractBeanAdapterAttribute {
             throw new RuntimeException(e);
         }
     }
+
+
 
     @Override
     public void setValue(Object o, Object value) {

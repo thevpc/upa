@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.exceptions.UPAException;
+
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/5/13 11:18 PM
@@ -17,7 +19,9 @@ public interface BeanAdapterAttribute {
 
         public Object getValue(Object o);
 
+        public Object getDefaultValue();
+
         public void setValue(Object o, Object value);
-//        public R getDefaultValue()throws UPAException;
-//        public boolean isDefaultValue(Object o)throws UPAException;
+
+        public boolean isDefaultValue(Object o) ;
     }

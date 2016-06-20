@@ -108,7 +108,7 @@ public interface PersistenceGroup extends Closeable {
 
     public void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, EventPhase phase);
+    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly,EventPhase phase);
 
     public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
 

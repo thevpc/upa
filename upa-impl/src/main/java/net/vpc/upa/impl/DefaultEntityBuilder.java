@@ -1,6 +1,6 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ *
  * and open the template in the editor.
  */
 package net.vpc.upa.impl;
@@ -19,7 +19,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     private EntityFactory entityFactory;
     private KeyFactory keyFactory;
-    private EntityConverter entityConverter;
+//    private EntityConverter entityConverter;
     private Entity entity;
 
     public DefaultEntityBuilder(Entity entity) {
@@ -40,14 +40,6 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     public void setKeyFactory(KeyFactory keyFactory) {
         this.keyFactory = keyFactory;
-    }
-
-    public EntityConverter getEntityConverter() {
-        return entityConverter;
-    }
-
-    public void setEntityConverter(EntityConverter entityConverter) {
-        this.entityConverter = entityConverter;
     }
 
     @Override
@@ -73,23 +65,23 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public <R> Record getRecord(R entity, boolean ignoreUnspecified) {
-        return entityFactory.getRecord(entity, ignoreUnspecified);
+    public Record objectToRecord(Object entity, boolean ignoreUnspecified) {
+        return entityFactory.objectToRecord(entity, ignoreUnspecified);
     }
 
     @Override
-    public Record getRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
-        return entityFactory.getRecord(entity, fields,ignoreUnspecified,ensureIncludeIds);
+    public Record objectToRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
+        return entityFactory.objectToRecord(entity, fields, ignoreUnspecified, ensureIncludeIds);
     }
 
     @Override
-    public <R> Record getRecord(R entity) {
-        return entityFactory.getRecord(entity);
+    public Record objectToRecord(Object entity) {
+        return entityFactory.objectToRecord(entity);
     }
 
     @Override
-    public <R> R getEntity(Record unstructuredRecord) {
-        return entityFactory.getEntity(unstructuredRecord);
+    public <R> R recordToObject(Record record) throws UPAException {
+        return entityFactory.recordToObject(record);
     }
 
     @Override
@@ -131,117 +123,105 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Key idToKey(Object entityId) throws UPAException {
-        return entityConverter.idToKey(entityId);
+        return entityFactory.idToKey(entityId);
     }
 
     @Override
     public Object keyToId(Key recordKey) throws UPAException {
-        return entityConverter.keyToId(recordKey);
+        return entityFactory.keyToId(recordKey);
     }
 
-    @Override
-    public Record objectToRecord(Object objectValue) throws UPAException {
-        return entityConverter.objectToRecord(objectValue);
-    }
 
-    @Override
-    public Record objectToRecord(Object objectValue, boolean ignoreUnspecified) throws UPAException {
-        return entityConverter.objectToRecord(objectValue);
-    }
 
     @Override
     public Object getMainValue(Object objectValue) throws UPAException {
-        return entityConverter.getMainProperty(objectValue);
+        return entityFactory.getMainProperty(objectValue);
     }
 
-    @Override
-    public <R> R recordToObject(Record record) throws UPAException {
-        return entityConverter.recordToObject(record);
-    }
 
     @Override
     public <R> R idToObject(Object objectId) throws UPAException {
-        return entityConverter.idToObject(objectId);
+        return entityFactory.idToObject(objectId);
     }
 
     @Override
     public Record idToRecord(Object objectId) throws UPAException {
-        return entityConverter.idToObject(objectId);
+        return entityFactory.idToObject(objectId);
     }
 
     @Override
     public Object objectToId(Object objectValue) throws UPAException {
-        return entityConverter.objectToId(objectValue);
+        return entityFactory.objectToId(objectValue);
     }
 
     @Override
     public Key objectToKey(Object objectValue) throws UPAException {
-        return entityConverter.objectToKey(objectValue);
+        return entityFactory.objectToKey(objectValue);
     }
 
     @Override
     public Object recordToId(Record record) throws UPAException {
-        return entityConverter.recordToId(record);
+        return entityFactory.recordToId(record);
     }
 
     @Override
     public Key recordToKey(Record record) throws UPAException {
-        return entityConverter.recordToKey(record);
+        return entityFactory.recordToKey(record);
     }
 
     @Override
     public Object keyToObject(Key key) throws UPAException {
-        return entityConverter.keyToObject(key);
+        return entityFactory.keyToObject(key);
     }
 
     @Override
     public Record keyToRecord(Key key) throws UPAException {
-        return entityConverter.keyToRecord(key);
+        return entityFactory.keyToRecord(key);
     }
 
     @Override
     public void setRecordId(Record record, Object id) throws UPAException {
-        entityConverter.setRecordId(record, id);
+        entityFactory.setRecordId(record, id);
     }
 
     @Override
     public void setObjectId(Object object, Object id) throws UPAException {
-        entityConverter.setObjectId(object, id);
+        entityFactory.setObjectId(object, id);
     }
 
     @Override
     public Expression recordToExpression(Record record, String alias) throws UPAException {
-        return entityConverter.recordToExpression(record, alias);
+        return entityFactory.recordToExpression(record, alias);
     }
 
     @Override
     public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException {
-        return entityConverter.objectToExpression(object, ignoreUnspecified, alias);
+        return entityFactory.objectToExpression(object, ignoreUnspecified, alias);
     }
 
     @Override
     public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException {
-        return entityConverter.objectToIdExpression(objectOrRecord, alias);
+        return entityFactory.objectToIdExpression(objectOrRecord, alias);
     }
 
     @Override
     public Expression idToExpression(Object id, String alias) throws UPAException {
-        return entityConverter.idToExpression(id, alias);
+        return entityFactory.idToExpression(id, alias);
     }
 
     @Override
     public Expression keyToExpression(Key recordKey, String alias) throws UPAException {
-        return entityConverter.keyToExpression(recordKey, alias);
+        return entityFactory.keyToExpression(recordKey, alias);
     }
 
     @Override
     public <K> Expression idListToExpression(List<K> idList, String alias) throws UPAException {
-        return entityConverter.idListToExpression(idList, alias);
+        return entityFactory.idListToExpression(idList, alias);
     }
 
     @Override
     public Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException {
-        return entityConverter.keyListToExpression(keyList, alias);
+        return entityFactory.keyListToExpression(keyList, alias);
     }
 
     @Override
@@ -275,7 +255,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     @Override
     public <R> R createInitializedObject() {
         Object o = createObject();
-        Record r = DefaultEntityBuilder.this.objectToRecord(o, false);
+        Record r = objectToRecord(o, false);
         for (Field field : entity.getFields()) {
             Object df = field.getDefaultValue();
             if (field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))) {

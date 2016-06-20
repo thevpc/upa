@@ -288,7 +288,7 @@ public class DefaultEntityShield implements EntityShield {
                     throw new CloneRecordNotAllowedException(entity);
                 }
             }
-            Object o = entity.createQueryBuilder().setId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
             if (o == null) {
                 throw new CloneRecordOldKeyNotFoundException(entity);
             }
@@ -329,7 +329,7 @@ public class DefaultEntityShield implements EntityShield {
                 }
             }
 
-            Object o = entity.createQueryBuilder().setId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
             if (o == null) {
                 throw new RenameRecordOldKeyNotFoundException(entity);
             }

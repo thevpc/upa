@@ -337,8 +337,8 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
         listeners.removeCallback(callback);
     }
 
-    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, EventPhase phase) {
-        List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, phase);
+    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
+        List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, preparedOnly,phase);
         return callbackInvokers.toArray(new Callback[callbackInvokers.size()]);
     }
     

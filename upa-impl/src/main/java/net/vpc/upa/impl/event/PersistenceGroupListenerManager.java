@@ -35,7 +35,7 @@ public class PersistenceGroupListenerManager {
             for (PersistenceUnitDefinitionListener listener : interceptorList) {
                 listener.onPreCreatePersistenceUnit(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_PRE_CREATE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_CREATE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
@@ -55,7 +55,7 @@ public class PersistenceGroupListenerManager {
             for (PersistenceUnitDefinitionListener listener : interceptorList) {
                 listener.onPreDropPersistenceUnit(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_PRE_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
@@ -85,14 +85,14 @@ public class PersistenceGroupListenerManager {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onPreClose(event);
 //            }
-//            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        } else {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onClose(event);
 //            }
-//            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        }
@@ -102,14 +102,14 @@ public class PersistenceGroupListenerManager {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onPreStart(event);
 //            }
-//            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(CallbackType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        } else {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onStart(event);
 //            }
-//            for (Callback invoker : getCallbackPreInvokers(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(CallbackType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        }
@@ -126,7 +126,7 @@ public class PersistenceGroupListenerManager {
         callbackManager.removeCallback(callback);
     }
 
-//    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String name, EventPhase phase, boolean system) {
+//    public List<Callback> getCallbacks(CallbackType callbackType, AnyObjectType objectType, String name, EventPhase phase, boolean system) {
 //        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, name, phase, system);
 //        allCallbacks.addAll(((DefaultPersistenceGroup) persistenceUnit.getPersistenceGroup()).getCallbacks(callbackType, objectType, name, phase, system));
 //        return allCallbacks;
@@ -140,13 +140,13 @@ public class PersistenceGroupListenerManager {
     }
 
     public List<Callback> getCallbackEffectiveInvokers(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
-        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, phase);
-        allCallbacks.addAll(Arrays.asList(group.getContext().getCallbacks(callbackType, objectType, nameFilter, system, phase)));
+        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, false,phase);
+        allCallbacks.addAll(Arrays.asList(group.getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, phase)));
         return allCallbacks;
     }
 
-    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
-        return callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, phase);
+    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
+        return callbackManager.getCallbacks(callbackType, objectType, nameFilter, system,preparedOnly, phase);
     }
 
 }

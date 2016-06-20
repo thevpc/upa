@@ -1,9 +1,10 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.BeanType;
 import net.vpc.upa.Entity;
-import net.vpc.upa.impl.util.EntityBeanAdapter;
+import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -12,19 +13,19 @@ import java.util.List;
 public class BeanAdapterKey extends AbstractKey {
 
     private Class keyType;
-    private EntityBeanAdapter nfo;
+    private BeanType nfo;
     private Object userObject;
 
     public BeanAdapterKey(Class keyType, Object userObject, Entity entity) {
         this.keyType = keyType;
         this.userObject = userObject;
-        nfo = new EntityBeanAdapter(keyType, entity);
+        nfo = PlatformBeanTypeRepository.getInstance().getBeanType(keyType);
     }
 
     @Override
     public Object[] getValue() {
         Object o = userObject;
-        List<String> names = nfo.getFieldNames();
+        Set<String> names = nfo.getPropertyNames();
         Object[] v = new Object[names.size()];
         int i = 0;
         for (String name : names) {
@@ -37,7 +38,7 @@ public class BeanAdapterKey extends AbstractKey {
     @Override
     public void setValue(Object[] value) {
         Object o = userObject;
-        List<String> names = nfo.getFieldNames();
+        Set<String> names = nfo.getPropertyNames();
         int i = 0;
         for (String name : names) {
             nfo.setProperty(o, name, value[i]);

@@ -22,6 +22,8 @@ public interface NativeSQL {
 
     public QueryResult getQueryResult();
 
+    public Map<String,Object> getHints();
+
     //
     public NativeField[] getFields();
 

@@ -126,6 +126,15 @@ public class ExpressionCompilerConfig {
         return hints;
     }
 
+    public Object getHint(String hintName) {
+        return hints==null?null:hints.get(hintName);
+    }
+
+    public Object getHint(String hintName,Object defaultValue) {
+        Object c = hints == null ? null : hints.get(hintName);
+        return c==null?defaultValue:c;
+    }
+
     public void setHints(Map<String, Object> hints) {
         this.hints = hints;
     }

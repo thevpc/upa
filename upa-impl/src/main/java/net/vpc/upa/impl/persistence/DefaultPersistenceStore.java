@@ -3,9 +3,10 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Query;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.DefaultProperties;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.uql.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.util.*;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.I18NString;
+import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.expressions.*;
@@ -40,11 +41,6 @@ import net.vpc.upa.impl.persistence.specific.derby.FloatAsDoubleMarshaller;
 import net.vpc.upa.impl.uql.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.util.UQLUtils;
-import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.EntityType;
-import net.vpc.upa.types.FileData;
-import net.vpc.upa.types.FileType;
-import net.vpc.upa.types.ImageType;
 
 @PortabilityHint(target = "C#", name = "partial")
 public class DefaultPersistenceStore implements PersistenceStore {
@@ -129,13 +125,9 @@ public class DefaultPersistenceStore implements PersistenceStore {
         this.connectionProfile = connectionProfile;
         PersistenceNameStrategy c = persistenceUnit.getFactory().createObject(PersistenceNameStrategy.class);
         setPersistenceNameStrategy(c);
-        DefaultBeanAdapter b = new DefaultBeanAdapter(persistenceNameStrategy);
-        if (b.containsProperty("persistenceStore")) {
-            b.setProperty("persistenceStore", this);
-        }
-        if (b.containsProperty("persistenceUnit")) {
-            b.setProperty("persistenceUnit", persistenceUnit);
-        }
+        BeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
+        b.inject(persistenceNameStrategy,"persistenceStore", this);
+        b.inject(persistenceNameStrategy,"persistenceUnit", persistenceUnit);
         commitManager.init(persistenceUnit, this);
     }
 
@@ -197,7 +189,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
         getMarshallManager().setTypeMarshaller(FileData.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
         getMarshallManager().setTypeMarshaller(DataType.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
         ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
         getMarshallManager().setTypeMarshaller(java.sql.Date.class, TypeMarshallerUtils.SQL_DATE);
         getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
         getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
@@ -557,7 +548,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             if (DRIVER_TYPE_ODBC.equalsIgnoreCase(connectionDriver)) {
                 return createNativeOdbcConnection(p);
             }
-            return createNativeCustomNativeConnection(p);
+            return createCustomPlatformConnection(p);
         } catch (UPAException e) {
             throw e;
         } catch (Exception e) {
@@ -754,14 +745,24 @@ public class DefaultPersistenceStore implements PersistenceStore {
         }
     }
 
-    public Connection createNativeCustomNativeConnection(ConnectionProfile p) throws UPAException {
+    public Connection createCustomPlatformConnection(ConnectionProfile p) throws UPAException {
         throw new UPAException(new I18NString("CreateCustomNativeConnectionNotSupported"));
     }
 
+    protected int getMaxJoinCount(){
+        return getProperties().getInt("maxQueryJoinCount",-1);
+    }
+
     //    @Override
-    public NativeSQL nativeSQL(net.vpc.upa.expressions.CompiledExpression expression, FieldFilter defaultFieldFilter, EntityExecutionContext context, Map<String, Object> hints) throws UPAException {
+    public NativeSQL nativeSQL(CompiledExpression expression0, FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
         if (defaultFieldFilter == null) {
             defaultFieldFilter = READABLE;
+        }
+        int maxJoinCount = getMaxJoinCount();
+        CompiledExpression expression=((DefaultCompiledExpression)expression0).copy();
+        Map<String, Object> hints= context.getHints();
+        if(hints==null){
+            hints=new HashMap<String, Object>();
         }
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
         config.setExpandEntityFilter(true);
@@ -769,7 +770,42 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setExpandFields(true);
         config.setValidate(true);
         config.setHints(hints);
-        DefaultCompiledExpression ee = (DefaultCompiledExpression) context.getPersistenceUnit().getExpressionManager().compileExpression(expression, config);
+        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) context.getPersistenceUnit().getExpressionManager().compileExpression(expression, config);
+        boolean reeavluateWithLessJoin=false;
+        if(maxJoinCount>0) {
+            for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
+                CompiledSelect cs = (CompiledSelect) ce;
+                if (cs.getJoins().length >= maxJoinCount) {
+                    log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :"+expression);
+                    reeavluateWithLessJoin = true;
+                    break;
+                }
+            }
+            if (reeavluateWithLessJoin) {
+                //reset expression
+                expression = ((DefaultCompiledExpression) expression0).copy();
+                config = new ExpressionCompilerConfig();
+                config.setExpandEntityFilter(true);
+                config.setExpandFieldFilter(defaultFieldFilter);
+                config.setExpandFields(true);
+                config.setValidate(true);
+                hints.put(QueryHints.FETCH_STRATEGY, "select");
+                config.setHints(hints);
+                compiledExpression = (DefaultCompiledExpression) context.getPersistenceUnit().getExpressionManager().compileExpression(expression, config);
+                reeavluateWithLessJoin = false;
+                for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
+                    CompiledSelect cs = (CompiledSelect) ce;
+                    if (cs.getJoins().length >= maxJoinCount) {
+                        log.warning("this query is very likely to fail. It still uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :"+expression);
+                        reeavluateWithLessJoin = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        Boolean noTypeTransformO = (Boolean)hints.get(QueryHints.NO_TYPE_TRANSFORM);
+        boolean noTypeTransform = noTypeTransformO==null?false:noTypeTransformO;
 
         NativeField[] ne = null;
         if (expression instanceof CompiledQueryStatement) {
@@ -820,15 +856,24 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 if (c == null) {
                     c = tc;
                 }
+                    boolean fieldNoTypeTransform=noTypeTransform;
+                    if (!noTypeTransform) {
+                        if(f!=null) {
+                            String fieldKey = QueryHints.NO_TYPE_TRANSFORM+"." + f.getAbsoluteName();
+                            fieldNoTypeTransform = (Boolean)(hints.get(fieldKey)==null?false:hints.get(fieldKey));
+                        }
+                    }
+                    DataTypeTransform baseTransform = c;
+                    c = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
                 ne[i] = new NativeField(validName, binding, f, c);
             }
         } else {
             ne = new NativeField[0];
         }
 
-        String query = this.getSqlManager().getSQL(ee, context, new DefaultExpressionDeclarationList(null));
+        String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
 
-        List<CompiledParam> cvalues = ee.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
+        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
         List<Parameter> values = new ArrayList<Parameter>();
         for (CompiledParam e : cvalues) {
             if (e.isUnspecified()) {
@@ -838,17 +883,28 @@ public class DefaultPersistenceStore implements PersistenceStore {
             Object objectValue = e.getValue();
             if (ei.getOldReferrer() != null) {
                 Field oldField = (Field) ei.getOldReferrer();
-                if (oldField.getDataType() instanceof EntityType) {
-                    EntityType et = (EntityType) oldField.getDataType();
+                if (oldField.getDataType() instanceof ManyToOneType) {
+                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
                     objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 }
             }
-            values.add(new DefaultParameter(e.getName(), objectValue, ei.getTypeTransform()));
+            boolean fieldNoTypeTransform=noTypeTransform;
+            if(ei.getReferrer() instanceof Field) {
+                if (!noTypeTransform) {
+                    Field field = (Field) ei.getReferrer();
+                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM+"." + field.getAbsoluteName();
+                    fieldNoTypeTransform = (Boolean)(hints.get(fieldKey)==null?false:hints.get(fieldKey));
+                }
+            }
+            DataTypeTransform baseTransform = ei.getTypeTransform();
+            DataTypeTransform preferedTransform = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
+
+            values.add(new DefaultParameter(e.getName(), objectValue, preferedTransform));
         }
-        NativeSQL nativeSQL = new DefaultNativeSQL(context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE);
+        NativeSQL nativeSQL = new DefaultNativeSQL(context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE,hints);
         nativeSQL.setPersistenceStore(this);
         UConnection connection = context.getConnection();
-        nativeSQL.addNativeStatement(new ReturnStatement(query, values, context.getGeneratedValues(),hints));
+        nativeSQL.addNativeStatement(new ReturnStatement(query, values, context.getGeneratedValues(),context.getHints()));
         nativeSQL.setQuery(query);
         nativeSQL.setFields(ne);
         nativeSQL.setConnection(connection);
@@ -932,7 +988,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        EntityExecutionContext context = ((DefaultPersistenceUnit) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND);
+        EntityExecutionContext context = ((DefaultPersistenceUnit) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND,entityPersistenceContext.getHints());
         sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (defaultObject == null && !cr.getTargetType().isNullable()) {
             defaultObject = cr.getTargetType().getDefaultValue();
@@ -993,7 +1049,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             }
         }
 
-        EntityExecutionContext qlContext = ((DefaultPersistenceUnit) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
+        EntityExecutionContext qlContext = ((DefaultPersistenceUnit) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
         net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression compiledExpression = (net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(sqlManager.getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
@@ -1184,8 +1240,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
         if (f instanceof PrimitiveField) {
             PrimitiveField pf = (PrimitiveField) f;
             DataType d = pf.getDataType();
-            if (d instanceof EntityType) {
-                EntityType rd = (EntityType) d;
+            if (d instanceof ManyToOneType) {
+                ManyToOneType rd = (ManyToOneType) d;
                 for (Field field : rd.getRelationship().getSourceRole().getFields()) {
                     fillPrimitiveField(field, list);
                 }
@@ -1311,7 +1367,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             for (PrimitiveField key : keys) {
                 if (key.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                     //live fields are not stored
-                } else if ((key.getDataType() instanceof EntityType)) {
+                } else if ((key.getDataType() instanceof ManyToOneType)) {
                     //relation 'object' fields are not stored
                 } else {
                     if (firstElement) {
@@ -1513,7 +1569,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setExpandEntityFilter(false);
         config.setValidate(true);
         CompiledEntityStatement compiledExpression = (CompiledEntityStatement) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
-        NativeSQL nativeSQL = nativeSQL(compiledExpression, null, executionContext, null);
+        NativeSQL nativeSQL = nativeSQL(compiledExpression, null, executionContext);
         nativeSQL.execute();
         return nativeSQL.getResultCount();
     }
@@ -1960,7 +2016,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public PersistenceState getFieldPersistenceState(Field object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         PersistenceState status = PersistenceState.UNKNOWN;
         FlagSet<FieldModifier> fieldModifiers = object.getModifiers();
-        if ((object.getDataType() instanceof EntityType)) {
+        if ((object.getDataType() instanceof ManyToOneType)) {
 //            status = PersistenceState.VALID;
             status = PersistenceState.TRANSIENT;
         } else if (fieldModifiers.contains(FieldModifier.TRANSIENT)) {
