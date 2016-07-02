@@ -13,8 +13,8 @@ public class SerializableOrManyToOneType extends DefaultDataType implements Clon
     public SerializableOrManyToOneType(String name, Class platformType, boolean nullable) {
         super(name, platformType, nullable);
     }
-    
-    public Class getEntityType(){
+
+    public Class getEntityType() {
         return getPlatformType();
     }
 
@@ -22,7 +22,7 @@ public class SerializableOrManyToOneType extends DefaultDataType implements Clon
     public Class getPlatformType() {
         return super.getPlatformType();
     }
-    
+
 
     @Override
     public Object clone() {
