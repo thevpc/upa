@@ -46,18 +46,6 @@ import java.util.Map;
 public abstract class DefaultDataType implements DataType {
     //    private DataTypeView null_dataTypeView;
 
-    public String unitName;
-    public String name;
-    protected boolean nullable;
-    protected Properties properties;
-    protected Object defaultNonNullValue;
-    protected Object defaultValue;
-    protected Object defaultUnspecifiedValue;
-    protected Class platformType;
-    protected int scale;
-    protected int precision;
-    protected List<TypeValueValidator> valueValidators = new ArrayList<TypeValueValidator>();
-    protected List<TypeValueRewriter> valueRewriters = new ArrayList<TypeValueRewriter>();
     private final static Map<Class, Object> NULLABLE_DEFAULT_VALUES = new HashMap<Class, Object>();
     private final static Map<Class, Object> NON_NULLABLE_DEFAULT_VALUES = new HashMap<Class, Object>();
 
@@ -86,6 +74,19 @@ public abstract class DefaultDataType implements DataType {
         NON_NULLABLE_DEFAULT_VALUES.put(Byte.class, (byte) 0);
         NON_NULLABLE_DEFAULT_VALUES.put(Character.class, (char) 0);
     }
+
+    public String unitName;
+    public String name;
+    protected boolean nullable;
+    protected Properties properties;
+    protected Object defaultNonNullValue;
+    protected Object defaultValue;
+    protected Object defaultUnspecifiedValue;
+    protected Class platformType;
+    protected int scale;
+    protected int precision;
+    protected List<TypeValueValidator> valueValidators = new ArrayList<TypeValueValidator>();
+    protected List<TypeValueRewriter> valueRewriters = new ArrayList<TypeValueRewriter>();
 
     public DefaultDataType(String name, Class platformType) {
         this(name, platformType, 0, 0, false);
