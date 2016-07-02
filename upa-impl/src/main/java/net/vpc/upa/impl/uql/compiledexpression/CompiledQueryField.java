@@ -6,8 +6,11 @@ package net.vpc.upa.impl.uql.compiledexpression;
  */
 public class CompiledQueryField extends CompiledNamedExpression {
 
+    private int index=-1;
+    private boolean expanded=false;
     private String alias;
     private String binding;
+    private String aliasBinding;
 
     private static String resolveName(String alias, DefaultCompiledExpression expression) {
         if (alias != null) {
@@ -59,7 +62,35 @@ public class CompiledQueryField extends CompiledNamedExpression {
         return binding;
     }
 
-    public void setBinding(String binding) {
+    public CompiledQueryField setBinding(String binding) {
         this.binding = binding;
+        return this;
+    }
+
+    public String getAliasBinding() {
+        return aliasBinding;
+    }
+
+    public CompiledQueryField setAliasBinding(String aliasBinding) {
+        this.aliasBinding = aliasBinding;
+        return this;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public CompiledQueryField setIndex(int index) {
+        this.index = index;
+        return this;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public CompiledQueryField setExpanded(boolean expanded) {
+        this.expanded = expanded;
+        return this;
     }
 }

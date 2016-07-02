@@ -1,13 +1,13 @@
 package net.vpc.upa.impl.persistence.connection;
 
 import net.vpc.upa.Properties;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.*;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.vpc.upa.impl.DefaultProperties;
-import net.vpc.upa.impl.util.Strings;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -132,7 +132,7 @@ public class ConnectionProfileParser {
             setParam(profile, ConnectionOption.CONNECTION_DRIVER_VERSION, connectionDriverVersion, parameters, connectionStringPropertyName);
 
             //pathAndName
-            if (Strings.isNullOrEmpty(pathAndName)) {
+            if (StringUtils.isNullOrEmpty(pathAndName)) {
                 pathAndName = null;
             }
             pathAndName = replaceVars(pathAndName, parameters);

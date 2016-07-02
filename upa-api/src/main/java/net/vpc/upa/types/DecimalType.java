@@ -112,6 +112,9 @@ public class DecimalType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof BigDecimal)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && ((BigDecimal) value).compareTo(getMin()) < 0) {
             BigDecimal limit = getMin();
             throw new ConstraintsException("NumberTooLow", name, description, value, limit);

@@ -41,7 +41,7 @@ import java.util.List;
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:12 PM To change
  * this template use File | Settings | File Templates.
  */
-public class EntityName extends DefaultExpression implements NameOrSelect {
+public class EntityName extends DefaultExpression implements NameOrQuery {
 
     private String name;
 

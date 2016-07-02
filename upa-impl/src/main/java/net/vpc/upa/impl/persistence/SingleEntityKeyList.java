@@ -9,10 +9,10 @@ import java.sql.SQLException;
 public class SingleEntityKeyList<K> extends QueryResultLazyList<K> {
     private int columns;
     private Entity entity;
-    public SingleEntityKeyList(NativeSQL nativeSQL, Entity entity) throws SQLException {
-        super(nativeSQL);
+    public SingleEntityKeyList(QueryExecutor queryExecutor, Entity entity) throws SQLException {
+        super(queryExecutor);
         this.entity = entity;
-        columns = nativeSQL.getFields().length;
+        columns = queryExecutor.getFields().length;
     }
 
     @Override

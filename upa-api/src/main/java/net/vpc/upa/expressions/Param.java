@@ -62,6 +62,10 @@ public class Param extends DefaultExpression {
         this.name = name;
     }
 
+    public void setUnspecified(boolean unspecified) {
+        this.unspecified = unspecified;
+    }
+
     @Override
     public List<TaggedExpression> getChildren() {
         return Collections.EMPTY_LIST;

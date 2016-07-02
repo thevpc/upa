@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public interface NativeStatement {
 
-    public abstract void execute(NativeSQL nativeSQL)
+    public abstract void execute(QueryExecutor queryExecutor)
             throws SQLException, UPAException;
 
     public abstract void dispose()

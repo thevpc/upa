@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledDecode;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ class DerbyDecodeSQLProvider extends DerbyFunctionSQLProvider {
     @Override
     public String simplify(String functionName, String[] params, Map<String, Object> context) {
         if (params.length < 4 || params.length % 2 != 0) {
-            throw new IllegalArgumentException("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + Strings.format(params) + ")");
+            throw new IllegalArgumentException("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + StringUtils.format(params) + ")");
         }
         StringBuilder sb = new StringBuilder("case");
         for (int i = 1; i < params.length; i += 2) {

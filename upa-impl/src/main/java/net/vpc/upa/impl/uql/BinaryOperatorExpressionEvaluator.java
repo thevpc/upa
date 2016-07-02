@@ -5,12 +5,11 @@
  */
 package net.vpc.upa.impl.uql;
 
-import java.util.Objects;
 import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
 import net.vpc.upa.expressions.BinaryOperatorExpression;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.impl.util.XNumber;
 
@@ -130,7 +129,7 @@ class BinaryOperatorExpressionEvaluator implements QLTypeEvaluator {
                 {
                     Object a = evaluator.evalObject(eq.getLeft(), context);
                     Object b = evaluator.evalObject(eq.getRight(), context);
-                    return Strings.matchesSimpleExpression((String) a, (String) b);
+                    return StringUtils.matchesSimpleExpression((String) a, (String) b);
                 }
         }
         throw new IllegalArgumentException("Not supported");

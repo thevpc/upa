@@ -135,8 +135,9 @@ public class ExpressionCompilerConfig {
         return c==null?defaultValue:c;
     }
 
-    public void setHints(Map<String, Object> hints) {
+    public ExpressionCompilerConfig setHints(Map<String, Object> hints) {
         this.hints = hints;
+        return this;
     }
 
     @Override

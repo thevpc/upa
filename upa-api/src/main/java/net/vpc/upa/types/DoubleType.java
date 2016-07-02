@@ -96,6 +96,9 @@ public class DoubleType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof Double)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && (Double) value < getMin()) {
             throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
         }

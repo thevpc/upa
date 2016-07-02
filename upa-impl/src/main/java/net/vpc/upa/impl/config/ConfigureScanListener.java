@@ -41,7 +41,7 @@ import net.vpc.upa.config.OnUpdateFormula;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.EqualsStringFilter;
 import net.vpc.upa.impl.util.SimpleEntityFilter;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
@@ -145,7 +145,7 @@ public class ConfigureScanListener implements ScanListener {
                 Decoration at = (Decoration) event.getUserObject();
                 String _filter = at.getString("filter");
                 String _name = at.getString("name");
-                if (Strings.isNullOrEmpty(_name)) {
+                if (StringUtils.isNullOrEmpty(_name)) {
                     _name = i.getClass().getSimpleName();
                 }
                 boolean _trackSystemObjects = at.getBoolean("trackSystemObjects");
@@ -161,7 +161,7 @@ public class ConfigureScanListener implements ScanListener {
 //                net.vpc.upa.config.FunctionDefinition d = type.getAnnotation();
             DataType dt = TypesFactory.forPlatformType(d.getType("returnType"));
             String n = d.getString("name");
-            if (Strings.isNullOrEmpty(n)) {
+            if (StringUtils.isNullOrEmpty(n)) {
                 n = d.getLocationType();
             }
             persistenceUnit.getExpressionManager().addFunction(n, dt, f);
@@ -263,7 +263,7 @@ public class ConfigureScanListener implements ScanListener {
             callbackPhase=EventPhase.AFTER;
             String functionName = methodDecoration.getString("name");
             Class returnType = methodDecoration.getType("returnType");
-            if (!Strings.isNullOrEmpty(functionName)) {
+            if (!StringUtils.isNullOrEmpty(functionName)) {
                 conf.put("functionName", functionName);
             }
             if (returnType != null && !PlatformUtils.isVoid(returnType)) {

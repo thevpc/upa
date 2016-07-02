@@ -485,7 +485,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) throws UPAException {
         EntityConfiguratorProcessor.configureTracker(this, new SimpleEntityFilter(
-                Strings.isNullOrEmpty(entityNamePattern) ? null : new EqualsStringFilter(entityNamePattern, false, false),
+                StringUtils.isNullOrEmpty(entityNamePattern) ? null : new EqualsStringFilter(entityNamePattern, false, false),
                 system
         ), new EntityInterceptorEntityConfigurator(interceptor, triggerName));
     }
@@ -714,7 +714,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (filter != null && filter instanceof UserExpression) {
             UserExpression ff = (UserExpression) filter;
             String expression = ff.getExpression();
-            if (Strings.isNullOrEmpty(expression)) {
+            if (StringUtils.isNullOrEmpty(expression)) {
                 filter = null;
             } else if (ff.getParameters().isEmpty()) {
                 filter = getExpressionManager().parseExpression(expression);
@@ -789,7 +789,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             HierarchicalRelationshipSupport s = new HierarchicalRelationshipSupport(r);
             r.setHierarchyExtension(s);
             String hierarchyPathField = relationDescriptor.getHierarchyPathField();
-            if (Strings.isNullOrEmpty(hierarchyPathField)) {
+            if (StringUtils.isNullOrEmpty(hierarchyPathField)) {
                 if (relationDescriptor.getBaseField() == null) {
                     StringBuilder n = new StringBuilder();
                     for (Field detailField : detailFields) {
@@ -806,7 +806,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             s.setHierarchyPathField(hierarchyPathField);
 
             String hierarchySeparator = relationDescriptor.getHierarchyPathSeparator();
-            if (Strings.isNullOrEmpty(hierarchySeparator)) {
+            if (StringUtils.isNullOrEmpty(hierarchySeparator)) {
                 hierarchySeparator = "/";
             }
             s.setHierarchyPathSeparator(hierarchySeparator);
@@ -2148,7 +2148,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public <T> T findByMainField(String entityName, Object mainFieldValue) throws UPAException {
         Entity e = getEntity(entityName);
-        return createQueryBuilder(entityName).byExpression(new Equals(new Var(new Var(e.getName()), e.getMainField().getName()), new Param("main", mainFieldValue)))
+        Field mainField = e.getMainField();
+        mainField.check(mainFieldValue);
+        return createQueryBuilder(entityName).byExpression(new Equals(new Var(new Var(e.getName()), mainField.getName()), new Param("main", mainFieldValue)))
                 .getSingleEntityOrNull();
     }
 
@@ -2449,7 +2451,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //                    return new DefaultPasswordStrategy(DefaultCipherStrategy.SHA256, cipherValue);
 //                }
 //                default: {
-//                    if (Strings.isNullOrEmpty(cipherStrategy)) {
+//                    if (StringUtils.isNullOrEmpty(cipherStrategy)) {
 //                        throw new UPAException("MissingCipherStrategy", cipherStrategy, this);
 //                    }
 //                    CipherStrategy o;
@@ -2641,7 +2643,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         Map<String, Object> c = b.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
             String functionName = c==null?null:(String) c.get("functionName");
-            if(Strings.isNullOrEmpty(functionName)){
+            if(StringUtils.isNullOrEmpty(functionName)){
                 throw new UPAException("MissingCallbackFunctionName");
             }
             DataType returnType = (DataType) c.get("returnType");
@@ -2660,7 +2662,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         Map<String, Object> c = b.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
             String functionName = c==null?null:(String) c.get("functionName");
-            if(Strings.isNullOrEmpty(functionName)){
+            if(StringUtils.isNullOrEmpty(functionName)){
                 throw new UPAException("MissingCallbackFunctionName");
             }
             getExpressionManager().removeFunction(functionName);
@@ -2818,4 +2820,47 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     }
 
+    @Override
+    public <T> T copyObject(T r) {
+        if(r==null){
+            return null;
+        }
+        return getEntity(r).getBuilder().copyObject(r);
+    }
+
+    @Override
+    public <T> T copyObject(String entityName, T r) {
+        if(r==null){
+            return null;
+        }
+        return getEntity(r).getBuilder().copyObject(r);
+    }
+
+    @Override
+    public <T> T copyObject(Class entityType, T r) {
+        if(r==null){
+            return null;
+        }
+        return getEntity(r).getBuilder().copyObject(r);
+    }
+
+    @Override
+    public boolean isEmpty(String entityName) {
+        return getEntity(entityName).isEmpty();
+    }
+
+    @Override
+    public boolean isEmpty(Class entityType) {
+        return getEntity(entityType).isEmpty();
+    }
+
+    @Override
+    public long getEntityCount(String entityName) {
+        return getEntity(entityName).getEntityCount();
+    }
+
+    @Override
+    public long getEntityCount(Class entityType) {
+        return getEntity(entityType).getEntityCount();
+    }
 }

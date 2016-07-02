@@ -108,6 +108,9 @@ public class TimeType extends TemporalType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof net.vpc.upa.types.Date)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && getMin().compareTo((Date) value) > 0) {
             throw new ConstraintsException("DateTooEarly", name, description, value, min);
         }

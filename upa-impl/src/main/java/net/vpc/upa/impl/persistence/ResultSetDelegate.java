@@ -1,7 +1,7 @@
 //package net.vpc.upa.impl.persistence;
 //
 //
-//import net.vpc.upa.impl.persistence.NativeSQL;
+//import net.vpc.upa.impl.persistence.QueryExecutor;
 //import net.vpc.upa.persistence.PersistenceUnitManager;
 //
 //import java.sql.ResultSet;
@@ -9,18 +9,18 @@
 //import java.sql.Statement;
 //
 //// Referenced classes of package net.vpc.lib.pheromone.ariana.database.jdbc:
-////            ResultSetHandler, NativeExecutionContext, NativeSQL, StatementDelegate,
+////            ResultSetHandler, NativeExecutionContext, QueryExecutor, StatementDelegate,
 ////            DatabaseAdapter
 //
 //public class ResultSetDelegate extends ResultSetHandler {
 //
-//    public ResultSetDelegate(ResultSet rs, StatementDelegate statement, NativeSQL execContext) {
+//    public ResultSetDelegate(ResultSet rs, StatementDelegate statement, QueryExecutor execContext) {
 //        super(rs);
 //        this.statement = statement;
 //        this.execContext = execContext;
 //    }
 //
-//    public NativeSQL getContext() {
+//    public QueryExecutor getContext() {
 //        return execContext;
 //    }
 //
@@ -28,7 +28,7 @@
 ////            throws SQLException {
 ////        super.close();
 ////        if (execContext != null) {
-////            NativeSQL c = execContext;
+////            QueryExecutor c = execContext;
 ////            if (c != null) {
 ////                c.dispose();
 ////            }
@@ -46,5 +46,5 @@
 //    }
 //
 //    private Statement statement;
-////    private NativeSQL execContext;
+////    private QueryExecutor execContext;
 //}

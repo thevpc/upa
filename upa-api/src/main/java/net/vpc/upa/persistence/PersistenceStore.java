@@ -102,7 +102,7 @@ public interface PersistenceStore {
 
     public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException;
 
-    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
+//    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
 
     public boolean isReservedKeyword(String name);
 

@@ -25,7 +25,7 @@ class CloseListenerImpl<R> implements CloseListener {
 
     @Override
     public void afterClose(Object source) {
-        outer.nativeSQL.getConnection().removeCloseListener(this);
+        outer.queryExecutor.getConnection().removeCloseListener(this);
     }
     
 }

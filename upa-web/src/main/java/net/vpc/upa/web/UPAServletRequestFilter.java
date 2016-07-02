@@ -4,6 +4,7 @@ import net.vpc.upa.UPA;
 import net.vpc.upa.VoidAction;
 import net.vpc.upa.exceptions.ExecutionException;
 
+import javax.faces.application.ViewExpiredException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,12 @@ public class UPAServletRequestFilter implements Filter {
                     throw (IOException) cause;
                 }
                 if( cause instanceof ServletException){
-                    throw (ServletException) cause;
+                    ServletException cause1 = (ServletException) cause;
+//                    Throwable rootCause = cause1.getRootCause();
+//                    if(rootCause instanceof ViewExpiredException){
+//
+//                    }
+                    throw cause1;
                 }
                 throw e;
             }finally {

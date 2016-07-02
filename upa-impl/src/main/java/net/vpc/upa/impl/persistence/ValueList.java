@@ -12,8 +12,8 @@ import java.sql.SQLException;
 public class ValueList<T> extends QueryResultLazyList<T> {
     int index;
 
-    public ValueList(NativeSQL nativeSQL, int index) throws SQLException, UPAException {
-        super(nativeSQL);
+    public ValueList(QueryExecutor queryExecutor, int index) throws SQLException, UPAException {
+        super(queryExecutor);
         this.index = index;
     }
 

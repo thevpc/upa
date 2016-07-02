@@ -5,8 +5,27 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.*;
-import net.vpc.upa.QueryHints;
+import net.vpc.upa.expressions.BinaryOperator;
+import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.filters.Fields;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.RefEqualCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.compiledreplacer.CompiledQLFunctionExpressionSimplifier;
+import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendentReplacer;
+import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
+import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.SerializableType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,39 +33,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.vpc.upa.FieldModifier;
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.BinaryOperator;
-import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-
-import net.vpc.upa.impl.uql.compiledexpression.CompiledAnd;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEquals;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledInsert;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledJoinCriteria;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledNameOrSelect;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryField;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVarVal;
-import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendentReplacer;
-import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
-import net.vpc.upa.impl.util.Strings;
-import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.persistence.ExpressionCompilerConfig;
-import net.vpc.upa.types.*;
-
 /**
- *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class ExpressionValidationManager {
@@ -270,16 +257,15 @@ public class ExpressionValidationManager {
     }
 
     private void expandFields(CompiledSelect qs, ExpressionCompilerConfig config) {
-        int navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH,-1);
-        String fetchStrategy=(String) config.getHint(QueryHints.FETCH_STRATEGY,"join");
-        if(!"join".equals(fetchStrategy) && !"select".equals(fetchStrategy)){
-            //TODO log warning
-            fetchStrategy="join";
+        int navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH, -1);
+        QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
+        if (fetchStrategy == null) {
+            fetchStrategy = QueryFetchStrategy.JOIN;
         }
         ExpansionVisitTracker visitedEntities = new ExpansionVisitTracker(navigationDepth);
 
         if (qs.countFields() == 0) {
-            CompiledVar fvar = new CompiledVar("*");
+            CompiledVar fvar = new CompiledVar("*");//throw unsupported
             qs.field(fvar, null);
         }
         final List<CompiledQueryField> fields = new ArrayList<CompiledQueryField>(qs.getFields());
@@ -287,6 +273,7 @@ public class ExpressionValidationManager {
         List<NamedEntity2> usedEntities = getUsedEntities(qs);
         for (CompiledQueryField f : fields) {
             DefaultCompiledExpression fe = f.getExpression();
+            String fieldAlias = f.getAlias();
 //            boolean indexChanged = false;
             if (fe instanceof CompiledVar) {
                 CompiledVar cv = (CompiledVar) fe;
@@ -294,10 +281,10 @@ public class ExpressionValidationManager {
                 if ("*".equals(cv.getName())) {
                     for (NamedEntity2 entry : usedEntities) {
                         String alias = entry.alias == null ? entry.entity.getName() : entry.alias;
-                        if("join".equals(fetchStrategy)) {
-                            expandEntityFieldsJoinFetch(qs, entry.entity, alias, alias, config.getExpandFieldFilter(), visitedEntities);
-                        }else if("select".equals(fetchStrategy)){
-                            expandEntityFieldsSelectFetch(qs, entry.entity, alias, alias, config.getExpandFieldFilter(), visitedEntities);
+                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
+                            expandEntityFieldsJoinFetch(qs, f.getIndex(),entry.entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
+                        } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
+                            expandEntityFieldsSelectFetch(qs, f.getIndex(), entry.entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
                         }
                     }
                 } else if (referrer instanceof Entity) {
@@ -322,19 +309,36 @@ public class ExpressionValidationManager {
                     final Entity _entity = selectedEntry.entity;
                     if (cv.getChild() == null || cv.getChild().getName().equals("*")) {
                         String alias = selectedEntry.alias == null ? _entity.getName() : selectedEntry.alias;
-                        if("join".equals(fetchStrategy)) {
-                            expandEntityFieldsJoinFetch(qs, _entity, alias, alias, config.getExpandFieldFilter(), visitedEntities);
-                        }else if("select".equals(fetchStrategy)){
-                            expandEntityFieldsSelectFetch(qs, _entity, alias, alias, config.getExpandFieldFilter(), visitedEntities);
+                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
+                            expandEntityFieldsJoinFetch(qs, f.getIndex(),_entity, alias, alias, alias, config.getExpandFieldFilter(), visitedEntities);
+                        } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
+                            expandEntityFieldsSelectFetch(qs, f.getIndex(), _entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
                         }
                     } else {
                         CompiledVar ff = (CompiledVar) cv.getChild();
                         Field ef = (Field) ff.getReferrer();
                         if (ef.getDataType() instanceof ManyToOneType) {
-                            if("join".equals(fetchStrategy)) {
-                                expandManyToOneFieldJoinFetch(qs, ef, selectedEntry.alias, null, config.getExpandFieldFilter(), visitedEntities);
-                            }else if("select".equals(fetchStrategy)) {
-                                expandManyToOneFieldSelectFetch(qs, ef, selectedEntry.alias, null, config.getExpandFieldFilter(), visitedEntities);
+                            String binding = "";
+                            CompiledVarOrMethod r = cv;
+                            while (r != null) {
+                                if (binding.length() == 0) {
+                                    binding = r.getName();
+                                } else {
+                                    binding = r.getName() + "." + binding;
+                                }
+                                if (r.getParentExpression() instanceof CompiledVarOrMethod) {
+                                    r = (CompiledVarOrMethod) r.getParentExpression();
+                                } else {
+                                    r = null;
+                                }
+                            }
+                            if (binding.length() == 0) {
+                                binding = null;
+                            }
+                            if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
+                                expandManyToOneFieldJoinFetch(qs, f.getIndex(),ef, selectedEntry.alias, binding, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
+                            } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
+                                expandManyToOneFieldSelectFetch(qs, f.getIndex(), ef, selectedEntry.alias, binding, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
                             }
                         } else {
                             qs.addField(f);
@@ -345,12 +349,13 @@ public class ExpressionValidationManager {
                     DefaultCompiledExpression pe = cv.getParentExpression();
                     CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
                     if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                        expandLiveFormulaField(qs, ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
+                        expandLiveFormulaField(qs, f.getIndex(),ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
                     } else if (ef.getDataType() instanceof ManyToOneType) {
-                        if("join".equals(fetchStrategy)) {
-                            expandManyToOneFieldJoinFetch(qs, ef, pp == null ? null : pp.getName(), null, config.getExpandFieldFilter(), visitedEntities);
-                        }if("select".equals(fetchStrategy)) {
-                            expandManyToOneFieldSelectFetch(qs, ef, pp == null ? null : pp.getName(), null, config.getExpandFieldFilter(), visitedEntities);
+                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
+                            expandManyToOneFieldJoinFetch(qs, f.getIndex(), ef, pp == null ? null : pp.getName(), null, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
+                        }
+                        if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
+                            expandManyToOneFieldSelectFetch(qs, f.getIndex(), ef, pp == null ? null : pp.getName(), null, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
                         }
                     } else {
                         qs.addField(f);
@@ -365,10 +370,10 @@ public class ExpressionValidationManager {
 
     }
 
-    private void expandLiveFormulaField(CompiledSelect qs, Field field, Entity e, String entityAlias, String binding) {
+    private void expandLiveFormulaField(CompiledSelect qs, int index,Field field, Entity e, String entityAlias, String binding) {
         Formula f = field.getSelectFormula();
         if (f instanceof CustomFormula) {
-            //do nothing, should mak it as custom formula
+            //do nothing, should be processed as custom formula later
         } else if (f instanceof ExpressionFormula) {
             ExpressionFormula ef = (ExpressionFormula) f;
             Expression expr = ef.getExpression();
@@ -383,7 +388,10 @@ public class ExpressionValidationManager {
             cfg.setAliasToEntityContext(aliasToEntityContext);
             DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
 
-            qs.addField(rr, field.getName()).setBinding(binding);
+            qs.addField(rr, field.getName())
+                    .setIndex(index)
+                    .setExpanded(true)
+                    .setBinding(binding);
 
             cfg = new ExpressionCompilerConfig();
             cfg.setThisAlias(entityAlias);
@@ -400,39 +408,46 @@ public class ExpressionValidationManager {
         }
     }
 
-    private void expandEntityFieldsJoinFetch(CompiledSelect qs, Entity e, String entityAlias, String binding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+    private void expandEntityFieldsJoinFetch(CompiledSelect qs, int index,Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
         for (Field field : e.getFields(Fields.as(fieldFilter).and(READABLE))) {
             if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                expandLiveFormulaField(qs, field, e, entityAlias, binding);
+                expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
             } else if (field.getDataType() instanceof ManyToOneType) {
                 ExpansionVisitTracker c = visitedEntities.copy();
-                expandManyToOneFieldJoinFetch(qs, field, entityAlias, binding, fieldFilter, c);
+                expandManyToOneFieldJoinFetch(qs, index,field, entityAlias, binding, UPAUtils.dotConcat(aliasBinding, field.getName()), fieldFilter, c);
             } else {
                 CompiledVar vv = new CompiledVar(entityAlias, e);
                 vv.setChild(new CompiledVar(field));
                 //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                qs.addField(vv, field.getName()).setBinding(binding);
+                qs.addField(vv, field.getName())
+                        .setBinding(binding)
+                        .setIndex(index)
+                        .setExpanded(true)
+                        .setAliasBinding(UPAUtils.dotConcat(aliasBinding, field.getName()));
             }
         }
     }
 
-    private void expandEntityFieldsSelectFetch(CompiledSelect qs, Entity e, String entityAlias, String binding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+    private void expandEntityFieldsSelectFetch(CompiledSelect qs,int index, Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
         for (Field field : e.getFields(Fields.as(fieldFilter).and(READABLE))) {
             if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                expandLiveFormulaField(qs, field, e, entityAlias, binding);
+                expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
             } else if (field.getDataType() instanceof ManyToOneType) {
                 ExpansionVisitTracker c = visitedEntities.copy();
-                expandManyToOneFieldSelectFetch(qs, field, entityAlias, binding, fieldFilter, c);
+                expandManyToOneFieldSelectFetch(qs, index,field, entityAlias, binding, aliasBinding, fieldFilter, c);
             } else {
                 CompiledVar vv = new CompiledVar(entityAlias, e);
                 vv.setChild(new CompiledVar(field));
                 //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                qs.addField(vv, field.getName()).setBinding(binding);
+                qs.addField(vv, field.getName())
+                        .setIndex(index)
+                        .setExpanded(true)
+                        .setBinding(binding);
             }
         }
     }
 
-    private void expandManyToOneFieldJoinFetch(CompiledSelect qs, Field field, String entityAlias, String binding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+    private void expandManyToOneFieldJoinFetch(CompiledSelect qs, int index,Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
         ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
         Relationship rel = manyToOneType.getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -445,16 +460,22 @@ public class ExpressionValidationManager {
                     CompiledVar vv = new CompiledVar(entityAlias, field.getEntity());
                     vv.setChild(new CompiledVar(f));
                     //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                    qs.addField(vv, f.getName()).setBinding(binding);
+                    qs.addField(vv, f.getName())
+                            .setIndex(index)
+                            .setExpanded(true)
+                            .setBinding(binding);
                 }
             }
             return;
         }
-        BindingJoinInfo d = addBindingJoin(qs, field, entityAlias, (Strings.isNullOrEmpty(binding) ? field.getName() : (binding + "." + field.getName())));
-        expandEntityFieldsJoinFetch(qs, masterEntity, d.alias, d.binding, fieldFilter, dived);
+        BindingJoinInfo d = addBindingJoin(qs, field, entityAlias,
+                (StringUtils.isNullOrEmpty(binding) ? field.getName() : (binding + "." + field.getName())),
+                (StringUtils.isNullOrEmpty(aliasBinding) ? field.getName() : (aliasBinding + "." + field.getName()))
+        );
+        expandEntityFieldsJoinFetch(qs, index,masterEntity, d.alias, d.binding, aliasBinding, fieldFilter, dived);
     }
 
-    private void expandManyToOneFieldSelectFetch(CompiledSelect qs, Field field, String entityAlias, String binding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+    private void expandManyToOneFieldSelectFetch(CompiledSelect qs, int index,Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
         ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
         Relationship rel = manyToOneType.getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -469,12 +490,16 @@ public class ExpressionValidationManager {
                 CompiledVar vv = new CompiledVar(entityAlias, field.getEntity());
                 vv.setChild(new CompiledVar(f));
                 //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                qs.addField(vv, f.getName()).setBinding(binding);
+                qs.addField(vv, f.getName())
+                        .setIndex(index)
+                        .setBinding(binding)
+                        .setExpanded(true)
+                        .setAliasBinding(aliasBinding);
             }
         }
     }
 
-    private BindingJoinInfo addBindingJoin(CompiledSelect qs, Field field, String entityAlias, String binding) {
+    private BindingJoinInfo addBindingJoin(CompiledSelect qs, Field field, String entityAlias, String binding, String aliasBinding) {
         BindingJoinInfo ret = new BindingJoinInfo();
         Relationship rel = ((ManyToOneType) field.getDataType()).getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -657,7 +682,7 @@ public class ExpressionValidationManager {
         return d;
     }
 
-//    public CompiledVar validateCompiledVar(CompiledVar v, ExpressionCompilerConfig config) {
+    //    public CompiledVar validateCompiledVar(CompiledVar v, ExpressionCompilerConfig config) {
 //        try {
 //            CompiledVar v2 = v;
 //            v2 = validateCompiledVarReferrer(v2, config);
@@ -714,7 +739,8 @@ public class ExpressionValidationManager {
                 //this 
                 Field f = (Field) p1.getReferrer();
                 if (f.getDataType() instanceof ManyToOneType) {
-                    BindingJoinInfo alias = addBindingJoin(s, f, p2.getName(), createBindingID(p1));
+                    CompiledQueryField cqf = CompiledExpressionHelper.findRootCompiledQueryField(p1);
+                    BindingJoinInfo alias = addBindingJoin(s, f, p2.getName(), createBindingID(p1), cqf == null ? null : cqf.getAlias());
                     p2.setName(alias.alias);
                     p2.setReferrer(alias.entity);
 
@@ -869,7 +895,8 @@ public class ExpressionValidationManager {
             throw new IllegalArgumentException("Field or alias not found : " + v.getName());
         } else {
             String before = p.toString();
-            /*p =*/ validateCompiledVarReferrer(p, config);
+            /*p =*/
+            validateCompiledVarReferrer(p, config);
             Object ref = p.getReferrer();
             if (ref instanceof Entity) {
                 Entity ee = (Entity) ref;

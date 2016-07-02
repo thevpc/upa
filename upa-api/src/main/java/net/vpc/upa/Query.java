@@ -49,6 +49,12 @@ public interface Query extends Closeable {
 
     public Boolean getBoolean() throws UPAException;
 
+    public Integer getInteger() throws UPAException;
+
+    public Long getLong() throws UPAException;
+
+    public Double getDouble() throws UPAException;
+
     public String getString() throws UPAException;
 
     public Number getNumber() throws UPAException;
@@ -82,6 +88,10 @@ public interface Query extends Closeable {
     Set<Key> getKeySet() throws UPAException;
 
     public List<MultiRecord> getMultiRecordList() throws UPAException;
+
+    public <T> List<T> getResultList() ;
+
+    public <T> Set<T> getResultSet() ;
 
     public List<Record> getRecordList() throws UPAException;
 

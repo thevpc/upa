@@ -6,10 +6,7 @@
 package net.vpc.upa.vfs;
 
 import net.vpc.upa.UserFieldModifier;
-import net.vpc.upa.config.Entity;
-import net.vpc.upa.config.Field;
-import net.vpc.upa.config.Id;
-import net.vpc.upa.config.Path;
+import net.vpc.upa.config.*;
 
 /**
  *
@@ -20,12 +17,12 @@ import net.vpc.upa.config.Path;
 public class FileContent {
 
     @Id
-    @Field(modifiers = UserFieldModifier.MAIN)
+    @Main
     public Integer id;
     public byte[] content;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     public long length;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     public long lastModified;
 
     public Integer getId() {

@@ -29,7 +29,7 @@ import net.vpc.upa.impl.persistence.DefaultQueryBuilder;
 import net.vpc.upa.impl.persistence.FieldListPersistenceInfo;
 import net.vpc.upa.impl.persistence.FieldPersistenceInfo;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.uql.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.expressions.IdCollectionExpression;
@@ -297,7 +297,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         List<String> fieldList = new ArrayList<String>(new LinkedHashSet<String>(Arrays.asList(fields)));
         Index index = getPersistenceUnit().getFactory().createObject(Index.class);
-        if (Strings.isNullOrEmpty(indexName)) {
+        if (StringUtils.isNullOrEmpty(indexName)) {
             StringBuilder b = new StringBuilder("IX").append(getName());
             for (String f : fieldList) {
                 b.append("_").append(f);
@@ -727,7 +727,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public DataType getDataType() throws UPAException {
         if (dataType == null) {
-            dataType = new KeyType(this, (Expression) null, true);
+            dataType = new KeyType(this);
         }
         return dataType;
     }
@@ -1170,7 +1170,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public Trigger addTrigger(String triggerName, EntityInterceptor trigger) throws UPAException {
         DefaultPersistenceUnit pu = (DefaultPersistenceUnit) getPersistenceUnit();
-        if (Strings.isNullOrEmpty(triggerName)) {
+        if (StringUtils.isNullOrEmpty(triggerName)) {
             while (true) {
                 String n = "anonymous" + triggerAnonymousNameIndex;
                 if (!triggers.containsKey(n) //only hard triggers should by schema wise unique!!
@@ -1388,7 +1388,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public Field bindField(Field field, String sectionPath, int index) throws UPAException {
 
-        if (Strings.isNullOrEmpty(field.getName())) {
+        if (StringUtils.isNullOrEmpty(field.getName())) {
             throw new IllegalArgumentException("Field name is Null or Empty");
         }
         if (field.getDataType() == null) {
@@ -2709,7 +2709,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public Query createQuery(EntityStatement query) throws UPAException {
         if (query instanceof Select) {
             Select s = (Select) query;
-            NameOrSelect entityName = s.getEntity();
+            NameOrQuery entityName = s.getEntity();
             if (entityName == null) {
                 s.from(getName());
             }

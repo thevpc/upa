@@ -18,7 +18,7 @@ import net.vpc.upa.SecretStrategy;
 import net.vpc.upa.SecretStrategyType;
 import net.vpc.upa.config.StringEncoderType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
 
 /**
@@ -421,7 +421,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 }
             }
         } else if (s instanceof String) {
-            if (!Strings.isNullOrEmpty((String) s)) {
+            if (!StringUtils.isNullOrEmpty((String) s)) {
                 s = (PasswordStrategy) pu.getFactory().createObject((String) s);
             } else {
                 s = DefaultPasswordStrategy.MD5;
@@ -468,7 +468,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
             }
         } else if (s instanceof String) {
             String ss = (String) s;
-            if (!Strings.isNullOrEmpty(ss)) {
+            if (!StringUtils.isNullOrEmpty(ss)) {
                 s = (SecretStrategy) pu.getFactory().createObject((String) s);
             } else {
                 //use default
@@ -642,7 +642,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         if (postEncoderObject == null) {
 
         } else if (postEncoderObject instanceof String) {
-            if (!Strings.isNullOrEmpty((String) postEncoderObject)) {
+            if (!StringUtils.isNullOrEmpty((String) postEncoderObject)) {
                 postEncoder = pu.getFactory().createObject((String) postEncoderObject);
             }
         } else if (postEncoderObject instanceof Class) {
@@ -704,7 +704,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         if (postEncoderObject == null) {
 
         } else if (postEncoderObject instanceof String) {
-            if (!Strings.isNullOrEmpty((String) postEncoderObject)) {
+            if (!StringUtils.isNullOrEmpty((String) postEncoderObject)) {
                 postEncoder = pu.getFactory().createObject((String) postEncoderObject);
             }
         } else if (postEncoderObject instanceof Class) {

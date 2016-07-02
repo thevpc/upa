@@ -44,23 +44,23 @@ package net.vpc.upa.expressions;
 public class QueryField {
 
     private String alias;
-    private String name;
+//    private String name;
     private Expression expression;
 
 
     public QueryField(String alias, Expression expression/*, Object relative*/) {
         this.expression = expression;
         this.alias = alias;
-        if (alias != null) {
-            name = alias;
-        } else if (expression instanceof Var) {
-            name = ((Var) expression).getName();
-        }
+//        if (alias != null) {
+//            name = alias;
+//        } else if (expression instanceof Var) {
+//            name = ((Var) expression).getName();
+//        }
     }
 
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
 
     public Expression getExpression() {
         return expression;

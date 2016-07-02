@@ -1,46 +1,37 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.Query;
-import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.DefaultProperties;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.uql.TypeCompiledExpressionFilter;
-import net.vpc.upa.impl.util.*;
-import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
-import net.vpc.upa.impl.SessionParams;
-import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
-import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.parser.DefaultNativeSQL;
-import net.vpc.upa.impl.uql.parser.ReturnStatement;
-import net.vpc.upa.persistence.*;
-
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
+import net.vpc.upa.impl.DefaultProperties;
+import net.vpc.upa.impl.SessionParams;
+import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.persistence.shared.ConstantDataMarshallerFactory;
 import net.vpc.upa.impl.persistence.shared.DefaultSerializablePlatformObjectMarshaller;
 import net.vpc.upa.impl.persistence.shared.TypeMarshallerUtils;
 import net.vpc.upa.impl.persistence.specific.derby.FloatAsDoubleMarshaller;
-import net.vpc.upa.impl.uql.CompiledExpressionHelper;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
+import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
+import net.vpc.upa.impl.util.*;
+import net.vpc.upa.persistence.*;
+import net.vpc.upa.types.*;
+
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @PortabilityHint(target = "C#", name = "partial")
 public class DefaultPersistenceStore implements PersistenceStore {
@@ -68,7 +59,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     private String persistenceUnitName;
     private ObjectFactory factory;
     private IdentifierStoreTranslator identifierStoreTranslator;
-    private PlatformLenientType DBCP_TYPE=new PlatformLenientType("org.apache.commons.dbcp.BasicDataSource");
+    private PlatformLenientType DBCP_TYPE = new PlatformLenientType("org.apache.commons.dbcp.BasicDataSource");
     //    private StatementDelegate statement;
 //    private ConnectionProfile profile;
 //    private String dbName;
@@ -126,8 +117,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
         PersistenceNameStrategy c = persistenceUnit.getFactory().createObject(PersistenceNameStrategy.class);
         setPersistenceNameStrategy(c);
         BeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
-        b.inject(persistenceNameStrategy,"persistenceStore", this);
-        b.inject(persistenceNameStrategy,"persistenceUnit", persistenceUnit);
+        b.inject(persistenceNameStrategy, "persistenceStore", this);
+        b.inject(persistenceNameStrategy, "persistenceUnit", persistenceUnit);
         commitManager.init(persistenceUnit, this);
     }
 
@@ -582,20 +573,21 @@ public class DefaultPersistenceStore implements PersistenceStore {
             throw new UPAException(e, new I18NString("CreateNativeConnectionFailed"));
         }
     }
-    private Integer embeddedDataSourceSupported;
-    private static final int DS_DBCP=1;
-    private Map<String,DataSource> embeddedDataSources=new HashMap<String, DataSource>();
 
-    protected boolean isPoolableDataSourceSupported(){
-        if(embeddedDataSourceSupported==null){
-            if(DBCP_TYPE.isValid()){
+    private Integer embeddedDataSourceSupported;
+    private static final int DS_DBCP = 1;
+    private Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
+
+    protected boolean isPoolableDataSourceSupported() {
+        if (embeddedDataSourceSupported == null) {
+            if (DBCP_TYPE.isValid()) {
                 embeddedDataSourceSupported = DS_DBCP;
             }
-            if(embeddedDataSourceSupported==null) {
-                embeddedDataSourceSupported=0;
+            if (embeddedDataSourceSupported == null) {
+                embeddedDataSourceSupported = 0;
             }
         }
-        return embeddedDataSourceSupported!=0;
+        return embeddedDataSourceSupported != 0;
     }
 
     protected DataSource resolvePoolableDataSource(
@@ -605,13 +597,13 @@ public class DefaultPersistenceStore implements PersistenceStore {
             String password,
             Map<String, String> properties
     ) throws UPAException {
-        if(!isPoolableDataSourceSupported()){
+        if (!isPoolableDataSourceSupported()) {
             return null;
         }
-        String k=driver+"\n"+url+user+password;
+        String k = driver + "\n" + url + user + password;
         DataSource ds = embeddedDataSources.get(k);
-        if(ds==null){
-            if(embeddedDataSourceSupported==DS_DBCP) {
+        if (ds == null) {
+            if (embeddedDataSourceSupported == DS_DBCP) {
                 ds = (DataSource) DBCP_TYPE.newInstance();
                 DBCP_TYPE.invokeInstance(ds, "setDriverClassName", new Class[]{String.class}, new Object[]{driver});
                 DBCP_TYPE.invokeInstance(ds, "setUsername", new Class[]{String.class}, new Object[]{user});
@@ -627,15 +619,16 @@ public class DefaultPersistenceStore implements PersistenceStore {
                             Integer.parseInt(properties.get("poolMaxSize"))
                     });
                 }
-            }else{
+            } else {
                 //
             }
-            if(ds!=null){
-                embeddedDataSources.put(k,ds);
+            if (ds != null) {
+                embeddedDataSources.put(k, ds);
             }
         }
         return ds;
     }
+
     protected Connection createNativeGenericConnection(ConnectionProfile p) throws UPAException {
         try {
             Map<String, String> properties = p.getProperties();
@@ -657,11 +650,11 @@ public class DefaultPersistenceStore implements PersistenceStore {
                                                   String password,
                                                   Map<String, String> properties) throws UPAException {
         try {
-            boolean pool="true".equals(properties.get("pool"));
+            boolean pool = "true".equals(properties.get("pool"));
 
-            if(pool){
+            if (pool) {
                 DataSource ds = resolvePoolableDataSource(driver, url, user, password, properties);
-                if(ds!=null){
+                if (ds != null) {
                     return ds.getConnection();
                 }
                 log.severe("Datasource is not supported, ignored pooling");
@@ -671,7 +664,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
              * System.Data.OleDb.OleDbConnection(oledbURL);
              */
             {
-                if(!Strings.isNullOrEmpty(driver)) {
+                if (!StringUtils.isNullOrEmpty(driver)) {
                     try {
                         PlatformUtils.forName(driver);
                     } catch (Exception cls) {
@@ -749,54 +742,158 @@ public class DefaultPersistenceStore implements PersistenceStore {
         throw new UPAException(new I18NString("CreateCustomNativeConnectionNotSupported"));
     }
 
-    protected int getMaxJoinCount(){
-        return getProperties().getInt("maxQueryJoinCount",-1);
+    protected int getMaxJoinCount() {
+        return getProperties().getInt("maxQueryJoinCount", -1);
     }
 
-    //    @Override
-    public NativeSQL nativeSQL(CompiledExpression expression0, FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
+    public QueryExecutor createExecutor(
+            Expression baseExpression,
+            Map<String, Object> parametersByName,
+            Map<Integer, Object> parametersByIndex,
+            boolean updatable,
+            FieldFilter defaultFieldFilter,
+            EntityExecutionContext context) throws UPAException {
+        if (isUpdateComplexValuesIncludingUpdatedTableSupported || !(baseExpression instanceof Update)) {
+            return createDefaultExecutor(baseExpression,
+                    parametersByName,
+                    parametersByIndex,
+                    updatable,
+                    defaultFieldFilter, context);
+        }
+        return createCustomUpdateExecutor((Update) baseExpression,
+                parametersByName,
+                parametersByIndex,
+                updatable,
+                defaultFieldFilter, context);
+    }
+
+
+    public QueryExecutor createCustomUpdateExecutor(
+            final Update baseExpression,
+            final Map<String, Object> parametersByName,
+            final Map<Integer, Object> parametersByIndex,
+            final boolean updatable,
+            final FieldFilter defaultFieldFilter,
+            final EntityExecutionContext context
+    ) throws UPAException {
+
+        ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
+        final ResultMetaData metadata = expressionManager.createMetaData((EntityStatement) baseExpression, defaultFieldFilter);
+        Map<String, Object> hints = context.getHints();
+        if (hints == null) {
+            hints = new HashMap<String, Object>();
+        }
+        Update update2 = (Update) baseExpression.copy();
+        PersistenceUnit pu = context.getPersistenceUnit();
+        final Entity entity = pu.getEntity(update2.getEntityName());
+        final String entityName = entity.getName();
+        final List<VarVal> complexVals = new ArrayList<VarVal>();
+        for (int i = update2.countFields() - 1; i >= 0; i--) {
+            VarVal varVal = update2.getVarVal(i);
+            boolean complexSelect = false;
+            Expression fieldExpression = varVal.getVal();
+            if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported))) {
+                complexSelect = true;
+            }
+            if (complexSelect) {
+                //complex expression
+                complexVals.add(varVal);
+                update2.removeFieldAt(i);
+            }
+        }
+        final Map<String, Object> finalHints = hints;
+        return new CustomUpdateQueryExecutor(this, finalHints, update2, parametersByName, parametersByIndex, updatable, defaultFieldFilter, context, complexVals, entity, entityName, metadata);
+    }
+
+    public QueryExecutor createDefaultExecutor(
+            Expression baseExpression,
+            Map<String, Object> parametersByName,
+            Map<Integer, Object> parametersByIndex,
+            boolean updatable,
+            FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
+
         if (defaultFieldFilter == null) {
             defaultFieldFilter = READABLE;
         }
-        int maxJoinCount = getMaxJoinCount();
-        CompiledExpression expression=((DefaultCompiledExpression)expression0).copy();
-        Map<String, Object> hints= context.getHints();
-        if(hints==null){
-            hints=new HashMap<String, Object>();
+        ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
+        ResultMetaData m = expressionManager.createMetaData((EntityStatement) baseExpression, defaultFieldFilter);
+        EntityStatement statement = m.getStatement();
+
+        //apply parameters
+        if (parametersByName != null) {
+            for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {
+                String name = entry.getKey();
+                Object value = entry.getValue();
+
+                List<Expression> params = statement.findAll(ExpressionFilterFactory.forParam(name));
+                if (params.isEmpty()) {
+                    throw new IllegalArgumentException("Parameter not found " + name);
+                }
+                for (Expression e : params) {
+                    Param p = (Param) e;
+                    p.setValue(value);
+                    p.setUnspecified(false);
+                }
+            }
         }
+        if (parametersByIndex != null && !parametersByIndex.isEmpty()) {
+            List<Expression> params = statement.findAll(ExpressionFilterFactory.PARAM_FILTER);
+            for (Map.Entry<Integer, Object> entry : parametersByIndex.entrySet()) {
+                Integer index = entry.getKey();
+                Object value = entry.getValue();
+                if (params.size() <= index) {
+                    throw new IllegalArgumentException("Parameter not found " + index);
+                }
+                Param p = (Param) params.get(index);
+                if (p == null) {
+                    throw new IllegalArgumentException("Parameter not found " + index);
+                }
+                p.setValue(value);
+                p.setUnspecified(false);
+            }
+        }
+
+
+        Map<String, Object> hints = context.getHints();
+        if (hints == null) {
+            hints = new HashMap<String, Object>();
+        }
+
+        int maxJoinCount = getMaxJoinCount();
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
         config.setExpandEntityFilter(true);
         config.setExpandFieldFilter(defaultFieldFilter);
         config.setExpandFields(true);
         config.setValidate(true);
         config.setHints(hints);
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) context.getPersistenceUnit().getExpressionManager().compileExpression(expression, config);
-        boolean reeavluateWithLessJoin=false;
-        if(maxJoinCount>0) {
+
+        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
+        boolean reeavluateWithLessJoin = false;
+        if (maxJoinCount > 0) {
             for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                 CompiledSelect cs = (CompiledSelect) ce;
                 if (cs.getJoins().length >= maxJoinCount) {
-                    log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :"+expression);
+                    log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :" + statement);
                     reeavluateWithLessJoin = true;
                     break;
                 }
             }
             if (reeavluateWithLessJoin) {
                 //reset expression
-                expression = ((DefaultCompiledExpression) expression0).copy();
-                config = new ExpressionCompilerConfig();
-                config.setExpandEntityFilter(true);
-                config.setExpandFieldFilter(defaultFieldFilter);
-                config.setExpandFields(true);
-                config.setValidate(true);
-                hints.put(QueryHints.FETCH_STRATEGY, "select");
+                config = new ExpressionCompilerConfig()
+                        .setExpandEntityFilter(true)
+                        .setExpandFieldFilter(defaultFieldFilter)
+                        .setExpandFields(true)
+                        .setValidate(true);
+
+                hints.put(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
                 config.setHints(hints);
-                compiledExpression = (DefaultCompiledExpression) context.getPersistenceUnit().getExpressionManager().compileExpression(expression, config);
+                compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(baseExpression, config);
                 reeavluateWithLessJoin = false;
                 for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                     CompiledSelect cs = (CompiledSelect) ce;
                     if (cs.getJoins().length >= maxJoinCount) {
-                        log.warning("this query is very likely to fail. It still uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :"+expression);
+                        log.warning("this query is very likely to fail. It still uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :" + statement);
                         reeavluateWithLessJoin = true;
                         break;
                     }
@@ -804,16 +901,22 @@ public class DefaultPersistenceStore implements PersistenceStore {
             }
         }
 
-        Boolean noTypeTransformO = (Boolean)hints.get(QueryHints.NO_TYPE_TRANSFORM);
-        boolean noTypeTransform = noTypeTransformO==null?false:noTypeTransformO;
+        Boolean noTypeTransformO = (Boolean) hints.get(QueryHints.NO_TYPE_TRANSFORM);
+        boolean noTypeTransform = noTypeTransformO == null ? false : noTypeTransformO;
 
         NativeField[] ne = null;
-        if (expression instanceof CompiledQueryStatement) {
-            CompiledQueryStatement cquery = (CompiledQueryStatement) expression;
+        if (compiledExpression instanceof CompiledQueryStatement) {
+            CompiledQueryStatement cquery = (CompiledQueryStatement) compiledExpression;
             ne = new NativeField[cquery.countFields()];
             for (int i = 0; i < ne.length; i++) {
                 CompiledQueryField field = cquery.getField(i);
+//                String fieldAlias = field.getAliasBinding();
                 net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression expression1 = field.getExpression();
+                String binding = field.getBinding();
+//                if(binding==null){
+//                    binding=field.getAlias();
+//                }
+                String exprString = expression1.toString();
                 String validName = field.getName() != null ? field.getName() : expression1.toString();
                 if (validName == null) {
                     validName = "#" + i;
@@ -825,8 +928,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
                     throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
                 }
                 Field f = null;
-                String binding = field.getBinding();
-
                 if (expression1 instanceof CompiledVar) {
                     CompiledVar v = (CompiledVar) expression1;
                     CompiledVarOrMethod leaf = v.getDeepChild();
@@ -835,37 +936,21 @@ public class DefaultPersistenceStore implements PersistenceStore {
                         f = (Field) referrer;
                         c = UPAUtils.getTypeTransformOrIdentity(f);
                     }
-//                    prefix = v.getParent() == null ? null : v.getParent().getName();
-//                    if (prefix == null) {
-//                        if (cquery instanceof CompiledSelect) {
-//                            CompiledSelect s = (CompiledSelect) cquery;
-//                            prefix = ((s.getEntity() instanceof CompiledEntityName) ? ((CompiledEntityName) (s.getEntity())).getName() : null);
-//                        } else if (cquery instanceof CompiledUnion) {
-//                            throw new IllegalArgumentException("Unsupported");
-//                        }
-//                    }
-//                    Object referrer = v.getReferrer();
-//                    if (referrer instanceof Field) {
-//                        f = (Field) referrer;
-//                    } else {
-//                        if (prefix != null) {
-//                            f = context.getPersistenceUnit().getEntity(prefix).getField(v.getName(), false);
-//                        }
-//                    }
                 }
                 if (c == null) {
                     c = tc;
                 }
-                    boolean fieldNoTypeTransform=noTypeTransform;
-                    if (!noTypeTransform) {
-                        if(f!=null) {
-                            String fieldKey = QueryHints.NO_TYPE_TRANSFORM+"." + f.getAbsoluteName();
-                            fieldNoTypeTransform = (Boolean)(hints.get(fieldKey)==null?false:hints.get(fieldKey));
-                        }
+                boolean fieldNoTypeTransform = noTypeTransform;
+                if (!noTypeTransform) {
+                    if (f != null) {
+                        String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + f.getAbsoluteName();
+                        fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
                     }
-                    DataTypeTransform baseTransform = c;
-                    c = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
-                ne[i] = new NativeField(validName, binding, f, c);
+                }
+                DataTypeTransform baseTransform = c;
+                c = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
+//                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
+                ne[i] = new NativeField(validName, binding, exprString, field.getIndex(), field.isExpanded(), f, c);
             }
         } else {
             ne = new NativeField[0];
@@ -888,40 +973,36 @@ public class DefaultPersistenceStore implements PersistenceStore {
                     objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 }
             }
-            boolean fieldNoTypeTransform=noTypeTransform;
-            if(ei.getReferrer() instanceof Field) {
+            boolean fieldNoTypeTransform = noTypeTransform;
+            if (ei.getReferrer() instanceof Field) {
                 if (!noTypeTransform) {
                     Field field = (Field) ei.getReferrer();
-                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM+"." + field.getAbsoluteName();
-                    fieldNoTypeTransform = (Boolean)(hints.get(fieldKey)==null?false:hints.get(fieldKey));
+                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + field.getAbsoluteName();
+                    fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
                 }
             }
             DataTypeTransform baseTransform = ei.getTypeTransform();
-            DataTypeTransform preferedTransform = fieldNoTypeTransform? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()):baseTransform;
+            DataTypeTransform preferedTransform = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
 
             values.add(new DefaultParameter(e.getName(), objectValue, preferedTransform));
         }
-        NativeSQL nativeSQL = new DefaultNativeSQL(context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE,hints);
-        nativeSQL.setPersistenceStore(this);
-        UConnection connection = context.getConnection();
-        nativeSQL.addNativeStatement(new ReturnStatement(query, values, context.getGeneratedValues(),context.getHints()));
-        nativeSQL.setQuery(query);
-        nativeSQL.setFields(ne);
-        nativeSQL.setConnection(connection);
-        nativeSQL.setMarshallManager(this.getMarshallManager());
-        return nativeSQL;
+        return new DefaultQueryExecutor(
+                context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE,
+                hints, query, values, context.getGeneratedValues()
+                , this, context.getConnection(), ne, updatable, m
+        );
     }
 
     //    @Override
-//    public NativeSQL nativeSQL(String query) throws SQLException {
+//    public QueryExecutor queryExecutor(String query) throws SQLException {
 //        //query = validateFunctions(query);
 //        HashMap context = new HashMap(1);
 //        query = getParser().simplify(query, context);
-//        NativeSQL nativeSQL = new DefaultNativeSQL(NativeStatementType.SELECT);
-//        nativeSQL.setPersistenceStore(this);
-//        nativeSQL.addNativeStatement(new ReturnStatement(query));
-//        nativeSQL.setQuery(query);
-//        return nativeSQL;
+//        QueryExecutor queryExecutor = new DefaultQueryExecutor(NativeStatementType.SELECT);
+//        queryExecutor.setPersistenceStore(this);
+//        queryExecutor.addNativeStatement(new ReturnStatement(query));
+//        queryExecutor.setQuery(query);
+//        return queryExecutor;
 //    }
 //    public boolean warnings(SQLWarning warn)
 //            throws UPAException {
@@ -988,7 +1069,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        EntityExecutionContext context = ((DefaultPersistenceUnit) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND,entityPersistenceContext.getHints());
+        EntityExecutionContext context = ((DefaultPersistenceUnit) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND, entityPersistenceContext.getHints());
         sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (defaultObject == null && !cr.getTargetType().isNullable()) {
             defaultObject = cr.getTargetType().getDefaultValue();
@@ -1049,7 +1130,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             }
         }
 
-        EntityExecutionContext qlContext = ((DefaultPersistenceUnit) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
+        EntityExecutionContext qlContext = ((DefaultPersistenceUnit) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME, executionContext.getHints());
         net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression compiledExpression = (net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(sqlManager.getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
@@ -1102,12 +1183,12 @@ public class DefaultPersistenceStore implements PersistenceStore {
         connection.setProperty("IdentityConstraintsEnabled." + entity.getName(), enable);
         if (enable) {
             String s = getEnableIdentityConstraintsStatement(entity);
-            if (!Strings.isNullOrEmpty(s)) {
+            if (!StringUtils.isNullOrEmpty(s)) {
                 connection.executeNonQuery(s, null, null);
             }
         } else {
             String s = getDisableIdentityConstraintsStatement(entity);
-            if (!Strings.isNullOrEmpty(s)) {
+            if (!StringUtils.isNullOrEmpty(s)) {
                 connection.executeNonQuery(s, null, null);
             }
         }
@@ -1387,58 +1468,14 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
     @Override
     public Query createQuery(Entity entity, EntityStatement query, EntityExecutionContext executionContext) throws UPAException {
-        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        String alias = null;
-        String ent = null;
-        if (query instanceof Select) {
-            Select d = (Select) query;
-            String entityAlias = d.getEntityAlias();
-            EntityName entityName = (d.getEntity() instanceof EntityName) ? ((EntityName) d.getEntity()) : null;
-            if (entityAlias != null) {
-                alias = entityAlias;
-                ent = entityName == null ? null : entityName.getName();
-            } else {
-                ent = entityName == null ? null : entityName.getName();
-                alias = ent;
-            }
-        }
-        if (alias != null) {
-            config.setThisAlias(alias);
-        }
-        config.setExpandEntityFilter(false);
-        config.setExpandFields(false);
-        config.setValidate(false);
-        CompiledEntityStatement compiledExpression = (CompiledEntityStatement) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
-        DefaultQuery q = new DefaultQuery(compiledExpression, entity, executionContext);
+        DefaultQuery q = new DefaultQuery(query, entity, executionContext);
         configureQuery(q, executionContext);
         return q;
     }
 
     @Override
     public Query createQuery(EntityStatement query, EntityExecutionContext executionContext) throws UPAException {
-        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        String alias = null;
-        String ent = null;
-        if (query instanceof Select) {
-            Select d = (Select) query;
-            String entityAlias = d.getEntityAlias();
-            EntityName entityName = (d.getEntity() instanceof EntityName) ? ((EntityName) d.getEntity()) : null;
-            if (entityAlias != null) {
-                alias = entityAlias;
-                ent = entityName == null ? null : entityName.getName();
-            } else {
-                ent = entityName == null ? null : entityName.getName();
-                alias = ent;
-            }
-        }
-        if (alias != null) {
-            config.setThisAlias(alias);
-        }
-        config.setExpandFields(false);
-        config.setExpandEntityFilter(false);
-        config.setValidate(true);
-        CompiledQueryStatement compiledExpression = (CompiledQueryStatement) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
-        DefaultQuery q = new DefaultQuery(compiledExpression, null, executionContext);
+        DefaultQuery q = new DefaultQuery(query, null, executionContext);
         configureQuery(q, executionContext);
         return q;
     }
@@ -1448,131 +1485,112 @@ public class DefaultPersistenceStore implements PersistenceStore {
         q.setLazyListLoadingEnabled(lazyListLoadingEnabled);
     }
 
-    @Override
-    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
-        if (query instanceof Delete) {
-            return executeDelete((Delete) query, executionContext);
-        } else if (query instanceof InsertSelection) {
-            return executeInsertSelection((InsertSelection) query, executionContext);
-        } else if (query instanceof Update) {
-            return executeUpdate((Update) query, executionContext);
-        } else if (query instanceof Insert) {
-            return executeInsert((Insert) query, executionContext);
-        }
-        return defaultExecuteNonQuery(query, executionContext);
-    }
+//    @Override
+//    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
+//        if (query instanceof Delete) {
+//            return executeDelete((Delete) query, executionContext);
+//        } else if (query instanceof InsertSelection) {
+//            return executeInsertSelection((InsertSelection) query, executionContext);
+//        } else if (query instanceof Update) {
+//            return executeUpdate((Update) query, executionContext);
+//        } else if (query instanceof Insert) {
+//            return executeInsert((Insert) query, executionContext);
+//        }
+//        return defaultExecuteNonQuery(query, executionContext);
+//    }
 
-    public int executeUpdate(Update query, EntityExecutionContext executionContext) throws UPAException {
-        if (isUpdateComplexValuesIncludingUpdatedTableSupported) {
-            return defaultExecuteNonQuery(query, executionContext);
-        } else {
-            PersistenceUnit pu = executionContext.getPersistenceUnit();
-            Entity entity = pu.getEntity(query.getEntityName());
-            final String entityName = entity.getName();
-            List<VarVal> complexVals = new ArrayList<VarVal>();
-            for (int i = query.countFields() - 1; i >= 0; i--) {
-                VarVal varVal = query.getVarVal(i);
-                Field field = entity.getField(varVal.getVar().getName());
-
-                String complexSelectKey = COMPLEX_SELECT_MERGE;
-//                String complexSelectString = field.getProperties().getString(complexSelectKey, null);
-                boolean complexSelect = false;
-//                if (complexSelectString == null) {
-                Expression fieldExpression = varVal.getVal();
-                if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported))) {
-                    complexSelect = true;
-                }
-//                    field.getProperties().setString(complexSelectKey, String.valueOf(complexSelect));
-//                } else {
-//                    complexSelect = Boolean.valueOf(complexSelectString);
+//    public int executeUpdate(Update query, EntityExecutionContext executionContext) throws UPAException {
+//        if (isUpdateComplexValuesIncludingUpdatedTableSupported) {
+//            return defaultExecuteNonQuery(query, executionContext);
+//        } else {
+//            PersistenceUnit pu = executionContext.getPersistenceUnit();
+//            Entity entity = pu.getEntity(query.getEntityName());
+//            final String entityName = entity.getName();
+//            List<VarVal> complexVals = new ArrayList<VarVal>();
+//            for (int i = query.countFields() - 1; i >= 0; i--) {
+//                VarVal varVal = query.getVarVal(i);
+//                Field field = entity.getField(varVal.getVar().getName());
+//
+//                String complexSelectKey = COMPLEX_SELECT_MERGE;
+////                String complexSelectString = field.getProperties().getString(complexSelectKey, null);
+//                boolean complexSelect = false;
+////                if (complexSelectString == null) {
+//                Expression fieldExpression = varVal.getVal();
+//                if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported))) {
+//                    complexSelect = true;
 //                }
-                if (complexSelect) {
-                    //complex expression
-                    complexVals.add(varVal);
-                    query.removeFieldAt(i);
-                }
-            }
-            int c1 = 0;
-            int c2 = 0;
-            if (query.countFields() > 0) {
-                c1 = defaultExecuteNonQuery(query, executionContext);
-            }
-            if (complexVals.size() > 0) {
-                Select q = new Select();
-                for (Field primaryField : entity.getPrimaryFields()) {
-                    q.field(primaryField.getName());
-                }
-                String oldAlias = query.getEntityAlias();
-                if (oldAlias == null) {
-                    oldAlias = entity.getName();
-                }
-                boolean replaceThis = !"this".equals(oldAlias);
-                for (VarVal f : complexVals) {
-                    Expression fieldExpression = f.getVal();
-                    if (replaceThis) {
-                        UQLUtils.replaceThisVar(fieldExpression, oldAlias, executionContext.getPersistenceUnit());
-                    }
-                    q.field(fieldExpression, f.getVar().getName());
-                }
-                q.from(entity.getName(), oldAlias);
-                Expression cond = query.getCondition();
-                q.setWhere(cond == null ? null : cond.copy());
-
-                EntityBuilder eb = entity.getBuilder();
-
-                for (Record record : entity.getPersistenceUnit().createQuery(q).getRecordList()) {
-                    Update u2 = new Update();
-                    u2.entity(entityName);
-                    for (VarVal f : complexVals) {
-                        String fname = f.getVar().getName();
-                        u2.set(fname, record.getObject(fname));
-                    }
-                    Expression exprId = eb.objectToIdExpression(record, oldAlias);
-                    u2.where(exprId);
-                    c2 += defaultExecuteNonQuery(u2, executionContext);
-                }
-            }
-            return Math.max(c1, c2);
-        }
-    }
-
-    public int executeInsert(Insert query, EntityExecutionContext executionContext) throws UPAException {
-        return defaultExecuteNonQuery(query, executionContext);
-    }
-
-    public int executeInsertSelection(InsertSelection query, EntityExecutionContext executionContext) throws UPAException {
-        return defaultExecuteNonQuery(query, executionContext);
-    }
-
-    public int executeDelete(Delete query, EntityExecutionContext executionContext) throws UPAException {
-        return defaultExecuteNonQuery(query, executionContext);
-    }
-
-    public int defaultExecuteNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
-        requireTransaction(executionContext);
-        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        String alias = null;
-        String ent = null;
-        String entityAlias = query.getEntityAlias();
-        String entity = query.getEntityName();
-        if (entityAlias != null) {
-            alias = entityAlias;
-            ent = entity;
-        } else {
-            ent = entity;
-            alias = ent;
-        }
-        if (alias != null) {
-            config.setThisAlias(alias);
-        }
-        config.setExpandFields(false);
-        config.setExpandEntityFilter(false);
-        config.setValidate(true);
-        CompiledEntityStatement compiledExpression = (CompiledEntityStatement) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
-        NativeSQL nativeSQL = nativeSQL(compiledExpression, null, executionContext);
-        nativeSQL.execute();
-        return nativeSQL.getResultCount();
-    }
+////                    field.getProperties().setString(complexSelectKey, String.valueOf(complexSelect));
+////                } else {
+////                    complexSelect = Boolean.valueOf(complexSelectString);
+////                }
+//                if (complexSelect) {
+//                    //complex expression
+//                    complexVals.add(varVal);
+//                    query.removeFieldAt(i);
+//                }
+//            }
+//            int c1 = 0;
+//            int c2 = 0;
+//            if (query.countFields() > 0) {
+//                c1 = defaultExecuteNonQuery(query, executionContext);
+//            }
+//            if (complexVals.size() > 0) {
+//                Select q = new Select();
+//                for (Field primaryField : entity.getPrimaryFields()) {
+//                    q.field(primaryField.getName());
+//                }
+//                String oldAlias = query.getEntityAlias();
+//                if (oldAlias == null) {
+//                    oldAlias = entity.getName();
+//                }
+//                boolean replaceThis = !"this".equals(oldAlias);
+//                for (VarVal f : complexVals) {
+//                    Expression fieldExpression = f.getVal();
+//                    if (replaceThis) {
+//                        UQLUtils.replaceThisVar(fieldExpression, oldAlias, executionContext.getPersistenceUnit());
+//                    }
+//                    q.field(fieldExpression, f.getVar().getName());
+//                }
+//                q.from(entity.getName(), oldAlias);
+//                Expression cond = query.getCondition();
+//                q.setWhere(cond == null ? null : cond.copy());
+//
+//                EntityBuilder eb = entity.getBuilder();
+//
+//                for (Record record : entity.getPersistenceUnit().createQuery(q).getRecordList()) {
+//                    Update u2 = new Update();
+//                    u2.entity(entityName);
+//                    for (VarVal f : complexVals) {
+//                        String fname = f.getVar().getName();
+//                        u2.set(fname, record.getObject(fname));
+//                    }
+//                    Expression exprId = eb.objectToIdExpression(record, oldAlias);
+//                    u2.where(exprId);
+//                    c2 += defaultExecuteNonQuery(u2, executionContext);
+//                }
+//            }
+//            return Math.max(c1, c2);
+//        }
+//    }
+//
+//    public int executeInsert(Insert query, EntityExecutionContext executionContext) throws UPAException {
+//        return defaultExecuteNonQuery(query, executionContext);
+//    }
+//
+//    public int executeInsertSelection(InsertSelection query, EntityExecutionContext executionContext) throws UPAException {
+//        return defaultExecuteNonQuery(query, executionContext);
+//    }
+//
+//    public int executeDelete(Delete query, EntityExecutionContext executionContext) throws UPAException {
+//        return defaultExecuteNonQuery(query, executionContext);
+//    }
+//
+//    public int defaultExecuteNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
+//        requireTransaction(executionContext);
+//        QueryExecutor queryExecutor = createExecutor(query, null, executionContext);
+//        queryExecutor.execute();
+//        return queryExecutor.getResultCount();
+//    }
 
     @Override
     public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException {

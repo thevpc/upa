@@ -63,6 +63,9 @@ public class FileType extends LOBType {
         if (value == null) {
             return;
         }
+        if(!(value instanceof FileData)) {
+            throw new ConstraintsException("InvalidCast", name, description, value, maxSize);
+        }
         FileData fileData = ((FileData) value);
         String fileName = fileData.getSourceName();
         if (extensions != null && extensions.length != 0 && fileName != null) {

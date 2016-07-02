@@ -12,7 +12,7 @@ import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.*;
-import net.vpc.upa.impl.uql.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

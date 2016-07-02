@@ -17,7 +17,7 @@ public class DefaultEntityResetOperation implements EntityResetOperation {
             return 0;
         }
         Delete stmt = (new Delete()).from(entity.getName());
-        return context.getPersistenceStore().executeNonQuery(stmt, context);
+        return context.getPersistenceStore().createQuery(stmt, context).executeNonQuery();
     }
 
 }

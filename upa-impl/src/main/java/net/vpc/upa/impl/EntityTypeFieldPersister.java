@@ -23,7 +23,7 @@ public class EntityTypeFieldPersister implements FieldPersister {
     public void prepareFieldForPersist(Field field, Object value, Record userRecord, Record persistentRecord, EntityExecutionContext executionContext, Set<Field> persistNonNullable, Set<Field> persistWithDefaultValue) throws UPAException {
         ManyToOneType e = (ManyToOneType) field.getDataType();
         if (e.isUpdatable()) {
-            Entity masterEntity = executionContext.getPersistenceUnit().getEntity(e.getReferencedEntityName());
+            Entity masterEntity = executionContext.getPersistenceUnit().getEntity(e.getTargetEntityName());
             Key k = null;
             if (value instanceof Record) {
                 k = masterEntity.getBuilder().recordToKey((Record) value);

@@ -228,7 +228,19 @@ public final class Update extends DefaultEntityStatement implements NonQueryStat
                 sb.append(", ");
             }
             sb.append(field);
-            sb.append("=").append(fieldValue);
+            sb.append("=");
+            if(fieldValue instanceof Function
+                    || fieldValue instanceof Param
+                    || fieldValue instanceof Literal
+                    || fieldValue instanceof Var
+                    || fieldValue instanceof Cst
+                    ) {
+                sb.append(fieldValue);
+            }else{
+                sb.append("(");
+                sb.append(fieldValue);
+                sb.append(")");
+            }
         }
         if (getCondition() != null && getCondition().isValid()) {
             sb.append(" Where ").append(getCondition());

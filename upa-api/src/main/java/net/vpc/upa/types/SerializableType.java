@@ -48,4 +48,8 @@ public class SerializableType extends LOBType {
         super(name, platformType, nullable);
     }
 
+    @Override
+    public String toString() {
+        return "SerializableType{"+getPlatformType()+"}";
+    }
 }

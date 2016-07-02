@@ -28,10 +28,10 @@ public class MultiRecordList extends QueryResultLazyList<MultiRecord> {
     private NativeField[] fields;
     private boolean forUpdate;
 
-    public MultiRecordList(NativeSQL nativeSQL, boolean forUpdate) throws SQLException, UPAException {
-        super(nativeSQL);
+    public MultiRecordList(QueryExecutor queryExecutor, boolean forUpdate) throws SQLException, UPAException {
+        super(queryExecutor);
         this.forUpdate = forUpdate;
-        this.fields = nativeSQL.getFields();
+        this.fields = queryExecutor.getFields();
         this.entities = new Entity[this.fields.length];
         this.recordName = new String[this.fields.length];
         this.currentRecords=new HashMap<String, MultiRecordListTracker>();

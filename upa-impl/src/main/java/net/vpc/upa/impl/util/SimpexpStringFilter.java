@@ -22,7 +22,7 @@ public class SimpexpStringFilter implements ObjectFilter<String> {
 
     public SimpexpStringFilter(String patternString, boolean nullIsEmpty, boolean ignoreCase) {
         this.patternString = (nullIsEmpty && patternString == null) ? "" : patternString;
-        this.pattern = this.patternString == null ? null : Pattern.compile(Strings.simpexpToRegexp(patternString), (ignoreCase ? Pattern.CASE_INSENSITIVE : 0));
+        this.pattern = this.patternString == null ? null : Pattern.compile(StringUtils.simpexpToRegexp(patternString), (ignoreCase ? Pattern.CASE_INSENSITIVE : 0));
         this.nullIsEmpty = nullIsEmpty;
         this.ignoreCase = ignoreCase;
     }

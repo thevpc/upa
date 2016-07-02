@@ -97,7 +97,8 @@ public class ListType extends SeriesType implements Cloneable {
     @Override
     public void check(Object value, String name, String description)
             throws ConstraintsException {
-//        super.check(value);
+        super.check(value,name,description);
+        elementType.check(value,name,description);
 //        if (!elements.containsKey(value))
 //            throw new ConstraintsException(MessageFormat.format(DataType.MSG_ILLEGAL_VALUE, new Object[]{
 //                value

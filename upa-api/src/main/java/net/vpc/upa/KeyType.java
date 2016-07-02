@@ -49,8 +49,15 @@ public class KeyType extends StructType {
     private Relationship relationship;
     private Entity entity;
 
+    public KeyType(Entity entity) throws UPAException {
+        this(entity,(Expression) null,true);
+    }
     public KeyType(Entity entity, String filter, boolean nullable) throws UPAException {
         this(entity, filter == null ? null : new UserExpression(filter), nullable);
+    }
+
+    public KeyType(Entity entity, boolean nullable) throws UPAException {
+        this(entity,(Expression) null,nullable);
     }
 
     public KeyType(Entity entity, Expression filter, boolean nullable) throws UPAException {

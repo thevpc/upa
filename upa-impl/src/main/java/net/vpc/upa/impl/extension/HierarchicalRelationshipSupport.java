@@ -2,6 +2,7 @@ package net.vpc.upa.impl.extension;
 
 import java.util.ArrayList;
 
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -12,7 +13,6 @@ import java.util.List;
 import net.vpc.upa.extensions.HierarchyExtension;
 
 import net.vpc.upa.filters.Fields;
-import net.vpc.upa.impl.util.Strings;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -305,13 +305,13 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
     public Expression createFindEntityByMainPathExpression(String mainFieldPath, String entityAlias) {
         Entity entity = getEntity();
         RelationshipRole detailRole = getTreeRelationship().getSourceRole();
-        if (Strings.isNullOrEmpty(mainFieldPath)) {
+        if (StringUtils.isNullOrEmpty(mainFieldPath)) {
             return null;
         }
         String mainFieldName = entity.getMainField().getName();
         Object mainFieldValue = null;
         Object parent = null;
-        String[] parentAndName = Strings.split(mainFieldPath, getHierarchyPathSeparator().charAt(0), false);
+        String[] parentAndName = StringUtils.split(mainFieldPath, getHierarchyPathSeparator().charAt(0), false);
         if (parentAndName != null) {
             parent = findEntityByMainPath(parentAndName[0]);
             mainFieldValue = parentAndName[1];

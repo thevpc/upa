@@ -20,7 +20,7 @@ public class DefaultEntityRemoveOperation implements EntityRemoveOperation {
             return 0;
         }
         Delete stmt = (new Delete()).from(entity.getName()).where(condition);
-        return context.getPersistenceStore().executeNonQuery(stmt, context);
+        return context.getPersistenceStore().createQuery(stmt, context).executeNonQuery();
     }
 
     public Query createQuery(Entity e, Delete query, EntityExecutionContext context) throws UPAException {

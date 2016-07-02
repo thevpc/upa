@@ -23,11 +23,11 @@ public class McKoiPersistenceStore extends DefaultPersistenceStore {
 
 
 //    @Override
-//    public NativeSQL nativeSQL(CompiledExpression expression, ExecutionContext qlContext, Map<String,DataType> generatedKeys)throws UPAException{
+//    public QueryExecutor createExecutor(CompiledExpression expression, ExecutionContext qlContext, Map<String,DataType> generatedKeys)throws UPAException{
 ////        HashMap context = new HashMap(3);
 ////        String query = getSQL(expression, qlContext);
 ////        query = getParser().simplify(query, context);
-//        NativeSQL nativeSQL = new DefaultNativeSQL(NativeStatementType.SELECT);
+//        QueryExecutor createExecutor = new DefaultQueryExecutor(NativeStatementType.SELECT);
 //        if(expression instanceof CompiledInsertSelection){
 //
 //        }
@@ -41,9 +41,9 @@ public class McKoiPersistenceStore extends DefaultPersistenceStore {
 //            });
 //            SQLToken t = SQLToken.findForwardToken(query.toUpperCase(), token.getEnd(), "SELECT", 2, 0, false);
 //            if (t == null) {
-//                nativeSQL.addNativeStatement(new ReturnStatement(query, values,generatedKeys));
+//                createExecutor.addNativeStatement(new ReturnStatement(query, values,generatedKeys));
 //            } else {
-//                nativeSQL.addNativeStatement(new InsertIntoSelectNativeStatement(query, values));
+//                createExecutor.addNativeStatement(new InsertIntoSelectNativeStatement(query, values));
 //            }
 //        } else {
 //            List<Param> values = ExpressionUtils.findExpressionsList(expression, new ExpressionFilter() {
@@ -52,12 +52,12 @@ public class McKoiPersistenceStore extends DefaultPersistenceStore {
 //                    return e instanceof Param;
 //                }
 //            });
-//            nativeSQL.addNativeStatement(new ReturnStatement(simplifyQuery(query, 0, query.length(), nativeSQL), values,generatedKeys));
+//            createExecutor.addNativeStatement(new ReturnStatement(simplifyQuery(query, 0, query.length(), createExecutor), values,generatedKeys));
 //        }
-//        return nativeSQL;
+//        return createExecutor;
 //    }
 //
-//    public static String simplifyQuery(String query, int startIndex, int endIndex, NativeSQL nativeSQL) {
+//    public static String simplifyQuery(String query, int startIndex, int endIndex, QueryExecutor createExecutor) {
 //        StringBuffer sb = new StringBuffer();
 //        for (int index = startIndex; index >= startIndex && index < endIndex; ) {
 //            SQLToken t = SQLToken.getForewardTokenAt(query, index, true);
@@ -67,7 +67,7 @@ public class McKoiPersistenceStore extends DefaultPersistenceStore {
 //            }
 //            if (t.accept(SQLToken.PAR)) {
 //                sb.append('(');
-//                sb.append(simplifyQuery(query, t.getStart() + 1, t.getEnd() - 1, nativeSQL));
+//                sb.append(simplifyQuery(query, t.getStart() + 1, t.getEnd() - 1, createExecutor));
 //                sb.append(')');
 //                index = t.getEnd();
 //            } else {
@@ -105,7 +105,7 @@ public class McKoiPersistenceStore extends DefaultPersistenceStore {
 //            } while (nextToken != null || previousToken != null);
 //            if (isVar) {
 //                String computation = "VAR" + UUID.randomUUID();
-//                nativeSQL.addNativeStatement(new ComputeStatement(computation, sb.toString(), null));
+//                createExecutor.addNativeStatement(new ComputeStatement(computation, sb.toString(), null));
 //                return '{' + computation + '}';
 //            }
 //            returned = sb.toString();

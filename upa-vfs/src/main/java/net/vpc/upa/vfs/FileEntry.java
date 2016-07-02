@@ -6,12 +6,7 @@
 package net.vpc.upa.vfs;
 
 import net.vpc.upa.UserFieldModifier;
-import net.vpc.upa.config.Entity;
-import net.vpc.upa.config.Field;
-import net.vpc.upa.config.Hierarchy;
-import net.vpc.upa.config.Id;
-import net.vpc.upa.config.ManyToOne;
-import net.vpc.upa.config.Path;
+import net.vpc.upa.config.*;
 import net.vpc.upa.types.DateTime;
 import net.vpc.common.vfs.VFileType;
 
@@ -25,18 +20,18 @@ public class FileEntry {
 
     @Id
     private Integer id;
-    @Field(modifiers = UserFieldModifier.MAIN)
+    @Main
     private String name;
     private String path;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     private String parentPath;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     private VFileType type;
     @Hierarchy
     private FileEntry parent;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     private long length;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     private DateTime lastModifed;
     @ManyToOne(targetEntity = "FileContent")
     private Integer contentId;

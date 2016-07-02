@@ -37,8 +37,12 @@ package net.vpc.upa.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.EntityStatement;
+import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.DataType;
+
+import java.util.List;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -46,15 +50,8 @@ import net.vpc.upa.types.DataType;
  */
 public interface ResultMetaData {
 
-    public int getFieldsCount() throws UPAException;
+    public EntityStatement getStatement() ;
 
-    public String getFieldName(int index) throws UPAException;
+    public List<ResultField> getFields() ;
 
-    public DataType getFieldType(int index) throws UPAException;
-
-    public DataTypeTransform getFieldTransform(int index) throws UPAException;
-
-    public Field getField(int index) throws UPAException;
-
-    public Entity getEntity(int index) throws UPAException;
 }

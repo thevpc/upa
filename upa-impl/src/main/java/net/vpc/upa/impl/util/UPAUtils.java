@@ -1,7 +1,9 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.Closeable;
@@ -630,4 +632,24 @@ public class UPAUtils {
         return t;
     }
 
+    public static String dotConcat(String ... all){
+        StringBuilder sb=new StringBuilder();
+        for (String s : all) {
+            if(!StringUtils.isNullOrEmpty(s)){
+                if(sb.length()>0){
+                    sb.append(".");
+                }
+                sb.append(s);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String getValidBinding(ResultField s){
+        if(StringUtils.isNullOrEmpty(s.getAlias())){
+            Expression ss = s.getExpression();
+            return ss==null?"":ss.toString();
+        }
+        return s.getAlias();
+    }
 }

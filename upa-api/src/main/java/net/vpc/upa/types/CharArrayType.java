@@ -69,6 +69,8 @@ public class CharArrayType extends LOBType {
             if (getMaxSize() > 0 && getMaxSize() < ((Character[]) value).length) {
                 throw new ConstraintsException("ArraySizeTooShort", name, description, value, maxSize);
             }
+        }else{
+            throw new ConstraintsException("InvalidCast", name, description, value, maxSize);
         }
     }
 

@@ -63,7 +63,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
             if ((field.getDataType() instanceof ManyToOneType)) {
                 ManyToOneType e = (ManyToOneType) field.getDataType();
                 if (e.isUpdatable()) {
-                    Entity masterEntity = pu.getEntity(e.getReferencedEntityName());
+                    Entity masterEntity = pu.getEntity(e.getTargetEntityName());
                     Key k = null;
                     if (value instanceof Record) {
                         k = masterEntity.getBuilder().recordToKey((Record) value);
@@ -81,7 +81,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 insert.set(key, valueExpression);
             }
         }
-        context.getPersistenceStore().executeNonQuery(insert, context);
+        context.getPersistenceStore().createQuery(insert, context).executeNonQuery();
     }
 
     public Query createQuery(Entity e, Insert query, EntityExecutionContext context) throws UPAException {

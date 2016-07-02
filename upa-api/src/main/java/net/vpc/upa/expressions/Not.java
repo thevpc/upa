@@ -37,7 +37,7 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Not extends DefaultExpression
+public final class Not extends OperatorExpression
         implements Cloneable {
 
     private static final DefaultTag EXPR = new DefaultTag("EXPR");

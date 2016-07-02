@@ -33,7 +33,7 @@ public class ThisRenamerVisitor implements ExpressionVisitor {
             Expression cce = cc.getExpression();
             if (cce != null) {
                 if (cce instanceof UserExpression) {
-                    Expression rr = expressionManager.parseExpression(((UserExpression) cce).getExpression());
+                    Expression rr = expressionManager.parseExpression((UserExpression) cce);
                     rr.visit(this);
                     expression.setChild(rr, cc.getTag());
                 } else if (cce instanceof Var) {

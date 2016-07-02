@@ -8,8 +8,8 @@
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upa-api.version>1.2.0.23</upa-api.version>
-        <upa-impl.version>1.2.0.23.0</upa-impl.version>
+        <upa-api.version>1.2.0.24</upa-api.version>
+        <upa-impl.version>1.2.0.24.0</upa-impl.version>
         <upa-web.version>1.0.0.0.6</upa-web.version>
     </properties>
     <modules>

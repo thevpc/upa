@@ -10,34 +10,34 @@ import net.vpc.upa.persistence.QueryResultParser;
  * @creationdate 11/21/12 4:09 PM
  */
 public abstract class QueryResultLazyList<R>  extends LazyList<R> implements QueryResultParser<R> {
-    NativeSQL nativeSQL;
+    QueryExecutor queryExecutor;
     private CloseListener closeListener;
 
-    protected QueryResultLazyList(NativeSQL _nativeSQL) {
+    protected QueryResultLazyList(QueryExecutor _queryExecutor) {
         super(null);
-        this.nativeSQL = _nativeSQL;
-        this.base = new QueryResultReader<R>(nativeSQL.getQueryResult(),this);
+        this.queryExecutor = _queryExecutor;
+        this.base = new QueryResultReader<R>(queryExecutor.getQueryResult(),this);
 
         closeListener = new CloseListenerImpl(this);
 
-        nativeSQL.getConnection().addCloseListener(closeListener);
+        queryExecutor.getConnection().addCloseListener(closeListener);
     }
 
     @Override
     protected void loadingFinished() {
-        nativeSQL.getQueryResult().close();
-        nativeSQL.getConnection().removeCloseListener(closeListener);
+        queryExecutor.getQueryResult().close();
+        queryExecutor.getConnection().removeCloseListener(closeListener);
     }
 
     @PortabilityHint(target = "C#",name = "ignore")
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        nativeSQL.getQueryResult().close();
+        queryExecutor.getQueryResult().close();
     }
 
-    public NativeSQL getNativeSQL() {
-        return nativeSQL;
+    public QueryExecutor getQueryExecutor() {
+        return queryExecutor;
     }
 
     public void loadAll(){

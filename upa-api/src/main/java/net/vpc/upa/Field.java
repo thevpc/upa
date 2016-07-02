@@ -174,4 +174,6 @@ public interface Field extends EntityPart {
     public Object getMainValue(Object instance);
 
     public void setValue(Object instance, Object value);
+
+    public void check(Object value);
 }

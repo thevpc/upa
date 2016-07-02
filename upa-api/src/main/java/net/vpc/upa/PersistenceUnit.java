@@ -639,4 +639,17 @@ public interface PersistenceUnit extends Closeable {
     public void invokePrivileged(VoidAction action) ;
     
     public Comparator<Entity> getDependencyComparator() ;
+
+    public <T> T copyObject(T r);
+    public <T> T copyObject(String entityName,T r);
+    public <T> T copyObject(Class entityType,T r);
+
+    public boolean isEmpty(String entityName) ;
+
+    public boolean isEmpty(Class entityType) ;
+
+    public long getEntityCount(String entityName) ;
+
+    public long getEntityCount(Class entityType) ;
+
 }

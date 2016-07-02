@@ -12,7 +12,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 
 /**
  * AbstractParameters is an abstract implementation of the Parameters interface
@@ -268,7 +268,7 @@ public abstract class AbstractProperties implements Properties {
         if (key == null || !(key instanceof String)) {
             return key;
         }
-        final List<String> vars = Strings.parseVarsList(key);
+        final List<String> vars = StringUtils.parseVarsList(key);
         switch (vars.size()) {
             case 0: {
                 return key;

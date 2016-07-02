@@ -49,9 +49,9 @@
 //        return handledInstance.getCatalog();
 //    }
 //
-//    public String nativeSQL(String param_1)
+//    public String queryExecutor(String param_1)
 //            throws SQLException {
-//        return handledInstance.nativeSQL(param_1);
+//        return handledInstance.queryExecutor(param_1);
 //    }
 //
 //    public CallableStatement prepareCall(String param_1)

@@ -6,7 +6,7 @@ package net.vpc.upa.impl.transform;
 
 import java.security.MessageDigest;
 import net.vpc.upa.PasswordStrategy;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 
 /**
  *
@@ -40,7 +40,7 @@ public class DefaultPasswordStrategy implements PasswordStrategy {
             /**@PortabilityHint(target = "C#", name = "suppress")*/
             hash = md.digest(bytesOfMessage);
             /**@PortabilityHint(target = "C#", name = "suppress")*/
-            return Strings.toHexString(hash);
+            return StringUtils.toHexString(hash);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

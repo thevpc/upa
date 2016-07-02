@@ -8,7 +8,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.util.CastConverter;
 import net.vpc.upa.impl.util.ConvertedList;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -280,7 +280,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             Field field = getEntity().getField(key);
             if (!field.isUnspecifiedValue(value)) {
                 Expression e = null;
-                Var p = new Var(Strings.isNullOrEmpty(alias) ? getEntity().getName() : alias);
+                Var p = new Var(StringUtils.isNullOrEmpty(alias) ? getEntity().getName() : alias);
                 switch (field.getSearchOperator()) {
                     case DEFAULT:
                     case EQ: {

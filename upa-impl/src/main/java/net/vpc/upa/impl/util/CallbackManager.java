@@ -27,7 +27,7 @@ public class CallbackManager {
             trackSystemObjects = (Boolean) conf.get("trackSystemObjects");
         }
         nameFilter = conf==null ?null : (String) conf.get("nameFilter");
-        if (Strings.isNullOrEmpty(nameFilter)) {
+        if (StringUtils.isNullOrEmpty(nameFilter)) {
             nameFilter = null;
         }
         if (fireBefore) {
@@ -81,7 +81,7 @@ public class CallbackManager {
             }
             nameFilter = (String) conf.get("nameFilter");
         }
-        if (Strings.isNullOrEmpty(nameFilter)) {
+        if (StringUtils.isNullOrEmpty(nameFilter)) {
             nameFilter = null;
         }
 

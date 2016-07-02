@@ -83,6 +83,10 @@ public class ByteType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof Byte)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
+
         if (getMin() != null && ((Byte) value).compareTo(getMin()) < 0) {
             throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
         }

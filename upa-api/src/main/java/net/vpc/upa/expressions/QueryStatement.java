@@ -34,13 +34,17 @@
  */
 package net.vpc.upa.expressions;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 12:29 AM To change
  * this template use File | Settings | File Templates.
  */
-public interface QueryStatement extends EntityStatement {
+public interface QueryStatement extends EntityStatement,NameOrQuery {
 
     public int countFields();
 
     public QueryField getField(int i);
+
+    public List<QueryField> getFields();
 }

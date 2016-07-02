@@ -37,7 +37,7 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class UnaryOperatorExpression extends DefaultExpression
+public abstract class UnaryOperatorExpression extends OperatorExpression
         implements Cloneable {
     private static final DefaultTag EXPR = new DefaultTag("Expr");
     private static final long serialVersionUID = 1L;

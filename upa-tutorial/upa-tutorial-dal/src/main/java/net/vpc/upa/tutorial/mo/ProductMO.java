@@ -23,7 +23,7 @@ public class ProductMO {
     @Field(min = "3",modifiers = UserFieldModifier.MAIN)
     FieldDesc name;
 
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     FieldDesc quantity;
 
     //add new field

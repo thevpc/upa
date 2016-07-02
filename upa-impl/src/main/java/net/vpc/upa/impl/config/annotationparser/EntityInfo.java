@@ -6,7 +6,7 @@ import net.vpc.upa.extensions.EntityExtensionDefinition;
 import java.util.*;
 
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -147,7 +147,7 @@ class EntityInfo implements EntityDescriptor {
     }
 
     public void addIndex(String name, List<String> fields, boolean unique, int configOrder) {
-        if (Strings.isNullOrEmpty(name)) {
+        if (StringUtils.isNullOrEmpty(name)) {
             IndexInfo i = new IndexInfo();
             i.setName(null);
             i.getUnique().setBetterValue(unique, configOrder);

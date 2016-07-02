@@ -39,7 +39,7 @@ import net.vpc.upa.Relationship;
 
 public class ManyToOneType extends DefaultDataType implements Cloneable {
 
-    private String referencedEntityName;
+    private String targetEntityName;
     private Relationship relationship;
     private boolean updatable;
 
@@ -47,25 +47,33 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
 //        super(name, platformType);
 //        this.updatable = updatable;
 //    }
+    public ManyToOneType(Class entityType, String entityName, boolean nullable) {
+        this(null,entityType, entityName, true, nullable);
+    }
+
+    public ManyToOneType(Class entityType, boolean nullable) {
+        this(null,entityType, entityType.getSimpleName(), true, nullable);
+    }
+
     public ManyToOneType(String typeName, Class entityType, String entityName, boolean updatable, boolean nullable) {
         super(typeName, entityType, nullable);
         this.updatable = updatable;
-        this.referencedEntityName=entityName;
+        this.targetEntityName =entityName;
     }
 
-    public String getReferencedEntityName() {
-        return referencedEntityName;
+    public String getTargetEntityName() {
+        return targetEntityName;
     }
 
-    public void setReferencedEntityName(String referencedEntityName) {
-        this.referencedEntityName = referencedEntityName;
+    public void setTargetEntityName(String targetEntityName) {
+        this.targetEntityName = targetEntityName;
     }
 
     public Relationship getRelationship() {
         return relationship;
     }
 
-    public Entity getReferencedType() {
+    public Entity getTargetEntity() {
         return getRelationship().getTargetRole().getEntity();
     }
 
@@ -86,9 +94,9 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
     public String toString() {
         String n = getPlatformType() == null ? null : getPlatformType().getName();
         if (n == null) {
-            n = getReferencedEntityName();
-        } else if (getReferencedEntityName() != null) {
-            n = n + ":" + getReferencedEntityName();
+            n = getTargetEntityName();
+        } else if (getTargetEntityName() != null) {
+            n = n + ":" + getTargetEntityName();
         }
         return "ManyToOneType{" + n + ", updatable=" + updatable + '}';
     }

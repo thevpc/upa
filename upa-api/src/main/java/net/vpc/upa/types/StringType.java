@@ -64,6 +64,9 @@ public class StringType extends DefaultDataType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof String)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         String sval = (String) value;
         if (getMin() >= 0 && sval.length() < getMin()) {
             throw new ConstraintsException("StringTooShort", name, description, value, min);

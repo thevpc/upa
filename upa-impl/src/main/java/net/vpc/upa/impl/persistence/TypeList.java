@@ -13,9 +13,9 @@ public class TypeList<T> extends QueryResultLazyList<T> {
     private BeanType beanType;
     private String[] fields;
     private String[] fieldsByExpression;
-    public TypeList(NativeSQL nativeSQL, Class<T> entity, String[] fields) throws SQLException {
-        super(nativeSQL);
-        NativeField[] expressions = nativeSQL.getFields();
+    public TypeList(QueryExecutor queryExecutor, Class<T> entity, String[] fields) throws SQLException {
+        super(queryExecutor);
+        NativeField[] expressions = queryExecutor.getFields();
         this.fields = fields;
         beanType = PlatformBeanTypeRepository.getInstance().getBeanType(entity);
         if(fields==null || fields.length==0){

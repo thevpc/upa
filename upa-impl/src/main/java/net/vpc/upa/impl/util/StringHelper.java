@@ -24,7 +24,7 @@ public class StringHelper {
         this.trim=trim;
     }
     public String format(String s){
-        if(Strings.isUndefined(s)){
+        if(StringUtils.isUndefined(s)){
             return undefinedValue;
         }
         if(s==null){

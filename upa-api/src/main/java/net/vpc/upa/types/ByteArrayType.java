@@ -72,6 +72,8 @@ public class ByteArrayType extends LOBType {
             if (getMaxSize() > 0 && getMaxSize() < ((Byte[]) value).length) {
                 throw new ConstraintsException("FileSizeTooSmall", name, description, value, maxSize);
             }
+        }else{
+            throw new ConstraintsException("InvalidCast", name, description, value, maxSize);
         }
     }
 

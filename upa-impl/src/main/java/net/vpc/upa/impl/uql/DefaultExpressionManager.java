@@ -16,10 +16,11 @@ import net.vpc.upa.ExpressionManager;
 import net.vpc.upa.FunctionDefinition;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Function;
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.*;
+import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
 
 /**
@@ -31,12 +32,14 @@ public class DefaultExpressionManager implements ExpressionManager {
     private PersistenceUnit persistenceUnit;
     private ExpressionTranslationManager translationManager;
     private ExpressionValidationManager validationManager;
+    private ExpressionMetadataBuilder expressionMetadataBuilder;
     private HashMap<String, FunctionDefinition> qlFunctionMap = new HashMap<String, FunctionDefinition>();
 
     public DefaultExpressionManager(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
         translationManager = new ExpressionTranslationManager(this, persistenceUnit);
         validationManager = new ExpressionValidationManager(persistenceUnit);
+        expressionMetadataBuilder = new ExpressionMetadataBuilder(this,persistenceUnit);
     }
 
     public ExpressionTranslationManager getTranslationManager() {
@@ -47,6 +50,14 @@ public class DefaultExpressionManager implements ExpressionManager {
         return validationManager;
     }
 
+    public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) {
+        return expressionMetadataBuilder.createResultMetaData(baseExpression, fieldFilter);
+    }
+    public Expression parseExpression(final UserExpression expression) {
+        Expression expr = parseExpression(expression.getExpression());
+        expr.visit(new UserExpressionToExpressionVisitor(expression));
+        return expr;
+    }
     public Expression parseExpression(String expression) {
         UQLParser p = new UQLParser(new StringReader(expression));
         try {
@@ -97,7 +108,7 @@ public class DefaultExpressionManager implements ExpressionManager {
     public void removeFunction(String name) {
         name = persistenceUnit.getNamingStrategy().getUniformValue(name);
         if (!qlFunctionMap.containsKey(name)) {
-            throw new IllegalArgumentException("No Such QLFunction " + name);
+            throw new IllegalArgumentException("No Such Function " + name);
         }
         qlFunctionMap.remove(name);
     }
@@ -131,4 +142,5 @@ public class DefaultExpressionManager implements ExpressionManager {
     public PersistenceUnit getPersistenceUnit() {
         return persistenceUnit;
     }
+
 }

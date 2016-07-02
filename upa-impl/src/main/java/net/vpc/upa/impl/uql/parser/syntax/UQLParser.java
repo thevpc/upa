@@ -13,7 +13,7 @@ public class UQLParser implements UQLParserConstants {
     }
     String s=t.image;
     if(s.startsWith("`")){
-        return Strings.unescapeString(s.substring(1,s.length()-1));
+        return StringUtils.unescapeString(s.substring(1, s.length() - 1));
     }else{
       return s;
     }
@@ -21,7 +21,7 @@ public class UQLParser implements UQLParserConstants {
 
   private String getStringLiteral(Token t){
     String s=t.image;
-    return Strings.unescapeString(s.substring(1,s.length()-1));
+    return StringUtils.unescapeString(s.substring(1, s.length() - 1));
   }
 
   final public Expression Any() throws ParseException {
@@ -395,7 +395,7 @@ public class UQLParser implements UQLParserConstants {
       ;
     }
         {if (true) return new JoinCriteria(type,
-            (fromToken !=null)? (NameOrSelect)new EntityName(getIdentifierName(fromToken)):(NameOrSelect)fromSelect,
+            (fromToken !=null)? (NameOrQuery)new EntityName(getIdentifierName(fromToken)):(NameOrQuery)fromSelect,
             getIdentifierName(fromAlias),
             condition
         );}

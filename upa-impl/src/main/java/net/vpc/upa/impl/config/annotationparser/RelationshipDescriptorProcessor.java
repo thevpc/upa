@@ -15,7 +15,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
 
@@ -46,10 +46,10 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 
     public void process() {
         if (!processRelation(false)) {
-            if (!Strings.isNullOrEmpty(relationDescriptor.getSourceEntity())) {
+            if (!StringUtils.isNullOrEmpty(relationDescriptor.getSourceEntity())) {
                 persistenceUnit.addDefinitionListener(relationDescriptor.getSourceEntity(), this, true);
             }
-            if (!Strings.isNullOrEmpty(relationDescriptor.getTargetEntity())) {
+            if (!StringUtils.isNullOrEmpty(relationDescriptor.getTargetEntity())) {
                 persistenceUnit.addDefinitionListener(relationDescriptor.getTargetEntity(), this, true);
             }
             if (relationDescriptor.getSourceEntityType() != null) {
@@ -157,8 +157,8 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             DataType baseFieldType = baseField.getDataType();
             if (baseFieldType instanceof ManyToOneType) {
                 ManyToOneType et = (ManyToOneType) baseFieldType;
-                if (et.getReferencedEntityName() == null || et.getReferencedEntityName().isEmpty()) {
-                    et.setReferencedEntityName(masterEntity.getName());
+                if (et.getTargetEntityName() == null || et.getTargetEntityName().isEmpty()) {
+                    et.setTargetEntityName(masterEntity.getName());
                 }
                 detailUpdateType = RelationshipUpdateType.COMPOSED;
                 List<Field> masterPK = masterEntity.getPrimaryFields();
@@ -298,7 +298,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 //                ));
 //            }
         } else {
-            if (!Strings.isNullOrEmpty(relationDescriptor.getName())) {
+            if (!StringUtils.isNullOrEmpty(relationDescriptor.getName())) {
                 relation.setName(relationDescriptor.getName());
             }
             relation.setRelationshipType(relationDescriptor.getRelationshipType() == null ? RelationshipType.DEFAULT : relationDescriptor.getRelationshipType());
@@ -432,4 +432,43 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 
     }
 
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public RelationshipDescriptor getRelationDescriptor() {
+        return relationDescriptor;
+    }
+
+    public Entity getDetailEntity() {
+        return detailEntity;
+    }
+
+    public Entity getMasterEntity() {
+        return masterEntity;
+    }
+
+    public Relationship getRelation() {
+        return relation;
+    }
+
+    public Field getManyToOneField() {
+        return manyToOneField;
+    }
+
+    public RelationshipUpdateType getDetailUpdateType() {
+        return detailUpdateType;
+    }
+
+    public List<String> getDetailFieldNames() {
+        return detailFieldNames;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public Expression getFilter() {
+        return filter;
+    }
 }

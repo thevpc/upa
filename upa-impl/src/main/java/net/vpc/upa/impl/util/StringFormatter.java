@@ -47,14 +47,14 @@ class StringFormatter implements Formatter {
         if (remaining < 0)
             switch (position) {
                 case RIGTH_ALIGN: // '\001'
-                    return Strings.substring(string, remaining);
+                    return StringUtils.substring(string, remaining);
 
                 case CENTER_ALIGN: // '\002'
-                    return string = Strings.substring(string, remaining / 2, width + remaining / 2);
+                    return string = StringUtils.substring(string, remaining / 2, width + remaining / 2);
 
                 case LEFT_ALIGN: // '\0'
                 default:
-                    return Strings.substring(string, 0, remaining);
+                    return StringUtils.substring(string, 0, remaining);
             }
         char[] left;
         char[] rigth;

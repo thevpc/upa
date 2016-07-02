@@ -87,6 +87,9 @@ public class DateType extends TemporalType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof Date)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && getMin().compareTo((java.util.Date) value) > 0) {
             throw new ConstraintsException("DateTooEarly", name, description, value, min);
         }

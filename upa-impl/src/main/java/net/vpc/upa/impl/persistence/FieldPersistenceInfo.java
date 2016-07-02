@@ -7,7 +7,7 @@ import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.UserExpression;
-import net.vpc.upa.impl.uql.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;

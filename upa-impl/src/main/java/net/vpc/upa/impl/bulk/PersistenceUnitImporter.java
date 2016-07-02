@@ -228,7 +228,7 @@ public class PersistenceUnitImporter {
         for (Field field : entity.getFields()) {
             if (field.getDataType() instanceof ManyToOneType) {
                 ManyToOneType g = (ManyToOneType) field.getDataType();
-                Entity rr = target.getEntity(g.getReferencedEntityName());
+                Entity rr = target.getEntity(g.getTargetEntityName());
                 Object v2 = bb.getProperty(instance, field.getName());
                 if (v2 != null) {
                     t.put(field.getName(), new Obj(rr.getName(), v2));

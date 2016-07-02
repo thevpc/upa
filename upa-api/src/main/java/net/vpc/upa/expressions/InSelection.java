@@ -37,7 +37,7 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class InSelection extends DefaultExpression
+public final class InSelection extends OperatorExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;

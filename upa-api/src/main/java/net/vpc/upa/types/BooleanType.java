@@ -50,6 +50,14 @@ public class BooleanType extends SeriesType implements Cloneable {
     }
 
     @Override
+    public void check(Object value, String name, String description) throws ConstraintsException {
+        super.check(value, name, description);
+        if(!(value instanceof Boolean)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
+    }
+
+    @Override
     public List<Object> getValues() {
         List<Object> list = new ArrayList<Object>();
         list.add(Boolean.TRUE);

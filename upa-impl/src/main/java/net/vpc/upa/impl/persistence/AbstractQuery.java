@@ -29,6 +29,24 @@ public abstract class AbstractQuery implements Query {
     }
 
     @Override
+    public Integer getInteger() throws UPAException {
+        Number n = (Number) getSingleValue();
+        return n==null?null:n.intValue();
+    }
+
+    @Override
+    public Long getLong() throws UPAException {
+        Number n = (Number) getSingleValue();
+        return n==null?null:n.longValue();
+    }
+
+    @Override
+    public Double getDouble() throws UPAException {
+        Number n = (Number) getSingleValue();
+        return n==null?null:n.doubleValue();
+    }
+
+    @Override
     public String getString() throws UPAException {
         return (String) getSingleValue();
     }
@@ -143,5 +161,4 @@ public abstract class AbstractQuery implements Query {
         this.updatable = forUpdate;
     }
 
-    public abstract Entity getDefaultEntity();
 }

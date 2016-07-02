@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.*;
 import net.vpc.upa.persistence.PersistenceNameType;
@@ -12,7 +11,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.PersistenceName;
 import net.vpc.upa.persistence.PersistenceNameStrategy;
 import net.vpc.upa.persistence.PersistenceNameConfig;
@@ -47,7 +46,7 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
             modelMap.put("PERSISTENCE_NAME_ESCAPE", model.getPersistenceNameEscape());
             if (model.getNames() != null) {
                 for (PersistenceName persistenceName : model.getNames()) {
-                    if (Strings.isNullOrEmpty(persistenceName.getObject())) {
+                    if (StringUtils.isNullOrEmpty(persistenceName.getObject())) {
                         modelMap.put(persistenceName.getPersistenceNameType().name(), persistenceName.getValue());
                     } else {
                         modelMap.put(persistenceName.getPersistenceNameType().name() + ":" + persistenceName.getObject(), persistenceName.getValue());
@@ -161,10 +160,10 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
 
     private String getParamValue(String confPrefix, String name, Properties parameters) {
         String v = modelMap.get(name);
-        if (Strings.isNullOrEmpty(v)) {
+        if (StringUtils.isNullOrEmpty(v)) {
             v = parameters.getString(confPrefix + name);
         }
-        if (!Strings.isNullOrEmpty(v)) {
+        if (!StringUtils.isNullOrEmpty(v)) {
             return v;
         }
         return null;

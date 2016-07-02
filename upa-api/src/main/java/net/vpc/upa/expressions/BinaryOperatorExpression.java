@@ -37,7 +37,7 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BinaryOperatorExpression extends DefaultExpression implements Cloneable {
+public abstract class BinaryOperatorExpression extends OperatorExpression implements Cloneable {
 
     private static final DefaultTag LEFT = new DefaultTag("Left");
     private static final DefaultTag RIGHT = new DefaultTag("Right");

@@ -1,7 +1,9 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.impl.util.Strings;
-import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.expressions.*;
+import net.vpc.upa.impl.persistence.result.*;
+import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.FindException;
@@ -11,20 +13,12 @@ import net.vpc.upa.impl.IdToKeyConverter;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.ConvertedList;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.Query;
-import net.vpc.upa.persistence.QueryResult;
-import net.vpc.upa.persistence.ResultMetaData;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.filters.Fields;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.uql.CompiledExpressionHelper;
-import net.vpc.upa.impl.uql.DecObjectType;
-import net.vpc.upa.impl.uql.ExpressionDeclaration;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:14 PM To change
@@ -34,11 +28,11 @@ public class DefaultQuery extends AbstractQuery {
 
     private static final Logger log = Logger.getLogger(DefaultQuery.class.getName());
     private EntityExecutionContext context;
-    private Entity defaultEntity;
-    private CompiledEntityStatement query;
-    private DefaultResultMetaData metadata;
+//    private Entity defaultEntity;
+//    private CompiledEntityStatement cquery;
+    private EntityStatement query;
     private QueryResult result;
-//    private NativeSQL nativeSQL;
+//    private QueryExecutor queryExecutor;
     private DefaultPersistenceStore store;
     private boolean lazyListLoadingEnabled = true;
     private Map<String, Object> hints = new HashMap<String, Object>();
@@ -49,7 +43,7 @@ public class DefaultQuery extends AbstractQuery {
                     FieldModifier.SELECT_LIVE)).andNot(Fields.byAllAccessLevel(AccessLevel.PRIVATE));
 
     private List<Object> allResults = new ArrayList<Object>();
-    private Map<String, NativeSQL> precompiledNativeSQLMap = new HashMap<String, NativeSQL>();
+    private QueryExecutor lastQueryExecutor = null;
     private DefaultQuery sessionAwareInstance;
     private Map<String, Object> parametersByName ;
     private Map<Integer, Object> parametersByIndex ;
@@ -58,10 +52,39 @@ public class DefaultQuery extends AbstractQuery {
     protected DefaultQuery() {
     }
 
-    public DefaultQuery(CompiledEntityStatement query, Entity defaultEntity, EntityExecutionContext context) {
+//    public DefaultQuery(CompiledEntityStatement query, Entity defaultEntity, EntityExecutionContext context) {
+//        this.context = context;
+//        this.cquery = (CompiledEntityStatement) query.copy();
+//        this.defaultEntity = defaultEntity;
+//        store = (DefaultPersistenceStore) context.getPersistenceStore();
+//    }
+
+    public DefaultQuery(EntityStatement query, Entity defaultEntity, EntityExecutionContext context) {
+        this.query=query;
+        if(defaultEntity!=null) {
+            if (query instanceof Select) {
+                Select select = (Select) query;
+                if (select.getEntity() == null) {
+                    select.from(defaultEntity.getName());
+                }
+            } else if (query instanceof Insert) {
+                if (((Insert) query).getEntity() == null) {
+                    ((Insert) query).into(defaultEntity.getName());
+                }
+            } else if (query instanceof Update) {
+                if (((Update) query).getEntity() == null) {
+                    ((Update) query).entity(defaultEntity.getName());
+                }
+            } else if (query instanceof Delete) {
+                if (((Delete) query).getEntity() == null) {
+                    ((Delete) query).from(defaultEntity.getName());
+                }
+            }
+        }
+
         this.context = context;
-        this.query = (CompiledEntityStatement) query.copy();
-        this.defaultEntity = defaultEntity;
+//        this.cquery = (CompiledEntityStatement) query.copy();
+//        this.defaultEntity = defaultEntity;
         store = (DefaultPersistenceStore) context.getPersistenceStore();
     }
 
@@ -73,73 +96,38 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.executeNonQuery();
         }
         //
-        NativeSQL nativeSQL = createNativeSQL(null, null);
-        DefaultResultMetaData m = new DefaultResultMetaData();
-        m.addField("result", IdentityDataTypeTransform.INT, null);
-        this.metadata = m;
-        nativeSQL.execute();
-        return nativeSQL.getResultCount();
+        QueryExecutor queryExecutor = createNativeSQL(null);
+        return queryExecutor.execute().getResultCount();
     }
 
-    protected String resolveAliasName() {
-        String aliasName = null;
-        if (query instanceof CompiledUnion) {
-            List<CompiledQueryStatement> queryStatements = ((CompiledUnion) query).getQueryStatements();
-            if (queryStatements.isEmpty()) {
-                throw new IllegalArgumentException("Empty Union");
-            }
-            List<ExpressionDeclaration> declarations = queryStatements.get(0).getExportedDeclarations();
-            for (ExpressionDeclaration d : declarations) {
-                if (d.getReferrerType() == DecObjectType.ENTITY) {
-                    aliasName = d.getValidName();
-                    break;
-                }
-            }
-        } else { // select
-            List<ExpressionDeclaration> declarations = query.getExportedDeclarations();
-            for (ExpressionDeclaration d : declarations) {
-                if (d.getReferrerType() == DecObjectType.ENTITY) {
-                    aliasName = d.getValidName();
-                    break;
-                }
+    protected CompiledEntityStatement createCompiledEntityStatement(){
+        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
+        String alias = null;
+        String ent = null;
+        if (query instanceof Select) {
+            Select d = (Select) query;
+            String entityAlias = d.getEntityAlias();
+            EntityName entityName = (d.getEntity() instanceof EntityName) ? ((EntityName) d.getEntity()) : null;
+            if (entityAlias != null) {
+                alias = entityAlias;
+                ent = entityName == null ? null : entityName.getName();
+            } else {
+                ent = entityName == null ? null : entityName.getName();
+                alias = ent;
             }
         }
-        return aliasName;
+        if (alias != null) {
+            config.setThisAlias(alias);
+        }
+        config.setExpandFields(false);
+        config.setExpandEntityFilter(false);
+        config.setValidate(false);
+        return (CompiledEntityStatement) context.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
     }
 
     @Override
     public <R2> List<R2> getEntityList() throws UPAException {
-        if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
-            if (sessionAwareInstance == null) {
-                sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
-            }
-            return sessionAwareInstance.getEntityList();
-        }
-        try {
-            String aliasName = resolveAliasName();
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            String fetchStrategy=(String) nativeSQL.getHints().get(QueryHints.FETCH_STRATEGY);
-            if(Strings.isNullOrEmpty(fetchStrategy)){
-                fetchStrategy="join";
-            }
-            QueryResultLazyList<R2> r=null;
-            if("select".equals(fetchStrategy)) {
-                r = new SingleEntityQueryResultSelectFetchStrategy<R2>(nativeSQL, aliasName);
-            }else if("join".equals(fetchStrategy)){
-                r = new SingleEntityQueryResultJoinFetchStrategy<R2>(nativeSQL, aliasName);
-            }else {
-                log.log(Level.WARNING, "Ignored "+QueryHints.FETCH_STRATEGY+" '"+fetchStrategy+"' possible values are {join,select}");
-                r = new SingleEntityQueryResultJoinFetchStrategy<R2>(nativeSQL, aliasName);
-            }
-            allResults.add(r);
-            if (!isLazyListLoadingEnabled()) {
-                //force loading
-                r.loadAll();
-            }
-            return r;
-        } catch (Exception e) {
-            throw new FindException(e, new I18NString("FindFailed"));
-        }
+        return getResultList();
     }
 
     @Override
@@ -151,8 +139,8 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getMultiRecordList();
         }
         try {
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            MultiRecordList r = new MultiRecordList(nativeSQL, isUpdatable());
+            QueryExecutor queryExecutor = executeQuery(READABLE);
+            MultiRecordList r = new MultiRecordList(queryExecutor, isUpdatable());
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -173,10 +161,10 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.isEmpty();
         }
         try {
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
+            QueryExecutor queryExecutor = executeQuery(READABLE);
             QueryResult r = null;
             try {
-                r = nativeSQL.getQueryResult();
+                r = queryExecutor.getQueryResult();
                 return !r.hasNext();
             } finally {
                 if (r != null) {
@@ -188,31 +176,53 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
-    @Override
-    public List<Record> getRecordList() throws UPAException {
+    public <T> List<T> getResultList() throws UPAException {
+        return getResultList(new ObjectOrArrayQueryResultItemBuilder());
+    }
+
+    public <T> Set<T> getResultSet() throws UPAException {
+        HashSet<T> set = new HashSet<T>();
+        set.addAll(this.<T>getResultList(new ObjectOrArrayQueryResultItemBuilder()));
+        return set;
+    }
+
+    public <T> List<T> getResultList(QueryResultItemBuilder builder) throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
                 sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
             }
-            return sessionAwareInstance.getRecordList();
+            return sessionAwareInstance.getResultList(builder);
         }
         try {
-            String aliasName = resolveAliasName();
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            String fetchStrategy=(String) nativeSQL.getHints().get(QueryHints.FETCH_STRATEGY);
-            if(Strings.isNullOrEmpty(fetchStrategy)){
-                fetchStrategy="join";
+            QueryExecutor queryExecutor = executeQuery(READABLE);
+            QueryFetchStrategy fetchStrategy=(QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
+            if(fetchStrategy==null){
+                fetchStrategy=QueryFetchStrategy.JOIN;
             }
-            QueryResultLazyList<Record> r=null;
-            if("select".equals(fetchStrategy)) {
-                r = new RecordQueryResultSelectFetchStrategy(nativeSQL, aliasName);
-            }else if("join".equals(fetchStrategy)){
-                r = new RecordQueryResultJoinFetchStrategy(nativeSQL, aliasName);
-            }else {
-                log.log(Level.WARNING, "Ignored "+QueryHints.FETCH_STRATEGY+" '"+fetchStrategy+"' possible values are {join,select}");
-                r = new RecordQueryResultJoinFetchStrategy(nativeSQL, aliasName);
+            boolean itemAsRecord=builder instanceof RecordQueryResultItemBuilder;
+            boolean relationAsRecord=false;
+            boolean supportCache=false;
+            QueryResultRelationLoader loader=null;
+            switch (fetchStrategy){
+                case JOIN:{
+                    break;
+                }
+                case SELECT:{
+                    supportCache=true;
+                    loader=new QueryRelationLoaderSelectObject();
+                    break;
+                }
             }
-
+            QueryResultLazyList<T> r=new DefaultObjectQueryResultLazyList<T>(
+                    queryExecutor,
+                    fetchStrategy!=QueryFetchStrategy.JOIN,
+                    itemAsRecord,
+                    relationAsRecord,
+                    supportCache,
+                    isUpdatable(),
+                    loader,
+                    builder
+            );
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -224,6 +234,12 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
+
+    @Override
+    public List<Record> getRecordList() throws UPAException {
+        return getResultList(new RecordQueryResultItemBuilder());
+    }
+
     @Override
     public <T> List<T> getValueList(int index) throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
@@ -233,11 +249,11 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(index);
         }
         try {
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            if (index < 0 || index > nativeSQL.getFields().length) {
+            QueryExecutor queryExecutor = executeQuery(READABLE);
+            if (index < 0 || index > queryExecutor.getMetaData().getFields().size()) {
                 throw new ArrayIndexOutOfBoundsException("Invalid index " + index);
             }
-            ValueList<T> r = new ValueList<T>(nativeSQL, index);
+            ValueList<T> r = new ValueList<T>(queryExecutor, index);
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -272,11 +288,11 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(name);
         }
         try {
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            NativeField[] ne = nativeSQL.getFields();
+            QueryExecutor queryExecutor = executeQuery(READABLE);
+            List<ResultField> ne = queryExecutor.getMetaData().getFields();
             int index = -1;
-            for (int i = 0; i < ne.length; i++) {
-                if (name.equals(ne[i].getName())) {
+            for (int i = 0; i < ne.size(); i++) {
+                if (name.equals(ne.get(i).getAlias())) {
                     index = i;
                     break;
                 }
@@ -284,7 +300,7 @@ public class DefaultQuery extends AbstractQuery {
             if (index < 0) {
                 throw new NoSuchElementException("Field " + name + " not found");
             }
-            ValueList<T> r = new ValueList<T>(nativeSQL, index);
+            ValueList<T> r = new ValueList<T>(queryExecutor, index);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
                 r.loadAll();
@@ -304,8 +320,8 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getTypeList(type, fields);
         }
         try {
-            NativeSQL nativeSQL = executeQuery("READABLE", READABLE);
-            TypeList<T> r = new TypeList<T>(nativeSQL, type, fields);
+            QueryExecutor queryExecutor = executeQuery(READABLE);
+            TypeList<T> r = new TypeList<T>(queryExecutor, type, fields);
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -332,11 +348,24 @@ public class DefaultQuery extends AbstractQuery {
             }
             return sessionAwareInstance.getKeyList();
         }
-        ConvertedList<Object, Key> r = new ConvertedList<Object, Key>(getIdList(), new IdToKeyConverter<Object>(defaultEntity));
-        allResults.add(r);
-        return r;
+        if((query instanceof QueryStatement)) {
+            Entity entity = resolveDefaultEntity();
+            if (entity != null) {
+                ConvertedList<Object, Key> r = new ConvertedList<Object, Key>(getIdList(), new IdToKeyConverter<Object>(entity));
+                allResults.add(r);
+                return r;
+            }
+        }
+        throw new FindException(new I18NString("InvalidQuery"));
     }
-
+    private Entity resolveDefaultEntity(){
+        String[] a = UQLUtils.resolveEntityAndAlias((QueryStatement) query);
+        Entity entity = null;
+        if (a != null) {
+            entity = context.getPersistenceUnit().getEntity(a[0]);
+        }
+        return entity;
+    }
     @Override
     public <K2> List<K2> getIdList() throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
@@ -346,43 +375,23 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getIdList();
         }
         try {
-            Entity entity = null;
-            if (query instanceof CompiledUnion) {
-                List<CompiledQueryStatement> queryStatements = ((CompiledUnion) query).getQueryStatements();
-                if (queryStatements.isEmpty()) {
-                    throw new IllegalArgumentException("Empty Union");
-                }
-                List<ExpressionDeclaration> declarations = queryStatements.get(0).getExportedDeclarations();
-                for (ExpressionDeclaration d : declarations) {
-                    if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        entity = context.getPersistenceUnit().getEntity((String) d.getReferrerName());
-                        break;
+            if((query instanceof QueryStatement)) {
+                Entity entity = resolveDefaultEntity();
+                if(entity!=null){
+                    QueryExecutor queryExecutor = executeQuery(ID);
+                    SingleEntityKeyList<K2> r = new SingleEntityKeyList<K2>(queryExecutor, entity);
+                    allResults.add(r);
+                    if (!isLazyListLoadingEnabled()) {
+                        //force loading
+                        r.loadAll();
                     }
-                }
-            } else { // select
-                List<ExpressionDeclaration> declarations = query.getExportedDeclarations();
-                for (ExpressionDeclaration d : declarations) {
-                    if (d.getReferrerType() == DecObjectType.ENTITY) {
-                        entity = context.getPersistenceUnit().getEntity((String) d.getReferrerName());
-                        break;
-                    }
+                    return r;
                 }
             }
-
-            if (entity == null) {
-                entity = getDefaultEntity();
-            }
-            NativeSQL nativeSQL = executeQuery("ID", ID);
-            SingleEntityKeyList<K2> r = new SingleEntityKeyList<K2>(nativeSQL, entity);
-            allResults.add(r);
-            if (!isLazyListLoadingEnabled()) {
-                //force loading
-                r.loadAll();
-            }
-            return r;
         } catch (Exception e) {
             throw new FindException(e, new I18NString("FindFailed"));
         }
+        throw new FindException(new I18NString("InvalidQuery"));
     }
 
     @Override
@@ -399,37 +408,26 @@ public class DefaultQuery extends AbstractQuery {
         return set;
     }
 
-    public Entity getDefaultEntity() {
-        if (defaultEntity == null) {
-            throw new IllegalArgumentException("No Default Entity is associated to this Find Query");
-        }
-        return defaultEntity;
-    }
-
-    protected NativeSQL executeQuery(String filteredKey, FieldFilter fieldFilter) {
+    protected QueryExecutor executeQuery(FieldFilter fieldFilter) {
 //        if (result != null) {
 //            throw new FindException("QueryAlreadyExecutedException");
 //        }
-        NativeSQL nativeSQL = createNativeSQL(filteredKey, fieldFilter);
-        DefaultResultMetaData m = new DefaultResultMetaData();
-        for (NativeField x : nativeSQL.getFields()) {
-            m.addField(x.getName(), x.getTypeTransform(), x.getField());
-        }
-        this.metadata = m;
-        nativeSQL.setUpdatable(isUpdatable());
-        nativeSQL.execute();
-        result = nativeSQL.getQueryResult();
-        return nativeSQL;
+        QueryExecutor queryExecutor = createNativeSQL(fieldFilter);
+//        DefaultResultMetaData m = new DefaultResultMetaData();
+//        for (NativeField x : queryExecutor.getFields()) {
+//            m.addField(x.getName(), x.getTypeTransform(), x.getField());
+//        }
+//        this.metadata = m;
+        queryExecutor.execute();
+        result = queryExecutor.getQueryResult();
+        return queryExecutor;
     }
 
-    protected NativeSQL createNativeSQL(String key, FieldFilter fieldFilter) {
-        applyParameters();
-        NativeSQL s = precompiledNativeSQLMap.get(key);
-        if (s == null) {
-            s = store.nativeSQL(query, fieldFilter, context.setHints(getHints()));
-            precompiledNativeSQLMap.put(key, s);
-        }
-        return s;
+    protected QueryExecutor createNativeSQL(FieldFilter fieldFilter) {
+//        applyParameters();
+        lastQueryExecutor =store.createExecutor(query, parametersByName, parametersByIndex, isUpdatable(), fieldFilter, context.setHints(getHints()));
+        EntityStatement statement = lastQueryExecutor.getMetaData().getStatement();
+        return lastQueryExecutor;
     }
 
 //        CompiledNamedExpression[] ne = new CompiledNamedExpression[query.countFields()];
@@ -475,41 +473,43 @@ public class DefaultQuery extends AbstractQuery {
         return this;
     }
 
-
-    private Query applyParameters() {
-        if (parametersByName != null) {
-            for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {
-                String name = entry.getKey();
-                Object value = entry.getValue();
-
-                List<CompiledParam> params = query.findExpressionsList(new CompiledParamFilter(name));
-                if (params.isEmpty()) {
-                    throw new IllegalArgumentException("Parameter not found " + name);
-                }
-                for (CompiledParam p : params) {
-                    p.setValue(value);
-                    p.setUnspecified(false);
-                }
-            }
-        }
-        if(parametersByIndex!=null && !parametersByIndex.isEmpty()) {
-            List<CompiledParam> params = query.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
-            for (Map.Entry<Integer, Object> entry : parametersByIndex.entrySet()) {
-                Integer index = entry.getKey();
-                Object value = entry.getValue();
-                if (params.size() <= index) {
-                    throw new IllegalArgumentException("Parameter not found " + index);
-                }
-                CompiledParam p = params.get(index);
-                if (p == null) {
-                    throw new IllegalArgumentException("Parameter not found " + index);
-                }
-                p.setValue(value);
-                p.setUnspecified(false);
-            }
-        }
-        return this;
-    }
+//
+//    private Query applyParameters() {
+//        if (parametersByName != null) {
+//            for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {
+//                String name = entry.getKey();
+//                Object value = entry.getValue();
+//
+//                List<Expression> params = query.findAll(ExpressionFilterFactory.forParam(name));
+//                if (params.isEmpty()) {
+//                    params=query.findAll(ExpressionFilterFactory.forParam(name));
+//                    throw new IllegalArgumentException("Parameter not found " + name);
+//                }
+//                for (Expression e : params) {
+//                    Param p=(Param) e;
+//                    p.setValue(value);
+//                    p.setUnspecified(false);
+//                }
+//            }
+//        }
+//        if(parametersByIndex!=null && !parametersByIndex.isEmpty()) {
+//            List<Expression> params = query.findAll(ExpressionFilterFactory.PARAM_FILTER);
+//            for (Map.Entry<Integer, Object> entry : parametersByIndex.entrySet()) {
+//                Integer index = entry.getKey();
+//                Object value = entry.getValue();
+//                if (params.size() <= index) {
+//                    throw new IllegalArgumentException("Parameter not found " + index);
+//                }
+//                Param p = (Param) params.get(index);
+//                if (p == null) {
+//                    throw new IllegalArgumentException("Parameter not found " + index);
+//                }
+//                p.setValue(value);
+//                p.setUnspecified(false);
+//            }
+//        }
+//        return this;
+//    }
 
     @Override
     public Query setParameter(int index, Object value) {
@@ -522,33 +522,10 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public ResultMetaData getMetaData() throws UPAException {
-        if (metadata == null) {
-            DefaultResultMetaData m = new DefaultResultMetaData();
-            CompiledEntityStatement query2 = (CompiledEntityStatement) context.getPersistenceUnit().getExpressionManager().compileExpression(query, new ExpressionCompilerConfig().setValidate(true));
-            if (query2 instanceof CompiledQueryStatement) {
-                final CompiledQueryStatement qs = (CompiledQueryStatement) query2;
-                for (int i = 0; i < qs.countFields(); i++) {
-                    CompiledQueryField field = qs.getField(i);
-
-                    DefaultCompiledExpression expression = field.getExpression();
-                    String validName = field.getName() != null ? field.getName() : expression.toString();
-                    if (validName == null) {
-                        validName = "#" + i;
-                    }
-                    Field f = null;
-                    if (expression instanceof CompiledVar) {
-                        CompiledVar v = (CompiledVar) expression;
-                        CompiledVarOrMethod finest = v.getFinest();
-                        if (finest != null && finest.getReferrer() instanceof Field) {
-                            f = (Field) finest.getReferrer();
-                        }
-                    }
-                    m.addField(validName, expression.getTypeTransform(), f);
-                }
-            }
-            this.metadata = m;
+        if(lastQueryExecutor ==null){
+            throw new UPAException("NoQueryExecutedYet");
         }
-        return metadata;
+        return lastQueryExecutor.getMetaData();
     }
 
     public boolean isLazyListLoadingEnabled() {

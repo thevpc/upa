@@ -19,7 +19,7 @@ public class Customer {
     private int customerId;
     @Field(max = "50", nullable = BoolEnum.TRUE,modifiers = UserFieldModifier.MAIN)
     private String name;
-    @Field(modifiers = UserFieldModifier.SUMMARY)
+    @Summary
     private java.sql.Date birthDate;
 
     public int getCustomerId() {

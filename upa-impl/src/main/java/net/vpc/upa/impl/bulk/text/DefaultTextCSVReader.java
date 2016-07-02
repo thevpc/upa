@@ -18,7 +18,7 @@ import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.TextCSVColumn;
 import net.vpc.upa.bulk.TextCSVParser;
 import net.vpc.upa.impl.bulk.AbstractDataReader;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 
 /**
  *
@@ -36,7 +36,7 @@ public class DefaultTextCSVReader extends AbstractDataReader {
         super(new TextCSVColumn(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]), p.isContainsHeader(), p.getSkipRows());
         this.p = p;
         this.reader = (reader instanceof BufferedReader) ? ((BufferedReader) reader) : new BufferedReader(reader);
-        separators = Strings.isNullOrEmpty(p.getSeparators()) ? new char[]{';'} : p.getSeparators().toCharArray();
+        separators = StringUtils.isNullOrEmpty(p.getSeparators()) ? new char[]{';'} : p.getSeparators().toCharArray();
         prepareHeader();
     }
 

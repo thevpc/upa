@@ -35,8 +35,12 @@
 package net.vpc.upa;
 
 import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.EntityStatement;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.UserExpression;
+import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
 
 import java.util.List;
@@ -47,7 +51,11 @@ import java.util.Set;
  */
 public interface ExpressionManager {
 
+    public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) ;
+
     public Expression parseExpression(String expression);
+
+    public Expression parseExpression(UserExpression expression);
 
     public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
 

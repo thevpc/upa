@@ -1,45 +1,28 @@
 package net.vpc.upa.impl.event;
 
-import net.vpc.upa.callbacks.DefinitionListener;
-import net.vpc.upa.callbacks.SectionDefinitionListener;
-import net.vpc.upa.callbacks.TriggerEvent;
-import net.vpc.upa.callbacks.FieldDefinitionListener;
-import net.vpc.upa.callbacks.FieldEvent;
-import net.vpc.upa.callbacks.PersistenceUnitEvent;
-import net.vpc.upa.callbacks.RelationshipEvent;
-import net.vpc.upa.callbacks.IndexEvent;
-import net.vpc.upa.callbacks.IndexDefinitionListener;
-import net.vpc.upa.callbacks.Trigger;
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.TriggerDefinitionListener;
-import net.vpc.upa.callbacks.SectionEvent;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.PackageDefinitionListener;
-import net.vpc.upa.callbacks.RelationshipDefinitionListener;
-import net.vpc.upa.callbacks.PackageEvent;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
+import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.Init;
 import net.vpc.upa.exceptions.EntityAlreadyExistsException;
 import net.vpc.upa.exceptions.NoSuchEntityException;
 import net.vpc.upa.exceptions.ObjectAlreadyExistsException;
+import net.vpc.upa.expressions.Select;
 import net.vpc.upa.impl.ObjectRegistrationModel;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.config.annotationparser.FieldSerializableOrEntityProcessor;
+import net.vpc.upa.impl.config.annotationparser.RelationshipDescriptorProcessor;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.CallbackManager;
+import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.expressions.Select;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.Strings;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -96,13 +79,13 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 EntityDescriptor entityInfo = entity.getEntityDescriptor();
 
                 String orderByString = entityInfo.getListOrder();
-                if(!Strings.isNullOrEmpty(orderByString)){
-                    Select s = (Select)persistenceUnit.getExpressionManager().parseExpression("Select a from "+entity.getName()+" order by "+orderByString);
+                if (!StringUtils.isNullOrEmpty(orderByString)) {
+                    Select s = (Select) persistenceUnit.getExpressionManager().parseExpression("Select a from " + entity.getName() + " order by " + orderByString);
                     entity.setListOrder(s.getOrder());
                 }
                 orderByString = entityInfo.getArchivingOrder();
-                if(!Strings.isNullOrEmpty(orderByString)){
-                    Select s = (Select)persistenceUnit.getExpressionManager().parseExpression("Select a from "+entity.getName()+" order by "+orderByString);
+                if (!StringUtils.isNullOrEmpty(orderByString)) {
+                    Select s = (Select) persistenceUnit.getExpressionManager().parseExpression("Select a from " + entity.getName() + " order by " + orderByString);
                     entity.setArchivingOrder(s.getOrder());
                 }
                 List<FieldDescriptor> fieldDescriptors = entityInfo.getFieldDescriptors();
@@ -124,7 +107,55 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     }
                 }
                 fireOnInitEntity(entity, position, EventPhase.BEFORE);
-                
+
+                //some fields may be added as ManyToOne without explicit definition of RelationshipDescriptor
+                // must process them accordingly
+                //will first retrieve ManyToOne fields than will add relations for
+                //ones without relation!
+                HashSet<String> initialManyToOneFields = new HashSet<String>();
+                List<Relationship> existing = entity.getPersistenceUnit().getRelationshipsBySource(entity);
+                for (Relationship relationship : existing) {
+                    if (relationship.getSourceRole().getEntityField() != null) {
+                        initialManyToOneFields.add(relationship.getSourceRole().getEntityField().getName());
+                    }
+                }
+                for (PersistenceUnitListener persistenceUnitListener : entity.getPersistenceUnit().getPersistenceUnitListeners()) {
+                    if (persistenceUnitListener instanceof RelationshipDescriptorProcessor) {
+                        RelationshipDescriptorProcessor r = (RelationshipDescriptorProcessor) persistenceUnitListener;
+                        RelationshipDescriptor d = r.getRelationDescriptor();
+                        if (d.getSourceEntity() != null) {
+                            if (d.getSourceEntity().equals(entity.getName())) {
+                                if (d.getBaseField() != null) {
+                                    initialManyToOneFields.add(d.getBaseField());
+                                }
+                            }
+                        } else if (d.getSourceEntityType().equals(entity.getEntityType())) {
+                            if (d.getBaseField() != null) {
+                                initialManyToOneFields.add(d.getBaseField());
+                            }
+                        }
+                    }
+                }
+                for (Field field : entity.getFields()) {
+                    DataType dt = field.getDataType();
+
+                    //check if relationship not already defined
+                    if (dt instanceof ManyToOneType
+                            && ((ManyToOneType) dt).getRelationship() == null) {
+                        if (!initialManyToOneFields.contains(field.getName())) {
+
+                            //no relationship defined!
+                            entity.getPersistenceUnit().addRelationship(
+                                    new DefaultRelationshipDescriptor()
+                                            .setBaseField(field.getName())
+                                            .setNullable(dt.isNullable())
+                                            .setSourceEntity(entity.getName())
+                                            .setTargetEntity(((ManyToOneType) dt).getTargetEntityName())
+                                            .setSourceFields(new String[]{field.getName()})
+                            );
+                        }
+                    }
+                }
                 if (entityInfo.getSource() != null && entityInfo.getSource() != entityInfo) {
                     Class c = entityInfo.getSource().getClass();
                     List<Method> methods = new ArrayList<Method>();
@@ -160,7 +191,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     }
                 }
                 fireOnInitEntity(entity, position, EventPhase.AFTER);
-                
+
             }
         } else if (object instanceof Field) {
             Field field = (Field) object;
@@ -355,7 +386,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             final Entity entity = field.getEntity();
             String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
             boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
-            FieldEvent event = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, toPosition,phase);
+            FieldEvent event = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, toPosition, phase);
             List<FieldDefinitionListener> interceptorList = fields.getAllListeners(system, entity.getName(), entityTypeListenerId);
             if (phase == EventPhase.BEFORE) {
                 for (FieldDefinitionListener listener : interceptorList) {
@@ -378,7 +409,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         } else if (object instanceof Section) {
             Section section = (Section) object;
             Entity entity = section.getEntity();
-            SectionEvent event = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, toPosition,phase);
+            SectionEvent event = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, toPosition, phase);
             String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
             boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
             List<SectionDefinitionListener> interceptorList = sections.getAllListeners(system, section.getName(), entityTypeListenerId);
@@ -402,7 +433,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             }
         } else if (object instanceof Package) {
             Package module = (Package) object;
-            PackageEvent event = new PackageEvent(module, module.getPersistenceUnit(), module.getParent(), position, null, toPosition,phase);
+            PackageEvent event = new PackageEvent(module, module.getPersistenceUnit(), module.getParent(), position, null, toPosition, phase);
             List<PackageDefinitionListener> interceptorList = packages;
             if (phase == EventPhase.BEFORE) {
                 for (PackageDefinitionListener listener : interceptorList) {
@@ -426,7 +457,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnCreateTrigger(Trigger trigger, EventPhase phase) {
-        TriggerEvent evt = new TriggerEvent(trigger, trigger.getEntity(),phase);
+        TriggerEvent evt = new TriggerEvent(trigger, trigger.getEntity(), phase);
         if (phase == EventPhase.BEFORE) {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
                 li.onPreCreateTrigger(evt);
@@ -448,7 +479,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnDropTrigger(Trigger trigger, EventPhase phase) {
-        TriggerEvent evt = new TriggerEvent(trigger, trigger.getEntity(),phase);
+        TriggerEvent evt = new TriggerEvent(trigger, trigger.getEntity(), phase);
         boolean system = trigger.getEntity().getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
@@ -471,7 +502,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnCreateEntity(Entity entity, int position, EventPhase phase) {
-        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1,phase);
+        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
@@ -493,8 +524,9 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             }
         }
     }
+
     protected void fireOnInitEntity(Entity entity, int position, EventPhase phase) {
-        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1,phase);
+        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
@@ -519,7 +551,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 
     protected void fireFieldAdded(Field field, int position, EventPhase phase) {
         final Entity entity = field.getEntity();
-        FieldEvent evt = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, -1,phase);
+        FieldEvent evt = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, -1, phase);
 
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
@@ -544,7 +576,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnCreateIndex(Index index, int position, EventPhase phase) {
-        IndexEvent event = new IndexEvent(index, index.getPersistenceUnit(),phase);
+        IndexEvent event = new IndexEvent(index, index.getPersistenceUnit(), phase);
         Entity entity = index.getEntity();
         String entityTypeListenerId = getEntityTypeListenerId(index.getEntity().getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
@@ -572,7 +604,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         Entity entity = section.getEntity();
         String entityName = section.getEntity().getName();
         String entityTypeId = getEntityTypeListenerId(section.getEntity().getEntityType());
-        SectionEvent event = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, -1,phase);
+        SectionEvent event = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, -1, phase);
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
             for (SectionDefinitionListener listener : sections.getAllListeners(system, entityName, entityTypeId)) {
@@ -600,7 +632,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         List<PackageDefinitionListener> interceptorList = packages;
         if (phase == EventPhase.BEFORE) {
             if (!interceptorList.isEmpty()) {
-                evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1,phase);
+                evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 for (PackageDefinitionListener listener : interceptorList) {
                     listener.onPreCreatePackage(evt);
                 }
@@ -608,7 +640,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             List<Callback> callbackInvokers = getPreCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
             if (!callbackInvokers.isEmpty()) {
                 if (evt == null) {
-                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1,phase);
+                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 }
                 for (Callback callback : callbackInvokers) {
                     callback.invoke(evt);
@@ -616,14 +648,14 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             }
             for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
                 if (evt == null) {
-                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1,phase);
+                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 }
                 callback.prepare(evt);
             }
 
         } else {
             if (!interceptorList.isEmpty()) {
-                evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1,phase);
+                evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 for (PackageDefinitionListener listener : interceptorList) {
                     listener.onCreatePackage(evt);
                 }
@@ -631,7 +663,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             List<Callback> callbackInvokers = getPostCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
             if (!callbackInvokers.isEmpty()) {
                 if (evt == null) {
-                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1,phase);
+                    evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 }
                 for (Callback callback : callbackInvokers) {
                     callback.invoke(evt);
@@ -642,7 +674,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 
     protected void fireOnCreateRelationship(Relationship relation, int position, EventPhase phase) {
         if (phase == EventPhase.BEFORE) {
-            RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(),phase);
+            RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(), phase);
             List<RelationshipDefinitionListener> interceptorList = getRelationshipListeners(relation.getSourceRole().getEntity().getName(), relation.getTargetRole().getEntity().getName());
             for (RelationshipDefinitionListener listener : interceptorList) {
                 listener.onPreCreateRelationship(evt);
@@ -654,7 +686,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 callback.prepare(evt);
             }
         } else {
-            RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(),phase);
+            RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(), phase);
             List<RelationshipDefinitionListener> interceptorList = getRelationshipListeners(relation.getSourceRole().getEntity().getName(), relation.getTargetRole().getEntity().getName());
             for (RelationshipDefinitionListener listener : interceptorList) {
                 listener.onCreateRelationship(evt);
@@ -666,7 +698,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnDropEntity(Entity entity, int position, EventPhase phase) {
-        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1,phase);
+        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
@@ -691,7 +723,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 
     protected void fireFieldRemoved(Field field, int position, EventPhase phase) {
         final Entity entity = field.getEntity();
-        FieldEvent evt = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, -1,phase);
+        FieldEvent evt = new FieldEvent(field, field.getPersistenceUnit(), entity, field.getParent(), position, null, -1, phase);
         String entityName = entity.getName();
         String entityTypeId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
@@ -716,7 +748,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnDropIndex(Index index, int position, EventPhase phase) {
-        IndexEvent evt = new IndexEvent(index, index.getPersistenceUnit(),phase);
+        IndexEvent evt = new IndexEvent(index, index.getPersistenceUnit(), phase);
         Entity entity = index.getEntity();
         String entityName = index.getEntity().getName();
         String entityTypeId = getEntityTypeListenerId(index.getEntity().getEntityType());
@@ -743,7 +775,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 
     protected void fireOnDropSection(Section section, int position, EventPhase phase) {
         Entity entity = section.getEntity();
-        SectionEvent evt = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, -1,phase);
+        SectionEvent evt = new SectionEvent(section, section.getPersistenceUnit(), entity, (Section) section.getParent(), position, null, -1, phase);
         String entityName = section.getEntity().getName();
         String entityTypeId = getEntityTypeListenerId(section.getEntity().getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
@@ -768,7 +800,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnDropPackage(Package module, int position, EventPhase phase) {
-        PackageEvent evt = new PackageEvent(module, module.getPersistenceUnit(), module.getParent(), position, null, -1,phase);
+        PackageEvent evt = new PackageEvent(module, module.getPersistenceUnit(), module.getParent(), position, null, -1, phase);
         List<PackageDefinitionListener> interceptorList = packages;
         if (phase == EventPhase.BEFORE) {
             for (PackageDefinitionListener listener : interceptorList) {
@@ -791,7 +823,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     protected void fireOnDropRelationship(Relationship relation, int position, EventPhase phase) {
-        RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(),phase);
+        RelationshipEvent evt = new RelationshipEvent(relation, relation.getPersistenceUnit(), phase);
         if (phase == EventPhase.BEFORE) {
             for (RelationshipDefinitionListener listener : getRelationshipListeners(relation.getSourceRole().getEntity().getName(), relation.getTargetRole().getEntity().getName())) {
                 listener.onPreDropRelationship(evt);
@@ -935,7 +967,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnStorageChanged(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreStorageChanged(event);
@@ -954,7 +986,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnClear(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreClear(event);
@@ -976,7 +1008,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnClose(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreClose(event);
@@ -998,7 +1030,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnReset(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreReset(event);
@@ -1020,7 +1052,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public void fireOnStart(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreStart(event);
@@ -1054,16 +1086,16 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     }
 
     public List<Callback> getPreCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.BEFORE);
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.BEFORE)));
+        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE);
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
         allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
         return allCallbacks;
     }
 
     public List<Callback> getPostCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.AFTER);
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.AFTER)));
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.AFTER)));
+        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER);
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)));
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)));
         return allCallbacks;
     }
 
@@ -1072,22 +1104,22 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         for (Callback callback : callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, true, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
-        for (Callback callback : persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.AFTER)){
+        for (Callback callback : persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
-        for (Callback callback : persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system,false, EventPhase.AFTER)){
+        for (Callback callback : persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
         return callbacks;
     }
 
-    public Callback[] getCurrentCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system,boolean preparedOnly, EventPhase phase) {
-        List<Callback> callbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly,phase);
+    public Callback[] getCurrentCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
+        List<Callback> callbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         return callbacks.toArray(new Callback[callbacks.size()]);
     }
 
     public void fireOnUpdateFormulas(PersistenceUnitEvent event) {
-        EventPhase phase=event.getPhase();
+        EventPhase phase = event.getPhase();
         if (phase == EventPhase.BEFORE) {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreUpdateFormulas(event);

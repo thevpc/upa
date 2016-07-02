@@ -85,6 +85,9 @@ public class BigIntType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof BigInteger)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && ((BigInteger) value).compareTo(getMin()) < 0) {
             throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
         }

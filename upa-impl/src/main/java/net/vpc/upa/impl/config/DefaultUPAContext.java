@@ -23,7 +23,7 @@ import net.vpc.upa.impl.event.UpdateFormulaObjectEventCallback;
 import net.vpc.upa.impl.event.UpdateObjectEventCallback;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.UPAContextConfig;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.types.DataType;
@@ -139,7 +139,7 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     public PersistenceGroup getPersistenceGroup(String name) throws UPAException {
-        if (Strings.isNullOrEmpty(name)) {
+        if (StringUtils.isNullOrEmpty(name)) {
             name = "";
         }
         if (!persistenceGroups.containsKey(name)) {
@@ -149,14 +149,14 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     public boolean containsPersistenceGroup(String name) {
-        if (Strings.isNullOrEmpty(name)) {
+        if (StringUtils.isNullOrEmpty(name)) {
             name = "";
         }
         return persistenceGroups.containsKey(name);
     }
 
     public PersistenceGroup addPersistenceGroup(String name) throws UPAException {
-        if (Strings.isNullOrEmpty(name)) {
+        if (StringUtils.isNullOrEmpty(name)) {
             name = "";
         }
         if (persistenceGroups.containsKey(name)) {

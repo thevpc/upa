@@ -81,6 +81,9 @@ public class LongType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
+        if(!(value instanceof Long)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
         if (getMin() != null && ((Long) value) < getMin()) {
             throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
         }

@@ -14,11 +14,11 @@ public class TreeEntityJoin extends JoinCriteria {
         this(new EntityName(table),var1,expression);
     }
 
-    public TreeEntityJoin(NameOrSelect table, String var1, Expression expression) {
+    public TreeEntityJoin(NameOrQuery table, String var1, Expression expression) {
         this(table, var1,null,expression);
     }
 
-    public TreeEntityJoin(NameOrSelect table, String var1, String var2, Expression expression) {
+    public TreeEntityJoin(NameOrQuery table, String var1, String var2, Expression expression) {
         super(JoinType.INNER_JOIN, table,var1,new TreeEntityJoinCondition(((EntityName)table).getName(),var1,var2==null?var2+"_ancestor":var2,expression));
     }
 //    private static TreeEntityExtension getTreeSpecSupport(Entity entity){

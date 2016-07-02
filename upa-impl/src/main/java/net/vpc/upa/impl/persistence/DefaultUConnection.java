@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.TypesFactory;
 
 /**
@@ -47,7 +47,7 @@ public class DefaultUConnection implements UConnection {
         this.connection = connection;
         this.marshallManager = marshallManager;
         this.support = new CloseListenerSupport();
-        nameDebugString=Strings.isNullOrEmpty(name)?"[]":("["+name+"]");
+        nameDebugString= StringUtils.isNullOrEmpty(name)?"[]":("["+name+"]");
     }
 
     public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException {

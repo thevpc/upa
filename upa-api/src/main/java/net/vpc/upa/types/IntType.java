@@ -81,10 +81,14 @@ public class IntType extends NumberType implements Cloneable {
         if (value == null) {
             return;
         }
-        if (getMin() != null && ((Integer) value) < getMin()) {
+        if(!(value instanceof Integer)) {
+            throw new ConstraintsException("InvalidCast", name, description, value);
+        }
+        Integer castedValue = (Integer) value;
+        if (getMin() != null && castedValue < getMin()) {
             throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
         }
-        if (getMax() != null && ((Integer) value) > getMax()) {
+        if (getMax() != null && castedValue > getMax()) {
             throw new ConstraintsException("NumberTooHigh", name, description, value, getMax());
         }
     }

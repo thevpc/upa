@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //            Expression, Litteral
-public class Between extends DefaultExpression
+public class Between extends OperatorExpression
         implements Cloneable {
 
     private static final DefaultTag LEFT = new DefaultTag("Left");

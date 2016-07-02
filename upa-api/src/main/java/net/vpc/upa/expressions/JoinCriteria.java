@@ -41,7 +41,7 @@ import java.io.Serializable;
 
 public class JoinCriteria implements Serializable, Cloneable {
     private JoinType type;
-    private NameOrSelect entity;
+    private NameOrQuery entity;
     private String alias;
     private Expression condition;
 
@@ -56,11 +56,11 @@ public class JoinCriteria implements Serializable, Cloneable {
         return null;
     }
     
-    public NameOrSelect getEntity() {
+    public NameOrQuery getEntity() {
         return entity;
     }
 
-    public void setEntity(NameOrSelect entity) {
+    public void setEntity(NameOrQuery entity) {
         this.entity = entity;
     }
 
@@ -76,7 +76,7 @@ public class JoinCriteria implements Serializable, Cloneable {
         return condition;
     }
 
-    public JoinCriteria(JoinType type, NameOrSelect entity, String alias, Expression condition) {
+    public JoinCriteria(JoinType type, NameOrQuery entity, String alias, Expression condition) {
         this.type = type;
         this.entity = entity;
         this.alias = alias;

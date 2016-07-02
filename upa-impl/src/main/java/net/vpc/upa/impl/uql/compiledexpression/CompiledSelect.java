@@ -1,9 +1,10 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.QLParameter;
-import net.vpc.upa.expressions.JoinType;
+import net.vpc.upa.expressions.*;
 
 import java.util.*;
+
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.DecObjectType;
@@ -730,13 +731,16 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
                 CompiledQueryField fi = getField(i);
                 DefaultCompiledExpression e = fi.getExpression();
                 valueString = String.valueOf(e);
+                if(!(e instanceof CompiledVar) && !(e instanceof CompiledParam) && !(e instanceof CompiledFunction) && !(e instanceof CompiledLiteral)){
+                    valueString="("+valueString+")";
+                }
                 aliasString = fi.getAlias();
                 if (started) {
                     sb.append(",");
                 } else {
                     started = true;
                 }
-                if (aliasString == null || valueString.equals(aliasString)) {
+                if (aliasString == null/* || valueString.equals(aliasString)*/) {
                     sb.append(valueString);
                 } else {
                     sb.append(valueString);

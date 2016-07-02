@@ -34,7 +34,7 @@ public class ReservedWordsUC {
 
         Business bo = UPA.makeSessionAware(new Business());
         bo.testQuery();
-//        bo.testPrimitiveReferences();
+//        bo.initializeData();
     }
 
     public static class Business {

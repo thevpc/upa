@@ -15,7 +15,7 @@ import java.util.zip.ZipEntry;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.bulk.xml.StackBlockingSAXReaderFactory;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import org.xml.sax.SAXException;
 
 /**
@@ -51,7 +51,7 @@ public class XLSXPackagePart {
     public List<XLSXPackageRel> getRelationships() throws IOException, SAXException, InterruptedException {
         XLSXPackagePart relationshipPart = getRelationshipPart();
         if (relationshipPart != null) {
-            StackBlockingSAXReader reader = StackBlockingSAXReaderFactory.createStackBlockingSAXReader(relationshipPart.getInputStream(), 10, new RelationshipProcessor(null, Strings.split(path, '/', false)[0]));
+            StackBlockingSAXReader reader = StackBlockingSAXReaderFactory.createStackBlockingSAXReader(relationshipPart.getInputStream(), 10, new RelationshipProcessor(null, StringUtils.split(path, '/', false)[0]));
             List<XLSXPackageRel> t = reader.takeList();
             for (XLSXPackageRel r : t) {
                 try {
@@ -70,7 +70,7 @@ public class XLSXPackagePart {
     }
 
     public String getRelationshipPartPath() {
-        String[] f = Strings.split("/" + entry.getName(),'/',false);
+        String[] f = StringUtils.split("/" + entry.getName(), '/', false);
         String p = f[0];
         String n = f[1];
         return p + "/_rels/" + n + ".rels";

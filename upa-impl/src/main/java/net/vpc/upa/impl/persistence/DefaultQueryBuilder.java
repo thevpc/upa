@@ -146,7 +146,7 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return this;
     }
 
-    private Query exec() {
+    private Query build() {
 //        if (query == null) {
         String entityName = entity.getName();
         Select s = (new Select()).from(entityName, entityAlias);
@@ -200,112 +200,139 @@ public final class DefaultQueryBuilder implements QueryBuilder {
 
     @Override
     public Date getDate() throws UPAException {
-        return exec().getDate();
+        return build().getDate();
     }
 
     @Override
     public Boolean getBoolean() throws UPAException {
-        return exec().getBoolean();
+        return build().getBoolean();
+    }
+
+    @Override
+    public Integer getInteger() throws UPAException {
+        return build().getInteger();
+    }
+
+    @Override
+    public Long getLong() throws UPAException {
+        return build().getLong();
+    }
+
+    @Override
+    public Double getDouble() throws UPAException {
+        return null;
     }
 
     @Override
     public String getString() throws UPAException {
-        return exec().getString();
+        return build().getString();
     }
 
     @Override
     public Number getNumber() throws UPAException {
-        return exec().getNumber();
+        return build().getNumber();
     }
 
     @Override
     public Object getSingleValue() throws UPAException {
-        return exec().getString();
+        return build().getString();
     }
 
     @Override
     public Object getSingleValue(Object defaultValue) throws UPAException {
-        return exec().getSingleValue(defaultValue);
+        return build().getSingleValue(defaultValue);
     }
 
     @Override
     public MultiRecord getMultiRecord() throws UPAException {
-        return exec().getMultiRecord();
+        return build().getMultiRecord();
     }
 
     @Override
     public Record getRecord() throws UPAException {
-        return exec().getRecord();
+        return build().getRecord();
     }
 
     @Override
     public <R2> List<R2> getEntityList() throws UPAException {
-        Query exec = exec();
-        return exec.getEntityList();
+        Query q = build();
+        return q.getEntityList();
+    }
+
+    @Override
+    public <R2> List<R2> getResultList() throws UPAException {
+        Query q = build();
+        return q.getResultList();
+    }
+
+    @Override
+    public <T> Set<T> getResultSet() {
+        Query q = build();
+        return q.getResultSet();
     }
 
     @Override
     public <R> R getEntity() throws UPAException {
-        return exec().getEntity();
+        return build().getEntity();
     }
 
     @Override
     public <K> List<K> getIdList() throws UPAException {
-        return exec().getIdList();
+        return build().getIdList();
     }
 
     @Override
     public List<Key> getKeyList() throws UPAException {
-        return exec().getKeyList();
+        return build().getKeyList();
     }
 
     @Override
     public List<MultiRecord> getMultiRecordList() throws UPAException {
-        return exec().getMultiRecordList();
+        return build().getMultiRecordList();
     }
 
     @Override
     public List<Record> getRecordList() throws UPAException {
-        return exec().getRecordList();
+        return build().getRecordList();
     }
 
     @Override
     public ResultMetaData getMetaData() throws UPAException {
-        return exec().getMetaData();
+        return build().getMetaData();
     }
 
     public <T> List<T> getValueList(int index) throws UPAException {
-        return exec().getValueList(index);
+        return build().getValueList(index);
     }
 
     @Override
     public <T> Set<T> getValueSet(int index) throws UPAException {
-        return exec().getValueSet(index);
+        return build().getValueSet(index);
     }
 
     @Override
     public <T> Set<T> getValueSet(String name) throws UPAException {
-        return exec().getValueSet(name);
+        return build().getValueSet(name);
     }
 
     public <T> List<T> getValueList(String name) throws UPAException {
-        return exec().getValueList(name);
+        return build().getValueList(name);
     }
 
     public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException {
-        return exec().getTypeList(type, fields);
+        return build().getTypeList(type, fields);
     }
 
     public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
-        return exec().getTypeSet(type, fields);
+        return build().getTypeSet(type, fields);
     }
 
     public <R> R getSingleEntity() throws UPAException {
-        return exec().getSingleEntity();
+        return build().getSingleEntity();
     }
 
     public <R> R getSingleEntityOrNull() throws UPAException {
-        return exec().getSingleEntityOrNull();
+        return build().getSingleEntityOrNull();
     }
 
     @Override
@@ -383,7 +410,7 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     public int executeNonQuery() {
-        return exec().executeNonQuery();
+        return build().executeNonQuery();
     }
 
     public void close() {
@@ -400,7 +427,7 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     public boolean isEmpty() throws UPAException {
-        return exec().isEmpty();
+        return build().isEmpty();
     }
 
     public Map<String, Object> getHints() {
@@ -450,11 +477,11 @@ public final class DefaultQueryBuilder implements QueryBuilder {
 
     @Override
     public <K> Set<K> getIdSet() throws UPAException {
-        return exec().getIdSet();
+        return build().getIdSet();
     }
 
     @Override
     public Set<Key> getKeySet() throws UPAException {
-        return exec().getKeySet();
+        return build().getKeySet();
     }
 }

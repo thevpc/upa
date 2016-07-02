@@ -97,6 +97,11 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
     }
 
     @Override
+    public List<QueryField> getFields() {
+        return queryStatements.get(0).getFields();
+    }
+
+    @Override
     public boolean isValid() {
         if (queryStatements.isEmpty()) {
             return false;

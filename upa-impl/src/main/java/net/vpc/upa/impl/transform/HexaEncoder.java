@@ -5,7 +5,7 @@
  */
 package net.vpc.upa.impl.transform;
 
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.StringEncoder;
 
 /**
@@ -20,14 +20,14 @@ public class HexaEncoder implements StringEncoder {
         if (bytes == null) {
             return null;
         }
-        return Strings.toHexString(bytes);
+        return StringUtils.toHexString(bytes);
     }
 
     public byte[] decode(String value) {
         if (value == null) {
             return null;
         }
-        return Strings.parseHexString(value);
+        return StringUtils.parseHexString(value);
     }
 
     @Override

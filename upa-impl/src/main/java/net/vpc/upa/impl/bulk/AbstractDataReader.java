@@ -6,7 +6,7 @@ import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.ValueConverter;
 import net.vpc.upa.bulk.ValueValidator;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.StringType;
 
 /**
@@ -129,7 +129,7 @@ public abstract class AbstractDataReader implements DataReader {
         Object[] all = nextRowArray();
         DataColumn[] columns = new DataColumn[all.length];
         for (int i = 0; i < columns.length; i++) {
-            if (i < parserColumns.length && !Strings.isNullOrEmpty(parserColumns[i].getName())) {
+            if (i < parserColumns.length && !StringUtils.isNullOrEmpty(parserColumns[i].getName())) {
                 columns[i] = (DataColumn) parserColumns[i].clone();
             } else {
                 columns[i] = createColumn(i);

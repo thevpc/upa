@@ -397,7 +397,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 //                    break;
 //                }
 //                default: {
-//                    if (Strings.isNullOrEmpty(cipherStrategy)) {
+//                    if (StringUtils.isNullOrEmpty(cipherStrategy)) {
 //                        throw new UPAException("MissingCipherStrategy", cipherStrategy, this);
 //                    }
 //                    CipherStrategy o;
@@ -474,4 +474,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         getEntity().getBuilder().setProperty(instance, getName(), value);
     }
 
+    @Override
+    public void check(Object value) {
+        getDataType().check(value,getName(),null);
+    }
 }

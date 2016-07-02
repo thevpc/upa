@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.classpath.DecorationParser;
 import net.vpc.upa.persistence.PersistenceUnitConfig;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.CallbackType;
+
 import net.vpc.upa.EntityDescriptor;
 import net.vpc.upa.EntitySecurityManager;
 import net.vpc.upa.Function;
@@ -70,7 +71,6 @@ import net.vpc.upa.config.OnPreUpdateFormula;
 import net.vpc.upa.impl.config.decorations.SimpleDecoration;
 import net.vpc.upa.impl.util.OrderedIem;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.Strings;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.PersistenceGroupConfig;
@@ -168,8 +168,8 @@ public class URLAnnotationStrategySupport {
                 if (ignored == null) {
 
                     PersistenceUnitConfig c = new PersistenceUnitConfig();
-                    c.setName(Strings.trim(configPersistenceUnit.getString("name")));
-                    c.setPersistenceGroup(Strings.trim(configPersistenceUnit.getString("persistenceGroup")));
+                    c.setName(StringUtils.trim(configPersistenceUnit.getString("name")));
+                    c.setPersistenceGroup(StringUtils.trim(configPersistenceUnit.getString("persistenceGroup")));
                     for (Object configPropertyObj : configPersistenceUnit.getArray("properties")) {
                         Decoration configProperty = (Decoration) configPropertyObj;
                         Object v = UPAUtils.createValue(new net.vpc.upa.Property(configProperty.getString("name"),
@@ -190,7 +190,7 @@ public class URLAnnotationStrategySupport {
 
                     Decoration config = a.getDecoration("config");
                     int configOrder = config.getInt("order");
-                    String key = Strings.trim(config.getString("persistenceGroup")) + "/" + Strings.trim(config.getString("persistenceUnit")) + "/" + configOrder;
+                    String key = StringUtils.trim(config.getString("persistenceGroup")) + "/" + StringUtils.trim(config.getString("persistenceUnit")) + "/" + configOrder;
                     PersistenceUnitConfig puc = partialPersistenceUnitConfig.get(key);
                     if (puc == null) {
                         puc = new PersistenceUnitConfig();
@@ -211,7 +211,7 @@ public class URLAnnotationStrategySupport {
 
             List<PersistenceUnitConfig> buildPersistenceUnitConfigs = buildPersistenceUnitConfigs(persistenceUnitConfigs);
             for (PersistenceUnitConfig c : buildPersistenceUnitConfigs) {
-                if (!Strings.isSimpleExpression(c.getPersistenceGroup())) {
+                if (!StringUtils.isSimpleExpression(c.getPersistenceGroup())) {
                     if (listener != null) {
                         listener.contextItemScanned(new ScanEvent(context, null, null, PersistenceUnitConfig.class, null, c));
                     }
@@ -229,7 +229,7 @@ public class URLAnnotationStrategySupport {
             for (PersistenceGroup g : createdPersistenceGroups) {
 //                int count = 0;
                 for (PersistenceGroupConfig pgc : context.getBootstrapContextConfig().getPersistenceGroups()) {
-                    if (Strings.matchesSimpleExpression(g.getName(), pgc.getName())) {
+                    if (StringUtils.matchesSimpleExpression(g.getName(), pgc.getName())) {
                         if (pgc.getAutoScan() != null) {
                             g.setAutoScan(pgc.getAutoScan());
                         }
@@ -247,9 +247,9 @@ public class URLAnnotationStrategySupport {
             //persistence units
             List<PersistenceUnit> createdPersistenceUnits = new ArrayList<PersistenceUnit>();
             for (PersistenceUnitConfig c : buildPersistenceUnitConfigs) {
-                if (!Strings.isSimpleExpression(c.getName())) {
+                if (!StringUtils.isSimpleExpression(c.getName())) {
                     for (PersistenceGroup persistenceGroup : context.getPersistenceGroups()) {
-                        if (Strings.matchesSimpleExpression(persistenceGroup.getName(), c.getPersistenceGroup())) {
+                        if (StringUtils.matchesSimpleExpression(persistenceGroup.getName(), c.getPersistenceGroup())) {
                             if (!persistenceGroup.containsPersistenceUnit(c.getName())) {
                                 PersistenceUnit pu = persistenceGroup.addPersistenceUnit(c.getName());
                                 createdPersistenceUnits.add(pu);
@@ -261,8 +261,8 @@ public class URLAnnotationStrategySupport {
             for (PersistenceUnit pu : createdPersistenceUnits) {
                 boolean autoScan = false;
                 for (PersistenceUnitConfig puc : buildPersistenceUnitConfigs) {
-                    if (Strings.matchesSimpleExpression(pu.getPersistenceGroup().getName(), puc.getPersistenceGroup())
-                            && Strings.matchesSimpleExpression(pu.getName(), puc.getName())) {
+                    if (StringUtils.matchesSimpleExpression(pu.getPersistenceGroup().getName(), puc.getPersistenceGroup())
+                            && StringUtils.matchesSimpleExpression(pu.getName(), puc.getName())) {
                         if ((puc.getAutoScan() != null)) {
                             pu.setAutoScan(autoScan);
                         }
@@ -373,6 +373,9 @@ public class URLAnnotationStrategySupport {
                             net.vpc.upa.config.SecurityContext.class,
                             net.vpc.upa.config.Config.class,
                             net.vpc.upa.config.Field.class,
+                            net.vpc.upa.config.Main.class,
+                            net.vpc.upa.config.Summary.class,
+                            net.vpc.upa.config.Unique.class,
                             net.vpc.upa.config.FilterEntity.class,
                             net.vpc.upa.config.Formula.class,
                             net.vpc.upa.config.Formulas.class,
@@ -660,13 +663,13 @@ public class URLAnnotationStrategySupport {
 
     private void merge(ConnectionConfig source, ConnectionConfig target) {
         if (source != null) {
-            if (!Strings.isNullOrEmpty(source.getConnectionString())) {
-                target.setConnectionString(Strings.trim(source.getConnectionString()));
+            if (!StringUtils.isNullOrEmpty(source.getConnectionString())) {
+                target.setConnectionString(StringUtils.trim(source.getConnectionString()));
             }
-            if (!Strings.isNullOrEmpty(source.getUserName())) {
-                target.setUserName(Strings.trim(source.getUserName()));
+            if (!StringUtils.isNullOrEmpty(source.getUserName())) {
+                target.setUserName(StringUtils.trim(source.getUserName()));
             }
-            if (!Strings.isNullOrEmpty(source.getPassword())) {
+            if (!StringUtils.isNullOrEmpty(source.getPassword())) {
                 target.setPassword(source.getPassword());
             }
             if (source.getStructureStrategy() != null) {
@@ -677,8 +680,8 @@ public class URLAnnotationStrategySupport {
             }
             if (source.getProperties() != null) {
                 for (Map.Entry<String, String> entry : source.getProperties().entrySet()) {
-                    if (Strings.isNullOrEmpty(entry.getValue())) {
-                        target.getProperties().put(Strings.trim(entry.getKey()), Strings.trim(entry.getValue()));
+                    if (StringUtils.isNullOrEmpty(entry.getValue())) {
+                        target.getProperties().put(StringUtils.trim(entry.getKey()), StringUtils.trim(entry.getValue()));
                     }
                 }
             }
@@ -687,16 +690,16 @@ public class URLAnnotationStrategySupport {
 
     private void merge(Decoration persistenceNameStrategy, PersistenceNameConfig target) {
         if (persistenceNameStrategy != null) {
-            if (!Strings.isUndefined(persistenceNameStrategy.getString("escape"))) {
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("escape"))) {
                 target.setPersistenceNameEscape(persistenceNameStrategy.getString("escape"));
             }
-            if (!Strings.isUndefined(persistenceNameStrategy.getString("globalPersistenceName"))) {
-                target.setGlobalPersistenceName(Strings.trim(persistenceNameStrategy.getString("globalPersistenceName")));
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("globalPersistenceName"))) {
+                target.setGlobalPersistenceName(StringUtils.trim(persistenceNameStrategy.getString("globalPersistenceName")));
             }
-            if (!Strings.isUndefined(persistenceNameStrategy.getString("localPersistenceName"))) {
-                target.setLocalPersistenceName(Strings.trim(persistenceNameStrategy.getString("localPersistenceName")));
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("localPersistenceName"))) {
+                target.setLocalPersistenceName(StringUtils.trim(persistenceNameStrategy.getString("localPersistenceName")));
             }
-            if (!Strings.isUndefined(persistenceNameStrategy.getString("persistenceName"))) {
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("persistenceName"))) {
                 target.setGlobalPersistenceName(persistenceNameStrategy.getString("persistenceName"));
             }
             for (Object persistenceNameObj : persistenceNameStrategy.getArray("names")) {
@@ -705,7 +708,7 @@ public class URLAnnotationStrategySupport {
                 PersistenceNameType type2 = null;
                 switch (net.vpc.upa.config.PersistenceNameType.valueOf(persistenceName.getString("type"))) {
                     case CUSTOM: {
-                        if (Strings.isUndefined(persistenceNameStrategy.getString("custom"))) {
+                        if (StringUtils.isUndefined(persistenceNameStrategy.getString("custom"))) {
                             throw new UPAException("MissingCustomPersistenceNameType");
                         }
                         type2 = PersistenceNameType.valueOf(persistenceName.getString("customType"));
@@ -716,17 +719,17 @@ public class URLAnnotationStrategySupport {
                         break;
                     }
                 }
-                target.getNames().add(new net.vpc.upa.persistence.PersistenceName(Strings.trim(persistenceName.getString("object")), type2, Strings.trim(persistenceName.getString("value")), persistenceName.getConfig().getOrder()));
+                target.getNames().add(new net.vpc.upa.persistence.PersistenceName(StringUtils.trim(persistenceName.getString("object")), type2, StringUtils.trim(persistenceName.getString("value")), persistenceName.getConfig().getOrder()));
             }
         }
     }
 
     private void merge(PersistenceNameConfig source, PersistenceNameConfig target) {
         if (source != null) {
-            if (Strings.isNullOrEmpty(source.getPersistenceNameEscape())) {
+            if (StringUtils.isNullOrEmpty(source.getPersistenceNameEscape())) {
                 target.setPersistenceNameEscape(source.getPersistenceNameEscape());
             }
-            if (Strings.isNullOrEmpty(source.getGlobalPersistenceName())) {
+            if (StringUtils.isNullOrEmpty(source.getGlobalPersistenceName())) {
                 target.setGlobalPersistenceName(source.getGlobalPersistenceName());
             }
             if (source.getGlobalPersistenceName() != null) {
@@ -746,8 +749,8 @@ public class URLAnnotationStrategySupport {
         Collections.sort(persistenceUnitConfigs);
         for (OrderedIem<PersistenceUnitConfig> orderedIem : persistenceUnitConfigs) {
             PersistenceUnitConfig c = orderedIem.value;
-            String puname = Strings.trim(c.getName());
-            String pgname = Strings.trim(c.getPersistenceGroup());
+            String puname = StringUtils.trim(c.getName());
+            String pgname = StringUtils.trim(c.getPersistenceGroup());
             String id = pgname + "/" + puname;
             PersistenceUnitConfig old = t.get(id);
             if (old == null) {
@@ -766,10 +769,10 @@ public class URLAnnotationStrategySupport {
                     m = new PersistenceNameConfig(orderedIem.order);
                     old.setModel(m);
                 }
-                if (Strings.isNullOrEmpty(m0.getPersistenceNameEscape())) {
+                if (StringUtils.isNullOrEmpty(m0.getPersistenceNameEscape())) {
                     m.setPersistenceNameEscape(m0.getPersistenceNameEscape());
                 }
-                if (Strings.isNullOrEmpty(m0.getGlobalPersistenceName())) {
+                if (StringUtils.isNullOrEmpty(m0.getGlobalPersistenceName())) {
                     m.setGlobalPersistenceName(m0.getGlobalPersistenceName());
                 }
                 if (m0.getGlobalPersistenceName() != null) {

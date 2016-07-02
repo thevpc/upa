@@ -56,7 +56,7 @@ public class EnumType extends SeriesType implements Cloneable {
     public void check(Object value, String name, String description) throws ConstraintsException {
         super.check(value, name, description);
         if (value != null && !enumClass.isInstance(value)) {
-            throw new ConstraintsException("InvalidEnum");
+            throw new ConstraintsException("InvalidCast", name, description, value);
         }
     }
 

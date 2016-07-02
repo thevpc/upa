@@ -4,6 +4,8 @@
  */
 package net.vpc.upa.impl.uql;
 
+import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryField;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryStatement;
 import net.vpc.upa.impl.uql.compiler.CurrentTimeExpressionTranslator;
 import net.vpc.upa.impl.uql.compiler.DateDiffExpressionTranslator;
 import net.vpc.upa.impl.uql.compiler.D2VExpressionTranslator;
@@ -222,6 +224,16 @@ public class ExpressionTranslationManager {
             }
         }
         DefaultCompiledExpression s = compileAny(expression, dec);
+
+        if (s instanceof CompiledQueryStatement) {
+            CompiledQueryStatement qs=(CompiledQueryStatement) s;
+            java.util.List<CompiledQueryField> fields = qs.getFields();
+            for (int i = 0; i < fields.size(); i++) {
+                CompiledQueryField field = fields.get(i);
+                field.setIndex(i);
+            }
+        }
+
         return s;
     }
 

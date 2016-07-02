@@ -34,10 +34,11 @@ package net.vpc.upa.expressions;
 import net.vpc.upa.QLParameter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Select extends DefaultEntityStatement
-        implements QueryStatement, Cloneable, NameOrSelect {
+        implements QueryStatement, Cloneable {
 
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");
     private static final DefaultTag WEHRE = new DefaultTag("WEHRE");
@@ -54,13 +55,18 @@ public class Select extends DefaultEntityStatement
     //    private Vector groupByList;
     private GroupCriteria group;
     private Order order;
-    private NameOrSelect queryEntity;
+    private NameOrQuery queryEntity;
     private String queryEntityAlias;
     private ArrayList<QLParameter> parameters;
 
     public Select(Select other) {
         this();
         addQuery(other);
+    }
+
+    @Override
+    public List<QueryField> getFields() {
+        return Collections.unmodifiableList(fields);
     }
 
     public Select() {
@@ -110,7 +116,7 @@ public class Select extends DefaultEntityStatement
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
         if (ENTITY.equals(tag)) {
-            this.queryEntity = (NameOrSelect) e;
+            this.queryEntity = (NameOrQuery) e;
         } else if (WEHRE.equals(tag)) {
             this.where = e;
         } else if (HAVING.equals(tag)) {
@@ -121,7 +127,7 @@ public class Select extends DefaultEntityStatement
             if (en.equals("FIELD")) {
                 fields.get(ii.getIndex()).setExpression(e);
             } else if (en.equals("JOIN_ENTITY")) {
-                joinsEntities.get(ii.getIndex()).setEntity((NameOrSelect) e);
+                joinsEntities.get(ii.getIndex()).setEntity((NameOrQuery) e);
             } else if (en.equals("JOIN_COND")) {
                 joinsEntities.get(ii.getIndex()).setCondition(e);
             } else if (en.equals("GROUP")) {
@@ -156,7 +162,12 @@ public class Select extends DefaultEntityStatement
 //        return field(expression, alias/*, null*/);
 //    }
     public Select field(Expression expression, String alias) {
-        fields.add(new QueryField(alias, expression));
+        field(new QueryField(alias, expression));
+        return this;
+    }
+
+    public Select field(QueryField queryField) {
+        fields.add(queryField);
         return this;
     }
 
@@ -171,6 +182,11 @@ public class Select extends DefaultEntityStatement
 
     public Select field(int index, Expression expression, String alias) {
         fields.add(index, new QueryField(alias, expression));
+        return this;
+    }
+
+    public Select clearFields() {
+        fields.clear();
         return this;
     }
 
@@ -224,7 +240,7 @@ public class Select extends DefaultEntityStatement
 //    public boolean containsFieldAlias(String alias) {
 //        return fields.containsKey(alias);
 //    }
-    public Select from(NameOrSelect queryEntity, String alias) {
+    public Select from(NameOrQuery queryEntity, String alias) {
         //getContext().declare(alias, queryEntity);
         this.queryEntity = queryEntity;
         queryEntityAlias = alias;
@@ -243,12 +259,12 @@ public class Select extends DefaultEntityStatement
         return from(view, null);
     }
 
-    public NameOrSelect getEntity() {
+    public NameOrQuery getEntity() {
         return queryEntity;
     }
 
     public String getEntityName() {
-        NameOrSelect e = getEntity();
+        NameOrQuery e = getEntity();
         return (e != null && (e instanceof EntityName)) ? ((EntityName) e).getName() : null;
     }
 
@@ -257,7 +273,7 @@ public class Select extends DefaultEntityStatement
         return queryEntityAlias;
     }
 
-    private Select join(JoinType joinType, NameOrSelect entity, String alias, Expression condition) {
+    private Select join(JoinType joinType, NameOrQuery entity, String alias, Expression condition) {
         joinsEntities.add(new JoinCriteria(joinType, entity, alias, condition));
         return this;
     }
@@ -535,7 +551,7 @@ public class Select extends DefaultEntityStatement
 //        return toSQLPattern(false, database);
 //    }
     public String getMainEntityName() {
-        NameOrSelect t = getEntity();
+        NameOrQuery t = getEntity();
         return ((t instanceof EntityName) ? ((EntityName) t).getName() : null);
     }
 
@@ -593,7 +609,7 @@ public class Select extends DefaultEntityStatement
                 } else {
                     started = true;
                 }
-                if (aliasString == null || valueString.equals(aliasString)) {
+                if (aliasString == null/* || valueString.equals(aliasString)*/) {
                     sb.append(valueString);
                 } else {
                     sb.append(valueString);

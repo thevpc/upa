@@ -510,6 +510,18 @@ class FieldInfo implements FieldDescriptor {
                 AnnotationParserUtils.validStr(fieldDeco.getString("defaultValue"), overriddenDefaultValueStr, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("unspecifiedValue"), overriddenUnspecifiedValueStr, processOrder);
             }
+            Decoration mainDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Main.class);
+            if(mainDeco!=null){
+                modifiers=modifiers.add(UserFieldModifier.MAIN);
+            }
+            Decoration summaryDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Summary.class);
+            if(summaryDeco!=null){
+                modifiers=modifiers.add(UserFieldModifier.SUMMARY);
+            }
+            Decoration uniqueDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Unique.class);
+            if(uniqueDeco!=null){
+                modifiers=modifiers.add(UserFieldModifier.UNIQUE);
+            }
             Decoration annID = repo.getFieldDecoration(someField, Id.class);
             if (annID != null) {
                 modifiers = modifiers.add(UserFieldModifier.ID);

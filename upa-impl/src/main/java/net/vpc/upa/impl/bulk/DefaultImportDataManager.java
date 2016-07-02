@@ -16,7 +16,7 @@ import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.ImportDataConfig;
 import net.vpc.upa.bulk.ImportDataManager;
 import net.vpc.upa.bulk.ImportDataMode;
-import net.vpc.upa.impl.util.Strings;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.ManyToOneType;
 
 /**
@@ -55,7 +55,7 @@ public class DefaultImportDataManager implements ImportDataManager {
                     ManyToOneType et = (ManyToOneType) f.getDataType();
                     Entity master = et.getRelationship().getTargetRole().getEntity();
                     Object value = entry.getValue();
-                    if (value!= null && (!(value instanceof String) || !Strings.isNullOrEmpty(String.valueOf(value))))
+                    if (value!= null && (!(value instanceof String) || !StringUtils.isNullOrEmpty(String.valueOf(value))))
                     {
                         ImportDataConfig config2 = config.copy();
                         config2.setMode(ImportDataMode.ADD_UPDATE);

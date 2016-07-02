@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class InCollection extends DefaultExpression
+public class InCollection extends OperatorExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;

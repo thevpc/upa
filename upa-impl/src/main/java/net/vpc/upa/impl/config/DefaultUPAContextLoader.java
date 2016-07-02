@@ -111,7 +111,7 @@ public class DefaultUPAContextLoader {
                     cc.setConnectionString(ce.connectionString);
                     cc.setUserName(ce.userName);
                     cc.setPassword(ce.password);
-                    cc.setStructureStrategy(Strings.isNullOrEmpty(ce.structure) ? PlatformUtils.getUndefinedValue(StructureStrategy.class) : StructureStrategy.valueOf(ce.structure.toUpperCase()));
+                    cc.setStructureStrategy(StringUtils.isNullOrEmpty(ce.structure) ? PlatformUtils.getUndefinedValue(StructureStrategy.class) : StructureStrategy.valueOf(ce.structure.toUpperCase()));
                     cc.setProperties(new LinkedHashMap<String, String>());
                     for (Map.Entry<String, String> x : ce.properties.entrySet()) {
                         cc.getProperties().put(x.getKey(), x.getValue());
@@ -123,7 +123,7 @@ public class DefaultUPAContextLoader {
                     cc.setConnectionString(ce.connectionString);
                     cc.setUserName(ce.userName);
                     cc.setPassword(ce.password);
-                    cc.setStructureStrategy(Strings.isNullOrEmpty(ce.structure) ? PlatformUtils.getUndefinedValue(StructureStrategy.class) : StructureStrategy.valueOf(ce.structure.toUpperCase()));
+                    cc.setStructureStrategy(StringUtils.isNullOrEmpty(ce.structure) ? PlatformUtils.getUndefinedValue(StructureStrategy.class) : StructureStrategy.valueOf(ce.structure.toUpperCase()));
                     cc.setProperties(new LinkedHashMap<String, String>());
                     for (Map.Entry<String, String> x : ce.properties.entrySet()) {
                         cc.getProperties().put(x.getKey(), x.getValue());

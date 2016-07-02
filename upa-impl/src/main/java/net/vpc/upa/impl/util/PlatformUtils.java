@@ -8,6 +8,7 @@ import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.*;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -492,12 +493,12 @@ public class PlatformUtils {
         Decoration configObject = a.getDecoration("config");
         if (configObject instanceof Decoration) {
             Decoration c = (Decoration) configObject;
-            String v = Strings.trim(c.getString("persistenceGroup"));
-            if (!Strings.matchesSimpleExpression(persistenceGroup, v)) {
+            String v = StringUtils.trim(c.getString("persistenceGroup"));
+            if (!StringUtils.matchesSimpleExpression(persistenceGroup, v)) {
                 return false;
             }
-            v = Strings.trim(c.getString("persistenceUnit"));
-            if (!Strings.matchesSimpleExpression(persistenceUnit, v)) {
+            v = StringUtils.trim(c.getString("persistenceUnit"));
+            if (!StringUtils.matchesSimpleExpression(persistenceUnit, v)) {
                 return false;
             }
         }
@@ -857,4 +858,10 @@ public class PlatformUtils {
         }
     }
 
+    public static <X> X[] addToArray(X[] arr,X x){
+        X[] arr2 = (X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
+        System.arraycopy(arr,0,arr2,0,arr.length);
+        arr2[arr.length]=x;
+        return arr2;
+    }
 }
