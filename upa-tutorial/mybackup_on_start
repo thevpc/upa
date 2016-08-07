@@ -1,0 +1,2 @@
+#!/bin/bash 
+mybackup --verbose --rmbase $0 target build classes
