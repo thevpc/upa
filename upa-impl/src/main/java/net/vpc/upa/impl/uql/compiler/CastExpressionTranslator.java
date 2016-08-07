@@ -18,21 +18,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class CastExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
 
-    public CastExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileCast((Cast) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileCast((Cast) o, declarations);
-    }
-
-    protected CompiledCast compileCast(Cast v, ExpressionDeclarationList declarations) {
+    protected CompiledCast compileCast(Cast v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledCast s = new CompiledCast(outer.compileAny(v.getValue(), declarations), new IdentityDataTypeTransform(v.getDataType()));
+        CompiledCast s = new CompiledCast(manager.translateAny(v.getValue(), declarations), new IdentityDataTypeTransform(v.getDataType()));
         //        s.setDeclarationList(declarations);
         return s;
     }

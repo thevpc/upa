@@ -38,7 +38,5 @@ namespace Net.Vpc.Upa
          void AddSessionListener(Net.Vpc.Upa.Callbacks.SessionListener sessionListener);
 
          void RemoveSessionListener(Net.Vpc.Upa.Callbacks.SessionListener sessionListener);
-
-         void Close();
     }
 }

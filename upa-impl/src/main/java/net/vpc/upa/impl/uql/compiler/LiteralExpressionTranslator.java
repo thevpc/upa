@@ -16,17 +16,11 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class LiteralExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public LiteralExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileLiteral((Literal) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileLiteral((Literal) o, declarations);
-    }
-
-    protected CompiledLiteral compileLiteral(Literal v, ExpressionDeclarationList declarations) {
+    protected CompiledLiteral compileLiteral(Literal v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }

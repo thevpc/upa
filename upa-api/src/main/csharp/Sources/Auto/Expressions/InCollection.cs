@@ -11,13 +11,16 @@
 
 
 
+using System.Linq;
 namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public class InCollection : Net.Vpc.Upa.Expressions.DefaultExpression {
+    public class InCollection : Net.Vpc.Upa.Expressions.OperatorExpression {
 
 
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag LEFT = new Net.Vpc.Upa.Expressions.DefaultTag("LEFT");
 
         private Net.Vpc.Upa.Expressions.Expression left;
 
@@ -49,8 +52,26 @@ namespace Net.Vpc.Upa.Expressions
             }
         }
 
-        public virtual int Size() {
-            return 2;
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (left != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
+            }
+            for (int i = 0; i < (right).Count; i++) {
+                Net.Vpc.Upa.Expressions.Expression r = right[i];
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(r, new Net.Vpc.Upa.Expressions.IndexedTag("RIGTH", i)));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (tag.Equals(LEFT)) {
+                this.left = e;
+            } else {
+                right[((Net.Vpc.Upa.Expressions.IndexedTag) tag).GetIndex()]=e;
+            }
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression GetLeft() {
@@ -75,6 +96,10 @@ namespace Net.Vpc.Upa.Expressions
 
         public virtual Net.Vpc.Upa.Expressions.Expression GetRight(int i) {
             return right[i];
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Expression[] GetRight() {
+            return right.ToArray();
         }
 
 

@@ -16,7 +16,7 @@ import net.vpc.upa.config.OnDrop;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @Callback
 public class MyIntrospector extends DefinitionListenerAdapter {

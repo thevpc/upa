@@ -163,8 +163,7 @@ namespace Net.Vpc.Upa.Bulk
             return this;
         }
 
-
-        public virtual object Clone() {
+        public virtual object Copy() {
             try {
                 Net.Vpc.Upa.Bulk.DataColumn c = (Net.Vpc.Upa.Bulk.DataColumn) base.MemberwiseClone();
                 if (extraNames != null) {
@@ -172,7 +171,7 @@ namespace Net.Vpc.Upa.Bulk
                 }
                 return c;
             } catch (System.Exception ex) {
-                throw new System.ArgumentException ("Missing Cloneable Interface Anchor for " + (GetType()).FullName);
+                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Missing Cloneable Interface Anchor for " + (GetType()).FullName, ex);
             }
         }
 
@@ -180,5 +179,7 @@ namespace Net.Vpc.Upa.Bulk
         public override string ToString() {
             return "DataColumn{" + "index=" + index + ", name=" + name + ", title=" + title + '}';
         }
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        virtual public object Clone() { return base.MemberwiseClone();}
     }
 }

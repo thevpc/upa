@@ -22,8 +22,7 @@ namespace Net.Vpc.Upa.Impl.Transaction
     public class DefaultTransactionManager : Net.Vpc.Upa.TransactionManager {
 
 
-        public virtual Net.Vpc.Upa.Transaction CreateTransaction(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.UConnection connection = persistenceStore.GetConnection();
+        public virtual Net.Vpc.Upa.Transaction CreateTransaction(Net.Vpc.Upa.Persistence.UConnection connection, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (connection == null) {
                 throw new System.Exception("No Active Connection Found");
             }

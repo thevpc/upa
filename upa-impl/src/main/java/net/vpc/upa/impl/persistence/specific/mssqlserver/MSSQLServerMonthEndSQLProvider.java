@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledMonthEnd;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Time: 17:26:10
  * To change this template use Options | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 class MSSQLServerMonthEndSQLProvider extends MSSQLServerFunctionSQLProvider {
     public MSSQLServerMonthEndSQLProvider() {
         super(CompiledMonthEnd.class);

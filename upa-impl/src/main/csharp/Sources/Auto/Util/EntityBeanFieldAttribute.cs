@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         private System.Reflection.FieldInfo field;
 
-        internal EntityBeanFieldAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanAdapter entityBeanAdapter, System.Reflection.FieldInfo field, System.Type cls)  : base(entityBeanAdapter, (field).Name, field.GetType()){
+        internal EntityBeanFieldAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, System.Reflection.FieldInfo field, System.Type cls)  : base(entityBeanAdapter, (field).Name, field.GetType()){
 
             this.field = field;
             //field.SetAccessible(true);

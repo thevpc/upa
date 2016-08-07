@@ -38,15 +38,13 @@ import net.vpc.upa.expressions.Expression;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface QLEvaluator {
 
-    public Object evalString(String expression, Object context);
+    public Expression evalString(String expression, Object context);
 
-    public Object evalObject(Expression expression, Object context);
+    public Expression evalObject(Expression expression, Object context);
 
-    public void registerTypeEvaluator(Class type, QLTypeEvaluator t);
-
-    public QLTypeEvaluator getTypeEvaluator(Class type);
+    public QLEvaluatorRegistry getRegistry();
 }

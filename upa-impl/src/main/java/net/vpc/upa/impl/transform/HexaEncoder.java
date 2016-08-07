@@ -10,7 +10,7 @@ import net.vpc.upa.types.StringEncoder;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class HexaEncoder implements StringEncoder {
 

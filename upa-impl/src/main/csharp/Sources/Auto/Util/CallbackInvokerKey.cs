@@ -64,8 +64,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public override int GetHashCode() {
-            int result = callbackType != null ? callbackType.GetHashCode() : 0;
-            result = 31 * result + (objectType != null ? objectType.GetHashCode() : 0);
+            int result = callbackType != default(Net.Vpc.Upa.CallbackType) ? callbackType.GetHashCode() : 0;
+            result = 31 * result + (objectType != default(Net.Vpc.Upa.ObjectType) ? objectType.GetHashCode() : 0);
             result = 31 * result + (system ? 1 : 0);
             result = 31 * result + (name != null ? name.GetHashCode() : 0);
             return result;

@@ -17,6 +17,7 @@ import java.net.URL;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.TextCSVParser;
+import net.vpc.upa.exceptions.UPAException;
 
 /**
  *
@@ -50,9 +51,13 @@ public class DefaultTextCSVParser extends TextCSVParser {
         return w;
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (source != null) {
-            source.close();
+            try{
+                source.close();
+            } catch (IOException e) {
+                throw new UPAException("IOException",e);
+            }
         }
     }
 

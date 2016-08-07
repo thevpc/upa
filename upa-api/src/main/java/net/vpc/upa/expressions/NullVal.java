@@ -37,11 +37,18 @@ package net.vpc.upa.expressions;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
-public final class NullVal extends Function
+public final class NullVal extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private DataType type;
+
+    public NullVal(Expression[] expressions) {
+        if(expressions.length!=0 && expressions.length!=1 && expressions.length!=2) {
+            checkArgCount(getName(), expressions, 1);
+        }
+        this.type=(DataType) ((Cst) expressions[0]).getValue();
+    }
 
     public NullVal(DataType type) {
         this.type = type;

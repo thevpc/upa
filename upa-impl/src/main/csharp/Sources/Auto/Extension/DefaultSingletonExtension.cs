@@ -30,9 +30,9 @@ namespace Net.Vpc.Upa.Impl.Extension
         public override void CommitModelChanges() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = GetEntity();
             if ((entity.GetPrimaryFields().Count==0)) {
-                Net.Vpc.Upa.Field field = entity.AddField("SGLcode", null, Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.ID), null, 0, new Net.Vpc.Upa.Types.IntType(0, 0, false, false), -1);
+                Net.Vpc.Upa.Field field = entity.AddField("SGLcode", null, Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.ID), null, 0, new Net.Vpc.Upa.Types.IntType(0, 0, false, false), -1);
                 field.SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
-                field.SetInsertFormula(new Net.Vpc.Upa.Sequence(Net.Vpc.Upa.SequenceStrategy.AUTO));
+                field.SetPersistFormula(new Net.Vpc.Upa.Sequence(Net.Vpc.Upa.SequenceStrategy.AUTO));
             }
             if (!entity.GetUserExcludeModifiers().Contains(Net.Vpc.Upa.EntityModifier.NAVIGATE)) {
                 entity.GetModifiers().Add(Net.Vpc.Upa.EntityModifier.NAVIGATE);

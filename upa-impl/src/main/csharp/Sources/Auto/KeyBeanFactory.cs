@@ -24,7 +24,7 @@ namespace Net.Vpc.Upa.Impl
 
         private bool isEntityKey;
 
-        private Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter bnfo;
+        private Net.Vpc.Upa.BeanType bnfo;
 
         private System.Type idType;
 
@@ -50,8 +50,8 @@ namespace Net.Vpc.Upa.Impl
                     //                }
                     this.fieldNames = fn.ToArray();
                 } else {
-                    bnfo = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(idType);
-                    System.Collections.Generic.IList<string> fn = bnfo.GetFieldNames();
+                    bnfo = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(idType);
+                    System.Collections.Generic.ISet<string> fn = bnfo.GetPropertyNames();
                     this.fieldNames = fn.ToArray();
                 }
             }
@@ -85,7 +85,7 @@ namespace Net.Vpc.Upa.Impl
             } else {
                 object o = bnfo.NewInstance();
                 for (int i = 0; i < keyValues.Length; i++) {
-                    bnfo.SetProperty<object>(o, fieldNames[i], keyValues[i]);
+                    bnfo.SetProperty(o, fieldNames[i], keyValues[i]);
                 }
                 return o;
             }
@@ -100,8 +100,8 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object key) {
-            if (key == null) {
+        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+            if (id == null) {
                 return null;
             }
             if (Build()) {
@@ -110,11 +110,18 @@ namespace Net.Vpc.Upa.Impl
                 //            for (int i = 0; i < value.length; i++) {
                 //                value[i] = entityFactory.getProperty(key, fieldNames[i]);
                 //            }
-                return CreateKey(new object[] { key });
+                if (!idType.IsInstanceOfType(id)) {
+                    Net.Vpc.Upa.Entity ee = entity.GetPersistenceUnit().FindEntity(idType);
+                    if (ee != null) {
+                        //check assume this is the id of the entity ee
+                        id = ee.GetBuilder().IdToObject<R>(id);
+                    }
+                }
+                return CreateKey(new object[] { id });
             } else {
                 object[] @value = new object[fieldNames.Length];
                 for (int i = 0; i < @value.Length; i++) {
-                    @value[i] = bnfo.GetProperty(key, fieldNames[i]);
+                    @value[i] = bnfo.GetProperty(id, fieldNames[i]);
                 }
                 return CreateKey(@value);
             }

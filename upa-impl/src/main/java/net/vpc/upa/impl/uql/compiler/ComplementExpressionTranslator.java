@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class ComplementExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public ComplementExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileComplement((Complement) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileComplement((Complement) o, declarations);
-    }
-
-    protected CompiledComplement compileComplement(Complement v, ExpressionDeclarationList declarations) {
+    protected CompiledComplement compileComplement(Complement v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledComplement s = new CompiledComplement(outer.compileAny(v.getExpression(), declarations));
+        CompiledComplement s = new CompiledComplement(manager.translateAny(v.getExpression(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

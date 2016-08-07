@@ -36,7 +36,7 @@ package net.vpc.upa.config;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public enum PersistenceNameType {
 

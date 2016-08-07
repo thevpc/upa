@@ -46,64 +46,72 @@ namespace Net.Vpc.Upa.Bulk
             return containsHeader;
         }
 
-        public virtual void SetContainsHeader(bool containsHeader) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetContainsHeader(bool containsHeader) {
             this.containsHeader = containsHeader;
+            return this;
         }
 
         public virtual string GetSeparators() {
             return separators;
         }
 
-        public virtual void SetSeparators(string separators) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSeparators(string separators) {
             this.separators = separators;
+            return this;
         }
 
         public virtual bool IsSupportsDoubleQuote() {
             return supportsDoubleQuote;
         }
 
-        public virtual void SetSupportsDoubleQuote(bool supportsDoubleQuote) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsDoubleQuote(bool supportsDoubleQuote) {
             this.supportsDoubleQuote = supportsDoubleQuote;
+            return this;
         }
 
         public virtual bool IsSupportsSimpleQuote() {
             return supportsSimpleQuote;
         }
 
-        public virtual void SetSupportsSimpleQuote(bool supportsSimpleQuote) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsSimpleQuote(bool supportsSimpleQuote) {
             this.supportsSimpleQuote = supportsSimpleQuote;
+            return this;
         }
 
         public virtual bool IsSupportsBackSlash() {
             return supportsBackSlash;
         }
 
-        public virtual void SetSupportsBackSlash(bool supportsBackSlash) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSupportsBackSlash(bool supportsBackSlash) {
             this.supportsBackSlash = supportsBackSlash;
+            return this;
         }
 
         public virtual bool IsTrimValues() {
             return trimValues;
         }
 
-        public virtual void SetTrimValues(bool trimValues) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetTrimValues(bool trimValues) {
             this.trimValues = trimValues;
+            return this;
         }
 
         public virtual string GetNewLine() {
             return newLine;
         }
 
-        public virtual void SetNewLine(string newLine) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetNewLine(string newLine) {
             this.newLine = newLine;
+            return this;
         }
 
         public virtual int GetSkipRows() {
             return skipRows;
         }
 
-        public virtual void SetSkipRows(int skipRows) {
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetSkipRows(int skipRows) {
             this.skipRows = skipRows;
+            return this;
         }
     }
 }

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.persistence.shared.*;
+import net.vpc.upa.impl.persistence.shared.sql.*;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.ClassMap;

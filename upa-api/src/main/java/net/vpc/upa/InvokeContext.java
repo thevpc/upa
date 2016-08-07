@@ -34,11 +34,13 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.exceptions.UnexpectedException;
+
 import java.io.Serializable;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class InvokeContext implements Serializable, Cloneable {
 
@@ -101,7 +103,7 @@ public class InvokeContext implements Serializable, Cloneable {
         try {
             return (InvokeContext) super.clone();
         } catch (CloneNotSupportedException ex) {
-            throw new IllegalArgumentException("Never");
+            throw new UnexpectedException(ex);
         }
     }
 

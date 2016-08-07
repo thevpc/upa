@@ -40,18 +40,27 @@ import java.util.Date;
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
  * change this template use Options | File Templates.
  */
-public class DateDiff extends Function {
+public class DateDiff extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
     private DatePartType type;
     private Expression start;
     private Expression end;
 
+    public DateDiff(Expression[] expressions) {
+        checkArgCount(getName(),expressions,3);
+        init((DatePartType) ((Cst)expressions[0]).getValue(),expressions[1],expressions[2]);
+    }
+
     public DateDiff(DatePartType datePartType, Date date1, Date date2) {
         this(datePartType, new Literal(date1), new Literal(date2));
     }
 
     public DateDiff(DatePartType datePartType, Expression startDate, Expression endDate) {
+        init(datePartType,startDate,endDate);
+    }
+
+    private void init(DatePartType datePartType, Expression startDate, Expression endDate) {
         this.type = datePartType;
         this.start = startDate;
         this.end = endDate;

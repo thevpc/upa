@@ -50,5 +50,7 @@ public interface EntityPart extends UPAObject {
     // -------------------------- PATH SUPPORT
     public String getPath();
 
+    public void commitModelChanges() ;
+
 //    public void close() throws UPAException;
 }

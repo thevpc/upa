@@ -21,14 +21,14 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      */
     public class PatternListLibNameFilter {
 
-        private System.Text.RegularExpressions.Regex[] patterns;
+        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] patterns;
 
         private string[] patternStrings;
 
         public PatternListLibNameFilter(string[] filter) {
             if (filter != null) {
                 patternStrings = new string[filter.Length];
-                patterns = new System.Text.RegularExpressions.Regex[filter.Length];
+                patterns = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[filter.Length];
                 for (int i = 0; i < filter.Length; i++) {
                     string f = filter[i];
                     if (f != null) {
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                     }
                     patternStrings[i] = f;
                     if (f != null) {
-                        patterns[i] = new System.Text.RegularExpressions.Regex(Convert(f));
+                        patterns[i] = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(Convert(f));
                     }
                 }
             }
@@ -91,8 +91,8 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                 return true;
             }
             int i = 0;
-            foreach (System.Text.RegularExpressions.Regex pattern in patterns) {
-                if (pattern == null || (pattern.Match(cls)).Success) {
+            foreach (Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern in patterns) {
+                if (pattern == null || pattern.Matcher(cls).Matches()) {
                     //                System.out.println("Lib : "+url+" :: GRANT "+pattern+" : "+patternStrings[i]);
                     return true;
                 } else {

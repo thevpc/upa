@@ -117,7 +117,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert Set(System.Collections.Generic.IDictionary<string , object> keysValues) {
-            foreach (System.Collections.Generic.KeyValuePair<string , object> e in keysValues) {
+            foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(keysValues)) {
                 Set((e).Key, (e).Value);
             }
             return this;

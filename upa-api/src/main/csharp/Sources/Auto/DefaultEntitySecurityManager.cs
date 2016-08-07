@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultEntitySecurityManager : Net.Vpc.Upa.EntitySecurityManager {
 
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return IsAllowedKey(entity, "Update");
         }
 
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return IsAllowedKey(entity, "Remove");
         }
 
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return IsAllowedKey(entity, "Load");
         }
 
@@ -91,13 +91,18 @@ namespace Net.Vpc.Upa
         }
 
 
+        public virtual bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return IsAllowedKey(entity, "Navigate");
+        }
+
+
         public virtual bool IsAllowedRead(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return IsAllowedKey(field.GetEntity(), "Load");
         }
 
 
-        public virtual bool IsAllowedRead(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return IsAllowedKey(entity, "Load");
+        public virtual bool IsAllowedRead(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return IsAllowedKey(field.GetEntity(), "Load");
         }
 
 
@@ -106,9 +111,10 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return IsAllowedKey(field.GetEntity(), "Update");
         }
+
 
         public virtual Net.Vpc.Upa.Expressions.Expression GetEntityFilter(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return null;

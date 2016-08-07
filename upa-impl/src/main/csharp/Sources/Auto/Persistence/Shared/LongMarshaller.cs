@@ -21,11 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class LongMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            long n = resultSet.GetLong(index);
-            if (n == 0L && resultSet.WasNull()) {
-                return null;
-            }
-            return n;
+            
+            return null;
         }
 
 
@@ -40,11 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.BIGINT);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=System.Convert.ToInt32(((object) @object));
-            }
+            
         }
 
         public LongMarshaller() {

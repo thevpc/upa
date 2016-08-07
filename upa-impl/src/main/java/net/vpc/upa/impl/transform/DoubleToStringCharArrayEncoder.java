@@ -9,7 +9,7 @@ import net.vpc.upa.types.CharArrayEncoder;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DoubleToStringCharArrayEncoder implements CharArrayEncoder {
     public static final DoubleToStringCharArrayEncoder INSTANCE=new DoubleToStringCharArrayEncoder();

@@ -52,6 +52,6 @@ public interface ResultMetaData {
 
     public EntityStatement getStatement() ;
 
-    public List<ResultField> getFields() ;
+    public List<ResultField> getResultFields() ;
 
 }

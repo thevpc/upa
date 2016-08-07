@@ -48,7 +48,18 @@ public interface Expression extends Cloneable, java.io.Serializable {
 
     public Expression findOne(ExpressionFilter filter);
 
+    /**
+     * pre-order DFS traversal of expression
+     * @param filter
+     */
     public void visit(ExpressionVisitor filter);
+
+    /**
+     * post-order DFS traversal and transformation of expression
+     * @param transformer transformer
+     * @return result
+     */
+    public ExpressionTransformerResult transform(ExpressionTransformer transformer);
 
     public List<Expression> findAll(ExpressionFilter filter);
 }

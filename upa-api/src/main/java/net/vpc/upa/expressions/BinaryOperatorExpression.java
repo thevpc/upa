@@ -67,7 +67,7 @@ public abstract class BinaryOperatorExpression extends OperatorExpression implem
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(2);
         if (left != null) {
             list.add(new TaggedExpression(left, LEFT));
         }

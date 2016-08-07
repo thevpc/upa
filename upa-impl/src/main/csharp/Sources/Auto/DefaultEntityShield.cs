@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl
      */
     public class DefaultEntityShield : Net.Vpc.Upa.EntityShield {
 
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter PERSISTENT_NON_FORMULA = Net.Vpc.Upa.Filters.Fields.ByModifiersNoneOf(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA, Net.Vpc.Upa.FieldModifier.UPDATE_FORMULA, Net.Vpc.Upa.FieldModifier.TRANSIENT);
+        private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.DefaultEntityShield)).FullName);
 
         private Net.Vpc.Upa.Entity entity;
 
@@ -106,7 +106,8 @@ namespace Net.Vpc.Upa.Impl
         public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonUpdatableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity parent = entity.GetParentEntity();
             Net.Vpc.Upa.Expressions.Expression a = GetNonUpdatableRecordsExpression();
-            Net.Vpc.Upa.Expressions.Expression b = parent == null ? null : entity.ParentToChildExpression(parent.GetShield().GetFullNonUpdatableRecordsExpression());
+            //if hierarchical entity then ignore parent
+            Net.Vpc.Upa.Expressions.Expression b = (parent == null || parent.GetName().Equals(entity.GetName())) ? null : entity.ParentToChildExpression(parent.GetShield().GetFullNonUpdatableRecordsExpression());
             a = (a == null) ? ((Net.Vpc.Upa.Expressions.Expression)(b)) : new Net.Vpc.Upa.Expressions.Or(a, b);
             return (a == null || !a.IsValid()) ? null : a;
         }
@@ -122,7 +123,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual bool IsUpdateFormulaOnPersistSupported() {
-            return GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_INSERT);
+            return GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_PERSIST);
         }
 
 
@@ -132,7 +133,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual bool IsUpdateFormulaSupported() {
-            return !IsTransient() && (GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_INSERT) || GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_UPDATE));
+            return !IsTransient() && (GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_PERSIST) || GetEffectiveModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_UPDATE));
         }
 
         public bool IsPersistSupported() {
@@ -160,7 +161,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual bool IsPersistEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return IsPersistSupported() && entity.GetPersistenceUnit().GetSecurityManager().IsAllowedPersist(entity) && IsNoVeto(Net.Vpc.Upa.VetoableOperation.insertEnabled);
+            return IsPersistSupported() && entity.GetPersistenceUnit().GetSecurityManager().IsAllowedPersist(entity) && IsNoVeto(Net.Vpc.Upa.VetoableOperation.persistEnabled);
         }
 
         public virtual bool IsUpdateEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -168,7 +169,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual bool IsDeleteEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return IsDeleteSupported() && entity.GetPersistenceUnit().GetSecurityManager().IsAllowedRemove(entity) && IsNoVeto(Net.Vpc.Upa.VetoableOperation.deleteEnabled);
+            return IsDeleteSupported() && entity.GetPersistenceUnit().GetSecurityManager().IsAllowedRemove(entity) && IsNoVeto(Net.Vpc.Upa.VetoableOperation.removeEnabled);
         }
 
         public virtual bool IsRenameEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -190,7 +191,7 @@ namespace Net.Vpc.Upa.Impl
         public virtual bool IsGeneratedId() {
             foreach (Net.Vpc.Upa.Field field in entity.GetPrimaryFields()) {
                 if (field.GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.PERSIST_FORMULA)) {
-                    if (field.GetInsertFormula() is Net.Vpc.Upa.Sequence) {
+                    if (field.GetPersistFormula() is Net.Vpc.Upa.Sequence) {
                         return true;
                     }
                 }
@@ -236,7 +237,8 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.Entity p = entity.GetParentEntity();
             if (p != null) {
                 Net.Vpc.Upa.Expressions.Expression ss = entity.ChildToParentExpression(condition);
-                p.GetShield().CheckRemove(ss, recurse);
+                //            p.getShield().checkRemove(ss, recurse);
+                p.GetShield().CheckUpdate(p.GetBuilder().CreateRecord(), ss);
             }
             CheckVeto(Net.Vpc.Upa.VetoableOperation.checkDelete, condition, recurse);
         }
@@ -264,7 +266,7 @@ namespace Net.Vpc.Upa.Impl
                         throw new Net.Vpc.Upa.Exceptions.CloneRecordNotAllowedException(entity);
                     }
                 }
-                object o = entity.CreateQueryBuilder().SetId(oldId).SetFieldFilter(PERSISTENT_NON_FORMULA).GetEntity<object>();
+                object o = entity.CreateQueryBuilder().ById(oldId).SetFieldFilter(Net.Vpc.Upa.Impl.Util.Filters.Fields2.PERSISTENT_NON_FORMULA).GetEntity<R>();
                 if (o == null) {
                     throw new Net.Vpc.Upa.Exceptions.CloneRecordOldKeyNotFoundException(entity);
                 }
@@ -304,7 +306,7 @@ namespace Net.Vpc.Upa.Impl
                         throw new Net.Vpc.Upa.Exceptions.UnrenamableRecordException(entity);
                     }
                 }
-                object o = entity.CreateQueryBuilder().SetId(oldId).SetFieldFilter(PERSISTENT_NON_FORMULA).GetEntity<object>();
+                object o = entity.CreateQueryBuilder().ById(oldId).SetFieldFilter(Net.Vpc.Upa.Impl.Util.Filters.Fields2.PERSISTENT_NON_FORMULA).GetEntity<R>();
                 if (o == null) {
                     throw new Net.Vpc.Upa.Exceptions.RenameRecordOldKeyNotFoundException(entity);
                 }
@@ -316,6 +318,7 @@ namespace Net.Vpc.Upa.Impl
             }
             CheckVeto(Net.Vpc.Upa.VetoableOperation.checkRename, oldId, newId);
         }
+
 
         public virtual void CheckUpdate(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!entity.GetPersistenceUnit().GetSecurityManager().IsAllowedUpdate(entity)) {
@@ -349,7 +352,7 @@ namespace Net.Vpc.Upa.Impl
                             foreach (Net.Vpc.Upa.Field aF in f) {
                                 if (updates.IsSet(aF.GetName())) {
                                     found++;
-                                    Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(updates.GetObject<object>(aF.GetName()))));
+                                    Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(updates.GetObject<T>(aF.GetName()))));
                                     a = a == null ? ((Net.Vpc.Upa.Expressions.Expression)(b)) : new Net.Vpc.Upa.Expressions.And(a, b);
                                 }
                             }
@@ -382,8 +385,13 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.Entity p = entity.GetParentEntity();
             if (p != null) {
                 Net.Vpc.Upa.Expressions.Expression ss = entity.ChildToParentExpression(condition);
-                p.GetShield().CheckUpdate(null, ss);
+                try {
+                    p.GetShield().CheckUpdate(null, ss);
+                } catch (Net.Vpc.Upa.Exceptions.UpdateRecordKeyNotFoundException ex) {
+                    log.Warning(entity.GetName() + "'s parent seems not to be resolvable for condition (" + condition + "): " + ex);
+                }
             }
+            //ignore if parent not found!
             CheckVeto(Net.Vpc.Upa.VetoableOperation.checkUpdate, updates, condition);
         }
 
@@ -400,10 +408,10 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual void CheckPersist(Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!entity.GetPersistenceUnit().GetSecurityManager().IsAllowedPersist(entity)) {
-                throw new Net.Vpc.Upa.Exceptions.InsertRecordNotAllowedException(entity);
+                throw new Net.Vpc.Upa.Exceptions.PersistRecordNotAllowedException(entity);
             }
             if (!IsPersistSupported()) {
-                throw new Net.Vpc.Upa.Exceptions.InsertRecordNotAllowedException(entity);
+                throw new Net.Vpc.Upa.Exceptions.PersistRecordNotAllowedException(entity);
             }
             if (record != null) {
                 // check parent is not read only
@@ -415,7 +423,7 @@ namespace Net.Vpc.Upa.Impl
                         System.Collections.Generic.IList<Net.Vpc.Upa.Field> mf = r.GetTargetRole().GetFields();
                         object[] pko = new object[(mf).Count];
                         for (int i = 0; i < pko.Length; i++) {
-                            pko[i] = record.GetObject<object>(df[i].GetName());
+                            pko[i] = record.GetObject<T>(df[i].GetName());
                         }
                         object pk = entity.CreateId(pko);
                         long c = entity.GetParentEntity().GetEntityCount(new Net.Vpc.Upa.Expressions.And(parentUnupdatable, entity.GetParentEntity().GetBuilder().IdToExpression(pk, null)));
@@ -434,7 +442,9 @@ namespace Net.Vpc.Upa.Impl
                 if (p != null) {
                     //Expression ss = childToParentExpression(toExpression(key));
                     Net.Vpc.Upa.Expressions.Expression ss = entity.ChildToParentExpression(record);
-                    p.GetShield().CheckUpdate(null, ss);
+                    if (ss != null) {
+                        p.GetShield().CheckUpdate(null, ss);
+                    }
                 }
                 System.Collections.Generic.IList<Net.Vpc.Upa.Index> uniqueIndexes = entity.GetIndexes(true);
                 if ((uniqueIndexes.Count==0)) {
@@ -452,11 +462,11 @@ namespace Net.Vpc.Upa.Impl
                         Net.Vpc.Upa.Field[] f = index.GetFields();
                         Net.Vpc.Upa.Expressions.Expression e1 = null;
                         if (f.Length == 1) {
-                            e1 = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(f[0].GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<object>(f[0].GetName())));
+                            e1 = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(f[0].GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<T>(f[0].GetName())));
                         } else {
                             Net.Vpc.Upa.Expressions.Expression a = null;
                             foreach (Net.Vpc.Upa.Field aF in f) {
-                                Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<object>(aF.GetName()))));
+                                Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<T>(aF.GetName()))));
                                 a = a == null ? ((Net.Vpc.Upa.Expressions.Expression)(b)) : new Net.Vpc.Upa.Expressions.And(a, b);
                             }
                             e1 = a;
@@ -474,17 +484,17 @@ namespace Net.Vpc.Upa.Impl
                             Net.Vpc.Upa.Field[] f = index.GetFields();
                             Net.Vpc.Upa.Expressions.Expression e1 = null;
                             if (f.Length == 1) {
-                                e1 = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(f[0].GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<object>(f[0].GetName())));
+                                e1 = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(f[0].GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<T>(f[0].GetName())));
                             } else {
                                 Net.Vpc.Upa.Expressions.Expression a = null;
                                 foreach (Net.Vpc.Upa.Field aF in f) {
-                                    Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<object>(aF.GetName()))));
+                                    Net.Vpc.Upa.Expressions.Expression b = (new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(aF.GetName()), Net.Vpc.Upa.Expressions.ExpressionFactory.ToLiteral(record.GetObject<T>(aF.GetName()))));
                                     a = a == null ? ((Net.Vpc.Upa.Expressions.Expression)(b)) : new Net.Vpc.Upa.Expressions.And(a, b);
                                 }
                                 e1 = a;
                             }
                             if (entity.GetEntityCount(e1) > 0) {
-                                throw new Net.Vpc.Upa.Exceptions.InsertRecordDuplicateUniqueFieldsException(entity, index, record.GetObject<object>(f[0].GetName()));
+                                throw new Net.Vpc.Upa.Exceptions.InsertRecordDuplicateUniqueFieldsException(entity, index, record.GetObject<T>(f[0].GetName()));
                             }
                         }
                         throw new System.Exception("WouldNeverBeThrownException");
@@ -565,7 +575,7 @@ namespace Net.Vpc.Upa.Impl
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.EntityShieldVeto> GetVetoList(Net.Vpc.Upa.VetoableOperation operation) {
             System.Collections.Generic.IList<Net.Vpc.Upa.EntityShieldVeto> vetoList = GetVetoList(operation, false);
             if (vetoList == null) {
-                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<Net.Vpc.Upa.EntityShieldVeto>();
+                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             }
             return new System.Collections.Generic.List<Net.Vpc.Upa.EntityShieldVeto>(vetoList);
         }

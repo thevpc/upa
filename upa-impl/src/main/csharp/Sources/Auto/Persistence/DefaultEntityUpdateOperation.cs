@@ -21,28 +21,57 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class DefaultEntityUpdateOperation : Net.Vpc.Upa.Persistence.EntityUpdateOperation {
 
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter UPDATE = Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.UPDATE);
-
         public virtual int Update(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityExecutionContext context, Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Expressions.Update u = new Net.Vpc.Upa.Expressions.Update().Entity(entity.GetName());
             foreach (string fieldName in updates.KeySet()) {
                 Net.Vpc.Upa.Field f = entity.FindField(fieldName);
-                if (f != null && UPDATE.Accept(f)) {
-                    object @value = updates.GetObject<object>(fieldName);
-                    if ((f.GetDataType() is Net.Vpc.Upa.Types.EntityType)) {
-                        Net.Vpc.Upa.Types.EntityType e = (Net.Vpc.Upa.Types.EntityType) f.GetDataType();
+                if (f != null && Net.Vpc.Upa.Impl.Util.Filters.Fields2.UPDATE.Accept(f)) {
+                    object @value = updates.GetObject<T>(fieldName);
+                    if ((f.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType)) {
+                        Net.Vpc.Upa.Types.ManyToOneType e = (Net.Vpc.Upa.Types.ManyToOneType) f.GetDataType();
                         if (e.IsUpdatable()) {
-                            Net.Vpc.Upa.Entity masterEntity = context.GetPersistenceUnit().GetEntity(e.GetReferencedEntityName());
-                            Net.Vpc.Upa.Key k = null;
-                            if (@value is Net.Vpc.Upa.Record) {
-                                k = masterEntity.GetBuilder().RecordToKey((Net.Vpc.Upa.Record) @value);
+                            Net.Vpc.Upa.Entity masterEntity = context.GetPersistenceUnit().GetEntity(e.GetTargetEntityName());
+                            Net.Vpc.Upa.EntityBuilder mbuilder = masterEntity.GetBuilder();
+                            if (@value is Net.Vpc.Upa.Expressions.Expression) {
+                                Net.Vpc.Upa.Expressions.Expression evalue;
+                                System.Collections.Generic.IList<Net.Vpc.Upa.Field> sfields = e.GetRelationship().GetSourceRole().GetFields();
+                                System.Collections.Generic.IList<Net.Vpc.Upa.Field> tfields = e.GetRelationship().GetTargetRole().GetFields();
+                                for (int i = 0; i < (sfields).Count; i++) {
+                                    Net.Vpc.Upa.Field fk = sfields[i];
+                                    Net.Vpc.Upa.Field fid = tfields[i];
+                                    evalue = ((Net.Vpc.Upa.Expressions.Expression) @value).Copy();
+                                    evalue = context.GetPersistenceUnit().GetExpressionManager().ParseExpression(evalue);
+                                    if (evalue is Net.Vpc.Upa.Expressions.Select) {
+                                        Net.Vpc.Upa.Expressions.Select svalue = (Net.Vpc.Upa.Expressions.Select) evalue;
+                                        if (svalue.CountFields() != 1) {
+                                            throw new System.Exception("Invalid Expression " + svalue + " as formula for field " + f.GetAbsoluteName());
+                                        }
+                                        if (svalue.GetField(0).GetExpression() is Net.Vpc.Upa.Expressions.Var) {
+                                            svalue.GetField(0).SetExpression(new Net.Vpc.Upa.Expressions.Var((Net.Vpc.Upa.Expressions.Var) svalue.GetField(0).GetExpression(), fid.GetName()));
+                                        } else {
+                                            throw new System.Exception("Invalid Expression " + svalue + " as formula for field " + f.GetAbsoluteName());
+                                        }
+                                    } else if (evalue is Net.Vpc.Upa.Expressions.Var) {
+                                        evalue = (new Net.Vpc.Upa.Expressions.Var((Net.Vpc.Upa.Expressions.Var) evalue, fk.GetName()));
+                                    } else if (evalue is Net.Vpc.Upa.Expressions.Param) {
+                                    } else if (evalue is Net.Vpc.Upa.Expressions.Literal) {
+                                    } else {
+                                        throw new System.Exception("Invalid Expression " + evalue + " as formula for field " + f.GetAbsoluteName());
+                                    }
+                                    u.Set(fk.GetName(), evalue);
+                                }
                             } else {
-                                k = masterEntity.GetBuilder().EntityToKey(@value);
-                            }
-                            int x = 0;
-                            foreach (Net.Vpc.Upa.Field fk in e.GetRelationship().GetSourceRole().GetFields()) {
-                                u.Set(fk.GetName(), new Net.Vpc.Upa.Expressions.Param(fk.GetName(), k == null ? null : k.GetObjectAt(x)));
-                                x++;
+                                Net.Vpc.Upa.Key k = null;
+                                if (@value is Net.Vpc.Upa.Record) {
+                                    k = mbuilder.RecordToKey((Net.Vpc.Upa.Record) @value);
+                                } else {
+                                    k = mbuilder.ObjectToKey(@value);
+                                }
+                                int x = 0;
+                                foreach (Net.Vpc.Upa.Field fk in e.GetRelationship().GetSourceRole().GetFields()) {
+                                    u.Set(fk.GetName(), new Net.Vpc.Upa.Expressions.Param(fk.GetName(), k == null ? null : k.GetObjectAt(x)));
+                                    x++;
+                                }
                             }
                         }
                     } else {
@@ -52,7 +81,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 }
             }
             u.Where(condition);
-            return context.GetPersistenceStore().ExecuteUpdate(u, context);
+            return context.GetPersistenceStore().CreateQuery(u, context).ExecuteNonQuery();
         }
 
         public virtual Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Entity e, Net.Vpc.Upa.Expressions.Update query, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {

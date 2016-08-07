@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class D2VExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public D2VExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileD2V((D2V) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileD2V((D2V) o, declarations);
-    }
-
-    protected CompiledD2V compileD2V(D2V v, ExpressionDeclarationList declarations) {
+    protected CompiledD2V compileD2V(D2V v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledD2V s = new CompiledD2V(outer.compileAny(v.getValue(), declarations));
+        CompiledD2V s = new CompiledD2V(manager.translateAny(v.getExpression(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

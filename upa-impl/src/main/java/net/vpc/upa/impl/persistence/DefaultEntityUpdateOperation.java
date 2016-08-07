@@ -1,11 +1,9 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
-import net.vpc.upa.FieldModifier;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.EntityUpdateOperation;import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -15,13 +13,11 @@ import net.vpc.upa.types.ManyToOneType;
  */
 public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
 
-    private static final FieldFilter UPDATE = Fields.byModifiersAllOf(FieldModifier.UPDATE);
-
     public int update(Entity entity, EntityExecutionContext context, Record updates, Expression condition) throws UPAException {
         Update u = new Update().entity(entity.getName());
         for (String fieldName : updates.keySet()) {
             Field f = entity.findField(fieldName);
-            if (f != null && UPDATE.accept(f)) {
+            if (f != null && Fields2.UPDATE.accept(f)) {
                 Object value = updates.getObject(fieldName);
                 if ((f.getDataType() instanceof ManyToOneType)) {
                     ManyToOneType e = (ManyToOneType) f.getDataType();
@@ -36,9 +32,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
                                 Field fk = sfields.get(i);
                                 Field fid = tfields.get(i);
                                 evalue = ((Expression) value).copy();
-                                if (evalue instanceof UserExpression) {
-                                    evalue = context.getPersistenceUnit().getExpressionManager().parseExpression((UserExpression) evalue);
-                                }
+                                evalue = context.getPersistenceUnit().getExpressionManager().parseExpression(evalue);
                                 if (evalue instanceof Select) {
                                     Select svalue = (Select) evalue;
                                     if (svalue.countFields() != 1) {

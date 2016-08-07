@@ -11,6 +11,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: net.vpc.toolbox:j2cs:1.0.0" level="project" />
+    <orderEntry type="module" module-name="j2cs" />
   </component>
 </module>

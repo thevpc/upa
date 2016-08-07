@@ -70,7 +70,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                 if (annotations != null) {
                     int pos = 0;
                     foreach (System.Attribute a in annotations) {
-                        if (decorationFilter.AcceptTypeDecoration((a.AnnotationType).FullName, (type).FullName, type)) {
+                        if (decorationFilter.AcceptTypeDecoration((a.GetType()).FullName, (type).FullName, type)) {
                             decorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.TYPE, (type).FullName, null, pos));
                             newDecorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.TYPE, (type).FullName, null, pos));
                         }
@@ -92,7 +92,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                         int pos = 0;
                         foreach (System.Attribute a in method.GetAnnotations()) {
                             string methodSig = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetMethodSignature(method);
-                            if (decorationFilter.AcceptMethodDecoration((a.AnnotationType).FullName, methodSig, (type).FullName, method)) {
+                            if (decorationFilter.AcceptMethodDecoration((a.GetType()).FullName, methodSig, (type).FullName, method)) {
                                 decorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.METHOD, ((method).DeclaringType).FullName, methodSig, pos));
                                 newDecorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.METHOD, ((method).DeclaringType).FullName, methodSig, pos));
                             }
@@ -113,7 +113,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                     foreach (System.Reflection.FieldInfo field in declaredFields) {
                         int pos = 0;
                         foreach (System.Attribute a in field.GetAnnotations()) {
-                            if (decorationFilter.AcceptFieldDecoration((a.AnnotationType).FullName, (field).Name, (type).FullName, field)) {
+                            if (decorationFilter.AcceptFieldDecoration((a.GetType()).FullName, (field).Name, (type).FullName, field)) {
                                 decorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.FIELD, ((field).DeclaringType).FullName, (field).Name, pos));
                                 newDecorationRepository.Visit(new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration(a, Net.Vpc.Upa.Config.DecorationSourceType.TYPE, Net.Vpc.Upa.Config.DecorationTarget.FIELD, ((field).DeclaringType).FullName, (field).Name, pos));
                             }
@@ -130,13 +130,6 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
         public virtual void Parse() /* throws System.IO.IOException, System.Exception, System.Exception */  {
             foreach (System.Type type in urls) {
-                try {
-                    if ((type).FullName.ToLower().Contains("lockinfo")) {
-                        System.Console.Out.WriteLine("unexpected configureType of " + (type).FullName);
-                    }
-                } catch (System.Exception e) {
-                    System.Console.WriteLine(e);
-                }
                 Visit(type, decorationFilter);
             }
         }

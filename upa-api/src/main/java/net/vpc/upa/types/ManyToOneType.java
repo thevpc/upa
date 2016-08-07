@@ -86,11 +86,6 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
     }
 
     @Override
-    public Object clone() {
-        return super.clone();
-    }
-
-    @Override
     public String toString() {
         String n = getPlatformType() == null ? null : getPlatformType().getName();
         if (n == null) {

@@ -45,7 +45,7 @@ class EntityInfo implements EntityDescriptor {
         return factory;
     }
 
-    public LinkedHashMap<String, Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return entityParams;
     }
 

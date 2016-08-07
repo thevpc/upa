@@ -34,16 +34,14 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.expressions.EntityStatement;
-import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.UserExpression;
+import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -53,9 +51,31 @@ public interface ExpressionManager {
 
     public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) ;
 
+    public FunctionExpression createFunctionExpression(String name,Expression[] args);
+
+    public QLEvaluator createEvaluator() ;
+
     public Expression parseExpression(String expression);
 
-    public Expression parseExpression(UserExpression expression);
+    /**
+     * simplifies expression by evaluating all map vars in the expression.
+     * simplifyExpression("a.id",{"a":{id:4,name:'example'}}) = Literal(4)
+     * the expression it self may be modified while evaluation process.
+     * Do copy ( expression.copy() ) the expression if one wants readonly acept
+     * @param expression expression to simplify
+     * @param vars map of available vars
+     * @return simplified expression
+     */
+    public Expression simplifyExpression(Expression expression, Map<String, Object> vars);
+
+    public Expression simplifyExpression(String expression, Map<String, Object> vars);
+
+    /**
+     * parse all UserExpressions withing this expression
+     * @param expression any expression
+     * @return expression where all UserExpressions are parsed
+     */
+    public Expression parseExpression(Expression expression);
 
     public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
 

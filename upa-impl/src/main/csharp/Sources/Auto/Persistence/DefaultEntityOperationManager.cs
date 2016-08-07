@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class DefaultEntityOperationManager : Net.Vpc.Upa.Persistence.EntityOperationManager {
 
-        private Net.Vpc.Upa.Persistence.EntityPersistOperation persistenceInsertAction = new Net.Vpc.Upa.Impl.Persistence.DefaultEntityPersistOperation();
+        private Net.Vpc.Upa.Persistence.EntityPersistOperation persistencePersistAction = new Net.Vpc.Upa.Impl.Persistence.DefaultEntityPersistOperation();
 
         private Net.Vpc.Upa.Persistence.EntityUpdateOperation persistenceUpdateAction = new Net.Vpc.Upa.Impl.Persistence.DefaultEntityUpdateOperation();
 
@@ -37,10 +37,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore;
 
-        private Net.Vpc.Upa.Entity entityManager;
+        private Net.Vpc.Upa.Entity entity;
 
         public virtual void Init(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) {
-            this.entityManager = entity;
+            this.entity = entity;
             this.persistenceStore = persistenceStore;
         }
 
@@ -50,13 +50,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual void SetInsertOperation(Net.Vpc.Upa.Persistence.EntityPersistOperation operation) {
-            this.persistenceInsertAction = operation;
+        public virtual void SetPersistOperation(Net.Vpc.Upa.Persistence.EntityPersistOperation operation) {
+            this.persistencePersistAction = operation;
         }
 
 
-        public virtual Net.Vpc.Upa.Persistence.EntityPersistOperation GetInsertOperation() {
-            return persistenceInsertAction;
+        public virtual Net.Vpc.Upa.Persistence.EntityPersistOperation GetPersistOperation() {
+            return persistencePersistAction;
         }
 
 

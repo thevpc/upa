@@ -67,7 +67,7 @@ public class FieldListFilter extends AbstractFieldFilter {
     }
 
     public FieldListFilter setAccepted(PrimitiveField[] f) {
-        Collection<Field> a = new ArrayList<Field>();
+        Collection<Field> a = new ArrayList<Field>(f.length);
         for (PrimitiveField primitiveField : f) {
             a.add(primitiveField);
         }
@@ -89,7 +89,7 @@ public class FieldListFilter extends AbstractFieldFilter {
     }
 
     public FieldListFilter setRejected(PrimitiveField[] f) {
-        Collection<Field> a = new ArrayList<Field>();
+        Collection<Field> a = new ArrayList<Field>(f.length);
         for (PrimitiveField primitiveField : f) {
             a.add(primitiveField);
         }

@@ -7,7 +7,7 @@ package net.vpc.upa;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class EvalContext {
     private String functionName;

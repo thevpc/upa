@@ -18,7 +18,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public abstract class AbstractDecorationValue : Net.Vpc.Upa.Config.DecorationValue {
 

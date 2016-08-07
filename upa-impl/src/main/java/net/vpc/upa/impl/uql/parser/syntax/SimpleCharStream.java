@@ -2,11 +2,14 @@
 /* JavaCCOptions:STATIC=false,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.PortabilityHint;
+
 /**
  * An implementation of interface CharStream, where the stream is assumed to
  * contain only ASCII characters (without unicode processing).
  */
 
+@PortabilityHint(target = "C#",name = "suppress")
 public class SimpleCharStream
 {
 /** Whether parser is static. */

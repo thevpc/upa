@@ -10,7 +10,7 @@ import net.vpc.upa.BeanAdapterFactory;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultBeanAdapterFactory implements BeanAdapterFactory {
 

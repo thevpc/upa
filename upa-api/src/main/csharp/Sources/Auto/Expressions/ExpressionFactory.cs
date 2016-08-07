@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Expressions
                     try {
                         c = defaultInstance.GetConstructor(new System.Type[] { typeof(object) });
                     } catch (System.Exception e2) {
-                        throw new System.ArgumentException ("Could not cast " + e + " as Expression");
+                        throw new System.ArgumentException ("Could not cast " + e + " as Expression", e1);
                     }
                 }
                 try {

@@ -48,17 +48,17 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         public virtual void Parse(System.Collections.Generic.IList<System.Reflection.FieldInfo> fields) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> insertSequenceFields = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Config.Decoration> persistSequenceFields = new System.Collections.Generic.List<Net.Vpc.Upa.Config.Decoration>();
             foreach (System.Reflection.FieldInfo javaField in fields) {
                 Net.Vpc.Upa.Config.Decoration gid = repo.GetFieldDecoration(javaField, typeof(Net.Vpc.Upa.Config.Sequence));
                 if (gid != null) {
-                    insertSequenceFields.Add(gid);
+                    persistSequenceFields.Add(gid);
                 }
             }
-            if ((insertSequenceFields).Count > 1) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(insertSequenceFields, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
+            if ((persistSequenceFields).Count > 1) {
+                Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(persistSequenceFields, Net.Vpc.Upa.Impl.Config.Annotationparser.DecorationComparator.INSTANCE);
             }
-            foreach (Net.Vpc.Upa.Config.Decoration gid in insertSequenceFields) {
+            foreach (Net.Vpc.Upa.Config.Decoration gid in persistSequenceFields) {
                 MergeSequence(gid);
             }
         }
@@ -79,13 +79,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 if ((gid.GetString("group")).Length > 0) {
                     group = gid.GetString("group");
                 }
-                if (gid.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType)) != Net.Vpc.Upa.SequenceType.DEFAULT) {
+                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.SequenceType>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType)),Net.Vpc.Upa.SequenceType.DEFAULT)) {
                     sequenceType = gid.GetEnum<Net.Vpc.Upa.SequenceType>("type", typeof(Net.Vpc.Upa.SequenceType));
                 }
                 if ((gid.GetString("name")).Length > 0) {
                     name = gid.GetString("name");
                 }
-                if (gid.GetEnum<Net.Vpc.Upa.SequenceStrategy>("strategy", typeof(Net.Vpc.Upa.SequenceStrategy)) != Net.Vpc.Upa.SequenceStrategy.UNSPECIFIED) {
+                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.SequenceStrategy>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.SequenceStrategy>("strategy", typeof(Net.Vpc.Upa.SequenceStrategy)),Net.Vpc.Upa.SequenceStrategy.UNSPECIFIED)) {
                     strategy = gid.GetEnum<Net.Vpc.Upa.SequenceStrategy>("strategy", typeof(Net.Vpc.Upa.SequenceStrategy));
                 }
                 if (gid.GetInt("formulaOrder") != System.Int32.MinValue) {

@@ -43,7 +43,7 @@ public class EnumUC {
             val.setStatus(Status.INVALID);
             pu.persist(val);
 
-            List<Data> entityList = pu.createQuery("Select a from Data a").getEntityList();
+            List<Data> entityList = pu.createQuery("Select a from Data a").getResultList();
             for (Data c : entityList) {
                 System.out.println(c);
             }

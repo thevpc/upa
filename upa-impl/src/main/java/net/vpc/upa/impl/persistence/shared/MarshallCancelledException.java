@@ -7,7 +7,7 @@ package net.vpc.upa.impl.persistence.shared;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class MarshallCancelledException extends RuntimeException{
     

@@ -27,11 +27,11 @@ public class InvoiceModule {
     }
 
     public List<Customer> findAllCustomers() {
-        return UPA.getPersistenceUnit().createQueryBuilder(Customer.class).getEntityList();
+        return UPA.getPersistenceUnit().createQueryBuilder(Customer.class).getResultList();
     }
 
     public List<Customer> findCustomers(Customer prototype) {
-        return UPA.getPersistenceUnit().createQueryBuilder(Customer.class).byPrototype(prototype).getEntityList();
+        return UPA.getPersistenceUnit().createQueryBuilder(Customer.class).byPrototype(prototype).getResultList();
     }
 
     public void saveCustomer(Customer customer) {
@@ -66,14 +66,14 @@ public class InvoiceModule {
             Expression b = new LessThan(new Var("date"), new Param("endDate", end));
             a = a == null ? b : new And(a, b);
         }
-        return UPA.getPersistenceUnit().createQueryBuilder(Invoice.class).byExpression(a).getEntityList();
+        return UPA.getPersistenceUnit().createQueryBuilder(Invoice.class).byExpression(a).getResultList();
     }
 
     public List<Invoice> findInvoiceListByCustomer(int customerId) {
         return UPA.getPersistenceUnit().createQueryBuilder(Invoice.class)
                 .byExpression("customerId=:customerId")
                 .setParameter("customerId", customerId)
-                .getEntityList();
+                .getResultList();
     }
 
     public List<String> findCustomerNames() {

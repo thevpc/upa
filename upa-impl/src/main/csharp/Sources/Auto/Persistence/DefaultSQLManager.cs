@@ -25,12 +25,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager;
 
-        private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
-
-        public DefaultSQLManager(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+        public DefaultSQLManager(Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
             this.marshallManager = marshallManager;
-            this.persistenceUnit = persistenceUnit;
             Register0(new Net.Vpc.Upa.Impl.Persistence.Shared.BinaryOperatorExpressionSQLProvider());
+            Register0(new Net.Vpc.Upa.Impl.Persistence.Shared.PlusExpressionSQLProvider());
             Register0(new Net.Vpc.Upa.Impl.Persistence.Shared.VarSQLProvider());
             Register0(new Net.Vpc.Upa.Impl.Persistence.Shared.UnaryOperatorSQLProvider());
             Register0(new Net.Vpc.Upa.Impl.Persistence.Shared.BinaryExpressionSQLProvider());

@@ -2,6 +2,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.ExpressionHelper;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            Expression
@@ -76,7 +77,7 @@ public class CompiledVar extends CompiledVarOrMethod {
     @Override
     public String toString() {
         StringBuilder v = new StringBuilder();
-        v.append(getName());
+        v.append(ExpressionHelper.escapeIdentifier(getName()));
         if (getChild() != null) {
             v.append(".");
             v.append(getChild().toString());

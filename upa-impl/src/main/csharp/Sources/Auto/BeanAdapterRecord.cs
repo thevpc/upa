@@ -27,12 +27,15 @@ namespace Net.Vpc.Upa.Impl
 
         private System.Collections.Generic.IDictionary<string , object> extra;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanAdapter nfo;
+        private string entityName;
+
+        private Net.Vpc.Upa.BeanType nfo;
 
         private Net.Vpc.Upa.PropertyChangeSupport propertyChangeSupport;
 
-        public BeanAdapterRecord(object userObject, Net.Vpc.Upa.Impl.Util.EntityBeanAdapter nfo, bool ignoreUnspecified) {
+        public BeanAdapterRecord(object userObject, string entityName, Net.Vpc.Upa.BeanType nfo, bool ignoreUnspecified) {
             this.userObject = userObject;
+            this.entityName = entityName;
             this.nfo = nfo;
             this.ignoreUnspecified = ignoreUnspecified;
             propertyChangeSupport = new Net.Vpc.Upa.PropertyChangeSupport(this);
@@ -44,10 +47,10 @@ namespace Net.Vpc.Upa.Impl
 
 
         public override  T GetObject<T>(string key) {
-            T y = (T) nfo.GetProperty<T>(userObject, key);
+            T y = (T) nfo.GetProperty(userObject, key);
             //in C# could not compare y == default(y)
             //so cast y to Object to do so
-            if (((object) y) == null && nfo.GetAttrAdapter(key) == null && extra != null) {
+            if (((object) y) == null && !nfo.ContainsProperty(key) && extra != null) {
                 y = (T) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(extra,key);
             }
             return y;
@@ -56,8 +59,8 @@ namespace Net.Vpc.Upa.Impl
 
         public override void SetObject(string key, object @value) {
             SetUpdated(key);
-            object oldValue = nfo.GetProperty<object>(userObject, key);
-            if (@value is Net.Vpc.Upa.Expressions.Expression || !nfo.SetProperty<object>(userObject, key, @value)) {
+            object oldValue = nfo.GetProperty(userObject, key);
+            if (@value is Net.Vpc.Upa.Expressions.Expression || !nfo.SetProperty(userObject, key, @value)) {
                 // handle unstructured fields (non defined in the bean class)
                 if (extra == null) {
                     extra = new System.Collections.Generic.Dictionary<string , object>();
@@ -77,9 +80,8 @@ namespace Net.Vpc.Upa.Impl
 
 
         public override bool IsSet(string key) {
-            Net.Vpc.Upa.Impl.Util.EntityBeanAttribute f = nfo.GetAttrAdapter(key);
-            if (f != null) {
-                if (!ignoreUnspecified || !f.IsDefaultValue(userObject)) {
+            if (nfo.ContainsProperty(key)) {
+                if (!ignoreUnspecified || !nfo.IsDefaultValue(userObject, key)) {
                     return true;
                 }
             }
@@ -105,11 +107,11 @@ namespace Net.Vpc.Upa.Impl
             if (ignoreUnspecified) {
                 includeDefaults = false;
             }
-            System.Collections.Generic.HashSet<string> s = new System.Collections.Generic.HashSet<string>(nfo.KeySet(userObject, includeDefaults));
-            if (extra != null) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(s, new System.Collections.Generic.HashSet<string>(extra.Keys));
+            System.Collections.Generic.ISet<string> keySet = nfo.GetPropertyNames(userObject, includeDefaults);
+            if (extra != null && (extra).Count > 0) {
+                Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(keySet, new System.Collections.Generic.HashSet<string>(extra.Keys));
             }
-            return s;
+            return keySet;
         }
 
 
@@ -123,11 +125,11 @@ namespace Net.Vpc.Upa.Impl
             if (ignoreUnspecified) {
                 includeDefaults = false;
             }
-            System.Collections.Generic.Dictionary<string , object> map = new System.Collections.Generic.Dictionary<string , object>(nfo.ToMap(userObject, includeDefaults));
-            if (extra != null) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,object>(map,extra);
+            System.Collections.Generic.IDictionary<string , object> m = nfo.ToMap(userObject, includeDefaults);
+            if (extra != null && (extra).Count > 0) {
+                Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,object>(m,extra);
             }
-            return map;
+            return m;
         }
 
 
@@ -156,7 +158,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public override string ToString() {
-            return nfo.GetEntity().GetName() + ToMap().ToString();
+            return entityName + ToMap().ToString();
         }
     }
 }

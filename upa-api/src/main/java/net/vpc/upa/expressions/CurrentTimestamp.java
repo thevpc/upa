@@ -44,9 +44,12 @@ import java.util.List;
  * Time: 17:00:10
  * To change this template use Options | File Templates.
  */
-public class CurrentTimestamp extends Function {
+public class CurrentTimestamp extends FunctionExpression {
     private static final long serialVersionUID = 1L;
 
+    public CurrentTimestamp(Expression[] expressions) {
+        checkArgCount(getName(),expressions,0);
+    }
     public CurrentTimestamp() {
     }
 

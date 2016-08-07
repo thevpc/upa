@@ -139,7 +139,7 @@ namespace Net.Vpc.Upa
                 if (e is Net.Vpc.Upa.Exceptions.UPAException) {
                     throw (Net.Vpc.Upa.Exceptions.UPAException) e;
                 }
-                throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("UnableToLoadBootstrapFactory"));
+                throw new Net.Vpc.Upa.Exceptions.BootstrapException("LoadBootstrapFactoryException", e);
             }
         }
 

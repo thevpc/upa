@@ -16,23 +16,23 @@ namespace Net.Vpc.Upa.Impl.Persistence
 {
 
 
-    public class TypeList<T> : Net.Vpc.Upa.Impl.Persistence.QueryResultIteratorList<T> {
+    public class TypeList<T> : Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<T> {
 
         private int columns;
 
-        private Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter beanAdapter;
+        private Net.Vpc.Upa.BeanType beanType;
 
         private string[] fields;
 
         private string[] fieldsByExpression;
 
-        public TypeList(Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL, System.Type entity, string[] fields)  : base(nativeSQL){
+        public TypeList(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor, System.Type entity, string[] fields)  : base(queryExecutor){
 
-            Net.Vpc.Upa.Impl.Persistence.NativeField[] expressions = nativeSQL.GetFields();
+            Net.Vpc.Upa.Impl.Persistence.NativeField[] expressions = queryExecutor.GetFields();
             this.fields = fields;
-            beanAdapter = new Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter(entity);
+            beanType = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(entity);
             if (fields == null || fields.Length == 0) {
-                System.Collections.Generic.IList<string> fieldNames = beanAdapter.GetFieldNames();
+                System.Collections.Generic.ISet<string> fieldNames = beanType.GetPropertyNames();
                 this.fields = fieldNames.ToArray();
             }
             fieldsByExpression = new string[expressions.Length];
@@ -51,11 +51,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
 
         public override T Parse(Net.Vpc.Upa.Persistence.QueryResult result) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            T instance = (T) beanAdapter.NewInstance();
+            T instance = (T) beanType.NewInstance();
             for (int i = 0; i < columns; i++) {
-                object v = result.Read<object>(i);
+                object v = result.Read<T>(i);
                 if (fieldsByExpression[i] != null) {
-                    beanAdapter.SetProperty<object>(instance, fieldsByExpression[i], v);
+                    beanType.SetProperty(instance, fieldsByExpression[i], v);
                 }
             }
             return instance;

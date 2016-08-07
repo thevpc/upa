@@ -21,7 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class SqlTimeMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            return resultSet.GetTime(index);
+            
+            return null;
         }
 
 
@@ -37,11 +38,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.TIME);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=(@object is Net.Vpc.Upa.Types.Time) ? ((Net.Vpc.Upa.Types.Time) @object) : (new Net.Vpc.Upa.Types.Time(((Net.Vpc.Upa.Types.Temporal) @object).GetTime()));
-            }
+            
         }
 
         public SqlTimeMarshaller() {

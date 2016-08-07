@@ -2,17 +2,19 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
+import net.vpc.upa.Properties;
 import net.vpc.upa.bulk.ImportExportManager;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.*;
+import net.vpc.upa.exceptions.IllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.*;
 import net.vpc.upa.filters.DefaultEntityFilter;
 import net.vpc.upa.filters.EntityFilter;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.config.*;
 import net.vpc.upa.impl.config.annotationparser.RelationshipDescriptorProcessor;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
@@ -21,11 +23,12 @@ import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipDataInterceptor;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
+import net.vpc.upa.impl.eval.functions.FunctionCallback;
 import net.vpc.upa.impl.persistence.DefaultDBConfigModel;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
 import net.vpc.upa.impl.uql.DefaultExpressionManager;
-import net.vpc.upa.impl.uql.PasswordQLFunction;
+import net.vpc.upa.impl.eval.functions.PasswordQLFunction;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
@@ -44,7 +47,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public static final int STATUS_INITIALIZING = 0;
     private static final Logger log = Logger.getLogger(DefaultPersistenceUnit.class.getName());
-    private static final FieldFilter ID = Fields.regular().and(Fields.byModifiersAllOf(FieldModifier.ID));
     public static final NamingStrategy CASE_SENSITIVE_COMPARATOR = new CaseSensitiveNamingStrategy();
     public static final NamingStrategy CASE_INSENSITIVE_COMPARATOR = new CaseInsensitiveNamingStrategy();
     public static final int COMMIT_ORDER_ENTITY = 10;
@@ -408,7 +410,16 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             r.commitModelChanged();
 //            cache_relationsByName.put(r.getName(), r);
         }
-
+        for (Entity entity : getEntities()) {
+            for (Field field : entity.getFields()) {
+                if(field.getDataType() instanceof SerializableOrManyToOneType){
+                    Class entityType = ((SerializableOrManyToOneType) field.getDataType()).getEntityType();
+//                    if(findEntity(entityType)!=null){
+                        throw new UnexpectedException("Bug");
+//                    }
+                }
+            }
+        }
         for (Entity entity : getEntities()) {
             if (entity instanceof DefaultEntity) {
                 ((DefaultEntity) entity).commitExpressionModelChanges();
@@ -1174,7 +1185,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     private List<ConnectionProfile> getValidConnectionProfiles(boolean root) {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
-        DefaultProperties p2 = new DefaultProperties(getProperties());
+        Properties p2 = new DefaultProperties(getProperties());
         return connectionProfileParser.parseEnabled(p2, getConnectionConfigs(), (root ? UPA.ROOT_CONNECTION_STRING : UPA.CONNECTION_STRING));
     }
 
@@ -1299,7 +1310,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return true;
     }
 
-    @Override
     public DBConfigModel getDBConfigModel() {
         if (dbConfigModel == null) {
             dbConfigModel = new DefaultDBConfigModel();
@@ -1307,7 +1317,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return dbConfigModel;
     }
 
-    @Override
     public void setDBConfigModel(DBConfigModel dbConfigModel) {
         this.dbConfigModel = dbConfigModel;
     }
@@ -1401,7 +1410,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //            for (Iterator i = relations.entrySet().iterator(); i.hasNext(); ) {
 //                Map.Entry e = (Map.Entry) i.next();
 //                Relationship r = (Relationship) e.getValue();
-//                if ((detailsEntity == null || r.getDetailEntity().equals(detailsEntity))
+//                if ((detailsEntity == null || r.getSourceEntity().equals(detailsEntity))
 //                        && (r.getName().equalsIgnoreCase(relationName)
 //                        || r.getTargetRole().getTitle().equalsIgnoreCase(relationName))) {
 //                    return r;
@@ -1605,7 +1614,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public List<LockInfo> getLockingInfo(Entity entity, Expression expression) throws UPAException {
         ArrayList<LockInfo> vector = new ArrayList<LockInfo>();
-        FieldFilter filter = Fields.as(ID).or(Fields.byName("lockId", "lockTime"));
+        FieldFilter filter = FieldFilters.id().or(FieldFilters.byName("lockId", "lockTime"));
         List<Record> list = entity.createQueryBuilder().byExpression(
                 new And(new Different(new Var("lockId"), null), expression)).setFieldFilter(filter).getRecordList();
         for (Record record : list) {
@@ -1700,7 +1709,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             try {
                 locked = lockInfoEntity.createQueryBuilder()
                         .byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                        .setFieldFilter(Fields.byName("lockId", "lockTime")).getRecord();
+                        .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
             } catch (UPAException e) {
                 throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NString());
             }
@@ -1727,7 +1736,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private LockInfo _getLockInfo(String entityName) throws UPAException {
         Record rec = getEntity(entityName).createQueryBuilder().byExpression(
                 new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                .setFieldFilter(Fields.byName("lockId", "lockTime")).getRecord();
+                .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
         if (rec == null) {
             return null;
         }
@@ -1747,7 +1756,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             // oll is Ok
         } else {
             Record rlocked = entity.createQueryBuilder().byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                    .setFieldFilter(Fields.byName("lockId", "lockTime")).getRecord();
+                    .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
             if (rlocked == null) {
                 rlocked = entity.getBuilder().createRecord();
             }
@@ -2151,33 +2160,33 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         Field mainField = e.getMainField();
         mainField.check(mainFieldValue);
         return createQueryBuilder(entityName).byExpression(new Equals(new Var(new Var(e.getName()), mainField.getName()), new Param("main", mainFieldValue)))
-                .getSingleEntityOrNull();
+                .getSingleResultOrNull();
     }
 
     public <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) throws UPAException {
         Entity e = getEntity(entityType);
         return createQueryBuilder(entityType)
                 .byExpression(new Equals(new Var(new Var(e.getName()), fieldName), new Param("main", mainFieldValue)))
-                .getSingleEntityOrNull();
+                .getSingleResultOrNull();
     }
 
     public <T> T findByField(String entityName, String fieldName, Object mainFieldValue) throws UPAException {
         Entity e = getEntity(entityName);
         return createQueryBuilder(entityName)
                 .byExpression(new Equals(new Var(new Var(e.getName()), fieldName), new Param("main", mainFieldValue)))
-                .getSingleEntityOrNull();
+                .getSingleResultOrNull();
     }
 
     public <T> List<T> findAll(Class entityType) throws UPAException {
         return createQueryBuilder(entityType)
                 .orderBy(getEntity(entityType).getListOrder())
-                .getEntityList();
+                .getResultList();
     }
 
     public <T> List<T> findAll(String entityName) throws UPAException {
         return createQueryBuilder(entityName)
                 .orderBy(getEntity(entityName).getListOrder())
-                .getEntityList();
+                .getResultList();
     }
 
     @Override
@@ -2201,12 +2210,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public <T> T findById(Class entityType, Object id) throws UPAException {
-        return createQueryBuilder(entityType).byId(id).getEntity();
+        return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
     }
 
     @Override
     public <T> T findById(String entityType, Object id) throws UPAException {
-        return createQueryBuilder(entityType).byId(id).getEntity();
+        return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
     }
 
     @Override
@@ -2576,7 +2585,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (currentSession == null) {
             return null;
         }
-        return currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+        UserPrincipal p = currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+        if(p==null){
+            //inherit global context
+            p=getSecurityManager().getUserPrincipal();
+        }
+        return p;
     }
 
     @Override
@@ -2789,34 +2803,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public Comparator<Entity> getDependencyComparator() {
-        return new Comparator<Entity>() {
-            @Override
-            public int compare(Entity o1, Entity o2) {
-                Set<String> s1 = findEntityDependencies(o1);
-                Set<String> s2 = findEntityDependencies(o2);
-                if(s1.contains(o2.getName()) && s2.contains(o1.getName())) {
-                    return o1.getName().compareTo(o2.getName());
-                }else if(s1.contains(o2.getName())){
-                    return -1;
-                }else if(s2.contains(o1.getName())){
-                    return 1;
-                }else {
-                    return o1.getName().compareTo(o2.getName());
-                }
-            }
-            private Set<String> findEntityDependencies(Entity o1){
-                Set<String> all=new HashSet<String>();
-                for (Field field : o1.getFields()) {
-                    if(!field.getModifiers().contains(FieldModifier.TRANSIENT)){
-                        DataType dt = field.getDataType();
-                        if(dt instanceof ManyToOneType){
-                            all.add(((ManyToOneType) dt).getRelationship().getTargetEntity().getName());
-                        }
-                    }
-                }
-                return all;
-            }
-        };
+        return DefaultEntityDependencyComparator.INSTANCE;
 
     }
 
@@ -2863,4 +2850,5 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     public long getEntityCount(Class entityType) {
         return getEntity(entityType).getEntityCount();
     }
+
 }

@@ -182,14 +182,13 @@ namespace Net.Vpc.Upa.Impl
                 if (persistenceUnits.ContainsKey(name)) {
                     throw new Net.Vpc.Upa.Exceptions.PersistenceUnitAlreadyExistsException(name);
                 }
-                Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this);
-                listeners.FireOnCreatePersistenceUnit(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+                listeners.FireOnCreatePersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.BEFORE));
                 persistenceUnits[name]=persistenceUnit;
                 Net.Vpc.Upa.PersistenceUnit oldPersistenceUnit = GetPersistenceUnitProvider().GetPersistenceUnit(this);
                 if (oldPersistenceUnit == null) {
                     SetPersistenceUnit(persistenceUnit.GetName());
                 }
-                listeners.FireOnCreatePersistenceUnit(@event, Net.Vpc.Upa.EventPhase.AFTER);
+                listeners.FireOnCreatePersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.AFTER));
             }
             log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Create PersistenceUnit {0}/{1}",null,new object[] { GetName(), persistenceUnit.GetName() }));
             return persistenceUnit;
@@ -208,10 +207,9 @@ namespace Net.Vpc.Upa.Impl
                 if (!persistenceUnit.IsClosed()) {
                     persistenceUnit.Close();
                 }
-                Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this);
-                listeners.FireOnDropPersistenceUnit(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+                listeners.FireOnDropPersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.BEFORE));
                 persistenceUnits.Remove(name);
-                listeners.FireOnDropPersistenceUnit(@event, Net.Vpc.Upa.EventPhase.AFTER);
+                listeners.FireOnDropPersistenceUnit(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(persistenceUnit, this, Net.Vpc.Upa.EventPhase.AFTER));
             }
         }
 
@@ -230,6 +228,11 @@ namespace Net.Vpc.Upa.Impl
                 throw new Net.Vpc.Upa.Exceptions.CurrentSessionNotFoundException();
             }
             return session;
+        }
+
+
+        public virtual Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetSessionContextProvider().GetSession(this);
         }
 
         public virtual void SetCurrentSession(Net.Vpc.Upa.Session session) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -340,9 +343,62 @@ namespace Net.Vpc.Upa.Impl
             listeners.RemoveCallback(callback);
         }
 
-        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = listeners.GetCallbacks(nameFilter, objectType, name, system, phase);
+        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = listeners.GetCallbacks(nameFilter, objectType, name, system, preparedOnly, phase);
             return callbackInvokers.ToArray();
+        }
+
+        protected internal virtual Net.Vpc.Upa.InvokeContext PrepareInvokeContext(Net.Vpc.Upa.InvokeContext c) {
+            if (c == null) {
+                c = new Net.Vpc.Upa.InvokeContext();
+            } else {
+                c = c.Copy();
+            }
+            c.SetPersistenceGroup(this);
+            if (c.GetPersistenceUnit() != null && c.GetPersistenceUnit().GetPersistenceGroup() != this) {
+                c.SetPersistenceUnit(null);
+            }
+            return c;
+        }
+
+
+        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetContext().Invoke(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetContext().InvokePrivileged(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetContext().Invoke<T>(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetContext().InvokePrivileged<T>(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetContext().Invoke(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetContext().InvokePrivileged(action, PrepareInvokeContext(null));
         }
     }
 }

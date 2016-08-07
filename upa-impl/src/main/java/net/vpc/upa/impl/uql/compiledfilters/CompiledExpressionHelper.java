@@ -15,7 +15,7 @@ import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class CompiledExpressionHelper {
 

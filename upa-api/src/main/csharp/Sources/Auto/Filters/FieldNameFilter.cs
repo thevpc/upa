@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Filters
             this.acceptedFields = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(acceptedFields));
         }
 
-        public FieldNameFilter(System.Collections.Generic.IList<string> acceptedFields) {
+        public FieldNameFilter(System.Collections.Generic.ICollection<string> acceptedFields) {
             this.acceptedFields = new System.Collections.Generic.HashSet<string>(acceptedFields);
         }
 

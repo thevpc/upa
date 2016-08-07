@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Bulk
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public abstract class AbstractDataParser : Net.Vpc.Upa.Bulk.DataParser {
 

@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         public virtual void SetReferrer(object referrer) {
             this.referrer = referrer;
             if (this.referrer is Net.Vpc.Upa.Field) {
-                this.SetDataType(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity((Net.Vpc.Upa.Field) referrer));
+                this.SetTypeTransform(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity((Net.Vpc.Upa.Field) referrer));
             }
         }
 

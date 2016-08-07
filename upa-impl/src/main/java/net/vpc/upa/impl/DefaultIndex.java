@@ -6,8 +6,8 @@ import net.vpc.upa.Index;
 import net.vpc.upa.exceptions.UPAException;
 
 import java.util.ArrayList;
-import java.util.List;
-import net.vpc.upa.filters.Fields;
+
+import net.vpc.upa.filters.FieldFilters;
 
 public class DefaultIndex extends AbstractUPAObject implements Index {
 
@@ -48,7 +48,7 @@ public class DefaultIndex extends AbstractUPAObject implements Index {
 
     @Override
     public void commitModelChanges() {
-        ArrayList<Field> fields = new ArrayList<Field>(entity.getFields(Fields.byName(fieldNames)));
+        ArrayList<Field> fields = new ArrayList<Field>(entity.getFields(FieldFilters.byName(fieldNames)));
         this.fields = fields.toArray(new Field[fields.size()]);
     }
 

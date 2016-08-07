@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.specific.mysql;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.AbstractSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -92,6 +92,8 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
             } else if (PlatformUtils.isDateTime(platformType)) {
                 return "DATETIME";
             } else if (PlatformUtils.isDateOnly(platformType)) {
+                return "DATE";
+            } else {
                 return "DATE";
             }
         }

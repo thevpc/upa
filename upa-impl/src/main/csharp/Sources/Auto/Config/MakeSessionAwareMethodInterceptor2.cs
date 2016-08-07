@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
         public virtual object Intercept(Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) /* throws System.Exception */  {
             if (methodFilter == null || methodFilter.Accept(@event.GetMethod())) {
-                return Net.Vpc.Upa.UPA.GetContext().Invoke<object>(new Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor2Action<object>(@event), null);
+                return Net.Vpc.Upa.UPA.GetContext().Invoke<object>(new Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor2Action<T>(@event), null);
             } else {
                 return @event.InvokeBase(@event.GetObject(), @event.GetArguments());
             }

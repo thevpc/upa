@@ -67,11 +67,12 @@ public class DefaultPersistenceStoreFactory implements PersistenceStoreFactory {
     private Map<DatabaseProduct, Class<? extends PersistenceStore>> puStoresByDialect = new HashMap<DatabaseProduct, Class<? extends PersistenceStore>>();
 
     public DefaultPersistenceStoreFactory() {
+        /**@PortabilityHint(target = "C#", name = "todo")*/
         setDialectPersistenceUnitManager(DatabaseProduct.SQLSERVER, MSSQLServerPersistenceStore.class);
 
-        /**@PortabilityHint(target = "C#", name = "ignore")*/
+        /**@PortabilityHint(target = "C#", name = "todo")*/
         setDialectPersistenceUnitManager(DatabaseProduct.ORACLE, OraclePersistenceStore.class);
-        /**@PortabilityHint(target = "C#", name = "ignore")*/
+        /**@PortabilityHint(target = "C#", name = "todo")*/
         setDialectPersistenceUnitManager(DatabaseProduct.MYSQL, MySQLPersistenceStore.class);
 
 

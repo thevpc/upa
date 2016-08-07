@@ -31,11 +31,11 @@ namespace Net.Vpc.Upa.Config
 
         private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.UserFieldModifier>();
 
-        private Net.Vpc.Upa.Formula insertFormula;
+        private Net.Vpc.Upa.Formula persistFormula;
 
         private Net.Vpc.Upa.Formula updateFormula;
 
-        private bool insertFormulaSet;
+        private bool persistFormulaSet;
 
         private bool updateFormulaSet;
 
@@ -51,14 +51,14 @@ namespace Net.Vpc.Upa.Config
             return name;
         }
 
-        public virtual bool IsInsertFormulaSet() {
-            return insertFormulaSet;
+        public virtual bool IsPersistFormulaSet() {
+            return persistFormulaSet;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetInsertFormulaSet(bool insertFormulaSet) {
-            this.insertFormulaSet = insertFormulaSet;
-            if (!insertFormulaSet) {
-                insertFormula = null;
+        public virtual Net.Vpc.Upa.Config.FieldDesc SetPersistFormulaSet(bool persistFormulaSet) {
+            this.persistFormulaSet = persistFormulaSet;
+            if (!persistFormulaSet) {
+                persistFormula = null;
             }
             return this;
         }
@@ -138,8 +138,8 @@ namespace Net.Vpc.Upa.Config
             return SetExcludeModifiers(GetExcludeModifiers().RemoveAll(modifiers));
         }
 
-        public virtual Net.Vpc.Upa.Formula GetInsertFormula() {
-            return insertFormula;
+        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+            return persistFormula;
         }
 
         public virtual Net.Vpc.Upa.Formula GetUpdateFormula() {
@@ -147,14 +147,14 @@ namespace Net.Vpc.Upa.Config
         }
 
         public virtual Net.Vpc.Upa.Config.FieldDesc SetFormula(Net.Vpc.Upa.Formula formula) {
-            SetInsertFormula(formula);
+            SetPersistFormula(formula);
             SetUpdateFormula(formula);
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Config.FieldDesc SetInsertFormula(Net.Vpc.Upa.Formula insertFormula) {
-            this.insertFormula = insertFormula;
-            this.insertFormulaSet = true;
+        public virtual Net.Vpc.Upa.Config.FieldDesc SetPersistFormula(Net.Vpc.Upa.Formula persistFormula) {
+            this.persistFormula = persistFormula;
+            this.persistFormulaSet = true;
             return this;
         }
 

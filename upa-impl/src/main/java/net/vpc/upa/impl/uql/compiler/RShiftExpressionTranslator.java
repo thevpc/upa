@@ -16,22 +16,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class RShiftExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public RShiftExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileRShift((RShift) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileRShift((RShift) o, declarations);
-    }
-
-    protected CompiledRShift compileRShift(RShift v, ExpressionDeclarationList declarations) {
+    protected CompiledRShift compileRShift(RShift v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = outer.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledRShift s = new CompiledRShift(left, right);
         //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

@@ -35,9 +35,14 @@
 package net.vpc.upa.expressions;
 
 
-public final class Sum extends Function implements Cloneable {
+public final class Sum extends FunctionExpression implements Cloneable {
     private static final long serialVersionUID = 1L;
     private Expression expression;
+
+    public Sum(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
+    }
 
     public Sum(Expression expression) {
         this.expression = expression;

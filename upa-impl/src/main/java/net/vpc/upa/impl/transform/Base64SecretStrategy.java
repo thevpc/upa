@@ -11,7 +11,7 @@ import net.vpc.upa.impl.util.Base64;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class Base64SecretStrategy implements SecretStrategy {
 

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.ImportDataConfig;
 import net.vpc.upa.bulk.ImportEntityFinder;
 import net.vpc.upa.bulk.ImportEntityMapper;
@@ -16,6 +17,7 @@ import net.vpc.upa.bulk.ImportEntityMapper;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class ImportDataConfigHelper {
     private ImportDataConfig config;
     private Map<String,ImportEntityMapper> mappers=new HashMap<String, ImportEntityMapper>();

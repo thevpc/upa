@@ -21,8 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class UtilDateMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            Net.Vpc.Upa.Types.Timestamp ts = resultSet.GetTimestamp(index);
-            return ts == null ? null : new Net.Vpc.Upa.Types.Date(ts.GetTime());
+            
+            return null;
         }
 
 
@@ -37,11 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.TIMESTAMP);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=(@object is Net.Vpc.Upa.Types.Timestamp) ? ((Net.Vpc.Upa.Types.Timestamp) @object) : (new Net.Vpc.Upa.Types.Timestamp(((Net.Vpc.Upa.Types.Temporal) @object).GetTime()));
-            }
+            
         }
 
         public UtilDateMarshaller() {

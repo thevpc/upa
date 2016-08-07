@@ -46,5 +46,4 @@ public interface DataWriter extends Closeable {
 
     void writeRow(Object[] row);
 
-    void close();
 }

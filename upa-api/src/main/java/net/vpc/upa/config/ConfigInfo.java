@@ -7,7 +7,7 @@ package net.vpc.upa.config;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ConfigInfo implements Comparable<ConfigInfo> {
 

@@ -17,13 +17,13 @@ namespace Net.Vpc.Upa.Impl.Util
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
-    public class RegexpStringFilter : Net.Vpc.Upa.Impl.Util.ObjectFilter<string> {
+    public class RegexpStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
 
         private string patternString;
 
-        private System.Text.RegularExpressions.Regex pattern;
+        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
 
         private bool nullIsEmpty;
 
@@ -31,11 +31,12 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public RegexpStringFilter(string patternString, bool nullIsEmpty, bool ignoreCase) {
             this.patternString = (nullIsEmpty && patternString == null) ? "" : patternString;
+            this.ignoreCase = ignoreCase;
             if (patternString != null) {
                 if (ignoreCase) {
-                    this.pattern = new System.Text.RegularExpressions.Regex(patternString, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    this.pattern = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(patternString.ToLower());
                 } else {
-                    this.pattern = new System.Text.RegularExpressions.Regex(patternString);
+                    this.pattern = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(patternString);
                 }
             }
             this.nullIsEmpty = nullIsEmpty;
@@ -46,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (nullIsEmpty && s == null) {
                 s = "";
             }
-            return (pattern.Match(s)).Success;
+            return pattern.Matcher(ignoreCase ? s.ToLower() : s).Find();
         }
     }
 }

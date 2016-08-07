@@ -63,12 +63,7 @@ public class EnumType extends SeriesType implements Cloneable {
     @PortabilityHint(target = "C#", name = "ignore")
     @Override
     public List<Object> getValues() {
-        try {
-
             return Arrays.asList(enumClass.getEnumConstants());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

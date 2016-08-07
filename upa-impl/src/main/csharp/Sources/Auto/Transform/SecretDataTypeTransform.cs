@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class SecretDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransform {
 
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Impl.Transform
         public SecretDataTypeTransform(Net.Vpc.Upa.SecretStrategy secretStrategy, Net.Vpc.Upa.Types.DataType source, int? targetMax) {
             this.secretStrategy = secretStrategy;
             this.sourceType = source;
-            this.targetType = new Net.Vpc.Upa.Types.ByteArrayType(null, targetMax == null ? ((int?)(255)) : targetMax, source.IsNullable());
+            this.targetType = new Net.Vpc.Upa.Types.ByteArrayType(null, targetMax == null ? ((Net.Vpc.Upa.Types.DataType)(255)) : targetMax, source.IsNullable());
         }
 
         public virtual object TransformValue(object @value) {

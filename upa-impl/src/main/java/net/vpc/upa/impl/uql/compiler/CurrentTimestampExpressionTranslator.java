@@ -16,13 +16,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class CurrentTimestampExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public CurrentTimestampExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileCurrentTimestamp((CurrentTimestamp) o, declarations);
     }
 

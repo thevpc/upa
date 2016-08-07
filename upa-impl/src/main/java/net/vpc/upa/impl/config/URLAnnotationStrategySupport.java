@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
-import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.classpath.DecorationParser;
 import net.vpc.upa.persistence.PersistenceUnitConfig;
 import java.util.ArrayList;
@@ -69,9 +69,6 @@ import net.vpc.upa.config.OnPreReset;
 import net.vpc.upa.config.OnPreUpdate;
 import net.vpc.upa.config.OnPreUpdateFormula;
 import net.vpc.upa.impl.config.decorations.SimpleDecoration;
-import net.vpc.upa.impl.util.OrderedIem;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.PersistenceGroupConfig;
 import net.vpc.upa.persistence.PersistenceNameConfig;
@@ -229,7 +226,7 @@ public class URLAnnotationStrategySupport {
             for (PersistenceGroup g : createdPersistenceGroups) {
 //                int count = 0;
                 for (PersistenceGroupConfig pgc : context.getBootstrapContextConfig().getPersistenceGroups()) {
-                    if (StringUtils.matchesSimpleExpression(g.getName(), pgc.getName())) {
+                    if (StringUtils.matchesSimpleExpression(g.getName(), pgc.getName(), PatternType.DOT_PATH)) {
                         if (pgc.getAutoScan() != null) {
                             g.setAutoScan(pgc.getAutoScan());
                         }
@@ -249,7 +246,7 @@ public class URLAnnotationStrategySupport {
             for (PersistenceUnitConfig c : buildPersistenceUnitConfigs) {
                 if (!StringUtils.isSimpleExpression(c.getName())) {
                     for (PersistenceGroup persistenceGroup : context.getPersistenceGroups()) {
-                        if (StringUtils.matchesSimpleExpression(persistenceGroup.getName(), c.getPersistenceGroup())) {
+                        if (StringUtils.matchesSimpleExpression(persistenceGroup.getName(), c.getPersistenceGroup(), PatternType.DOT_PATH)) {
                             if (!persistenceGroup.containsPersistenceUnit(c.getName())) {
                                 PersistenceUnit pu = persistenceGroup.addPersistenceUnit(c.getName());
                                 createdPersistenceUnits.add(pu);
@@ -261,8 +258,8 @@ public class URLAnnotationStrategySupport {
             for (PersistenceUnit pu : createdPersistenceUnits) {
                 boolean autoScan = false;
                 for (PersistenceUnitConfig puc : buildPersistenceUnitConfigs) {
-                    if (StringUtils.matchesSimpleExpression(pu.getPersistenceGroup().getName(), puc.getPersistenceGroup())
-                            && StringUtils.matchesSimpleExpression(pu.getName(), puc.getName())) {
+                    if (StringUtils.matchesSimpleExpression(pu.getPersistenceGroup().getName(), puc.getPersistenceGroup(), PatternType.DOT_PATH)
+                            && StringUtils.matchesSimpleExpression(pu.getName(), puc.getName(), PatternType.DOT_PATH)) {
                         if ((puc.getAutoScan() != null)) {
                             pu.setAutoScan(autoScan);
                         }

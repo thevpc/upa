@@ -116,15 +116,6 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override object Clone() {
-            try {
-                return base.MemberwiseClone();
-            } catch (System.Exception e) {
-                return null;
-            }
-        }
-
-
         public override string ToString() {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string valueString = System.Convert.ToString(entity);

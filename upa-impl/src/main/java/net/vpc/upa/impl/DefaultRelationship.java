@@ -2,6 +2,8 @@ package net.vpc.upa.impl;
 
 import java.util.ArrayList;
 
+import net.vpc.upa.impl.uql.util.ThatExpressionReplacer;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -90,7 +92,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             dataType = targetEntity.getDataType();
         }
         if (dataType.isNullable() != nullable) {
-            DataType trCloned = (DataType) dataType.clone();
+            DataType trCloned = (DataType) dataType.copy();
             trCloned.setNullable(nullable);
             dataType = trCloned;
         }
@@ -121,7 +123,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 if (tr.isNullable() == nullable) {
                     sourceFields[i].setDataType(tr);
                 } else {
-                    DataType trCloned = (DataType) tr.clone();
+                    DataType trCloned = (DataType) tr.copy();
                     trCloned.setNullable(nullable);
                     sourceFields[i].setDataType(trCloned);
                 }
@@ -469,11 +471,11 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
     }
 
     public Entity getTargetEntity() throws UPAException {
-        return targetRole.getEntity();
+        return targetRole==null?null:targetRole.getEntity();
     }
 
     public Entity getSourceEntity() throws UPAException {
-        return sourceRole.getEntity();
+        return sourceRole==null?null:sourceRole.getEntity();
     }
 
     //    public void setRelationType(RelationType relationType) {
@@ -590,6 +592,22 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 
     public void setHierarchyExtension(HierarchyExtension hierarchyExtension) {
         this.hierarchyExtension = hierarchyExtension;
+    }
+
+    public Expression createTargetListExpression(Object currentInstance, String alias){
+        if(filter==null){
+            return null;
+        }
+        HashMap<String,Object> v=new HashMap<String,Object>();
+        v.put("this",currentInstance);
+        if(StringUtils.isNullOrEmpty(alias)){
+            alias=getTargetEntity().getName();
+        }
+        final String alias2=alias;
+        Expression filter2=getPersistenceUnit().getExpressionManager().simplifyExpression(filter.copy(),v);
+        filter2.visit(new ThatExpressionReplacer(alias2));
+        return filter2;
+
     }
 
 }

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.exceptions.BootstrapException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.types.I18NString;
 
@@ -52,7 +53,7 @@ public final class UPA {
     public static final String CONNECTION_STRING = "upa.connection";
     public static final String ROOT_CONNECTION_STRING = "upa.root-connection";
 
-    static boolean contextProviderCreated = false;
+    private static final UPABootstrap bootstrap = new UPABootstrap();
 
     private UPA() {
     }
@@ -162,17 +163,18 @@ public final class UPA {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             }
-            throw new UPAException(e, new I18NString("UPAContextProviderLazyHolderError"));
+            throw new BootstrapException("UPAContextProviderLazyHolderError",e);
         }
 
+        bootstrap.setContextInitialized();
         UPAContext context = contextProvider.getContext();
         //Double Checking Lock will/should work here because we are not about to instantiate the object,
         //this is the responsibility of the contextProvider
         if (context == null) {
-            synchronized (UPAContext.class) {
+            synchronized (bootstrap) {
                 context = contextProvider.getContext();
                 if (context == null) {
-                    ObjectFactory bootstrapFactory = getBootstrapFactory();
+                    ObjectFactory bootstrapFactory = bootstrap.getFactory();
                     context = bootstrapFactory.createObject(UPAContext.class);
                     context.start(bootstrapFactory);
                     contextProvider.setContext(context);
@@ -182,35 +184,13 @@ public final class UPA {
         return context;
     }
 
-    public static ObjectFactory getBootstrapFactory() {
-        try {
-            return BootstrapObjectFactoryLazyHolder.INSTANCE;
-        } catch (Throwable e) {
-            /**
-             * @PortabilityHint(target = "C#",name = "suppress")
-             */
-            if (e instanceof java.lang.ExceptionInInitializerError) {
-                java.lang.ExceptionInInitializerError ee = (java.lang.ExceptionInInitializerError) e;
-                if (ee.getCause() instanceof UPAException) {
-                    throw (UPAException) ee.getCause();
-                }
-                throw new UPAException(ee.getCause(), new I18NString("LoadBootstrapFactoryException"));
-            }
-            if (e instanceof UPAException) {
-                throw (UPAException) e;
-            }
-            /**
-             * @PortabilityHint(target = "C#",name = "suppress")
-             */
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            }
-            throw new UPAException(e, new I18NString("UnableToLoadBootstrapFactory"));
-        }
+    public static UPABootstrap getBootstrap() {
+        return bootstrap;
     }
 
+
     public static void close() {
-        if (contextProviderCreated) {
+        if (bootstrap.isContextInitialized()) {
             UPAContext context = UPAContextProviderLazyHolder.INSTANCE.getContext();
             if (context != null) {
                 context.close();

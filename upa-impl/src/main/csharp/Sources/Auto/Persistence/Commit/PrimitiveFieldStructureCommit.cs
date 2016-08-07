@@ -27,8 +27,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
 
         }
 
-        protected internal override Net.Vpc.Upa.PersistenceState GetObjectStatus() {
-            return GetPersistenceUnitCommitManager().GetPersistenceUnitManager().GetPersistenceState(@object, typedObject.GetSpec());
+        protected internal override Net.Vpc.Upa.PersistenceState GetObjectStatus(Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+            return GetPersistenceUnitCommitManager().GetPersistenceUnitManager().GetPersistenceState(@object, typedObject.GetSpec(), entityExecutionContext);
         }
 
 
@@ -36,8 +36,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
             Net.Vpc.Upa.PrimitiveField field = (Net.Vpc.Upa.PrimitiveField) @object;
             Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceUnitManager = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
             log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
-            string q = persistenceUnitManager.GetAlterTableAddColumnStatement(field);
-            Net.Vpc.Upa.Persistence.UConnection b = persistenceUnitManager.GetConnection();
+            string q = persistenceUnitManager.GetAlterTableAddColumnStatement(field, executionContext);
+            Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
             b.ExecuteNonQuery(q, null, null);
         }
     }

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public interface QLExpressionParser {
 

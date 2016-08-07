@@ -70,8 +70,8 @@ public class Select extends DefaultEntityStatement
     }
 
     public Select() {
-        joinsEntities = new ArrayList<JoinCriteria>();
-        fields = new ArrayList<QueryField>(1);
+        joinsEntities = new ArrayList<JoinCriteria>(3);
+        fields = new ArrayList<QueryField>(5);
 //        groupByList = new Vector(1);
         group = new GroupCriteria();
         order = new Order();
@@ -80,7 +80,9 @@ public class Select extends DefaultEntityStatement
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(
+                fields.size()+joinsEntities.size()+group.size()+order.size()+3
+        );
 
 //    private Expression where;
 //    private Expression having;
@@ -446,10 +448,11 @@ public class Select extends DefaultEntityStatement
      */
     public Select where(Expression condition) {
         if (condition != null) {
-            if (getWhere() == null) {
+            Expression where = getWhere();
+            if (where == null) {
                 setWhere(condition);
             } else {
-                setWhere(new And(getWhere(), condition));
+                setWhere(new And(where, condition));
             }
         }
         return this;
@@ -565,7 +568,7 @@ public class Select extends DefaultEntityStatement
 
     public void addParameter(QLParameter p) {
         if (parameters == null) {
-            parameters = new ArrayList<QLParameter>();
+            parameters = new ArrayList<QLParameter>(5);
         }
         parameters.add(p);
     }

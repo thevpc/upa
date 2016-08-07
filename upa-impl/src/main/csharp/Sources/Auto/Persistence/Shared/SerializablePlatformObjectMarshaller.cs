@@ -24,16 +24,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            byte[] b = resultSet.GetBytes(index);
-            if (b == null) {
-                return null;
-            }
-            try {
-                return Net.Vpc.Upa.Impl.Util.IOUtils.GetObjectFromSerializedForm(b);
-            } catch (System.Exception e) {
-                //Log.bug(e);
-                return null;
-            }
+            
+            return null;
         }
 
         public override string ToSQLLiteral(object @object) {
@@ -48,15 +40,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                //            	preparedStatement.setNull(i, Types.VARCHAR);
-                preparedStatement.SetBytes(i, null);
-            } else {
-                //            	byte[] d=Utils.getSerializedFormOf(object);
-                //InputStream dis=new ByteArrayInputStream(d);
-                //preparedStatement.setBinaryStream(i, dis,d.length);
-                preparedStatement.SetBytes(i, Net.Vpc.Upa.Impl.Util.IOUtils.GetSerializedFormOf(@object));
-            }
+            
         }
 
 

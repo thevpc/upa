@@ -33,13 +33,20 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.Package oldParent;
 
-        public PackageEvent(Net.Vpc.Upa.Package item, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Package parent, int index, Net.Vpc.Upa.Package oldParent, int oldIndex) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public PackageEvent(Net.Vpc.Upa.Package item, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Package parent, int index, Net.Vpc.Upa.Package oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.item = item;
             this.parent = parent;
             this.index = index;
             this.oldParent = oldParent;
             this.oldIndex = oldIndex;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {

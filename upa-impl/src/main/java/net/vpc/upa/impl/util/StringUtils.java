@@ -1,13 +1,14 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.config.BoolEnum;
+import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
+import net.vpc.upa.impl.util.regexp.PortablePatternMatcher;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.vpc.upa.config.BoolEnum;
-import net.vpc.upa.expressions.ExpressionHelper;
 
 /**
  * User: taha Date: 6 aout 2003 Time: 21:15:14
@@ -135,7 +136,7 @@ public final class StringUtils {
         return true;
     }
 
-//    public static void clear(StringBuffer sb) {
+    //    public static void clear(StringBuffer sb) {
 //        sb.remove(0, sb.length());
 //    }
     private static boolean split_allzero(int[] arr) {
@@ -379,8 +380,8 @@ public final class StringUtils {
 
     public static List<String> parseVarsList(String s) {
         List<String> vars = new ArrayList<String>();
-        Pattern p = Pattern.compile("\\$\\{[a-zA-Z]+\\w*\\}");
-        Matcher m = p.matcher(s);
+        PortablePattern p = new PortablePattern("\\$\\{[a-zA-Z]+\\w*\\}");
+        PortablePatternMatcher m = p.matcher(s);
         while (m.find()) {
             int n = 0;
             for (int i = m.start() - 1; i >= 0 && s.charAt(i) == '\\'; i--) {
@@ -453,7 +454,21 @@ public final class StringUtils {
         return false;
     }
 
-    public static String simpexpToRegexp(String pattern) {
+    public static String valueOf(Object pattern) {
+        if (pattern == null) {
+            return "";
+        }
+        return pattern.toString();
+    }
+
+    /**
+     * *
+     * **
+     *
+     * @param pattern
+     * @return
+     */
+    public static String simpexpToRegexp(String pattern, PatternType type) {
         if (pattern == null) {
             pattern = "*";
         }
@@ -465,16 +480,44 @@ public final class StringUtils {
             switch (c) {
                 case '.':
                 case '!':
-                case '$': {
+                case '$':
+                case '[':
+                case ']':
+                case '(':
+                case ')':
+                case '?':
+                case '^':
+                case '\\': {
                     sb.append('\\').append(c);
                     break;
                 }
                 case '*': {
-                    if (i + 1 < cc.length && cc[i + 1] == '*') {
-                        i++;
-                        sb.append("[a-zA-Z_0-9$.]*");
-                    } else {
-                        sb.append("[a-zA-Z_0-9$]*");
+                    switch (type) {
+                        case DOT_PATH: {
+                            if (i + 1 < cc.length && cc[i + 1] == '*') {
+                                i++;
+                                sb.append("[a-zA-Z_0-9$.]*");
+                            } else {
+                                sb.append("[a-zA-Z_0-9$]*");
+                            }
+                            break;
+                        }
+                        case SLASH_PATH: {
+                            if (i + 1 < cc.length && cc[i + 1] == '*') {
+                                i++;
+                                sb.append("[a-zA-Z_0-9$/]*");
+                            } else {
+                                sb.append("[a-zA-Z_0-9$]*");
+                            }
+                            break;
+                        }
+                        case ANY: {
+                            sb.append(".*");
+                            break;
+                        }
+                        default: {
+                            throw new IllegalArgumentException("Unsupported");
+                        }
                     }
                     break;
                 }
@@ -487,9 +530,9 @@ public final class StringUtils {
         sb.append('$');
         return sb.toString();
     }
-    
-    public static boolean matchesSimpleExpression(String str, String pattern) {
-        return Pattern.compile(simpexpToRegexp(pattern)).matcher(str == null ? "" : str).matches();
+
+    public static boolean matchesSimpleExpression(String str, String pattern, PatternType type) {
+        return new PortablePattern(simpexpToRegexp(pattern, type)).matcher(str == null ? "" : str).matches();
     }
 
     public static boolean isUndefined(String value) {
@@ -508,5 +551,254 @@ public final class StringUtils {
 
     public static String trim(String value) {
         return StringHelper.EMPTY_STRING.format(value);
+    }
+
+    public static Map<String, String> readEscapedKeyValMap(char[] chars, String commaSep, String equalsSep) {
+        return readEscapedKeyValMap(chars, commaSep, equalsSep, new Ref<Integer>(0));
+    }
+
+    public static Map<String, String> readEscapedKeyValMap(char[] chars, String commaSep, String equalsSep, Ref<Integer> pos) {
+        Map<String, String> m = new LinkedHashMap<String, String>();
+        while (pos.get() < chars.length) {
+            String[] v = readEscapedKeyVal(chars, commaSep, equalsSep, pos);
+            if (v != null) {
+                m.put(v[0], v[1]);
+            }
+            pos.set(pos.get() + 1);
+        }
+        return m;
+    }
+
+    public static String[] readEscapedKeyVal(char[] chars, String commaSep, String equalsSep, Ref<Integer> pos) {
+        int old = pos.get();
+        String key = null;
+        String value = null;
+        key = readEscapedString(chars, commaSep + equalsSep, pos);
+        int newPos = pos.get();
+        if (newPos == old) {
+            if (equalsSep.indexOf(chars[newPos]) >= 0) {
+                pos.set(pos.get() + 1);
+                value = readEscapedString(chars, commaSep, pos);
+            } else {
+                return null;
+            }
+        } else {
+            if (newPos < chars.length && equalsSep.indexOf(chars[newPos]) >= 0) {
+                pos.set(pos.get() + 1);
+                value = readEscapedString(chars, commaSep, pos);
+            } else {
+                value = "";
+            }
+        }
+        return new String[]{key, value};
+    }
+
+    public static String readEscapedString(char[] chars, String separators, Ref<Integer> pos) {
+//        System.out.println("readEscapedString : "+pos);
+        int i = pos.get();
+        List<String[]> ret = new ArrayList<String[]>();
+        while (i < chars.length) {
+            if (separators.indexOf(chars[i]) >= 0) {
+                break;
+            } else if (chars[i] == '\"') {
+                int k = i + 1;
+                StringBuilder v = new StringBuilder();
+                while (k < chars.length) {
+                    if (chars[k] == '\\') {
+                        k++;
+                        switch (chars[k]) {
+                            case '\n': {
+                                v.append("\n");
+                                break;
+                            }
+                            case '\r': {
+                                v.append("\r");
+                                break;
+                            }
+                            case '\t': {
+                                v.append("\t");
+                                break;
+                            }
+                            default: {
+                                v.append(chars[k]);
+                            }
+                        }
+                    } else if (chars[k] == '\"') {
+                        break;
+                    } else {
+                        v.append(chars[k]);
+                    }
+                    k++;
+                }
+                i = k;
+                if (v.length() > 0) {
+                    ret.add(new String[]{"\"", v.toString()});
+                }
+            } else if (chars[i] == '\'') {
+                int k = i + 1;
+                StringBuilder v = new StringBuilder();
+                while (k < chars.length) {
+                    if (chars[k] == '\\') {
+                        k++;
+                        switch (chars[k]) {
+                            case '\n': {
+                                v.append("\n");
+                                break;
+                            }
+                            case '\r': {
+                                v.append("\r");
+                                break;
+                            }
+                            case '\t': {
+                                v.append("\t");
+                                break;
+                            }
+                            default: {
+                                v.append(chars[k]);
+                            }
+                        }
+                    } else if (chars[k] == '\'') {
+                        break;
+                    } else {
+                        v.append(chars[k]);
+                    }
+                    k++;
+                }
+                i = k;
+                if (v.length() > 0) {
+                    ret.add(new String[]{"\'", v.toString()});
+                }
+            } else {
+                int k = i;
+                StringBuilder v = new StringBuilder();
+                while (k < chars.length) {
+                    if (separators.indexOf(chars[k]) < 0 && chars[k] != '\'' && chars[k] != '\"') {
+                        v.append(chars[k]);
+                        k++;
+                    } else {
+                        k--;
+                        break;
+                    }
+                }
+                i = k;
+                if (v.length() > 0) {
+                    ret.add(new String[]{"", v.toString()});
+                }
+            }
+            i++;
+        }
+        pos.set(i);
+
+        //trim
+        while (ret.size() > 0) {
+            String[] s = ret.get(0);
+            String[] e = ret.get(ret.size() - 1);
+            if (s[0].equals("")) {
+                s[1] = trim(s[1], true, false);
+            }
+            if (e[0].equals("")) {
+                e[1] = trim(e[1], false, true);
+            }
+            if (s[0].equals("") && s[1].trim().isEmpty()) {
+                ret.remove(0);
+            } else if (e[0].equals("") && e[1].trim().isEmpty()) {
+                ret.remove(ret.size() - 1);
+            } else {
+                break;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String[] s : ret) {
+            sb.append(s[1]);
+        }
+        return sb.toString();
+    }
+
+    public static String trim(String str, boolean start, boolean end) {
+        char[] value = str.toCharArray();
+        int len = value.length;
+        int st = 0;
+        char[] val = value;
+        if (start) {
+            while ((st < len) && (val[st] <= ' ')) {
+                st++;
+            }
+        }
+        if (end) {
+            while ((st < len) && (val[len - 1] <= ' ')) {
+                len--;
+            }
+        }
+        return ((st > 0) || (len < value.length)) ? str.substring(st, len) : str;
+    }
+
+    public static String replaceDollarVars(String str, Converter<String, String> varConverter) {
+        if(str==null){
+            return str;
+        }
+        StringBuffer sb = new StringBuffer();
+        PortablePattern p = new PortablePattern("\\$\\{[^\\{\\}]*\\}");
+        PortablePatternMatcher m = p.matcher(str == null ? "" : str);
+        while (m.find()) {
+            final String g = m.group(0);
+            String v = g.substring(2, g.length() - 1);
+            sb.append(m.replace(varConverter.convert(v)));
+        }
+        sb.append(m.tail());
+        return sb.toString();
+    }
+
+    public static String replaceNoDollarVars(String str, Converter<String, String> varConverter) {
+        if(str==null){
+            return str;
+        }
+        StringBuffer sb = new StringBuffer();
+        PortablePattern p = new PortablePattern("\\{[^\\{\\}]*\\}");
+        PortablePatternMatcher m = p.matcher(str == null ? "" : str);
+        while (m.find()) {
+            final String g = m.group(0);
+            String v = g.substring(1, g.length() - 1);
+            sb.append(m.replace(varConverter.convert(v)));
+        }
+        sb.append(m.tail());
+        return sb.toString();
+
+//        StringBuffer sb = new StringBuffer();
+//
+//        {
+//            boolean javaExprSupported = true;
+//            if (javaExprSupported) {
+//                PortablePattern p = new PortablePattern("\\{[^\\{\\}]*\\}");
+//                PortablePatternMatcher m = p.matcher(str == null ? "" : str);
+//                while (m.find()) {
+//                    final String g = m.group(0);
+//                    String v = g.substring(1, g.length() - 1);
+//                    sb.append(m.replace(varConverter.convert(v)));
+//                }
+//                sb.append(m.tail());
+//                return sb.toString();
+//            }
+//        }
+//
+//        int i = 0;
+//        while (i >= 0 && i < str.length()) {
+//            int j = str.indexOf("{", i);
+//            if (j < 0) {
+//                sb.append(str.substring(i));
+//                i = -1;
+//            } else {
+//                sb.append(str.substring(i, j));
+//                int k = str.indexOf("}", j + 1);
+//                if (k < 0) {
+//                    sb.append(varConverter.convert(str.substring(j + 1)));
+//                    i = -1;
+//                } else {
+//                    sb.append(varConverter.convert(str.substring(j + 1, k)));
+//                    i = k + 1;
+//                }
+//            }
+//        }
+//
+//        return sb.toString();
     }
 }

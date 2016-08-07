@@ -22,16 +22,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class ByteArrayToBlobMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            Java.Sql.Blob t = resultSet.GetBlob(index);
-            if (t == null) {
-                return null;
-            }
-            try {
-                return Net.Vpc.Upa.Impl.Util.IOUtils.ToByteArray(t.GetBinaryStream());
-            } catch (System.Exception e) {
-                //                    Log.bug(e);
-                return null;
-            }
+            
+            return null;
         }
 
 
@@ -47,11 +39,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.BLOB);
-            } else {
-                preparedStatement.SetBlob(i, new Java.Io.ByteArrayInputStream((byte[]) @object));
-            }
+            
         }
 
         public ByteArrayToBlobMarshaller() {

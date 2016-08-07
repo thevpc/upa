@@ -4,20 +4,20 @@ import net.vpc.upa.CloseListener;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryScript;
 import net.vpc.upa.impl.persistence.connection.CloseListenerSupport;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.Parameter;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.UConnection;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
+import net.vpc.upa.types.TypesFactory;
 
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.util.StringUtils;
-import net.vpc.upa.types.TypesFactory;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -25,7 +25,7 @@ import net.vpc.upa.types.TypesFactory;
  */
 public class DefaultUConnection implements UConnection {
 
-    private static Set<String> _conn_attr_based_wrappers=new HashSet<String>(Arrays.asList(
+    private static Set<String> _conn_attr_based_wrappers = new HashSet<String>(Arrays.asList(
             "org.apache.tomcat.dbcp.dbcp.PoolableConnection",
             "org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper",
             "org.apache.commons.dbcp.PoolableConnection",
@@ -41,55 +41,44 @@ public class DefaultUConnection implements UConnection {
     private Map<String, Object> properties;
     private boolean closed = false;
     private static final Logger log = Logger.getLogger(DefaultUConnection.class.getName());
+    private static final List<UConnection> activeConnections = new ArrayList<UConnection>();
+    private static int activeConnectionsMaxCount=0;
 
-    public DefaultUConnection(String name,Connection connection, MarshallManager marshallManager) {
+    public DefaultUConnection(String name, Connection connection, MarshallManager marshallManager) {
         this.name = name;
         this.connection = connection;
         this.marshallManager = marshallManager;
         this.support = new CloseListenerSupport();
-        nameDebugString= StringUtils.isNullOrEmpty(name)?"[]":("["+name+"]");
+        nameDebugString = StringUtils.isNullOrEmpty(name) ? "[]" : ("[" + name + "]");
+        synchronized (activeConnections) {
+            activeConnections.add(this);
+            activeConnectionsMaxCount = Math.max(activeConnectionsMaxCount, activeConnections.size());
+            log.log(Level.FINE, "activeConnections " + activeConnections.size()+"/"+activeConnectionsMaxCount);
+        }
     }
 
     public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
         }
-        long startTime =System.currentTimeMillis();
-        SQLException error=null;
+        long startTime = System.currentTimeMillis();
+        SQLException error = null;
         try {
             try {
 
 
                 PreparedStatement s = null;
                 /**
-                 * @PortabilityHint(target="C#",name="replace") s =
-                 * connection.CreateCommand(); s.CommandText=query;
+                 * @PortabilityHint(target="C#",name="replace")
+                 * s =connection.CreateCommand();
+                 * s.CommandText=query;
                  * s.CommandType=System.Data.CommandType.Text;
                  */
                 s = connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
 
-                if (types == null) {
-                    ResultSetMetaData metaData = s.getMetaData();
-                    types = new DataTypeTransform[metaData.getColumnCount()];
-                    for (int i = 0; i < types.length; i++) {
-                        try {
-                            types[i] = new IdentityDataTypeTransform(
-                                    TypesFactory.forPlatformType(Class.forName(metaData.getColumnClassName(i + 1)))
-                            );
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(DefaultUConnection.class.getName()).log(Level.SEVERE, null, ex);
-                            types[i] = new IdentityDataTypeTransform(
-                                    TypesFactory.forPlatformType(Object.class)
-                            );
-                        }
-                    }
-                }
-                int index = 1;
-                TypeMarshaller[] marshallers = new TypeMarshaller[types.length];
-                for (int i = 0; i < marshallers.length; i++) {
-                    marshallers[i] = marshallManager.getTypeMarshaller(types[i]);
-                }
+
                 int mi = 0;
+                int index = 1;
                 if (queryParameters != null) {
                     for (Parameter value : queryParameters) {
                         DataTypeTransform transform = value.getTypeTransform();
@@ -100,17 +89,55 @@ public class DefaultUConnection implements UConnection {
                     }
                 }
 
+                ResultSet resultSet = s.executeQuery();
+
+                if (types == null) {
+
+                    int columnCount;
+                    Class[] colTypes;
+                    /**
+                     * @PortabilityHint(target = "C#",name = "replace")
+                     * columnCount=resultSet.FieldCount;
+                     * colTypes = new System.Type[columnCount];
+                     * for (int i = 0; i < columnCount; i++) {
+                     *      colTypes[i] = resultSet.GetFieldType(i);
+                     *  }
+                     */
+                    {
+                        ResultSetMetaData metaData = resultSet.getMetaData();
+                        columnCount = metaData.getColumnCount();
+                        colTypes = new Class[columnCount];
+                        for (int i = 0; i < columnCount; i++) {
+                            try {
+                                colTypes[i] = Class.forName(metaData.getColumnClassName(i + 1));
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(DefaultUConnection.class.getName()).log(Level.SEVERE, null, ex);
+                                colTypes[i] = Object.class;
+                            }
+                        }
+                    }
+
+                    types = new DataTypeTransform[columnCount];
+                    for (int i = 0; i < types.length; i++) {
+                        types[i] = new IdentityDataTypeTransform(TypesFactory.forPlatformType(colTypes[i]));
+                    }
+                }
+                TypeMarshaller[] marshallers = new TypeMarshaller[types.length];
+                for (int i = 0; i < marshallers.length; i++) {
+                    marshallers[i] = marshallManager.getTypeMarshaller(types[i]);
+                }
+
 //        Log.log(PersistenceUnitManager.DB_PRE_NATIVE_QUERY_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-                return new DefaultQueryResult(s.executeQuery(), s, marshallers, types);
+                return new DefaultQueryResult(resultSet, s, marshallers, types);
             } catch (SQLException ee) {
-                error=ee;
+                error = ee;
                 throw ee;
             } finally {
                 if (log.isLoggable(Level.FINE)) {
-                    if(error!=null) {
-                        log.log(Level.SEVERE, nameDebugString+" [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
-                    }else {
-                        log.log(Level.FINE, "{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}", new Object[]{nameDebugString,query, queryParameters,(System.currentTimeMillis()-startTime)});
+                    if (error != null) {
+                        log.log(Level.SEVERE, nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
+                    } else {
+                        log.log(Level.FINE, "{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                     }
                 }
 //                long endTime = System.currentTimeMillis();
@@ -125,15 +152,16 @@ public class DefaultUConnection implements UConnection {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
         }
-        SQLException error=null;
+        SQLException error = null;
         int count = -1;
         boolean gen = generatedKeys != null && generatedKeys.size() > 0;
         long startTime = System.currentTimeMillis();
         try {
             PreparedStatement s = null;
             /**
-             * @PortabilityHint(target="C#",name="replace") s =
-             * connection.CreateCommand(); s.CommandText=query;
+             * @PortabilityHint(target="C#",name="replace")
+             * s = connection.CreateCommand();
+             * s.CommandText=query;
              * s.CommandType=System.Data.CommandType.Text;
              */
             s = connection.prepareStatement(query, gen ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
@@ -148,6 +176,10 @@ public class DefaultUConnection implements UConnection {
                 }
             }
             count = s.executeUpdate();
+
+            /**
+             * @PortabilityHint(target="C#",name="todo")
+             */
             if (gen) {
                 ResultSet rs = s.getGeneratedKeys();
                 if (rs.next()) {
@@ -163,16 +195,16 @@ public class DefaultUConnection implements UConnection {
                 }
             }
         } catch (SQLException ee) {
-            error=ee;
+            error = ee;
 //            Log.log(PersistenceUnitManager.DB_ERROR_LOG,"[Error] "+currentQueryInfo+" :=" + currentQuery);
             throw createUPAException(ee, "ExecuteUpdateFailedException", query);
         } finally {
             if (log.isLoggable(Level.FINE)) {
-                if(error!=null) {
-                    log.log(Level.SEVERE, nameDebugString+" [Error] executeNonQuery " + query + " :: parameters = " + queryParameters, error);
-                }else {
+                if (error != null) {
+                    log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery " + query + " :: parameters = " + queryParameters, error);
+                } else {
                     log.log(Level.FINE, "{0} executeNonQuery {1}" + ((queryParameters != null && !queryParameters.isEmpty())
-                            ? "\n\tqueryParameters={2}" : "")+" ;; time = {3}", new Object[]{nameDebugString,query, queryParameters,(System.currentTimeMillis()-startTime)});
+                            ? "\n\tqueryParameters={2}" : "") + " ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                 }
             }
 //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);
@@ -198,9 +230,9 @@ public class DefaultUConnection implements UConnection {
 //                    }
                 } catch (UPAException sqle) {
                     errorsCount++;
-                    log.log(Level.SEVERE, nameDebugString+" [Error] executeNonQuery @" + i + " : " + script.getStatement(i) /*+ " :: parameters = " + queryParameters*/, sqle);
+                    log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery @" + i + " : " + script.getStatement(i) /*+ " :: parameters = " + queryParameters*/, sqle);
 //                    log.log(Level.SEVERE,"Error @" + i + " : " + script.getStatement(i));
-                    log.log(Level.SEVERE, "{0} Error @{1} : {2}", new Object[]{nameDebugString,i, script.getStatement(i)});
+                    log.log(Level.SEVERE, "{0} Error @{1} : {2}", new Object[]{nameDebugString, i, script.getStatement(i)});
                     if (exitOnError) {
                         throw sqle;
                     }
@@ -276,12 +308,19 @@ public class DefaultUConnection implements UConnection {
 
     @Override
     public void close() throws UPAException {
+        synchronized (activeConnections) {
+            activeConnections.remove(this);
+            log.log(Level.FINE, "activeConnections " + activeConnections.size()+"/"+activeConnectionsMaxCount);
+        }
 //        try {
 //            connection.rollback();
 //        } catch (SQLException e) {
 //            throw createUPAException(e, "CloseFailed", connection);
 //        }
         support.beforeClose(this);
+        /**
+         * @PortabilityHint(target="C#",name="todo")
+         */
         try {
             connection.commit();
         } catch (SQLException e) {
@@ -295,9 +334,10 @@ public class DefaultUConnection implements UConnection {
         closed = true;
         support.afterClose(this);
     }
+
     @Override
     public Connection getMetadataAccessibleConnection() throws UPAException {
-        if(metadataAccessibleConnection==null) {
+        if (metadataAccessibleConnection == null) {
             Connection retConn = connection;
             while (true) {
                 String connClassName = retConn.getClass().getName();
@@ -316,7 +356,7 @@ public class DefaultUConnection implements UConnection {
                     break;
                 }
             }
-            metadataAccessibleConnection=retConn;
+            metadataAccessibleConnection = retConn;
         }
         return metadataAccessibleConnection;
     }

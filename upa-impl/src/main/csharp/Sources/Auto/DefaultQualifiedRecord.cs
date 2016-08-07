@@ -43,7 +43,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual string GetRecordName() {
-            return GetRecord().GetObject<string>(GetEntity().GetMainField().GetName());
+            return GetRecord().GetObject<T>(GetEntity().GetMainField().GetName());
         }
 
         public virtual Net.Vpc.Upa.Key GetKey() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {

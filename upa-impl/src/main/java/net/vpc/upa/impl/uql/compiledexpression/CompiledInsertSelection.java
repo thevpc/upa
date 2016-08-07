@@ -139,7 +139,13 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
         if (entity != null) {
             all.add(entity);
         }
-        all.addAll(fields);
+        /**
+         * this will not work because in C# all and fields have different types
+         */
+        //all.addAll(fields);
+        for (CompiledVar field : fields) {
+            all.add(field);
+        }
         all.add(selection);
         return all.toArray(new DefaultCompiledExpression[all.size()]);
     }

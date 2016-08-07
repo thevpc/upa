@@ -13,7 +13,7 @@ import net.vpc.upa.impl.util.IndexedComparator;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class ClassIndexedComparator implements IndexedComparator<Class> {
     private DecorationRepository repo;

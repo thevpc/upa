@@ -28,8 +28,6 @@ namespace Net.Vpc.Upa.Persistence
 
          bool HasNext();
 
-         void Close();
-
          void UpdateCurrent();
     }
 }

@@ -20,10 +20,10 @@ public class EntitySequenceManager implements SequenceManager {
 
     public synchronized PrivateSequence getOrCreateSequence(String name, String pattern, int initialValue, int increment) throws UPAException {
 //        System.out.println(">>>>>>>>>>>>>>>>>>> getOrCreateSequence("+name+","+pattern+")");
-        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         if (r == null) {
             createSequence(name, pattern, initialValue, increment);
-            r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
+            r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         }
         return r;
     }
@@ -33,7 +33,7 @@ public class EntitySequenceManager implements SequenceManager {
         if (increment == 0) {
             throw new IllegalArgumentException("increment zero");
         }
-        final PrivateSequence r = (PrivateSequence) entity.getBuilder().createObject();
+        PrivateSequence r = (PrivateSequence) entity.getBuilder().createObject();
         r.setName(name);
         r.setGroup(pattern);
         r.setLocked(false);
@@ -45,7 +45,7 @@ public class EntitySequenceManager implements SequenceManager {
 
     @Override
     public PrivateSequence getSequence(String name, String pattern) throws UPAException {
-        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         if (r == null) {
             throw new UPAException("Sequence " + pattern + " not found");
         }
@@ -84,7 +84,7 @@ public class EntitySequenceManager implements SequenceManager {
 
     @Override
     public synchronized int getCurrentValue(String name, String pattern) throws UPAException {
-        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getEntity();
+        PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         if (r == null) {
             return -1;
         }
@@ -107,7 +107,7 @@ public class EntitySequenceManager implements SequenceManager {
         if (r.isLocked() && !r.getLockUserId().equals(entity.getPersistenceUnit().getUserPrincipal().getName())) {
             throw new UPAException("Already locked");
         }
-        final int v = r.getValue();
+        int v = r.getValue();
         r.setValue(v + r.getIncrement());
         r.setLocked(false);
         r.setLockUserId(null);
@@ -121,7 +121,7 @@ public class EntitySequenceManager implements SequenceManager {
             q = entity.createQueryBuilder().byExpression(condition);
             q.setUpdatable(true);
             int oldValue;
-            for (PrivateSequence s : q.<PrivateSequence>getEntityList()) {
+            for (PrivateSequence s : q.<PrivateSequence>getResultList()) {
                 oldValue = s.getValue();
                 s.setValue(oldValue + s.getIncrement());
                 q.updateCurrent();
@@ -150,7 +150,7 @@ public class EntitySequenceManager implements SequenceManager {
         if (!r.getLockUserId().equals(entity.getPersistenceUnit().getUserPrincipal().getName())) {
             throw new UPAException("locked by others");
         }
-        final int v = r.getValue();
+        int v = r.getValue();
         r.setLocked(false);
         r.setLockUserId(null);
         r.setLockDate(null);

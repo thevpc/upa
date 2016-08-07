@@ -36,6 +36,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     private AccessLevel readAccessLevel = AccessLevel.PUBLIC;
     private FieldPersister fieldPersister;
     private PropertyAccessType accessType;
+    private List<Relationship> relationships;
 
     protected AbstractField() {
     }
@@ -55,6 +56,14 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         propertyChangeSupport.firePropertyChange("parent", old, parent);
     }
 
+    @Override
+    public void commitModelChanges() {
+//        if(getDataType() instanceof SerializableOrManyToOneType){
+//            System.out.println("Why");
+//        }
+        relationships=getManyToOneRelationshipsImpl();
+        //do nothing
+    }
     //    public boolean is(long modifier) {
 //        return modifier == (modifiers & modifier);
 //    }
@@ -83,6 +92,11 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public List<Relationship> getManyToOneRelationships() {
+        return relationships;
+//        return getManyToOneRelationshipsImpl();
+    }
+
+    public List<Relationship> getManyToOneRelationshipsImpl() {
         List<Relationship> relations = new ArrayList<Relationship>();
         for (Relationship r : getPersistenceUnit().getRelationshipsBySource(getEntity())) {
             Field entityField = r.getSourceRole().getEntityField();
@@ -97,7 +111,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
                 }
             }
         }
-        return relations;
+        return PlatformUtils.trimToSize(relations);
     }
 
     public void setFormula(Formula formula) {

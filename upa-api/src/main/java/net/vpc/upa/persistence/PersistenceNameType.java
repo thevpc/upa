@@ -38,7 +38,7 @@ import java.util.LinkedHashMap;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class PersistenceNameType {
 
@@ -66,17 +66,17 @@ public final class PersistenceNameType {
     public static PersistenceNameType valueOf(String name) {
         PersistenceNameType f = values.get(name);
         if (f == null) {
-            throw new IllegalArgumentException("PersistenceNameType not found " + name);
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("PersistenceNameType not found " + name);
         }
         return f;
     }
 
     public static PersistenceNameType create(String name, boolean globalScope) {
         if (name == null || name.length() == 0 || name.trim().length() != name.length()) {
-            throw new IllegalArgumentException("Invalid PersistenceNameType Name " + name);
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid PersistenceNameType Name " + name);
         }
         if (values.containsKey(name)) {
-            throw new IllegalArgumentException("PersistenceNameType already exists " + name);
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("PersistenceNameType already exists " + name);
         }
         PersistenceNameType t = new PersistenceNameType(name, globalScope);
         values.put(t.name(), t);

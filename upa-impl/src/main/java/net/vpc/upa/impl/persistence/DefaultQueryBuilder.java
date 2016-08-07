@@ -327,12 +327,15 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return build().getTypeSet(type, fields);
     }
 
-    public <R> R getSingleEntity() throws UPAException {
-        return build().getSingleEntity();
+    public <R> R getSingleResult() throws UPAException {
+        return build().getSingleResult();
     }
 
-    public <R> R getSingleEntityOrNull() throws UPAException {
-        return build().getSingleEntityOrNull();
+    public <R> R getSingleResultOrNull() throws UPAException {
+        return build().getSingleResultOrNull();
+    }
+    public <R> R getFirstResultOrNull() throws UPAException {
+        return build().getFirstResultOrNull();
     }
 
     @Override
@@ -453,7 +456,7 @@ public final class DefaultQueryBuilder implements QueryBuilder {
     }
 
     @Override
-    public QueryBuilder setHint(String key, Object value) {
+    public Query setHint(String key, Object value) {
         if (query != null) {
             throw new IllegalArgumentException("Query is already executed");
         }

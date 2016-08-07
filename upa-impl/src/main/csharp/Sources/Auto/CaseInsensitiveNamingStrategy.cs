@@ -20,9 +20,9 @@ namespace Net.Vpc.Upa.Impl
     internal class CaseInsensitiveNamingStrategy : Net.Vpc.Upa.NamingStrategy {
 
         public virtual string GetUniformValue(string name) {
-            if (name == null) {
-                throw new System.ArgumentException ("name should not be null");
-            }
+            //        if (name == null) {
+            //            throw new IllegalArgumentException("name should not be null");
+            //        }
             return name.ToUpper();
         }
 

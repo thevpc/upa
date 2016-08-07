@@ -18,7 +18,7 @@ import net.vpc.upa.impl.config.URLScanSource;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultUPAContextFactory implements UPAContextFactory {
 

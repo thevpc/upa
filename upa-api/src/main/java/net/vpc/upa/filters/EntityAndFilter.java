@@ -43,20 +43,27 @@ import java.util.List;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class EntityAndFilter implements EntityFilter {
-    private List<EntityFilter> v = new ArrayList<EntityFilter>(2);
+public class EntityAndFilter extends AbstractRichEntityFilter {
+    private List<EntityFilter> list = new ArrayList<EntityFilter>(2);
 
     public EntityAndFilter() {
     }
 
+    public EntityAndFilter(List<EntityFilter> list) {
+        this.list = new ArrayList<EntityFilter>(list);
+    }
+
     public EntityAndFilter and(EntityFilter filter) {
-        v.add(filter);
+        if(filter==null){
+            throw new NullPointerException();
+        }
+        list.add(filter);
         return this;
     }
 
     public boolean accept(Entity entity) throws UPAException {
-        for (int i = v.size() - 1; i >= 0; i--) {
-            EntityFilter entityFilter = v.get(i);
+        for (int i = list.size() - 1; i >= 0; i--) {
+            EntityFilter entityFilter = list.get(i);
             if (!entityFilter.accept(entity)) {
                 return false;
             }

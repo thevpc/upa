@@ -21,11 +21,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class FloatMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            float f = resultSet.GetFloat(index);
-            if (f == 0f && resultSet.WasNull()) {
-                return null;
-            }
-            return new float?(f);
+            return null;
         }
 
 
@@ -41,11 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.FLOAT);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=System.Convert.ToSingle((((object) @object)));
-            }
+            
         }
 
         public FloatMarshaller() {

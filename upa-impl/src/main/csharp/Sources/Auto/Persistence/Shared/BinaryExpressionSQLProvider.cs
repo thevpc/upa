@@ -140,7 +140,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                     }
                 case Net.Vpc.Upa.Expressions.BinaryOperator.LIKE:
                     {
-                        s = leftValue + " Like " + rightValue + " {escape '*'} ";
+                        //escape seems to be not supported with '*' wildcard
+                        //s=leftValue+" Like "+rightValue+" {escape '*'} ";
+                        s = leftValue + " Like " + rightValue + " ";
                         break;
                     }
                 default:

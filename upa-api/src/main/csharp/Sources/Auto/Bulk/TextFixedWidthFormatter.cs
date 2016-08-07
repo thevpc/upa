@@ -36,24 +36,27 @@ namespace Net.Vpc.Upa.Bulk
             return writeHeader;
         }
 
-        public virtual void SetWriteHeader(bool writeHeader) {
+        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetWriteHeader(bool writeHeader) {
             this.writeHeader = writeHeader;
+            return this;
         }
 
         public virtual int GetSkipRows() {
             return skipRows;
         }
 
-        public virtual void SetSkipRows(int skipRows) {
+        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetSkipRows(int skipRows) {
             this.skipRows = skipRows;
+            return this;
         }
 
         public virtual string GetNewLine() {
             return newLine;
         }
 
-        public virtual void SetNewLine(string newLine) {
+        public virtual Net.Vpc.Upa.Bulk.TextFixedWidthFormatter SetNewLine(string newLine) {
             this.newLine = newLine;
+            return this;
         }
 
         public abstract Net.Vpc.Upa.Bulk.DataWriter Format(System.IO.TextWriter writer) /* throws System.IO.IOException */ ;

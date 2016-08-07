@@ -40,7 +40,7 @@ import net.vpc.upa.exceptions.UPAException;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class EntityReverseFilter implements EntityFilter {
+public class EntityReverseFilter extends AbstractRichEntityFilter {
     private EntityFilter base;
 
     public EntityReverseFilter(EntityFilter base) {

@@ -14,17 +14,31 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public sealed class Exists : Net.Vpc.Upa.Expressions.Function {
+    public sealed class Exists : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
         private Net.Vpc.Upa.Expressions.QueryStatement query;
+
+        public Exists(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 1);
+            SetQuery((Net.Vpc.Upa.Expressions.QueryStatement) expressions[0]);
+        }
 
         public Exists() {
         }
 
         public Exists(Net.Vpc.Upa.Expressions.QueryStatement query) {
             SetQuery(query);
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            if (index == 0) {
+                this.query = (Net.Vpc.Upa.Expressions.QueryStatement) e;
+            } else {
+                throw new System.IndexOutOfRangeException();
+            }
         }
 
         public int Size() {

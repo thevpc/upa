@@ -23,6 +23,8 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.CallbackType GetCallbackType();
 
+         Net.Vpc.Upa.EventPhase GetPhase();
+
          Net.Vpc.Upa.ObjectType GetObjectType();
     }
 }

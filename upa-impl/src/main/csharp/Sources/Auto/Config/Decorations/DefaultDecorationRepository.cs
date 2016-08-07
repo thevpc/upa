@@ -18,7 +18,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultDecorationRepository : Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository {
 
@@ -146,7 +146,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             string methodOrFieldName = d.GetLocation();
             Net.Vpc.Upa.Config.DecorationTarget targetType = d.GetTarget();
             if (enableLog && /*IsLoggable=*/true) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] register Decoration {1}",null,new object[] { name, d }));
+                log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,40,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("\t[{0}] register Decoration {1}",null,new object[] { name, d }));
             }
             Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo typeInfo = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationRepositoryTypeInfo>(decorationsByType,typeName);
             if (typeInfo == null) {
@@ -154,7 +154,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                 typeInfo.typeName = typeName;
                 decorationsByType[typeName]=typeInfo;
             }
-            if (targetType != null) {
+            if (targetType != default(Net.Vpc.Upa.Config.DecorationTarget)) {
                 switch(targetType) {
                     case Net.Vpc.Upa.Config.DecorationTarget.TYPE:
                         {

@@ -1,8 +1,9 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.SelectSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.SelectSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -11,6 +12,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change
  * this template use File | Settings | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class MSSQLServerSelectSQLProvider extends SelectSQLProvider {
 
     public MSSQLServerSelectSQLProvider() {

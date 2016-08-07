@@ -42,7 +42,7 @@ import java.util.ArrayList;
 
 public class Order implements Serializable, Cloneable {
 
-    private ArrayList<OrderItem> fields = new ArrayList<OrderItem>(1);
+    private ArrayList<OrderItem> fields = new ArrayList<OrderItem>(3);
 
     public Order() {
     }

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DecorationPrimitiveValue : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue {
 

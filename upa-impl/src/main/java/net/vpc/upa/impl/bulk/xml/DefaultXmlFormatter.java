@@ -50,12 +50,16 @@ public class DefaultXmlFormatter extends XmlFormatter {
         }
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (target != null) {
-            if (target instanceof OutputStream) {
-                ((OutputStream) target).close();
-            } else if (target instanceof Writer) {
-                ((Writer) target).close();
+            try{
+                if (target instanceof OutputStream) {
+                    ((OutputStream) target).close();
+                } else if (target instanceof Writer) {
+                    ((Writer) target).close();
+                }
+            } catch (IOException e) {
+                throw new UPAException("IOException",e);
             }
         }
     }

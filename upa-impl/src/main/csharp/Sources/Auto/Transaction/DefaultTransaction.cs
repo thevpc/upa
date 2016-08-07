@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa.Impl.Transaction
             if (/*IsLoggable=*/true) {
                 log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit Transaction {0}",null,((int)(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this))).ToString("X").ToUpper()));
             }
-            connection.GetPlatformConnection().Commit();
+            
         }
 
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Impl.Transaction
             if (/*IsLoggable=*/true) {
                 log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Rollback Transaction {0}",null,((int)(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(this))).ToString("X").ToUpper()));
             }
-            connection.GetPlatformConnection().Rollback();
+            
         }
     }
 }

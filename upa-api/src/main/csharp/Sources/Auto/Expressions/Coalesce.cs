@@ -15,7 +15,7 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public sealed class Coalesce : Net.Vpc.Upa.Expressions.Function {
+    public sealed class Coalesce : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -25,11 +25,20 @@ namespace Net.Vpc.Upa.Expressions
             elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(1);
         }
 
-        public Coalesce(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions)  : this(){
+        public Coalesce(Net.Vpc.Upa.Expressions.Expression[] expressions)  : this(new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions)){
 
+        }
+
+        public Coalesce(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions) {
+            elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>((expressions).Count);
             foreach (Net.Vpc.Upa.Expressions.Expression expression in expressions) {
                 Add(expression);
             }
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            elements[index]=e;
         }
 
         public Coalesce(Net.Vpc.Upa.Expressions.Expression expression1, Net.Vpc.Upa.Expressions.Expression expression2)  : this(){
@@ -72,7 +81,9 @@ namespace Net.Vpc.Upa.Expressions
             bool valid = false;
             for (int i = 0; i < max; i++) {
                 Net.Vpc.Upa.Expressions.Expression e = Get(i);
-                if (e.IsValid()) valid = true;
+                if (e.IsValid()) {
+                    valid = true;
+                }
             }
             return valid;
         }

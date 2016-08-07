@@ -6,9 +6,9 @@ import net.vpc.upa.expressions.*;
 
 import java.util.*;
 import java.util.logging.Logger;
-import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.filters.Fields2;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -17,7 +17,6 @@ import net.vpc.upa.impl.util.PlatformUtils;
 public class DefaultEntityShield implements EntityShield {
 
     private static final Logger log = Logger.getLogger(DefaultEntityShield.class.getName());
-    private static final FieldFilter PERSISTENT_NON_FORMULA = Fields.byModifiersNoneOf(FieldModifier.PERSIST_FORMULA, FieldModifier.UPDATE_FORMULA, FieldModifier.TRANSIENT);
     private Entity entity;
     private Map<VetoableOperation, List<EntityShieldVeto>> vetoMap = new HashMap<VetoableOperation, List<EntityShieldVeto>>();
     private Expression nonDeletableRecordsExpression;
@@ -96,7 +95,10 @@ public class DefaultEntityShield implements EntityShield {
     public Expression getFullNonUpdatableRecordsExpression() throws UPAException {
         Entity parent = entity.getParentEntity();
         Expression a = getNonUpdatableRecordsExpression();
-        Expression b = parent == null ? null : entity.parentToChildExpression(parent.getShield().getFullNonUpdatableRecordsExpression());
+        Expression b = (parent == null
+                //if hierarchical entity then ignore parent
+                || parent.getName().equals(entity.getName())
+        )? null : entity.parentToChildExpression(parent.getShield().getFullNonUpdatableRecordsExpression());
         a = (a == null) ? b : new Or(a, b);
         return (a == null || !a.isValid()) ? null : a;
     }
@@ -288,7 +290,7 @@ public class DefaultEntityShield implements EntityShield {
                     throw new CloneRecordNotAllowedException(entity);
                 }
             }
-            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(Fields2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
                 throw new CloneRecordOldKeyNotFoundException(entity);
             }
@@ -329,7 +331,7 @@ public class DefaultEntityShield implements EntityShield {
                 }
             }
 
-            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(PERSISTENT_NON_FORMULA).getEntity();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(Fields2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
                 throw new RenameRecordOldKeyNotFoundException(entity);
             }
@@ -485,7 +487,9 @@ public class DefaultEntityShield implements EntityShield {
             if (p != null) {
                 //Expression ss = childToParentExpression(toExpression(key));
                 Expression ss = entity.childToParentExpression(record);
-                p.getShield().checkUpdate(null, ss);
+                if(ss!=null) {
+                    p.getShield().checkUpdate(null, ss);
+                }
             }
             List<Index> uniqueIndexes = entity.getIndexes(true);
             if (uniqueIndexes.isEmpty()) {

@@ -14,6 +14,7 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
+
     /**
      * Created by IntelliJ IDEA.
      * User: root
@@ -21,9 +22,13 @@ namespace Net.Vpc.Upa.Expressions
      * Time: 17:00:10
      * To change this template use Options | File Templates.
      */
-    public class CurrentTimestamp : Net.Vpc.Upa.Expressions.Function {
+    public class CurrentTimestamp : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
+
+        public CurrentTimestamp(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 0);
+        }
 
         public CurrentTimestamp() {
         }
@@ -31,6 +36,21 @@ namespace Net.Vpc.Upa.Expressions
 
         public override string GetName() {
             return "CurrentTimestamp";
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            throw new System.Exception("Not supported yet.");
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            throw new System.Exception("Not supported yet.");
         }
 
 

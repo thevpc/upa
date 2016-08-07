@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DecoratedMethodScan {
 

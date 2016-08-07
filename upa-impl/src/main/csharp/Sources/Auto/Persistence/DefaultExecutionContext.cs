@@ -31,6 +31,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.Parameter> generatedValues = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Persistence.Parameter>();
 
+        private System.Collections.Generic.IDictionary<string , object> hints;
+
         public DefaultExecutionContext() {
         }
 
@@ -43,6 +45,16 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
             return persistenceUnit;
+        }
+
+
+        public virtual Net.Vpc.Upa.Persistence.UConnection GetConnection() {
+            return GetPersistenceUnit().GetConnection();
+        }
+
+
+        public virtual Net.Vpc.Upa.Session GetSession() {
+            return GetPersistenceUnit().GetCurrentSession();
         }
 
         public virtual Net.Vpc.Upa.Entity GetEntity() {
@@ -93,6 +105,51 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public virtual Net.Vpc.Upa.Persistence.Parameter GetGeneratedValue(string name) {
             return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Persistence.Parameter>(generatedValues,name);
+        }
+
+
+        public virtual System.Collections.Generic.IDictionary<string , object> GetHints() {
+            return hints;
+        }
+
+        public virtual object GetHint(string hintName) {
+            return hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+        }
+
+        public virtual object GetHint(string hintName, object defaultValue) {
+            object c = hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            return c == null ? defaultValue : c;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext ResetHints() {
+            if (hints != null) {
+                hints.Clear();
+            }
+            hints = null;
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext SetHint(string name, object @value) {
+            if (@value == null) {
+                if (hints != null) {
+                    hints.Remove(name);
+                }
+            } else {
+                if (hints == null) {
+                    hints = new System.Collections.Generic.Dictionary<string , object>();
+                }
+                hints[name]=@value;
+            }
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+            if (hints != null) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(hints)) {
+                    SetHint((e).Key, (e).Value);
+                }
+            }
+            return this;
         }
     }
 }

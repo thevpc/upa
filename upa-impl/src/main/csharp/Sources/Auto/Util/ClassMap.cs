@@ -40,7 +40,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public virtual V Get(System.Type clazz) {
             V v1 = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,clazz);
-            if (v1 != default(V)) {
+            if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v1,default(V))) {
                 return v1;
             }
             System.Collections.Generic.HashSet<System.Type> visited = new System.Collections.Generic.HashSet<System.Type>();
@@ -52,11 +52,11 @@ namespace Net.Vpc.Upa.Impl.Util
                 if (!visited.Contains(c)) {
                     visited.Add(c);
                     V v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,c);
-                    if (v != default(V)) {
+                    if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                         return v;
                     }
                     v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(data,c);
-                    if (v != default(V)) {
+                    if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                         cache[clazz]=v;
                         return v;
                     }
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (!visited.Contains(typeof(object))) {
                 visited.Add(typeof(object));
                 V v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,V>(cache,typeof(object));
-                if (v != default(V)) {
+                if (!System.Collections.Generic.EqualityComparer<V>.Default.Equals(v,default(V))) {
                     cache[clazz]=v;
                     return v;
                 }

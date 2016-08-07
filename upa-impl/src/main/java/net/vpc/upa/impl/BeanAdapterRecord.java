@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.expressions.Expression;
 
 import java.beans.PropertyChangeListener;
@@ -18,10 +18,10 @@ public class BeanAdapterRecord extends AbstractRecord {
     private Object userObject;
     private Map<String, Object> extra;
     private String entityName;
-    private BeanType nfo;
+    private PlatformBeanType nfo;
     private PropertyChangeSupport propertyChangeSupport;
 
-    public BeanAdapterRecord(Object userObject, String entityName,BeanType nfo, boolean ignoreUnspecified) {
+    public BeanAdapterRecord(Object userObject, String entityName,PlatformBeanType nfo, boolean ignoreUnspecified) {
         this.userObject = userObject;
         this.entityName = entityName;
         this.nfo = nfo;

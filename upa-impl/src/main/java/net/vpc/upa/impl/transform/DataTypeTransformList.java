@@ -14,7 +14,7 @@ import net.vpc.upa.types.DataType;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DataTypeTransformList implements DataTypeTransform, Iterable<DataTypeTransform> {
 
@@ -98,5 +98,14 @@ public class DataTypeTransformList implements DataTypeTransform, Iterable<DataTy
     public Iterator<DataTypeTransform> iterator() {
         return Arrays.asList(items).iterator();
     }
+
+    /**
+     *  @PortabilityHint(target = "C#", name = "inline")
+     *  public System.Collections.Generic.IEnumerator<T> GetEnumerator (){
+     *    return ((System.Collections.Generic.IEnumerable<Net.Vpc.Upa.Types.DataTypeTransform>)items).GetEnumerator ();
+     *  }
+     *
+     */
+
 
 }

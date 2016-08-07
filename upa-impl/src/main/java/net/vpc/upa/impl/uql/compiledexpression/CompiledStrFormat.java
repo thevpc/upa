@@ -4,8 +4,6 @@ import net.vpc.upa.PersistenceUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.Converter;
 import net.vpc.upa.impl.util.PlatformUtils;

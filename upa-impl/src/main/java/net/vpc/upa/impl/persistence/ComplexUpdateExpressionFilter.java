@@ -12,7 +12,7 @@ import net.vpc.upa.expressions.Select;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class ComplexUpdateExpressionFilter implements ExpressionFilter {
 

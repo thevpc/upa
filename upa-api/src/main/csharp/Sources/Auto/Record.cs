@@ -111,7 +111,13 @@ namespace Net.Vpc.Upa
 
          System.Collections.Generic.IDictionary<string , object> ToMap();
 
+         System.Collections.Generic.ISet<System.Collections.Generic.KeyValuePair<string , object>> EntrySet();
+
+         void SetAll(System.Collections.Generic.IDictionary<string , object> other);
+
          void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys);
+
+         void SetAll(Net.Vpc.Upa.Record other);
 
          void SetAll(Net.Vpc.Upa.Record other, params string [] keys);
 
@@ -130,5 +136,7 @@ namespace Net.Vpc.Upa
          void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
 
          bool IsEmpty();
+
+         Net.Vpc.Upa.Record Copy();
     }
 }

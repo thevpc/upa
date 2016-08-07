@@ -17,15 +17,15 @@ namespace Net.Vpc.Upa.Impl.Util
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class SimpleEntityFilter : Net.Vpc.Upa.Filters.EntityFilter {
 
-        private Net.Vpc.Upa.Impl.Util.ObjectFilter<string> name;
+        private Net.Vpc.Upa.Filters.ObjectFilter<string> name;
 
         private bool includeSystem;
 
-        public SimpleEntityFilter(Net.Vpc.Upa.Impl.Util.ObjectFilter<string> name, bool includeSystem) {
+        public SimpleEntityFilter(Net.Vpc.Upa.Filters.ObjectFilter<string> name, bool includeSystem) {
             this.name = name;
             this.includeSystem = includeSystem;
         }

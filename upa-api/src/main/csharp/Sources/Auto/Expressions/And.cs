@@ -25,5 +25,15 @@ namespace Net.Vpc.Upa.Expressions
         public And(Net.Vpc.Upa.Expressions.Expression left, Net.Vpc.Upa.Expressions.Expression right)  : base(Net.Vpc.Upa.Expressions.BinaryOperator.AND, left, right){
 
         }
+
+        public static Net.Vpc.Upa.Expressions.Expression Create(Net.Vpc.Upa.Expressions.Expression left, Net.Vpc.Upa.Expressions.Expression right) {
+            if (left == null) {
+                return right;
+            }
+            if (right == null) {
+                return left;
+            }
+            return new Net.Vpc.Upa.Expressions.And(left, right);
+        }
     }
 }

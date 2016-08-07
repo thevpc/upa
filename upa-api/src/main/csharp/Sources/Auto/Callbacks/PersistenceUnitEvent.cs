@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class PersistenceUnitEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
 
@@ -25,9 +25,16 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
 
-        public PersistenceUnitEvent(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.PersistenceGroup persistenceGroup) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public PersistenceUnitEvent(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.persistenceGroup = persistenceGroup;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {

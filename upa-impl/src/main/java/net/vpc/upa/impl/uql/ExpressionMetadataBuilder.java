@@ -117,7 +117,7 @@ public class ExpressionMetadataBuilder {
                 for (QueryStatement qs : u0.getQueryStatements()) {
                     ResultMetaData resultMetaData = createResultMetaData(qs, fieldFilter,context2);
                     u.add((QueryStatement) resultMetaData.getStatement());
-                    List<ResultField> f = resultMetaData.getFields();
+                    List<ResultField> f = resultMetaData.getResultFields();
                     if (fields == null) {
                         fields = f.toArray(new ResultField[f.size()]);
                     } else {
@@ -148,14 +148,11 @@ public class ExpressionMetadataBuilder {
     }
 
     protected List<ResultField> createResultFields(Expression expression, String alias, FieldFilter fieldFilter, List<QueryStatement> context){
-        if(expression instanceof UserExpression){
-            Expression uexpression = expressionManager.parseExpression((UserExpression) expression);
-            return createResultFields(uexpression,alias, fieldFilter, context);
-        }
+        expression = expressionManager.parseExpression(expression);
+        List<ResultField> results=new ArrayList<ResultField>();
         if(expression instanceof Var){
             Var v=(Var) expression;
-            Var parent = v.getParent();
-            List<ResultField> results=new ArrayList<ResultField>();
+            Expression parent = v.getApplier();
             if(parent !=null){
                 List<ResultField> parentResults = createResultFields(parent, null, fieldFilter, context);
                 int size = parentResults.size();
@@ -165,7 +162,7 @@ public class ExpressionMetadataBuilder {
                     }
                     if(p.getExpression()!=parent){
                         //change parent
-                        v.setParent((Var) p.getExpression());
+                        v.setApplier((Var) p.getExpression());
                     }
                     if(p.getEntity()!=null){
                         if(v.getName().equals("*")){
@@ -236,7 +233,6 @@ public class ExpressionMetadataBuilder {
             }
             return results;
         }
-        List<ResultField> results=new ArrayList<ResultField>();
         results.add(new DefaultResultField(expression, alias, TypesFactory.OBJECT, null, null));
         return results;
     }

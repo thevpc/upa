@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa.Impl.Extension
 
         public static Net.Vpc.Upa.Relationship GetTreeRelationName(Net.Vpc.Upa.Entity e) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Relationship r = null;
-            foreach (Net.Vpc.Upa.Relationship relation in e.GetPersistenceUnit().GetRelationshipsForSource(e)) {
+            foreach (Net.Vpc.Upa.Relationship relation in e.GetPersistenceUnit().GetRelationshipsBySource(e)) {
                 if (relation.GetTargetRole().GetEntity().Equals(e)) {
                     if (r != null) {
                         throw new System.Exception("Ambiguity in resolving tree relation");
@@ -82,7 +82,7 @@ namespace Net.Vpc.Upa.Impl.Extension
 
         public virtual Net.Vpc.Upa.Expressions.Expression CreateFindRootsExpression(string alias) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Expressions.Var v = new Net.Vpc.Upa.Expressions.Var(alias == null ? null : new Net.Vpc.Upa.Expressions.Var(alias), GetHierarchyPathField());
-            return new Net.Vpc.Upa.Expressions.Equals(v, new Net.Vpc.Upa.Expressions.Concat(new Net.Vpc.Upa.Expressions.Literal(GetHierarchyPathField()), v));
+            return new Net.Vpc.Upa.Expressions.Equals(v, new Net.Vpc.Upa.Expressions.Concat(new Net.Vpc.Upa.Expressions.Expression[] { new Net.Vpc.Upa.Expressions.Literal(GetHierarchyPathField()), v }));
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression CreateFindDeepChildrenExpression(string alias, object id, bool includeId) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -164,13 +164,13 @@ namespace Net.Vpc.Upa.Impl.Extension
         protected internal virtual void ValidatePathField(object id, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IList<Net.Vpc.Upa.Field> lfs = GetTreeRelationship().GetSourceRole().GetFields();
             object[] parent_id = new object[(lfs).Count];
-            Net.Vpc.Upa.Record values = GetEntity().CreateQueryBuilder().SetExpression(GetEntity().GetBuilder().IdToExpression(id, null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByList(lfs))).GetRecord();
+            Net.Vpc.Upa.Record values = GetEntity().CreateQueryBuilder().ByExpression(GetEntity().GetBuilder().IdToExpression(id, null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByList(lfs))).GetRecord();
             if (values == null) {
                 parent_id = null;
             } else {
                 for (int i = 0; i < parent_id.Length; i++) {
                     Net.Vpc.Upa.Field field = lfs[i];
-                    parent_id[i] = values.GetObject<object>(field.GetName());
+                    parent_id[i] = values.GetObject<T>(field.GetName());
                     if (parent_id[i] != null) {
                         continue;
                     }
@@ -180,7 +180,7 @@ namespace Net.Vpc.Upa.Impl.Extension
             }
             string path = ToStringId(id);
             if (parent_id != null) {
-                Net.Vpc.Upa.Record r = GetEntity().CreateQueryBuilder().SetExpression(GetEntity().GetBuilder().IdToExpression(GetEntity().CreateId(parent_id), null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(GetHierarchyPathField())).GetRecord();
+                Net.Vpc.Upa.Record r = GetEntity().CreateQueryBuilder().ByExpression(GetEntity().GetBuilder().IdToExpression(GetEntity().CreateId(parent_id), null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(GetHierarchyPathField())).GetRecord();
                 if (r != null) {
                     path = r.GetString(GetHierarchyPathField()) + GetHierarchyPathSeparator() + path;
                 }
@@ -191,7 +191,7 @@ namespace Net.Vpc.Upa.Impl.Extension
         }
 
         protected internal virtual void ValidateChildren(object key, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Record r = GetEntity().CreateQueryBuilder().SetExpression(GetEntity().GetBuilder().IdToExpression(key, null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(GetHierarchyPathField())).GetRecord();
+            Net.Vpc.Upa.Record r = GetEntity().CreateQueryBuilder().ByExpression(GetEntity().GetBuilder().IdToExpression(key, null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(GetHierarchyPathField())).GetRecord();
             System.Collections.Generic.IList<Net.Vpc.Upa.Field> lfs = GetTreeRelationship().GetSourceRole().GetFields();
             Net.Vpc.Upa.Expressions.Concat concat = new Net.Vpc.Upa.Expressions.Concat();
             concat.Add(new Net.Vpc.Upa.Expressions.Literal(r.GetString(GetHierarchyPathField()), GetEntity().GetField(GetHierarchyPathField()).GetDataType()));
@@ -227,7 +227,7 @@ namespace Net.Vpc.Upa.Impl.Extension
                 p = p == null ? ((Net.Vpc.Upa.Expressions.Expression)(e)) : new Net.Vpc.Upa.Expressions.And(p, e);
             }
             GetEntity().UpdateCore(s, p, executionContext);
-            System.Collections.Generic.IList<object> children = GetEntity().CreateQueryBuilder().SetExpression(p).GetIdList<object>();
+            System.Collections.Generic.IList<object> children = GetEntity().CreateQueryBuilder().ByExpression(p).GetIdList<K>();
             foreach (object aChildren in children) {
                 ValidateChildren(aChildren, executionContext);
             }
@@ -235,17 +235,17 @@ namespace Net.Vpc.Upa.Impl.Extension
 
         public virtual object FindEntityByMainPath(string mainFieldPath) {
             Net.Vpc.Upa.Entity entity = GetEntity();
-            return entity.CreateQueryBuilder().SetExpression(CreateFindEntityByMainPathExpression(mainFieldPath, null)).GetEntity<object>();
+            return entity.CreateQueryBuilder().ByExpression(CreateFindEntityByMainPathExpression(mainFieldPath, null)).GetEntity<R>();
         }
 
         public virtual object FindEntityByIdPath(object[] idPath) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = GetEntity();
-            return entity.CreateQueryBuilder().SetExpression(CreateFindEntityByIdPathExpression(idPath, null)).GetEntity<object>();
+            return entity.CreateQueryBuilder().ByExpression(CreateFindEntityByIdPathExpression(idPath, null)).GetEntity<R>();
         }
 
         public virtual object FindEntityByKeyPath(Net.Vpc.Upa.Key[] keyPath) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = GetEntity();
-            return entity.CreateQueryBuilder().SetExpression(CreateFindEntityByKeyPathExpression(keyPath, null)).GetEntity<object>();
+            return entity.CreateQueryBuilder().ByExpression(CreateFindEntityByKeyPathExpression(keyPath, null)).GetEntity<R>();
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression CreateFindEntityByIdPathExpression(object[] idPath, string entityAlias) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -277,13 +277,13 @@ namespace Net.Vpc.Upa.Impl.Extension
         public virtual Net.Vpc.Upa.Expressions.Expression CreateFindEntityByMainPathExpression(string mainFieldPath, string entityAlias) {
             Net.Vpc.Upa.Entity entity = GetEntity();
             Net.Vpc.Upa.RelationshipRole detailRole = GetTreeRelationship().GetSourceRole();
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(mainFieldPath)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(mainFieldPath)) {
                 return null;
             }
             string mainFieldName = entity.GetMainField().GetName();
             object mainFieldValue = null;
             object parent = null;
-            string[] parentAndName = Net.Vpc.Upa.Impl.Util.Strings.Split(mainFieldPath, GetHierarchyPathSeparator()[0], false);
+            string[] parentAndName = Net.Vpc.Upa.Impl.Util.StringUtils.Split(mainFieldPath, GetHierarchyPathSeparator()[0], false);
             if (parentAndName != null) {
                 parent = FindEntityByMainPath(parentAndName[0]);
                 mainFieldValue = parentAndName[1];
@@ -295,7 +295,7 @@ namespace Net.Vpc.Upa.Impl.Extension
                 entityAlias = entity.GetName();
             }
             expr = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(entityAlias), mainFieldName), mainFieldValue);
-            Net.Vpc.Upa.Key entityToKey = parent == null ? null : entity.GetBuilder().EntityToKey(parent);
+            Net.Vpc.Upa.Key entityToKey = parent == null ? null : entity.GetBuilder().ObjectToKey(parent);
             System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = detailRole.GetFields();
             for (int index = 0; index < (primaryFields).Count; index++) {
                 Net.Vpc.Upa.Field field = primaryFields[index];
@@ -305,15 +305,15 @@ namespace Net.Vpc.Upa.Impl.Extension
         }
 
         public virtual  System.Collections.Generic.IList<T> FindDeepChildrenEntityList<T>(object id, bool includeId) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).SetExpression(CreateFindDeepChildrenExpression(GetEntity().GetName(), id, includeId)).GetEntityList<T>();
+            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).ByExpression(CreateFindDeepChildrenExpression(GetEntity().GetName(), id, includeId)).GetEntityList<R>();
         }
 
         public virtual  System.Collections.Generic.IList<T> FindImmediateChildrenEntityList<T>(object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).SetExpression(CreateFindImmediateChildrenExpression(GetEntity().GetName(), id)).GetEntityList<T>();
+            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).ByExpression(CreateFindImmediateChildrenExpression(GetEntity().GetName(), id)).GetEntityList<R>();
         }
 
         public virtual  System.Collections.Generic.IList<T> FindRootsEntityList<T>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).SetExpression(CreateFindRootsExpression(GetEntity().GetName())).GetEntityList<T>();
+            return treeRelation.GetPersistenceUnit().CreateQueryBuilder(GetEntity().GetName()).ByExpression(CreateFindRootsExpression(GetEntity().GetName())).GetEntityList<R>();
         }
     }
 }

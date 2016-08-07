@@ -187,6 +187,12 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             if (ue != null && ue.GetString("path") != null && (ue.GetString("path")).Length > 0) {
                 entityInfo.path.SetBetterValue(ue.GetString("path"), ue.GetConfig().GetOrder());
             }
+            if (ue != null && ue.GetString("listOrder") != null && (ue.GetString("listOrder")).Length > 0) {
+                entityInfo.listOrder.SetBetterValue(ue.GetString("listOrder"), ue.GetConfig().GetOrder());
+            }
+            if (ue != null && ue.GetString("archivingOrder") != null && (ue.GetString("archivingOrder")).Length > 0) {
+                entityInfo.archivingOrder.SetBetterValue(ue.GetString("archivingOrder"), ue.GetConfig().GetOrder());
+            }
             Net.Vpc.Upa.Config.Decoration path = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(type, typeof(Net.Vpc.Upa.Config.Path));
             if (path != null) {
                 if ((path.GetString("value")).Length > 0) {
@@ -199,7 +205,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             foreach (Net.Vpc.Upa.Config.Decoration indexAnn in FindIndexAnnotation(type)) {
                 //net.vpc.upa.config.Index 
                 System.Collections.Generic.IList<string> rr = new System.Collections.Generic.List<string>();
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(rr, new System.Collections.Generic.List<T>(indexAnn.GetPrimitiveArray<string>("fields", typeof(string))));
+                Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(rr, new System.Collections.Generic.List<string>(indexAnn.GetPrimitiveArray<string>("fields", typeof(string))));
                 entityInfo.AddIndex(indexAnn.GetString("name"), rr, indexAnn.GetBoolean("unique"), indexAnn.GetConfig().GetOrder());
             }
             //        net.vpc.upa.config.Sequence gue = (net.vpc.upa.config.Sequence) type.getAnnotation(Sequence.class);
@@ -257,7 +263,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                         Net.Vpc.Upa.Config.DecorationValue[] entities = unionEntity.GetArray("entities");
                         System.Collections.Generic.IList<string> _entities = new System.Collections.Generic.List<string>();
                         System.Collections.Generic.IList<string> _fields = new System.Collections.Generic.List<string>();
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(_fields, new System.Collections.Generic.List<T>(unionEntity.GetPrimitiveArray<string>("fields", typeof(string))));
+                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(_fields, new System.Collections.Generic.List<string>(unionEntity.GetPrimitiveArray<string>("fields", typeof(string))));
                         string _entityFieldName = discriminator;
                         string[][] _mapping = (string[][])Net.Vpc.Upa.Impl.FwkConvertUtils.CreateMultiArray(typeof(string),entities.Length,(_fields).Count);
                         int ientity = 0;
@@ -282,7 +288,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                         }
                         entityInfo.specs.Add(new Net.Vpc.Upa.Extensions.DefaultUnionEntityExtensionDefinition(new Net.Vpc.Upa.Extensions.UnionQueryInfo(_entities, _fields, _entityFieldName, _mapping)));
                     } else {
-                        entityInfo.specs.Add((Net.Vpc.Upa.Extensions.EntityExtensionDefinition) factory.CreateObject<Net.Vpc.Upa.Extensions.EntityExtensionDefinition>(unionEntity.GetType("spec")));
+                        entityInfo.specs.Add((Net.Vpc.Upa.Extensions.EntityExtensionDefinition) factory.CreateObject<T>(unionEntity.GetType("spec")));
                     }
                 }
                 Net.Vpc.Upa.Config.Decoration view = (Net.Vpc.Upa.Config.Decoration) repo.GetTypeDecoration(type, typeof(Net.Vpc.Upa.Config.View));

@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa.Bulk
 
          void Configure(object target) /* throws System.IO.IOException */ ;
 
-         void SetDataSerializer(Net.Vpc.Upa.Bulk.DataSerializer dataSerializer);
+         Net.Vpc.Upa.Bulk.DataFormatter SetDataRowConverter(Net.Vpc.Upa.Bulk.DataRowConverter dataRowConverter);
 
-         Net.Vpc.Upa.Bulk.DataSerializer GetDataSerializer();
+         Net.Vpc.Upa.Bulk.DataRowConverter GetDataRowConverter();
 
          Net.Vpc.Upa.Bulk.DataWriter CreateWriter() /* throws System.IO.IOException */ ;
     }

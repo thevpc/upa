@@ -35,6 +35,8 @@ namespace Net.Vpc.Upa
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities();
 
+         System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities(bool includeSubPackages);
+
          System.Collections.Generic.IList<Net.Vpc.Upa.Package> GetPackages();
 
          Net.Vpc.Upa.Package GetPart(string name);

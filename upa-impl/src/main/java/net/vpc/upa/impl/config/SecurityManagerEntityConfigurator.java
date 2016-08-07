@@ -10,7 +10,7 @@ import net.vpc.upa.EntitySecurityManager;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class SecurityManagerEntityConfigurator implements EntityConfigurator {
 

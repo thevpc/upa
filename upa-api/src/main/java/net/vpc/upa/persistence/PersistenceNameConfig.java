@@ -39,12 +39,12 @@ import java.util.List;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class PersistenceNameConfig {
 
     private int configOrder;
-    private List<PersistenceName> names = new ArrayList<PersistenceName>();
+    private List<PersistenceName> names = new ArrayList<PersistenceName>(2);
     private String globalPersistenceName;
     private String localPersistenceName;
 

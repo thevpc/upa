@@ -28,7 +28,7 @@ import net.vpc.common.vfs.VirtualFileACL;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class UPAFileSystem extends AbstractVirtualFileSystem {
 
@@ -62,7 +62,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
 
     protected FileEntry getDirEntry(String path) {
         PersistenceUnit pu = getPersistenceUnit();
-        FileEntry entity = pu.createQueryBuilder(FileEntry.class).byField("path", path).getEntity();
+        FileEntry entity = pu.createQueryBuilder(FileEntry.class).byField("path", path).getFirstResultOrNull();
         if (entity == null) {
             if (path.equals("/")) {
                 entity = new FileEntry();
@@ -249,7 +249,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
         List<FileEntry> childen = getPersistenceUnit().createQueryBuilder(FileEntry.class)
                 .byField(
                         "parentPath", path
-                ).getEntityList();
+                ).getResultList();
         List<VFile> ret = new ArrayList<>();
         for (FileEntry c : childen) {
             DefaultFile ff = new DefaultFile(c.getPath(), this);

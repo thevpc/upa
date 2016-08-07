@@ -1,7 +1,11 @@
 package net.vpc.upa.test;
 
+import java.util.Arrays;
 import java.util.List;
+
+import junit.framework.Assert;
 import net.vpc.upa.*;
+import net.vpc.upa.filters.EntityFilters;
 import net.vpc.upa.test.model.Client;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.Query;
@@ -30,11 +34,28 @@ public class SelectUC {
         pu.start();
 
         Business bo = UPA.makeSessionAware(new Business());
-        bo.testQuery();
-//        bo.initializeData();
+        bo.init();
+        bo.testQuery2();
     }
 
     public static class Business {
+
+        public void init() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            pu.clear(EntityFilters.all(),null);
+            Client c = getRefClient();
+            pu.persist(c);
+        }
+
+        private Client getRefClient() {
+            Client c=new Client();
+            c.setId(1);
+            c.setFirstName("emma");
+            c.setLastName("community");
+            c.setRight("left");
+            return c;
+        }
 
         public void testQuery() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
@@ -43,9 +64,16 @@ public class SelectUC {
                     .setParameter("v", "%mm%")
                     ;
             List<Record> r = q.getRecordList();
-            for (Record record : r) {
-                System.out.println(r);
-            }
+            Assert.assertEquals(r, Arrays.asList(pu.getEntity(Client.class).getBuilder().objectToRecord(getRefClient())));
+        }
+        public void testQuery2() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a. `right` from Client a");
+            List<Record> r = q.getRecordList();
+            Record er = pu.getEntity(Client.class).getBuilder().createRecord();
+            er.setString("right","left");
+            Assert.assertEquals(r, Arrays.asList(er));
         }
     }
 

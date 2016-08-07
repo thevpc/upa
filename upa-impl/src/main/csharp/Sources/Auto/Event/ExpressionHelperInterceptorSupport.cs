@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Impl.Event
 
         public abstract void AfterUpdateHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event, Net.Vpc.Upa.Expressions.Expression updatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-        public abstract void AfterInsertHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event, Net.Vpc.Upa.Expressions.Expression translatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        public abstract void AfterPersistHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event, Net.Vpc.Upa.Expressions.Expression translatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
         public virtual bool AcceptDeleteTableHelper(Net.Vpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return true;
@@ -40,7 +40,13 @@ namespace Net.Vpc.Upa.Impl.Event
             return false;
         }
 
-        public virtual bool AcceptInsertRecordHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        /**
+             *
+             * @param event
+             * @return
+             * @throws UPAException
+             */
+        public virtual bool AcceptPersistRecordHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return true;
         }
 
@@ -56,7 +62,7 @@ namespace Net.Vpc.Upa.Impl.Event
         public override sealed void OnRemove(Net.Vpc.Upa.Callbacks.RemoveEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
             string name = @event.GetTrigger().GetName();
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = (System.Collections.Generic.ICollection<Net.Vpc.Upa.Key>) executionContext.GetObject<System.Collections.Generic.ICollection<Net.Vpc.Upa.Key>>(name + ":toDelete");
+            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = (System.Collections.Generic.ICollection<Net.Vpc.Upa.Key>) executionContext.GetObject<T>(name + ":toDelete");
             if (collection == null) {
                 return;
             }
@@ -83,12 +89,12 @@ namespace Net.Vpc.Upa.Impl.Event
             // validate old references
             Net.Vpc.Upa.Persistence.EntityExecutionContext executioncontext = @event.GetContext();
             string name = @event.GetTrigger().GetName();
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = executioncontext.GetObject<System.Collections.Generic.ICollection<Net.Vpc.Upa.Key>>(name + ":toUpdate");
+            System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection = executioncontext.GetObject<T>(name + ":toUpdate");
             if (collection == null) {
                 return;
             }
             executioncontext.Remove(name + ":toUpdate");
-            Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression inColl = null;
+            Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = null;
             if (!(collection.Count==0)) {
                 inColl = CreateInCollection(@event.GetEntity(), collection);
                 AfterUpdateHelper(@event, inColl);
@@ -111,24 +117,24 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
         private System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> CreateUpdatedCollection(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return entity.CreateQueryBuilder().SetExpression(TranslateExpression(expression)).GetKeyList();
+            return entity.CreateQueryBuilder().ByExpression(TranslateExpression(expression)).GetKeyList();
         }
 
-        private Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression CreateInCollection(Net.Vpc.Upa.Entity entity, System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        private Net.Vpc.Upa.Expressions.IdCollectionExpression CreateInCollection(Net.Vpc.Upa.Entity entity, System.Collections.Generic.ICollection<Net.Vpc.Upa.Key> collection) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IList<Net.Vpc.Upa.Field> pfs = entity.GetPrimaryFields();
             Net.Vpc.Upa.Expressions.Var[] v = new Net.Vpc.Upa.Expressions.Var[(pfs).Count];
             for (int i = 0; i < (pfs).Count; i++) {
                 v[i] = new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(pfs[i].GetEntity().GetName()), pfs[i].GetName());
             }
             if ((pfs).Count == 1) {
-                Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression inColl = new Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression(v[0]);
+                Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = new Net.Vpc.Upa.Expressions.IdCollectionExpression(v[0]);
                 //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
                 foreach (Net.Vpc.Upa.Key k in collection) {
                     inColl.Add(new Net.Vpc.Upa.Expressions.Literal(k.GetObject(), pfs[0].GetDataType()));
                 }
                 return inColl;
             } else {
-                Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression inColl = new Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression(v);
+                Net.Vpc.Upa.Expressions.IdCollectionExpression inColl = new Net.Vpc.Upa.Expressions.IdCollectionExpression(v);
                 //inColl.setClientProperty(DefaultEntity.EXPRESSION_SURELY_EXISTS, true);
                 foreach (Net.Vpc.Upa.Key k in collection) {
                     Net.Vpc.Upa.Expressions.Literal[] l = new Net.Vpc.Upa.Expressions.Literal[(pfs).Count];
@@ -143,8 +149,8 @@ namespace Net.Vpc.Upa.Impl.Event
 
 
         public override sealed void OnPersist(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (AcceptInsertRecordHelper(@event)) {
-                AfterInsertHelper(@event, TranslateExpression(@event.GetEntity().GetBuilder().IdToExpression(@event.GetPersistedId(), null)));
+            if (AcceptPersistRecordHelper(@event)) {
+                AfterPersistHelper(@event, TranslateExpression(@event.GetEntity().GetBuilder().IdToExpression(@event.GetPersistedId(), null)));
             }
         }
     }

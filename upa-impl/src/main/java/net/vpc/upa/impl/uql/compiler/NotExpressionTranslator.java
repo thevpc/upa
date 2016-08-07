@@ -17,18 +17,12 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class NotExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
-
-    public NotExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         Not v = (Not) o;
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getNegatedExpression(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getExpression(), declarations);
         CompiledNot s = new CompiledNot(left);
         //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

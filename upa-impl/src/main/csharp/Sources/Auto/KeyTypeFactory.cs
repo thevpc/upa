@@ -37,19 +37,19 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key CreateKey(params object [] keyValues) {
-            if (keyValues == null) {
+        public virtual Net.Vpc.Upa.Key CreateKey(params object [] idValues) {
+            if (idValues == null) {
                 return null;
             }
-            return new Net.Vpc.Upa.Impl.DefaultKey(keyValues);
+            return new Net.Vpc.Upa.Impl.DefaultKey(idValues);
         }
 
 
-        public virtual object CreateId(params object [] keyValues) {
-            if (keyValues == null) {
+        public virtual object CreateId(params object [] idValues) {
+            if (idValues == null) {
                 return null;
             }
-            return keyValues[0];
+            return idValues[0];
         }
 
 
@@ -61,11 +61,11 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object key) {
-            if (key == null) {
+        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+            if (id == null) {
                 return null;
             }
-            return CreateKey(key);
+            return CreateKey(id);
         }
     }
 }

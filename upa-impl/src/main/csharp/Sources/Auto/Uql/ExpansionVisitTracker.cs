@@ -25,9 +25,14 @@ namespace Net.Vpc.Upa.Impl.Uql
 
         private int maxEntityDepth = 2;
 
-        private int maxGlobalDepth = 10;
+        private int navigationDepth = 2;
 
-        private int globalDepth = 10;
+        public ExpansionVisitTracker() {
+        }
+
+        public ExpansionVisitTracker(int navigationDepth) {
+            this.navigationDepth = navigationDepth < 0 ? 2 : navigationDepth;
+        }
 
         public virtual bool NextVisit(string entity) {
             int i = GetVisited(entity);
@@ -40,11 +45,11 @@ namespace Net.Vpc.Upa.Impl.Uql
 
         public virtual int GetVisited(string entity) {
             int? i = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,int?>(map,entity);
-            return i == null ? ((int)(maxEntityDepth)) : (i).Value;
+            return i == null ? ((int)(maxEntityDepth)) : i;
         }
 
-        public virtual void DecGlobal() {
-            globalDepth--;
+        public virtual void DecNavigationDepth() {
+            navigationDepth--;
         }
 
         public virtual void DecVisited(string entity) {
@@ -52,9 +57,9 @@ namespace Net.Vpc.Upa.Impl.Uql
         }
 
         public virtual Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker Dive() {
-            if (globalDepth > 0) {
+            if (navigationDepth > 0) {
                 Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker cc = Copy();
-                cc.globalDepth--;
+                cc.navigationDepth--;
                 return cc;
             }
             return null;
@@ -64,9 +69,14 @@ namespace Net.Vpc.Upa.Impl.Uql
             Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker r = new Net.Vpc.Upa.Impl.Uql.ExpansionVisitTracker();
             Net.Vpc.Upa.Impl.FwkConvertUtils.PutAllMap<string,int?>(r.map,map);
             r.maxEntityDepth = maxEntityDepth;
-            r.maxGlobalDepth = maxGlobalDepth;
-            r.globalDepth = globalDepth;
+            //        r.maxGlobalDepth = maxGlobalDepth;
+            r.navigationDepth = navigationDepth;
             return r;
+        }
+
+
+        public override string ToString() {
+            return "ExpansionVisitTracker{maxEntityDepth=" + maxEntityDepth + ", navigationDepth=" + navigationDepth + ", map=" + map + '}';
         }
     }
 }

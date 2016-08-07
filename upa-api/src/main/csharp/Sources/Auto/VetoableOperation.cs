@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa
      */
     public enum VetoableOperation {
 
-        checkPersist, checkUpdate, checkClone, checkRename, checkLoad, checkNavigate, checkDelete, deletableRecord, updatableRecord, insertEnabled, updateEnabled, deleteEnabled, renameEnabled, cloneEnabled, fieldEditable, fieldVisible
+        checkPersist, checkUpdate, checkClone, checkRename, checkLoad, checkNavigate, checkDelete, deletableRecord, updatableRecord, persistEnabled, updateEnabled, removeEnabled, renameEnabled, cloneEnabled, fieldEditable, fieldVisible
     }
 }

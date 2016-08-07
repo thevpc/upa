@@ -39,5 +39,9 @@ namespace Net.Vpc.Upa.Callbacks
          void OnPreClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
 
          void OnClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+
+         void OnPreUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
+
+         void OnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event);
     }
 }

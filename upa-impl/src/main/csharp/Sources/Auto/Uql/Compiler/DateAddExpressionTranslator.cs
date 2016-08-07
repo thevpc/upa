@@ -21,21 +21,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class DateAddExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public DateAddExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileDateAdd((Net.Vpc.Upa.Expressions.DateAdd) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileDateAdd((Net.Vpc.Upa.Expressions.DateAdd) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd CompileDateAdd(Net.Vpc.Upa.Expressions.DateAdd v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd CompileDateAdd(Net.Vpc.Upa.Expressions.DateAdd v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd(v.GetDatePartType(), outer.CompileAny(v.GetCount(), declarations), outer.CompileAny(v.GetDate(), declarations));
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateAdd(v.GetDatePartType(), manager.TranslateAny(v.GetCount(), declarations), manager.TranslateAny(v.GetDate(), declarations));
             //        s.setDeclarationList(declarations);
             return s;
         }

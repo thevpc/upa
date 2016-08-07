@@ -39,8 +39,8 @@ namespace Net.Vpc.Upa.Impl
                 bool privateSeq = false;
                 foreach (Net.Vpc.Upa.Field field in fields) {
                     System.Collections.Generic.List<Net.Vpc.Upa.Sequence> seqs = new System.Collections.Generic.List<Net.Vpc.Upa.Sequence>();
-                    if ((field.GetInsertFormula() is Net.Vpc.Upa.Sequence)) {
-                        seqs.Add((Net.Vpc.Upa.Sequence) field.GetInsertFormula());
+                    if ((field.GetPersistFormula() is Net.Vpc.Upa.Sequence)) {
+                        seqs.Add((Net.Vpc.Upa.Sequence) field.GetPersistFormula());
                     }
                     if ((field.GetUpdateFormula() is Net.Vpc.Upa.Sequence)) {
                         seqs.Add((Net.Vpc.Upa.Sequence) field.GetUpdateFormula());

@@ -17,22 +17,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class LikeExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
-
-    public LikeExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileLike((Like) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileLike((Like) o, declarations);
-    }
-
-    protected CompiledLike compileLike(Like v, ExpressionDeclarationList declarations) {
+    protected CompiledLike compileLike(Like v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = outer.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledLike s = new CompiledLike(left, right);
 //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

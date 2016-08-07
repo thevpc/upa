@@ -32,13 +32,13 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Types.DataTypeTransformConfig[] GetTypeTransform();
 
-         Net.Vpc.Upa.Formula GetInsertFormula();
+         Net.Vpc.Upa.Formula GetPersistFormula();
 
          Net.Vpc.Upa.Formula GetUpdateFormula();
 
          Net.Vpc.Upa.Formula GetSelectFormula();
 
-         int GetInsertFormulaOrder();
+         int GetPersistFormulaOrder();
 
          int GetUpdateFormulaOrder();
 
@@ -46,11 +46,11 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserExcludeModifiers();
 
-         Net.Vpc.Upa.AccessLevel GetInsertAccessLevel();
+         Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
 
          Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetSelectAccessLevel();
+         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
 
          System.Collections.Generic.IDictionary<string , object> GetFieldParams();
 

@@ -30,18 +30,24 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 
     PersistenceUnit persistenceUnit;
     RelationshipDescriptor relationDescriptor;
-    Entity detailEntity;
-    Entity masterEntity;
+    Entity sourceEntity;
+    Entity targetEntity;
     Relationship relation;
     Field manyToOneField = null;
-    RelationshipUpdateType detailUpdateType;
-    List<String> detailFieldNames;
+    RelationshipUpdateType sourceUpdateType;
+    List<String> sourceFieldNames;
     boolean nullable;
     Expression filter;
 
     public RelationshipDescriptorProcessor(PersistenceUnit persistenceUnit, RelationshipDescriptor relationInfo) {
         this.persistenceUnit = persistenceUnit;
         this.relationDescriptor = relationInfo;
+        if(StringUtils.isNullOrEmpty(relationDescriptor.getTargetEntity()) && relationDescriptor.getTargetEntityType()==null){
+            throw new UPAException("NoneOfTargetEntityAndTargetEntityTypeDefined");
+        }
+        if(StringUtils.isNullOrEmpty(relationDescriptor.getSourceEntity()) && relationDescriptor.getSourceEntityType()==null){
+            throw new UPAException("NoneOfSourceEntityAndSourceEntityTypeDefined");
+        }
     }
 
     public void process() {
@@ -100,72 +106,72 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
     }
 
     private boolean build(boolean throwErrors) {
-        if (detailEntity == null) {
+        if (sourceEntity == null) {
             if (relationDescriptor.getSourceEntity() != null) {
                 if (persistenceUnit.containsEntity(relationDescriptor.getSourceEntity())) {
-                    detailEntity = persistenceUnit.getEntity(relationDescriptor.getSourceEntity());
+                    sourceEntity = persistenceUnit.getEntity(relationDescriptor.getSourceEntity());
                 }
             }
         }
-        if (detailEntity == null) {
+        if (sourceEntity == null) {
             if (relationDescriptor.getSourceEntityType() != null) {
                 if (persistenceUnit.containsEntity(relationDescriptor.getSourceEntityType())) {
-                    detailEntity = persistenceUnit.getEntity(relationDescriptor.getSourceEntityType());
+                    sourceEntity = persistenceUnit.getEntity(relationDescriptor.getSourceEntityType());
                 }
             }
         }
-        if (masterEntity == null) {
+        if (targetEntity == null) {
             if (relationDescriptor.getTargetEntity() != null) {
                 if (persistenceUnit.containsEntity(relationDescriptor.getTargetEntity())) {
-                    masterEntity = persistenceUnit.getEntity(relationDescriptor.getTargetEntity());
+                    targetEntity = persistenceUnit.getEntity(relationDescriptor.getTargetEntity());
                 }
             }
         }
-        if (masterEntity == null) {
+        if (targetEntity == null) {
             if (relationDescriptor.getTargetEntityType() != null) {
                 if (persistenceUnit.containsEntity(relationDescriptor.getTargetEntityType())) {
-                    masterEntity = persistenceUnit.getEntity(relationDescriptor.getTargetEntityType());
+                    targetEntity = persistenceUnit.getEntity(relationDescriptor.getTargetEntityType());
                 }
             }
         }
-        if (detailEntity == null) {
+        if (sourceEntity == null) {
             if (throwErrors) {
                 throw new UPAException("InvalidRelationEntityNotFound", relationDescriptor.getSourceEntityType());
             } else {
                 return false;
             }
         }
-        if (masterEntity == null) {
+        if (targetEntity == null) {
             if (throwErrors) {
                 throw new UPAException("InvalidRelationEntityNotFound", relationDescriptor.getTargetEntityType());
             } else {
                 return false;
             }
         }
-        detailUpdateType = RelationshipUpdateType.FLAT;
-        detailFieldNames = new ArrayList<String>();
+        sourceUpdateType = RelationshipUpdateType.FLAT;
+        sourceFieldNames = new ArrayList<String>();
         if (relationDescriptor.getBaseField() == null) {
-            detailFieldNames.addAll(Arrays.asList(relationDescriptor.getSourceFields()));
+            sourceFieldNames.addAll(Arrays.asList(relationDescriptor.getSourceFields()));
             if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                 if (relationDescriptor.getMappedTo().length > 1) {
                     throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                 }
-                manyToOneField = detailEntity.getField(relationDescriptor.getMappedTo()[0]);
+                manyToOneField = sourceEntity.getField(relationDescriptor.getMappedTo()[0]);
             }
         } else {
-            Field baseField = detailEntity.getField(relationDescriptor.getBaseField());
+            Field baseField = sourceEntity.getField(relationDescriptor.getBaseField());
             DataType baseFieldType = baseField.getDataType();
             if (baseFieldType instanceof ManyToOneType) {
                 ManyToOneType et = (ManyToOneType) baseFieldType;
                 if (et.getTargetEntityName() == null || et.getTargetEntityName().isEmpty()) {
-                    et.setTargetEntityName(masterEntity.getName());
+                    et.setTargetEntityName(targetEntity.getName());
                 }
-                detailUpdateType = RelationshipUpdateType.COMPOSED;
-                List<Field> masterPK = masterEntity.getPrimaryFields();
+                sourceUpdateType = RelationshipUpdateType.COMPOSED;
+                List<Field> masterPK = targetEntity.getPrimaryFields();
                 if (relationDescriptor.getMappedTo() == null || relationDescriptor.getMappedTo().length == 0) {
                     if (masterPK.isEmpty()) {
                         if (throwErrors) {
-                            throw new UPAException("PrimaryFieldsNotFoundException", masterEntity.getName());
+                            throw new UPAException("PrimaryFieldsNotFoundException", targetEntity.getName());
                         } else {
                             return false;
                         }
@@ -178,34 +184,34 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                                 f = f.substring(0, 1).toUpperCase() + f.substring(1);
                             }
                             String extraName = baseField.getName() + f;
-                            detailFieldNames.add(extraName);
+                            sourceFieldNames.add(extraName);
                         }
                     }
                 } else {
-                    detailFieldNames.addAll(Arrays.asList(relationDescriptor.getMappedTo()));
+                    sourceFieldNames.addAll(Arrays.asList(relationDescriptor.getMappedTo()));
                 }
-                if (detailFieldNames.size() != masterPK.size()) {
+                if (sourceFieldNames.size() != masterPK.size()) {
                     if (throwErrors) {
                         throw new IllegalArgumentException("Incorrect parameters");
                     } else {
                         return false;
                     }
                 }
-                if (detailFieldNames.isEmpty()) {
+                if (sourceFieldNames.isEmpty()) {
                     if (throwErrors) {
                         throw new IllegalArgumentException("Incorrect parameters");
                     } else {
                         return false;
                     }
                 }
-                for (int i = 0; i < detailFieldNames.size(); i++) {
-                    String extraName = detailFieldNames.get(i);
-                    Field idField = detailEntity.findField(extraName);
+                for (int i = 0; i < sourceFieldNames.size(); i++) {
+                    String extraName = sourceFieldNames.get(i);
+                    Field idField = sourceEntity.findField(extraName);
                     if (idField == null) {
-                        DataType dt = (DataType) masterPK.get(i).getDataType().clone();
+                        DataType dt = (DataType) masterPK.get(i).getDataType().copy();
                         boolean nullable = baseFieldType.isNullable();
                         dt.setNullable(nullable);
-                        idField = detailEntity.addField(extraName, "system", FlagSets.of(UserFieldModifier.SYSTEM), FlagSets.of(UserFieldModifier.UPDATE), null, dt, -1);
+                        idField = sourceEntity.addField(extraName, "system", FlagSets.of(UserFieldModifier.SYSTEM), FlagSets.of(UserFieldModifier.UPDATE), null, dt, -1);
                         idField.setAccessLevel(AccessLevel.PRIVATE);
                     } else {
                         idField.setUserExcludeModifiers(idField.getUserExcludeModifiers().add(UserFieldModifier.UPDATE));
@@ -213,24 +219,24 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                 }
                 manyToOneField = baseField;
             } else {
-                detailFieldNames.add(baseField.getName());
+                sourceFieldNames.add(baseField.getName());
                 if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                     if (relationDescriptor.getMappedTo().length > 1) {
                         throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                     }
-                    manyToOneField = detailEntity.getField(relationDescriptor.getMappedTo()[0]);
+                    manyToOneField = sourceEntity.getField(relationDescriptor.getMappedTo()[0]);
                 }
             }
         }
         nullable = true;//TODO FIX ME
-        for (int i = 0; i < detailFieldNames.size(); i++) {
-            Field slaveField = detailEntity.getField(detailFieldNames.get(i));
+        for (int i = 0; i < sourceFieldNames.size(); i++) {
+            Field slaveField = sourceEntity.getField(sourceFieldNames.get(i));
             DataType dataType = slaveField.getDataType();
             if (dataType == null) {
                 //inherit master DataType
-                if (masterEntity.getPrimaryFields().size() > i) {
-                    DataType d = masterEntity.getPrimaryFields().get(i).getDataType();
-                    d = (DataType) d.clone();
+                if (targetEntity.getPrimaryFields().size() > i) {
+                    DataType d = targetEntity.getPrimaryFields().get(i).getDataType();
+                    d = (DataType) d.copy();
                     d.setNullable(nullable);
                     slaveField.setDataType(d);
                     //reset transform!
@@ -243,7 +249,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         filter = relationDescriptor.getFilter();
 //        if (baseFieldType instanceof ManyToOneType) {
 //            manyToOneField = baseField;
-//        } else if (detailFieldNames.size() == 1) {
+//        } else if (sourceFieldNames.size() == 1) {
 //            DataType slaveType = slaveField.getDataType();
 //            if (slaveType instanceof ManyToOneType) {
 //                manyToOneField = slaveField;
@@ -260,15 +266,15 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         if (!build(throwErrors)) {
             return false;
         }
-        PersistenceUnit pu = detailEntity.getPersistenceUnit();
+        PersistenceUnit pu = sourceEntity.getPersistenceUnit();
         if (relation == null) {
             DefaultRelationshipDescriptor rd = new DefaultRelationshipDescriptor();
             rd.setName(relationDescriptor.getName());
             rd.setBaseField(relationDescriptor.getBaseField());
             rd.setRelationshipType(relationDescriptor.getRelationshipType());
-            rd.setSourceEntity(detailEntity.getName());
-            rd.setTargetEntity(masterEntity.getName());
-            rd.setSourceFields(detailFieldNames.toArray(new String[detailFieldNames.size()]));
+            rd.setSourceEntity(sourceEntity.getName());
+            rd.setTargetEntity(targetEntity.getName());
+            rd.setSourceFields(sourceFieldNames.toArray(new String[sourceFieldNames.size()]));
             rd.setFilter(relationDescriptor.getFilter());
             rd.setHierarchy(relationDescriptor.isHierarchy());
             rd.setHierarchyPathField(relationDescriptor.getHierarchyPathField());
@@ -278,20 +284,20 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             relation = ((DefaultPersistenceUnit) pu).addRelationshipImmediate(rd);
 //                    relationDescriptor.getName(),
 //                    relationDescriptor.getRelationType(),
-//                    detailEntity.getName(),
-//                    masterEntity.getName(),
+//                    sourceEntity.getName(),
+//                    targetEntity.getName(),
 //                    manyToOneField == null ? null : manyToOneField.getName(),
 //                    null,
-//                    detailUpdateType,
+//                    sourceUpdateType,
 //                    null,
-//                    detailFieldNames.toArray(new String[detailFieldNames.size()]),
+//                    sourceFieldNames.toArray(new String[sourceFieldNames.size()]),
 //                    nullable,
 //                    filter);
 //            if(relationDescriptor.hierarchy()){
-//                detailEntity.addExtensionDefinition(
+//                sourceEntity.addExtensionDefinition(
 //                        TreeEntityExtensionDefinition.class, 
 //                        new DefaultTreeEntityExtensionDefinition(
-//                        manyToOneField!=null?manyToOneField.getName():detailFieldNames.get(0),
+//                        manyToOneField!=null?manyToOneField.getName():sourceFieldNames.get(0),
 //                        relation.getName(),
 //                        relationDescriptor.getHierarchyPathField(),
 //                        relationDescriptor.getHierarchyPathSeparator()
@@ -303,10 +309,10 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             }
             relation.setRelationshipType(relationDescriptor.getRelationshipType() == null ? RelationshipType.DEFAULT : relationDescriptor.getRelationshipType());
             relation.getSourceRole().setEntityField(manyToOneField);
-            relation.getSourceRole().setRelationshipUpdateType(detailUpdateType);
+            relation.getSourceRole().setRelationshipUpdateType(sourceUpdateType);
             List<Field> slaveFields = new ArrayList<Field>();
-            for (String n : detailFieldNames) {
-                Field f = detailEntity.getField(n);
+            for (String n : sourceFieldNames) {
+                Field f = sourceEntity.getField(n);
                 slaveFields.add(f);
             }
             relation.getSourceRole().setFields(slaveFields.toArray(new Field[slaveFields.size()]));
@@ -440,12 +446,12 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         return relationDescriptor;
     }
 
-    public Entity getDetailEntity() {
-        return detailEntity;
+    public Entity getSourceEntity() {
+        return sourceEntity;
     }
 
-    public Entity getMasterEntity() {
-        return masterEntity;
+    public Entity getTargetEntity() {
+        return targetEntity;
     }
 
     public Relationship getRelation() {
@@ -456,12 +462,12 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         return manyToOneField;
     }
 
-    public RelationshipUpdateType getDetailUpdateType() {
-        return detailUpdateType;
+    public RelationshipUpdateType getSourceUpdateType() {
+        return sourceUpdateType;
     }
 
-    public List<String> getDetailFieldNames() {
-        return detailFieldNames;
+    public List<String> getSourceFieldNames() {
+        return sourceFieldNames;
     }
 
     public boolean isNullable() {

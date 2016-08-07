@@ -180,7 +180,7 @@ namespace Net.Vpc.Upa.Expressions
                             unicodeStr = false;
                             encountredSlash = false;
                         } catch (System.Exception nfe) {
-                            throw new System.Exception("Unable to parse unicode value: " + unicode, nfe);
+                            throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
                         }
                     }
                     continue;

@@ -58,7 +58,7 @@ public class ByteArrayEncoderTransformConfig implements DataTypeTransformConfig,
                 || encoder instanceof Class
                 || encoder instanceof ByteArrayEncoder
                 )) {
-            throw new IllegalArgumentException("secretStrategy shoud be of type String (as class/bean name), Class (implementing class) or ByteArrayEncoder instance");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("secretStrategy shoud be of type String (as class/bean name), Class (implementing class) or ByteArrayEncoder instance");
         }
         this.encoder = encoder;
     }

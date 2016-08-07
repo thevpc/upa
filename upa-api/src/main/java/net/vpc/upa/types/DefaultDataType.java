@@ -36,6 +36,7 @@ package net.vpc.upa.types;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
+import net.vpc.upa.exceptions.UnexpectedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,8 +86,8 @@ public abstract class DefaultDataType implements DataType {
     protected Class platformType;
     protected int scale;
     protected int precision;
-    protected List<TypeValueValidator> valueValidators = new ArrayList<TypeValueValidator>();
-    protected List<TypeValueRewriter> valueRewriters = new ArrayList<TypeValueRewriter>();
+    protected List<TypeValueValidator> valueValidators = new ArrayList<TypeValueValidator>(1);
+    protected List<TypeValueRewriter> valueRewriters = new ArrayList<TypeValueRewriter>(1);
 
     public DefaultDataType(String name, Class platformType) {
         this(name, platformType, 0, 0, false);
@@ -171,7 +172,7 @@ public abstract class DefaultDataType implements DataType {
     }
 
     @Override
-    @PortabilityHint(target = "C#", name = "virtual")
+//    @PortabilityHint(target = "C#", name = "virtual")
     public void check(Object value, String name, String description) throws ConstraintsException {
         if (value == null && !isNullable()) {
             throw new ConstraintsException("IllegalNull", name, description, value);
@@ -182,14 +183,14 @@ public abstract class DefaultDataType implements DataType {
     }
 
     @Override
-    public Object clone() {
+    public Object copy() {
         try {
             DefaultDataType cloned = (DefaultDataType) super.clone();
             cloned.valueValidators = new ArrayList<TypeValueValidator>(valueValidators);
             cloned.valueRewriters = new ArrayList<TypeValueRewriter>(valueRewriters);
             return cloned;
-        } catch (Exception e) {
-            throw new RuntimeException(e.toString());
+        } catch (Exception ex) {
+            throw new UnexpectedException("Clone Not Supported", ex);
         }
     }
 

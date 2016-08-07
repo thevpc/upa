@@ -68,7 +68,7 @@ public class QualifiedIdentifier {
                 return uKey.getObjectAt(i);
             }
         }
-        throw new IllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
+        throw new net.vpc.upa.exceptions.IllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
     }
 
 }

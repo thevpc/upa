@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 import net.vpc.upa.persistence.QueryResult;
@@ -10,16 +10,16 @@ import java.util.Set;
 
 public class TypeList<T> extends QueryResultLazyList<T> {
     private int columns;
-    private BeanType beanType;
+    private PlatformBeanType platformBeanType;
     private String[] fields;
     private String[] fieldsByExpression;
     public TypeList(QueryExecutor queryExecutor, Class<T> entity, String[] fields) throws SQLException {
         super(queryExecutor);
         NativeField[] expressions = queryExecutor.getFields();
         this.fields = fields;
-        beanType = PlatformBeanTypeRepository.getInstance().getBeanType(entity);
+        platformBeanType = PlatformBeanTypeRepository.getInstance().getBeanType(entity);
         if(fields==null || fields.length==0){
-            Set<String> fieldNames = beanType.getPropertyNames();
+            Set<String> fieldNames = platformBeanType.getPropertyNames();
             this.fields=fieldNames.toArray(new String[fieldNames.size()]);
         }
         fieldsByExpression=new String[expressions.length];
@@ -38,11 +38,11 @@ public class TypeList<T> extends QueryResultLazyList<T> {
 
     @Override
     public T parse(QueryResult result) throws UPAException {
-        T instance = (T) beanType.newInstance();
+        T instance = (T) platformBeanType.newInstance();
         for (int i = 0; i < columns; i++) {
             Object v = result.read(i);
             if(fieldsByExpression[i]!=null){
-                beanType.setProperty(instance, fieldsByExpression[i], v);
+                platformBeanType.setProperty(instance, fieldsByExpression[i], v);
             }
         }
         return instance;

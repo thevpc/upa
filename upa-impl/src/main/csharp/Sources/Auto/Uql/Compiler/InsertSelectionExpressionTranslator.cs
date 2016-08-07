@@ -21,17 +21,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class InsertSelectionExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public InsertSelectionExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileInsertSelection((Net.Vpc.Upa.Expressions.InsertSelection) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileInsertSelection((Net.Vpc.Upa.Expressions.InsertSelection) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsertSelection CompileInsertSelection(Net.Vpc.Upa.Expressions.InsertSelection v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsertSelection CompileInsertSelection(Net.Vpc.Upa.Expressions.InsertSelection v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
@@ -41,7 +35,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
                 Net.Vpc.Upa.Expressions.Var fvar = v.GetField(i);
                 s.Field(fvar.GetName());
             }
-            s.From((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) outer.CompileAny(v.GetSelection(), declarations));
+            s.From((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) manager.TranslateAny(v.GetSelection(), declarations));
             return s;
         }
     }

@@ -99,21 +99,21 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
@@ -124,7 +124,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
@@ -135,14 +135,14 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsAllOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOf instead");
             }
             return Or(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAnyOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -153,7 +153,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -164,7 +164,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsNotOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsNotOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -175,7 +175,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isNotOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isNotOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -186,21 +186,21 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new System.ArgumentException ("use orIsNoneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsNoneOf instead");
             }
             return OrNot(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isAllOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOf instead");
             }
             return Or(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new System.ArgumentException ("use isNoneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isNoneOf instead");
             }
             return OrNot(modifiers);
         }

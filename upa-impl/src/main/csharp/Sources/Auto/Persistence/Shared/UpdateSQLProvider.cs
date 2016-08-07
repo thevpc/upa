@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                 //            Object referrer = vv.getReferrer();
                 Net.Vpc.Upa.Field f = ((Net.Vpc.Upa.Field) fv.GetReferrer());
                 Net.Vpc.Upa.Entity entityManager = f.GetEntity();
-                System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> primFields = entityManager.ToPrimitiveFields<T>(new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(new[]{(Net.Vpc.Upa.EntityPart) f}));
+                System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> primFields = entityManager.ToPrimitiveFields<Net.Vpc.Upa.EntityPart>(new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(new[]{(Net.Vpc.Upa.EntityPart) f}));
                 foreach (Net.Vpc.Upa.PrimitiveField primField in primFields) {
                     if (isFirst) {
                         isFirst = false;
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                         sb.Append(sqlManager.GetSQL(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(ev.GetName()), context, declarations)).Append(".");
                     }
                     sb.Append(sqlManager.GetSQL(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(primField), context, declarations));
-                    sb.Append("=").Append(sqlManager.GetSQL(fieldValue, context, declarations));
+                    sb.Append("=").Append("(").Append(sqlManager.GetSQL(fieldValue, context, declarations)).Append(")");
                 }
             }
             if (o.GetCondition() != null && o.GetCondition().IsValid()) {

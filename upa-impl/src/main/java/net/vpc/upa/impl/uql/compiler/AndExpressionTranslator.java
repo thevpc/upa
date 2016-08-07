@@ -17,22 +17,19 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class AndExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
-
-    public AndExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public AndExpressionTranslator() {
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileAnd((And) o, declarations);
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileAnd((And) o, manager,declarations);
     }
 
-    public CompiledAnd compileAnd(And v, ExpressionDeclarationList declarations) {
+    public CompiledAnd compileAnd(And v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = outer.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledAnd s = new CompiledAnd(left, right);
 //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

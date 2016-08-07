@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys) {
             if (keys.Length == 0) {
-                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in other) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(other)) {
                     SetObject((entry).Key, (entry).Value);
                 }
             } else {
@@ -81,12 +81,17 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
+
+        public virtual System.Collections.Generic.ISet<System.Collections.Generic.KeyValuePair<string , object>> EntrySet() {
+            return new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(ToMap());
+        }
+
         /**
              * {@inheritDoc}
              */
 
         public virtual int GetInt(string key) {
-            return System.Convert.ToInt32(((object) GetObject<object>(key)));
+            return System.Convert.ToInt32(((object) GetObject<T>(key)));
         }
 
         /**
@@ -119,7 +124,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual long GetLong(string key) {
-            return System.Convert.ToInt32(((object) GetObject<object>(key)));
+            return System.Convert.ToInt32(((object) GetObject<T>(key)));
         }
 
         /**
@@ -152,7 +157,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual double GetDouble(string key) {
-            return System.Convert.ToDouble(((object) GetObject<object>(key)));
+            return System.Convert.ToDouble(((object) GetObject<T>(key)));
         }
 
         /**
@@ -185,7 +190,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual float GetFloat(string key) {
-            return System.Convert.ToSingle(((object) GetObject<object>(key)));
+            return System.Convert.ToSingle(((object) GetObject<T>(key)));
         }
 
         /**
@@ -226,7 +231,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual System.Numerics.BigInteger? GetBigInteger(string key) {
-            return GetObject<System.Numerics.BigInteger?>(key);
+            return GetObject<T>(key);
         }
 
         /**
@@ -259,7 +264,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual object GetNumber(string key) {
-            return ((object) GetObject<object>(key));
+            return ((object) GetObject<T>(key));
         }
 
         /**
@@ -284,7 +289,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual object GetNumber() {
-            return GetSingleResult<object>();
+            return GetSingleResult<T>();
         }
 
         /**
@@ -292,7 +297,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual bool GetBoolean(string key) {
-            return GetObject<bool>(key);
+            return GetObject<T>(key);
         }
 
         /**
@@ -316,7 +321,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual bool GetBoolean() {
-            return GetSingleResult<bool>();
+            return GetSingleResult<T>();
         }
 
         /**
@@ -324,7 +329,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual string GetString(string key) {
-            return ((string) GetObject<string>(key));
+            return ((string) GetObject<T>(key));
         }
 
         /**
@@ -348,7 +353,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual string GetString() {
-            return GetSingleResult<string>();
+            return GetSingleResult<T>();
         }
 
         /**
@@ -356,7 +361,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key) {
-            return GetObject<Net.Vpc.Upa.Types.Temporal>(key);
+            return GetObject<T>(key);
         }
 
         /**
@@ -380,7 +385,23 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual Net.Vpc.Upa.Types.Temporal GetDate() {
-            return GetSingleResult<Net.Vpc.Upa.Types.Temporal>();
+            return GetSingleResult<T>();
+        }
+
+
+        public virtual void SetAll(Net.Vpc.Upa.Record other) {
+            if (other != null) {
+                SetAll(other.ToMap());
+            }
+        }
+
+
+        public virtual void SetAll(System.Collections.Generic.IDictionary<string , object> other) {
+            if (other != null) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(other)) {
+                    SetObject((entry).Key, (entry).Value);
+                }
+            }
         }
 
         /**
@@ -443,6 +464,13 @@ namespace Net.Vpc.Upa.Impl
 
         public override string ToString() {
             return ToMap().ToString();
+        }
+
+
+        public virtual Net.Vpc.Upa.Record Copy() {
+            Net.Vpc.Upa.Impl.DefaultRecord r = new Net.Vpc.Upa.Impl.DefaultRecord();
+            r.SetAll(this);
+            return r;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void AddPropertyChangeListener(string arg1, Net.Vpc.Upa.PropertyChangeListener arg2);

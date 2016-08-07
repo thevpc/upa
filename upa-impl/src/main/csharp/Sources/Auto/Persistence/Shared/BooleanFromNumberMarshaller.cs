@@ -21,7 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class BooleanFromNumberMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            return resultSet.GetDouble(index) != 0.0D ? true : false;
+            
+            return null;
         }
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
@@ -37,11 +38,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.INTEGER);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=(((bool?) @object)).Value ? 1 : 0;
-            }
+            
         }
 
         public BooleanFromNumberMarshaller() {

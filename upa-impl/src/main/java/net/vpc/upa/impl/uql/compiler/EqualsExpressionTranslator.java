@@ -16,22 +16,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class EqualsExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public EqualsExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileEquals((Equals) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileEquals((Equals) o, declarations);
-    }
-
-    protected CompiledEquals compileEquals(Equals v, ExpressionDeclarationList declarations) {
+    protected CompiledEquals compileEquals(Equals v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = outer.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledEquals s = new CompiledEquals(left, right);
         //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

@@ -1,18 +1,18 @@
 package net.vpc.upa.impl.util.classpath;
 
-import java.util.regex.Pattern;
 import net.vpc.upa.impl.config.ClassNameFilter;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/16/12 1:05 PM
  */
 public class PatternListPathFilter implements ClassNameFilter {
-    Pattern[] patterns;
+    PortablePattern[] patterns;
 
     public PatternListPathFilter(String[] filter) {
         if (filter != null) {
-            patterns = new Pattern[filter.length];
+            patterns = new PortablePattern[filter.length];
             for (int i = 0; i < filter.length; i++) {
                 String f = filter[i];
                 if (f != null) {
@@ -22,7 +22,7 @@ public class PatternListPathFilter implements ClassNameFilter {
                     }
                 }
                 if (f != null) {
-                    patterns[i] = Pattern.compile(convert(f));
+                    patterns[i] = new PortablePattern(convert(f));
                 }
             }
         }
@@ -72,7 +72,7 @@ public class PatternListPathFilter implements ClassNameFilter {
         if (patterns == null || patterns.length == 0) {
             return true;
         }
-        for (Pattern pattern : patterns) {
+        for (PortablePattern pattern : patterns) {
             if (pattern == null || pattern.matcher(cls).matches()) {
                 return true;
             }

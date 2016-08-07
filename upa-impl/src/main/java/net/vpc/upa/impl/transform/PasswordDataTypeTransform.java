@@ -12,7 +12,7 @@ import net.vpc.upa.types.StringType;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class PasswordDataTypeTransform implements DataTypeTransform {
 

@@ -18,7 +18,7 @@ import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class RemoveObjectEventCallback extends SingleEntityObjectEventCallback {
 

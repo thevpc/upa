@@ -34,6 +34,10 @@ namespace Net.Vpc.Upa
 
         private string packagePath;
 
+        private string listOrder;
+
+        private string archivingOrder;
+
         private int position;
 
         private System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> entityExtensions;
@@ -162,6 +166,25 @@ namespace Net.Vpc.Upa
 
         public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetRelationshipDescriptors(System.Collections.Generic.IList<Net.Vpc.Upa.RelationshipDescriptor> relationshipDescriptors) {
             this.relationshipDescriptors = relationshipDescriptors;
+            return this;
+        }
+
+
+        public virtual string GetListOrder() {
+            return listOrder;
+        }
+
+        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetListOrder(string listOrder) {
+            this.listOrder = listOrder;
+            return this;
+        }
+
+        public virtual string GetArchivingOrder() {
+            return archivingOrder;
+        }
+
+        public virtual Net.Vpc.Upa.DefaultEntityDescriptor SetArchivingOrder(string archivingOrder) {
+            this.archivingOrder = archivingOrder;
             return this;
         }
 

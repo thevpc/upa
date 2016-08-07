@@ -5,20 +5,19 @@
 package net.vpc.upa.impl.uql;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.ExpressionManager;
-import net.vpc.upa.FunctionDefinition;
-import net.vpc.upa.PersistenceUnit;
+
+import net.vpc.upa.*;
 import net.vpc.upa.Function;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.impl.uql.parser.syntax.FunctionFactory;
 import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
+import net.vpc.upa.impl.uql.util.SimplifyVarsExpressionTransformer;
+import net.vpc.upa.impl.uql.util.UserExpressionParserVisitor;
+import net.vpc.upa.impl.uql.util.UserExpressionParametersMatcherVisitor;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
@@ -34,12 +33,14 @@ public class DefaultExpressionManager implements ExpressionManager {
     private ExpressionValidationManager validationManager;
     private ExpressionMetadataBuilder expressionMetadataBuilder;
     private HashMap<String, FunctionDefinition> qlFunctionMap = new HashMap<String, FunctionDefinition>();
+    private QLExpressionParser parser;
 
     public DefaultExpressionManager(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
         translationManager = new ExpressionTranslationManager(this, persistenceUnit);
         validationManager = new ExpressionValidationManager(persistenceUnit);
         expressionMetadataBuilder = new ExpressionMetadataBuilder(this,persistenceUnit);
+        parser = persistenceUnit.getFactory().createObject(QLExpressionParser.class);
     }
 
     public ExpressionTranslationManager getTranslationManager() {
@@ -53,15 +54,28 @@ public class DefaultExpressionManager implements ExpressionManager {
     public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) {
         return expressionMetadataBuilder.createResultMetaData(baseExpression, fieldFilter);
     }
-    public Expression parseExpression(final UserExpression expression) {
-        Expression expr = parseExpression(expression.getExpression());
-        expr.visit(new UserExpressionToExpressionVisitor(expression));
-        return expr;
+
+    @Override
+    public FunctionExpression createFunctionExpression(String name, Expression[] args) {
+        return FunctionFactory.createFunction(name,Arrays.asList(args));
     }
+
+    public Expression parseExpression(Expression expression) {
+        if(expression instanceof UserExpression){
+            UserExpression ucce = (UserExpression) expression;
+            Expression expr = parseExpression(ucce.getExpression());
+            expr.visit(new UserExpressionParametersMatcherVisitor(ucce));
+            return expr;
+        }else{
+            UserExpressionParserVisitor v=new UserExpressionParserVisitor(this);
+            expression.visit(v);
+            return expression;
+        }
+    }
+
     public Expression parseExpression(String expression) {
-        UQLParser p = new UQLParser(new StringReader(expression));
         try {
-            return p.Any();
+            return parser.parse(new StringReader(expression));
         } catch (net.vpc.upa.impl.uql.parser.syntax.ParseException e) {
             log.log(Level.SEVERE, "Unable to parse Expression : " + expression, e);
             throw e;
@@ -143,4 +157,20 @@ public class DefaultExpressionManager implements ExpressionManager {
         return persistenceUnit;
     }
 
+    @Override
+    public Expression simplifyExpression(Expression expression, final Map<String, Object> vars) {
+        Expression e=parseExpression(expression);
+        ExpressionTransformerResult e2=e.transform(new SimplifyVarsExpressionTransformer(getPersistenceUnit(),vars));
+        return createEvaluator().evalObject(e2.getExpression(),null);
+    }
+
+    @Override
+    public Expression simplifyExpression(String expression, Map<String, Object> vars) {
+        return simplifyExpression(parseExpression(expression), vars);
+    }
+
+    @Override
+    public QLEvaluator createEvaluator() {
+        return getPersistenceUnit().getFactory().createObject(QLEvaluator.class);
+    }
 }

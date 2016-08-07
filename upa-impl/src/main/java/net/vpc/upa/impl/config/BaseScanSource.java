@@ -9,7 +9,7 @@ import net.vpc.upa.config.ScanSource;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public abstract class BaseScanSource implements ScanSource{
     public abstract Iterable<Class> toIterable(Object context);

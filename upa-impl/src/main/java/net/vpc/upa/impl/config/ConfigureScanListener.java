@@ -47,7 +47,7 @@ import net.vpc.upa.types.TypesFactory;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ConfigureScanListener implements ScanListener {
 

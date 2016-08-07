@@ -60,6 +60,6 @@ public class FlagSets {
     }
 
     public static <E extends Enum<E>> FlagSet<E> copyOf(FlagSet<E> s) {
-        return s.clone();
+        return s.copy();
     }
 }

@@ -26,7 +26,7 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual void SetAll(System.Collections.Generic.IDictionary<string , object> other, params string [] keys) {
             if (keys.Length == 0) {
-                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in other) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(other)) {
                     SetObject((entry).Key, (entry).Value);
                 }
             } else {
@@ -41,7 +41,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual int GetInt(string key) {
-            return System.Convert.ToInt32(((object) GetObject<object>(key)));
+            return System.Convert.ToInt32(((object) GetObject<T>(key)));
         }
 
 
@@ -56,12 +56,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual int GetSingleInt() {
-            return GetSingleObject<int>();
+            return GetSingleObject<T>();
         }
 
 
         public virtual long GetLong(string key) {
-            return System.Convert.ToInt32(((object) GetObject<object>(key)));
+            return System.Convert.ToInt32(((object) GetObject<T>(key)));
         }
 
 
@@ -77,12 +77,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual long GetSingleLong() {
-            return GetSingleObject<long>();
+            return GetSingleObject<T>();
         }
 
 
         public virtual double GetDouble(string key) {
-            return System.Convert.ToDouble(((object) GetObject<object>(key)));
+            return System.Convert.ToDouble(((object) GetObject<T>(key)));
         }
 
 
@@ -97,12 +97,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual double GetSingleDouble() {
-            return System.Convert.ToDouble(((object) GetSingleObject<object>()));
+            return System.Convert.ToDouble(((object) GetSingleObject<T>()));
         }
 
 
         public virtual float GetFloat(string key) {
-            return System.Convert.ToSingle(((object) GetObject<object>(key)));
+            return System.Convert.ToSingle(((object) GetObject<T>(key)));
         }
 
 
@@ -117,7 +117,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual float GetSingleFloat() {
-            return System.Convert.ToSingle(((object) GetSingleObject<object>()));
+            return System.Convert.ToSingle(((object) GetSingleObject<T>()));
         }
 
 
@@ -130,7 +130,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual System.Numerics.BigInteger? GetBigInteger(string key) {
-            return GetObject<System.Numerics.BigInteger?>(key);
+            return GetObject<T>(key);
         }
 
 
@@ -145,7 +145,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual System.Numerics.BigInteger? GetSingleBigInteger() {
-            return GetSingleObject<System.Numerics.BigInteger?>();
+            return GetSingleObject<T>();
         }
 
 
@@ -158,7 +158,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual bool GetBoolean(string key) {
-            return GetObject<bool>(key);
+            return GetObject<T>(key);
         }
 
 
@@ -173,12 +173,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual bool GetSingleBoolean() {
-            return GetSingleObject<bool>();
+            return GetSingleObject<T>();
         }
 
 
         public virtual string GetString(string key) {
-            return ((string) GetObject<string>(key));
+            return ((string) GetObject<T>(key));
         }
 
 
@@ -193,12 +193,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual string GetSingleString() {
-            return GetSingleObject<string>();
+            return GetSingleObject<T>();
         }
 
 
         public virtual Net.Vpc.Upa.Types.Temporal GetDate(string key) {
-            return GetObject<Net.Vpc.Upa.Types.Temporal>(key);
+            return GetObject<T>(key);
         }
 
 
@@ -213,7 +213,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual Net.Vpc.Upa.Types.Temporal GetSingleDate() {
-            return GetSingleObject<Net.Vpc.Upa.Types.Temporal>();
+            return GetSingleObject<T>();
         }
 
 
@@ -225,7 +225,7 @@ namespace Net.Vpc.Upa.Impl
             if (key == null || !(key is string)) {
                 return key;
             }
-            System.Collections.Generic.IList<string> vars = Net.Vpc.Upa.Impl.Util.Strings.ParseVarsList(key);
+            System.Collections.Generic.IList<string> vars = Net.Vpc.Upa.Impl.Util.StringUtils.ParseVarsList(key);
             switch((vars).Count) {
                 case 0:
                     {
@@ -234,7 +234,7 @@ namespace Net.Vpc.Upa.Impl
                 case 1:
                     {
                         string v = vars[0];
-                        object ov = GetObject<object>(v);
+                        object ov = GetObject<T>(v);
                         if (ov != null || !(ov is string)) {
                             return ov;
                         }
@@ -245,7 +245,7 @@ namespace Net.Vpc.Upa.Impl
                         string s = key;
                         System.Collections.Generic.ISet<string> vars2 = new System.Collections.Generic.HashSet<string>(vars);
                         foreach (string v in vars2) {
-                            object ov = GetObject<object>(v);
+                            object ov = GetObject<T>(v);
                             if (ov == null) {
                                 ov = "";
                             } else if (!(ov is string)) {

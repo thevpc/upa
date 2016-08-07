@@ -22,14 +22,14 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
     public class KeyExpressionCompiler : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object x, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Uql.Expression.KeyExpression o = (Net.Vpc.Upa.Impl.Uql.Expression.KeyExpression) x;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object x, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Net.Vpc.Upa.Expressions.IdExpression o = (Net.Vpc.Upa.Expressions.IdExpression) x;
             Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ret = null;
             Net.Vpc.Upa.Entity entity = null;
             if (o.GetEntity() != null) {
                 entity = o.GetEntity();
             }
-            Net.Vpc.Upa.PersistenceUnit persistenceUnit = expressionTranslationManager.GetPersistenceUnit();
+            Net.Vpc.Upa.PersistenceUnit persistenceUnit = manager.GetPersistenceUnit();
             if (entity == null && o.GetEntityName() != null) {
                 entity = persistenceUnit.GetEntity(o.GetEntityName());
             }
@@ -57,8 +57,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
             if (entity == null) {
                 throw new System.ArgumentException ("Key enumeration must by associated to and entity");
             }
-            Net.Vpc.Upa.Key key = entity.GetBuilder().IdToKey(o.GetKey());
-            object[] values = key.GetValue();
+            Net.Vpc.Upa.Key key = entity.GetBuilder().IdToKey(o.GetId());
+            object[] values = key == null ? null : key.GetValue();
             Net.Vpc.Upa.Entity entity1 = o.GetEntity();
             System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> f = entity1.ToPrimitiveFields<Net.Vpc.Upa.Field>(entity1.GetPrimaryFields());
             for (int i = 0; i < (f).Count; i++) {
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
                 } else {
                     ppp.SetChild(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(f[i].GetName()));
                 }
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals e = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals(ppp, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(values[i], Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(f[i])));
+                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals e = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals(ppp, new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral(values == null ? null : values[i], Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(f[i])));
                 ret = (ret == null) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression)(e)) : new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(ret, e);
             }
             if (ret == null) {

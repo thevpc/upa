@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface ClassPathResource {
     public String getPath();

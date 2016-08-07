@@ -5,11 +5,12 @@
  */
 package net.vpc.upa.impl.transform;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.types.*;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class IdentityDataTypeTransform implements DataTypeTransform {
 
@@ -20,6 +21,7 @@ public final class IdentityDataTypeTransform implements DataTypeTransform {
     public static final DataTypeTransform BIGINT = new IdentityDataTypeTransform(TypesFactory.BIGINT);
     public static final DataTypeTransform INT = new IdentityDataTypeTransform(TypesFactory.INT);
     public static final DataTypeTransform LONG = new IdentityDataTypeTransform(TypesFactory.LONG);
+    @PortabilityHint(target = "C#", name = "suppress") //no supported
     public static final DataTypeTransform BIGDECIMAL = new IdentityDataTypeTransform(TypesFactory.BIGDECIMAL);
     public static final DataTypeTransform DOUBLE = new IdentityDataTypeTransform(TypesFactory.DOUBLE);
     public static final DataTypeTransform FLOAT = new IdentityDataTypeTransform(TypesFactory.FLOAT);

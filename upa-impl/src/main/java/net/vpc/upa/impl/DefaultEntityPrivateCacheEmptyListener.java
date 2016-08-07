@@ -9,7 +9,7 @@ import net.vpc.upa.callbacks.UpdateEvent;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/4/13 12:09 AM
  */
-public class DefaultEntityPrivateCacheEmptyListener extends EntityListenerAdapter{
+class DefaultEntityPrivateCacheEmptyListener extends EntityListenerAdapter{
     private DefaultEntityCache cache;
 
     public DefaultEntityPrivateCacheEmptyListener(DefaultEntityCache cache) {

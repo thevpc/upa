@@ -54,7 +54,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
-        public virtual void CommitStorage(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void CommitStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore = context.GetPersistenceStore();
             //should verify if not yet stored
             switch(@object.GetPersistenceState()) {
                 case Net.Vpc.Upa.PersistenceState.VALID:

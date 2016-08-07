@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class MinExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public MinExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileMin((Min) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileMin((Min) o, declarations);
-    }
-
-    protected CompiledMin compileMin(Min v, ExpressionDeclarationList declarations) {
+    protected CompiledMin compileMin(Min v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledMin s = new CompiledMin(outer.compileAny(v.getArgument(0), declarations));
+        CompiledMin s = new CompiledMin(manager.translateAny(v.getArgument(0), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

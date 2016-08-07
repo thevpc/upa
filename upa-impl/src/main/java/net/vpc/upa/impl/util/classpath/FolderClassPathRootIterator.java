@@ -11,7 +11,7 @@ import java.util.Stack;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class FolderClassPathRootIterator implements Iterator<ClassPathResource> {
 

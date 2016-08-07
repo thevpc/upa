@@ -25,9 +25,16 @@ namespace Net.Vpc.Upa.Callbacks
 
         private readonly Net.Vpc.Upa.Relationship relationship;
 
-        public RelationshipEvent(Net.Vpc.Upa.Relationship relation, Net.Vpc.Upa.PersistenceUnit persistenceUnit) {
+        private readonly Net.Vpc.Upa.EventPhase phase;
+
+        public RelationshipEvent(Net.Vpc.Upa.Relationship relation, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.relationship = relation;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {

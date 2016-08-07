@@ -16,18 +16,19 @@ namespace Net.Vpc.Upa.Bulk
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public abstract class AbstractDataFormatter : Net.Vpc.Upa.Bulk.DataFormatter {
 
-        private Net.Vpc.Upa.Bulk.DataSerializer dataSerializer;
+        private Net.Vpc.Upa.Bulk.DataRowConverter dataRowConverter;
 
-        public virtual Net.Vpc.Upa.Bulk.DataSerializer GetDataSerializer() {
-            return dataSerializer;
+        public virtual Net.Vpc.Upa.Bulk.DataRowConverter GetDataRowConverter() {
+            return dataRowConverter;
         }
 
-        public virtual void SetDataSerializer(Net.Vpc.Upa.Bulk.DataSerializer dataSerializer) {
-            this.dataSerializer = dataSerializer;
+        public virtual Net.Vpc.Upa.Bulk.DataFormatter SetDataRowConverter(Net.Vpc.Upa.Bulk.DataRowConverter dataRowConverter) {
+            this.dataRowConverter = dataRowConverter;
+            return this;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void Configure(object arg1);

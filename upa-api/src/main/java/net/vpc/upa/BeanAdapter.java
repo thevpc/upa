@@ -36,11 +36,11 @@ package net.vpc.upa;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface BeanAdapter {
 
-    public BeanType getBeanType();
+    public PlatformBeanType getPlatformBeanType();
 
     public Object getProperty(String field);
 

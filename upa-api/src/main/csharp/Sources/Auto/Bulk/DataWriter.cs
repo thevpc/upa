@@ -23,7 +23,5 @@ namespace Net.Vpc.Upa.Bulk
          void WriteObject(object row);
 
          void WriteRow(object[] row);
-
-         void Close();
     }
 }

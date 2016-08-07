@@ -14,6 +14,7 @@ import java.net.URL;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.TextFixedWidthParser;
+import net.vpc.upa.exceptions.UPAException;
 
 /**
  *
@@ -47,9 +48,13 @@ public class DefaultTextFixedWidthParser extends TextFixedWidthParser {
         return w;
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (source != null) {
-            source.close();
+            try {
+                source.close();
+            } catch (IOException e) {
+                new UPAException("IOException",e);
+            }
         }
     }
 

@@ -36,7 +36,7 @@ package net.vpc.upa.expressions;
 
 import java.util.ArrayList;
 
-public final class Concat extends Function
+public final class Concat extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -46,8 +46,8 @@ public final class Concat extends Function
         elements = new ArrayList<Expression>(1);
     }
 
-    public Concat(Expression... expressions) {
-        this();
+    public Concat(Expression[] expressions) {
+        elements = new ArrayList<Expression>(expressions.length);
         for (Expression expression : expressions) {
             add(expression);
         }

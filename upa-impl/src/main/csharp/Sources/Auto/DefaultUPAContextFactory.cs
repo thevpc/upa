@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultUPAContextFactory : Net.Vpc.Upa.UPAContextFactory {
 

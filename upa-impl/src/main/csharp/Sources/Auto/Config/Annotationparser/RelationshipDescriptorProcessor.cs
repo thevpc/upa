@@ -25,17 +25,17 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal Net.Vpc.Upa.RelationshipDescriptor relationDescriptor;
 
-        internal Net.Vpc.Upa.Entity detailEntity;
+        internal Net.Vpc.Upa.Entity sourceEntity;
 
-        internal Net.Vpc.Upa.Entity masterEntity;
+        internal Net.Vpc.Upa.Entity targetEntity;
 
         internal Net.Vpc.Upa.Relationship relation;
 
         internal Net.Vpc.Upa.Field manyToOneField = null;
 
-        internal Net.Vpc.Upa.RelationshipUpdateType detailUpdateType;
+        internal Net.Vpc.Upa.RelationshipUpdateType sourceUpdateType;
 
-        internal System.Collections.Generic.IList<string> detailFieldNames;
+        internal System.Collections.Generic.IList<string> sourceFieldNames;
 
         internal bool nullable;
 
@@ -44,14 +44,20 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         public RelationshipDescriptorProcessor(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.RelationshipDescriptor relationInfo) {
             this.persistenceUnit = persistenceUnit;
             this.relationDescriptor = relationInfo;
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(relationDescriptor.GetTargetEntity()) && relationDescriptor.GetTargetEntityType() == null) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("NoneOfTargetEntityAndTargetEntityTypeDefined");
+            }
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(relationDescriptor.GetSourceEntity()) && relationDescriptor.GetSourceEntityType() == null) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("NoneOfSourceEntityAndSourceEntityTypeDefined");
+            }
         }
 
         public virtual void Process() {
             if (!ProcessRelation(false)) {
-                if (!Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(relationDescriptor.GetSourceEntity())) {
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(relationDescriptor.GetSourceEntity())) {
                     persistenceUnit.AddDefinitionListener(relationDescriptor.GetSourceEntity(), this, true);
                 }
-                if (!Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(relationDescriptor.GetTargetEntity())) {
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(relationDescriptor.GetTargetEntity())) {
                     persistenceUnit.AddDefinitionListener(relationDescriptor.GetTargetEntity(), this, true);
                 }
                 if (relationDescriptor.GetSourceEntityType() != null) {
@@ -100,72 +106,72 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         private bool Build(bool throwErrors) {
-            if (detailEntity == null) {
+            if (sourceEntity == null) {
                 if (relationDescriptor.GetSourceEntity() != null) {
                     if (persistenceUnit.ContainsEntity(relationDescriptor.GetSourceEntity())) {
-                        detailEntity = persistenceUnit.GetEntity(relationDescriptor.GetSourceEntity());
+                        sourceEntity = persistenceUnit.GetEntity(relationDescriptor.GetSourceEntity());
                     }
                 }
             }
-            if (detailEntity == null) {
+            if (sourceEntity == null) {
                 if (relationDescriptor.GetSourceEntityType() != null) {
                     if (persistenceUnit.ContainsEntity(relationDescriptor.GetSourceEntityType())) {
-                        detailEntity = persistenceUnit.GetEntity(relationDescriptor.GetSourceEntityType());
+                        sourceEntity = persistenceUnit.GetEntity(relationDescriptor.GetSourceEntityType());
                     }
                 }
             }
-            if (masterEntity == null) {
+            if (targetEntity == null) {
                 if (relationDescriptor.GetTargetEntity() != null) {
                     if (persistenceUnit.ContainsEntity(relationDescriptor.GetTargetEntity())) {
-                        masterEntity = persistenceUnit.GetEntity(relationDescriptor.GetTargetEntity());
+                        targetEntity = persistenceUnit.GetEntity(relationDescriptor.GetTargetEntity());
                     }
                 }
             }
-            if (masterEntity == null) {
+            if (targetEntity == null) {
                 if (relationDescriptor.GetTargetEntityType() != null) {
                     if (persistenceUnit.ContainsEntity(relationDescriptor.GetTargetEntityType())) {
-                        masterEntity = persistenceUnit.GetEntity(relationDescriptor.GetTargetEntityType());
+                        targetEntity = persistenceUnit.GetEntity(relationDescriptor.GetTargetEntityType());
                     }
                 }
             }
-            if (detailEntity == null) {
+            if (sourceEntity == null) {
                 if (throwErrors) {
                     throw new Net.Vpc.Upa.Exceptions.UPAException("InvalidRelationEntityNotFound", relationDescriptor.GetSourceEntityType());
                 } else {
                     return false;
                 }
             }
-            if (masterEntity == null) {
+            if (targetEntity == null) {
                 if (throwErrors) {
                     throw new Net.Vpc.Upa.Exceptions.UPAException("InvalidRelationEntityNotFound", relationDescriptor.GetTargetEntityType());
                 } else {
                     return false;
                 }
             }
-            detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.FLAT;
-            detailFieldNames = new System.Collections.Generic.List<string>();
+            sourceUpdateType = Net.Vpc.Upa.RelationshipUpdateType.FLAT;
+            sourceFieldNames = new System.Collections.Generic.List<string>();
             if (relationDescriptor.GetBaseField() == null) {
-                Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(detailFieldNames, new System.Collections.Generic.List<string>(relationDescriptor.GetSourceFields()));
+                Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(sourceFieldNames, new System.Collections.Generic.List<string>(relationDescriptor.GetSourceFields()));
                 if (relationDescriptor.GetMappedTo() != null && relationDescriptor.GetMappedTo().Length > 0) {
                     if (relationDescriptor.GetMappedTo().Length > 1) {
                         throw new System.ArgumentException ("mappedTo cannot only apply to single Entity Field");
                     }
-                    manyToOneField = detailEntity.GetField(relationDescriptor.GetMappedTo()[0]);
+                    manyToOneField = sourceEntity.GetField(relationDescriptor.GetMappedTo()[0]);
                 }
             } else {
-                Net.Vpc.Upa.Field baseField = detailEntity.GetField(relationDescriptor.GetBaseField());
+                Net.Vpc.Upa.Field baseField = sourceEntity.GetField(relationDescriptor.GetBaseField());
                 Net.Vpc.Upa.Types.DataType baseFieldType = baseField.GetDataType();
-                if (baseFieldType is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType et = (Net.Vpc.Upa.Types.EntityType) baseFieldType;
-                    if (et.GetReferencedEntityName() == null || et.GetReferencedEntityName().Length==0) {
-                        et.SetReferencedEntityName(masterEntity.GetName());
+                if (baseFieldType is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType et = (Net.Vpc.Upa.Types.ManyToOneType) baseFieldType;
+                    if (et.GetTargetEntityName() == null || (et.GetTargetEntityName().Length==0)) {
+                        et.SetTargetEntityName(targetEntity.GetName());
                     }
-                    detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.COMPOSED;
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Field> masterPK = masterEntity.GetPrimaryFields();
+                    sourceUpdateType = Net.Vpc.Upa.RelationshipUpdateType.COMPOSED;
+                    System.Collections.Generic.IList<Net.Vpc.Upa.Field> masterPK = targetEntity.GetPrimaryFields();
                     if (relationDescriptor.GetMappedTo() == null || relationDescriptor.GetMappedTo().Length == 0) {
                         if ((masterPK.Count==0)) {
                             if (throwErrors) {
-                                throw new Net.Vpc.Upa.Exceptions.UPAException("PrimaryFieldsNotFoundException", masterEntity.GetName());
+                                throw new Net.Vpc.Upa.Exceptions.UPAException("PrimaryFieldsNotFoundException", targetEntity.GetName());
                             } else {
                                 return false;
                             }
@@ -178,34 +184,34 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                                     f = f.Substring(0, 1).ToUpper() + f.Substring(1);
                                 }
                                 string extraName = baseField.GetName() + f;
-                                detailFieldNames.Add(extraName);
+                                sourceFieldNames.Add(extraName);
                             }
                         }
                     } else {
-                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(detailFieldNames, new System.Collections.Generic.List<string>(relationDescriptor.GetMappedTo()));
+                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(sourceFieldNames, new System.Collections.Generic.List<string>(relationDescriptor.GetMappedTo()));
                     }
-                    if ((detailFieldNames).Count != (masterPK).Count) {
+                    if ((sourceFieldNames).Count != (masterPK).Count) {
                         if (throwErrors) {
                             throw new System.ArgumentException ("Incorrect parameters");
                         } else {
                             return false;
                         }
                     }
-                    if ((detailFieldNames.Count==0)) {
+                    if ((sourceFieldNames.Count==0)) {
                         if (throwErrors) {
                             throw new System.ArgumentException ("Incorrect parameters");
                         } else {
                             return false;
                         }
                     }
-                    for (int i = 0; i < (detailFieldNames).Count; i++) {
-                        string extraName = detailFieldNames[i];
-                        Net.Vpc.Upa.Field idField = detailEntity.FindField(extraName);
+                    for (int i = 0; i < (sourceFieldNames).Count; i++) {
+                        string extraName = sourceFieldNames[i];
+                        Net.Vpc.Upa.Field idField = sourceEntity.FindField(extraName);
                         if (idField == null) {
-                            Net.Vpc.Upa.Types.DataType dt = (Net.Vpc.Upa.Types.DataType) masterPK[i].GetDataType().Clone();
+                            Net.Vpc.Upa.Types.DataType dt = (Net.Vpc.Upa.Types.DataType) masterPK[i].GetDataType().Copy();
                             bool nullable = baseFieldType.IsNullable();
                             dt.SetNullable(nullable);
-                            idField = detailEntity.AddField(extraName, "system", Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM), Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.UPDATE), null, dt, -1);
+                            idField = sourceEntity.AddField(extraName, "system", Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.SYSTEM), Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.UPDATE), null, dt, -1);
                             idField.SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
                         } else {
                             idField.SetUserExcludeModifiers(idField.GetUserExcludeModifiers().Add(Net.Vpc.Upa.UserFieldModifier.UPDATE));
@@ -213,25 +219,25 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     }
                     manyToOneField = baseField;
                 } else {
-                    detailFieldNames.Add(baseField.GetName());
+                    sourceFieldNames.Add(baseField.GetName());
                     if (relationDescriptor.GetMappedTo() != null && relationDescriptor.GetMappedTo().Length > 0) {
                         if (relationDescriptor.GetMappedTo().Length > 1) {
                             throw new System.ArgumentException ("mappedTo cannot only apply to single Entity Field");
                         }
-                        manyToOneField = detailEntity.GetField(relationDescriptor.GetMappedTo()[0]);
+                        manyToOneField = sourceEntity.GetField(relationDescriptor.GetMappedTo()[0]);
                     }
                 }
             }
             nullable = true;
             //TODO FIX ME
-            for (int i = 0; i < (detailFieldNames).Count; i++) {
-                Net.Vpc.Upa.Field slaveField = detailEntity.GetField(detailFieldNames[i]);
+            for (int i = 0; i < (sourceFieldNames).Count; i++) {
+                Net.Vpc.Upa.Field slaveField = sourceEntity.GetField(sourceFieldNames[i]);
                 Net.Vpc.Upa.Types.DataType dataType = slaveField.GetDataType();
                 if (dataType == null) {
                     //inherit master DataType
-                    if ((masterEntity.GetPrimaryFields()).Count > i) {
-                        Net.Vpc.Upa.Types.DataType d = masterEntity.GetPrimaryFields()[i].GetDataType();
-                        d = (Net.Vpc.Upa.Types.DataType) d.Clone();
+                    if ((targetEntity.GetPrimaryFields()).Count > i) {
+                        Net.Vpc.Upa.Types.DataType d = targetEntity.GetPrimaryFields()[i].GetDataType();
+                        d = (Net.Vpc.Upa.Types.DataType) d.Copy();
                         d.SetNullable(nullable);
                         slaveField.SetDataType(d);
                         //reset transform!
@@ -242,11 +248,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
             }
             filter = relationDescriptor.GetFilter();
-            //        if (baseFieldType instanceof EntityType) {
+            //        if (baseFieldType instanceof ManyToOneType) {
             //            manyToOneField = baseField;
-            //        } else if (detailFieldNames.size() == 1) {
+            //        } else if (sourceFieldNames.size() == 1) {
             //            DataType slaveType = slaveField.getDataType();
-            //            if (slaveType instanceof EntityType) {
+            //            if (slaveType instanceof ManyToOneType) {
             //                manyToOneField = slaveField;
             //            }
             //        }
@@ -261,15 +267,15 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             if (!Build(throwErrors)) {
                 return false;
             }
-            Net.Vpc.Upa.PersistenceUnit pu = detailEntity.GetPersistenceUnit();
+            Net.Vpc.Upa.PersistenceUnit pu = sourceEntity.GetPersistenceUnit();
             if (relation == null) {
                 Net.Vpc.Upa.DefaultRelationshipDescriptor rd = new Net.Vpc.Upa.DefaultRelationshipDescriptor();
                 rd.SetName(relationDescriptor.GetName());
                 rd.SetBaseField(relationDescriptor.GetBaseField());
                 rd.SetRelationshipType(relationDescriptor.GetRelationshipType());
-                rd.SetSourceEntity(detailEntity.GetName());
-                rd.SetTargetEntity(masterEntity.GetName());
-                rd.SetSourceFields(detailFieldNames.ToArray());
+                rd.SetSourceEntity(sourceEntity.GetName());
+                rd.SetTargetEntity(targetEntity.GetName());
+                rd.SetSourceFields(sourceFieldNames.ToArray());
                 rd.SetFilter(relationDescriptor.GetFilter());
                 rd.SetHierarchy(relationDescriptor.IsHierarchy());
                 rd.SetHierarchyPathField(relationDescriptor.GetHierarchyPathField());
@@ -277,15 +283,15 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 rd.SetNullable(relationDescriptor.IsNullable());
                 relation = ((Net.Vpc.Upa.Impl.DefaultPersistenceUnit) pu).AddRelationshipImmediate(rd);
             } else {
-                if (!Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(relationDescriptor.GetName())) {
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(relationDescriptor.GetName())) {
                     relation.SetName(relationDescriptor.GetName());
                 }
-                relation.SetRelationshipType(relationDescriptor.GetRelationshipType() == null ? Net.Vpc.Upa.RelationshipType.DEFAULT : relationDescriptor.GetRelationshipType());
+                relation.SetRelationshipType(relationDescriptor.GetRelationshipType() == default(Net.Vpc.Upa.RelationshipType) ? Net.Vpc.Upa.RelationshipType.DEFAULT : relationDescriptor.GetRelationshipType());
                 relation.GetSourceRole().SetEntityField(manyToOneField);
-                relation.GetSourceRole().SetRelationshipUpdateType(detailUpdateType);
+                relation.GetSourceRole().SetRelationshipUpdateType(sourceUpdateType);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Field> slaveFields = new System.Collections.Generic.List<Net.Vpc.Upa.Field>();
-                foreach (string n in detailFieldNames) {
-                    Net.Vpc.Upa.Field f = detailEntity.GetField(n);
+                foreach (string n in sourceFieldNames) {
+                    Net.Vpc.Upa.Field f = sourceEntity.GetField(n);
                     slaveFields.Add(f);
                 }
                 relation.GetSourceRole().SetFields(slaveFields.ToArray());
@@ -372,6 +378,62 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
 
         public virtual void OnPreClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnPreUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        }
+
+
+        public virtual void OnPreInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        }
+
+        public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
+            return persistenceUnit;
+        }
+
+        public virtual Net.Vpc.Upa.RelationshipDescriptor GetRelationDescriptor() {
+            return relationDescriptor;
+        }
+
+        public virtual Net.Vpc.Upa.Entity GetSourceEntity() {
+            return sourceEntity;
+        }
+
+        public virtual Net.Vpc.Upa.Entity GetTargetEntity() {
+            return targetEntity;
+        }
+
+        public virtual Net.Vpc.Upa.Relationship GetRelation() {
+            return relation;
+        }
+
+        public virtual Net.Vpc.Upa.Field GetManyToOneField() {
+            return manyToOneField;
+        }
+
+        public virtual Net.Vpc.Upa.RelationshipUpdateType GetSourceUpdateType() {
+            return sourceUpdateType;
+        }
+
+        public virtual System.Collections.Generic.IList<string> GetSourceFieldNames() {
+            return sourceFieldNames;
+        }
+
+        public virtual bool IsNullable() {
+            return nullable;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Expression GetFilter() {
+            return filter;
         }
     }
 }

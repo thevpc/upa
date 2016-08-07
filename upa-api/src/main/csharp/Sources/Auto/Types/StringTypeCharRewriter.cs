@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Types
             this.from = from;
             this.to = to;
             if (from == null || to == null || (from).Length == 0 || (from).Length != (to).Length) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
         }
 

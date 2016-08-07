@@ -79,11 +79,12 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             for (int i = 0; i < (other.fields).Count; i++) {
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar fvar = other.GetField(i);
                 Net.Vpc.Upa.Field field = (Net.Vpc.Upa.Field) fvar.GetReferrer();
-                Set(field, other.GetFieldValue(i));
+                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression fieldValue = other.GetFieldValue(i);
+                Set(field, fieldValue == null ? null : fieldValue.Copy());
             }
             if (other.condition != null) {
                 if (condition == null) {
-                    Where(condition.Copy());
+                    Where(other.condition.Copy());
                 } else {
                     Where(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(condition, other.condition.Copy()));
                 }

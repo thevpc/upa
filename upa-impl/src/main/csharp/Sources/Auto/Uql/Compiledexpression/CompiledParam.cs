@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      */
     public class CompiledParam : Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl {
 
-        private object @object;
+        private object @value;
 
         private string name;
 
@@ -30,36 +30,36 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
 
 
-        public CompiledParam(object @object, string name, Net.Vpc.Upa.Types.DataTypeTransform type, bool unspecified) {
-            this.@object = @object;
+        public CompiledParam(object @value, string name, Net.Vpc.Upa.Types.DataTypeTransform type, bool unspecified) {
+            this.@value = @value;
             this.name = name;
             this.unspecified = unspecified;
             if (type == null) {
-                if (@object == null) {
-                    SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.OBJECT);
+                if (@value == null) {
+                    SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.OBJECT);
                 } else {
-                    SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.ForNativeType(@object.GetType()));
+                    SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.ForNativeType(@value.GetType()));
                 }
             } else {
-                SetDataType(type);
+                SetTypeTransform(type);
             }
         }
 
 
-        public override void SetDataType(Net.Vpc.Upa.Types.DataTypeTransform type) {
-            base.SetDataType(type);
+        public override void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform type) {
+            base.SetTypeTransform(type);
         }
 
-        public virtual object GetObject() {
-            return @object;
+        public virtual object GetValue() {
+            return @value;
         }
 
         public virtual string GetName() {
             return name;
         }
 
-        public virtual void SetObject(object @object) {
-            this.@object = @object;
+        public virtual void SetValue(object @value) {
+            this.@value = @value;
         }
 
         public virtual bool IsUnspecified() {
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
 
         public override Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression Copy() {
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam(@object, name, GetTypeTransform(), unspecified);
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam o = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam(@value, name, GetTypeTransform(), unspecified);
             o.SetDescription(GetDescription());
             o.GetClientParameters().SetAll(GetClientParameters());
             return o;
@@ -90,7 +90,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
 
         public override string ToString() {
-            return ('{' + name + "=" + (unspecified ? ((string)("?")) : @object) + '}');
+            return ('{' + name + "=" + (unspecified ? ((string)("?")) : @value) + '}');
         }
 
 

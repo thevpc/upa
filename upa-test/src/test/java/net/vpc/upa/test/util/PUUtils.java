@@ -14,7 +14,7 @@ import net.vpc.upa.persistence.ConnectionConfig;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class PUUtils {
-    private static final String TYPE="mysql";
+    private static final String TYPE="embedded";
     public static PersistenceUnit createTestPersistenceUnit(Class clz) {
         return createTestPersistenceUnit(clz,TYPE);
     }

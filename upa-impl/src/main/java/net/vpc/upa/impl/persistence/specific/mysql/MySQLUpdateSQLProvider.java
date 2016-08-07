@@ -1,12 +1,9 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
-import net.vpc.upa.impl.persistence.shared.*;
-import net.vpc.upa.Entity;
-import net.vpc.upa.EntityPart;
-import net.vpc.upa.Field;
-import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
+import net.vpc.upa.impl.persistence.shared.sql.UpdateSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
@@ -16,7 +13,7 @@ import net.vpc.upa.persistence.PersistenceStore;
 
 import java.util.Arrays;
 import java.util.List;
-import net.vpc.upa.PersistenceUnit;
+
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
 import net.vpc.upa.persistence.PersistenceNameType;
 
@@ -24,6 +21,7 @@ import net.vpc.upa.persistence.PersistenceNameType;
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change
  * this template use File | Settings | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
 
     public MySQLUpdateSQLProvider() {

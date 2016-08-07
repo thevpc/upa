@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Types
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class CustomExpressionDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransformConfig {
 

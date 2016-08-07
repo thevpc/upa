@@ -42,7 +42,7 @@ import net.vpc.upa.config.ScanFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class PersistenceUnitConfig {
 
@@ -52,10 +52,10 @@ public class PersistenceUnitConfig {
     private PersistenceNameConfig model;
     private Boolean autoStart;
     private Boolean autoScan;
-    private List<ConnectionConfig> rootConnections = new ArrayList<ConnectionConfig>();
-    private List<ConnectionConfig> connections = new ArrayList<ConnectionConfig>();
-    private Map<String, Object> properties = new HashMap<String, Object>();
-    private final List<ScanFilter> filters = new ArrayList<ScanFilter>();
+    private List<ConnectionConfig> rootConnections = new ArrayList<ConnectionConfig>(2);
+    private List<ConnectionConfig> connections = new ArrayList<ConnectionConfig>(2);
+    private Map<String, Object> properties = new HashMap<String, Object>(5);
+    private final List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
 
     public PersistenceUnitConfig() {
     }

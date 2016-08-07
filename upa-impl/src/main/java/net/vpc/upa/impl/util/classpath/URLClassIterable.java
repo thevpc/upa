@@ -79,7 +79,6 @@ public class URLClassIterable implements Iterable<Class> {
         return new URLClassIterableIterator(this);
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     Class configureClassURL(URL src, String path) throws ClassNotFoundException {
         if (path.startsWith("/")) {
             path = path.substring(1);

@@ -17,11 +17,11 @@ namespace Net.Vpc.Upa.Types
 
     public sealed class TypesFactory {
 
-        public static readonly Net.Vpc.Upa.Types.DataType OBJECT = new Net.Vpc.Upa.Types.DataType("OBJECT", typeof(object), true);
+        public static readonly Net.Vpc.Upa.Types.DataType OBJECT = new Net.Vpc.Upa.Types.SerializableType("OBJECT", typeof(object), true);
 
         public static readonly Net.Vpc.Upa.Types.BooleanType BOOLEAN = Net.Vpc.Upa.Types.BooleanType.BOOLEAN_REF;
 
-        public static readonly Net.Vpc.Upa.Types.DataType VOID = new Net.Vpc.Upa.Types.DataType("VOID", typeof(void), true);
+        public static readonly Net.Vpc.Upa.Types.DataType VOID = new Net.Vpc.Upa.Types.SerializableType("VOID", typeof(void), true);
 
         public static readonly Net.Vpc.Upa.Types.BigIntType BIGINT = Net.Vpc.Upa.Types.BigIntType.DEFAULT;
 
@@ -153,6 +153,9 @@ namespace Net.Vpc.Upa.Types
             Net.Vpc.Upa.Types.DataType o = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,Net.Vpc.Upa.Types.DataType>(defaultMapping,clazz);
             if (o != null) {
                 return o;
+            }
+            if ((clazz).IsEnum) {
+                return new Net.Vpc.Upa.Types.EnumType(clazz, true);
             }
             return OBJECT;
         }

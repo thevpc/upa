@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public abstract class AbstractDecoration : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue, Net.Vpc.Upa.Config.Decoration {
 
@@ -130,7 +130,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                 return default(T[]);
             }
             Net.Vpc.Upa.Config.DecorationValue[] arr = t.GetValues();
-            T[] arr2 = (T[]) Java.Lang.Reflect.Array.NewInstance(type, arr.Length);
+            T[] arr2 = (T[]) System.Array.CreateInstance(type,arr.Length);
             for (int i = 0; i < arr2.Length; i++) {
                 arr2[i] = (T) ((Net.Vpc.Upa.Impl.Config.Decorations.DecorationPrimitiveValue) arr[i]).GetValue();
             }
@@ -154,7 +154,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             Net.Vpc.Upa.Config.DecorationValue[] alternatives = Shrink(alternatives1);
             foreach (Net.Vpc.Upa.Config.DecorationValue alternative in alternatives) {
                 Net.Vpc.Upa.Config.Decoration d = (Net.Vpc.Upa.Config.Decoration) alternative;
-                foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in d.GetAttributes()) {
+                foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.Vpc.Upa.Config.DecorationValue>>(d.GetAttributes())) {
                     Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v1 = (Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Config.DecorationValue>(att,(e).Key);
                     Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue v2 = (Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecorationValue) (e).Value;
                     if (v1 == null) {
@@ -165,7 +165,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
                 }
                 break;
             }
-            foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in att) {
+            foreach (System.Collections.Generic.KeyValuePair<string , Net.Vpc.Upa.Config.DecorationValue> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,Net.Vpc.Upa.Config.DecorationValue>>(att)) {
                 ((Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecoration) (e).Value).Merge();
             }
             if (alternatives.Length == 0) {

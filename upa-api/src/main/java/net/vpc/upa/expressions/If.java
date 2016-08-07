@@ -34,14 +34,17 @@
  */
 package net.vpc.upa.expressions;
 
+import net.vpc.upa.exceptions.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
  * change this template use Options | File Templates.
  */
-public class If extends Function implements Cloneable {
+public class If extends FunctionExpression implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private final int EXPECT_CONDITION = 0;
@@ -51,12 +54,18 @@ public class If extends Function implements Cloneable {
     private int state = 0;
 
     private If() {
-        params = new ArrayList<Expression>();
+        params = new ArrayList<Expression>(3);
     }
 
     public If(List<Expression> expressions) {
-        params = new ArrayList<Expression>(2);
+        params = new ArrayList<Expression>(expressions.size());
         params.addAll(expressions);
+        state = VALID;
+    }
+
+    public If(Expression[] expressions) {
+        params = new ArrayList<Expression>(expressions.length);
+        params.addAll(Arrays.asList(expressions));
         state = VALID;
     }
 
@@ -81,9 +90,9 @@ public class If extends Function implements Cloneable {
             state = EXPECT_CONDITION;
             return this;
         } else if (state == VALID) {
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("No more tokens are expected");
         } else {
-            throw new IllegalArgumentException("Expected a value");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Expected a value");
         }
     }
 
@@ -96,9 +105,9 @@ public class If extends Function implements Cloneable {
             state = VALID;
             return this;
         } else if (state == VALID) {
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("No more tokens are expected");
         } else {
-            throw new IllegalArgumentException("Expected a value");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Expected a value");
         }
     }
 
@@ -111,9 +120,9 @@ public class If extends Function implements Cloneable {
             state = EXPECT_VALUE;
             return this;
         } else if (state == VALID) {
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("No more tokens are expected");
         } else {
-            throw new IllegalArgumentException("Expected a condition");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Expected a condition");
         }
     }
 

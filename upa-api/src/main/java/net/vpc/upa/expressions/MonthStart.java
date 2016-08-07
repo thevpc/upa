@@ -35,6 +35,7 @@
 package net.vpc.upa.expressions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
@@ -63,10 +64,17 @@ import java.util.List;
  *          the date at the end of the next "count" month. when count=0, the end of the current month
  * </pre>
  */
-public class MonthStart extends Function {
+public class MonthStart extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private List<Expression> expressions = new ArrayList<Expression>();
+    private List<Expression> expressions = new ArrayList<Expression>(2);
+
+    public MonthStart(Expression[] expressions) {
+        if(expressions.length!=0 && expressions.length!=1 && expressions.length!=2) {
+            checkArgCount(getName(), expressions, 1);
+        }
+        this.expressions.addAll(Arrays.asList(expressions));
+    }
 
     public MonthStart() {
 

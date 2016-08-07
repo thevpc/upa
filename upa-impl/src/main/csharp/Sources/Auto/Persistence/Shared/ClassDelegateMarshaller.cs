@@ -49,7 +49,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            GetDelegate().Write(@object, i, preparedStatement);
+            
         }
 
         public override bool IsLiteralSupported() {

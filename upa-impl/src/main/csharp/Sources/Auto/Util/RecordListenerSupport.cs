@@ -25,11 +25,14 @@ namespace Net.Vpc.Upa.Impl.Util
 
         private Net.Vpc.Upa.Entity entity;
 
-        public RecordListenerSupport(Net.Vpc.Upa.Entity entity) {
+        private Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager persistenceUnitListenerManager;
+
+        public RecordListenerSupport(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager persistenceUnitListenerManager) {
             this.entity = entity;
+            this.persistenceUnitListenerManager = persistenceUnitListenerManager;
         }
 
-        public virtual void FireBeforeInsert(object objectId, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void FireBeforePersist(object objectId, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             //        Object methodExecId = Math.random();
             //        log.log(Level.FINE,"enter {} {}", new Object[]{key, record});
             //Log.method_enter(methodExecId, getName(), key, record);
@@ -42,7 +45,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context);
+                            @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         @event.SetTrigger(et);
                         li.OnPrePersist(@event);
@@ -54,9 +57,19 @@ namespace Net.Vpc.Upa.Impl.Util
                     }
                 }
             }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".firePreInsertTable> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_PERSIST, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_PERSIST, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
+            }
         }
 
-        public virtual void FireAfterInsert(object objectId, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void FireAfterPersist(object objectId, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             //        Object methodExecId = Math.random();
             //        Log.method_enter(methodExecId, getName(), key, record);
             //        entity.postInsertRecord(key, record, context);
@@ -68,7 +81,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context);
+                            @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         @event.SetTrigger(et);
                         li.OnPersist(@event);
@@ -79,6 +92,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".firePostInsertTable> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.PersistEvent(objectId, record, context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_PERSIST, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -94,7 +114,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreUpdate(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -104,6 +124,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
             }
         }
 
@@ -119,7 +149,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnUpdate(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -128,6 +158,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.UpdateEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -143,7 +180,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreRemove(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -152,6 +189,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeRemove> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_REMOVE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_REMOVE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
             }
         }
 
@@ -167,7 +214,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnRemove(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException ex) {
@@ -176,6 +223,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw ex;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterRemove> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.RemoveEvent(condition, context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_REMOVE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -191,7 +245,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreUpdateFormula(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException ex) {
@@ -201,6 +255,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw ex;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
             }
         }
 
@@ -216,7 +280,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context);
+                            @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnUpdateFormula(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException ex) {
@@ -225,6 +289,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw ex;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.UpdateFormulaEvent(updates, condition, context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -240,7 +311,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreInitialize(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -249,6 +320,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
             }
         }
 
@@ -264,7 +345,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnInitialize(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -273,6 +354,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -288,7 +376,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreClear(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -297,6 +385,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -312,7 +410,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnClear(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -321,6 +419,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
 
@@ -336,7 +441,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
                         }
                         li.OnPreReset(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -345,6 +450,16 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireBeforeUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.BEFORE);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
+            }
+            foreach (Net.Vpc.Upa.PreparedCallback invoker in persistenceUnitListenerManager.GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Prepare(@event);
             }
         }
 
@@ -360,7 +475,7 @@ namespace Net.Vpc.Upa.Impl.Util
                     try {
                         Net.Vpc.Upa.Callbacks.EntityListener li = t.GetListener();
                         if (@event == null) {
-                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context);
+                            @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
                         }
                         li.OnReset(@event);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
@@ -369,6 +484,13 @@ namespace Net.Vpc.Upa.Impl.Util
                         throw e;
                     }
                 }
+            }
+            //                Log.log(EditorConstants.Logs.TRIGGER, "<END   " + getName() + ".fireAfterUpdate> " + t.toString());
+            if (@event == null) {
+                @event = new Net.Vpc.Upa.Callbacks.EntityEvent(context, Net.Vpc.Upa.EventPhase.AFTER);
+            }
+            foreach (Net.Vpc.Upa.Callback invoker in persistenceUnitListenerManager.GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.ENTITY, @event.GetEntity().GetName(), Net.Vpc.Upa.Impl.Event.PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
+                invoker.Invoke(@event);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * Time: 6:41 AM
      * To change this template use File | Settings | File Templates.
      */
-    public class MultiRecordList : Net.Vpc.Upa.Impl.Persistence.QueryResultIteratorList<Net.Vpc.Upa.MultiRecord> {
+    public class MultiRecordList : Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<Net.Vpc.Upa.MultiRecord> {
 
         private string[] recordName;
 
@@ -38,10 +38,14 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private bool forUpdate;
 
-        public MultiRecordList(Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL, bool forUpdate)  : base(nativeSQL){
+        public MultiRecordList(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor, bool forUpdate)  : base(queryExecutor){
 
             this.forUpdate = forUpdate;
-            this.fields = nativeSQL.GetFields();
+            this.fields = queryExecutor.GetFields();
+            this.entities = new Net.Vpc.Upa.Entity[this.fields.Length];
+            this.recordName = new string[this.fields.Length];
+            this.currentRecords = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.MultiRecordListTracker>();
+            this.setterToProp = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Persistence.FieldTracking>>();
             int fieldsCount = fields.Length;
             for (int i = 0; i < fieldsCount; i++) {
                 Net.Vpc.Upa.Impl.Persistence.NativeField namedExpression = fields[i];
@@ -91,7 +95,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                             multiRecord.SetRecord(r, current);
                         }
                     }
-                    current.SetObject(fields[i].GetName(), result.Read<object>(i));
+                    current.SetObject(fields[i].GetName(), result.Read<T>(i));
                     Net.Vpc.Upa.Impl.Persistence.MultiRecordListTracker tr = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.MultiRecordListTracker>(currentRecords,recordName[i]);
                     if (tr == null) {
                         Net.Vpc.Upa.PropertyChangeListener li = new Net.Vpc.Upa.Impl.Persistence.MultiRecordListTrackPropertyChangeListener(this, r, result);
@@ -115,7 +119,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                             multiRecord.SetRecord(r, current);
                         }
                     }
-                    current.SetObject(fields[i].GetName(), result.Read<object>(i));
+                    current.SetObject(fields[i].GetName(), result.Read<T>(i));
                 }
                 return multiRecord;
             }

@@ -9,7 +9,7 @@ import net.vpc.upa.filters.ObjectFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class EqualsStringFilter implements ObjectFilter<String> {
     private String base;

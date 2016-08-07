@@ -73,6 +73,8 @@ namespace Net.Vpc.Upa.Types
 
 
         public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
+            base.Check(@value, name, description);
+            elementType.Check(@value, name, description);
         }
 
         public virtual object GetValueAt(int index) {
@@ -108,10 +110,14 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override object Clone() {
-            Net.Vpc.Upa.Types.ListType l = (Net.Vpc.Upa.Types.ListType) base.MemberwiseClone();
-            l.elements = new System.Collections.Generic.List<object>(l.elements);
-            return l;
+        public override object Copy() {
+            try {
+                Net.Vpc.Upa.Types.ListType l = (Net.Vpc.Upa.Types.ListType) Clone();
+                l.elements = new System.Collections.Generic.List<object>(l.elements);
+                return l;
+            } catch (System.Exception ex) {
+                throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
+            }
         }
     }
 }

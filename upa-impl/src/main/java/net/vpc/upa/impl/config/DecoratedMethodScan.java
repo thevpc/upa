@@ -10,7 +10,7 @@ import net.vpc.upa.config.Decoration;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DecoratedMethodScan {
 

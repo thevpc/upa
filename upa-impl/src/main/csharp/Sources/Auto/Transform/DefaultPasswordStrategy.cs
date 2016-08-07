@@ -45,8 +45,9 @@ namespace Net.Vpc.Upa.Impl.Transform
                     return null;
                 }
                 // first of all convert this object to String
-                byte[] bytesOfMessage = @value.GetBytes("UTF-8");
+                byte[] bytesOfMessage = System.Text.Encoding.GetEncoding("UTF-8").GetBytes(@value);
                 byte[] hash = null;
+                return Net.Vpc.Upa.Impl.Util.StringUtils.ToHexString(hash);
             } catch (System.Exception ex) {
                 throw new System.Exception("RuntimeException", ex);
             }

@@ -41,7 +41,7 @@ import java.util.List;
 //            ConstraintsException, Utils
 public class ConstraintsEvent {
 
-    private List<ConstraintsException> errors = new ArrayList<ConstraintsException>();
+    private List<ConstraintsException> errors = new ArrayList<ConstraintsException>(1);
 
     /**
      * The object on which the Event initially occurred.
@@ -56,7 +56,7 @@ public class ConstraintsEvent {
      */
     public ConstraintsEvent(Object source) {
         if (source == null)
-            throw new IllegalArgumentException("null source");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("null source");
 
         this.source = source;
     }

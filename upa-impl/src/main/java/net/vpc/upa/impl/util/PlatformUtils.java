@@ -5,6 +5,8 @@ import net.vpc.upa.config.Decoration;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.ObjectFilter;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
+import net.vpc.upa.impl.util.regexp.PortablePatternMatcher;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.*;
 
@@ -17,8 +19,6 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -297,8 +297,14 @@ public class PlatformUtils {
     }
 
     public static Class forName(String name) throws ClassNotFoundException {
-        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-        return Class.forName(name, true, contextClassLoader);
+        /**
+         * @PortabilityHint(target = "C#", name = "replace")
+         * return System.Type.GetType (name, true);
+         */
+        {
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            return Class.forName(name, true, contextClassLoader);
+        }
     }
 
     public static <T> T convert(Object value, Class<T> to) {
@@ -310,7 +316,7 @@ public class PlatformUtils {
             if (value instanceof String) {
                 return (T) Enum.valueOf((Class) to, (String) value);
             } else if (value instanceof Integer) {
-                return to.getEnumConstants()[(Integer) value];
+                return (T) getEnumValues(to)[(Integer) value];
             }
         }
         return to.cast(value);
@@ -469,7 +475,7 @@ public class PlatformUtils {
     public static Object[] getEnumValues(Class enumType) {
         /**
          * @PortabilityHint(target = "C#", name = "replace")
-         * return (Object[])Enum.GetValues(enumType);
+         * return (object[])System.Enum.GetValues(enumType);
          */
         try {
             return ((Object[]) enumType.getEnumConstants());
@@ -491,14 +497,13 @@ public class PlatformUtils {
             return false;
         }
         Decoration configObject = a.getDecoration("config");
-        if (configObject instanceof Decoration) {
-            Decoration c = (Decoration) configObject;
-            String v = StringUtils.trim(c.getString("persistenceGroup"));
-            if (!StringUtils.matchesSimpleExpression(persistenceGroup, v)) {
+        if (configObject != null) {
+            String v = StringUtils.trim(configObject.getString("persistenceGroup"));
+            if (!StringUtils.matchesSimpleExpression(persistenceGroup, v, PatternType.DOT_PATH)) {
                 return false;
             }
-            v = StringUtils.trim(c.getString("persistenceUnit"));
-            if (!StringUtils.matchesSimpleExpression(persistenceUnit, v)) {
+            v = StringUtils.trim(configObject.getString("persistenceUnit"));
+            if (!StringUtils.matchesSimpleExpression(persistenceUnit, v, PatternType.DOT_PATH)) {
                 return false;
             }
         }
@@ -750,7 +755,7 @@ public class PlatformUtils {
         return m;
     }
 
-    public static int hashCode(Object a[]) {
+    public static int hashCode(Object[] a) {
         if (a == null)
             return 0;
 
@@ -808,46 +813,6 @@ public class PlatformUtils {
         return getProxyFactory().create(type, methodProxy);
     }
 
-    public static String replaceNoDollarVars(String str, Converter<String, String> varConverter) {
-        StringBuffer sb = new StringBuffer();
-
-        /**@PortabilityHint(target = "C#", name = "suppress")
-         */
-        {
-            boolean javaExprSupported = false;
-            if (javaExprSupported) {
-                Pattern p = Pattern.compile("\\{[^\\{\\}]*\\}");
-                final Matcher m = p.matcher(str == null ? "" : str);
-                while (m.find()) {
-                    final String g = m.group();
-                    String v = g.substring(1, g.length() - 1);
-                    m.appendReplacement(sb, varConverter.convert(v));
-                }
-                return sb.toString();
-            }
-        }
-
-        int i = 0;
-        while (i >= 0 && i < str.length()) {
-            int j = str.indexOf("{", i);
-            if (j < 0) {
-                sb.append(str.substring(i));
-                i = -1;
-            } else {
-                sb.append(str.substring(i, j));
-                int k = str.indexOf("}", j + 1);
-                if (k < 0) {
-                    sb.append(varConverter.convert(str.substring(j + 1)));
-                    i = -1;
-                } else {
-                    sb.append(varConverter.convert(str.substring(j + 1, k)));
-                    i = k + 1;
-                }
-            }
-        }
-
-        return sb.toString();
-    }
 
     public static boolean isInt32(String s) {
         try {
@@ -859,9 +824,134 @@ public class PlatformUtils {
     }
 
     public static <X> X[] addToArray(X[] arr,X x){
-        X[] arr2 = (X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
+        X[] arr2 =null;
+        /**
+         * @PortabilityHint(target = "C#", name = "replace")
+         * arr2 = new X[arr.Length + 1];
+         */
+        arr2=(X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
+
         System.arraycopy(arr,0,arr2,0,arr.length);
         arr2[arr.length]=x;
         return arr2;
+    }
+
+    public static RuntimeException createRuntimeException(Throwable t){
+        if(t.getCause()!=null){
+            return createRuntimeException(t.getCause());
+        }
+        if(t instanceof RuntimeException){
+            return (RuntimeException) t;
+        }
+        return new RuntimeException(t);
+    }
+
+
+
+
+    public static PlatformBeanProperty findPlatformBeanProperty(String field, Class platformType) {
+        String g1 = PlatformUtils.getterName(field, Object.class);
+        String g2 = PlatformUtils.getterName(field, Boolean.TYPE);
+        String s = PlatformUtils.setterName(field);
+        Class<?> x = platformType;
+        Method getter = null;
+        Method setter = null;
+        Class propertyType = null;
+        LinkedHashMap<Class, Method> setters = new LinkedHashMap<Class, Method>();
+        while (x != null) {
+            for (Method m : x.getDeclaredMethods()) {
+                if (!PlatformUtils.isStatic(m)) {
+                    String mn = m.getName();
+                    if (getter == null) {
+                        if (g1.equals(mn) || g2.equals(mn)) {
+                            if (m.getParameterTypes().length == 0 && !Void.TYPE.equals(m.getReturnType())) {
+                                getter = m;
+                                Class<?> ftype = getter.getReturnType();
+                                for (Class key : new HashSet<Class>(setters.keySet())) {
+                                    if (!key.equals(ftype)) {
+                                        setters.remove(key);
+                                    }
+                                }
+                                if (setter == null) {
+                                    setter = setters.get(ftype);
+                                }
+                            }
+                        }
+                    }
+                    if (setter == null) {
+                        if (s.equals(mn)) {
+                            if (m.getParameterTypes().length == 1) {
+                                Class<?> stype = m.getParameterTypes()[0];
+                                if (getter != null) {
+                                    Class<?> gtype = getter.getReturnType();
+                                    if (gtype.equals(stype)) {
+                                        if (!setters.containsKey(stype)) {
+                                            setters.put(stype, m);
+                                        }
+                                        if (setter == null) {
+                                            setter = m;
+                                        }
+                                    }
+                                } else {
+                                    if (!setters.containsKey(stype)) {
+                                        setters.put(stype, m);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (getter != null && setter != null) {
+                        break;
+                    }
+                }
+            }
+            if (getter != null && setter != null) {
+                break;
+            }
+            x = x.getSuperclass();
+        }
+        if (getter != null) {
+            propertyType = getter.getReturnType();
+        }
+        if (getter == null && setter == null && setters.size() > 0) {
+            Method[] settersArray = setters.values().toArray(new Method[setters.size()]);
+            setter = settersArray[0];
+            if (settersArray.length > 1) {
+                //TODO log?
+            }
+        }
+        if (getter == null && setter != null && propertyType == null) {
+            propertyType = setter.getParameterTypes()[0];
+        }
+        if (getter != null || setter != null) {
+            return new DefaultPlatformBeanProperty(field, propertyType, getter, setter);
+        }
+        return null;
+    }
+
+    public static Method findPlatformMethod(Class type, String name, Class ret, Class... args) {
+        try {
+            Method method = type.getMethod(name, args);
+            if (ret == null || method.getReturnType().equals(ret)) {
+                return method;
+            }
+        } catch (NoSuchMethodException ignored) {
+        }
+        Class s = type.getSuperclass();
+        if (s != null) {
+            return findPlatformMethod(s, name, ret, args);
+        }
+        return null;
+    }
+
+    public static <T> List<T> trimToSize(List<T> list){
+        if(list instanceof ArrayList){
+            ((ArrayList<T>)list).trimToSize();
+            return list;
+        }
+        if(list.isEmpty()){
+            return new ArrayList<T>(1);
+        }
+        return new ArrayList<T>(list);
     }
 }

@@ -17,19 +17,12 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class IsHierarchyDescendentExpressionTranslator implements ExpressionTranslator {
-
-    private final ExpressionTranslationManager outer;
-
-    public IsHierarchyDescendentExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         IsHierarchyDescendent v = (IsHierarchyDescendent) o;
         return new IsHierarchyDescendentCompiled(
-                expressionTranslationManager.compileAny(v.getAncestorExpression(), declarations),
-                expressionTranslationManager.compileAny(v.getChildExpression(), declarations),
-                (CompiledEntityName)expressionTranslationManager.compileAny(v.getEntityName(), declarations)
+                manager.translateAny(v.getAncestorExpression(), declarations),
+                manager.translateAny(v.getChildExpression(), declarations),
+                (CompiledEntityName) manager.translateAny(v.getEntityName(), declarations)
         );
     }
 

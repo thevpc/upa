@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultFieldDescriptor : Net.Vpc.Upa.FieldDescriptor {
 
@@ -33,13 +33,13 @@ namespace Net.Vpc.Upa
 
         private Net.Vpc.Upa.Types.DataTypeTransformConfig[] typeTransform;
 
-        private Net.Vpc.Upa.Formula insertFormula;
+        private Net.Vpc.Upa.Formula persistFormula;
 
         private Net.Vpc.Upa.Formula updateFormula;
 
         private Net.Vpc.Upa.Formula selectFormula;
 
-        private int insertFormulaOrder;
+        private int persistFormulaOrder;
 
         private int updateFormulaOrder;
 
@@ -47,11 +47,11 @@ namespace Net.Vpc.Upa
 
         private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> userExcludeModifiers;
 
-        private Net.Vpc.Upa.AccessLevel insertAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        private Net.Vpc.Upa.AccessLevel persistAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
 
         private Net.Vpc.Upa.AccessLevel updateAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
 
-        private Net.Vpc.Upa.AccessLevel selectAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        private Net.Vpc.Upa.AccessLevel readAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
 
         private System.Collections.Generic.IDictionary<string , object> fieldParams;
 
@@ -113,12 +113,12 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetInsertFormula() {
-            return insertFormula;
+        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+            return persistFormula;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetInsertFormula(Net.Vpc.Upa.Formula insertFormula) {
-            this.insertFormula = insertFormula;
+        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistFormula(Net.Vpc.Upa.Formula persistFormula) {
+            this.persistFormula = persistFormula;
             return this;
         }
 
@@ -140,12 +140,12 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public virtual int GetInsertFormulaOrder() {
-            return insertFormulaOrder;
+        public virtual int GetPersistFormulaOrder() {
+            return persistFormulaOrder;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetInsertFormulaOrder(int insertFormulaOrder) {
-            this.insertFormulaOrder = insertFormulaOrder;
+        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistFormulaOrder(int persistFormulaOrder) {
+            this.persistFormulaOrder = persistFormulaOrder;
             return this;
         }
 
@@ -178,12 +178,12 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetInsertAccessLevel() {
-            return insertAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetPersistAccessLevel() {
+            return persistAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetInsertAccessLevel(Net.Vpc.Upa.AccessLevel insertAccessLevel) {
-            this.insertAccessLevel = insertAccessLevel;
+        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel persistAccessLevel) {
+            this.persistAccessLevel = persistAccessLevel;
             return this;
         }
 
@@ -196,12 +196,12 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetSelectAccessLevel() {
-            return selectAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetReadAccessLevel() {
+            return readAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetSelectAccessLevel(Net.Vpc.Upa.AccessLevel selectAccessLevel) {
-            this.selectAccessLevel = selectAccessLevel;
+        public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetReadAccessLevel(Net.Vpc.Upa.AccessLevel readAccessLevel) {
+            this.readAccessLevel = readAccessLevel;
             return this;
         }
 
@@ -224,9 +224,9 @@ namespace Net.Vpc.Upa
         }
 
         public virtual Net.Vpc.Upa.DefaultFieldDescriptor SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel) {
-            SetInsertAccessLevel(accessLevel);
+            SetPersistAccessLevel(accessLevel);
             SetUpdateAccessLevel(accessLevel);
-            SetSelectAccessLevel(accessLevel);
+            SetReadAccessLevel(accessLevel);
             return this;
         }
 
@@ -249,16 +249,16 @@ namespace Net.Vpc.Upa
             SetUnspecifiedObject(other.GetUnspecifiedObject());
             SetDataType(other.GetDataType());
             SetTypeTransform(other.GetTypeTransform());
-            SetInsertFormula(other.GetInsertFormula());
+            SetPersistFormula(other.GetPersistFormula());
             SetUpdateFormula(other.GetUpdateFormula());
             SetSelectFormula(other.GetSelectFormula());
-            SetInsertFormulaOrder(other.GetInsertFormulaOrder());
+            SetPersistFormulaOrder(other.GetPersistFormulaOrder());
             SetUpdateFormulaOrder(other.GetUpdateFormulaOrder());
             SetUserFieldModifiers(other.GetUserFieldModifiers());
             SetUserExcludeModifiers(other.GetUserExcludeModifiers());
-            SetInsertAccessLevel(other.GetInsertAccessLevel());
+            SetPersistAccessLevel(other.GetPersistAccessLevel());
             SetUpdateAccessLevel(other.GetUpdateAccessLevel());
-            SetSelectAccessLevel(other.GetSelectAccessLevel());
+            SetReadAccessLevel(other.GetReadAccessLevel());
             SetFieldParams(other.GetFieldParams());
             SetPropertyAccessType(other.GetPropertyAccessType());
             SetPosition(other.GetPosition());
@@ -287,8 +287,8 @@ namespace Net.Vpc.Upa
             if (other.GetTypeTransform() != null) {
                 SetTypeTransform(other.GetTypeTransform());
             }
-            if (other.GetInsertFormula() != null) {
-                SetInsertFormula(other.GetInsertFormula());
+            if (other.GetPersistFormula() != null) {
+                SetPersistFormula(other.GetPersistFormula());
             }
             if (other.GetUpdateFormula() != null) {
                 SetUpdateFormula(other.GetUpdateFormula());
@@ -296,8 +296,8 @@ namespace Net.Vpc.Upa
             if (other.GetSelectFormula() != null) {
                 SetSelectFormula(other.GetSelectFormula());
             }
-            if (other.GetInsertFormulaOrder() != 0) {
-                SetInsertFormulaOrder(other.GetInsertFormulaOrder());
+            if (other.GetPersistFormulaOrder() != 0) {
+                SetPersistFormulaOrder(other.GetPersistFormulaOrder());
             }
             if (other.GetUpdateFormulaOrder() != 0) {
                 SetUpdateFormulaOrder(other.GetUpdateFormulaOrder());
@@ -308,19 +308,19 @@ namespace Net.Vpc.Upa
             if (other.GetUserExcludeModifiers() != null) {
                 SetUserExcludeModifiers(other.GetUserExcludeModifiers());
             }
-            if (other.GetInsertAccessLevel() != null) {
-                SetInsertAccessLevel(other.GetInsertAccessLevel());
+            if (other.GetPersistAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
+                SetPersistAccessLevel(other.GetPersistAccessLevel());
             }
-            if (other.GetUpdateAccessLevel() != null) {
+            if (other.GetUpdateAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
                 SetUpdateAccessLevel(other.GetUpdateAccessLevel());
             }
-            if (other.GetSelectAccessLevel() != null) {
-                SetSelectAccessLevel(other.GetSelectAccessLevel());
+            if (other.GetReadAccessLevel() != default(Net.Vpc.Upa.AccessLevel)) {
+                SetReadAccessLevel(other.GetReadAccessLevel());
             }
             if (other.GetFieldParams() != null) {
                 SetFieldParams(other.GetFieldParams());
             }
-            if (other.GetPropertyAccessType() != null) {
+            if (other.GetPropertyAccessType() != default(Net.Vpc.Upa.PropertyAccessType)) {
                 SetPropertyAccessType(other.GetPropertyAccessType());
             }
             if (other.GetPosition() != 0) {

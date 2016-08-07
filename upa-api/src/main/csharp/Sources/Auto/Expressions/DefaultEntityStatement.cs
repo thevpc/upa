@@ -22,5 +22,7 @@ namespace Net.Vpc.Upa.Expressions
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract string GetEntityName();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract string GetEntityAlias();
     }
 }

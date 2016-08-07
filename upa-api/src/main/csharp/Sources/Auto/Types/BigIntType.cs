@@ -63,17 +63,15 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return;
             }
+            if (!(@value is System.Numerics.BigInteger?)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+            }
             if (GetMin() != null && ((System.Numerics.BigInteger?) @value).Value.CompareTo(GetMin()) < 0) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }
             if (GetMax() != null && ((System.Numerics.BigInteger?) @value).Value.CompareTo(GetMax()) > 0) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
             }
-        }
-
-
-        public override object Clone() {
-            return base.MemberwiseClone();
         }
 
 

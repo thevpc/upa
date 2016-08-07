@@ -16,22 +16,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class LessThanExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public LessThanExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileLessThan((LessThan) o, declarations);
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileLessThan((LessThan) o, manager,declarations);
     }
     
-    protected CompiledLessThan compileLessThan(LessThan v, ExpressionDeclarationList declarations) {
+    protected CompiledLessThan compileLessThan(LessThan v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = outer.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = outer.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledLessThan s = new CompiledLessThan(left, right);
 //        s.setDeclarationList(declarations);
         return s;

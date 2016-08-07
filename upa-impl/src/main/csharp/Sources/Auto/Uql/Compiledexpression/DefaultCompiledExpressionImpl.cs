@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return this.type;
         }
 
-        public virtual void SetDataType(Net.Vpc.Upa.Types.DataTypeTransform type) {
+        public virtual void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform type) {
             this.type = type;
         }
 
@@ -97,7 +97,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         public virtual object GetClientProperty(string name) {
-            return clientParameters == null ? null : clientParameters.GetObject<object>(name);
+            return clientParameters == null ? null : clientParameters.GetObject<T>(name);
         }
 
         public virtual bool Visit(Net.Vpc.Upa.Impl.Uql.CompiledExpressionVisitor visitor) {
@@ -138,6 +138,26 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
         }
 
+
+        public virtual  T FindFirstExpression<T>(Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter filter) where  T : Net.Vpc.Upa.Expressions.CompiledExpression {
+            if (filter.Accept(this)) {
+                //this double casting is needed in C#
+                return ((T) (object) this);
+            }
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression[] subExpressions = GetSubExpressions();
+            if (subExpressions != null) {
+                foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression subExpression in subExpressions) {
+                    if (subExpression != null) {
+                        Net.Vpc.Upa.Expressions.CompiledExpression e = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpressionImpl) subExpression).FindFirstExpression<T>(filter);
+                        if (e != null) {
+                            return (T) e;
+                        }
+                    }
+                }
+            }
+            return default(T);
+        }
+
         public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ReplaceExpressions(Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter filter, Net.Vpc.Upa.Impl.Uql.CompiledExpressionReplacer replacer) {
             Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression t = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression) ((filter == null || filter.Accept(this)) ? replacer.Update(this) : null);
             bool updated = false;
@@ -157,17 +177,20 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                     }
                 }
                 foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.ReplacementPosition r in replacementPositions) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = r.GetChild().ReplaceExpressions(filter, replacer);
-                    if (c != null) {
-                        int pos = r.GetPos();
-                        //                if (!updated) {
-                        //                    t = t.copy();
-                        //                }
-                        if (subExpressions[pos] != c) {
-                            subExpressions[pos].SetParentExpression(null);
-                            t.SetSubExpression(pos, c);
+                    if (r.GetChild() == null) {
+                    } else {
+                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression c = r.GetChild().ReplaceExpressions(filter, replacer);
+                        if (c != null) {
+                            int pos = r.GetPos();
+                            //                if (!updated) {
+                            //                    t = t.copy();
+                            //                }
+                            if (subExpressions[pos] != c) {
+                                subExpressions[pos].SetParentExpression(null);
+                                t.SetSubExpression(pos, c);
+                            }
+                            updated = true;
                         }
-                        updated = true;
                     }
                 }
             }
@@ -200,7 +223,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             return exportedDeclarations == null ? emptyList : exportedDeclarations;
         }
 

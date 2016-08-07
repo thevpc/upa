@@ -21,15 +21,12 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class BigIntegerMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            System.Decimal b = resultSet.GetBigDecimal(index);
-            if (b == null) {
-                return null;
-            }
-            return b.ToBigInteger();
+            return null;
         }
 
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
+            
         }
 
         public override string ToSQLLiteral(object @object) {
@@ -41,9 +38,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
             if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.INTEGER);
+                
             } else {
-                preparedStatement.SetBigDecimal(i, new System.Decimal(((System.Numerics.BigInteger?) @object)));
+                
             }
         }
 

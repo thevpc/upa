@@ -14,11 +14,12 @@
 namespace Net.Vpc.Upa.Impl.Util
 {
 
+
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
-    public class EqualsStringFilter : Net.Vpc.Upa.Impl.Util.ObjectFilter<string> {
+    public class EqualsStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
 
         private string @base;
 

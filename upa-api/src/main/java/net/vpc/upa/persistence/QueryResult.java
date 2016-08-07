@@ -49,7 +49,6 @@ public interface QueryResult extends Closeable {
 
     public boolean hasNext();
 
-    public void close();
 
     public void updateCurrent();
 }

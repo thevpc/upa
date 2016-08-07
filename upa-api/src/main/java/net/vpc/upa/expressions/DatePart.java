@@ -40,11 +40,16 @@ import java.util.Date;
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
  * change this template use Options | File Templates.
  */
-public class DatePart extends Function {
+public class DatePart extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
     private DatePartType type;
     private Expression value;
+
+    public DatePart(Expression[] expressions) {
+        checkArgCount(getName(),expressions,2);
+        init((DatePartType) ((Cst)expressions[0]).getValue(),expressions[1]);
+    }
 
     public DatePart(DatePartType type, Date date) {
         this(type, new Literal(date));
@@ -55,6 +60,10 @@ public class DatePart extends Function {
     }
 
     public DatePart(DatePartType type, Expression val) {
+        init(type,val);
+    }
+
+    private void init(DatePartType type, Expression val) {
         this.type = type;
         this.value = val;
     }

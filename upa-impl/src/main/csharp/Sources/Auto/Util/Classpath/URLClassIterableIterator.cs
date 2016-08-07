@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class URLClassIterableIterator : System.Collections.Generic.IEnumerator<System.Type> {
 

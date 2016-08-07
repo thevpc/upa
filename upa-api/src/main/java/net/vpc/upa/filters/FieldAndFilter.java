@@ -49,7 +49,7 @@ public class FieldAndFilter extends AbstractFieldFilter {
     }
 
     public FieldAndFilter(List<FieldFilter> filters) {
-        ArrayList<FieldFilter> all = new ArrayList<FieldFilter>();
+        ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(filters.size());
         for (FieldFilter a : filters) {
             if (a != null) {
                 all.add(a);
@@ -63,7 +63,7 @@ public class FieldAndFilter extends AbstractFieldFilter {
     }
 
     public static FieldAndFilter and(FieldFilter... filters) {
-        ArrayList<FieldFilter> all = new ArrayList<FieldFilter>();
+        ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(filters.length);
         for (FieldFilter filter : filters) {
             if (filter != null) {
                 if (filter instanceof FieldAndFilter) {
@@ -79,12 +79,15 @@ public class FieldAndFilter extends AbstractFieldFilter {
     public FieldAndFilter and(FieldFilter filter) {
         if (filter != null) {
             if (filter instanceof FieldAndFilter) {
-                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>();
+                List<FieldFilter> children = ((FieldAndFilter) filter).getChildren();
+                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(
+                        v.length+children.size()
+                );
                 all.addAll(Arrays.asList(v));
-                all.addAll(((FieldAndFilter) filter).getChildren());
+                all.addAll(children);
                 return new FieldAndFilter(all);
             } else {
-                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>();
+                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(v.length+1);
                 all.addAll(Arrays.asList(v));
                 all.add(filter);
                 return new FieldAndFilter(all);

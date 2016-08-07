@@ -38,7 +38,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class UPAEvent implements Serializable{
     

@@ -21,11 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class DoubleMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            double n = resultSet.GetDouble(index);
-            if (n == 0D && resultSet.WasNull()) {
-                return null;
-            }
-            return n;
+            
+            return null;
         }
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
@@ -40,11 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.DOUBLE);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=System.Convert.ToDouble(((object) @object));
-            }
+            
         }
 
         public DoubleMarshaller() {

@@ -116,7 +116,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 System.Type t = (w1 >= w2) ? numberClass1 : numberClass2;
                 return nullable ? ToRefType(t) : ToPrimitiveType(t);
             } else if (IsAnyInteger(numberClass1) && IsAnyFloat(numberClass2)) {
-                numberClass1 = IsInt8(numberClass1) ? typeof(float?) : IsInt16(numberClass1) ? typeof(float?) : IsInt32(numberClass1) ? typeof(float?) : IsInt64(numberClass1) ? typeof(double?) : IsBigInt(numberClass1) ? typeof(System.Decimal) : typeof(System.Decimal);
+                numberClass1 = IsInt8(numberClass1) ? ((System.Type)(typeof(float?))) : IsInt16(numberClass1) ? ((System.Type)(typeof(float?))) : IsInt32(numberClass1) ? ((System.Type)(typeof(float?))) : IsInt64(numberClass1) ? typeof(double?) : IsBigInt(numberClass1) ? typeof(System.Decimal?) : typeof(System.Decimal?);
                 return GetExprNumberType(numberClass1, numberClass2);
             } else if (IsAnyFloat(numberClass1) && IsAnyInteger(numberClass2)) {
                 return GetExprNumberType(numberClass2, numberClass1);
@@ -224,7 +224,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsBigFloat(System.Type clazz) {
-            return typeof(System.Decimal).Equals(clazz);
+            return typeof(System.Decimal?).Equals(clazz);
         }
 
         public static bool IsFloat32(System.Type clazz) {
@@ -248,7 +248,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsAnyFloat(System.Type clazz) {
-            return typeof(float?).Equals(clazz) || typeof(float).Equals(clazz) || typeof(double?).Equals(clazz) || typeof(double).Equals(clazz) || typeof(System.Decimal).Equals(clazz);
+            return typeof(float?).Equals(clazz) || typeof(float).Equals(clazz) || typeof(double?).Equals(clazz) || typeof(double).Equals(clazz) || typeof(System.Decimal?).Equals(clazz);
         }
 
         public static bool IsNumber(System.Type clazz) {
@@ -256,8 +256,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static System.Type ForName(string name) /* throws System.Exception */  {
-            Java.Lang.ClassLoader contextClassLoader = Java.Lang.Thread.CurrentThread().GetContextClassLoader();
-            return System.Type.ForName(name, true, contextClassLoader);
+            return System.Type.GetType (name, true);
         }
 
         public static  T Convert<T>(object @value, System.Type to) {
@@ -268,7 +267,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 if (@value is string) {
                     return (T) System.Enum.Parse((System.Type) to,(string) @value);
                 } else if (@value is int?) {
-                    return to.GetEnumConstants()[((int?) @value).Value];
+                    return (T) GetEnumValues(to)[(int?) @value];
                 }
             }
             return System.Convert.ChangeType(@value,to);
@@ -423,7 +422,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static object[] GetEnumValues(System.Type enumType) {
-            return (Object[])Enum.GetValues(enumType);
+            return (object[])System.Enum.GetValues(enumType);
         }
 
         public static Net.Vpc.Upa.Config.Decoration GetDecoration(System.Type type, System.Type annotationClass, string persistenceGroup, string persistenceUnit, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository repository) {
@@ -439,21 +438,20 @@ namespace Net.Vpc.Upa.Impl.Util
                 return false;
             }
             Net.Vpc.Upa.Config.Decoration configObject = a.GetDecoration("config");
-            if (configObject is Net.Vpc.Upa.Config.Decoration) {
-                Net.Vpc.Upa.Config.Decoration c = (Net.Vpc.Upa.Config.Decoration) configObject;
-                string v = Net.Vpc.Upa.Impl.Util.Strings.Trim(c.GetString("persistenceGroup"));
-                if (!Net.Vpc.Upa.Impl.Util.Strings.MatchesSimpleExpression(persistenceGroup, v)) {
+            if (configObject != null) {
+                string v = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceGroup"));
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceGroup, v, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                     return false;
                 }
-                v = Net.Vpc.Upa.Impl.Util.Strings.Trim(c.GetString("persistenceUnit"));
-                if (!Net.Vpc.Upa.Impl.Util.Strings.MatchesSimpleExpression(persistenceUnit, v)) {
+                v = Net.Vpc.Upa.Impl.Util.StringUtils.Trim(configObject.GetString("persistenceUnit"));
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.MatchesSimpleExpression(persistenceUnit, v, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH)) {
                     return false;
                 }
             }
             return true;
         }
 
-        public static System.Reflection.FieldInfo FindField(System.Type clz, string name, Net.Vpc.Upa.Impl.Util.ObjectFilter<System.Reflection.FieldInfo> filter) {
+        public static System.Reflection.FieldInfo FindField(System.Type clz, string name, Net.Vpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> filter) {
             System.Type r = clz;
             while (r != null) {
                 System.Reflection.FieldInfo f = null;
@@ -468,6 +466,24 @@ namespace Net.Vpc.Upa.Impl.Util
                 r = (r).BaseType;
             }
             return null;
+        }
+
+        public static System.Collections.Generic.IList<System.Reflection.FieldInfo> FindFields(System.Type clz, string name) {
+            System.Collections.Generic.IList<System.Reflection.FieldInfo> all = new System.Collections.Generic.List<System.Reflection.FieldInfo>();
+            System.Type r = clz;
+            while (r != null) {
+                System.Reflection.FieldInfo f = null;
+                try {
+                    f = r.GetField(name, System.Reflection.BindingFlags.Default|System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Instance);
+                } catch (System.Exception ex) {
+                }
+                //ignore
+                if (f != null) {
+                    all.Add(f);
+                }
+                r = (r).BaseType;
+            }
+            return all;
         }
 
         public static string GetterName(string name, System.Type type) {
@@ -583,7 +599,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsAbstract(System.Reflection.MethodInfo method) {
-            return Java.Lang.Reflect.Modifier.IsAbstract(Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method));
+            return (((Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodModifiers(method)) & Net.Vpc.Upa.Impl.FwkConvertUtils.ABSTRACT) != 0);
         }
 
         public static bool IsAbstract(System.Type type) {
@@ -673,7 +689,7 @@ namespace Net.Vpc.Upa.Impl.Util
             return m;
         }
 
-        public static int GetHashCode(object a/*[]*/) {
+        public static int GetHashCode(object[] a) {
             if (a == null) return 0;
             int result = 1;
             foreach (object element in a) result = 31 * result + (element == null ? 0 : element.GetHashCode());
@@ -681,7 +697,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static  bool IsUndefinedValue<T>(System.Type type, T @value) {
-            return @value == GetUndefinedValue<T>(type);
+            return value == default(T);
         }
 
         public static  T GetUndefinedValue<T>(System.Type type) {
@@ -705,6 +721,20 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public static string ReplaceNoDollarVars(string str, Net.Vpc.Upa.Impl.Util.Converter<string , string> varConverter) {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            {
+                bool javaExprSupported = true;
+                if (javaExprSupported) {
+                    Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern p = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern("\\{[^\\{\\}]*\\}");
+                    Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher m = p.Matcher(str == null ? "" : str);
+                    while (m.Find()) {
+                        string g = m.Group(0);
+                        string v = g.Substring(1, (g).Length - 1);
+                        sb.Append(m.Replace(varConverter.Convert(v)));
+                    }
+                    sb.Append(m.Tail());
+                    return sb.ToString();
+                }
+            }
             int i = 0;
             while (i >= 0 && i < (str).Length) {
                 int j = str.IndexOf("{", i);
@@ -733,6 +763,24 @@ namespace Net.Vpc.Upa.Impl.Util
             } catch (System.Exception e) {
                 return false;
             }
+        }
+
+        public static  X[] AddToArray<X>(X[] arr, X x) {
+            X[] arr2 = default(X[]);
+            arr2 = new X[arr.Length + 1];
+            System.Array.Copy(arr, 0, arr2, 0, arr.Length);
+            arr2[arr.Length] = x;
+            return arr2;
+        }
+
+        public static System.Exception CreateRuntimeException(System.Exception t) {
+            if ((t).InnerException != null) {
+                return CreateRuntimeException((t).InnerException);
+            }
+            if (t is System.Exception) {
+                return (System.Exception) t;
+            }
+            return new System.Exception("RuntimeException", t);
         }
     }
 }

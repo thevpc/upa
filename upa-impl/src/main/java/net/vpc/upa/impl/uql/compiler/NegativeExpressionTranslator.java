@@ -17,17 +17,11 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class NegativeExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
-
-    public NegativeExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         Negative v = (Negative) o;
         if (v == null) {
             return null;
         }
-        return new CompiledNegative(outer.compileAny(v.getExpression(), declarations));
+        return new CompiledNegative(manager.translateAny(v.getExpression(), declarations));
     }
 }

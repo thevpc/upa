@@ -14,7 +14,7 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public sealed class Min : Net.Vpc.Upa.Expressions.Function {
+    public sealed class Min : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -22,6 +22,20 @@ namespace Net.Vpc.Upa.Expressions
 
         public Min(Net.Vpc.Upa.Expressions.Expression expression) {
             this.expression = expression;
+        }
+
+        public Min(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 1);
+            this.expression = expressions[0];
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            if (index == 0) {
+                this.expression = e;
+            } else {
+                throw new System.IndexOutOfRangeException();
+            }
         }
 
         public int Size() {

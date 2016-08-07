@@ -42,15 +42,15 @@ import net.vpc.upa.config.ScanFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class PersistenceGroupConfig {
 
     private int configOrder;
     private String name;
     private Boolean autoScan;
-    private List<PersistenceUnitConfig> persistenceUnits = new ArrayList<PersistenceUnitConfig>();
-    private List<ScanFilter> filters = new ArrayList<ScanFilter>();
+    private List<PersistenceUnitConfig> persistenceUnits = new ArrayList<PersistenceUnitConfig>(2);
+    private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
     private Map<String, Object> properties = new HashMap<String, Object>();
 
     public PersistenceGroupConfig(int configOrder) {

@@ -38,6 +38,8 @@
  */
 package net.vpc.upa.expressions;
 
+import net.vpc.upa.exceptions.*;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -219,7 +221,7 @@ public class ExpressionHelper {
                         unicodeStr = false;
                         encountredSlash = false;
                     } catch (NumberFormatException nfe) {
-                        throw new RuntimeException("Unable to parse unicode value: " + unicode, nfe);
+                        throw new net.vpc.upa.exceptions.IllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
                     }
                 }
                 continue;

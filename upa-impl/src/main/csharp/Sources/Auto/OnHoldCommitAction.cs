@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Impl
 
          void CommitModel() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void CommitStorage(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CommitStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          int GetOrder();
     }

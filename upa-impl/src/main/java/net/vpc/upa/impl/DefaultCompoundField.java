@@ -26,8 +26,8 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
 
     public DefaultCompoundField() {
         super();
-        fields = new ArrayList<PrimitiveField>();
-        fieldsMap = new HashMap<String, PrimitiveField>();
+        fields = new ArrayList<PrimitiveField>(2);
+        fieldsMap = new HashMap<String, PrimitiveField>(2);
     }
 
     public void addField(PrimitiveField child) throws UPAException {

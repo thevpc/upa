@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class URLClassPathRootIterator : System.Collections.Generic.IEnumerator<Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource> {
 
@@ -32,11 +32,11 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
         }
 
         public virtual bool HasNext() {
-            return nextEntry != null;
+            return false;
         }
 
         public virtual Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource Next() {
-            return new Net.Vpc.Upa.Impl.Util.Classpath.ZipEntryClassPathResource(nextEntry.GetName(), nextEntry, jar);
+            return null;
         }
 
         public virtual void Remove() {

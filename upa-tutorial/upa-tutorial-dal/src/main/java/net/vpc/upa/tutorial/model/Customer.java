@@ -17,7 +17,8 @@ public class Customer {
 
     @Id @Sequence
     private int customerId;
-    @Field(max = "50", nullable = BoolEnum.TRUE,modifiers = UserFieldModifier.MAIN)
+    @Main
+    @Field(max = "50", nullable = BoolEnum.TRUE)
     private String name;
     @Summary
     private java.sql.Date birthDate;

@@ -25,9 +25,16 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.Callbacks.Trigger trigger;
 
-        public TriggerEvent(Net.Vpc.Upa.Callbacks.Trigger trigger, Net.Vpc.Upa.Entity entity) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public TriggerEvent(Net.Vpc.Upa.Callbacks.Trigger trigger, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.EventPhase phase) {
             this.entity = entity;
             this.trigger = trigger;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.Entity GetEntity() {

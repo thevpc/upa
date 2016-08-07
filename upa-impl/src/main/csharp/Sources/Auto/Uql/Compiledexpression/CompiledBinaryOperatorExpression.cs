@@ -41,9 +41,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 rightType = right.GetTypeTransform();
             }
             if (leftType == null && rightType != null) {
-                left.SetDataType(rightType);
+                left.SetTypeTransform(rightType);
             } else if (rightType == null && leftType != null) {
-                right.SetDataType(leftType);
+                right.SetTypeTransform(leftType);
             }
             this.@operator = @operator;
             PrepareChildren(left, right);
@@ -290,6 +290,10 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                         throw new System.ArgumentException ("Not Supported Yet");
                     }
             }
+        }
+
+        public virtual bool IsSameOperandsType() {
+            return true;
         }
     }
 }

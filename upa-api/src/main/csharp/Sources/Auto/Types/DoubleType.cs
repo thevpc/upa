@@ -79,6 +79,9 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return;
             }
+            if (!(@value is double?)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+            }
             if (GetMin() != null && (double?) @value < GetMin()) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }

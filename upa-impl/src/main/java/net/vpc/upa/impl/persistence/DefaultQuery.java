@@ -1,8 +1,10 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.expressions.*;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.result.*;
 import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -18,7 +20,6 @@ import net.vpc.upa.Query;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
-import net.vpc.upa.filters.Fields;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:14 PM To change
@@ -36,11 +37,6 @@ public class DefaultQuery extends AbstractQuery {
     private DefaultPersistenceStore store;
     private boolean lazyListLoadingEnabled = true;
     private Map<String, Object> hints = new HashMap<String, Object>();
-    private static final FieldFilter ID = Fields.regular().and(Fields.byModifiersAllOf(FieldModifier.ID));
-    private static final FieldFilter READABLE = Fields.regular().and(
-            Fields.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-                    FieldModifier.SELECT_COMPILED,
-                    FieldModifier.SELECT_LIVE)).andNot(Fields.byAllAccessLevel(AccessLevel.PRIVATE));
 
     private List<Object> allResults = new ArrayList<Object>();
     private QueryExecutor lastQueryExecutor = null;
@@ -139,7 +135,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getMultiRecordList();
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
             MultiRecordList r = new MultiRecordList(queryExecutor, isUpdatable());
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
@@ -161,7 +157,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.isEmpty();
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
             QueryResult r = null;
             try {
                 r = queryExecutor.getQueryResult();
@@ -187,14 +183,15 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     public <T> List<T> getResultList(QueryResultItemBuilder builder) throws UPAException {
-        if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
+        PersistenceUnit pu = context.getPersistenceUnit();
+        if (!pu.getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
-                sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
+                sessionAwareInstance = pu.getPersistenceGroup().getContext().makeSessionAware(this);
             }
             return sessionAwareInstance.getResultList(builder);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
             QueryFetchStrategy fetchStrategy=(QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
             if(fetchStrategy==null){
                 fetchStrategy=QueryFetchStrategy.JOIN;
@@ -214,6 +211,7 @@ public class DefaultQuery extends AbstractQuery {
                 }
             }
             QueryResultLazyList<T> r=new DefaultObjectQueryResultLazyList<T>(
+                    pu,
                     queryExecutor,
                     fetchStrategy!=QueryFetchStrategy.JOIN,
                     itemAsRecord,
@@ -249,8 +247,8 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(index);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
-            if (index < 0 || index > queryExecutor.getMetaData().getFields().size()) {
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            if (index < 0 || index > queryExecutor.getMetaData().getResultFields().size()) {
                 throw new ArrayIndexOutOfBoundsException("Invalid index " + index);
             }
             ValueList<T> r = new ValueList<T>(queryExecutor, index);
@@ -288,8 +286,8 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(name);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
-            List<ResultField> ne = queryExecutor.getMetaData().getFields();
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            List<ResultField> ne = queryExecutor.getMetaData().getResultFields();
             int index = -1;
             for (int i = 0; i < ne.size(); i++) {
                 if (name.equals(ne.get(i).getAlias())) {
@@ -320,7 +318,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getTypeList(type, fields);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(READABLE);
+            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
             TypeList<T> r = new TypeList<T>(queryExecutor, type, fields);
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
@@ -378,7 +376,7 @@ public class DefaultQuery extends AbstractQuery {
             if((query instanceof QueryStatement)) {
                 Entity entity = resolveDefaultEntity();
                 if(entity!=null){
-                    QueryExecutor queryExecutor = executeQuery(ID);
+                    QueryExecutor queryExecutor = executeQuery(FieldFilters.id());
                     SingleEntityKeyList<K2> r = new SingleEntityKeyList<K2>(queryExecutor, entity);
                     allResults.add(r);
                     if (!isLazyListLoadingEnabled()) {

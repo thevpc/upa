@@ -145,7 +145,7 @@ public abstract class AbstractUPAObject implements UPAObject {
     public void addObjectListener(UPAObjectListener listener) {
         if (listener != null) {
             if (objectListeners == null) {
-                objectListeners = new ArrayList<UPAObjectListener>();
+                objectListeners = new ArrayList<UPAObjectListener>(2);
             }
             objectListeners.add(listener);
         }

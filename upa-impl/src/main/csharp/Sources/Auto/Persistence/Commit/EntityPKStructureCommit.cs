@@ -33,9 +33,9 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
             Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore store = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
             if ((entity.GetPrimaryFields()).Count > 0) {
                 log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
-                Net.Vpc.Upa.Persistence.UConnection b = store.GetConnection();
-                foreach (Net.Vpc.Upa.PrimitiveField primaryField in entity.GetPrimitiveFields(Net.Vpc.Upa.Impl.DefaultEntity.ID)) {
-                    Net.Vpc.Upa.Impl.Persistence.ColumnDesc cd = store.LoadColumnDesc(primaryField, b.GetPlatformConnection());
+                Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
+                foreach (Net.Vpc.Upa.PrimitiveField primaryField in entity.GetPrimitiveFields(Net.Vpc.Upa.Filters.Fields.Id())) {
+                    Net.Vpc.Upa.Impl.Persistence.ColumnDesc cd = store.LoadColumnDesc(primaryField, b.GetMetadataAccessibleConnection());
                     if (cd.IsNullable() != null && (cd.IsNullable()).Value) {
                         b.ExecuteNonQuery(store.GetAlterTableAlterColumnNullStatement(primaryField, false), null, null);
                     }
@@ -45,8 +45,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
         }
 
 
-        protected internal override Net.Vpc.Upa.PersistenceState GetObjectStatus() {
-            return GetPersistenceUnitCommitManager().GetPersistenceUnitManager().GetPersistenceState(GetObject(), GetTypedObject().GetSpec());
+        protected internal override Net.Vpc.Upa.PersistenceState GetObjectStatus(Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+            return GetPersistenceUnitCommitManager().GetPersistenceUnitManager().GetPersistenceState(GetObject(), GetTypedObject().GetSpec(), entityExecutionContext);
         }
     }
 }

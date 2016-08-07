@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
             Net.Vpc.Upa.Entity entityManager = (Net.Vpc.Upa.Entity) @object;
             Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceUnitManager = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
             log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
-            Net.Vpc.Upa.Persistence.UConnection b = persistenceUnitManager.GetConnection();
+            Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
             System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ViewEntityExtension> specSupport = entityManager.GetExtensions<Net.Vpc.Upa.Persistence.ViewEntityExtension>(typeof(Net.Vpc.Upa.Persistence.ViewEntityExtension));
             foreach (Net.Vpc.Upa.Persistence.ViewEntityExtension ss in specSupport) {
                 b.ExecuteNonQuery(persistenceUnitManager.GetCreateViewStatement(entityManager, ss.GetQuery(), executionContext), null, null);

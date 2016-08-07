@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Bulk
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public enum SheetContentType {
 

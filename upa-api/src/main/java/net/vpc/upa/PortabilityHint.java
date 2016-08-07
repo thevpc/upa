@@ -44,6 +44,8 @@ import java.lang.annotation.RetentionPolicy;
 //@Target({ElementType.PACKAGE,ElementType.TYPE,ElementType.LOCAL_VARIABLE,ElementType.ANNOTATION_TYPE,ElementType.PARAMETER})
 @Retention(value = RetentionPolicy.SOURCE)
 public @interface PortabilityHint {
+    public static final String SUPPRESS="suppress";
+    public static final String IGNORE="ignore";
     String target();
 
     /**

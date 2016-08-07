@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.bulk;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -13,6 +14,7 @@ import net.vpc.upa.impl.util.UPAUtils;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class DefaultDataRow implements DataRow {
 
     private DataColumn[] columns;

@@ -33,6 +33,10 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type> entityType = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<System.Type>();
 
+        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> listOrder = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+
+        public Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> archivingOrder = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
+
         public string name = null;
 
         public string shortName = null;
@@ -64,7 +68,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return factory;
         }
 
-        public virtual System.Collections.Generic.Dictionary<string , object> GetProperties() {
+        public virtual System.Collections.Generic.IDictionary<string , object> GetProperties() {
             return entityParams;
         }
 
@@ -132,8 +136,18 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
 
+        public virtual string GetListOrder() {
+            return listOrder.GetValue(null);
+        }
+
+
+        public virtual string GetArchivingOrder() {
+            return archivingOrder.GetValue(null);
+        }
+
+
         public virtual int GetPosition() {
-            return pathPosition.GetValue(0);
+            return (pathPosition.GetValue(0)).Value;
         }
 
 
@@ -156,7 +170,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         public virtual void AddIndex(string name, System.Collections.Generic.IList<string> fields, bool unique, int configOrder) {
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(name)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
                 Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo i = new Net.Vpc.Upa.Impl.Config.Annotationparser.IndexInfo();
                 i.SetName(null);
                 i.GetUnique().SetBetterValue(unique, configOrder);
@@ -182,6 +196,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(i.GetFieldsNames(), fields);
                 }
             }
+        }
+
+
+        public override string ToString() {
+            return "EntityInfo{" + "source=" + ((source is object[]) ? System.Convert.ToString((object[]) source) : System.Convert.ToString(source)) + '}';
         }
     }
 }

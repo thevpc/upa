@@ -45,7 +45,7 @@ public class IndexedVar extends Var {
         this(null, field, arguments);
     }
 
-    public IndexedVar(Var parent, String name, Expression... arguments) {
+    public IndexedVar(Expression parent, String name, Expression... arguments) {
         super(parent, name);
         this.arguments = arguments;
     }
@@ -53,7 +53,7 @@ public class IndexedVar extends Var {
 
     @Override
     public Expression copy() {
-        IndexedVar o = new IndexedVar(getParent(), getName(), getArguments());
+        IndexedVar o = new IndexedVar(getApplier(), getName(), getArguments());
         return o;
     }
 
@@ -77,8 +77,8 @@ public class IndexedVar extends Var {
 
     @Override
     public String toString() {
-        if (getParent() != null) {
-            return getParent().toString() + "." + getName();
+        if (getApplier() != null) {
+            return getApplier().toString() + "." + getName();
         }
         StringBuilder s = new StringBuilder(getName()).append("(");
         for (int i = 0; i < getArgumentsCount(); i++) {

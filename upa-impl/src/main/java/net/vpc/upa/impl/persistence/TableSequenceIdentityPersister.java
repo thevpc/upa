@@ -10,6 +10,7 @@ import net.vpc.upa.impl.EntitySequenceManager;
 import net.vpc.upa.impl.SequenceManager;
 import net.vpc.upa.impl.PrivateSequence;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
 
@@ -95,7 +96,7 @@ public abstract class TableSequenceIdentityPersister implements FieldPersister {
     protected abstract Object getNewValue(SequenceManager sm, String group, Record record) throws UPAException;
 
     protected String eval(String pattern, final Object replacement, final Record record) {
-        return PlatformUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, record));
+        return StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, record));
     }
 
     @Override

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class PersistEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
 
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         private object persistedObject;
 
-        public PersistEvent(object persistedId, Net.Vpc.Upa.Record persistedRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext)  : base(entityExecutionContext){
+        public PersistEvent(object persistedId, Net.Vpc.Upa.Record persistedRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.persistedId = persistedId;
             this.persistedRecord = persistedRecord;
@@ -43,7 +43,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         public virtual object GetPersistedObject() {
             if (persistedObject == null && persistedRecord != null) {
-                persistedObject = GetContext().GetEntity().GetBuilder().RecordToEntity<object>(persistedRecord);
+                persistedObject = GetContext().GetEntity().GetBuilder().RecordToObject<object>(persistedRecord);
             }
             return persistedObject;
         }

@@ -67,14 +67,38 @@ public interface Query extends Closeable {
 
     public Record getRecord() throws UPAException;
 
-    //    <R2> List<R2> getEntityList(Entity e) throws UPAException;
-//    <K2> List<K2> getIdList(Entity e) throws UPAException;
+    @Deprecated
     <R> List<R> getEntityList() throws UPAException;
 
-    <R> R getSingleEntity() throws UPAException;
+    /**
+     * Executes a Select query and returns a single result.
+     * @param <R> Result Type
+     * @return Single result if unique
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
+     */
+    <R> R getSingleResult() throws UPAException;
 
-    public <R> R getSingleEntityOrNull() throws UPAException;
+    /**
+     * Executes a Select query and returns a single result if found.
+     * If query returns no result null is returned.
+     * When Multiple results NonUniqueResultException will be thrown
+     * @param <R> Result Type
+     * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     */
+    public <R> R getSingleResultOrNull() throws UPAException;
 
+    /**
+     * Executes a Select query and returns a single result if found.
+     * If query returns no result null is returned.
+     * When Multiple results, the first result will be returned
+     * @param <R> Result Type
+     * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
+     */
+    public <R> R getFirstResultOrNull() throws UPAException;
+
+    @Deprecated
     <R> R getEntity() throws UPAException;
 
     boolean isEmpty() throws UPAException;
@@ -142,5 +166,4 @@ public interface Query extends Closeable {
 
     public int executeNonQuery();
 
-    public void close();
 }

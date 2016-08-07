@@ -88,7 +88,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void MovePart(int index, int newIndex) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<Net.Vpc.Upa.EntityPart>(parts, index, newIndex, this, null);
+            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<T>(parts, index, newIndex, this, null);
         }
 
         public virtual Net.Vpc.Upa.Section GetSection(string path, Net.Vpc.Upa.MissingStrategy missingStrategy) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {

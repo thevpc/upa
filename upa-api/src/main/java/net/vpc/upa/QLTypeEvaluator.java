@@ -38,10 +38,10 @@ import net.vpc.upa.expressions.Expression;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface QLTypeEvaluator {
 
-    Object evalObject(Expression e, QLEvaluator evaluator, Object context);
+    Expression evalObject(Expression e, QLEvaluator evaluator, Object context);
 
 }

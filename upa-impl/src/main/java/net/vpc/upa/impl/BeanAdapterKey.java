@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 
@@ -13,7 +13,7 @@ import java.util.Set;
 public class BeanAdapterKey extends AbstractKey {
 
     private Class keyType;
-    private BeanType nfo;
+    private PlatformBeanType nfo;
     private Object userObject;
 
     public BeanAdapterKey(Class keyType, Object userObject, Entity entity) {

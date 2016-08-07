@@ -6,27 +6,28 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.filters.ObjectFilter;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
 
-import java.util.regex.Pattern;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class RegexpStringFilter implements ObjectFilter<String> {
 
     private String patternString;
-    private Pattern pattern;
+    private PortablePattern pattern;
     private boolean nullIsEmpty;
     private boolean ignoreCase;
 
     public RegexpStringFilter(String patternString, boolean nullIsEmpty, boolean ignoreCase) {
         this.patternString = (nullIsEmpty && patternString == null) ? "" : patternString;
+        this.ignoreCase=ignoreCase;
         if(patternString!=null){
             if(ignoreCase){
-                this.pattern = Pattern.compile(patternString,Pattern.CASE_INSENSITIVE);
+                this.pattern = new PortablePattern(patternString.toLowerCase());
             }else {
-                this.pattern = Pattern.compile(patternString);
+                this.pattern = new PortablePattern(patternString);
             }
         }
         this.nullIsEmpty = nullIsEmpty;
@@ -37,7 +38,7 @@ public class RegexpStringFilter implements ObjectFilter<String> {
         if (nullIsEmpty && s == null) {
             s = "";
         }
-        return pattern.matcher(s).matches();
+        return pattern.matcher(ignoreCase?s.toLowerCase():s).find();
     }
 
 }

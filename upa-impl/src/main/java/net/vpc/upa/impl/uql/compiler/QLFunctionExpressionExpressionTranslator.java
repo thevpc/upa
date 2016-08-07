@@ -18,23 +18,17 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class QLFunctionExpressionExpressionTranslator implements ExpressionTranslator {
-
-    private final ExpressionTranslationManager outer;
-
-    public QLFunctionExpressionExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileQLFunctionExpression((QLFunctionExpression) o,manager, declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileQLFunctionExpression((QLFunctionExpression) o, declarations);
-    }
-
-    protected CompiledQLFunctionExpression compileQLFunctionExpression(QLFunctionExpression v, ExpressionDeclarationList declarations) {
+    protected CompiledQLFunctionExpression compileQLFunctionExpression(QLFunctionExpression v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        FunctionDefinition h = outer.getPersistenceUnit().getExpressionManager().getFunction(v.getName());
-        CompiledQLFunctionExpression s = new CompiledQLFunctionExpression(v.getName(), outer.compileArray(v.getArguments(), declarations), new IdentityDataTypeTransform(h.getDataType()), h.getFunction());
+        FunctionDefinition h = manager.getPersistenceUnit().getExpressionManager().getFunction(v.getName());
+        CompiledQLFunctionExpression s = new CompiledQLFunctionExpression(v.getName(), manager.translateArray(v.getArguments(), declarations)
+                , new IdentityDataTypeTransform(h.getDataType()), h.getFunction());
         //        s.setDeclarationList(declarations);
         return s;
     }

@@ -31,8 +31,6 @@ namespace Net.Vpc.Upa.Impl.Extension
 
         private string[][] fieldsMapping;
 
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter READABLE = Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.SELECT).AndNot(Net.Vpc.Upa.Filters.Fields.BySelectAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
-
 
         public override void Install(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Persistence.EntityOperationManager entityOperationManager, Net.Vpc.Upa.Extensions.EntityExtensionDefinition extension) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             base.Install(entity, entityOperationManager, extension);
@@ -42,8 +40,8 @@ namespace Net.Vpc.Upa.Impl.Extension
                 list.Add(updatableTable.GetName());
             }
             if (discriminator != null) {
-                Net.Vpc.Upa.Field field = GetEntity().AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName(discriminator).SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SUMMARY)).SetDefaultObject(updatableTables[0].GetName()).SetDataType(Net.Vpc.Upa.Types.TypesFactory.ForList(entity.GetName() + "." + discriminator, list, Net.Vpc.Upa.Types.TypesFactory.STRING, false)));
-                field.SetInsertFormula(new Net.Vpc.Upa.Sequence(Net.Vpc.Upa.SequenceStrategy.AUTO));
+                Net.Vpc.Upa.Field field = GetEntity().AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName(discriminator).SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.SUMMARY)).SetDefaultObject(updatableTables[0].GetName()).SetDataType(Net.Vpc.Upa.Types.TypesFactory.ForList(entity.GetName() + "." + discriminator, list, Net.Vpc.Upa.Types.TypesFactory.STRING, false)));
+                field.SetPersistFormula(new Net.Vpc.Upa.Sequence(Net.Vpc.Upa.SequenceStrategy.AUTO));
             }
             GetPersistenceUnit().AddPersistenceUnitListener(new Net.Vpc.Upa.Impl.Extension.UnionPersistenceUnitInterceptorAdapter(this));
             entityOperationManager.SetRemoveOperation(new Net.Vpc.Upa.Impl.Extension.EntityRemoveOperationHelper(this, updatableTables));
@@ -85,7 +83,7 @@ namespace Net.Vpc.Upa.Impl.Extension
             for (int i = 0; i < tabNames.Length; i++) {
                 tabNames[i] = updatableTables[i].GetName();
             }
-            viewFields = GetEntity().GetFieldNames(READABLE);
+            viewFields = GetEntity().GetFieldNames(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
             viewFields.Remove(discriminator);
             fieldsMapping = (string[][])Net.Vpc.Upa.Impl.FwkConvertUtils.CreateMultiArray(typeof(string),(queryInfo.GetEntities()).Count,(viewFields).Count);
             for (int i = 0; i < tabNames.Length; i++) {

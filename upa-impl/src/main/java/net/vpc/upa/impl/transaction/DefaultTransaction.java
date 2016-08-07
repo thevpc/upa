@@ -27,6 +27,9 @@ public class DefaultTransaction extends AbstractTransaction {
         if (log.isLoggable(Level.FINE)) {
             log.log(Level.FINE, "Commit Transaction {0}", Integer.toHexString(System.identityHashCode(this)).toUpperCase());
         }
+        /**
+         *  @PortabilityHint(target = "C#", name = "todo")
+         */
         connection.getPlatformConnection().commit();
     }
 
@@ -42,6 +45,9 @@ public class DefaultTransaction extends AbstractTransaction {
         if (log.isLoggable(Level.FINE)) {
             log.log(Level.FINE, "Rollback Transaction {0}", Integer.toHexString(System.identityHashCode(this)).toUpperCase());
         }
+        /**
+         *  @PortabilityHint(target = "C#", name = "todo")
+         */
         connection.getPlatformConnection().rollback();
     }
 }

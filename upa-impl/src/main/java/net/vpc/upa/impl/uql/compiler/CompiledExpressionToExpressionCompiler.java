@@ -12,7 +12,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 public class CompiledExpressionToExpressionCompiler implements ExpressionTranslator {
 
     @Override
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return (DefaultCompiledExpression) o;
     }
 }

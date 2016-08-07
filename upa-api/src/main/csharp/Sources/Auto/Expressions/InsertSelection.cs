@@ -15,9 +15,13 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public class InsertSelection : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.UpdateStatement {
+    public class InsertSelection : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.NonQueryStatement {
 
 
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag SELECTION = new Net.Vpc.Upa.Expressions.DefaultTag("SELECTION");
 
         private Net.Vpc.Upa.Expressions.QueryStatement selection;
 
@@ -30,6 +34,33 @@ namespace Net.Vpc.Upa.Expressions
         public InsertSelection() {
             selection = null;
             fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Var>(1);
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (entity != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
+            }
+            for (int i = 0; i < (fields).Count; i++) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i], new Net.Vpc.Upa.Expressions.IndexedTag("FIELD", i)));
+            }
+            if (selection != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(selection, SELECTION));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (ENTITY.Equals(tag)) {
+                this.entity = (Net.Vpc.Upa.Expressions.EntityName) e;
+            } else if (SELECTION.Equals(tag)) {
+                this.selection = (Net.Vpc.Upa.Expressions.QueryStatement) e;
+            } else {
+                Net.Vpc.Upa.Expressions.IndexedTag ii = (Net.Vpc.Upa.Expressions.IndexedTag) tag;
+                fields[ii.GetIndex()]=(Net.Vpc.Upa.Expressions.Var) e;
+            }
         }
 
         public InsertSelection(Net.Vpc.Upa.Expressions.InsertSelection other)  : this(){
@@ -121,6 +152,11 @@ namespace Net.Vpc.Upa.Expressions
 
         public override bool IsValid() {
             return entity != null && (fields).Count > 0 && selection.IsValid();
+        }
+
+
+        public override string GetEntityAlias() {
+            return null;
         }
     }
 }

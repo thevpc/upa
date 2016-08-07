@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Persistence
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class ConnectionConfig {
 

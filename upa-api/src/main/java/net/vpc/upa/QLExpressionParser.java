@@ -41,7 +41,7 @@ import net.vpc.upa.expressions.Expression;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface QLExpressionParser {
 

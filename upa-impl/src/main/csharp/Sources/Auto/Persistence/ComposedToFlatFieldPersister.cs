@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public ComposedToFlatFieldPersister(Net.Vpc.Upa.Field field) {
             this.field = field;
-            Net.Vpc.Upa.Types.EntityType t = (Net.Vpc.Upa.Types.EntityType) field.GetDataType();
+            Net.Vpc.Upa.Types.ManyToOneType t = (Net.Vpc.Upa.Types.ManyToOneType) field.GetDataType();
             Net.Vpc.Upa.Entity master = t.GetRelationship().GetTargetRole().GetEntity();
             Net.Vpc.Upa.RelationshipRole detailRole = t.GetRelationship().GetSourceRole();
             flatFields = detailRole.GetFields();
@@ -36,8 +36,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         public virtual void BeforePersist(Net.Vpc.Upa.Record record, Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            object o = record.GetObject<object>(field.GetName());
-            Net.Vpc.Upa.Key key = relationshipTargetConverter.EntityToKey(o);
+            object o = record.GetObject<T>(field.GetName());
+            Net.Vpc.Upa.Key key = relationshipTargetConverter.ObjectToKey(o);
             if (key == null) {
                 foreach (Net.Vpc.Upa.Field ff in flatFields) {
                     record.SetObject(ff.GetName(), ff.GetUnspecifiedValueDecoded());

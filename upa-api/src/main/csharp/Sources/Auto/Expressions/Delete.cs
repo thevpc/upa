@@ -14,7 +14,12 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public class Delete : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.UpdateStatement {
+
+    public class Delete : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.NonQueryStatement {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag COND = new Net.Vpc.Upa.Expressions.DefaultTag("COND");
 
 
 
@@ -40,6 +45,27 @@ namespace Net.Vpc.Upa.Expressions
             return this;
         }
 
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (entity != null) {
+                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
+            }
+            if (condition != null) {
+                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(condition, COND));
+            }
+            return all;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (ENTITY.Equals(tag)) {
+                this.entity = (Net.Vpc.Upa.Expressions.EntityName) e;
+            } else if (COND.Equals(tag)) {
+                this.condition = e;
+            }
+        }
+
         public virtual Net.Vpc.Upa.Expressions.Delete From(string entity) {
             return From(entity, null);
         }
@@ -53,7 +79,7 @@ namespace Net.Vpc.Upa.Expressions
             return (e != null) ? ((Net.Vpc.Upa.Expressions.EntityName) e).GetName() : null;
         }
 
-        public virtual string GetEntityAlias() {
+        public override string GetEntityAlias() {
             return entityAlias == null ? entity.GetName() : entityAlias;
         }
 

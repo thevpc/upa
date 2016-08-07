@@ -21,13 +21,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class CurrentUserExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public CurrentUserExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
-        }
-
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             return CompileCurrentUser((Net.Vpc.Upa.Expressions.CurrentUser) o, declarations);
         }
 

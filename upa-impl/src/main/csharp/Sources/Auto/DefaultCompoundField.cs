@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void MoveField(int index, int newIndex) {
-            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<Net.Vpc.Upa.PrimitiveField>(fields, index, newIndex, this, null);
+            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<T>(fields, index, newIndex, this, null);
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> GetFields() {

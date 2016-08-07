@@ -84,7 +84,7 @@ public final class UnspecifiedValue implements Serializable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone()  {
         return this;
     }
 

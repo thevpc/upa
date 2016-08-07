@@ -51,7 +51,7 @@ public final class Literal extends DefaultExpression
     public static final Literal IZERO = new Literal(0);
     public static final Literal DZERO = new Literal(0.0);
     public static final Literal ZERO = DZERO;
-    public static final Literal NULL = new Literal(0);
+    public static final Literal NULL = new Literal(null,null);
     public static final Literal TRUE = new Literal(true);
     public static final Literal FALSE = new Literal(false);
     public static final Literal EMPTY_STRING = new Literal("");
@@ -100,7 +100,7 @@ public final class Literal extends DefaultExpression
 //                && !(value instanceof Date)
 //                && !(value instanceof Boolean)
 //        ) {
-//            throw new RuntimeException("bad sql value : " + value.getClass().getName() + " ==> " + value);
+//            throw new IllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
 //        } else {
         this.value = value;
 
@@ -154,5 +154,9 @@ public final class Literal extends DefaultExpression
     @Override
     public Expression copy() {
         return new Literal(value, type);
+    }
+
+    public static Literal valueOf(boolean value){
+        return value?TRUE : FALSE;
     }
 }

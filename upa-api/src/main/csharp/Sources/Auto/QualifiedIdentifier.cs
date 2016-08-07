@@ -46,7 +46,7 @@ namespace Net.Vpc.Upa
                     return uKey.GetObjectAt(i);
                 }
             }
-            throw new System.ArgumentException ("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
+            throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
         }
     }
 }

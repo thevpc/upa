@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class PasswordTransformConfig : Net.Vpc.Upa.Types.DataTypeTransformConfig {
 
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa
                 throw new System.NullReferenceException();
             }
             if (!(cipherStrategy is string || cipherStrategy is System.Type || cipherStrategy is Net.Vpc.Upa.PasswordStrategy || (cipherStrategy is Net.Vpc.Upa.PasswordStrategyType && !cipherStrategy.Equals(Net.Vpc.Upa.PasswordStrategyType.CUSTOM)))) {
-                throw new System.ArgumentException ("cipherStrategy shoud be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any balue but custom)");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any balue but custom)");
             }
             this.cipherStrategy = cipherStrategy;
         }

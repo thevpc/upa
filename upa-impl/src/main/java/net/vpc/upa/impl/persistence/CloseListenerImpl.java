@@ -9,7 +9,7 @@ import net.vpc.upa.CloseListener;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class CloseListenerImpl<R> implements CloseListener {
     private final QueryResultLazyList<R> outer;

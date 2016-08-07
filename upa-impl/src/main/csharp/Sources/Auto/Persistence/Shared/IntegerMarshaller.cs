@@ -22,11 +22,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class IntegerMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            int n = System.Convert.ToInt32(resultSet[index]);
-            if (n == 0 && resultSet.WasNull()) {
-                return null;
-            }
-            return new int?(n);
+            return null;
         }
 
 
@@ -41,15 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.INTEGER);
-            } else {
-                try {
-                    ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=System.Convert.ToInt32((((object) @object)));
-                } catch (System.InvalidCastException e) {
-                    throw e;
-                }
-            }
+            
         }
 
         public IntegerMarshaller() {

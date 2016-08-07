@@ -16,7 +16,13 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public class Select : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.QueryStatement, Net.Vpc.Upa.Expressions.NameOrSelect {
+    public class Select : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.QueryStatement {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag WEHRE = new Net.Vpc.Upa.Expressions.DefaultTag("WEHRE");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag HAVING = new Net.Vpc.Upa.Expressions.DefaultTag("HAVING");
 
 
 
@@ -36,7 +42,7 @@ namespace Net.Vpc.Upa.Expressions
 
         private Net.Vpc.Upa.Expressions.Order order;
 
-        private Net.Vpc.Upa.Expressions.NameOrSelect queryEntity;
+        private Net.Vpc.Upa.Expressions.NameOrQuery queryEntity;
 
         private string queryEntityAlias;
 
@@ -47,6 +53,11 @@ namespace Net.Vpc.Upa.Expressions
             AddQuery(other);
         }
 
+
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryField> GetFields() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryField>(fields);
+        }
+
         public Select() {
             joinsEntities = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.JoinCriteria>();
             fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryField>(1);
@@ -54,6 +65,65 @@ namespace Net.Vpc.Upa.Expressions
             group = new Net.Vpc.Upa.Expressions.GroupCriteria();
             order = new Net.Vpc.Upa.Expressions.Order();
             top = -1;
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            //    private Expression where;
+            //    private Expression having;
+            //    private Order order;
+            if (queryEntity != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(queryEntity, ENTITY));
+            }
+            for (int i = 0; i < (fields).Count; i++) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i].GetExpression(), new Net.Vpc.Upa.Expressions.IndexedTag("FIELD", i)));
+            }
+            for (int i = 0; i < (joinsEntities).Count; i++) {
+                Net.Vpc.Upa.Expressions.JoinCriteria get = joinsEntities[i];
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(get.GetEntity(), new Net.Vpc.Upa.Expressions.IndexedTag("JOIN_ENTITY", i)));
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(get.GetCondition(), new Net.Vpc.Upa.Expressions.IndexedTag("JOIN_COND", i)));
+            }
+            if (where != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(where, WEHRE));
+            }
+            for (int i = 0; i < group.Size(); i++) {
+                Net.Vpc.Upa.Expressions.Expression ee = group.GetGroupAt(i);
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(ee, new Net.Vpc.Upa.Expressions.IndexedTag("GROUP", i)));
+            }
+            if (having != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(having, HAVING));
+            }
+            for (int i = 0; i < order.Size(); i++) {
+                Net.Vpc.Upa.Expressions.Expression ee = order.GetOrderAt(i);
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(ee, new Net.Vpc.Upa.Expressions.IndexedTag("ORDER", i)));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (ENTITY.Equals(tag)) {
+                this.queryEntity = (Net.Vpc.Upa.Expressions.NameOrQuery) e;
+            } else if (WEHRE.Equals(tag)) {
+                this.where = e;
+            } else if (HAVING.Equals(tag)) {
+                this.having = e;
+            } else {
+                Net.Vpc.Upa.Expressions.IndexedTag ii = (Net.Vpc.Upa.Expressions.IndexedTag) tag;
+                string en = ii.GetName();
+                if (en.Equals("FIELD")) {
+                    fields[ii.GetIndex()].SetExpression(e);
+                } else if (en.Equals("JOIN_ENTITY")) {
+                    joinsEntities[ii.GetIndex()].SetEntity((Net.Vpc.Upa.Expressions.NameOrQuery) e);
+                } else if (en.Equals("JOIN_COND")) {
+                    joinsEntities[ii.GetIndex()].SetCondition(e);
+                } else if (en.Equals("GROUP")) {
+                    group.SetGroupAt(ii.GetIndex(), e);
+                } else if (en.Equals("ORDER")) {
+                    order.SetOrderAt(ii.GetIndex(), e);
+                }
+            }
         }
 
         public virtual Net.Vpc.Upa.Expressions.Select Field(Net.Vpc.Upa.Expressions.Expression expression) {
@@ -77,7 +147,12 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual Net.Vpc.Upa.Expressions.Select Field(Net.Vpc.Upa.Expressions.Expression expression, string alias) {
-            fields.Add(new Net.Vpc.Upa.Expressions.QueryField(alias, expression));
+            Field(new Net.Vpc.Upa.Expressions.QueryField(alias, expression));
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Select Field(Net.Vpc.Upa.Expressions.QueryField queryField) {
+            fields.Add(queryField);
             return this;
         }
 
@@ -92,6 +167,11 @@ namespace Net.Vpc.Upa.Expressions
 
         public virtual Net.Vpc.Upa.Expressions.Select Field(int index, Net.Vpc.Upa.Expressions.Expression expression, string alias) {
             fields.Insert(index, new Net.Vpc.Upa.Expressions.QueryField(alias, expression));
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Select ClearFields() {
+            fields.Clear();
             return this;
         }
 
@@ -118,7 +198,7 @@ namespace Net.Vpc.Upa.Expressions
             return -1;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Select From(Net.Vpc.Upa.Expressions.NameOrSelect queryEntity, string alias) {
+        public virtual Net.Vpc.Upa.Expressions.Select From(Net.Vpc.Upa.Expressions.NameOrQuery queryEntity, string alias) {
             //getContext().declare(alias, queryEntity);
             this.queryEntity = queryEntity;
             queryEntityAlias = alias;
@@ -137,21 +217,21 @@ namespace Net.Vpc.Upa.Expressions
             return From(view, null);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.NameOrSelect GetEntity() {
+        public virtual Net.Vpc.Upa.Expressions.NameOrQuery GetEntity() {
             return queryEntity;
         }
 
         public override string GetEntityName() {
-            Net.Vpc.Upa.Expressions.NameOrSelect e = GetEntity();
+            Net.Vpc.Upa.Expressions.NameOrQuery e = GetEntity();
             return (e != null && (e is Net.Vpc.Upa.Expressions.EntityName)) ? ((Net.Vpc.Upa.Expressions.EntityName) e).GetName() : null;
         }
 
-        public virtual string GetEntityAlias() {
+        public override string GetEntityAlias() {
             //        return entityAlias == null ? (entity instanceof String) ? (String) entity : null : entityAlias;
             return queryEntityAlias;
         }
 
-        private Net.Vpc.Upa.Expressions.Select Join(Net.Vpc.Upa.Expressions.JoinType joinType, Net.Vpc.Upa.Expressions.NameOrSelect entity, string alias, Net.Vpc.Upa.Expressions.Expression condition) {
+        private Net.Vpc.Upa.Expressions.Select Join(Net.Vpc.Upa.Expressions.JoinType joinType, Net.Vpc.Upa.Expressions.NameOrQuery entity, string alias, Net.Vpc.Upa.Expressions.Expression condition) {
             joinsEntities.Add(new Net.Vpc.Upa.Expressions.JoinCriteria(joinType, entity, alias, condition));
             return this;
         }
@@ -280,6 +360,10 @@ namespace Net.Vpc.Upa.Expressions
             return order.Size();
         }
 
+        public virtual Net.Vpc.Upa.Expressions.Order GetOrder() {
+            return order;
+        }
+
         public virtual Net.Vpc.Upa.Expressions.Select GroupBy(Net.Vpc.Upa.Expressions.Expression field) {
             group.AddGroup(field);
             return this;
@@ -306,10 +390,11 @@ namespace Net.Vpc.Upa.Expressions
              */
         public virtual Net.Vpc.Upa.Expressions.Select Where(Net.Vpc.Upa.Expressions.Expression condition) {
             if (condition != null) {
-                if (GetWhere() == null) {
+                Net.Vpc.Upa.Expressions.Expression where = GetWhere();
+                if (where == null) {
                     SetWhere(condition);
                 } else {
-                    SetWhere(new Net.Vpc.Upa.Expressions.And(GetWhere(), condition));
+                    SetWhere(new Net.Vpc.Upa.Expressions.And(where, condition));
                 }
             }
             return this;
@@ -407,7 +492,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual string GetMainEntityName() {
-            Net.Vpc.Upa.Expressions.NameOrSelect t = GetEntity();
+            Net.Vpc.Upa.Expressions.NameOrQuery t = GetEntity();
             return ((t is Net.Vpc.Upa.Expressions.EntityName) ? ((Net.Vpc.Upa.Expressions.EntityName) t).GetName() : null);
         }
 
@@ -465,7 +550,7 @@ namespace Net.Vpc.Upa.Expressions
                     } else {
                         started = true;
                     }
-                    if (aliasString == null || valueString.Equals(aliasString)) {
+                    if (aliasString == null) {
                         sb.Append(valueString);
                     } else {
                         sb.Append(valueString);

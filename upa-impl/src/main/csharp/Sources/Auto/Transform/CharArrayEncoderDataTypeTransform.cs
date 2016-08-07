@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class CharArrayEncoderDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransform {
 
@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Impl.Transform
         public CharArrayEncoderDataTypeTransform(Net.Vpc.Upa.Types.CharArrayEncoder byteArrayEncoder, Net.Vpc.Upa.Types.DataType sourceType, int? max) {
             this.charArrayEncoder = byteArrayEncoder;
             this.sourceType = sourceType;
-            this.targetType = new Net.Vpc.Upa.Types.ByteArrayType(null, max == null ? ((int?)(255)) : max, sourceType.IsNullable());
+            this.targetType = new Net.Vpc.Upa.Types.ByteArrayType(null, max == null ? ((Net.Vpc.Upa.Types.DataType)(255)) : max, sourceType.IsNullable());
         }
 
         public virtual object TransformValue(object @value) {

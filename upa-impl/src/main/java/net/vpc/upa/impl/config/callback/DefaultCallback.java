@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import net.vpc.upa.EventPhase;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  * Created by vpc on 7/25/15.
@@ -52,10 +53,8 @@ public class DefaultCallback implements Callback {
     public Object invoke(Object... arguments) {
         try {
             return method.invoke(instance, converter.convert(arguments));
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        } catch (InvocationTargetException e) {
-            throw new IllegalArgumentException(e);
+        } catch (Exception e) {
+            throw PlatformUtils.createRuntimeException(e);
         }
     }
 

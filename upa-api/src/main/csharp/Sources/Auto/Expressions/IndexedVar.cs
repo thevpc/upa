@@ -26,14 +26,14 @@ namespace Net.Vpc.Upa.Expressions
 
         }
 
-        public IndexedVar(Net.Vpc.Upa.Expressions.Var parent, string name, params Net.Vpc.Upa.Expressions.Expression [] arguments)  : base(parent, name){
+        public IndexedVar(Net.Vpc.Upa.Expressions.Expression parent, string name, params Net.Vpc.Upa.Expressions.Expression [] arguments)  : base(parent, name){
 
             this.arguments = arguments;
         }
 
 
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.IndexedVar o = new Net.Vpc.Upa.Expressions.IndexedVar(GetParent(), GetName(), GetArguments());
+            Net.Vpc.Upa.Expressions.IndexedVar o = new Net.Vpc.Upa.Expressions.IndexedVar(GetApplier(), GetName(), GetArguments());
             return o;
         }
 
@@ -56,8 +56,8 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override string ToString() {
-            if (GetParent() != null) {
-                return GetParent().ToString() + "." + GetName();
+            if (GetApplier() != null) {
+                return GetApplier().ToString() + "." + GetName();
             }
             System.Text.StringBuilder s = new System.Text.StringBuilder(GetName()).Append("(");
             for (int i = 0; i < GetArgumentsCount(); i++) {

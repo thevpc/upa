@@ -78,7 +78,7 @@ public class DefaultSheetParser extends SheetParser {
         }
     }
     
-    public void close() throws Exception {
+    public void close() {
         if (created != null) {
             created.delete();
         }

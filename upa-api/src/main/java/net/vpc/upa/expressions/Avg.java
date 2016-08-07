@@ -35,14 +35,16 @@
 package net.vpc.upa.expressions;
 
 
-public final class Avg extends Function
+public final class Avg extends FunctionExpression
         implements Cloneable {
     private static final long serialVersionUID = 1L;
     private Expression expression;
 
-//    public Average(String fieldName,DataPrimitiveType type) {
-//        this(new Var(fieldName,type));
-//    }
+
+    public Avg(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
+    }
 
     public Avg(Expression expression) {
         this.expression = expression;

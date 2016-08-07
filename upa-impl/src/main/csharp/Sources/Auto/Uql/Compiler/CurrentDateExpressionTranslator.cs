@@ -21,17 +21,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class CurrentDateExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public CurrentDateExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileCurrentDate((Net.Vpc.Upa.Expressions.CurrentDate) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileCurrentDate((Net.Vpc.Upa.Expressions.CurrentDate) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentDate CompileCurrentDate(Net.Vpc.Upa.Expressions.CurrentDate v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledCurrentDate CompileCurrentDate(Net.Vpc.Upa.Expressions.CurrentDate v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }

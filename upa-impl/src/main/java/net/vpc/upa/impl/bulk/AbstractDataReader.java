@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.bulk;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataDeserializer;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataReader;
@@ -13,6 +14,7 @@ import net.vpc.upa.types.StringType;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public abstract class AbstractDataReader implements DataReader {
 
     protected DataColumn[] parserColumns;
@@ -53,14 +55,14 @@ public abstract class AbstractDataReader implements DataReader {
             } else {
                 header = new DataColumn[parserColumns.length];
                 for (int i = 0; i < header.length; i++) {
-                    header[i] = (DataColumn) parserColumns[i].clone();
+                    header[i] = (DataColumn) parserColumns[i].copy();
                     header[i].setIndex(i);
                 }
             }
         } else {
             header = new DataColumn[parserColumns.length];
             for (int i = 0; i < header.length; i++) {
-                header[i] = (DataColumn) parserColumns[i].clone();
+                header[i] = (DataColumn) parserColumns[i].copy();
                 header[i].setIndex(i);
             }
         }
@@ -119,7 +121,7 @@ public abstract class AbstractDataReader implements DataReader {
     protected abstract Object[] nextRowArray();
 
     protected DataColumn createColumn(int col) {
-        return (DataColumn) columnPrototype.clone();
+        return (DataColumn) columnPrototype.copy();
     }
 
 //    public Iterator<DataRow> iterator() {
@@ -130,7 +132,7 @@ public abstract class AbstractDataReader implements DataReader {
         DataColumn[] columns = new DataColumn[all.length];
         for (int i = 0; i < columns.length; i++) {
             if (i < parserColumns.length && !StringUtils.isNullOrEmpty(parserColumns[i].getName())) {
-                columns[i] = (DataColumn) parserColumns[i].clone();
+                columns[i] = (DataColumn) parserColumns[i].copy();
             } else {
                 columns[i] = createColumn(i);
                 columns[i].setName(String.valueOf(all[i]));

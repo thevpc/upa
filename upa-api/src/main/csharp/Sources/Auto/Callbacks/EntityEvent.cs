@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class EntityEvent : Net.Vpc.Upa.Callbacks.UPAEvent {
 
@@ -35,27 +35,35 @@ namespace Net.Vpc.Upa.Callbacks
 
         private int oldIndex;
 
+        private Net.Vpc.Upa.EventPhase phase;
+
         /**
              * actual trigger if this event is fired by a trigger
              */
         private Net.Vpc.Upa.Callbacks.Trigger trigger;
 
-        public EntityEvent(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Package parent, int index, Net.Vpc.Upa.Package oldParent, int oldIndex) {
+        public EntityEvent(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Package parent, int index, Net.Vpc.Upa.Package oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.entity = entity;
             this.parent = parent;
             this.index = index;
             this.oldParent = oldParent;
             this.oldIndex = oldIndex;
+            this.phase = phase;
         }
 
-        public EntityEvent(Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+        public EntityEvent(Net.Vpc.Upa.Persistence.EntityExecutionContext context, Net.Vpc.Upa.EventPhase phase) {
             this.context = context;
             this.entity = context.GetEntity();
             this.parent = entity.GetParent();
             this.persistenceUnit = context.GetPersistenceUnit();
             this.index = -1;
             this.oldIndex = -1;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.Callbacks.Trigger GetTrigger() {

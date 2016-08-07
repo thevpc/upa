@@ -25,9 +25,9 @@ namespace Net.Vpc.Upa.Impl.Util
 
         private System.Type fieldType;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanAdapter entityBeanAdapter;
+        private Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
 
-        internal AbstractEntityBeanAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanAdapter entityBeanAdapter, string name, System.Type fieldType) {
+        internal AbstractEntityBeanAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string name, System.Type fieldType) {
             this.entityBeanAdapter = entityBeanAdapter;
             this.name = name;
             this.fieldType = fieldType;

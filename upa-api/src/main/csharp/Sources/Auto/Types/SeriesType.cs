@@ -15,7 +15,7 @@ namespace Net.Vpc.Upa.Types
 {
 
 
-    public abstract class SeriesType : Net.Vpc.Upa.Types.DataType {
+    public abstract class SeriesType : Net.Vpc.Upa.Types.DefaultDataType {
 
         protected internal SeriesType(string name, System.Type platformType)  : base(name, platformType){
 

@@ -40,14 +40,14 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
                 if (Double.class.equals(t) || Double.class.equals(r)) {
                     /**
                      * @PortabilityHint(target="C#",name="replace")
-                     * SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
+                     * SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
                      *
                      */
                     setTypeTransform(IdentityDataTypeTransform.BIGDECIMAL);
                 } else if (Float.class.equals(t) || Float.class.equals(r)) {
                     /**
                      * @PortabilityHint(target="C#",name="replace")
-                     * SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
+                     * SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.DOUBLE);
                      *
                      */
                     setTypeTransform(IdentityDataTypeTransform.BIGDECIMAL);

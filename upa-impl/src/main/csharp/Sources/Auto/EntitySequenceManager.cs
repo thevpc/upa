@@ -30,10 +30,10 @@ namespace Net.Vpc.Upa.Impl
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.Synchronized)]
         public virtual Net.Vpc.Upa.Impl.PrivateSequence GetOrCreateSequence(string name, string pattern, int initialValue, int increment) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             //        System.out.println(">>>>>>>>>>>>>>>>>>> getOrCreateSequence("+name+","+pattern+")");
-            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().SetId(entity.CreateId(name, pattern)).GetEntity<Net.Vpc.Upa.Impl.PrivateSequence>();
+            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().ById(entity.CreateId(name, pattern)).GetEntity<R>();
             if (r == null) {
                 CreateSequence(name, pattern, initialValue, increment);
-                r = entity.CreateQueryBuilder().SetId(entity.CreateId(name, pattern)).GetEntity<Net.Vpc.Upa.Impl.PrivateSequence>();
+                r = entity.CreateQueryBuilder().ById(entity.CreateId(name, pattern)).GetEntity<R>();
             }
             return r;
         }
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl
             if (increment == 0) {
                 throw new System.ArgumentException ("increment zero");
             }
-            Net.Vpc.Upa.Impl.PrivateSequence r = (Net.Vpc.Upa.Impl.PrivateSequence) entity.GetBuilder().CreateObject<Net.Vpc.Upa.Impl.PrivateSequence>();
+            Net.Vpc.Upa.Impl.PrivateSequence r = (Net.Vpc.Upa.Impl.PrivateSequence) entity.GetBuilder().CreateObject<R>();
             r.SetName(name);
             r.SetGroup(pattern);
             r.SetLocked(false);
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual Net.Vpc.Upa.Impl.PrivateSequence GetSequence(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().SetId(entity.CreateId(name, pattern)).GetEntity<Net.Vpc.Upa.Impl.PrivateSequence>();
+            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().ById(entity.CreateId(name, pattern)).GetEntity<R>();
             if (r == null) {
                 throw new Net.Vpc.Upa.Exceptions.UPAException("Sequence " + pattern + " not found");
             }
@@ -89,14 +89,14 @@ namespace Net.Vpc.Upa.Impl
             r.SetLocked(true);
             r.SetLockUserId(entity.GetPersistenceUnit().GetUserPrincipal().GetName());
             r.SetLockDate(new Net.Vpc.Upa.Types.DateTime());
-            entity.UpdatePartial(r, entity.CreateId(name, pattern));
+            entity.CreateUpdateQuery().SetValues(r).ById(entity.CreateId(name, pattern));
             return r.GetValue();
         }
 
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.Synchronized)]
         public virtual int GetCurrentValue(string name, string pattern) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().SetId(entity.CreateId(name, pattern)).GetEntity<Net.Vpc.Upa.Impl.PrivateSequence>();
+            Net.Vpc.Upa.Impl.PrivateSequence r = entity.CreateQueryBuilder().ById(entity.CreateId(name, pattern)).GetEntity<R>();
             if (r == null) {
                 return -1;
             }
@@ -123,7 +123,7 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.Expressions.And condition = new Net.Vpc.Upa.Expressions.And(idToExpression, new Net.Vpc.Upa.Expressions.Or(new Net.Vpc.Upa.Expressions.Different(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(entity.GetName()), "locked"), Net.Vpc.Upa.Expressions.Literal.TRUE), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(entity.GetName()), "lockUserId"), new Net.Vpc.Upa.Expressions.Param("lockUserId", entity.GetPersistenceUnit().GetUserPrincipal().GetName()))));
             Net.Vpc.Upa.QueryBuilder q = null;
             try {
-                q = entity.CreateQueryBuilder().SetExpression(condition);
+                q = entity.CreateQueryBuilder().ByExpression(condition);
                 q.SetUpdatable(true);
                 int oldValue;
                 foreach (Net.Vpc.Upa.Impl.PrivateSequence s in q.GetEntityList<Net.Vpc.Upa.Impl.PrivateSequence>()) {
@@ -160,7 +160,7 @@ namespace Net.Vpc.Upa.Impl
             r.SetLocked(false);
             r.SetLockUserId(null);
             r.SetLockDate(null);
-            entity.UpdatePartial(r, entity.CreateId(pattern));
+            entity.CreateUpdateQuery().SetValues(r).ById(entity.CreateId(pattern));
             return v;
         }
     }

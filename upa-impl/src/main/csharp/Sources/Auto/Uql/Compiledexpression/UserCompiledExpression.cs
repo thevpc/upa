@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
 
-        public override void SetDataType(Net.Vpc.Upa.Types.DataTypeTransform type) {
+        public override void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform type) {
             this.type = type;
         }
 

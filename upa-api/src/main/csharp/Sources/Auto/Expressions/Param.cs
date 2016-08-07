@@ -14,6 +14,7 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
+
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
@@ -21,7 +22,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
 
-        private object @object;
+        private object @value;
 
         private string name;
 
@@ -36,31 +37,45 @@ namespace Net.Vpc.Upa.Expressions
             this.name = name;
         }
 
-        public Param(string name, object @object) {
+        public Param(string name, object @value) {
             this.unspecified = false;
-            this.@object = @object;
+            this.@value = @value;
             this.name = name;
+        }
+
+        public virtual void SetUnspecified(bool unspecified) {
+            this.unspecified = unspecified;
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            throw new System.Exception("Not supported yet.");
         }
 
         public virtual string GetName() {
             return name;
         }
 
-        public virtual object GetObject() {
-            return @object;
+        public virtual object GetValue() {
+            return @value;
         }
 
         public virtual bool IsUnspecified() {
             return unspecified;
         }
 
-        public virtual void SetObject(object @object) {
-            this.@object = @object;
+        public virtual void SetValue(object @value) {
+            this.@value = @value;
         }
 
 
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Param o = unspecified ? new Net.Vpc.Upa.Expressions.Param(name) : new Net.Vpc.Upa.Expressions.Param(name, @object);
+            Net.Vpc.Upa.Expressions.Param o = unspecified ? new Net.Vpc.Upa.Expressions.Param(name) : new Net.Vpc.Upa.Expressions.Param(name, @value);
             return o;
         }
 
@@ -69,7 +84,7 @@ namespace Net.Vpc.Upa.Expressions
             if (IsUnspecified()) {
                 return ":" + GetName();
             }
-            return ":" + GetName() + "(=" + GetObject() + ")";
+            return ":" + GetName() + "(=" + GetValue() + ")";
         }
     }
 }

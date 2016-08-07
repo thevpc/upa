@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class DatePartExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public DatePartExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileDatePart((DatePart) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileDatePart((DatePart) o, declarations);
-    }
-
-    protected CompiledDatePart compileDatePart(DatePart v, ExpressionDeclarationList declarations) {
+    protected CompiledDatePart compileDatePart(DatePart v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledDatePart s = new CompiledDatePart(v.getDatePartType(), outer.compileAny(v.getValue(), declarations));
+        CompiledDatePart s = new CompiledDatePart(v.getDatePartType(), manager.translateAny(v.getValue(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

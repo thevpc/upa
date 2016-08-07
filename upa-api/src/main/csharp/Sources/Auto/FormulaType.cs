@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa
      */
     public enum FormulaType {
 
-        PERSIST, UPDATE, LIVE, COMPILED
+        DEFAULT, PERSIST, UPDATE, LIVE, COMPILED
     }
 }

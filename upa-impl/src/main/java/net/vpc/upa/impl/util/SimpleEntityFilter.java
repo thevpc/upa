@@ -12,7 +12,7 @@ import net.vpc.upa.filters.ObjectFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class SimpleEntityFilter implements EntityFilter{
     private ObjectFilter<String> name;

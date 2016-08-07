@@ -23,6 +23,20 @@ namespace Net.Vpc.Upa.Expressions
 
         private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryStatement> queryStatements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryStatement>();
 
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            for (int i = 0; i < (queryStatements).Count; i++) {
+                all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(queryStatements[i], new Net.Vpc.Upa.Expressions.IndexedTag("#", i)));
+            }
+            return all;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            queryStatements[((Net.Vpc.Upa.Expressions.IndexedTag) tag).GetIndex()]=(Net.Vpc.Upa.Expressions.QueryStatement) e;
+        }
+
         public virtual void Add(Net.Vpc.Upa.Expressions.QueryStatement s) {
             queryStatements.Add(s);
         }
@@ -42,6 +56,11 @@ namespace Net.Vpc.Upa.Expressions
         }
 
 
+        public override string GetEntityAlias() {
+            return null;
+        }
+
+
         public virtual int CountFields() {
             return queryStatements[0].CountFields();
         }
@@ -49,6 +68,11 @@ namespace Net.Vpc.Upa.Expressions
 
         public virtual Net.Vpc.Upa.Expressions.QueryField GetField(int i) {
             return queryStatements[0].GetField(i);
+        }
+
+
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryField> GetFields() {
+            return queryStatements[0].GetFields();
         }
 
 

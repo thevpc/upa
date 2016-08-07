@@ -20,14 +20,22 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     private Entity entity;
     private EntityPart parent;
     private List<EntityPart> parts;
-    private Map<String, EntityPart> childrenMap;
+//    private Map<String, EntityPart> childrenMap;
     private boolean closed;
 
     public DefaultSection() {
         super();
         this.parent = null;
         this.parts = new ArrayList<EntityPart>(3);
-        childrenMap = new HashMap<String, EntityPart>();
+//        childrenMap = new HashMap<String, EntityPart>();
+    }
+
+    @Override
+    public void commitModelChanges() {
+        this.parts=PlatformUtils.trimToSize(this.parts);
+        for (EntityPart item : parts) {
+            item.commitModelChanges();
+        }
     }
 
     @Override

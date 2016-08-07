@@ -17,5 +17,7 @@ namespace Net.Vpc.Upa.Expressions
     public interface EntityStatement : Net.Vpc.Upa.Expressions.Expression {
 
          string GetEntityName();
+
+         string GetEntityAlias();
     }
 }

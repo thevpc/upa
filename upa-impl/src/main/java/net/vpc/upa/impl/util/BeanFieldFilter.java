@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class BeanFieldFilter implements ObjectFilter<Field> {
     public static final BeanFieldFilter INSTANCE=new BeanFieldFilter();

@@ -10,7 +10,7 @@ class EntityBeanFieldAttribute extends AbstractEntityBeanAttribute {
 
     private Field field;
 
-    EntityBeanFieldAttribute(EntityBeanType entityBeanAdapter, Field field, Class cls) {
+    EntityBeanFieldAttribute(EntityPlatformBeanType entityBeanAdapter, Field field, Class cls) {
         super(entityBeanAdapter,field.getName(), field.getType());
         this.field = field;
         field.setAccessible(true);

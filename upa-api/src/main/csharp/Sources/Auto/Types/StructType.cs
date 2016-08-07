@@ -15,7 +15,7 @@ namespace Net.Vpc.Upa.Types
 {
 
 
-    public class StructType : Net.Vpc.Upa.Types.DataType {
+    public class StructType : Net.Vpc.Upa.Types.DefaultDataType {
 
         public static readonly object OLD_VALUE = new object();
 
@@ -26,11 +26,11 @@ namespace Net.Vpc.Upa.Types
         public StructType(string name, System.Type clazz, string[] fieldNames, Net.Vpc.Upa.Types.DataType[] datatypes, bool nullable)  : base(name, clazz, datatypes.Length, 0, nullable){
 
             if (fieldNames.Length != datatypes.Length) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
             for (int i = 0; i < fieldNames.Length; i++) {
                 if (elementsMap.ContainsKey(fieldNames[i])) {
-                    throw new System.ArgumentException ();
+                    throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
                 }
                 elementsMap[fieldNames[i]]=datatypes[i];
                 elementsList.Add(fieldNames[i]);

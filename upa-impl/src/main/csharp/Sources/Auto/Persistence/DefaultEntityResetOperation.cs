@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return 0;
             }
             Net.Vpc.Upa.Expressions.Delete stmt = (new Net.Vpc.Upa.Expressions.Delete()).From(entity.GetName());
-            return context.GetPersistenceStore().ExecuteUpdate(stmt, context);
+            return context.GetPersistenceStore().CreateQuery(stmt, context).ExecuteNonQuery();
         }
     }
 }

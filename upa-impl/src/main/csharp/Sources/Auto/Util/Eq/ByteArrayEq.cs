@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Util.Eq
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class ByteArrayEq : Net.Vpc.Upa.Impl.Util.Eq.EqualHelper {
 

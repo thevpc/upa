@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledConcat;
 
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
  * Time: 17:17:34
  * To change this template use Options | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class MSSQLServerConcatSQLProvider extends MSSQLServerFunctionSQLProvider {
     public MSSQLServerConcatSQLProvider() {
         super(CompiledConcat.class);

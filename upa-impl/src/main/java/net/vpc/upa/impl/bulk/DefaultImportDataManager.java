@@ -6,10 +6,8 @@ package net.vpc.upa.impl.bulk;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Field;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.Record;
+
+import net.vpc.upa.*;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.DataRow;
@@ -23,6 +21,7 @@ import net.vpc.upa.types.ManyToOneType;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "todo")
 public class DefaultImportDataManager implements ImportDataManager {
 
     public void importEntity(Entity entity, DataReader dataIterator, ImportDataConfig config) {

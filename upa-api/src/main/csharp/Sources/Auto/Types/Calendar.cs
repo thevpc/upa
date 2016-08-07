@@ -143,6 +143,17 @@ namespace Net.Vpc.Upa.Types{
         
             /**
              * Field number for <code>get</code> and <code>set</code> indicating the
+             * hour of the morning or afternoon. <code>HOUR</code> is used for the
+             * 12-hour clock (0 - 11). Noon and midnight are represented by 0, not by 12.
+             * E.g., at 10:04:15.250 PM the <code>HOUR</code> is 10.
+             *
+             * @see #AM_PM
+             * @see #HOUR_OF_DAY
+             */
+            public const int HOUR = 10;
+
+             /**
+             * Field number for <code>get</code> and <code>set</code> indicating the
              * hour of the day. <code>HOUR_OF_DAY</code> is used for the 24-hour clock.
              * E.g., at 10:04:15.250 PM the <code>HOUR_OF_DAY</code> is 22.
              *

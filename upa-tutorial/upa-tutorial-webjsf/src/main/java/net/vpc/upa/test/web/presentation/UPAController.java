@@ -46,7 +46,7 @@ public class UPAController {
      */
     public UPAController() {
         final PersistenceUnit pu = UPA.getPersistenceUnit();
-        List<Customer> entityList = pu.createQueryBuilder(Customer.class).getEntityList();
+        List<Customer> entityList = pu.createQueryBuilder(Customer.class).getResultList();
         if (entityList.isEmpty()) {
             Customer customer = new Customer();
             customer.setName("Hammadi");
@@ -126,7 +126,7 @@ public class UPAController {
                 s.field(new Var(f.getName()));
             }
 
-            return pu.createQuery(s).getEntityList();
+            return pu.createQuery(s).getResultList();
         }
         return new ArrayList<Object>();
     }

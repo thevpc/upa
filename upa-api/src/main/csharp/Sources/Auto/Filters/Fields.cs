@@ -20,15 +20,17 @@ namespace Net.Vpc.Upa.Filters
      */
     public class Fields : Net.Vpc.Upa.Filters.AbstractFieldFilter {
 
-        private static Net.Vpc.Upa.Filters.Fields DYNAMIC = As(new Net.Vpc.Upa.Filters.FieldDynamicFilter());
+        private static readonly Net.Vpc.Upa.Filters.Fields DYNAMIC = As(new Net.Vpc.Upa.Filters.FieldDynamicFilter());
 
-        private static Net.Vpc.Upa.Filters.Fields REGULAR = As(new Net.Vpc.Upa.Filters.FieldRegularFilter());
+        private static readonly Net.Vpc.Upa.Filters.Fields REGULAR = As(new Net.Vpc.Upa.Filters.FieldRegularFilter());
 
-        private static Net.Vpc.Upa.Filters.Fields ANY = As(new Net.Vpc.Upa.Filters.FieldAnyFilter());
+        private static readonly Net.Vpc.Upa.Filters.Fields ANY = As(new Net.Vpc.Upa.Filters.FieldAnyFilter());
 
-        private static Net.Vpc.Upa.Filters.Fields NONE = As(new Net.Vpc.Upa.Filters.FieldAnyFilter()).Negate();
+        private static readonly Net.Vpc.Upa.Filters.Fields NONE = As(new Net.Vpc.Upa.Filters.FieldAnyFilter()).Negate();
 
-        private static Net.Vpc.Upa.Filters.Fields PRIMITIVE = As(new Net.Vpc.Upa.Filters.FieldPrimitiveFilter(null));
+        private static readonly Net.Vpc.Upa.Filters.Fields PRIMITIVE = As(new Net.Vpc.Upa.Filters.FieldPrimitiveFilter(null));
+
+        private static readonly Net.Vpc.Upa.Filters.Fields ID = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.ID));
 
         private Net.Vpc.Upa.Filters.FieldFilter @base;
 
@@ -50,6 +52,10 @@ namespace Net.Vpc.Upa.Filters
             return ANY;
         }
 
+        public static Net.Vpc.Upa.Filters.Fields Id() {
+            return ID;
+        }
+
         public static Net.Vpc.Upa.Filters.Fields Regular() {
             return REGULAR;
         }
@@ -67,15 +73,15 @@ namespace Net.Vpc.Upa.Filters
         }
 
         public static Net.Vpc.Upa.Filters.Fields ByInsertAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.Fields(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForInsert(accepted));
+            return new Net.Vpc.Upa.Filters.Fields(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForPersist(accepted));
         }
 
         public static Net.Vpc.Upa.Filters.Fields ByUpdateAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
             return new Net.Vpc.Upa.Filters.Fields(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForUpdate(accepted));
         }
 
-        public static Net.Vpc.Upa.Filters.Fields BySelectAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
-            return new Net.Vpc.Upa.Filters.Fields(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForSelect(accepted));
+        public static Net.Vpc.Upa.Filters.Fields ByReadAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
+            return new Net.Vpc.Upa.Filters.Fields(Net.Vpc.Upa.Filters.FieldAccessLevelFilter.ForFind(accepted));
         }
 
         public static Net.Vpc.Upa.Filters.Fields ByAllAccessLevel(params Net.Vpc.Upa.AccessLevel [] accepted) {
@@ -110,7 +116,7 @@ namespace Net.Vpc.Upa.Filters
             return As(new Net.Vpc.Upa.Filters.FieldNameFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.Fields ByName(System.Collections.Generic.IList<string> acceptedFields) {
+        public static Net.Vpc.Upa.Filters.Fields ByName(System.Collections.Generic.ICollection<string> acceptedFields) {
             return As(new Net.Vpc.Upa.Filters.FieldNameFilter(acceptedFields));
         }
 
@@ -122,8 +128,16 @@ namespace Net.Vpc.Upa.Filters
             return As(new Net.Vpc.Upa.Filters.FieldListFilter(acceptedFields));
         }
 
-        public static Net.Vpc.Upa.Filters.Fields ByType(System.Type type) {
-            return As(new Net.Vpc.Upa.Filters.FieldTypeFilter(type));
+        public static Net.Vpc.Upa.Filters.Fields ByImplType(System.Type type) {
+            return As(new Net.Vpc.Upa.Filters.FieldImplTypeFilter(type));
+        }
+
+        public static Net.Vpc.Upa.Filters.Fields ByDataType(System.Type type) {
+            return As(new Net.Vpc.Upa.Filters.FieldDataTypeFilter(type, true));
+        }
+
+        public static Net.Vpc.Upa.Filters.Fields ByEntityType() {
+            return ByDataType(typeof(Net.Vpc.Upa.Types.ManyToOneType));
         }
 
         public virtual Net.Vpc.Upa.Filters.Fields ByPrimitive() {

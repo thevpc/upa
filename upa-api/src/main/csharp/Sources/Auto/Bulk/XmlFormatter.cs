@@ -34,16 +34,18 @@ namespace Net.Vpc.Upa.Bulk
             return containsHeader;
         }
 
-        public virtual void SetContainsHeader(bool containsHeader) {
+        public virtual Net.Vpc.Upa.Bulk.XmlFormatter SetContainsHeader(bool containsHeader) {
             this.containsHeader = containsHeader;
+            return this;
         }
 
         public virtual bool IsTrimValues() {
             return trimValues;
         }
 
-        public virtual void SetTrimValues(bool trimValues) {
+        public virtual Net.Vpc.Upa.Bulk.XmlFormatter SetTrimValues(bool trimValues) {
             this.trimValues = trimValues;
+            return this;
         }
     }
 }

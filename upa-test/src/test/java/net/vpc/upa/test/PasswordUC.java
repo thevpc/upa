@@ -41,7 +41,7 @@ public class PasswordUC {
             List<Data> entityList;
             pu.createQuery("Delete from Data").executeNonQuery();
             final Query findAll = pu.createQuery("Select a from Data a");
-            entityList = findAll.getEntityList();
+            entityList = findAll.getResultList();
             Assert.assertTrue(entityList.size() == 0);
 //            if(true){
 //                return;
@@ -69,7 +69,7 @@ public class PasswordUC {
 //            Record r=pu.getEntity(Data.class).getEntityFactory().createRecord();
 //            r.setObject("password", new Literal("hella"));
 //            pu.insertRecord(Data.class,r);
-            entityList = findAll.getEntityList();
+            entityList = findAll.getResultList();
             Assert.assertTrue(entityList.size() == 4);
             for (Data c : entityList) {
                 Assert.assertEquals(c.getPassword(), "****");
@@ -80,12 +80,12 @@ public class PasswordUC {
 
             entityList = findByPassword
                     .setParameter("p", "hello")
-                    .getEntityList();
+                    .getResultList();
             Assert.assertTrue(entityList.size() == 2);
 
             entityList = findByPassword
                     .setParameter("p", "new password")
-                    .getEntityList();
+                    .getResultList();
             Assert.assertTrue(entityList.size() == 2);
         }
     }

@@ -18,7 +18,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class FieldSerializableOrEntityProcessor : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter, Net.Vpc.Upa.Callbacks.PersistenceUnitListener {
+    public class FieldSerializableOrEntityProcessor : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter, Net.Vpc.Upa.Callbacks.EntityDefinitionListener, Net.Vpc.Upa.Callbacks.PersistenceUnitListener {
 
         private Net.Vpc.Upa.PersistenceUnit persistenceUnit;
 
@@ -33,8 +33,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         public virtual void Process() {
             Net.Vpc.Upa.Types.DataType dataType = field.GetDataType();
-            if (dataType is Net.Vpc.Upa.Impl.SerializableOrEntityType) {
-                Net.Vpc.Upa.Impl.SerializableOrEntityType master = (Net.Vpc.Upa.Impl.SerializableOrEntityType) dataType;
+            if (dataType is Net.Vpc.Upa.Impl.SerializableOrManyToOneType) {
+                Net.Vpc.Upa.Impl.SerializableOrManyToOneType master = (Net.Vpc.Upa.Impl.SerializableOrManyToOneType) dataType;
                 relationshipTargetEntityType = master.GetEntityType();
                 if (persistenceUnit.ContainsEntity(relationshipTargetEntityType)) {
                     Net.Vpc.Upa.Entity tt = persistenceUnit.GetEntity(relationshipTargetEntityType);
@@ -49,14 +49,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         public virtual void OnModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
             Net.Vpc.Upa.Types.DataType dataType = field.GetDataType();
-            if (dataType is Net.Vpc.Upa.Impl.SerializableOrEntityType) {
-                Net.Vpc.Upa.Impl.SerializableOrEntityType masterDatatype = (Net.Vpc.Upa.Impl.SerializableOrEntityType) dataType;
+            if (dataType is Net.Vpc.Upa.Impl.SerializableOrManyToOneType) {
+                Net.Vpc.Upa.Impl.SerializableOrManyToOneType masterDatatype = (Net.Vpc.Upa.Impl.SerializableOrManyToOneType) dataType;
                 System.Type tt = masterDatatype.GetEntityType();
                 if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsSerializable(tt)) {
                     field.SetDataType(new Net.Vpc.Upa.Types.SerializableType(masterDatatype.GetName(), tt, masterDatatype.IsNullable()));
                     field.SetTypeTransform(null);
                 } else {
-                    throw new System.ArgumentException ("Type " + tt + " is not Serializable for " + field);
+                    throw new System.ArgumentException ("Type " + tt + " is neither Entity nor Serializable for " + field);
                 }
             }
         }
@@ -68,8 +68,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         private void BindRelation(Net.Vpc.Upa.Entity masterEntity) {
             Net.Vpc.Upa.Types.DataType dataType = field.GetDataType();
-            if (dataType is Net.Vpc.Upa.Impl.SerializableOrEntityType) {
-                field.SetDataType(new Net.Vpc.Upa.Types.EntityType(dataType.GetName(), dataType.GetPlatformType(), masterEntity.GetName(), true, dataType.IsNullable()));
+            if (dataType is Net.Vpc.Upa.Impl.SerializableOrManyToOneType) {
+                field.SetDataType(new Net.Vpc.Upa.Types.ManyToOneType(dataType.GetName(), dataType.GetPlatformType(), masterEntity.GetName(), true, dataType.IsNullable()));
                 field.SetTypeTransform(null);
                 field.SetTypeTransform(new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(field.GetDataType()));
                 Net.Vpc.Upa.DefaultRelationshipDescriptor relationDescriptor = new Net.Vpc.Upa.DefaultRelationshipDescriptor();
@@ -140,6 +140,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
 
         public virtual void OnClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnPreUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
     }
 }

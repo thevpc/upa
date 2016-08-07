@@ -44,23 +44,23 @@ public class Var extends DefaultExpression {
     private static final DefaultTag PARENT = new DefaultTag("PARENT");
     private static final long serialVersionUID = 1L;
     public static final char DOT = '.';
-    private Var parent;
+    private Expression applier;
     private String name;
 
     public Var(String field) {
         this(null, field);
     }
 
-    public Var(Var parent, String name) {
-        this.parent = parent;
+    public Var(Expression applier, String name) {
+        this.applier = applier;
         this.name = name;
         if (name.contains(".")) {
-            throw new IllegalArgumentException("Name could not contain dots");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Name could not contain dots");
         }
     }
 
-    public void setParent(Var parent) {
-        this.parent = parent;
+    public void setApplier(Var applier) {
+        this.applier = applier;
     }
 
     public void setName(String name) {
@@ -70,8 +70,8 @@ public class Var extends DefaultExpression {
     @Override
     public List<TaggedExpression> getChildren() {
         List<TaggedExpression> list = new ArrayList<TaggedExpression>(1);
-        if (parent != null) {
-            list.add(new TaggedExpression(parent, PARENT));
+        if (applier != null) {
+            list.add(new TaggedExpression(applier, PARENT));
         }
         return list;
     }
@@ -79,14 +79,14 @@ public class Var extends DefaultExpression {
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
         if (tag.equals(PARENT)) {
-            this.parent = (Var) e;
+            this.applier = e;
         } else {
-            throw new IllegalArgumentException("Not supported yet.");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Not supported yet.");
         }
     }
 
-    public Var getParent() {
-        return parent;
+    public Expression getApplier() {
+        return applier;
     }
 
     public String getName() {
@@ -95,14 +95,14 @@ public class Var extends DefaultExpression {
 
     @Override
     public Expression copy() {
-        Var o = new Var(parent, name);
+        Var o = new Var(applier==null?null: applier.copy(), name);
         return o;
     }
 
     @Override
     public String toString() {
-        if (parent != null) {
-            return parent.toString() + "." + ExpressionHelper.escapeIdentifier(getName());
+        if (applier != null) {
+            return applier.toString() + "." + ExpressionHelper.escapeIdentifier(getName());
         }
         return ExpressionHelper.escapeIdentifier(getName());
     }

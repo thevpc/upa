@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     log.TraceEvent(System.Diagnostics.TraceEventType.Warning,90,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("ResultSet closed, unable to retrieve next record",null));
                 }
                 updates.Clear();
-                return resultSet.Next();
+                return resultSet.NextResult();
             } catch (System.Exception e) {
                 bool alreadyClosed = false;
                 try {
@@ -110,12 +110,12 @@ namespace Net.Vpc.Upa.Impl.Persistence
         public virtual void UpdateCurrent() {
             int? index = null;
             try {
-                foreach (System.Collections.Generic.KeyValuePair<int? , object> entry in updates) {
+                foreach (System.Collections.Generic.KeyValuePair<int? , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<int?,object>>(updates)) {
                     index = (entry).Key;
-                    marshallers[(index).Value].Write((entry).Value, nativePos[(index).Value], resultSet);
+                    marshallers[index].Write((entry).Value, nativePos[index], resultSet);
                 }
             } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, index == null ? null : nativePos[(index).Value]);
+                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("ReadQueryResultColumnFailed"), index, index == null ? null : nativePos[index]);
             }
         }
     }

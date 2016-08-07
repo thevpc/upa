@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Types
     /**
      * User: taha Date: 16 juin 2003 Time: 15:47:42
      */
-    public class LOBType : Net.Vpc.Upa.Types.DataType {
+    public class LOBType : Net.Vpc.Upa.Types.DefaultDataType {
 
         public LOBType(string name, System.Type platformType)  : base(name, platformType){
 

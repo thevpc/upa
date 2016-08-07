@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa
      */
     public sealed class RemoveOptions {
 
-        private Net.Vpc.Upa.RemoveType removeType;
+        private Net.Vpc.Upa.ConditionType conditionType;
 
         private object removeCondition;
 
@@ -32,44 +32,58 @@ namespace Net.Vpc.Upa
 
         private Net.Vpc.Upa.Relationship followRelationship;
 
+        private System.Collections.Generic.IDictionary<string , object> hints;
+
         public static Net.Vpc.Upa.RemoveOptions ForId(object expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.ID, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.ID, expr);
         }
 
         public static  Net.Vpc.Upa.RemoveOptions ForIdList<T>(System.Collections.Generic.IList<T> expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.ID_LIST, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.ID_LIST, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForKey(Net.Vpc.Upa.Key expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.KEY, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.KEY, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForObject(object expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.OBJECT, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.OBJECT, expr);
+        }
+
+        public static Net.Vpc.Upa.RemoveOptions ForPrototype(object expr) {
+            if (expr is Net.Vpc.Upa.Record) {
+                return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD_PROTOTYPE, expr);
+            } else {
+                return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.PROTOTYPE, expr);
+            }
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForRecord(Net.Vpc.Upa.Record expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.RECORD, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD, expr);
+        }
+
+        public static Net.Vpc.Upa.RemoveOptions ForPrototye(Net.Vpc.Upa.Record expr) {
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD_PROTOTYPE, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForKeyList(System.Collections.Generic.IList<Net.Vpc.Upa.Key> expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.ID_LIST, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.ID_LIST, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForExpressionList(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.EXPRESSION_LIST, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.EXPRESSION_LIST, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForExpression(Net.Vpc.Upa.Expressions.Expression expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.EXPRESSION, expr);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.EXPRESSION, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForAll() {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.RemoveType.EXPRESSION, null);
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.EXPRESSION, null);
         }
 
-        private RemoveOptions(Net.Vpc.Upa.RemoveType removeType, object removeCondition) {
-            this.removeType = removeType;
+        private RemoveOptions(Net.Vpc.Upa.ConditionType conditionType, object removeCondition) {
+            this.conditionType = conditionType;
             this.removeCondition = removeCondition;
         }
 
@@ -109,12 +123,42 @@ namespace Net.Vpc.Upa
             return this;
         }
 
-        public Net.Vpc.Upa.RemoveType GetRemoveType() {
-            return removeType;
+        public Net.Vpc.Upa.ConditionType GetConditionType() {
+            return conditionType;
         }
 
         public object GetRemoveCondition() {
             return removeCondition;
+        }
+
+        public System.Collections.Generic.IDictionary<string , object> GetHints() {
+            return hints;
+        }
+
+        public System.Collections.Generic.IDictionary<string , object> GetHints(bool autoCreate) {
+            if (hints == null && autoCreate) {
+                hints = new System.Collections.Generic.Dictionary<string , object>();
+            }
+            return hints;
+        }
+
+        public Net.Vpc.Upa.RemoveOptions SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+            this.hints = hints;
+            return this;
+        }
+
+        public Net.Vpc.Upa.RemoveOptions SetHint(string name, object @value) {
+            if (@value == null) {
+                if (hints != null) {
+                    hints.Remove(name);
+                }
+            } else {
+                if (hints == null) {
+                    hints = new System.Collections.Generic.Dictionary<string , object>();
+                }
+                hints[name]=@value;
+            }
+            return this;
         }
     }
 }

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface DecorationRepository {
 

@@ -64,5 +64,13 @@ namespace Net.Vpc.Upa.Callbacks
 
         public virtual void OnReset(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
         }
+
+
+        public virtual void OnPreUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
+
+
+        public virtual void OnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+        }
     }
 }

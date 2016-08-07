@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
 
     /**
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class MakeSessionAwareMethodInterceptor2Action<T> : Net.Vpc.Upa.Action<object> {
 

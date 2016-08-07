@@ -3,6 +3,7 @@ package net.vpc.upa.impl.config;
 import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.Property;
+import net.vpc.upa.impl.util.VarContext;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

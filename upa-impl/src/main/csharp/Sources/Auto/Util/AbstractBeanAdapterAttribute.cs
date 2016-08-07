@@ -36,6 +36,22 @@ namespace Net.Vpc.Upa.Impl.Util
         public virtual System.Type GetFieldType() {
             return fieldType;
         }
+
+
+        public virtual bool IsDefaultValue(object o) {
+            object fieldValue = GetValue(o);
+            object fieldDefaultValue = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+            if (fieldDefaultValue == null) {
+                return fieldValue == null;
+            } else {
+                return fieldDefaultValue.Equals(fieldValue);
+            }
+        }
+
+
+        public virtual object GetDefaultValue() {
+            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,object>(Net.Vpc.Upa.Impl.Util.PlatformUtils.DEFAULT_VALUES_BY_TYPE,GetFieldType());
+        }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract object GetValue(object arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit

@@ -102,6 +102,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
+                    if (char.IsLetter(s[0])) {
+                        if ("max".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "maximum".Equals(s) || "max_value".Equals(s)) {
+                            return System.Int32.MaxValue;
+                        }
+                        if ("min".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "min".Equals(s) || "min_value".Equals(s)) {
+                            return System.Int32.MinValue;
+                        }
+                    }
                     return System.Convert.ToInt32(s);
                 }
             }
@@ -130,6 +138,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
+                    if (char.IsLetter(s[0])) {
+                        if ("max".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "maximum".Equals(s) || "max_value".Equals(s)) {
+                            return System.Int16.MaxValue;
+                        }
+                        if ("min".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "min".Equals(s) || "min_value".Equals(s)) {
+                            return System.Int16.MinValue;
+                        }
+                    }
                     return System.Convert.ToInt16(s);
                 }
             }
@@ -144,6 +160,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
+                    if (char.IsLetter(s[0])) {
+                        if ("max".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "maximum".Equals(s) || "max_value".Equals(s)) {
+                            return System.Int64.MaxValue;
+                        }
+                        if ("min".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "min".Equals(s) || "min_value".Equals(s)) {
+                            return System.Int64.MinValue;
+                        }
+                    }
                     return System.Convert.ToInt64(s);
                 }
             }
@@ -158,6 +182,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
+                    if (char.IsLetter(s[0])) {
+                        if ("max".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "maximum".Equals(s) || "max_value".Equals(s)) {
+                            return System.Double.MaxValue;
+                        }
+                        if ("min".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "min".Equals(s) || "min_value".Equals(s)) {
+                            return System.Double.MinValue;
+                        }
+                    }
                     return System.Convert.ToDouble(s);
                 }
             }
@@ -172,6 +204,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 s = s.Trim();
                 if ((s).Length != 0) {
+                    if (char.IsLetter(s[0])) {
+                        if ("max".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "maximum".Equals(s) || "max_value".Equals(s)) {
+                            return System.Single.MaxValue;
+                        }
+                        if ("min".Equals(s,System.StringComparison.InvariantCultureIgnoreCase) || "min".Equals(s) || "min_value".Equals(s)) {
+                            return System.Single.MinValue;
+                        }
+                    }
                     return System.Convert.ToSingle(s);
                 }
             }
@@ -270,6 +310,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> vv = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
                 vv.SetValue(s);
                 return ParseDate(c, vv, new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>(), false);
+            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsBool(c)) {
+                return System.Convert.ToBoolean(s);
             }
             return null;
         }

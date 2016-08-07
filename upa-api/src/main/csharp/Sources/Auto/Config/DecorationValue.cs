@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Config
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public interface DecorationValue : System.IComparable<Net.Vpc.Upa.Config.DecorationValue> {
 

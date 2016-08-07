@@ -7,7 +7,7 @@ package net.vpc.upa.impl.persistence;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class IdentifierStoreTranslatorLower implements IdentifierStoreTranslator {
 

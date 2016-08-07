@@ -34,9 +34,6 @@
  */
 package net.vpc.upa.expressions;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * User: root
@@ -44,22 +41,27 @@ import java.util.List;
  * Time: 12:21:56
  * To change this template use Options | File Templates.
  */
-public class Sign extends Function {
+public class Sign extends FunctionExpression {
     private static final long serialVersionUID = 1L;
-    private Expression value;
+    private Expression expression;
 
-    public Sign(Expression value) {
-        this.value = value;
+    public Sign(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
     }
 
-    public Expression getValue() {
-        return value;
+    public Sign(Expression expression) {
+        this.expression = expression;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 
     @Override
     public void setArgument(int index, Expression e) {
         if(index==0){
-            this.value=e;
+            this.expression =e;
         }else{
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -79,14 +81,14 @@ public class Sign extends Function {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return value;
+                return expression;
         }
         throw new ArrayIndexOutOfBoundsException();
     }
 
     @Override
     public Expression copy() {
-        Sign o = new Sign(value.copy());
+        Sign o = new Sign(expression.copy());
         return o;
     }
 }

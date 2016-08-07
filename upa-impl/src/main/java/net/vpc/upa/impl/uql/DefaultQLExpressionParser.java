@@ -15,7 +15,7 @@ import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultQLExpressionParser implements QLExpressionParser {
 
@@ -24,10 +24,18 @@ public class DefaultQLExpressionParser implements QLExpressionParser {
     }
 
     public Expression parse(String reader) throws UPAException {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return null;
+         */
         return new UQLParser(new StringReader(reader)).Any();
     }
     
     public Expression parse(InputStream inputStream) throws UPAException {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return null;
+         */
         return new UQLParser(inputStream).Any();
     }
 

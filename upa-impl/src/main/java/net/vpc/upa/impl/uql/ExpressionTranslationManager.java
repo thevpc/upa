@@ -134,63 +134,63 @@ public class ExpressionTranslationManager {
         register0(DefaultCompiledExpression.class, new CompiledExpressionToExpressionCompiler());
         register0(IdEnumerationExpression.class, new IdEnumerationExpressionCompiler());
         register0(IdExpression.class, new KeyExpressionCompiler());
-        register0(And.class, new AndExpressionTranslator(this));
-        register0(Or.class, new OrExpressionTranslator(this));
-        register0(Plus.class, new PlusExpressionTranslator(this));
-        register0(Minus.class, new MinusExpressionTranslator(this));
-        register0(Div.class, new DivExpressionTranslator(this));
-        register0(Mul.class, new MulExpressionTranslator(this));
-        register0(Reminder.class, new ReminderExpressionTranslator(this));
-        register0(Like.class, new LikeExpressionTranslator(this));
-        register0(LessThan.class, new LessThanExpressionTranslator(this));
-        register0(LessEqualThan.class, new LessEqualThanExpressionTranslator(this));
-        register0(GreaterThan.class, new GreaterThanExpressionTranslator(this));
-        register0(GreaterEqualThan.class, new GreaterEqualThanExpressionTranslator(this));
-        register0(Equals.class, new EqualsExpressionTranslator(this));
-        register0(Not.class, new NotExpressionTranslator(this));
-        register0(Negative.class, new NegativeExpressionTranslator(this));
-        register0(Different.class, new DifferentExpressionTranslator(this));
-        register0(LShift.class, new LShiftExpressionTranslator(this));
-        register0(RShift.class, new RShiftExpressionTranslator(this));
-        register0(URShift.class, new URShiftExpressionTranslator(this));
-        register0(Avg.class, new AvgExpressionTranslator(this));
-        register0(Min.class, new MinExpressionTranslator(this));
-        register0(Max.class, new MaxExpressionTranslator(this));
-        register0(Sum.class, new SumExpressionTranslator(this));
-        register0(Between.class, new BetweenExpressionTranslator(this));
-        register0(BitAnd.class, new BitAndExpressionTranslator(this));
-        register0(BitOr.class, new BitOrExpressionTranslator(this));
-        register0(XOr.class, new XOrExpressionTranslator(this));
-        register0(Cast.class, new CastExpressionTranslator(this));
-        register0(Coalesce.class, new CoalesceExpressionTranslator(this));
-        register0(Complement.class, new ComplementExpressionTranslator(this));
-        register0(Concat.class, new ConcatExpressionTranslator(this));
-        register0(Count.class, new CountExpressionTranslator(this));
-        register0(D2V.class, new D2VExpressionTranslator(this));
-        register0(I2V.class, new I2VExpressionTranslator(this));
-        register0(Var.class, new VarExpressionTranslator(this));
-        register0(Param.class, new ParamExpressionTranslator(this));
-        register0(Literal.class, new LiteralExpressionTranslator(this));
-        register0(Uplet.class, new UpletExpressionTranslator(this));
-        register0(UserExpression.class, new UserExpressionExpressionTranslator(this));
-        register0(Select.class, new SelectExpressionTranslator(this));
-        register0(EntityName.class, new EntityNameExpressionTranslator(this));
-        register0(Insert.class, new InsertExpressionTranslator(this));
-        register0(InsertSelection.class, new InsertSelectionExpressionTranslator(this));
-        register0(Update.class, new UpdateExpressionTranslator(this));
-        register0(Delete.class, new DeleteExpressionTranslator(this));
-        register0(CurrentTime.class, new CurrentTimeExpressionTranslator(this));
-        register0(CurrentTimestamp.class, new CurrentTimestampExpressionTranslator(this));
-        register0(CurrentDate.class, new CurrentDateExpressionTranslator(this));
-        register0(CurrentUser.class, new CurrentUserExpressionTranslator(this));
-        register0(DatePart.class, new DatePartExpressionTranslator(this));
-        register0(DateDiff.class, new DateDiffExpressionTranslator(this));
-        register0(DateAdd.class, new DateAddExpressionTranslator(this));
-        register0(DateTrunc.class, new DateTruncExpressionTranslator(this));
-        register0(QLFunctionExpression.class, new QLFunctionExpressionExpressionTranslator(this));
-        register0(InSelection.class, new InSelectionExpressionTranslator(this));
-        register0(InCollection.class, new InCollectionExpressionTranslator(this));
-        register0(IsHierarchyDescendent.class, new IsHierarchyDescendentExpressionTranslator(this));
+        register0(And.class, new AndExpressionTranslator());
+        register0(Or.class, new OrExpressionTranslator());
+        register0(Plus.class, new PlusExpressionTranslator());
+        register0(Minus.class, new MinusExpressionTranslator());
+        register0(Div.class, new DivExpressionTranslator());
+        register0(Mul.class, new MulExpressionTranslator());
+        register0(Reminder.class, new ReminderExpressionTranslator());
+        register0(Like.class, new LikeExpressionTranslator());
+        register0(LessThan.class, new LessThanExpressionTranslator());
+        register0(LessEqualThan.class, new LessEqualThanExpressionTranslator());
+        register0(GreaterThan.class, new GreaterThanExpressionTranslator());
+        register0(GreaterEqualThan.class, new GreaterEqualThanExpressionTranslator());
+        register0(Equals.class, new EqualsExpressionTranslator());
+        register0(Not.class, new NotExpressionTranslator());
+        register0(Negative.class, new NegativeExpressionTranslator());
+        register0(Different.class, new DifferentExpressionTranslator());
+        register0(LShift.class, new LShiftExpressionTranslator());
+        register0(RShift.class, new RShiftExpressionTranslator());
+        register0(URShift.class, new URShiftExpressionTranslator());
+        register0(Avg.class, new AvgExpressionTranslator());
+        register0(Min.class, new MinExpressionTranslator());
+        register0(Max.class, new MaxExpressionTranslator());
+        register0(Sum.class, new SumExpressionTranslator());
+        register0(Between.class, new BetweenExpressionTranslator());
+        register0(BitAnd.class, new BitAndExpressionTranslator());
+        register0(BitOr.class, new BitOrExpressionTranslator());
+        register0(XOr.class, new XOrExpressionTranslator());
+        register0(Cast.class, new CastExpressionTranslator());
+        register0(Coalesce.class, new CoalesceExpressionTranslator());
+        register0(Complement.class, new ComplementExpressionTranslator());
+        register0(Concat.class, new ConcatExpressionTranslator());
+        register0(Count.class, new CountExpressionTranslator());
+        register0(D2V.class, new D2VExpressionTranslator());
+        register0(I2V.class, new I2VExpressionTranslator());
+        register0(Var.class, new VarExpressionTranslator());
+        register0(Param.class, new ParamExpressionTranslator());
+        register0(Literal.class, new LiteralExpressionTranslator());
+        register0(Uplet.class, new UpletExpressionTranslator());
+        register0(UserExpression.class, new UserExpressionExpressionTranslator());
+        register0(Select.class, new SelectExpressionTranslator());
+        register0(EntityName.class, new EntityNameExpressionTranslator());
+        register0(Insert.class, new InsertExpressionTranslator());
+        register0(InsertSelection.class, new InsertSelectionExpressionTranslator());
+        register0(Update.class, new UpdateExpressionTranslator());
+        register0(Delete.class, new DeleteExpressionTranslator());
+        register0(CurrentTime.class, new CurrentTimeExpressionTranslator());
+        register0(CurrentTimestamp.class, new CurrentTimestampExpressionTranslator());
+        register0(CurrentDate.class, new CurrentDateExpressionTranslator());
+        register0(CurrentUser.class, new CurrentUserExpressionTranslator());
+        register0(DatePart.class, new DatePartExpressionTranslator());
+        register0(DateDiff.class, new DateDiffExpressionTranslator());
+        register0(DateAdd.class, new DateAddExpressionTranslator());
+        register0(DateTrunc.class, new DateTruncExpressionTranslator());
+        register0(QLFunctionExpression.class, new QLFunctionExpressionExpressionTranslator());
+        register0(InSelection.class, new InSelectionExpressionTranslator());
+        register0(InCollection.class, new InCollectionExpressionTranslator());
+        register0(IsHierarchyDescendent.class, new IsHierarchyDescendentExpressionTranslator());
     }
 
     public PersistenceUnit getPersistenceUnit() {
@@ -223,7 +223,7 @@ public class ExpressionTranslationManager {
                 dec.exportDeclaration(entry.getKey(), DecObjectType.ENTITY, entry.getValue(), null);
             }
         }
-        DefaultCompiledExpression s = compileAny(expression, dec);
+        DefaultCompiledExpression s = translateAny(expression, dec);
 
         if (s instanceof CompiledQueryStatement) {
             CompiledQueryStatement qs=(CompiledQueryStatement) s;
@@ -237,7 +237,7 @@ public class ExpressionTranslationManager {
         return s;
     }
 
-    public DefaultCompiledExpression compileAny(Object o, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateAny(Expression o, ExpressionDeclarationList declarations) {
         if (o == null) {
             return null;
         }
@@ -264,36 +264,17 @@ public class ExpressionTranslationManager {
         }
     }
 
-//    public Set<Field> findExpressionFields(Entity entity, Expression expression) throws UPAException {
-//        //create select to define entity context
-//        Select s = new Select().from(entity.getName()).field(expression);
-//        //compile query to  validate fields
-//        CompiledSelect cs = (CompiledSelect) compileSemantics(entity.getPersistenceUnit(), s);
-//        List<Expression> vars = cs.findExpressionsList(new CompiledExpressionFilter() {
-//            public boolean accept(Expression e) {
-//                return e instanceof Var;
-//            }
-//        });
-//        LinkedHashSet<Field> usedFields = new LinkedHashSet<Field>();
-//        for (Expression v : vars) {
-//            Field field = ExpressionCompiler.resolveCompiledVarFieldOrNull((Var) v);
-//            if (field != null) {
-//                usedFields.add(field);
-//            }
-//        }
-//        return usedFields;
-//    }
     public DefaultExpressionManager getExpressionManager() {
         return expressionManager;
     }
 
-    public DefaultCompiledExpression[] compileArray(Expression[] e, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression[] translateArray(Expression[] e, ExpressionDeclarationList declarations) {
         if (e == null) {
             return null;
         }
         DefaultCompiledExpression[] ce = new DefaultCompiledExpression[e.length];
         for (int i = 0; i < ce.length; i++) {
-            ce[i] = compileAny(e[i], declarations);
+            ce[i] = translateAny(e[i], declarations);
         }
         return ce;
     }

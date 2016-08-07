@@ -62,10 +62,14 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return;
             }
-            if (GetMin() != null && ((int?) @value) < GetMin()) {
+            if (!(@value is int?)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+            }
+            int? castedValue = (int?) @value;
+            if (GetMin() != null && castedValue < GetMin()) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }
-            if (GetMax() != null && ((int?) @value) > GetMax()) {
+            if (GetMax() != null && castedValue > GetMax()) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooHigh", name, description, @value, GetMax());
             }
         }

@@ -1,6 +1,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.Properties;
+import net.vpc.upa.exceptions.UnexpectedException;
 
 import java.util.List;
 
@@ -130,12 +131,11 @@ public class DataTypeAdapter implements DataType, Cloneable {
         dataType.setProperties(properties);
     }
 
-    @Override
-    public Object clone() {
+    public Object copy() {
         try {
             return super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException();
+        } catch (CloneNotSupportedException ex) {
+            throw new UnexpectedException("Clone Not Supported", ex);
         }
     }
 }

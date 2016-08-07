@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public sealed class IdentityDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransform {
 
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
         public static readonly Net.Vpc.Upa.Types.DataTypeTransform LONG = new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.LONG);
 
-        public static readonly Net.Vpc.Upa.Types.DataTypeTransform BIGDECIMAL = new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.BIGDECIMAL);
+
 
         public static readonly Net.Vpc.Upa.Types.DataTypeTransform DOUBLE = new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.DOUBLE);
 
@@ -86,6 +86,10 @@ namespace Net.Vpc.Upa.Impl.Transform
 
         public static Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform ForNativeType(System.Type clazz) {
             return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(clazz));
+        }
+
+        public static Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform ForDataType(Net.Vpc.Upa.Types.DataType sourceType) {
+            return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(sourceType);
         }
     }
 }

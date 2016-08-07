@@ -31,15 +31,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            int n = System.Convert.ToInt32(resultSet[index]);
-            if (n == 0 && resultSet.WasNull()) {
-                return null;
-            }
-            try {
-                return values[n];
-            } catch (System.IndexOutOfRangeException e) {
-                return null;
-            }
+            
+            return null;
         }
 
 
@@ -51,15 +44,11 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             if (@object == null) {
                 return base.ToSQLLiteral(@object);
             }
-            return System.Convert.ToString(((int)((Java.Lang.Enum<E>) @object)));
+            return System.Convert.ToString((int)@object);
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.INTEGER);
-            } else {
-                ( System.Data.IDbDataParameter)(preparedStatement).Parameters[i].Value=((int)((Java.Lang.Enum<E>) @object));
-            }
+            
         }
     }
 }

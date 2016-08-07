@@ -15,7 +15,7 @@ import net.vpc.upa.expressions.Var;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ThisRenamerVisitor implements ExpressionVisitor {
 
@@ -33,12 +33,12 @@ public class ThisRenamerVisitor implements ExpressionVisitor {
             Expression cce = cc.getExpression();
             if (cce != null) {
                 if (cce instanceof UserExpression) {
-                    Expression rr = expressionManager.parseExpression((UserExpression) cce);
+                    Expression rr = expressionManager.parseExpression(cce);
                     rr.visit(this);
                     expression.setChild(rr, cc.getTag());
                 } else if (cce instanceof Var) {
                     Var v = (Var) cce;
-                    if (v.getParent() == null && v.getName().equals("this")) {
+                    if (v.getApplier() == null && v.getName().equals("this")) {
                         v.setName(thisName);
                     }
                 }

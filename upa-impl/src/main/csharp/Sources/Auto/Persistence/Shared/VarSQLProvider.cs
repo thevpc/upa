@@ -37,12 +37,14 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                 sb.Append(persistenceStore.GetValidIdentifier(name));
             } else if (referrer is Net.Vpc.Upa.Entity) {
                 Net.Vpc.Upa.Entity entity = (Net.Vpc.Upa.Entity) referrer;
-                if ("this".Equals(o.GetName())) {
-                    throw new System.ArgumentException ("Unexpected this alias");
-                } else {
-                    string name = persistenceStore.GetPersistenceName(o.GetName(), Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS);
-                    sb.Append(persistenceStore.GetValidIdentifier(name));
-                }
+                //            if ("this".equals(o.getName())) {
+                //                throw new IllegalArgumentException("Unexpected this alias");
+                //                //this must be resolved to the ancestor alias
+                //                ExpressionDeclarationList declarationList = o.getDeclarationList();
+                //                name = persistenceManager.getPersistenceName(declarationList.getValue(null).getName(), PersistenceNameStrategyNames.ALIAS);
+                //            } else {
+                string name = persistenceStore.GetPersistenceName(o.GetName(), Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS);
+                sb.Append(persistenceStore.GetValidIdentifier(name));
             } else {
                 string name = persistenceStore.GetPersistenceName(o.GetName(), Net.Vpc.Upa.Persistence.PersistenceNameType.ALIAS);
                 sb.Append(persistenceStore.GetValidIdentifier(name));

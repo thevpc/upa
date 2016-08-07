@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             SetTypeMarshaller0(typeof(short?), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.SHORT);
             SetTypeMarshaller0(typeof(byte?), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.BYTE);
             SetTypeMarshaller0(typeof(System.Numerics.BigInteger?), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.BIG_INTEGER);
-            SetTypeMarshaller0(typeof(System.Decimal), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.BIG_DECIMAL);
+            SetTypeMarshaller0(typeof(System.Decimal?), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.BIG_DECIMAL);
             SetTypeMarshaller0(typeof(bool?), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.BOOLEAN_FROM_NUMBER);
             SetTypeMarshaller0(typeof(Net.Vpc.Upa.Types.FileData), new Net.Vpc.Upa.Impl.Persistence.Shared.SerializablePlatformObjectMarshaller());
             SetTypeMarshaller0(typeof(float), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.FLOAT);
@@ -72,6 +72,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             SetTypeMarshallerFactory0(typeof(Net.Vpc.Upa.Types.BooleanType), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.F_BOOLEAN_FROM_NUMBER);
             SetTypeMarshallerFactory0(typeof(Net.Vpc.Upa.Types.ListType), new Net.Vpc.Upa.Impl.Persistence.Shared.ListDataMarshallerFactory());
             SetTypeMarshallerFactory0(typeof(Net.Vpc.Upa.Types.DataType), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.F_OBJECT);
+            SetTypeMarshallerFactory0(typeof(Net.Vpc.Upa.Types.SerializableType), Net.Vpc.Upa.Impl.Persistence.Shared.TypeMarshallerUtils.F_OBJECT);
             SetTypeMarshallerFactory0(typeof(Net.Vpc.Upa.Types.EnumType), new Net.Vpc.Upa.Impl.Persistence.Shared.EnumMarshallerFactory());
         }
 

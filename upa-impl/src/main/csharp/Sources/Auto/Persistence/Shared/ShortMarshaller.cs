@@ -21,11 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class ShortMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            short n = resultSet.GetShort(index);
-            if (n == 0 && resultSet.WasNull()) {
-                return null;
-            }
-            return n;
+            
+            return null;
         }
 
 
@@ -40,11 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.DOUBLE);
-            } else {
-                preparedStatement.SetShort(i, System.Convert.ToInt16(((object) @object)));
-            }
+            
         }
 
         public ShortMarshaller() {

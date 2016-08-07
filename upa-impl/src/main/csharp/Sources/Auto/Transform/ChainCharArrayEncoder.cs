@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class ChainCharArrayEncoder : Net.Vpc.Upa.Types.CharArrayEncoder {
 

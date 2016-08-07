@@ -35,6 +35,8 @@
 package net.vpc.upa;
 
 
+import net.vpc.upa.exceptions.UnexpectedException;
+
 import java.util.*;
 
 /**
@@ -75,7 +77,7 @@ class BootstrapObjectFactoryLazyHolder {
                 factory = found.get(found.size() - 1);
             }
             String key = "net.vpc.upa.ObjectFactory";
-            String objectFactoryType = System.getProperty("net.vpc.upa.ObjectFactory");
+            String objectFactoryType = UPA.getBootstrap().getProperties().getString("net.vpc.upa.ObjectFactory");
             if (objectFactoryType == null) {
                 objectFactoryType = "net.vpc.upa.RootObjectFactory";
                 /**
@@ -101,7 +103,7 @@ class BootstrapObjectFactoryLazyHolder {
                 found.get(0).setParentFactory(rootFactory);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Unable to load net.vpc.upa.RootObjectFactory. Most likely a valid UPA Implementation is missing (up-impl for instance)", e);
+            throw new UnexpectedException("Unable to load net.vpc.upa.RootObjectFactory. Most likely a valid UPA Implementation is missing (up-impl for instance)", e);
         }
         return factory;
     }

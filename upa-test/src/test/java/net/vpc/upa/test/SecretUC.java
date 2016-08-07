@@ -51,7 +51,7 @@ public class SecretUC {
             List<Data> entityList;
             pu.createQuery("Delete from Data").executeNonQuery();
             final Query findAll = pu.createQuery("Select a from Data a");
-            entityList = findAll.getEntityList();
+            entityList = findAll.getResultList();
             Assert.assertTrue(entityList.size() == 0);
 //            if(true){
 //                return;

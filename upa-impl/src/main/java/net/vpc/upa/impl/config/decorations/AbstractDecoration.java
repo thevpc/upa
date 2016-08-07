@@ -16,7 +16,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public abstract class AbstractDecoration extends AbstractDecorationValue implements Decoration {
 

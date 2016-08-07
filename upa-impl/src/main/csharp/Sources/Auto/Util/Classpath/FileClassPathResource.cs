@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class FileClassPathResource : Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource {
 

@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class MarshallCancelledException : System.Exception {
     }

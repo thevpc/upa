@@ -35,11 +35,17 @@
 package net.vpc.upa.expressions;
 
 //            Expression, Select
-public final class Exists extends Function
+public final class Exists extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private QueryStatement query;
+
+
+    public Exists(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        setQuery((QueryStatement) expressions[0]);
+    }
 
     public Exists() {
     }

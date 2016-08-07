@@ -23,7 +23,7 @@ import net.vpc.upa.types.*;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory {
 

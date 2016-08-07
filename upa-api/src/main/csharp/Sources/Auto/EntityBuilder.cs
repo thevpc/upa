@@ -23,17 +23,21 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Record CreateRecord();
 
+         Net.Vpc.Upa.Record CreateInitializedRecord();
+
+          R CreateInitializedObject<R>();
+
           R CreateObject<R>();
 
-          Net.Vpc.Upa.Record GetRecord<R>(R entity);
+          R CopyObject<R>(R r);
 
-          Net.Vpc.Upa.Record GetRecord<R>(R entity, bool ignoreUnspecified);
+         Net.Vpc.Upa.Record CopyRecord(Net.Vpc.Upa.Record rec);
 
-          R GetEntity<R>(Net.Vpc.Upa.Record unstructuredRecord);
+         Net.Vpc.Upa.Record ObjectToRecord(object entity, System.Collections.Generic.ISet<string> fields, bool ignoreUnspecified, bool ensureIncludeIds);
 
-         void SetProperty(object entityObject, string property, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetProperty(object entityObject, string property, object @value);
 
-         object GetProperty(object entityObject, string property) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetProperty(object entityObject, string property);
 
          Net.Vpc.Upa.Key CreateKey(params object [] keyValues);
 
@@ -51,7 +55,7 @@ namespace Net.Vpc.Upa
              * @param entityId entity id
              * @return key representation
              */
-         Net.Vpc.Upa.Key IdToKey(object entityId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Key IdToKey(object entityId);
 
         /**
              * transforms record key to a entity id representation of the given record
@@ -61,69 +65,70 @@ namespace Net.Vpc.Upa
              * @param recordKey record key
              * @return key representation
              */
-         object KeyToId(Net.Vpc.Upa.Key recordKey) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object KeyToId(Net.Vpc.Upa.Key recordKey);
 
         /**
              * transforms entity value to a Record value representation of the given
              * entity value. Updates to the record are recorded to the provided value
              * and vice versa
              *
-             * @param entityValue entity value
+             * @param objectValue entity value
              * @return entityToRecord(r, false)
-             * @throws UPAException
+             * @
              */
-         Net.Vpc.Upa.Record EntityToRecord(object entityValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Record ObjectToRecord(object objectValue);
 
         /**
              * Record value representation of the given entity. updates to the record
              * are recorded to the provided value
              *
-             * @param entityValue entity value
+             * @param objectValue entity value
              * @param ignoreUnspecified when true primitive number type zeros and
              * boolean type false values are reported as null (not included in record)
-             * @return entityToRecord(r, false)
-             * @throws UPAException
+             * @return objectToRecord(r, false)
              */
-         Net.Vpc.Upa.Record EntityToRecord(object entityValue, bool ignoreUnspecified) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Record ObjectToRecord(object objectValue, bool ignoreUnspecified);
 
-         object GetMainValue(object entityValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetMainValue(object objectValue);
 
-          R RecordToEntity<R>(Net.Vpc.Upa.Record entityRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+          R RecordToObject<R>(Net.Vpc.Upa.Record record);
 
-          R IdToEntity<R>(object entityId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+          R IdToObject<R>(object objectId);
 
-         Net.Vpc.Upa.Record IdToRecord(object entityId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Record IdToRecord(object objectId);
 
-         object EntityToId(object entityValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object ObjectToId(object objectValue);
 
-         Net.Vpc.Upa.Key EntityToKey(object entityValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Key ObjectToKey(object objectValue);
 
-         object RecordToId(Net.Vpc.Upa.Record entityRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object RecordToId(Net.Vpc.Upa.Record record);
 
-         Net.Vpc.Upa.Key RecordToKey(Net.Vpc.Upa.Record entityRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Key RecordToKey(Net.Vpc.Upa.Record record);
 
-         object KeyToEntity(Net.Vpc.Upa.Key recordKey) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object KeyToObject(Net.Vpc.Upa.Key key);
 
-         Net.Vpc.Upa.Record KeyToRecord(Net.Vpc.Upa.Key recordKey) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Record KeyToRecord(Net.Vpc.Upa.Key key);
 
-         void SetRecordId(Net.Vpc.Upa.Record entityRecord, object entityId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetRecordId(Net.Vpc.Upa.Record record, object id);
 
-         void SetEntityId(object entityObject, object entityId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetObjectId(object @object, object id);
 
-         Net.Vpc.Upa.Expressions.Expression RecordToExpression(Net.Vpc.Upa.Record entityRecord, string entityAlias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression RecordToExpression(Net.Vpc.Upa.Record record, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression EntityToExpression(object entityValue, bool ignoreUnspecified, string entityAlias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression ObjectToExpression(object @object, bool ignoreUnspecified, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression IdToExpression(object entityId, string alias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression ObjectToIdExpression(object objectOrRecord, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression KeyToExpression(Net.Vpc.Upa.Key recordKey, string alias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression IdToExpression(object id, string alias);
 
-          Net.Vpc.Upa.Expressions.Expression IdListToExpression<K>(System.Collections.Generic.IList<K> entityIdList, string alias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression KeyToExpression(Net.Vpc.Upa.Key recordKey, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression KeyListToExpression(System.Collections.Generic.IList<Net.Vpc.Upa.Key> entityIdList, string alias) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+          Net.Vpc.Upa.Expressions.Expression IdListToExpression<K>(System.Collections.Generic.IList<K> idList, string alias);
 
-         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression KeyListToExpression(System.Collections.Generic.IList<Net.Vpc.Upa.Key> keyList, string alias);
 
-         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord(Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord();
+
+         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord(Net.Vpc.Upa.Record record);
     }
 }

@@ -22,6 +22,7 @@ import net.vpc.upa.impl.event.UPAContextListenerManager;
 import net.vpc.upa.impl.event.UpdateFormulaObjectEventCallback;
 import net.vpc.upa.impl.event.UpdateObjectEventCallback;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
+import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.UPAContextConfig;
@@ -53,14 +54,24 @@ public class DefaultUPAContext implements UPAContext {
     private InvokeContext emptyInvokeContext = new InvokeContext();
     private UPAContextListenerManager listeners;
     private ThreadLocal<Properties> threadProperties = new ThreadLocal<Properties>();
-
+    @Override
+    public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
+        return (T) PlatformUtils.createObjectInterceptor(
+                instance.getClass(),
+                new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
+    }
+    @Override
+    public <T> T makeSessionAware(final T instance) throws UPAException {
+        return makeSessionAware(instance, (MethodFilter) null);
+    }
     public DefaultUPAContext() {
         listeners = new UPAContextListenerManager(this);
     }
 
     public UPAContextConfig getBootstrapContextConfig() {
         if (bootstratContextConfig == null) {
-            DefaultUPAContextLoader object = new DefaultUPAContextLoader();
+            DefaultVarContext context = new DefaultVarContext(System.getProperties());
+            DefaultUPAContextLoader object = new DefaultUPAContextLoader(context);
             UPAContextConfig contextConfig = object.parse();
             if (contextConfig.getFilters() != null) {
                 int count = 0;
@@ -217,28 +228,28 @@ public class DefaultUPAContext implements UPAContext {
         return listeners.getPersistenceGroupDefinitionListeners();
     }
 
-    @Override
-    public <T> T makeSessionAware(final T instance) throws UPAException {
-        return makeSessionAware(instance, (MethodFilter) null);
-    }
+//    @Override
+//    public <T> T makeSessionAware(final T instance) throws UPAException {
+//        return makeSessionAware(instance, (MethodFilter) null);
+//    }
 
     @Override
     public <T> T makeSessionAware(final T instance, final Class<Annotation> sessionAwareMethodAnnotation) throws UPAException {
         return makeSessionAware(instance, sessionAwareMethodAnnotation == null ? null : new AnnotationMethodFilter(sessionAwareMethodAnnotation, decorationRepository));
     }
 
-    @Override
-    public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
-        return (T) PlatformUtils.createObjectInterceptor(
-                instance.getClass(),
-                new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
-    }
+//    @Override
+//    public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
+//        return (T) PlatformUtils.createObjectInterceptor(
+//                instance.getClass(),
+//                new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
+//    }
 
     @Override
     public <T> T makeSessionAware(final Class<T> type, final MethodFilter methodFilter) throws UPAException {
         return (T) PlatformUtils.createObjectInterceptor(
                 type,
-                new MakeSessionAwareMethodInterceptor2(methodFilter));
+                new MakeSessionAwareMethodInterceptor2<T>(methodFilter));
     }
 
     @Override

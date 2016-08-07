@@ -44,13 +44,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal Net.Vpc.Upa.Types.DataType type;
 
-        internal Net.Vpc.Upa.Formula insertFormula;
+        internal Net.Vpc.Upa.Formula persistFormula;
 
         internal Net.Vpc.Upa.Formula updateFormula;
 
         internal Net.Vpc.Upa.Formula selectFormula;
 
-        internal int insertFormulaOrder;
+        internal int persistFormulaOrder;
 
         internal int updateFormulaOrder;
 
@@ -60,11 +60,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers;
 
-        internal Net.Vpc.Upa.AccessLevel insertAccessLevel;
+        internal Net.Vpc.Upa.AccessLevel persistAccessLevel;
 
         internal Net.Vpc.Upa.AccessLevel updateAccessLevel;
 
-        internal Net.Vpc.Upa.AccessLevel selectAccessLevel;
+        internal Net.Vpc.Upa.AccessLevel readAccessLevel;
 
         internal bool valid = true;
 
@@ -84,7 +84,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string> overriddenUnspecifiedValueStr = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<string>();
 
-        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula> overriddenInsertFormula = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula>();
+        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula> overriddenPersistFormula = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula>();
 
         internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula> overriddenUpdateFormula = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Formula>();
 
@@ -116,13 +116,13 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
         internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Types.TemporalOption> overriddenTemporal = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.Types.TemporalOption>();
 
-        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenInsertAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
+        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenPersistAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
 
         internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenUpdateAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
 
-        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenDeleteAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
+        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenRemoveAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
 
-        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenSelectAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
+        internal Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel> overriddenReadAccessLevel = new Net.Vpc.Upa.Impl.Config.Annotationparser.OverriddenValue<Net.Vpc.Upa.AccessLevel>();
 
         internal System.Collections.Generic.IList<Net.Vpc.Upa.Property> parameterInfos = new System.Collections.Generic.List<Net.Vpc.Upa.Property>();
 
@@ -186,9 +186,9 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     if (type != null) {
                         overriddenDataType.SetBetterValue(type, processOrder);
                     }
-                    Net.Vpc.Upa.Formula _formula = fieldDesc.GetInsertFormula();
+                    Net.Vpc.Upa.Formula _formula = fieldDesc.GetPersistFormula();
                     if (_formula != null) {
-                        overriddenInsertFormula.SetBetterValue(_formula, processOrder);
+                        overriddenPersistFormula.SetBetterValue(_formula, processOrder);
                     }
                     _formula = fieldDesc.GetUpdateFormula();
                     if (_formula != null) {
@@ -219,8 +219,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 fieldTypeProcessed = true;
                 int minInt = (Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseInt(overriddenMinValue, 0)).Value;
                 int maxInt = (Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseInt(overriddenMaxValue, 255)).Value;
-                string charsAcceptedOk = (overriddenCharsAccepted.specified && overriddenCharsAccepted.@value != null && (overriddenCharsAccepted.@value).Length > 0) ? overriddenCharsAccepted.@value : null;
-                string charsRejectedOk = (overriddenCharsRejected.specified && overriddenCharsRejected.@value != null && (overriddenCharsRejected.@value).Length > 0) ? overriddenCharsRejected.@value : null;
+                string charsAcceptedOk = (overriddenCharsAccepted.specified && !System.Collections.Generic.EqualityComparer<string>.Default.Equals(overriddenCharsAccepted.@value,null) && (overriddenCharsAccepted.@value).Length > 0) ? overriddenCharsAccepted.@value : null;
+                string charsRejectedOk = (overriddenCharsRejected.specified && !System.Collections.Generic.EqualityComparer<string>.Default.Equals(overriddenCharsRejected.@value,null) && (overriddenCharsRejected.@value).Length > 0) ? overriddenCharsRejected.@value : null;
                 Net.Vpc.Upa.Types.StringType s = new Net.Vpc.Upa.Types.StringType(name, minInt, maxInt, nullableOk);
                 if (charsAcceptedOk != null) {
                     s.AddValueValidator(new Net.Vpc.Upa.Types.StringTypeCharValidator(charsAcceptedOk, true));
@@ -254,11 +254,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 float? min = Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseFloat(overriddenMinValue, null);
                 float? max = Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseFloat(overriddenMaxValue, null);
                 int precOk = System.Int32.MaxValue;
-                if (overriddenPrec.specified && overriddenPrec.@value > 0) {
+                if (overriddenPrec.specified && (overriddenPrec.@value).Value > 0) {
                     precOk = (overriddenPrec.@value).Value;
                 }
                 int scaleOk = System.Int32.MaxValue;
-                if (overriddenScale.specified && overriddenScale.@value > 0) {
+                if (overriddenScale.specified && (overriddenScale.@value).Value > 0) {
                     scaleOk = (overriddenScale.@value).Value;
                 }
                 overriddenDataType.SetValue(new Net.Vpc.Upa.Types.FloatType(absoluteName, min, max, scaleOk, precOk, nullableOk, Net.Vpc.Upa.Impl.Util.PlatformUtils.IsPrimitiveType(nativeClass)));
@@ -267,11 +267,11 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 double? min = Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseDouble(overriddenMinValue, null);
                 double? max = Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseDouble(overriddenMaxValue, null);
                 int precOk = System.Int32.MaxValue;
-                if (overriddenPrec.specified && overriddenPrec.@value > 0) {
-                    precOk = overriddenPrec.@value;
+                if (overriddenPrec.specified && (overriddenPrec.@value).Value > 0) {
+                    precOk = (overriddenPrec.@value).Value;
                 }
                 int scaleOk = System.Int32.MaxValue;
-                if (overriddenScale.specified && overriddenScale.@value > 0) {
+                if (overriddenScale.specified && (overriddenScale.@value).Value > 0) {
                     scaleOk = (overriddenScale.@value).Value;
                 }
                 overriddenDataType.SetValue(new Net.Vpc.Upa.Types.DoubleType(absoluteName, min, max, scaleOk, precOk, nullableOk, Net.Vpc.Upa.Impl.Util.PlatformUtils.IsPrimitiveType(nativeClass)));
@@ -339,7 +339,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             } else if (typeof(Net.Vpc.Upa.Types.FileData).Equals(nativeClass)) {
                 fieldTypeProcessed = true;
                 System.Collections.Generic.List<string> extensions = new System.Collections.Generic.List<string>();
-                if (overriddenFormat.specified && overriddenFormat.@value != null && (overriddenFormat.@value).Length > 0) {
+                if (overriddenFormat.specified && !System.Collections.Generic.EqualityComparer<string>.Default.Equals(overriddenFormat.@value,null) && (overriddenFormat.@value).Length > 0) {
                     foreach (string ext in System.Text.RegularExpressions.Regex.Split(overriddenFormat.@value,";")) {
                         extensions.Add(ext.Trim());
                     }
@@ -381,7 +381,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     Net.Vpc.Upa.Types.SerializableType ttype = new Net.Vpc.Upa.Types.SerializableType(name, nativeClass, nullableOk);
                     overriddenDataType.SetValue(ttype);
                 } else {
-                    Net.Vpc.Upa.Impl.SerializableOrEntityType ttype = new Net.Vpc.Upa.Impl.SerializableOrEntityType(name, nativeClass, nullableOk);
+                    Net.Vpc.Upa.Impl.SerializableOrManyToOneType ttype = new Net.Vpc.Upa.Impl.SerializableOrManyToOneType(name, nativeClass, nullableOk);
                     overriddenDataType.SetValue(ttype);
                 }
             }
@@ -398,7 +398,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             foreach (System.Reflection.FieldInfo someField in fields) {
                 Net.Vpc.Upa.Config.Decoration searchDeco = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Search));
                 if (searchDeco != null) {
-                    overriddenSearchOperator.SetBetterValue(searchDeco.GetEnum<Net.Vpc.Upa.SearchOperator>("op", typeof(Net.Vpc.Upa.SearchOperator)) == Net.Vpc.Upa.SearchOperator.DEFAULT ? Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.SearchOperator>(typeof(Net.Vpc.Upa.SearchOperator)) : searchDeco.GetEnum<Net.Vpc.Upa.SearchOperator>("op", typeof(Net.Vpc.Upa.SearchOperator)), searchDeco.GetConfig().GetOrder());
+                    overriddenSearchOperator.SetBetterValue(System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.SearchOperator>.Default.Equals(searchDeco.GetEnum<Net.Vpc.Upa.SearchOperator>("op", typeof(Net.Vpc.Upa.SearchOperator)),Net.Vpc.Upa.SearchOperator.DEFAULT) ? Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.SearchOperator>(typeof(Net.Vpc.Upa.SearchOperator)) : searchDeco.GetEnum<Net.Vpc.Upa.SearchOperator>("op", typeof(Net.Vpc.Upa.SearchOperator)), searchDeco.GetConfig().GetOrder());
                 }
                 foreach (Net.Vpc.Upa.Config.Index indexAnn in FindIndexAnnotation(someField)) {
                     System.Collections.Generic.IList<string> rr = new System.Collections.Generic.List<string>();
@@ -434,8 +434,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 Net.Vpc.Upa.Config.Decoration fieldDeco = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Field));
                 if (fieldDeco != null) {
-                    modifiers = modifiers.AddAll(new System.Collections.Generic.List<T>(fieldDeco.GetPrimitiveArray<Net.Vpc.Upa.UserFieldModifier>("modifiers", typeof(Net.Vpc.Upa.UserFieldModifier))));
-                    excludeModifiers = excludeModifiers.AddAll(new System.Collections.Generic.List<T>(fieldDeco.GetPrimitiveArray<Net.Vpc.Upa.UserFieldModifier>("excludeModifiers", typeof(Net.Vpc.Upa.UserFieldModifier))));
+                    modifiers = modifiers.AddAll(new System.Collections.Generic.List<Net.Vpc.Upa.UserFieldModifier>(fieldDeco.GetPrimitiveArray<Net.Vpc.Upa.UserFieldModifier>("modifiers", typeof(Net.Vpc.Upa.UserFieldModifier))));
+                    excludeModifiers = excludeModifiers.AddAll(new System.Collections.Generic.List<Net.Vpc.Upa.UserFieldModifier>(fieldDeco.GetPrimitiveArray<Net.Vpc.Upa.UserFieldModifier>("excludeModifiers", typeof(Net.Vpc.Upa.UserFieldModifier))));
                     int processOrder = fieldDeco.GetConfig().GetOrder();
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidClass(fieldDeco.GetType("type"), overriddenNativeType, typeof(object), processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("min"), overriddenMinValue, processOrder);
@@ -443,7 +443,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("layout"), overriddenLayout, processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidInt(fieldDeco.GetInt("scale"), overriddenScale, -1, processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidInt(fieldDeco.GetInt("precision"), overriddenPrec, -1, processOrder);
-                    if (fieldDeco.GetEnum<Net.Vpc.Upa.Config.BoolEnum>("nullable", typeof(Net.Vpc.Upa.Config.BoolEnum)) != Net.Vpc.Upa.Config.BoolEnum.UNDEFINED) {
+                    if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.Config.BoolEnum>.Default.Equals(fieldDeco.GetEnum<Net.Vpc.Upa.Config.BoolEnum>("nullable", typeof(Net.Vpc.Upa.Config.BoolEnum)),Net.Vpc.Upa.Config.BoolEnum.UNDEFINED)) {
                         overriddenNullable.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.Config.BoolEnum>("nullable", typeof(Net.Vpc.Upa.Config.BoolEnum)), processOrder);
                     }
                     if (fieldDeco.GetInt("position") != System.Int32.MinValue) {
@@ -452,17 +452,17 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     //                if (fieldDeco.getEnum("end", BoolEnum.class) != BoolEnum.UNDEFINED) {
                     //                    overriddenEnd.setBetterValue(fieldDeco.getEnum("nullable", BoolEnum.class), processOrder);
                     //                }
-                    if (fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("insertAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)) != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                        overriddenInsertAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("insertAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
+                    if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("persistAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)))) {
+                        overriddenPersistAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("persistAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
                     }
-                    if (fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("updateAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)) != Net.Vpc.Upa.AccessLevel.DEFAULT) {
+                    if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("updateAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)))) {
                         overriddenUpdateAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("updateAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
                     }
-                    if (fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("deleteAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)) != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                        overriddenDeleteAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("deleteAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
+                    if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("removeAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)))) {
+                        overriddenRemoveAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("removeAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
                     }
-                    if (fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("selectAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)) != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                        overriddenSelectAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("selectAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
+                    if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("readAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)))) {
+                        overriddenReadAccessLevel.SetBetterValue(fieldDeco.GetEnum<Net.Vpc.Upa.AccessLevel>("readAccessLevel", typeof(Net.Vpc.Upa.AccessLevel)), processOrder);
                     }
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("charsAccepted"), overriddenCharsAccepted, processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("charsRejected"), overriddenCharsRejected, processOrder);
@@ -470,6 +470,18 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("path"), overriddenPath, processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("defaultValue"), overriddenDefaultValueStr, processOrder);
                     Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ValidStr(fieldDeco.GetString("unspecifiedValue"), overriddenUnspecifiedValueStr, processOrder);
+                }
+                Net.Vpc.Upa.Config.Decoration mainDeco = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Main));
+                if (mainDeco != null) {
+                    modifiers = modifiers.Add(Net.Vpc.Upa.UserFieldModifier.MAIN);
+                }
+                Net.Vpc.Upa.Config.Decoration summaryDeco = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Summary));
+                if (summaryDeco != null) {
+                    modifiers = modifiers.Add(Net.Vpc.Upa.UserFieldModifier.SUMMARY);
+                }
+                Net.Vpc.Upa.Config.Decoration uniqueDeco = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Unique));
+                if (uniqueDeco != null) {
+                    modifiers = modifiers.Add(Net.Vpc.Upa.UserFieldModifier.UNIQUE);
                 }
                 Net.Vpc.Upa.Config.Decoration annID = repo.GetFieldDecoration(someField, typeof(Net.Vpc.Upa.Config.Id));
                 if (annID != null) {
@@ -484,7 +496,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             foreach (Net.Vpc.Upa.Property parameterInfo in parameterInfos) {
                 fieldParams[parameterInfo.GetName()]=Net.Vpc.Upa.Impl.Util.UPAUtils.CreateValue(parameterInfo);
             }
-            if (overriddenNullable.specified && (overriddenNullable.@value != Net.Vpc.Upa.Config.BoolEnum.UNDEFINED)) {
+            if (overriddenNullable.specified && (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.Config.BoolEnum>.Default.Equals(overriddenNullable.@value,Net.Vpc.Upa.Config.BoolEnum.UNDEFINED))) {
                 nullableOk = overriddenNullable.@value.Equals(Net.Vpc.Upa.Config.BoolEnum.TRUE);
             }
             if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsNullableType(nativeClass) || modifiers.Contains(Net.Vpc.Upa.UserFieldModifier.ID)) {
@@ -500,7 +512,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 PrepareBaseDataType(ctx, entityName);
             }
             PreparePeristentDataType(ctx, entityName);
-            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.FormulaType , object> ee in anyFormula.all) {
+            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.FormulaType , object> ee in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.FormulaType,object>>(anyFormula.all)) {
                 PrepareFormula(ctx, entityName, (ee).Key, (ee).Value);
             }
             if (foreignInfo.IsSpecified()) {
@@ -526,18 +538,18 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             //        if (overriddenTargetType.specified) {
             //            this.targetType = (overriddenTargetType.value);
             //        }
-            if (overriddenInsertAccessLevel.specified && overriddenInsertAccessLevel.@value != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                this.insertAccessLevel = overriddenInsertAccessLevel.@value;
+            if (overriddenPersistAccessLevel.specified && !Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), overriddenPersistAccessLevel.@value)) {
+                this.persistAccessLevel = overriddenPersistAccessLevel.@value;
             }
-            if (overriddenUpdateAccessLevel.specified && overriddenUpdateAccessLevel.@value != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                this.updateAccessLevel = overriddenInsertAccessLevel.@value;
+            if (overriddenUpdateAccessLevel.specified && !Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), overriddenUpdateAccessLevel.@value)) {
+                this.updateAccessLevel = overriddenUpdateAccessLevel.@value;
             }
-            if (overriddenSelectAccessLevel.specified && overriddenSelectAccessLevel.@value != Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                this.selectAccessLevel = overriddenSelectAccessLevel.@value;
+            if (overriddenReadAccessLevel.specified && !Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), overriddenReadAccessLevel.@value)) {
+                this.readAccessLevel = overriddenReadAccessLevel.@value;
             }
         }
 
-        public virtual void Build(System.Collections.Generic.IDictionary<string , object> ctx, string entityName) /* throws System.Exception */  {
+        public virtual void Build(System.Collections.Generic.IDictionary<string , object> ctx, string entityName) {
             if (buildForeign) {
                 if (Net.Vpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
                     int length = foreignInfo.GetMappedTo() == null ? 0 : foreignInfo.GetMappedTo().Length;
@@ -547,8 +559,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                             throw new System.ArgumentException ("Field " + foreignInfo.GetMappedTo()[0] + " not found");
                         }
                         if (!f.foreignInfo.IsSpecified()) {
-                            Net.Vpc.Upa.Types.EntityType entityType = new Net.Vpc.Upa.Types.EntityType(f.name, f.nativeClass, foreignInfo.GetTargetEntity(), false, f.nullableOk);
-                            f.overriddenDataType.SetValue(entityType);
+                            Net.Vpc.Upa.Types.ManyToOneType manyToOneType = new Net.Vpc.Upa.Types.ManyToOneType(f.name, f.nativeClass, foreignInfo.GetTargetEntity(), false, f.nullableOk);
+                            f.overriddenDataType.SetValue(manyToOneType);
                         } else {
                             throw new System.ArgumentException (f.name + " already mapped by " + name + ". Should not define relations on its own.");
                         }
@@ -557,7 +569,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                     }
                 }
             }
-            if (!overriddenDataType.specified || overriddenDataType.@value == null) {
+            if (!overriddenDataType.specified || System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.Types.DataType>.Default.Equals(overriddenDataType.@value,null)) {
                 System.Text.StringBuilder err = new System.Text.StringBuilder();
                 err.Append("Field Type could not be resolved for field ").Append(name).Append("(entity ").Append(entityName).Append(")\n");
                 err.Append("Scope Fields are ").Append(fields).Append("\n");
@@ -566,13 +578,21 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 return;
             }
             if (overriddenDefaultValueStr.specified && (!overriddenDefaultValue.specified || overriddenDefaultValueStr.order > overriddenDefaultValue.order)) {
-                overriddenDefaultValue.SetBetterValue(Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseStringValue(overriddenDefaultValueStr.@value, overriddenDataType.@value, null), overriddenDefaultValue.order);
+                try {
+                    overriddenDefaultValue.SetBetterValue(Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseStringValue(overriddenDefaultValueStr.@value, overriddenDataType.@value, null), overriddenDefaultValue.order);
+                } catch (System.Exception e) {
+                    throw new System.Exception("Unable to parse default value for " + entityName + "." + name, e);
+                }
             }
             if (overriddenDefaultValue.specified) {
                 this.defaultObject = (overriddenDefaultValue.@value);
             }
             if (overriddenUnspecifiedValueStr.specified && (!overriddenUnspecifiedValue.specified || overriddenUnspecifiedValueStr.order > overriddenUnspecifiedValue.order)) {
-                overriddenUnspecifiedValue.SetBetterValue(Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseStringValue(overriddenUnspecifiedValueStr.@value, overriddenDataType.@value, Net.Vpc.Upa.UnspecifiedValue.DEFAULT), overriddenUnspecifiedValue.order);
+                try {
+                    overriddenUnspecifiedValue.SetBetterValue(Net.Vpc.Upa.Impl.Config.Annotationparser.AnnotationParserUtils.ParseStringValue(overriddenUnspecifiedValueStr.@value, overriddenDataType.@value, Net.Vpc.Upa.UnspecifiedValue.DEFAULT), overriddenUnspecifiedValue.order);
+                } catch (System.Exception e) {
+                    throw new System.Exception("Unable to parse unspecified value for " + entityName + "." + name, e);
+                }
             }
             if (overriddenDataType.specified) {
                 this.type = (overriddenDataType.@value);
@@ -619,8 +639,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return type;
         }
 
-        public virtual Net.Vpc.Upa.Formula GetInsertFormula() {
-            return insertFormula;
+        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+            return persistFormula;
         }
 
         public virtual Net.Vpc.Upa.Formula GetUpdateFormula() {
@@ -631,8 +651,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return selectFormula;
         }
 
-        public virtual int GetInsertFormulaOrder() {
-            return insertFormulaOrder;
+        public virtual int GetPersistFormulaOrder() {
+            return persistFormulaOrder;
         }
 
         public virtual int GetUpdateFormulaOrder() {
@@ -659,16 +679,16 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             return excludeModifiers;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetInsertAccessLevel() {
-            return insertAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetPersistAccessLevel() {
+            return persistAccessLevel;
         }
 
         public virtual Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel() {
             return updateAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetSelectAccessLevel() {
-            return selectAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetReadAccessLevel() {
+            return readAccessLevel;
         }
 
         public virtual bool IsValid() {
@@ -738,14 +758,14 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             } else if (o is Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo) {
                 Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo formulaInfo = (Net.Vpc.Upa.Impl.Config.Annotationparser.SequenceInfo) o;
                 if (formulaInfo.specified) {
-                    ff = new Net.Vpc.Upa.Sequence(formulaInfo.strategy == null ? Net.Vpc.Upa.SequenceStrategy.AUTO : formulaInfo.strategy, formulaInfo.initialValue == null ? ((int)(1)) : (formulaInfo.initialValue).Value, formulaInfo.allocationSize == null ? ((int)(50)) : (formulaInfo.allocationSize).Value, formulaInfo.name, formulaInfo.group, formulaInfo.format);
+                    ff = new Net.Vpc.Upa.Sequence(formulaInfo.strategy == default(Net.Vpc.Upa.SequenceStrategy) ? Net.Vpc.Upa.SequenceStrategy.AUTO : formulaInfo.strategy, formulaInfo.initialValue == null ? ((Net.Vpc.Upa.Formula)(1)) : formulaInfo.initialValue, formulaInfo.allocationSize == null ? ((Net.Vpc.Upa.Formula)(50)) : formulaInfo.allocationSize, formulaInfo.name, formulaInfo.group, formulaInfo.format);
                 }
             }
             switch(t) {
                 case Net.Vpc.Upa.FormulaType.PERSIST:
                     {
-                        this.insertFormula = ff;
-                        this.insertFormulaOrder = order;
+                        this.persistFormula = ff;
+                        this.persistFormulaOrder = order;
                         break;
                     }
                 case Net.Vpc.Upa.FormulaType.UPDATE:
@@ -781,7 +801,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                             ci = fieldDecoration.GetConfig();
                         }
                         Net.Vpc.Upa.PasswordTransformConfig p = new Net.Vpc.Upa.PasswordTransformConfig();
-                        if (fieldDecoration.GetEnum<Net.Vpc.Upa.PasswordStrategyType>("strategyType", typeof(Net.Vpc.Upa.PasswordStrategyType)) == Net.Vpc.Upa.PasswordStrategyType.CUSTOM) {
+                        if (System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.PasswordStrategyType>.Default.Equals(fieldDecoration.GetEnum<Net.Vpc.Upa.PasswordStrategyType>("strategyType", typeof(Net.Vpc.Upa.PasswordStrategyType)),Net.Vpc.Upa.PasswordStrategyType.CUSTOM)) {
                             p.SetCipherStrategy(fieldDecoration.GetString("customStrategy"));
                         } else {
                             p.SetCipherStrategy(fieldDecoration.GetEnum<Net.Vpc.Upa.PasswordStrategyType>("strategyType", typeof(Net.Vpc.Upa.PasswordStrategyType)));

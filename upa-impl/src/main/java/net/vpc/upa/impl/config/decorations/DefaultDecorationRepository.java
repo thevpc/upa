@@ -23,7 +23,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultDecorationRepository implements DecorationRepository {
 

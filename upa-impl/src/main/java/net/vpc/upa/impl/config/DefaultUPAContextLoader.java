@@ -14,11 +14,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.PersistenceGroupConfig;
@@ -39,14 +42,18 @@ public class DefaultUPAContextLoader {
     private static XmlAttrListFilter propertyElementFilter = new DefaultXmlAttrListFilter("type", "name", "value", "format");
     private static XmlAttrListFilter persistenceGroupElementFilter = new DefaultXmlAttrListFilter("name", "autoscan");
     private static XmlAttrListFilter connectionElementFilter = new DefaultXmlAttrListFilter("connectionstring", "username", "password", "structure", "enabled");
+    private VarContext varContext;
 
+    public DefaultUPAContextLoader(VarContext context) {
+        this.varContext = context;
+    }
 
     public UPAContextConfig parse() throws UPAException {
         log.log(Level.FINE, "Loading UPAContext");
         ContextElement contextElement = new ContextElement();
         try {
-            parseResource("META-INF/upa.xml", contextElement);
-            return parseContextConfig(contextElement);
+            parseResource("META-INF/upa.xml", contextElement, varContext);
+            return parseContextConfig(contextElement, varContext);
         } catch (UPAException e) {
             throw e;
         } catch (Exception e) {
@@ -54,7 +61,7 @@ public class DefaultUPAContextLoader {
         }
     }
 
-    public UPAContextConfig parseContextConfig(ContextElement contextElement) {
+    public UPAContextConfig parseContextConfig(ContextElement contextElement, VarContext varContext) {
         UPAContextConfig c = new UPAContextConfig();
         LinkedHashSet<ScanFilter> filters = new LinkedHashSet<ScanFilter>();
         for (ScanElement scanElement : contextElement.getScanElements()) {
@@ -191,22 +198,40 @@ public class DefaultUPAContextLoader {
 //        return all;
     }
 
-    private void parseResource(String resource, ContextElement context) throws UPAException, SAXException, IOException, ParserConfigurationException {
+    private boolean parseResource(String resource, ContextElement context, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
 
+        boolean someInclusion = false;
         /**@PortabilityHint(target = "C#",name = "ignore")*/
         {
             Enumeration<URL> upaXmls = Thread.currentThread().getContextClassLoader().getResources(resource);
 
             while (upaXmls.hasMoreElements()) {
                 URL url = upaXmls.nextElement();
-                parseURL(url, context);
+                someInclusion |= parseURL(url, context, varContext);
             }
         }
+        return someInclusion;
     }
 
-    private void parseURL(URL url, ContextElement contextElement) throws UPAException, SAXException, IOException, ParserConfigurationException {
+    private boolean parseURL(URL url, ContextElement contextElement, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
         log.log(Level.FINE, "Loading Context URL {0}", url);
+        InputStream is = url.openStream();
+        boolean someInclusion = false;
+        try {
+            someInclusion = parseStream(is, contextElement, varContext);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+        return someInclusion;
+    }
 
+    private boolean parseStream(InputStream is, ContextElement contextElement, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
+        boolean someContent = false;
+        if (is == null) {
+            return false;
+        }
         /**@PortabilityHint(target = "C#",name = "ignore")*/
         {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -215,9 +240,19 @@ public class DefaultUPAContextLoader {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             //parse using builder to get DOM representation of the XML file
-            Document dom = db.parse(url.openStream());
-            Element docEle = dom.getDocumentElement();
+            if (is != null) {
+                Document dom = db.parse(is);
+                Element docEle = dom.getDocumentElement();
+                someContent = parseDocElement(docEle, contextElement, varContext);
+            }
+        }
+        return someContent;
+    }
 
+    private boolean parseDocElement(Element docEle, ContextElement contextElement, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
+        boolean someContent = false;
+        /**@PortabilityHint(target = "C#",name = "ignore")*/
+        {
             NodeList nl = docEle.getChildNodes();
             if (nl != null && nl.getLength() > 0) {
                 for (int i = 0; i < nl.getLength(); i++) {
@@ -226,25 +261,35 @@ public class DefaultUPAContextLoader {
                         Element el = (Element) item;
                         String tagName = el.getTagName();
                         if (XMLUtils.equalsUniform(tagName, "include")) {
-                            parseInclude(el, contextElement, url);
+                            someContent |= parseInclude(el, contextElement, varContext);
                         } else if (XMLUtils.equalsUniform(tagName, "persistenceGroup")) {
-                            parsePersistenceGroup(el, contextElement);
+                            someContent = true;
+                            parsePersistenceGroup(el, contextElement, varContext);
                         } else if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
+                            someContent = true;
                             PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            parsePersistenceUnit(el, pg);
+                            parsePersistenceUnit(el, pg, varContext);
                         } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                            contextElement.addScanElement(parseScan(el));
+                            someContent = true;
+                            contextElement.addScanElement(parseScan(el, varContext));
                         } else if (XMLUtils.equalsUniform(tagName, "connection")) {
+                            someContent = true;
                             PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
                             PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            pu.connectionElements.add(parseConnection(el));
+                            pu.connectionElements.add(parseConnection(el, varContext));
                         } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
+                            someContent = true;
                             PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
                             PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            pu.rootConnectionElements.add(parseConnection(el));
+                            pu.rootConnectionElements.add(parseConnection(el, varContext));
                         } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                            someContent = true;
                             PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            pg.properties.add(parseProperty(el));
+                            Property p = parseProperty(el, varContext);
+                            Object t = UPAUtils.createValue(p);
+                            String svalue = t == null ? null : String.valueOf(t);
+                            varContext.declare(p.getName(), svalue);
+                            pg.properties.add(p);
                         } else {
                             throw new IllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getTagName() + ". valid tags are "
                                     + "include, persistenceGroup, persistenceUnit, "
@@ -253,7 +298,9 @@ public class DefaultUPAContextLoader {
                     }
                 }
             }
+
         }
+        return someContent;
     }
 
     private String nullify(String s) {
@@ -267,28 +314,58 @@ public class DefaultUPAContextLoader {
         return s;
     }
 
-    private void parseInclude(Element e, ContextElement contextElement, URL url) throws UPAException, SAXException, IOException, ParserConfigurationException {
+    private boolean parseInclude(Element e, ContextElement contextElement, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
         Map<String, String> attrs = XMLUtils.getAttributes(e, includeElementFilter);
-        String urlString = nullify(attrs.get("url"));
+        String urlString = nullify(varContext.eval(attrs.get("url")));
+        boolean someInclusion = false;
         if (urlString != null) {
-            parseURL(url, contextElement);
+            try {
+                URL url = new URL(urlString);
+                someInclusion = parseURL(url, contextElement, varContext);
+            } catch (Exception ex) {
+                log.log(Level.SEVERE, "Unable to include URL " + urlString, ex);
+            }
         }
-        String file = nullify(attrs.get("file"));
+        String file = nullify(varContext.eval(attrs.get("file")));
         if (file != null) {
-            parseURL(new File(file).toURI().toURL(), contextElement);
+            File fileObj = new File(file);
+            if (fileObj.isFile() && fileObj.exists()) {
+
+                FileInputStream is = null;
+                try {
+                    try {
+                        is = new FileInputStream(fileObj);
+                        someInclusion = parseStream(is, contextElement, varContext);
+                    } finally {
+                        if (is != null) {
+                            is.close();
+                        }
+                    }
+                } catch (Exception ex) {
+                    log.log(Level.SEVERE, "Unable to include FILE " + urlString, ex);
+                }
+            } else {
+                log.log(Level.FINE, "file to include does not exist, ignored. " + file);
+            }
         }
-        String resource = nullify(attrs.get("resource"));
+        String resource = nullify(varContext.eval(attrs.get("resource")));
         if (resource != null) {
-            parseResource(resource, contextElement);
+            someInclusion |= parseResource(resource, contextElement, varContext);
         }
+        if (!someInclusion) {
+            //if nothing included, will parse content of include tag
+            someInclusion |= parseDocElement(e, contextElement, varContext);
+        }
+        return someInclusion;
     }
 
 
-    private PersistenceGroupElement parsePersistenceGroup(Element e, ContextElement context) {
+    private PersistenceGroupElement parsePersistenceGroup(Element e, ContextElement context, VarContext varContext) {
+        VarContext gvarContext = new DefaultVarContext(varContext);
         Map<String, String> attrs = XMLUtils.getAttributes(e, persistenceGroupElementFilter);
         String name = nullify(attrs.get("name"));
         PersistenceGroupElement c = context.getOrAddPersistenceGroupElement(name);
-        c.autoScan = parseBoolean(attrs.get("autoscan"), c.autoScan);
+        c.autoScan = parseBoolean(attrs.get("autoscan"), c.autoScan, gvarContext);
         NodeList nl = e.getChildNodes();
         if (nl != null && nl.getLength() > 0) {
             for (int i = 0; i < nl.getLength(); i++) {
@@ -297,11 +374,15 @@ public class DefaultUPAContextLoader {
                     Element el = (Element) item;
                     String tagName = el.getTagName();
                     if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
-                        parsePersistenceUnit(el, c);
+                        parsePersistenceUnit(el, c, varContext);
                     } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                        c.addScanElement(parseScan(el));
+                        c.addScanElement(parseScan(el, gvarContext));
                     } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                        c.properties.add(parseProperty(el));
+                        Property p = parseProperty(el, gvarContext);
+                        Object t = UPAUtils.createValue(p);
+                        String svalue = t == null ? null : String.valueOf(t);
+                        gvarContext.declare(p.getName(), svalue);
+                        c.properties.add(p);
                     } else {
                         throw new IllegalArgumentException("Unsupported tag " + tagName + " for PersistenceGroup. "
                                 + "valid tags are persistenceUnit, scan, property");
@@ -312,29 +393,30 @@ public class DefaultUPAContextLoader {
         return c;
     }
 
-    private boolean parseBoolean(String v, boolean defaultValue) {
-        v = nullify(v);
+    private boolean parseBoolean(String v, boolean defaultValue, VarContext varContext) {
+        v = nullify(varContext.eval(v));
         if (v != null) {
             return Boolean.parseBoolean(v);
         }
         return defaultValue;
     }
 
-    private ScanElement parseScan(Element e) {
+    private ScanElement parseScan(Element e, VarContext varContext) {
         ScanElement c = new ScanElement();
         Map<String, String> attrs = XMLUtils.getAttributes(e, scanElementFilter);
-        c.types = nullify(attrs.get("types"));
-        c.libs = nullify(attrs.get("libs"));
-        c.propagate = parseBoolean(attrs.get("propagate"), true);
+        c.types = nullify(varContext.eval(attrs.get("types")));
+        c.libs = nullify(varContext.eval(attrs.get("libs")));
+        c.propagate = parseBoolean(attrs.get("propagate"), true, varContext);
         return c;
     }
 
-    private PersistenceUnitElement parsePersistenceUnit(Element e, PersistenceGroupElement persistenceGroupElement) {
+    private PersistenceUnitElement parsePersistenceUnit(Element e, PersistenceGroupElement persistenceGroupElement, VarContext varContext) {
+        VarContext uvarContext = new DefaultVarContext(varContext);
         Map<String, String> attrs = XMLUtils.getAttributes(e, persistenceUnitElementFilter);
         String name = nullify(attrs.get("name"));
         PersistenceUnitElement s = persistenceGroupElement.getOrAddPersistenceUnitElement(name);
-        s.start = parseBoolean(attrs.get("start"), s.start);
-        s.autoScan = parseBoolean(attrs.get("autoScan"), s.autoScan);
+        s.start = parseBoolean(attrs.get("start"), s.start, uvarContext);
+        s.autoScan = parseBoolean(attrs.get("autoScan"), s.autoScan, uvarContext);
 
         NodeList nl = e.getChildNodes();
         if (nl != null && nl.getLength() > 0) {
@@ -346,13 +428,17 @@ public class DefaultUPAContextLoader {
                     //add it to list
                     String tagName = el.getTagName();
                     if (XMLUtils.equalsUniform(tagName, "connection")) {
-                        s.connectionElements.add(parseConnection(el));
+                        s.connectionElements.add(parseConnection(el, uvarContext));
                     } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
-                        s.rootConnectionElements.add(parseConnection(el));
+                        s.rootConnectionElements.add(parseConnection(el, uvarContext));
                     } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                        s.properties.add(parseProperty(el));
+                        Property p = parseProperty(el, uvarContext);
+                        Object t = UPAUtils.createValue(p);
+                        String svalue = t == null ? null : String.valueOf(t);
+                        uvarContext.declare(p.getName(), svalue);
+                        s.properties.add(p);
                     } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                        s.scanElements.add(parseScan(el));
+                        s.scanElements.add(parseScan(el, uvarContext));
                     } else {
                         throw new IllegalArgumentException("Unsupported tag " + tagName + " for PersistenceUnit. "
                                 + "valid tags are connection, rootConnection, property, scan");
@@ -365,12 +451,12 @@ public class DefaultUPAContextLoader {
         return s;
     }
 
-    private Property parseProperty(Element e) {
+    private Property parseProperty(Element e, VarContext varContext) {
         Map<String, String> attrs = XMLUtils.getAttributes(e, propertyElementFilter);
-        String name = attrs.get("name");
-        String className = attrs.get("type");
-        String format = attrs.get("format");
-        String value = attrs.get("value");
+        String name = varContext.eval(attrs.get("name"));
+        String className = varContext.eval(attrs.get("type"));
+        String format = varContext.eval(attrs.get("format"));
+        String value = varContext.eval(attrs.get("value"));
         String value2 = e.getFirstChild() != null ? e.getFirstChild().getNodeValue() : null;
         if (value == null) {
             value = value2;
@@ -378,7 +464,8 @@ public class DefaultUPAContextLoader {
         return (new Property(name, value, className, format));
     }
 
-    private ConnectionElement parseConnection(Element e) {
+    private ConnectionElement parseConnection(Element e, VarContext varContext) {
+        VarContext varContext2 = new DefaultVarContext(varContext);
         ConnectionElement s = new ConnectionElement();
         final Map<String, String> attrs = XMLUtils.getAttributes(e, connectionElementFilter);
         s.connectionString = trimToNull(attrs.get("connectionstring"));
@@ -397,20 +484,22 @@ public class DefaultUPAContextLoader {
                     Element el = (Element) item;
                     //add it to list
                     String tagName = el.getTagName();
-                    if (XMLUtils.equalsUniform(tagName,"connectionString")) {
+                    if (XMLUtils.equalsUniform(tagName, "connectionString")) {
                         s.connectionString = trimToNull(el.getFirstChild().getNodeValue());
-                    } else if (XMLUtils.equalsUniform(tagName,"userName")) {
+                    } else if (XMLUtils.equalsUniform(tagName, "userName")) {
                         s.userName = trimToNull(el.getFirstChild().getNodeValue());
-                    } else if (XMLUtils.equalsUniform(tagName,"password")) {
+                    } else if (XMLUtils.equalsUniform(tagName, "password")) {
                         s.password = trimToNull(el.getFirstChild().getNodeValue());
-                    } else if (XMLUtils.equalsUniform(tagName,"structure")) {
+                    } else if (XMLUtils.equalsUniform(tagName, "structure")) {
                         s.structure = trimToNull(el.getFirstChild().getNodeValue());
-                    } else if (XMLUtils.equalsUniform(tagName,"enabled")) {
+                    } else if (XMLUtils.equalsUniform(tagName, "enabled")) {
                         s.properties.put(tagName, trimToNull(el.getFirstChild().getNodeValue()));
-                    } else if (XMLUtils.equalsUniform(tagName,"property")) {
-                        Property p = parseProperty(el);
+                    } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                        Property p = parseProperty(el, varContext2);
                         Object t = UPAUtils.createValue(p);
-                        s.properties.put(p.getName(), t == null ? null : String.valueOf(t));
+                        String svalue = t == null ? null : String.valueOf(t);
+                        varContext2.declare(p.getName(), svalue);
+                        s.properties.put(p.getName(), svalue);
                     } else {
                         throw new IllegalArgumentException("Unsupported tag " + tagName + " for Connection and RootConnection. "
                                 + "valid tags are connectionString, userName, password, "
@@ -423,10 +512,11 @@ public class DefaultUPAContextLoader {
         }
         return s;
     }
-    private String trimToNull(String s){
-        if(s!=null){
-            s=s.trim();
-            if(s.isEmpty()){
+
+    private String trimToNull(String s) {
+        if (s != null) {
+            s = s.trim();
+            if (s.isEmpty()) {
                 return null;
             }
         }

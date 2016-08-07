@@ -23,7 +23,15 @@ namespace Net.Vpc.Upa
 
         private Net.Vpc.Upa.Entity entity;
 
+        public KeyType(Net.Vpc.Upa.Entity entity)  : this(entity, (Net.Vpc.Upa.Expressions.Expression) null, true){
+
+        }
+
         public KeyType(Net.Vpc.Upa.Entity entity, string filter, bool nullable)  : this(entity, filter == null ? null : new Net.Vpc.Upa.Expressions.UserExpression(filter), nullable){
+
+        }
+
+        public KeyType(Net.Vpc.Upa.Entity entity, bool nullable)  : this(entity, (Net.Vpc.Upa.Expressions.Expression) null, nullable){
 
         }
 

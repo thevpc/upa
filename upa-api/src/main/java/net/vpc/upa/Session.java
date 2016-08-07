@@ -61,6 +61,4 @@ public interface Session extends Closeable {
 
     public void removeSessionListener(SessionListener sessionListener);
 
-    public void close();
-
 }

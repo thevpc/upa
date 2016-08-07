@@ -43,20 +43,6 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private bool _Before = false;
-        public  bool Before{
-            get {return _Before;}
-            set {_Before=value;}
-        }
-
-
-        private bool _After = true;
-        public  bool After{
-            get {return _After;}
-            set {_After=value;}
-        }
-
-
         private Net.Vpc.Upa.Config.Config _Config = new Net.Vpc.Upa.Config.Config();
         public  Net.Vpc.Upa.Config.Config Config{
             get {return _Config;}

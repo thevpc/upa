@@ -14,6 +14,7 @@ import net.vpc.upa.impl.SequenceManager;
 import net.vpc.upa.impl.PrivateSequence;
 import net.vpc.upa.impl.persistence.SequencePatternEvaluator;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -68,7 +69,7 @@ public class StringSequenceEntityNavigator extends DefaultEntityNavigator {
     }
 
     private String eval(final Field field,String pattern, final Object replacement) {
-        return PlatformUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement,null));
+        return StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement,null));
     }
 
 //    public String getNewValue(Field field)

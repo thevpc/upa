@@ -42,10 +42,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
             //        modelMapPatterns.put(PersistenceNameType.FK_CONSTRAINT.name(), "");
             if (model != null) {
                 modelMap["GLOBAL_PERSISTENCE_NAME"]=model.GetGlobalPersistenceName();
+                modelMap["LOCAL_PERSISTENCE_NAME"]=model.GetLocalPersistenceName();
                 modelMap["PERSISTENCE_NAME_ESCAPE"]=model.GetPersistenceNameEscape();
                 if (model.GetNames() != null) {
                     foreach (Net.Vpc.Upa.Persistence.PersistenceName persistenceName in model.GetNames()) {
-                        if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(persistenceName.GetObject())) {
+                        if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(persistenceName.GetObject())) {
                             modelMap[persistenceName.GetPersistenceNameType().Name()]=persistenceName.GetValue();
                         } else {
                             modelMap[persistenceName.GetPersistenceNameType().Name() + ":" + persistenceName.GetObject()]=persistenceName.GetValue();
@@ -158,10 +159,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private string GetParamValue(string confPrefix, string name, Net.Vpc.Upa.Properties parameters) {
             string v = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,string>(modelMap,name);
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(v)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
                 v = parameters.GetString(confPrefix + name);
             }
-            if (!Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(v)) {
+            if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(v)) {
                 return v;
             }
             return null;
@@ -198,7 +199,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (defaultType.IsGlobal()) {
                 persistenceNamePattern = GetParamValue(confPrefix, "GLOBAL_PERSISTENCE_NAME", parameters);
             } else {
-                persistenceNamePattern = GetParamValue(confPrefix, "GLOBAL_PERSISTENCE_NAME", parameters);
+                persistenceNamePattern = GetParamValue(confPrefix, "LOCAL_PERSISTENCE_NAME", parameters);
             }
             if (persistenceNamePattern != null) {
                 persistenceNamePattern = persistenceNamePattern.Trim();

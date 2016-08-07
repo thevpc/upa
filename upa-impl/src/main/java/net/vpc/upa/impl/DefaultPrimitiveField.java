@@ -186,7 +186,7 @@ public class DefaultPrimitiveField extends AbstractField implements PrimitiveFie
 //    public String getAlias(String tableVarName, HashMap context) {
 //        String s = formula.getExpression().toSQL(getPersistenceUnit());
 //        String t = tableVarName != null ? tableVarName : getEntity().getPersistenceName();
-//        return DBUtils.simplifyExpression(s, t);
+//        return DBUtils.toIdListExpression(s, t);
 //    }
 
 //    public int getPass() {

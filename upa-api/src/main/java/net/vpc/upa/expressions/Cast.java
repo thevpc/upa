@@ -38,13 +38,21 @@ import net.vpc.upa.types.TypesFactory;
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:21:56 To
  * change this template use Options | File Templates.
  */
-public class Cast extends Function {
+public class Cast extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
     private Expression value;
     private DataType targetType;
 
+    public Cast(Expression[] expressions) {
+        checkArgCount(getName(),expressions,2);
+        init(expressions[0],(DataType) ((Cst)expressions[1]).getValue());
+    }
+
     public Cast(Expression value, DataType primitiveType) {
+        init(value,primitiveType);
+    }
+    private void init(Expression value, DataType primitiveType) {
         this.value = value;
         this.targetType = primitiveType;
     }

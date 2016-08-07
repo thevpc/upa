@@ -1,20 +1,21 @@
 package net.vpc.upa.impl.util.classpath;
 
+import net.vpc.upa.impl.util.regexp.PortablePattern;
+
 import java.net.URL;
-import java.util.regex.Pattern;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/16/12 1:05 PM
  */
 public class PatternListLibNameFilter  {
-    private Pattern[] patterns;
+    private PortablePattern[] patterns;
     private String[] patternStrings;
 
     public PatternListLibNameFilter(String[] filter) {
         if (filter != null) {
             patternStrings = new String[filter.length];
-            patterns = new Pattern[filter.length];
+            patterns = new PortablePattern[filter.length];
             for (int i = 0; i < filter.length; i++) {
                 String f = filter[i];
                 if (f != null) {
@@ -25,7 +26,7 @@ public class PatternListLibNameFilter  {
                 }
                 patternStrings[i]=f;
                 if (f != null) {
-                    patterns[i] = Pattern.compile(convert(f));
+                    patterns[i] = new PortablePattern(convert(f));
                 }
             }
         }
@@ -74,7 +75,7 @@ public class PatternListLibNameFilter  {
             return true;
         }
         int i=0;
-        for (Pattern pattern : patterns) {
+        for (PortablePattern pattern : patterns) {
             if (pattern == null || pattern.matcher(cls).matches()) {
 //                System.out.println("Lib : "+url+" :: GRANT "+pattern+" : "+patternStrings[i]);
                 return true;

@@ -65,7 +65,7 @@ public class Delete extends DefaultEntityStatement
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> all = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> all = new ArrayList<TaggedExpression>(2);
         if (entity != null) {
             all.add(new TaggedExpression(entity, ENTITY));
         }

@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 ProtectedAddArgument(a);
             }
             this.handler = handler;
-            SetDataType(type);
+            SetTypeTransform(type);
         }
 
 
@@ -76,7 +76,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) o).GetValue();
             }
             if (o is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) {
-                return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) o).GetObject();
+                return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) o).GetValue();
             }
             throw new System.ArgumentException ("Unable to evaluate type " + o.GetType() + " :: " + o);
         }

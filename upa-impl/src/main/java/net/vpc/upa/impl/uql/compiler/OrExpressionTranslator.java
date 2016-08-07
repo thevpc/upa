@@ -15,22 +15,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 * To change this template use File | Settings | File Templates.
 */
 public class OrExpressionTranslator implements ExpressionTranslator {
-    private ExpressionTranslationManager expressionTranslationManager;
-
-    public OrExpressionTranslator(ExpressionTranslationManager expressionTranslationManager) {
-        this.expressionTranslationManager = expressionTranslationManager;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileOr((Or) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileOr((Or) o, declarations);
-    }
-
-    protected CompiledOr compileOr(Or v, ExpressionDeclarationList declarations) {
+    protected CompiledOr compileOr(Or v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = expressionTranslationManager.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = expressionTranslationManager.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledOr s = new CompiledOr(left, right);
 //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

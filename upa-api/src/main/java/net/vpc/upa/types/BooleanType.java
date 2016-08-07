@@ -59,7 +59,7 @@ public class BooleanType extends SeriesType implements Cloneable {
 
     @Override
     public List<Object> getValues() {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<Object>(2);
         list.add(Boolean.TRUE);
         list.add(Boolean.FALSE);
         return list;

@@ -19,11 +19,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
      * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 6:41 AM To change
      * this template use File | Settings | File Templates.
      */
-    public class ValueList<T> : Net.Vpc.Upa.Impl.Persistence.QueryResultIteratorList<T> {
+    public class ValueList<T> : Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<T> {
 
         internal int index;
 
-        public ValueList(Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL, int index)  : base(nativeSQL){
+        public ValueList(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor, int index)  : base(queryExecutor){
 
             this.index = index;
         }

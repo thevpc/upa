@@ -17,9 +17,9 @@ namespace Net.Vpc.Upa.Impl.Util
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
-    public class BeanFieldFilter : Net.Vpc.Upa.Impl.Util.ObjectFilter<System.Reflection.FieldInfo> {
+    public class BeanFieldFilter : Net.Vpc.Upa.Filters.ObjectFilter<System.Reflection.FieldInfo> {
 
         public static readonly Net.Vpc.Upa.Impl.Util.BeanFieldFilter INSTANCE = new Net.Vpc.Upa.Impl.Util.BeanFieldFilter();
 

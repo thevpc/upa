@@ -44,7 +44,7 @@ public class OneToOneUC {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             List<Client> entityList;
 //            pu.createQuery("Select a from ClientInfo a where a.client=null").getEntityList();
-            pu.createQuery("Select a from ClientInfo a where a.client=:cc").setParameter("cc", new Client()).getEntityList();
+            pu.createQuery("Select a from ClientInfo a where a.client=:cc").setParameter("cc", new Client()).getResultList();
 //            pu.createQuery("Select a from ClientInfo a where a.client=null").executeNonQuery();
 //            pu.createQuery("Delete from ClientInfo").executeNonQuery();
 //            pu.createQuery("Delete from Client").executeNonQuery();

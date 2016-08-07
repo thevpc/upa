@@ -22,13 +22,14 @@ import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.SecretStrategy;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.util.DefaultVarContext;
+import net.vpc.upa.impl.util.VarContext;
 import net.vpc.upa.types.I18NString;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
-@PortabilityHint(target = "C#", name = "ignore")
 public class DefaultSecretStrategy implements SecretStrategy {
 
     private static final Logger log = Logger.getLogger(DefaultSecretStrategy.class.getName());
@@ -37,9 +38,13 @@ public class DefaultSecretStrategy implements SecretStrategy {
     private SecretKeySpec decodeKey;
 
     public void init(PersistenceUnit persistenceUnit, String encodingKey, String decodingKey) {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         */
         try {
             aes = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            Object v = persistenceUnit.getProperties().eval(encodingKey);
+            VarContext c=new DefaultVarContext(persistenceUnit.getProperties());
+            Object v = c.eval(encodingKey);
             byte[] k = null;
             if (v != null) {
                 if (v instanceof byte[]) {
@@ -65,6 +70,9 @@ public class DefaultSecretStrategy implements SecretStrategy {
     public DefaultSecretStrategy() {
     }
 
+    /**
+     * @PortabilityHint(target = "C#", name = "todo")
+     */
     protected SecretKeySpec createSimpleSymmetricKey(byte[] passphrase) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA");
@@ -75,6 +83,9 @@ public class DefaultSecretStrategy implements SecretStrategy {
         }
     }
 
+    /**
+     * @PortabilityHint(target = "C#", name = "todo")
+     */
     protected SecretKeySpec createSimpleSymmetricKey(char[] passphrase, byte[] salt) {
         try {
             int iterations = 10000;
@@ -92,6 +103,10 @@ public class DefaultSecretStrategy implements SecretStrategy {
         if(value==null){
             return value;
         }
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return value;
+         */
         try {
             aes.init(Cipher.ENCRYPT_MODE, encodeKey);
             return aes.doFinal(value);
@@ -108,6 +123,10 @@ public class DefaultSecretStrategy implements SecretStrategy {
         if(value==null){
             return value;
         }
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return value;
+         */
         try {
             aes.init(Cipher.DECRYPT_MODE, decodeKey);
             return aes.doFinal(value);

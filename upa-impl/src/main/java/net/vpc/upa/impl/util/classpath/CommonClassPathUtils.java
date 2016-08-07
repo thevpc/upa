@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#",name = "ignore")
 public class CommonClassPathUtils {

@@ -16,21 +16,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class XOrExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
 
-    public XOrExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileXOr((XOr) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileXOr((XOr) o, declarations);
-    }
-
-    protected CompiledXOr compileXOr(XOr v, ExpressionDeclarationList declarations) {
+    protected CompiledXOr compileXOr(XOr v,ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledXOr s = new CompiledXOr(outer.compileAny(v.getLeft(), declarations), outer.compileAny(v.getRight(), declarations));
+        CompiledXOr s = new CompiledXOr(manager.translateAny(v.getLeft(), declarations), manager.translateAny(v.getRight(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

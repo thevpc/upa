@@ -66,7 +66,7 @@ public class Between extends OperatorExpression
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(3);
         if (left != null) {
             list.add(new TaggedExpression(left, LEFT));
         }

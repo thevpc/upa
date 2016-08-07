@@ -157,10 +157,10 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _InsertAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel InsertAccessLevel{
-            get {return _InsertAccessLevel;}
-            set {_InsertAccessLevel=value;}
+        private Net.Vpc.Upa.AccessLevel _PersistAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        public  Net.Vpc.Upa.AccessLevel PersistAccessLevel{
+            get {return _PersistAccessLevel;}
+            set {_PersistAccessLevel=value;}
         }
 
 
@@ -171,17 +171,17 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _DeleteAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel DeleteAccessLevel{
-            get {return _DeleteAccessLevel;}
-            set {_DeleteAccessLevel=value;}
+        private Net.Vpc.Upa.AccessLevel _RemoveAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        public  Net.Vpc.Upa.AccessLevel RemoveAccessLevel{
+            get {return _RemoveAccessLevel;}
+            set {_RemoveAccessLevel=value;}
         }
 
 
-        private Net.Vpc.Upa.AccessLevel _SelectAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
-        public  Net.Vpc.Upa.AccessLevel SelectAccessLevel{
-            get {return _SelectAccessLevel;}
-            set {_SelectAccessLevel=value;}
+        private Net.Vpc.Upa.AccessLevel _ReadAccessLevel = Net.Vpc.Upa.AccessLevel.DEFAULT;
+        public  Net.Vpc.Upa.AccessLevel ReadAccessLevel{
+            get {return _ReadAccessLevel;}
+            set {_ReadAccessLevel=value;}
         }
 
 

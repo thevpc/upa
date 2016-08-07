@@ -6,9 +6,8 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionQueryInfo;
-import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.DefaultEntity;
+import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.UnionEntityExtension;
 import net.vpc.upa.types.TypesFactory;
@@ -27,11 +26,6 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
     private String discriminator;
     private List<String> viewFields;
     private String[][] fieldsMapping;
-    private static final FieldFilter READABLE = Fields.
-            byModifiersAllOf(FieldModifier.SELECT)
-            .andNot(
-                    Fields.byReadAccessLevel(AccessLevel.PRIVATE)
-            );
 
     @Override
     public void install(Entity entity, EntityOperationManager entityOperationManager, EntityExtensionDefinition extension) throws UPAException {
@@ -92,7 +86,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
         for (int i = 0; i < tabNames.length; i++) {
             tabNames[i] = updatableTables.get(i).getName();
         }
-        viewFields = getEntity().getFieldNames(READABLE);
+        viewFields = getEntity().getFieldNames(Fields2.READ);
         viewFields.remove(discriminator);
         fieldsMapping = new String[queryInfo.getEntities().size()][viewFields.size()];
         for (int i = 0; i < tabNames.length; i++) {

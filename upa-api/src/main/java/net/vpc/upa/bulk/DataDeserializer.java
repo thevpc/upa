@@ -38,7 +38,7 @@ import net.vpc.upa.bulk.DataRow;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface DataDeserializer {
 

@@ -14,14 +14,14 @@ import net.vpc.upa.types.DataType;
  */
 public class EntityBeanFactory extends AbstractEntityFactory {
 
-    private final BeanType nfo;
+    private final PlatformBeanType nfo;
     private final Entity entity;
     private final ObjectFactory objectFactory;
 //    private final Map<String, String> setterToProp = new HashMap<String, String>();
 
     public EntityBeanFactory(Entity entity, ObjectFactory objectFactory) {
         this.entity = entity;
-        this.nfo = entity.getBeanType();
+        this.nfo = entity.getPlatformBeanType();
         this.objectFactory = objectFactory;
         List<Field> fields = entity.getFields();
 //        for (Field field : fields) {
@@ -37,7 +37,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
     @Override
     public <R> R createObject() {
         try {
-            return (R) entity.getBeanType().newInstance();
+            return (R) entity.getPlatformBeanType().newInstance();
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
@@ -48,15 +48,15 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         if(object instanceof Record){
             return (Record) object;
         }
-        return new BeanAdapterRecord(entity.getBeanType().getPlatformType().cast(object),entity.getName(), nfo, ignoreUnspecified);
+        return new BeanAdapterRecord(entity.getPlatformBeanType().getPlatformType().cast(object),entity.getName(), nfo, ignoreUnspecified);
     }
 
 
     @Override
-    public Object recordToObject(Record record) {
+    public <R> R recordToObject(Record record) {
         if (record instanceof BeanAdapterRecord) {
             BeanAdapterRecord g = (BeanAdapterRecord) record;
-            return g.userObject();
+            return (R) g.userObject();
         }
         Object obj = createObject();
         Record ur = objectToRecord(obj, true);
@@ -73,7 +73,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
             ur.setObject(k, o);
         }
 //        ur.setAll(unstructuredRecord);
-        return obj;
+        return (R) obj;
     }
 
     @Override

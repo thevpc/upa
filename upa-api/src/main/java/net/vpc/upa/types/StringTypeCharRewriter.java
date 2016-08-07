@@ -46,7 +46,7 @@ public class StringTypeCharRewriter implements TypeValueRewriter {
         this.from = from;
         this.to = to;
         if (from == null || to == null || from.length() == 0 || from.length() != to.length()) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
     }
 

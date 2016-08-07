@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class CountExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public CountExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileCount((Count) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileCount((Count) o, declarations);
-    }
-
-    protected CompiledCount compileCount(Count v, ExpressionDeclarationList declarations) {
+    protected CompiledCount compileCount(Count v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledCount s = new CompiledCount(outer.compileAny(v.getValue(), declarations));
+        CompiledCount s = new CompiledCount(manager.translateAny(v.getExpression(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

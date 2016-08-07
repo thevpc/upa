@@ -1,10 +1,10 @@
 package net.vpc.upa.web;
 
+import net.vpc.upa.Properties;
 import net.vpc.upa.UPA;
 import net.vpc.upa.VoidAction;
 import net.vpc.upa.exceptions.ExecutionException;
 
-import javax.faces.application.ViewExpiredException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * Created by vpc on 5/19/16.
  */
-@WebFilter("/*")
+//@WebFilter("/*")
 public class UPAServletRequestFilter implements Filter {
     private Pattern pattern;
     public void init(FilterConfig filterConfig) throws ServletException {

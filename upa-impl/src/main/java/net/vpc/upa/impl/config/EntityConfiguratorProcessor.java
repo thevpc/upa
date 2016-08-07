@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class EntityConfiguratorProcessor
         extends DefinitionListenerAdapter

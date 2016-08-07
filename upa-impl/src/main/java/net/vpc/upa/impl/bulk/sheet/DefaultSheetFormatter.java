@@ -67,10 +67,14 @@ public class DefaultSheetFormatter extends SheetFormatter {
         }
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (target != null) {
             if (target instanceof OutputStream) {
-                ((OutputStream) target).close();
+                try{
+                    ((OutputStream) target).close();
+                } catch (IOException e) {
+                    throw new UPAException("IOException",e);
+                }
             }
         }
 

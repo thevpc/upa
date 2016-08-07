@@ -58,7 +58,7 @@ public class CharArrayEncoderTransformConfig implements DataTypeTransformConfig,
                 || encoder instanceof Class
                 || encoder instanceof CharArrayEncoder
                 )) {
-            throw new IllegalArgumentException("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
         }
         this.encoder = encoder;
     }

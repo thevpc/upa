@@ -46,14 +46,14 @@ namespace Net.Vpc.Upa.Impl
             }
             return i;
         }
-        public static void SetRemoveRange<E>(System.Collections.Generic.ISet<E> list, System.Collections.Generic.ISet<E> items)
+        public static void SetRemoveRange<E>(System.Collections.Generic.ISet<E> list, System.Collections.Generic.ICollection<E> items)
         {
             foreach(E i in items)
             {
               list.Remove(i);
             }
         }
-        public static void ListAddRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.IList<E> items)
+        public static void ListAddRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.ICollection<E> items)
         {
             foreach(E i in items)
             {
@@ -98,6 +98,30 @@ namespace Net.Vpc.Upa.Impl
               mapTo.Add(pair.Key, pair.Value);
             }
         }
+        public static object GetMapValue0(System.Collections.IDictionary map, object key)
+        {
+            return (map.Contains (key)) ? map [key] : null;
+        }
+        public static bool ArraysEquals<E>(E[] a, E[] a2)
+        {
+            if (a==a2)
+                        return true;
+                    if (a==null || a2==null)
+                        return false;
+            
+                    int length = a.Length;
+                    if (a2.Length != length)
+                        return false;
+            
+                    for (int i=0; i<length; i++) {
+                        E o1 = a[i];
+                        E o2 = a2[i];
+                        if (!(o1==null ? o2==null : o1.Equals(o2)))
+                            return false;
+                    }
+            
+                    return true;
+        }
         public static System.Array CreateMultiArray(System.Type elementType, params int[] dims)
         {
             if(dims.Length==0)
@@ -123,6 +147,21 @@ namespace Net.Vpc.Upa.Impl
                             return a;
                         }
         }
+        public static bool ObjectEquals(object a, object b)
+        {
+            return (a == b) || (a != null && a.Equals(b));;
+        }
+        public static bool FileExists(string path)
+        {
+            return System.IO.File.Exists(path) || System.IO.Directory.Exists(path) ;
+        }
+        public static E CollectionSetFirst<E>(System.Collections.Generic.ISet<E> set)
+        {
+            foreach (E e in set) {
+            return e;
+            }
+            return default(E);
+        }
         public static void ListRemoveRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.IList<E> items)
         {
             foreach(E i in items)
@@ -130,7 +169,7 @@ namespace Net.Vpc.Upa.Impl
               list.Remove(i);
             }
         }
-        public static void ListInsertRange<E>(System.Collections.Generic.IList<E> list, int index, System.Collections.Generic.IList<E> items)
+        public static void ListInsertRange<E>(System.Collections.Generic.IList<E> list, int index, System.Collections.Generic.ICollection<E> items)
         {
             int x=index;
             foreach(E i in items)
@@ -148,6 +187,18 @@ namespace Net.Vpc.Upa.Impl
             System.Random rnd = randomNumberGenerator;
             if (rnd == null) rnd = new System.Random();
             return rnd.NextDouble();
+        }
+        public static int ArraysGetHashCode<E>(E[] a)
+        {
+             if (a == null) {
+            				return 0;
+            			}
+                        int result = 17;
+                        
+            			foreach (E element in a) {
+            				result = 31 * result + (element == null ? 0 : element.GetHashCode ());
+            			}
+                        return result;
         }
         public static int GetMethodModifiers(System.Reflection.MethodInfo method)
         {
@@ -226,20 +277,9 @@ namespace Net.Vpc.Upa.Impl
             }
             return s.ToString();
         }
-        public static System.IO.Stream OpenURLStream(string url)
+        public static int ObjectHashCode(object o)
         {
-            if(string.IsNullOrEmpty(url)){  throw new System.Exception("Empty URL");
-            }else if(url.StartsWith("file:"))
-            {
-              string localPath = url.Substring("file://".Length).Replace("/", "\\");
-              return new System.IO.FileStream(localPath, System.IO.FileMode.Open);
-            }else if(url.StartsWith("http:"))
-            {
-              return System.Net.WebRequest.Create(url).GetResponse().GetResponseStream();
-            }else
-            {
-              return new System.IO.FileStream(url, System.IO.FileMode.Open);
-            }
+            return o==null?0:o.GetHashCode();
         }
     }
 }

@@ -19,13 +19,18 @@ namespace Net.Vpc.Upa.Expressions
      * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
      * change this template use Options | File Templates.
      */
-    public class DateTrunc : Net.Vpc.Upa.Expressions.Function {
+    public class DateTrunc : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
         private Net.Vpc.Upa.Expressions.DatePartType type;
 
         private Net.Vpc.Upa.Expressions.Expression @value;
+
+        public DateTrunc(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 2);
+            Init((Net.Vpc.Upa.Expressions.DatePartType) ((Net.Vpc.Upa.Expressions.Cst) expressions[0]).GetValue(), expressions[1]);
+        }
 
         public DateTrunc(Net.Vpc.Upa.Expressions.DatePartType type, Net.Vpc.Upa.Types.Temporal date)  : this(type, new Net.Vpc.Upa.Expressions.Literal(date)){
 
@@ -36,6 +41,10 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public DateTrunc(Net.Vpc.Upa.Expressions.DatePartType type, Net.Vpc.Upa.Expressions.Expression val) {
+            Init(type, val);
+        }
+
+        private void Init(Net.Vpc.Upa.Expressions.DatePartType type, Net.Vpc.Upa.Expressions.Expression val) {
             this.type = type;
             this.@value = val;
         }
@@ -65,6 +74,23 @@ namespace Net.Vpc.Upa.Expressions
                     return new Net.Vpc.Upa.Expressions.Cst(type);
                 case 1:
                     return @value;
+            }
+            throw new System.IndexOutOfRangeException();
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            switch(index) {
+                case 0:
+                    {
+                        type = (Net.Vpc.Upa.Expressions.DatePartType) ((Net.Vpc.Upa.Expressions.Cst) e).GetValue();
+                        break;
+                    }
+                case 1:
+                    {
+                        @value = e;
+                        break;
+                    }
             }
             throw new System.IndexOutOfRangeException();
         }

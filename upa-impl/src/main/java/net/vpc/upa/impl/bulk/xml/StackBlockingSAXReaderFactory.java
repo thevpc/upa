@@ -13,7 +13,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#", name = "suppress")
 public class StackBlockingSAXReaderFactory {

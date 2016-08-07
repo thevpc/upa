@@ -22,11 +22,11 @@ namespace Net.Vpc.Upa.Callbacks
     public class SingleDataInterceptorAdapter : Net.Vpc.Upa.Callbacks.SingleEntityListener {
 
 
-        public virtual void BeforeInsert(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void AfterInsert(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterPersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 

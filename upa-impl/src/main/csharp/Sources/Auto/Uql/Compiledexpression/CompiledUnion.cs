@@ -108,7 +108,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
 
         protected internal override System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression> FindEntityDefinitions() {
-            return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression>();
+            return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
         }
     }
 }

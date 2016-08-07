@@ -21,21 +21,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class DateDiffExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public DateDiffExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileDateDiff((Net.Vpc.Upa.Expressions.DateDiff) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileDateDiff((Net.Vpc.Upa.Expressions.DateDiff) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff CompileDateDiff(Net.Vpc.Upa.Expressions.DateDiff v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff CompileDateDiff(Net.Vpc.Upa.Expressions.DateDiff v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff(v.GetDatePartType(), outer.CompileAny(v.GetStart(), declarations), outer.CompileAny(v.GetEnd(), declarations));
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDateDiff(v.GetDatePartType(), manager.TranslateAny(v.GetStart(), declarations), manager.TranslateAny(v.GetEnd(), declarations));
             //        s.setDeclarationList(declarations);
             return s;
         }

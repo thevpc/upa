@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Types
 
         public I18NString(System.Collections.Generic.IList<string> keys) {
             if (keys == null) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
             this.keys = new System.Collections.Generic.List<string>(keys);
         }
@@ -57,7 +57,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual Net.Vpc.Upa.Types.I18NString Append(Net.Vpc.Upa.Types.I18NString path) {
             if (path == null) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
             System.Collections.Generic.HashSet<string> a = new System.Collections.Generic.HashSet<string>();
             foreach (string key1 in keys) {
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual Net.Vpc.Upa.Types.I18NString Append(string path) {
             if (path == null || path.Length==0) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
             System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>();
             foreach (string key in keys) {
@@ -97,7 +97,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual Net.Vpc.Upa.Types.I18NString Union(string other) {
             if (other == null || other.Length==0) {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
             System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>();
             Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(a, this.keys);

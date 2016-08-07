@@ -16,7 +16,7 @@ import net.vpc.upa.config.DecorationTarget;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultDecorationFilter implements DecorationFilter {
 
@@ -57,6 +57,19 @@ public class DefaultDecorationFilter implements DecorationFilter {
             if (t == null) {
                 throw new IllegalArgumentException(c + " seems not to be an annotation");
             }
+            /**
+             * @PortabilityHint(target = "C#",name = "replace")
+             *
+             *   if ((t.ValidOn & System.AttributeTargets.Class) != 0) {
+             *     typeAnnotations.Add((c).FullName);
+             *   }
+             *   if ((t.ValidOn & System.AttributeTargets.Field) != 0) {
+             *     fieldsAnnotations.Add((c).FullName);
+             *   }
+             *   if ((t.ValidOn & System.AttributeTargets.Method) != 0) {
+             *     methodsAnnotations.Add((c).FullName);
+             *   }
+             */
             for (ElementType et : t.value()) {
                 switch (et) {
                     case TYPE: {

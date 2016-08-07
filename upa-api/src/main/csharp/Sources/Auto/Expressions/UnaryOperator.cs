@@ -16,10 +16,10 @@ namespace Net.Vpc.Upa.Expressions
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public enum UnaryOperator {
 
-        COMPLEMENT, NEGATIVE, POSITIVE
+        NOT, COMPLEMENT, NEGATIVE, POSITIVE
     }
 }

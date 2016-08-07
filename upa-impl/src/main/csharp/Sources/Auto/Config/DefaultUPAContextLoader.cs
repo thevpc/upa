@@ -102,9 +102,9 @@ namespace Net.Vpc.Upa.Impl.Config
                         cc.SetConnectionString(ce.connectionString);
                         cc.SetUserName(ce.userName);
                         cc.SetPassword(ce.password);
-                        cc.SetStructureStrategy(Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(ce.structure) ? ((Net.Vpc.Upa.Persistence.StructureStrategy)(Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.Persistence.StructureStrategy>(typeof(Net.Vpc.Upa.Persistence.StructureStrategy)))) : (Net.Vpc.Upa.Persistence.StructureStrategy)(System.Enum.Parse(typeof(Net.Vpc.Upa.Persistence.StructureStrategy),ce.structure.ToUpper())));
+                        cc.SetStructureStrategy(Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(ce.structure) ? ((Net.Vpc.Upa.Persistence.StructureStrategy)(Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.Persistence.StructureStrategy>(typeof(Net.Vpc.Upa.Persistence.StructureStrategy)))) : (Net.Vpc.Upa.Persistence.StructureStrategy)(System.Enum.Parse(typeof(Net.Vpc.Upa.Persistence.StructureStrategy),ce.structure.ToUpper())));
                         cc.SetProperties(new System.Collections.Generic.Dictionary<string , string>());
-                        foreach (System.Collections.Generic.KeyValuePair<string , string> x in ce.properties) {
+                        foreach (System.Collections.Generic.KeyValuePair<string , string> x in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(ce.properties)) {
                             cc.GetProperties()[(x).Key]=(x).Value;
                         }
                         pu.GetConnections().Add(cc);
@@ -114,9 +114,9 @@ namespace Net.Vpc.Upa.Impl.Config
                         cc.SetConnectionString(ce.connectionString);
                         cc.SetUserName(ce.userName);
                         cc.SetPassword(ce.password);
-                        cc.SetStructureStrategy(Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(ce.structure) ? ((Net.Vpc.Upa.Persistence.StructureStrategy)(Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.Persistence.StructureStrategy>(typeof(Net.Vpc.Upa.Persistence.StructureStrategy)))) : (Net.Vpc.Upa.Persistence.StructureStrategy)(System.Enum.Parse(typeof(Net.Vpc.Upa.Persistence.StructureStrategy),ce.structure.ToUpper())));
+                        cc.SetStructureStrategy(Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(ce.structure) ? ((Net.Vpc.Upa.Persistence.StructureStrategy)(Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.Persistence.StructureStrategy>(typeof(Net.Vpc.Upa.Persistence.StructureStrategy)))) : (Net.Vpc.Upa.Persistence.StructureStrategy)(System.Enum.Parse(typeof(Net.Vpc.Upa.Persistence.StructureStrategy),ce.structure.ToUpper())));
                         cc.SetProperties(new System.Collections.Generic.Dictionary<string , string>());
-                        foreach (System.Collections.Generic.KeyValuePair<string , string> x in ce.properties) {
+                        foreach (System.Collections.Generic.KeyValuePair<string , string> x in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(ce.properties)) {
                             cc.GetProperties()[(x).Key]=(x).Value;
                         }
                         pu.GetRootConnections().Add(cc);
@@ -297,7 +297,7 @@ namespace Net.Vpc.Upa.Impl.Config
         private string TrimToNull(string s) {
             if (s != null) {
                 s = s.Trim();
-                if (s.Length==0) {
+                if ((s.Length==0)) {
                     return null;
                 }
             }

@@ -2,10 +2,13 @@
 /* JavaCCOptions:TOKEN_EXTENDS=,KEEP_LINE_COL=null,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.PortabilityHint;
+
 /**
  * Describes the input token stream.
  */
 
+@PortabilityHint(target = "C#",name = "suppress")
 public class Token implements java.io.Serializable {
 
   /**

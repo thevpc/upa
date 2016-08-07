@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 //            Expression, Select
-public final class IsHierarchyDescendent extends Function
+public final class IsHierarchyDescendent extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -43,24 +43,34 @@ public final class IsHierarchyDescendent extends Function
     private Expression ancestorExpression;
     private Expression childExpression;
 
-    public IsHierarchyDescendent(Expression ancestorExpression, Expression childExpression, Expression entityName) {
+    public IsHierarchyDescendent(Expression[] expressions) {
+        checkArgCount(getName(), expressions, 3);
+        init(expressions[0],expressions[1],expressions[2]);
+    }
+    public IsHierarchyDescendent(Expression ancestorExpression,
+                                 Expression childExpression,
+                                 Expression entityName) {
+        init(ancestorExpression,childExpression,entityName);
+    }
+
+    private void init(Expression ancestorExpression, Expression childExpression, Expression entityName) {
         if (entityName != null) {
             if (entityName instanceof EntityName) {
                 this.entityName = (EntityName) entityName;
             } else if (entityName instanceof Var) {
                 Var v = (Var) entityName;
-                if (v.getParent() != null) {
-                    throw new IllegalArgumentException("Invalid EntityName");
+                if (v.getApplier() != null) {
+                    throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid EntityName");
                 }
                 this.entityName = new EntityName(v.getName());
             } else if (entityName instanceof Literal) {
                 Literal v = (Literal) entityName;
                 if (!(v.getValue() instanceof String)) {
-                    throw new IllegalArgumentException("Invalid EntityName");
+                    throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid EntityName");
                 }
                 this.entityName = new EntityName((String) v.getValue());
             } else {
-                throw new IllegalArgumentException("Invalid EntityName");
+                throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid EntityName");
             }
         } else {
             this.entityName = new EntityName("");

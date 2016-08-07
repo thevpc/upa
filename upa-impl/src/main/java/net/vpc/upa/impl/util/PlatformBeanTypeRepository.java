@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,22 +10,22 @@ import java.util.Map;
  */
 public class PlatformBeanTypeRepository {
     private static PlatformBeanTypeRepository instance=new PlatformBeanTypeRepository();
-    private final Map<Class,BeanType> classBeanTypeReflectorMap=new HashMap<Class, BeanType>();
+    private final Map<Class,PlatformBeanType> classBeanTypeReflectorMap=new HashMap<Class, PlatformBeanType>();
     public static PlatformBeanTypeRepository getInstance() {
         return instance;
     }
-    public BeanType getBeanType(Class cls){
-        BeanType beanType = classBeanTypeReflectorMap.get(cls);
-        if(beanType ==null){
+    public PlatformBeanType getBeanType(Class cls){
+        PlatformBeanType platformBeanType = classBeanTypeReflectorMap.get(cls);
+        if(platformBeanType ==null){
             synchronized (classBeanTypeReflectorMap){
-                beanType = classBeanTypeReflectorMap.get(cls);
-                if(beanType ==null){
-                    beanType =new DefaultBeanType(cls);
-                    classBeanTypeReflectorMap.put(cls, beanType);
+                platformBeanType = classBeanTypeReflectorMap.get(cls);
+                if(platformBeanType ==null){
+                    platformBeanType =new DefaultPlatformBeanType(cls);
+                    classBeanTypeReflectorMap.put(cls, platformBeanType);
                 }
             }
         }
-        return beanType;
+        return platformBeanType;
     }
 
 }

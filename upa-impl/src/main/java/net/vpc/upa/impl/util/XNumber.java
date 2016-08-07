@@ -11,10 +11,9 @@ import java.util.Objects;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class XNumber {
-
     private Class type;
     private Number number;
 
@@ -42,6 +41,25 @@ public class XNumber {
             return new XNumber(bigIntegerValue().negate());
         } else if (type == BigDecimal.class) {
             return new XNumber(bigDecimalValue().negate());
+        }
+        throw new IllegalArgumentException("Invalid");
+    }
+
+    public XNumber inv() {
+        if (type == Byte.class) {
+            return new XNumber(1.0/byteValue());
+        } else if (type == Short.class) {
+            return new XNumber(1.0/shortValue());
+        } else if (type == Integer.class) {
+            return new XNumber(1.0/intValue());
+        } else if (type == Float.class) {
+            return new XNumber(1.0f/floatValue());
+        } else if (type == Double.class) {
+            return new XNumber(1.0/doubleValue());
+        } else if (type == BigInteger.class) {
+            return new XNumber(new BigDecimal("1").divide(bigDecimalValue(), BigDecimal.ROUND_UP));
+        } else if (type == BigDecimal.class) {
+                return new XNumber(new BigDecimal("1").divide(bigDecimalValue(), BigDecimal.ROUND_UP));
         }
         throw new IllegalArgumentException("Invalid");
     }
@@ -181,17 +199,30 @@ public class XNumber {
             return false;
         }
         final XNumber other = (XNumber) obj;
-        if (comparetTo(other) != 0) {
+        if (compareTo(other) != 0) {
             return false;
         }
         return true;
     }
 
     public boolean equals(XNumber other) {
-        return comparetTo(other) == 0;
+        return compareTo(other) == 0;
     }
 
-    public int comparetTo(XNumber other) {
+    public static int compare(XNumber a,XNumber b) {
+        if(a!=null && b!=null){
+            return a.compareTo(b);
+        }
+        if(a==null){
+            a=new XNumber(Double.NaN);
+        }
+        if(b==null){
+            b=new XNumber(Double.NaN);
+        }
+        return a.compareTo(b);
+    }
+
+    public int compareTo(XNumber other) {
         Class c = bestFit(type, other.type);
         if (c == Byte.class) {
             return Byte.compare(byteValue(), other.byteValue());
@@ -280,20 +311,30 @@ public class XNumber {
         if (number instanceof BigDecimal) {
             return (BigDecimal) number;
         }
-        if (isInteger()) {
-            if (number instanceof BigInteger) {
-                return new BigDecimal((BigInteger) number);
+        /**
+         * @PortabilityHint(target="C#",name="replace")
+         * return System.Convert.ToDecimal(number);
+         */
+        {
+            if (isInteger()) {
+                if (number instanceof BigInteger) {
+                    return new BigDecimal((BigInteger) number);
+                }
+                return new BigDecimal(number.longValue());
             }
-            return new BigDecimal(number.longValue());
+            if (isFloating()) {
+                return new BigDecimal(number.doubleValue());
+            }
+            throw new IllegalArgumentException("Invalid bigDecimaValue()");
         }
-        if (isFloating()) {
-            return new BigDecimal(number.doubleValue());
-        }
-        throw new IllegalArgumentException("Invalid bigDecimaValue()");
     }
 
     public BigInteger bigIntegerValue() {
         if (number instanceof BigDecimal) {
+            /**
+             * @PortabilityHint(target="C#",name="replace")
+             * return (System.Numerics.BigInteger?)(number);
+             */
             return ((BigDecimal) number).toBigInteger();
         }
         if (isInteger()) {
@@ -303,7 +344,8 @@ public class XNumber {
             return new BigInteger("" + number.longValue());
         }
         if (isFloating()) {
-            return new BigDecimal(number.doubleValue()).toBigInteger();
+            return new BigInteger("" + number.longValue());
+            //return new BigDecimal(number.doubleValue()).toBigInteger();
         }
         throw new IllegalArgumentException("Invalid bigDecimaValue()");
     }

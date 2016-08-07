@@ -53,7 +53,7 @@ public final class InSelection extends OperatorExpression
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(left.length+1);
         for (int i = 0; i < left.length; i++) {
             Expression expression = left[i];
             list.add(new TaggedExpression(expression, new IndexedTag("LEFT", i)));

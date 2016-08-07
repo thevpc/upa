@@ -14,7 +14,6 @@
 namespace Net.Vpc.Upa
 {
 
-
     /**
      * Created by vpc on 7/18/15.
      */

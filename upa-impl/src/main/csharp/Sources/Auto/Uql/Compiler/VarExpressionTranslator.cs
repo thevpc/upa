@@ -21,30 +21,31 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class VarExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public VarExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public VarExpressionTranslator() {
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileVar((Net.Vpc.Upa.Expressions.Var) o, declarations);
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileVar((Net.Vpc.Upa.Expressions.Var) o, manager, declarations);
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar CompileVar(Net.Vpc.Upa.Expressions.Var v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar CompileVar(Net.Vpc.Upa.Expressions.Var v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar p = null;
-            if (v.GetParent() != null) {
-                p = CompileVar(v.GetParent(), declarations);
+            Net.Vpc.Upa.Expressions.CompiledExpression p = null;
+            if (v.GetApplier() != null) {
+                p = manager.TranslateAny(v.GetApplier(), declarations);
             }
             if (p == null) {
                 return new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(v.GetName());
             } else {
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar r = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar(v.GetName());
-                ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) p.GetFinest()).SetChild(r);
-                return p;
+                if (p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
+                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) p).GetFinest()).SetChild(r);
+                    return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) p;
+                } else {
+                    throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported");
+                }
             }
         }
     }

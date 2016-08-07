@@ -11,7 +11,7 @@ import net.vpc.upa.impl.util.PlatformMethodProxyEvent;
 import net.vpc.upa.types.I18NString;
 
 /**
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class MakeSessionAwareMethodInterceptor2Action<T> implements Action<Object> {
 

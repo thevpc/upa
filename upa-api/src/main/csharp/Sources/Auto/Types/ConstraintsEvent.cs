@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Types
              * @throws IllegalArgumentException if source is null.
              */
         public ConstraintsEvent(object source) {
-            if (source == null) throw new System.ArgumentException ("null source");
+            if (source == null) throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("null source");
             this.source = source;
         }
 

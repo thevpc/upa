@@ -15,7 +15,7 @@ public class QueryRelationLoaderSelectObject implements QueryResultRelationLoade
         Object existingValue = referencesCache.get(cacheId);
         if(existingValue==null && !referencesCache.containsKey(cacheId)){
             Query query = e.createQueryBuilder().byId(id).setHints(context.getHints());
-            existingValue= record?query.getRecord():query.getEntity();
+            existingValue= record?query.getRecord():query.<Object>getFirstResultOrNull();
             referencesCache.put(cacheId,existingValue);
         }
         return existingValue;

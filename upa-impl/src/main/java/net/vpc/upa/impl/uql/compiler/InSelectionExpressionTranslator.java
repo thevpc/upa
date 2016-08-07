@@ -17,21 +17,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class InSelectionExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public InSelectionExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileInSelection((InSelection) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileInSelection((InSelection) o, declarations);
-    }
-
-    protected CompiledInSelection compileInSelection(InSelection v, ExpressionDeclarationList declarations) {
+    protected CompiledInSelection compileInSelection(InSelection v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        return new CompiledInSelection(outer.compileArray(v.getLeft(), declarations), (CompiledSelect)outer.compileAny(v.getSelection(), declarations));
+        return new CompiledInSelection(manager.translateArray(v.getLeft(), declarations)
+                , (CompiledSelect)manager.translateAny(v.getSelection(), declarations));
     }
     
 }

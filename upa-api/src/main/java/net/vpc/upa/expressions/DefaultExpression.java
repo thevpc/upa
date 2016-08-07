@@ -80,8 +80,39 @@ public abstract class DefaultExpression implements Expression {
         }
     }
 
+    public ExpressionTransformerResult transform(ExpressionTransformer transformer) {
+        List<TaggedExpression> c = this.getChildren();
+        boolean updated=false;
+        ExpressionTransformerResult r;
+        if (c != null) {
+            for (TaggedExpression te : c) {
+                r = te.getExpression().transform(transformer);
+                if(r!=null) {
+                    if (r.isChanged()) {
+                        if (r.isUpdated()) {
+                            updated = true;
+                        }
+                        if(r.isReplaced()){
+                            setChild(r.getExpression(), te.getTag());
+                        }
+                    }
+                }
+            }
+        }
+        r = transformer.transform(this);
+        if(r==null){
+            return new ExpressionTransformerResult(
+                    this,false,updated
+            );
+        }
+        return new ExpressionTransformerResult(
+                r.getExpression(),r.isReplaced(),
+                r.isUpdated()||updated
+        );
+    }
+
     public List<Expression> find(ExpressionFilter filter, boolean firstResult) {
-        ArrayList<Expression> found = new ArrayList<Expression>();
+        ArrayList<Expression> found = new ArrayList<Expression>(firstResult?1:5);
         if (filter.accept(this)) {
             found.add(this);
             if (firstResult) {

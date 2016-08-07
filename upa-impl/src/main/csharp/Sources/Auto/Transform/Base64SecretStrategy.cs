@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class Base64SecretStrategy : Net.Vpc.Upa.SecretStrategy {
 
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (@value == null) {
                 return null;
             }
-            return Net.Vpc.Upa.Impl.Util.Base64.Encode(@value).GetBytes();
+            return System.Text.Encoding.UTF8.GetBytes(Net.Vpc.Upa.Impl.Util.Base64.Encode(@value));
         }
 
         public virtual byte[] Decode(byte[] @value) {

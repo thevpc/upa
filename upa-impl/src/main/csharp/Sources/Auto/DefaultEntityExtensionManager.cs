@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Impl
                     }
                 }
             }
-            foreach (System.Collections.Generic.KeyValuePair<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>> e in new System.Collections.Generic.Dictionary<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>(extensionsSupportMap)) {
+            foreach (System.Collections.Generic.KeyValuePair<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<System.Type,System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>>(new System.Collections.Generic.Dictionary<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>(extensionsSupportMap))) {
                 System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo> tss2 = (e).Value;
                 for (int i2 = (tss2).Count; i2 >= 0; i2--) {
                     Net.Vpc.Upa.Impl.ExtensionSupportInfo tss3 = tss2[i2];
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Impl
                     extensionsSupportMap.Remove((e).Key);
                 }
             }
-            for (System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>> i = extensionsSupportMap.GetEnumerator(); i.MoveNext(); ) {
+            for (System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<System.Type , System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>> i = new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<System.Type,System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>>(extensionsSupportMap).GetEnumerator(); i.MoveNext(); ) {
             }
         }
 
@@ -95,7 +95,7 @@ namespace Net.Vpc.Upa.Impl
             System.Collections.Generic.IList<S> list = new System.Collections.Generic.List<S>();
             System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo> entitySpecs = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>(extensionsMap,type);
             if (entitySpecs == null) {
-                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<S>();
+                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             }
             foreach (Net.Vpc.Upa.Impl.ExtensionSupportInfo tss in entitySpecs) {
                 list.Add((S) tss.GetExtension());
@@ -107,7 +107,7 @@ namespace Net.Vpc.Upa.Impl
             System.Collections.Generic.IList<S> list = new System.Collections.Generic.List<S>();
             System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo> entitySpecs = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<System.Type,System.Collections.Generic.IList<Net.Vpc.Upa.Impl.ExtensionSupportInfo>>(extensionsSupportMap,type);
             if (entitySpecs == null) {
-                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<S>();
+                return Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             }
             foreach (Net.Vpc.Upa.Impl.ExtensionSupportInfo tss in entitySpecs) {
                 list.Add((S) tss.GetSupport());

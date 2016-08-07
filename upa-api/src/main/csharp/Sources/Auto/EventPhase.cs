@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa
      */
     public enum EventPhase {
 
-        BEFORE, AFTER
+        DEFAULT, BEFORE, AFTER
     }
 }

@@ -2,7 +2,10 @@
 /* JavaCCOptions: */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.PortabilityHint;
+
 /** Token Manager Error. */
+@PortabilityHint(target = "C#",name = "suppress")
 public class TokenMgrError extends Error
 {
 

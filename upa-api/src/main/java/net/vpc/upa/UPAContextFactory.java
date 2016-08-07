@@ -40,7 +40,7 @@ import net.vpc.upa.config.ScanSource;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface UPAContextFactory extends ObjectFactory {
 

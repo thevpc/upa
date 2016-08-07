@@ -8,9 +8,9 @@
     <packaging>pom</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upa-api.version>1.2.0.24</upa-api.version>
-        <upa-impl.version>1.2.0.24.0</upa-impl.version>
-        <upa-web.version>1.0.0.0.6</upa-web.version>
+        <upa-api.version>1.2.0.25</upa-api.version>
+        <upa-impl.version>1.2.0.25.0</upa-impl.version>
+        <upa-web.version>1.1.0.0.0</upa-web.version>
     </properties>
     <modules>
         <module>upa-tutorial-business</module>

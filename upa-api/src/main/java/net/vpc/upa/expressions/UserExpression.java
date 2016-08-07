@@ -79,7 +79,7 @@ public class UserExpression extends DefaultExpression
     }
 
     public Map<String, Object> getParameters() {
-        if (parameters != null) {
+        if (parameters == null) {
             //could not be supported safely on C#
             //return Collections.EMPTY_MAP;
             return new HashMap<String, Object>();

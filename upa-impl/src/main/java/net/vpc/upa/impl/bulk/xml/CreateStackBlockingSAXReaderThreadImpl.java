@@ -15,7 +15,7 @@ import org.xml.sax.XMLReader;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#", name = "ignore")
 class CreateStackBlockingSAXReaderThreadImpl extends Thread {

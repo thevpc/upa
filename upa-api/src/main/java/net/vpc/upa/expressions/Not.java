@@ -37,60 +37,24 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Not extends OperatorExpression
+public final class Not extends UnaryOperatorExpression
         implements Cloneable {
-
-    private static final DefaultTag EXPR = new DefaultTag("EXPR");
-
-    //    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
-//        return "Not(" + expression.toSQL(database) + ")";
-    private Expression expression;
 
     private static final long serialVersionUID = 1L;
 
     public Not(Expression expression) {
-        this.expression = expression;
-    }
-
-    @Override
-    public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
-        if (expression != null) {
-            list.add(new TaggedExpression(expression, EXPR));
-        }
-        return list;
-    }
-
-    @Override
-    public void setChild(Expression e, ExpressionTag tag) {
-        if (tag.equals(EXPR)) {
-            this.expression = e;
-        } else {
-            throw new IllegalArgumentException("Insupported");
-        }
-    }
-
-    public int size() {
-        return 1;
-    }
-
-    public Expression getNegatedExpression() {
-        return expression;
-    }
-
-    public boolean isValid() {
-        return expression.isValid();
+        super(UnaryOperator.NOT,"!", expression);
     }
 
     @Override
     public Expression copy() {
-        Not o = new Not(expression.copy());
+        Not o = new Not(getExpression().copy());
         return o;
     }
 
     @Override
     public String toString() {
-        return "not(" + expression + ')';
+        return "not(" + getExpression() + ')';
     }
 
 }

@@ -7,7 +7,8 @@ import net.vpc.upa.UpdateQuery;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldOrFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.util.filters.Fields2;
 
 import java.util.*;
 
@@ -246,7 +247,7 @@ public class DefaultUpdateQuery implements UpdateQuery{
     public UpdateQuery removeUpdatedFields(Collection<String> partialUpdateFields) {
         if(partialUpdateFields!=null) {
             if (this.partialUpdateFields != null) {
-                this.partialUpdateFields.remove(partialUpdateFields);
+                this.partialUpdateFields.removeAll(partialUpdateFields);
             }
         }
         return null;
@@ -300,13 +301,13 @@ public class DefaultUpdateQuery implements UpdateQuery{
 
     @Override
     public UpdateQuery validate(Collection<String> formulaFields) {
-        return validate(Fields.byName(formulaFields));
+        return validate(FieldFilters.byName(formulaFields));
     }
 
 
     @Override
     public UpdateQuery validateAll() {
-        return validate(DefaultEntity.UPDATE_FORMULA);
+        return validate(Fields2.UPDATE_FORMULA);
     }
     @Override
     public UpdateQuery validateNone() {

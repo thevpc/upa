@@ -1,16 +1,16 @@
 package net.vpc.upa.upaportable;
 
 
-import net.vpc.j2cs.CSharpVisitor;
-import net.vpc.j2cs.ConvertContext;
+import net.vpc.j2cs.csharp.CSharpVisitor;
+import net.vpc.j2cs.model.ConvertContext;
 import net.vpc.j2cs.SourcePrinter;
-import net.vpc.j2cs.converters.ConstructorConverter;
-import net.vpc.j2cs.converters.ConvertManager;
-import net.vpc.j2cs.converters.MethodConverter;
-import net.vpc.j2cs.converters.MethodNameConverter;
-import net.vpc.j2cs.model.java.ClassTypeName;
-import net.vpc.j2cs.model.java.ConstructorInfo;
-import net.vpc.j2cs.model.java.MethodInfo;
+import net.vpc.j2cs.csharp.converters.ConstructorConverter;
+import net.vpc.j2cs.csharp.converters.ConvertManager;
+import net.vpc.j2cs.csharp.converters.MethodConverter;
+import net.vpc.j2cs.csharp.converters.methods.MethodNameConverter;
+import net.vpc.j2cs.model.ClassTypeName;
+import net.vpc.j2cs.model.ConstructorInfo;
+import net.vpc.j2cs.model.MethodInfo;
 import net.vpc.j2cs.parser.ast.Node;
 import net.vpc.j2cs.parser.ast.expr.MethodCallExpr;
 import net.vpc.j2cs.parser.ast.expr.ObjectCreationExpr;

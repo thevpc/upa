@@ -1,7 +1,9 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.expressions.Cst;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.types.*;
@@ -16,7 +18,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -324,6 +325,41 @@ public class UPAUtils {
         return hash;
     }
 
+    public static <V> Map<String, V> extractMap(Map<String, V> base, Set<String> keys) {
+        Map<String, V> ret=new HashMap<String, V>();
+        for (Map.Entry<String, V> entry : base.entrySet()) {
+            String k=entry.getKey();
+            if(keys.contains(k)){
+                ret.put(k,entry.getValue());
+            }
+        }
+        return ret;
+    }
+
+    public static <V> Map<String, V> extractMap(Map<String, V> base, String prefix,boolean trimPrefix) {
+        Map<String, V> ret=new HashMap<String, V>();
+        String prefix1 = prefix + ".";
+        for (Map.Entry<String, V> entry : base.entrySet()) {
+            String k=entry.getKey();
+            if(k.equals(prefix)){
+                if(trimPrefix){
+                    ret.put("",entry.getValue());
+                }else{
+                    ret.put(k,entry.getValue());
+                }
+            }else {
+                if(k.startsWith(prefix1)){
+                    if(trimPrefix){
+                        ret.put(k.substring(prefix1.length()),entry.getValue());
+                    }else{
+                        ret.put(k,entry.getValue());
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
     public static void close(Object o) {
         if (o instanceof Closeable) {
             try {
@@ -503,15 +539,14 @@ public class UPAUtils {
 
                     bestType = IdentityDataTypeTransform.forNativeType(object.getClass());
                 }
-                ExprTypeInfo ii = new ExprTypeInfo();
-                ii.setTransform(bestType);
-                return ii;
+                ExprTypeInfo typeInfo1 = new ExprTypeInfo();
+                typeInfo1.setTransform(bestType);
+                return typeInfo1;
             }
         }
-        ExprTypeInfo ii = new ExprTypeInfo();
-        DataTypeTransform tt = typeTransform;
-        ii.setTransform(tt);
-        return ii;
+        ExprTypeInfo typeInfo2 = new ExprTypeInfo();
+        typeInfo2.setTransform(typeTransform);
+        return typeInfo2;
 
     }
 
@@ -522,10 +557,12 @@ public class UPAUtils {
         return createValue(value, ptype, format);
     }
 
-    public static Object createValue(String value, String ptype, String format) {
-        Class type = namedTypes.get(ptype);
+    public static Object createValue(String value, Class type, String format) {
+        if(value==null){
+            return null;
+        }
         if (type == null) {
-            throw new IllegalArgumentException("Insupported Parameter type " + ptype);
+            throw new IllegalArgumentException("Null Parameter type ");
         }
         if (type.equals(String.class)) {
             return value;
@@ -566,14 +603,28 @@ public class UPAUtils {
             }
             if (format.length() > 0) {
                 try {
-                    return new SimpleDateFormat(format).parse(value);
+                    return DateUtils.parseDateTime(value,format);
                 } catch (ParseException ex) {
                     throw new IllegalArgumentException("Unable to parse date " + value);
                 }
             }
             return DateUtils.parseUniversalDate(value);
         }
-        throw new IllegalArgumentException("Insupported Parameter type " + type);
+        throw new IllegalArgumentException("Unsupported Parameter type " + type);
+    }
+
+    public static Object createValue(String value, String ptype, String format) {
+        if(value==null){
+            return null;
+        }
+        if (ptype == null) {
+            throw new IllegalArgumentException("Null Parameter type ");
+        }
+        Class type = namedTypes.get(ptype);
+        if (type == null) {
+            throw new IllegalArgumentException("Unsupported Parameter type " + ptype);
+        }
+        return createValue(value,type,format);
     }
 
     public static BaseScanSource toConfigurationStrategy(ScanSource source) {
@@ -651,5 +702,41 @@ public class UPAUtils {
             return ss==null?"":ss.toString();
         }
         return s.getAlias();
+    }
+
+    public static Object unwrapLiteral(Object o) {
+        if(o instanceof Literal){
+            return ((Literal) o).getValue();
+        }
+        if(o instanceof Cst){
+            return ((Cst) o).getValue();
+        }
+        return o;
+    }
+
+    public static XNumber toNumberOrError(Object o) {
+        if (o == null) {
+            return null;
+        }
+        if (o instanceof String) {
+            return new XNumber(Double.valueOf((String) o));
+        }
+        if (o instanceof Number) {
+            return new XNumber((Number) o);
+        }
+        throw new RuntimeException("Not a number "+o);
+    }
+
+    public static XNumber toNumber(Object o) {
+        if (o == null) {
+            return new XNumber(0);
+        }
+        if (o instanceof String) {
+            return new XNumber(Double.valueOf((String) o));
+        }
+        if (o instanceof Number) {
+            return new XNumber((Number) o);
+        }
+        return null;
     }
 }

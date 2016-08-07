@@ -102,13 +102,13 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
                         Character.toUpperCase(periodTypeName.charAt(0))+periodTypeName.substring(1)
         };
         if(fieldDescriptor.getPersistFormula()!=null){
-            throw new IllegalArgumentException("Unsupported composing Persist Formula");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Persist Formula");
         }
         if(fieldDescriptor.getUpdateFormula()!=null){
-            throw new IllegalArgumentException("Unsupported composing Update Formula");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Update Formula");
         }
         if(fieldDescriptor.getSelectFormula()!=null){
-            throw new IllegalArgumentException("Unsupported composing Select Formula");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Select Formula");
         }
         FieldDescriptor[] fieldDescriptors=new FieldDescriptor[names.length];
         Object[] def=getPrimitiveValues(fieldDescriptor.getDefaultObject());

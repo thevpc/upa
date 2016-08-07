@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class ClassIndexedComparator : Net.Vpc.Upa.Impl.Util.IndexedComparator<System.Type> {
 

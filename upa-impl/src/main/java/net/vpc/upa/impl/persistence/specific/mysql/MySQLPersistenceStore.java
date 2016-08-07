@@ -6,8 +6,9 @@ import java.sql.SQLException;
 import java.util.LinkedHashSet;
 
 import net.vpc.upa.*;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
-import net.vpc.upa.impl.persistence.shared.NullValANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
 
 import java.util.List;
 import java.util.Map;
@@ -19,14 +20,13 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
-import net.vpc.upa.filters.Fields;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.persistence.DatabaseIdentityPersister;
 import net.vpc.upa.impl.persistence.NavigatorIdentityPersister;
 import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterInt;
 import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterString;
-import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
@@ -294,7 +294,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         sb.append("(");
         boolean first = true;
         List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(
-                Fields.regular().and(Fields.byList(index.getFields())));
+                FieldFilters.regular().and(FieldFilters.byList(index.getFields())));
         for (PrimitiveField field : primitiveFields) {
             if (first) {
                 first = false;
@@ -345,7 +345,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
         Select s = new Select();
         for (PrimitiveField key : keys) {
-            if (key.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
+            if (key.getModifiers().contains(FieldModifier.SELECT_STORED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (!key.getModifiers().contains(FieldModifier.TRANSIENT)) {
@@ -401,7 +401,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     public String getDropTablePKConstraintStatement(Entity entity) throws UPAException {
         StringBuilder sb = new StringBuilder();
         if (!entity.getShield().isTransient()) {
-            List<Field> pk = entity.getFields(ID);
+            List<Field> pk = entity.getFields(FieldFilters.id());
             if (pk.size() > 0) {
                 sb.append("Alter Table ").append(getValidIdentifier(getTableName(entity))).append(" Drop PRIMARY KEY ").append(getValidIdentifier(getTablePKName(entity)));
                 return (sb.toString());

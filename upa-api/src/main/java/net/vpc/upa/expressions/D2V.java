@@ -35,12 +35,16 @@
 package net.vpc.upa.expressions;
 //            Expression
 
-public class D2V extends Function {
+public class D2V extends FunctionExpression {
     private static final long serialVersionUID = 1L;
-    private Expression value;
+    private Expression expression;
 
     public D2V(Expression expression) {
-        this.value = expression;
+        this.expression = expression;
+    }
+    public D2V(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
     }
 
 //    public String toSQL(boolean integrated, PersistenceUnit database) {
@@ -50,14 +54,14 @@ public class D2V extends Function {
     @Override
     public void setArgument(int index, Expression e) {
         if (index == 0) {
-            this.value = e;
+            this.expression = e;
         } else {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
 
-    public Expression getValue() {
-        return value;
+    public Expression getExpression() {
+        return expression;
     }
 
 
@@ -76,12 +80,12 @@ public class D2V extends Function {
         if (index != 0) {
             throw new IndexOutOfBoundsException();
         }
-        return value;
+        return expression;
     }
 
     @Override
     public Expression copy() {
-        D2V o = new D2V(value.copy());
+        D2V o = new D2V(expression.copy());
         return o;
     }
 

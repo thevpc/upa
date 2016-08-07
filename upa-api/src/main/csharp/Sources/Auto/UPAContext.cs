@@ -67,7 +67,19 @@ namespace Net.Vpc.Upa
 
           T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
+          T Invoke<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
           T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         void Invoke(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         void InvokePrivileged(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
         /**
              * closes context and removed all persistence groups
@@ -82,36 +94,6 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.CloseListener[] GetCloseListeners();
 
-        /**
-             * prepare UPA context for method invocation. This method is same as
-             * beginInvocation(Map<String, Object> properties) but includes also
-             * annotation configurations for the method to invoke. Actually
-             * beginInvocation does not invoke the given method.
-             *
-             * @param method     method to be invoked
-             * @param properties non null Map to be shared between beginInvocation and
-             *                   endInvocation
-             */
-         void BeginInvocation(System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary<string , object> properties);
-
-        /**
-             * prepare UPA context for method invocation. This will prepare session and
-             * transaction Actually beginInvocation does not invoke the given method.
-             *
-             * @param properties non null Map to be shared between beginInvocation and
-             *                   endInvocation
-             */
-         void BeginInvocation(System.Collections.Generic.IDictionary<string , object> properties);
-
-        /**
-             * finalize method invocation and catch error if not null
-             *
-             * @param error      error if any
-             * @param properties non null Map to be shared between beginInvocation and
-             *                   endInvocation
-             */
-         void EndInvocation(System.Exception error, System.Collections.Generic.IDictionary<string , object> properties);
-
          void AddScanFilter(Net.Vpc.Upa.Config.ScanFilter filter);
 
          void RemoveScanFilter(Net.Vpc.Upa.Config.ScanFilter filter);
@@ -122,12 +104,16 @@ namespace Net.Vpc.Upa
 
          void SetProperties(System.Collections.Generic.IDictionary<string , object> properties);
 
-         Net.Vpc.Upa.Callback CreateCallback(object instance, System.Reflection.MethodInfo m, Net.Vpc.Upa.CallbackType callbackType, System.Collections.Generic.IDictionary<string , object> configuration);
+         Net.Vpc.Upa.Callback CreateCallback(Net.Vpc.Upa.CallbackConfig callbackConfig);
+
+         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.CallbackConfig callbackConfig);
 
          void AddCallback(Net.Vpc.Upa.Callback callback);
 
          void RemoveCallback(Net.Vpc.Upa.Callback callback);
 
-         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase);
+         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase);
+
+         Net.Vpc.Upa.Properties GetThreadProperties();
     }
 }

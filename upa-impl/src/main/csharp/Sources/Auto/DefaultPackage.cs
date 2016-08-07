@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void MovePart(int index, int newIndex) {
-            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<Net.Vpc.Upa.PersistenceUnitPart>(parts, index, newIndex, this, null);
+            Net.Vpc.Upa.Impl.Util.ListUtils.MoveTo<T>(parts, index, newIndex, this, null);
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PersistenceUnitPart> GetParts() {
@@ -75,6 +75,21 @@ namespace Net.Vpc.Upa.Impl
             foreach (Net.Vpc.Upa.PersistenceUnitPart item in parts) {
                 if (item is Net.Vpc.Upa.Entity) {
                     all.Add((Net.Vpc.Upa.Entity) item);
+                }
+            }
+            return all;
+        }
+
+
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Entity> GetEntities(bool includeSubPackages) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> all = new System.Collections.Generic.List<Net.Vpc.Upa.Entity>();
+            foreach (Net.Vpc.Upa.PersistenceUnitPart item in parts) {
+                if (item is Net.Vpc.Upa.Entity) {
+                    all.Add((Net.Vpc.Upa.Entity) item);
+                } else if (includeSubPackages) {
+                    if (item is Net.Vpc.Upa.Package) {
+                        Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(all, ((Net.Vpc.Upa.Package) item).GetEntities(includeSubPackages));
+                    }
                 }
             }
             return all;

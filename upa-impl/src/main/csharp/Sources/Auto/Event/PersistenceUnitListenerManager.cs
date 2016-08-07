@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Impl.Event
 
         private Net.Vpc.Upa.Impl.Util.CallbackManager callbackManager = new Net.Vpc.Upa.Impl.Util.CallbackManager();
 
-        private static bool DEFAULT_SYSTEM = false;
+        public static bool DEFAULT_SYSTEM = false;
 
         public PersistenceUnitListenerManager(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Impl.ObjectRegistrationModel model, Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository) {
             this.persistenceUnit = persistenceUnit;
@@ -73,12 +73,22 @@ namespace Net.Vpc.Upa.Impl.Event
                         }
                         throw new Net.Vpc.Upa.Exceptions.EntityAlreadyExistsException(entity.GetName(), s1, s2);
                     }
+                    AddHandlers(@object);
                     FireOnCreateEntity(entity, position, phase);
                 } else {
                     model.RegisterEntity(entity, parentModule);
-                    AddHandlers(@object);
                     FireOnCreateEntity(entity, position, phase);
                     Net.Vpc.Upa.EntityDescriptor entityInfo = entity.GetEntityDescriptor();
+                    string orderByString = entityInfo.GetListOrder();
+                    if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(orderByString)) {
+                        Net.Vpc.Upa.Expressions.Select s = (Net.Vpc.Upa.Expressions.Select) persistenceUnit.GetExpressionManager().ParseExpression("Select a from " + entity.GetName() + " order by " + orderByString);
+                        entity.SetListOrder(s.GetOrder());
+                    }
+                    orderByString = entityInfo.GetArchivingOrder();
+                    if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(orderByString)) {
+                        Net.Vpc.Upa.Expressions.Select s = (Net.Vpc.Upa.Expressions.Select) persistenceUnit.GetExpressionManager().ParseExpression("Select a from " + entity.GetName() + " order by " + orderByString);
+                        entity.SetArchivingOrder(s.GetOrder());
+                    }
                     System.Collections.Generic.IList<Net.Vpc.Upa.FieldDescriptor> fieldDescriptors = entityInfo.GetFieldDescriptors();
                     if (fieldDescriptors != null) {
                         foreach (Net.Vpc.Upa.FieldDescriptor field in fieldDescriptors) {
@@ -95,6 +105,45 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (relationshipDescriptors != null) {
                         foreach (Net.Vpc.Upa.RelationshipDescriptor relationDescriptor in relationshipDescriptors) {
                             entity.GetPersistenceUnit().AddRelationship(relationDescriptor);
+                        }
+                    }
+                    FireOnInitEntity(entity, position, Net.Vpc.Upa.EventPhase.BEFORE);
+                    //some fields may be added as ManyToOne without explicit definition of RelationshipDescriptor
+                    // must process them accordingly
+                    //will first retrieve ManyToOne fields than will add relations for
+                    //ones without relation!
+                    System.Collections.Generic.HashSet<string> initialManyToOneFields = new System.Collections.Generic.HashSet<string>();
+                    System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> existing = entity.GetPersistenceUnit().GetRelationshipsBySource(entity);
+                    foreach (Net.Vpc.Upa.Relationship relationship in existing) {
+                        if (relationship.GetSourceRole().GetEntityField() != null) {
+                            initialManyToOneFields.Add(relationship.GetSourceRole().GetEntityField().GetName());
+                        }
+                    }
+                    foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener persistenceUnitListener in entity.GetPersistenceUnit().GetPersistenceUnitListeners()) {
+                        if (persistenceUnitListener is Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipDescriptorProcessor) {
+                            Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipDescriptorProcessor r = (Net.Vpc.Upa.Impl.Config.Annotationparser.RelationshipDescriptorProcessor) persistenceUnitListener;
+                            Net.Vpc.Upa.RelationshipDescriptor d = r.GetRelationDescriptor();
+                            if (d.GetSourceEntity() != null) {
+                                if (d.GetSourceEntity().Equals(entity.GetName())) {
+                                    if (d.GetBaseField() != null) {
+                                        initialManyToOneFields.Add(d.GetBaseField());
+                                    }
+                                }
+                            } else if (d.GetSourceEntityType().Equals(entity.GetEntityType())) {
+                                if (d.GetBaseField() != null) {
+                                    initialManyToOneFields.Add(d.GetBaseField());
+                                }
+                            }
+                        }
+                    }
+                    foreach (Net.Vpc.Upa.Field field in entity.GetFields()) {
+                        Net.Vpc.Upa.Types.DataType dt = field.GetDataType();
+                        //check if relationship not already defined
+                        if (dt is Net.Vpc.Upa.Types.ManyToOneType && ((Net.Vpc.Upa.Types.ManyToOneType) dt).GetRelationship() == null) {
+                            if (!initialManyToOneFields.Contains(field.GetName())) {
+                                //no relationship defined!
+                                entity.GetPersistenceUnit().AddRelationship(new Net.Vpc.Upa.DefaultRelationshipDescriptor().SetBaseField(field.GetName()).SetNullable(dt.IsNullable()).SetSourceEntity(entity.GetName()).SetSourceEntityType(entity.GetEntityType()).SetTargetEntity(((Net.Vpc.Upa.Types.ManyToOneType) dt).GetTargetEntityName()).SetTargetEntityType(((Net.Vpc.Upa.Types.ManyToOneType) dt).GetPlatformType()).SetSourceFields(new string[] { field.GetName() }));
+                            }
                         }
                     }
                     if (entityInfo.GetSource() != null && entityInfo.GetSource() != entityInfo) {
@@ -130,6 +179,7 @@ namespace Net.Vpc.Upa.Impl.Event
                             }
                         }
                     }
+                    FireOnInitEntity(entity, position, Net.Vpc.Upa.EventPhase.AFTER);
                 }
             } else if (@object is Net.Vpc.Upa.Field) {
                 Net.Vpc.Upa.Field field = (Net.Vpc.Upa.Field) @object;
@@ -140,11 +190,11 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (model.ContainsField(field)) {
                         throw new Net.Vpc.Upa.Exceptions.ObjectAlreadyExistsException("Field already exists", s);
                     }
+                    AddHandlers(@object);
                     FireFieldAdded(field, position, phase);
                 } else {
                     model.RegisterField(field);
-                    AddHandlers(@object);
-                    if (field.GetDataType() is Net.Vpc.Upa.Impl.SerializableOrEntityType) {
+                    if (field.GetDataType() is Net.Vpc.Upa.Impl.SerializableOrManyToOneType) {
                         Net.Vpc.Upa.Impl.Config.Annotationparser.FieldSerializableOrEntityProcessor p = new Net.Vpc.Upa.Impl.Config.Annotationparser.FieldSerializableOrEntityProcessor(field.GetPersistenceUnit(), field);
                         p.Process();
                     }
@@ -158,10 +208,10 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (model.ContainsIndex(index, parentEntity)) {
                         throw new Net.Vpc.Upa.Exceptions.ObjectAlreadyExistsException("Index already exists", s);
                     }
+                    AddHandlers(@object);
                     FireOnCreateIndex(index, position, phase);
                 } else {
                     model.RegisterIndex(index, parentEntity);
-                    AddHandlers(@object);
                     FireOnCreateIndex(index, position, phase);
                 }
             } else if (@object is Net.Vpc.Upa.Section) {
@@ -173,10 +223,10 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (model.ContainsSection(section)) {
                         throw new Net.Vpc.Upa.Exceptions.ObjectAlreadyExistsException("Section already exists", s);
                     }
+                    AddHandlers(@object);
                     FireOnCreateSection(section, position, phase);
                 } else {
                     model.RegisterSection(section);
-                    AddHandlers(@object);
                     FireOnCreateSection(section, position, phase);
                 }
             } else if (@object is Net.Vpc.Upa.Package) {
@@ -192,10 +242,10 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (model.ContainsPackage(module, parentModule)) {
                         throw new Net.Vpc.Upa.Exceptions.ObjectAlreadyExistsException("Package already exists", s);
                     }
+                    AddHandlers(@object);
                     FireOnCreatePackage(module, parentModule, position, phase);
                 } else {
                     model.RegisterPackage(module, parentModule);
-                    AddHandlers(@object);
                     FireOnCreatePackage(module, parentModule, position, phase);
                 }
             } else if (@object is Net.Vpc.Upa.Relationship) {
@@ -205,10 +255,10 @@ namespace Net.Vpc.Upa.Impl.Event
                     if (model.ContainsRelationship(relation)) {
                         throw new Net.Vpc.Upa.Exceptions.ObjectAlreadyExistsException("Relationship already exists", s);
                     }
+                    AddHandlers(@object);
                     FireOnCreateRelationship(relation, position, phase);
                 } else {
                     model.RegisterRelationship(relation);
-                    AddHandlers(@object);
                     FireOnCreateRelationship(relation, position, phase);
                 }
             } else {
@@ -297,7 +347,7 @@ namespace Net.Vpc.Upa.Impl.Event
         public virtual void ItemMoved(Net.Vpc.Upa.UPAObject @object, int position, int toPosition, Net.Vpc.Upa.EventPhase phase) {
             if (@object is Net.Vpc.Upa.Entity) {
                 Net.Vpc.Upa.Entity entity = (Net.Vpc.Upa.Entity) @object;
-                Net.Vpc.Upa.Callbacks.EntityEvent @event = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, toPosition);
+                Net.Vpc.Upa.Callbacks.EntityEvent @event = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, toPosition, phase);
                 string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
                 bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.EntityDefinitionListener> interceptorList = entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId);
@@ -305,14 +355,17 @@ namespace Net.Vpc.Upa.Impl.Event
                     foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in interceptorList) {
                         listener.OnPreMoveEntity(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
+                    }
+                    foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), entity.IsSystem())) {
+                        callback.Prepare(@event);
                     }
                 } else {
                     foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in interceptorList) {
                         listener.OnMoveEntity(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
                     }
                 }
@@ -321,27 +374,30 @@ namespace Net.Vpc.Upa.Impl.Event
                 Net.Vpc.Upa.Entity entity = field.GetEntity();
                 string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
                 bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
-                Net.Vpc.Upa.Callbacks.FieldEvent @event = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, toPosition);
+                Net.Vpc.Upa.Callbacks.FieldEvent @event = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, toPosition, phase);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.FieldDefinitionListener> interceptorList = fields.GetAllListeners(system, entity.GetName(), entityTypeListenerId);
                 if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                     foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in interceptorList) {
                         listener.OnPreMoveField(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
+                    }
+                    foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), entity.IsSystem())) {
+                        callback.Prepare(@event);
                     }
                 } else {
                     foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in interceptorList) {
                         listener.OnMoveField(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
                     }
                 }
             } else if (@object is Net.Vpc.Upa.Section) {
                 Net.Vpc.Upa.Section section = (Net.Vpc.Upa.Section) @object;
                 Net.Vpc.Upa.Entity entity = section.GetEntity();
-                Net.Vpc.Upa.Callbacks.SectionEvent @event = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, toPosition);
+                Net.Vpc.Upa.Callbacks.SectionEvent @event = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, toPosition, phase);
                 string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
                 bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.SectionDefinitionListener> interceptorList = sections.GetAllListeners(system, section.GetName(), entityTypeListenerId);
@@ -349,33 +405,39 @@ namespace Net.Vpc.Upa.Impl.Event
                     foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in interceptorList) {
                         listener.OnPreMoveSection(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
+                    }
+                    foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), entity.IsSystem())) {
+                        callback.Prepare(@event);
                     }
                 } else {
                     foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in interceptorList) {
                         listener.OnMoveSection(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), entity.IsSystem())) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), entity.IsSystem())) {
                         invoker.Invoke(@event);
                     }
                 }
             } else if (@object is Net.Vpc.Upa.Package) {
                 Net.Vpc.Upa.Package module = (Net.Vpc.Upa.Package) @object;
-                Net.Vpc.Upa.Callbacks.PackageEvent @event = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), module.GetParent(), position, null, toPosition);
+                Net.Vpc.Upa.Callbacks.PackageEvent @event = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), module.GetParent(), position, null, toPosition, phase);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.PackageDefinitionListener> interceptorList = packages;
                 if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                     foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                         listener.OnPreMovePackage(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
                         invoker.Invoke(@event);
+                    }
+                    foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
+                        callback.Prepare(@event);
                     }
                 } else {
                     foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                         listener.OnMovePackage(@event);
                     }
-                    foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
+                    foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_MOVE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
                         invoker.Invoke(@event);
                     }
                 }
@@ -383,60 +445,93 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
         public virtual void FireOnCreateTrigger(Net.Vpc.Upa.Callbacks.Trigger trigger, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.TriggerEvent evt = new Net.Vpc.Upa.Callbacks.TriggerEvent(trigger, trigger.GetEntity());
+            Net.Vpc.Upa.Callbacks.TriggerEvent evt = new Net.Vpc.Upa.Callbacks.TriggerEvent(trigger, trigger.GetEntity(), phase);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.TriggerDefinitionListener li in entityTriggers.GetAllListeners(false, trigger.GetEntity().GetName())) {
                     li.OnPreCreateTrigger(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), trigger.GetEntity().IsSystem())) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), trigger.GetEntity().IsSystem())) {
+                    callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), trigger.GetEntity().IsSystem())) {
                     callback.Invoke(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.TriggerDefinitionListener li in entityTriggers.GetAllListeners(false, trigger.GetEntity().GetName())) {
                     li.OnCreateTrigger(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), trigger.GetEntity().IsSystem())) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), trigger.GetEntity().IsSystem())) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         public virtual void FireOnDropTrigger(Net.Vpc.Upa.Callbacks.Trigger trigger, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.TriggerEvent evt = new Net.Vpc.Upa.Callbacks.TriggerEvent(trigger, trigger.GetEntity());
+            Net.Vpc.Upa.Callbacks.TriggerEvent evt = new Net.Vpc.Upa.Callbacks.TriggerEvent(trigger, trigger.GetEntity(), phase);
             bool system = trigger.GetEntity().GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.TriggerDefinitionListener li in entityTriggers.GetAllListeners(false, trigger.GetEntity().GetName())) {
                     li.OnPreDropTrigger(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.TriggerDefinitionListener li in entityTriggers.GetAllListeners(false, trigger.GetEntity().GetName())) {
                     li.OnDropTrigger(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.TRIGGER, trigger.GetEntity().GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnCreateEntity(Net.Vpc.Upa.Entity entity, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.EntityEvent evt = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.EntityEvent evt = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, -1, phase);
             string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnPreCreateEntity(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnCreateEntity(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                    callback.Invoke(evt);
+                }
+            }
+        }
+
+        protected internal virtual void FireOnInitEntity(Net.Vpc.Upa.Entity entity, int position, Net.Vpc.Upa.EventPhase phase) {
+            Net.Vpc.Upa.Callbacks.EntityEvent evt = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, -1, phase);
+            string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
+            bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
+            if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
+                foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
+                    listener.OnPreInitEntity(evt);
+                }
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                    callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                    callback.Prepare(evt);
+                }
+            } else {
+                foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
+                    listener.OnInitEntity(evt);
+                }
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_INITIALIZE, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
@@ -444,28 +539,31 @@ namespace Net.Vpc.Upa.Impl.Event
 
         protected internal virtual void FireFieldAdded(Net.Vpc.Upa.Field field, int position, Net.Vpc.Upa.EventPhase phase) {
             Net.Vpc.Upa.Entity entity = field.GetEntity();
-            Net.Vpc.Upa.Callbacks.FieldEvent evt = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.FieldEvent evt = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, -1, phase);
             string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in fields.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnPreCreateField(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in fields.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnCreateField(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnCreateIndex(Net.Vpc.Upa.Index index, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.IndexEvent @event = new Net.Vpc.Upa.Callbacks.IndexEvent(index, index.GetPersistenceUnit());
+            Net.Vpc.Upa.Callbacks.IndexEvent @event = new Net.Vpc.Upa.Callbacks.IndexEvent(index, index.GetPersistenceUnit(), phase);
             Net.Vpc.Upa.Entity entity = index.GetEntity();
             string entityTypeListenerId = GetEntityTypeListenerId(index.GetEntity().GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
@@ -473,14 +571,17 @@ namespace Net.Vpc.Upa.Impl.Event
                 foreach (Net.Vpc.Upa.Callbacks.IndexDefinitionListener listener in indexes.GetAllListeners(system, index.GetEntity().GetName(), entityTypeListenerId)) {
                     listener.OnPreCreateIndex(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
                     callback.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.IndexDefinitionListener listener in indexes.GetAllListeners(system, index.GetEntity().GetName(), entityTypeListenerId)) {
                     listener.OnCreateIndex(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
                     callback.Invoke(@event);
                 }
             }
@@ -490,20 +591,23 @@ namespace Net.Vpc.Upa.Impl.Event
             Net.Vpc.Upa.Entity entity = section.GetEntity();
             string entityName = section.GetEntity().GetName();
             string entityTypeId = GetEntityTypeListenerId(section.GetEntity().GetEntityType());
-            Net.Vpc.Upa.Callbacks.SectionEvent @event = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.SectionEvent @event = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, -1, phase);
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in sections.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnPreCreateSection(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
                     callback.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in sections.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnCreateSection(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
                     callback.Invoke(@event);
                 }
             }
@@ -514,31 +618,37 @@ namespace Net.Vpc.Upa.Impl.Event
             System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.PackageDefinitionListener> interceptorList = packages;
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 if (!(interceptorList.Count==0)) {
-                    evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1);
+                    evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1, phase);
                     foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                         listener.OnPreCreatePackage(evt);
                     }
                 }
-                System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM);
+                System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM);
                 if (!(callbackInvokers.Count==0)) {
                     if (evt == null) {
-                        evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1);
+                        evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1, phase);
                     }
                     foreach (Net.Vpc.Upa.Callback callback in callbackInvokers) {
                         callback.Invoke(evt);
                     }
                 }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM)) {
+                    if (evt == null) {
+                        evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1, phase);
+                    }
+                    callback.Prepare(evt);
+                }
             } else {
                 if (!(interceptorList.Count==0)) {
-                    evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1);
+                    evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1, phase);
                     foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                         listener.OnCreatePackage(evt);
                     }
                 }
-                System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM);
+                System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbackInvokers = GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.PACKAGE, persistenceUnit.GetName(), DEFAULT_SYSTEM);
                 if (!(callbackInvokers.Count==0)) {
                     if (evt == null) {
-                        evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1);
+                        evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), parent, position, null, -1, phase);
                     }
                     foreach (Net.Vpc.Upa.Callback callback in callbackInvokers) {
                         callback.Invoke(evt);
@@ -549,42 +659,48 @@ namespace Net.Vpc.Upa.Impl.Event
 
         protected internal virtual void FireOnCreateRelationship(Net.Vpc.Upa.Relationship relation, int position, Net.Vpc.Upa.EventPhase phase) {
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
-                Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit());
+                Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit(), phase);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener> interceptorList = GetRelationshipListeners(relation.GetSourceRole().GetEntity().GetName(), relation.GetTargetRole().GetEntity().GetName());
                 foreach (Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener listener in interceptorList) {
                     listener.OnPreCreateRelationship(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceEntity().GetName(), false)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceEntity().GetName(), false)) {
                     callback.Invoke(evt);
                 }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceEntity().GetName(), false)) {
+                    callback.Prepare(evt);
+                }
             } else {
-                Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit());
+                Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit(), phase);
                 System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener> interceptorList = GetRelationshipListeners(relation.GetSourceRole().GetEntity().GetName(), relation.GetTargetRole().GetEntity().GetName());
                 foreach (Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener listener in interceptorList) {
                     listener.OnCreateRelationship(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceEntity().GetName(), false)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CREATE, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceEntity().GetName(), false)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnDropEntity(Net.Vpc.Upa.Entity entity, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.EntityEvent evt = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.EntityEvent evt = new Net.Vpc.Upa.Callbacks.EntityEvent(entity, entity.GetPersistenceUnit(), entity.GetParent(), position, null, -1, phase);
             string entityTypeListenerId = GetEntityTypeListenerId(entity.GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnPreDropEntity(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.EntityDefinitionListener listener in entities.GetAllListeners(system, entity.GetName(), entityTypeListenerId)) {
                     listener.OnDropEntity(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.ENTITY, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
@@ -592,7 +708,7 @@ namespace Net.Vpc.Upa.Impl.Event
 
         protected internal virtual void FireFieldRemoved(Net.Vpc.Upa.Field field, int position, Net.Vpc.Upa.EventPhase phase) {
             Net.Vpc.Upa.Entity entity = field.GetEntity();
-            Net.Vpc.Upa.Callbacks.FieldEvent evt = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.FieldEvent evt = new Net.Vpc.Upa.Callbacks.FieldEvent(field, field.GetPersistenceUnit(), entity, field.GetParent(), position, null, -1, phase);
             string entityName = entity.GetName();
             string entityTypeId = GetEntityTypeListenerId(entity.GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
@@ -600,21 +716,24 @@ namespace Net.Vpc.Upa.Impl.Event
                 foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in fields.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnPreDropField(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.FieldDefinitionListener listener in fields.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnDropField(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.FIELD, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnDropIndex(Net.Vpc.Upa.Index index, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.IndexEvent evt = new Net.Vpc.Upa.Callbacks.IndexEvent(index, index.GetPersistenceUnit());
+            Net.Vpc.Upa.Callbacks.IndexEvent evt = new Net.Vpc.Upa.Callbacks.IndexEvent(index, index.GetPersistenceUnit(), phase);
             Net.Vpc.Upa.Entity entity = index.GetEntity();
             string entityName = index.GetEntity().GetName();
             string entityTypeId = GetEntityTypeListenerId(index.GetEntity().GetEntityType());
@@ -623,14 +742,17 @@ namespace Net.Vpc.Upa.Impl.Event
                 foreach (Net.Vpc.Upa.Callbacks.IndexDefinitionListener listener in indexes.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnPreDropIndex(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.IndexDefinitionListener listener in indexes.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnDropIndex(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.INDEX, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
@@ -638,7 +760,7 @@ namespace Net.Vpc.Upa.Impl.Event
 
         protected internal virtual void FireOnDropSection(Net.Vpc.Upa.Section section, int position, Net.Vpc.Upa.EventPhase phase) {
             Net.Vpc.Upa.Entity entity = section.GetEntity();
-            Net.Vpc.Upa.Callbacks.SectionEvent evt = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.SectionEvent evt = new Net.Vpc.Upa.Callbacks.SectionEvent(section, section.GetPersistenceUnit(), entity, (Net.Vpc.Upa.Section) section.GetParent(), position, null, -1, phase);
             string entityName = section.GetEntity().GetName();
             string entityTypeId = GetEntityTypeListenerId(section.GetEntity().GetEntityType());
             bool system = entity.GetUserModifiers().Contains(Net.Vpc.Upa.EntityModifier.SYSTEM);
@@ -646,53 +768,62 @@ namespace Net.Vpc.Upa.Impl.Event
                 foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in sections.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnPreDropSection(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.SectionDefinitionListener listener in sections.GetAllListeners(system, entityName, entityTypeId)) {
                     listener.OnDropSection(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.SECTION, entity.GetName(), system)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnDropPackage(Net.Vpc.Upa.Package module, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.PackageEvent evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), module.GetParent(), position, null, -1);
+            Net.Vpc.Upa.Callbacks.PackageEvent evt = new Net.Vpc.Upa.Callbacks.PackageEvent(module, module.GetPersistenceUnit(), module.GetParent(), position, null, -1, phase);
             System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.PackageDefinitionListener> interceptorList = packages;
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                     listener.OnPreDropPackage(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PACKAGE, module.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PACKAGE, module.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PACKAGE, module.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PackageDefinitionListener listener in interceptorList) {
                     listener.OnDropPackage(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PACKAGE, module.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.PACKAGE, module.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     callback.Invoke(evt);
                 }
             }
         }
 
         protected internal virtual void FireOnDropRelationship(Net.Vpc.Upa.Relationship relation, int position, Net.Vpc.Upa.EventPhase phase) {
-            Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit());
+            Net.Vpc.Upa.Callbacks.RelationshipEvent evt = new Net.Vpc.Upa.Callbacks.RelationshipEvent(relation, relation.GetPersistenceUnit(), phase);
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener listener in GetRelationshipListeners(relation.GetSourceRole().GetEntity().GetName(), relation.GetTargetRole().GetEntity().GetName())) {
                     listener.OnPreDropRelationship(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceRole().GetEntity().GetName(), relation.GetSourceRole().GetEntity().IsSystem())) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceRole().GetEntity().GetName(), relation.GetSourceRole().GetEntity().IsSystem())) {
                     callback.Invoke(evt);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceRole().GetEntity().GetName(), relation.GetSourceRole().GetEntity().IsSystem())) {
+                    callback.Prepare(evt);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener listener in GetRelationshipListeners(relation.GetSourceRole().GetEntity().GetName(), relation.GetTargetRole().GetEntity().GetName())) {
                     listener.OnDropRelationship(evt);
                 }
-                foreach (Net.Vpc.Upa.Callback callback in GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceRole().GetEntity().GetName(), relation.GetSourceRole().GetEntity().IsSystem())) {
+                foreach (Net.Vpc.Upa.Callback callback in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_DROP, Net.Vpc.Upa.ObjectType.RELATIONSHIP, relation.GetSourceRole().GetEntity().GetName(), relation.GetSourceRole().GetEntity().IsSystem())) {
                     callback.Invoke(evt);
                 }
             }
@@ -798,109 +929,130 @@ namespace Net.Vpc.Upa.Impl.Event
             @object.RemoveObjectListener(this);
         }
 
-        public virtual void FireOnModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnModelChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreModelChanged(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MODEL_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_MODEL_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_MODEL_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnModelChanged(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_MODEL_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_MODEL_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnStorageChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnStorageChanged(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreStorageChanged(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_STORAGE_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
-                    invoker.Invoke(@event);
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_STORAGE_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnStorageChanged(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_STORAGE_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_STORAGE_CHANGED, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnClear(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnClear(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreClear(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnClear(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CLEAR, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnClose(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreClose(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CLOSE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_CLOSE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_CLOSE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnClose(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_CLOSE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_CLOSE, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnReset(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnReset(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreReset(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnReset(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_RESET, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
         }
 
-        public virtual void FireOnStart(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnStart(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnPreStart(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_START, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
-                    invoker.Invoke(@event);
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_START, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_START, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Prepare(@event);
                 }
             } else {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
                     listener.OnStart(@event);
                 }
-                foreach (Net.Vpc.Upa.Callback invoker in GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType.ON_START, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_START, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
                     invoker.Invoke(@event);
                 }
             }
@@ -918,23 +1070,59 @@ namespace Net.Vpc.Upa.Impl.Event
             callbackManager.RemoveCallback(callback);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.BEFORE);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.BEFORE)));
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.BEFORE)));
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetPreCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.BEFORE)));
+            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.BEFORE)));
             return allCallbacks;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.AFTER);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.AFTER)));
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.AFTER)));
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetPostCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER);
+            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER)));
+            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(persistenceUnit.GetPersistenceGroup().GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER)));
             return allCallbacks;
         }
 
-        public virtual Net.Vpc.Upa.Callback[] GetCurrentCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.PreparedCallback> GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.PreparedCallback> callbacks = new System.Collections.Generic.List<Net.Vpc.Upa.PreparedCallback>();
+            foreach (Net.Vpc.Upa.Callback callback in callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, true, Net.Vpc.Upa.EventPhase.AFTER)) {
+                callbacks.Add((Net.Vpc.Upa.PreparedCallback) callback);
+            }
+            foreach (Net.Vpc.Upa.Callback callback in persistenceUnit.GetPersistenceGroup().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER)) {
+                callbacks.Add((Net.Vpc.Upa.PreparedCallback) callback);
+            }
+            foreach (Net.Vpc.Upa.Callback callback in persistenceUnit.GetPersistenceGroup().GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER)) {
+                callbacks.Add((Net.Vpc.Upa.PreparedCallback) callback);
+            }
+            return callbacks;
+        }
+
+        public virtual Net.Vpc.Upa.Callback[] GetCurrentCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
             return callbacks.ToArray();
+        }
+
+        public virtual void FireOnUpdateFormulas(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
+            if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
+                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
+                    listener.OnPreUpdateFormulas(@event);
+                }
+                foreach (Net.Vpc.Upa.Callback callback in GetPreCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Invoke(@event);
+                }
+                foreach (Net.Vpc.Upa.PreparedCallback callback in GetPostPreparedCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    callback.Invoke(@event);
+                }
+            } else {
+                foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitListener listener in persistenceUnitListeners) {
+                    listener.OnUpdateFormulas(@event);
+                }
+                foreach (Net.Vpc.Upa.Callback invoker in GetPostCallbacks(Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS, Net.Vpc.Upa.ObjectType.PERSISTENCE_UNIT, @event.GetPersistenceUnit().GetName(), DEFAULT_SYSTEM)) {
+                    invoker.Invoke(@event);
+                }
+            }
         }
     }
 }

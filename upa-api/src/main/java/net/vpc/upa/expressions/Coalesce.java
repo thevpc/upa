@@ -35,9 +35,10 @@
 package net.vpc.upa.expressions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public final class Coalesce extends Function
+public final class Coalesce extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -48,8 +49,12 @@ public final class Coalesce extends Function
         elements = new ArrayList<Expression>(1);
     }
 
+    public Coalesce(Expression[] expressions) {
+        this(Arrays.asList(expressions));
+    }
+
     public Coalesce(List<Expression> expressions) {
-        this();
+        elements = new ArrayList<Expression>(expressions.size());
         for (Expression expression : expressions) {
             add(expression);
         }
@@ -128,7 +133,7 @@ public final class Coalesce extends Function
 //    }
     public Expression copy() {
         Coalesce o = new Coalesce();
-        o.elements = new ArrayList<Expression>();
+        o.elements = new ArrayList<Expression>(elements.size());
         for (Expression element : elements) {
             o.add(element.copy());
         }

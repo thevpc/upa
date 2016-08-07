@@ -1,9 +1,7 @@
 package net.vpc.upa.impl.config;
 
-import net.vpc.upa.Action;
 import net.vpc.upa.MethodFilter;
 import net.vpc.upa.UPA;
-import net.vpc.upa.UPAContext;
 import net.vpc.upa.exceptions.ExecutionException;
 import net.vpc.upa.impl.util.PlatformMethodProxy;
 import net.vpc.upa.impl.util.PlatformMethodProxyEvent;
@@ -18,7 +16,7 @@ import java.util.logging.Logger;
 public class MakeSessionAwareMethodInterceptor<T> implements PlatformMethodProxy<T> {
 
     private final MethodFilter methodFilter;
-    private final T instance;
+    final T instance;
     private DefaultUPAContext defaultUPAContext;
     private static final Logger log = Logger.getLogger(MakeSessionAwareMethodInterceptor.class.getName());
 
@@ -33,16 +31,7 @@ public class MakeSessionAwareMethodInterceptor<T> implements PlatformMethodProxy
         if (methodFilter == null || methodFilter.accept(event.getMethod())) {
             HashMap<String, Object> properties = new HashMap<String, Object>();
             try {
-                return UPA.getContext().invoke(new Action<Object>() {
-                    @Override
-                    public Object run() {
-                        try {
-                            return event.invokeBase(instance, event.getArguments());
-                        } catch (Throwable ex) {
-                            throw new ExecutionException(ex);
-                        }
-                    }
-                });
+                return UPA.getContext().invoke(new MakeSessionAwareMethodInterceptorAction<T>(this, event));
             }catch(ExecutionException e){
                 throw e.getCause();
             }
@@ -50,4 +39,5 @@ public class MakeSessionAwareMethodInterceptor<T> implements PlatformMethodProxy
             return event.invokeBase(instance, event.getArguments());
         }
     }
+
 }

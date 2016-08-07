@@ -475,7 +475,7 @@ class FieldInfo implements FieldDescriptor {
             if (fieldDeco != null) {
                 modifiers = modifiers.addAll(Arrays.asList(fieldDeco.getPrimitiveArray("modifiers", UserFieldModifier.class)));
                 excludeModifiers = excludeModifiers.addAll(Arrays.asList(fieldDeco.getPrimitiveArray("excludeModifiers", UserFieldModifier.class)));
-                final int processOrder = fieldDeco.getConfig().getOrder();
+                int processOrder = fieldDeco.getConfig().getOrder();
                 AnnotationParserUtils.validClass(fieldDeco.getType("type"), overriddenNativeType, Object.class, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("min"), overriddenMinValue, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("max"), overriddenMaxValue, processOrder);

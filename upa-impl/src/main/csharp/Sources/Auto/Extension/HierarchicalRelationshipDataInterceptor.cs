@@ -36,8 +36,11 @@ namespace Net.Vpc.Upa.Impl.Extension
             Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext = @event.GetContext();
             Net.Vpc.Upa.Relationship r = relation;
             System.Collections.Generic.IList<Net.Vpc.Upa.Field> fs = r.GetSourceRole().GetFields();
-            Net.Vpc.Upa.Expressions.Expression cond = new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(fs[0].GetName()), Net.Vpc.Upa.Expressions.Literal.NULL), @event.GetFilterExpression());
-            System.Collections.Generic.IList<object> keys = relation.GetSourceRole().GetEntity().CreateQueryBuilder().SetExpression(cond).GetIdList<object>();
+            Net.Vpc.Upa.Expressions.Expression cond = new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(fs[0].GetName()), Net.Vpc.Upa.Expressions.Literal.NULL);
+            if (@event.GetFilterExpression() != null) {
+                cond = new Net.Vpc.Upa.Expressions.And(cond, @event.GetFilterExpression());
+            }
+            System.Collections.Generic.IList<object> keys = relation.GetSourceRole().GetEntity().CreateQueryBuilder().ByExpression(cond).GetIdList<K>();
             foreach (object key in keys) {
                 support.ValidatePathField(key, executionContext);
                 support.ValidateChildren(key, executionContext);
@@ -46,13 +49,12 @@ namespace Net.Vpc.Upa.Impl.Extension
 
 
         public override void OnPersist(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Key parent_key = relation.GetKey(@event.GetPersistedRecord());
-            object[] parent_id = parent_key == null ? null : parent_key.GetValue();
+            object parent_id = relation.ExtractId(@event.GetPersistedRecord());
             string path = support.GetHierarchyPathSeparator() + support.ToStringId(@event.GetPersistedId());
             string pathFieldName = support.GetHierarchyPathField();
             Net.Vpc.Upa.Entity entity = relation.GetSourceRole().GetEntity();
             if (parent_id != null) {
-                Net.Vpc.Upa.Record r = entity.CreateQueryBuilder().SetExpression(entity.GetBuilder().IdToExpression(entity.CreateId(parent_id), null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(pathFieldName)).GetRecord();
+                Net.Vpc.Upa.Record r = entity.CreateQueryBuilder().ByExpression(entity.GetBuilder().IdToExpression(parent_id, null)).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName(pathFieldName)).GetRecord();
                 if (r != null) {
                     path = r.GetString(pathFieldName) + path;
                 }
@@ -100,7 +102,7 @@ namespace Net.Vpc.Upa.Impl.Extension
             if (!updates.IsSet(updateTreeFields[0].GetName())) {
                 return;
             }
-            object val = updates.GetObject<object>(updateTreeFields[0].GetName());
+            object val = updates.GetObject<T>(updateTreeFields[0].GetName());
             if (val is Net.Vpc.Upa.Expressions.Literal) {
                 val = ((Net.Vpc.Upa.Expressions.Literal) val).GetValue();
             } else if (val is Net.Vpc.Upa.Expressions.Expression) {
@@ -108,18 +110,19 @@ namespace Net.Vpc.Upa.Impl.Extension
                 return;
             }
             if (val != null) {
-                Net.Vpc.Upa.Key parent_key = relation.GetKey(updates);
-                Net.Vpc.Upa.Entity entity = @event.GetEntity();
-                object newKey = (object) entity.GetBuilder().KeyToId(parent_key);
-                string k = "recurse";
-                if (!executionContext.IsSet(k)) {
-                    System.Collections.Generic.IList<object> idList = entity.CreateQueryBuilder().SetExpression(@event.GetFilterExpression()).SetOrder(entity.GetUpdateFormulasOrder()).GetIdList<object>();
-                    executionContext.SetObject(k, idList);
-                }
-                System.Collections.Generic.IList<object> r = (System.Collections.Generic.IList<object>) executionContext.GetObject<System.Collections.Generic.IList<object>>("recurse");
-                foreach (object aR in r) {
-                    if (support.IsEqualOrIsParent(aR, newKey)) {
-                        throw new Net.Vpc.Upa.Exceptions.UPAException("RedundancyProblem");
+                object parentId = relation.ExtractId(updates);
+                if (parentId != null) {
+                    Net.Vpc.Upa.Entity entity = @event.GetEntity();
+                    string k = "recurse";
+                    if (!executionContext.IsSet(k)) {
+                        System.Collections.Generic.IList<object> idList = entity.CreateQueryBuilder().ByExpression(@event.GetFilterExpression()).OrderBy(entity.GetUpdateFormulasOrder()).GetIdList<K>();
+                        executionContext.SetObject(k, idList);
+                    }
+                    System.Collections.Generic.IList<object> r = (System.Collections.Generic.IList<object>) executionContext.GetObject<T>("recurse");
+                    foreach (object aR in r) {
+                        if (support.IsEqualOrIsParent(aR, parentId)) {
+                            throw new Net.Vpc.Upa.Exceptions.UPAException("RedundancyProblem");
+                        }
                     }
                 }
             }
@@ -136,7 +139,7 @@ namespace Net.Vpc.Upa.Impl.Extension
             if (!@event.GetUpdatesRecord().IsSet(updateTreeFields[0].GetName())) {
                 return;
             }
-            System.Collections.Generic.IList<object> r = (System.Collections.Generic.IList<object>) executionContext.GetObject<System.Collections.Generic.IList<object>>("recurse");
+            System.Collections.Generic.IList<object> r = (System.Collections.Generic.IList<object>) executionContext.GetObject<T>("recurse");
             if (r != null) {
                 foreach (object aR in r) {
                     support.ValidatePathField(aR, executionContext);

@@ -35,6 +35,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
+            targetMarshaller.Write(dataTypeTransform.TransformValue(@object), i, updatableResultSet);
         }
 
 

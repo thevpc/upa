@@ -35,7 +35,9 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.EntityPart oldParent;
 
-        public FieldEvent(Net.Vpc.Upa.Field field, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.EntityPart parent, int index, Net.Vpc.Upa.EntityPart oldParent, int oldIndex) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public FieldEvent(Net.Vpc.Upa.Field field, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.EntityPart parent, int index, Net.Vpc.Upa.EntityPart oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.field = field;
             this.parent = parent;
@@ -43,6 +45,7 @@ namespace Net.Vpc.Upa.Callbacks
             this.oldParent = oldParent;
             this.oldIndex = oldIndex;
             this.entity = entity;
+            this.phase = phase;
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {
@@ -71,6 +74,10 @@ namespace Net.Vpc.Upa.Callbacks
 
         public virtual Net.Vpc.Upa.Entity GetEntity() {
             return entity;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
     }
 }

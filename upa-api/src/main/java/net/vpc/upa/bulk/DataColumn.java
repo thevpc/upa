@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.bulk;
 
+import net.vpc.upa.exceptions.UnexpectedException;
 import net.vpc.upa.types.DataType;
 
 import java.util.HashSet;
@@ -184,8 +185,7 @@ public class DataColumn implements Cloneable {
         return this;
     }
 
-    @Override
-    public Object clone() {
+    public Object copy() {
         try {
             DataColumn c = (DataColumn) super.clone();
             if (extraNames != null) {
@@ -193,7 +193,7 @@ public class DataColumn implements Cloneable {
             }
             return c;
         } catch (CloneNotSupportedException ex) {
-            throw new IllegalArgumentException("Missing Cloneable Interface Anchor for " + getClass().getName());
+            throw new UnexpectedException("Missing Cloneable Interface Anchor for " + getClass().getName(),ex);
         }
     }
 

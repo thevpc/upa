@@ -10,7 +10,7 @@ import net.vpc.upa.expressions.*;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class UserExpressionParserVisitor implements ExpressionVisitor {
 
@@ -26,9 +26,10 @@ public class UserExpressionParserVisitor implements ExpressionVisitor {
             Expression cce = cc.getExpression();
             if (cce != null) {
                 if (cce instanceof UserExpression) {
-                    Expression rr = expressionManager.parseExpression((UserExpression) cce);
-                    rr.visit(this);
-                    expression.setChild(rr, cc.getTag());
+                    UserExpression ucce = (UserExpression) cce;
+                    Expression expr = expressionManager.parseExpression(ucce.getExpression());
+                    expr.visit(new UserExpressionParametersMatcherVisitor(ucce));
+                    expression.setChild(expr, cc.getTag());
                 }
             }
         }

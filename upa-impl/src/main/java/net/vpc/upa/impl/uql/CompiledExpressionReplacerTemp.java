@@ -10,7 +10,7 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class CompiledExpressionReplacerTemp implements CompiledExpressionReplacer {
     private String thisAlias;

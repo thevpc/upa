@@ -21,7 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class StringMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            return System.Convert.ToString(resultSet[index]);
+            
+            return null;
         }
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
@@ -53,7 +54,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            preparedStatement.SetString(i, (string) @object);
+            
         }
 
         public StringMarshaller() {

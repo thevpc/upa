@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa.Impl
     * @creationdate 1/8/13 1:51 AM*/
     public enum OnHoldCommitActionType {
 
-        CREATE, UPDATE, REMOVE
+        UNKNWON, CREATE, UPDATE, REMOVE
     }
 }

@@ -15,7 +15,7 @@ import net.vpc.upa.PortabilityHint;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class URLClassPathRootIterator implements Iterator<ClassPathResource> {
 
@@ -35,17 +35,24 @@ public class URLClassPathRootIterator implements Iterator<ClassPathResource> {
 
     public boolean hasNext() {
         /**
-         * @PortabilityHint(target = "C#", name = "suppress")
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return false;
          */
-        try {
-            nextEntry = jar.getNextEntry();
-        } catch (IOException ex) {
-            return false;
+        {
+            try {
+                nextEntry = jar.getNextEntry();
+            } catch (IOException ex) {
+                return false;
+            }
+            return nextEntry != null;
         }
-        return nextEntry != null;
     }
 
     public ClassPathResource next() {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         * return null;
+         */
         return new ZipEntryClassPathResource(nextEntry.getName(), nextEntry, jar);
     }
 

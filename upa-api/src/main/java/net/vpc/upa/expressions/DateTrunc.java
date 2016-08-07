@@ -40,11 +40,16 @@ import java.util.Date;
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
  * change this template use Options | File Templates.
  */
-public class DateTrunc extends Function {
+public class DateTrunc extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
     private DatePartType type;
     private Expression value;
+
+    public DateTrunc(Expression[] expressions) {
+        checkArgCount(getName(),expressions,2);
+        init((DatePartType) ((Cst)expressions[0]).getValue(),expressions[1]);
+    }
 
     public DateTrunc(DatePartType type, Date date) {
         this(type, new Literal(date));
@@ -55,6 +60,9 @@ public class DateTrunc extends Function {
     }
 
     public DateTrunc(DatePartType type, Expression val) {
+        init(type,val);
+    }
+    private void init(DatePartType type, Expression val) {
         this.type = type;
         this.value = val;
     }

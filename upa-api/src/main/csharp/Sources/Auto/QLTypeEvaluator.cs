@@ -17,10 +17,10 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public interface QLTypeEvaluator {
 
-         object EvalObject(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.QLEvaluator evaluator, object context);
+         Net.Vpc.Upa.Expressions.Expression EvalObject(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.QLEvaluator evaluator, object context);
     }
 }

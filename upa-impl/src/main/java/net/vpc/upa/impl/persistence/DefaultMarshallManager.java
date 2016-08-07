@@ -1,13 +1,12 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.impl.persistence.shared.*;
+import net.vpc.upa.impl.persistence.shared.marshallers.*;
 import net.vpc.upa.types.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -97,8 +96,8 @@ public class DefaultMarshallManager implements MarshallManager {
     }
 
     @Override
-    public void setTypeMarshallerFactory(Class platformType, TypeMarshallerFactory wrapperFactory) {
-        setTypeMarshallerFactory0(platformType, wrapperFactory);
+    public void setTypeMarshallerFactory(Class dataType, TypeMarshallerFactory wrapperFactory) {
+        setTypeMarshallerFactory0(dataType, wrapperFactory);
     }
 
     private void setTypeMarshallerFactory0(Class platformType, TypeMarshallerFactory wrapperFactory) {
@@ -134,9 +133,6 @@ public class DefaultMarshallManager implements MarshallManager {
     }
 
     public TypeMarshaller getTypeMarshaller(DataTypeTransform p) {
-        if (p instanceof IdentityDataTypeTransform) {
-            return getTypeMarshaller(((IdentityDataTypeTransform) p).getSourceType());
-        }
         return new DataTypeTransformMarshaller(p, getTypeMarshaller(p.getTargetType()));
     }
 

@@ -17,6 +17,9 @@ namespace Net.Vpc.Upa
     public enum FieldModifier {
 
         /**
+             * undefined valuye
+             */
+        DEFAULT, /**
              * ID fields defines the Entity Identifier's fields witch is mapped to the
              * Table's primary key. An Entity may define zero or many ID fields but is
              * is recommended to define at least one ID field. When many fields are
@@ -49,6 +52,6 @@ namespace Net.Vpc.Upa
              * are managed by the framework and should never be set directly by
              * application. FOREIGN fields always points to REFERENCED fields
              */
-        FOREIGN, PERSIST, PERSIST_DEFAULT, PERSIST_FORMULA, PERSIST_SEQUENCE, UPDATE, UPDATE_DEFAULT, UPDATE_FORMULA, UPDATE_SEQUENCE, SELECT, SELECT_DEFAULT, SELECT_LIVE, SELECT_COMPILED, SELECT_CUSTOM, REFERENCED, SYSTEM, TRANSIENT
+        FOREIGN, PERSIST, PERSIST_DEFAULT, PERSIST_FORMULA, PERSIST_SEQUENCE, UPDATE, UPDATE_DEFAULT, UPDATE_FORMULA, UPDATE_SEQUENCE, SELECT, SELECT_DEFAULT, SELECT_LIVE, SELECT_STORED, SELECT_CUSTOM, REFERENCED, SYSTEM, TRANSIENT
     }
 }

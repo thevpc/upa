@@ -21,11 +21,12 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
 import net.vpc.upa.expressions.IdExpression;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public abstract class SingleEntityObjectEventCallback extends DefaultCallback implements PreparedCallback{
 
@@ -38,10 +39,8 @@ public abstract class SingleEntityObjectEventCallback extends DefaultCallback im
     protected void invokeSingle(EntityEvent singleEvent) {
         try {
             method.invoke(instance, converter.convert(new Object[]{singleEvent}));
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        } catch (InvocationTargetException e) {
-            throw new IllegalArgumentException(e);
+        } catch (Exception ex) {
+            throw PlatformUtils.createRuntimeException(ex);
         }
     }
 

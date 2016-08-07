@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo> fields = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo>();
 
-        public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo> insertSequenceGeneratorFields = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo>();
+        public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo> persistSequenceGeneratorFields = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo>();
 
         public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo> updateSequenceGeneratorFields = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Persistence.FieldPersistenceInfo>();
 
@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public virtual void Update() {
             System.Collections.Generic.ISet<string> visited = new System.Collections.Generic.HashSet<string>();
-            insertSequenceGeneratorFields.Clear();
+            persistSequenceGeneratorFields.Clear();
             updateSequenceGeneratorFields.Clear();
             insertExpressions.Clear();
             updateExpressions.Clear();
@@ -52,8 +52,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 fieldPersistenceInfo.field = field;
                 fieldPersistenceInfo.persistenceStore = persistenceStore;
                 fieldPersistenceInfo.Synchronize();
-                if (fieldPersistenceInfo.insertFieldPersister != null) {
-                    insertSequenceGeneratorFields.Add(fieldPersistenceInfo);
+                if (fieldPersistenceInfo.persistFieldPersister != null) {
+                    persistSequenceGeneratorFields.Add(fieldPersistenceInfo);
                 }
                 if (fieldPersistenceInfo.updateFieldPersister != null) {
                     updateSequenceGeneratorFields.Add(fieldPersistenceInfo);
@@ -64,7 +64,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 if (fieldPersistenceInfo.updateExpression != null) {
                     updateExpressions.Add(fieldPersistenceInfo);
                 }
-                if (field.GetDataType() is Net.Vpc.Upa.Types.EntityType) {
+                if (field.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType) {
                     ((Net.Vpc.Upa.Impl.AbstractField) field).SetFieldPersister(new Net.Vpc.Upa.Impl.EntityTypeFieldPersister());
                 } else if (Net.Vpc.Upa.Impl.Util.UPAUtils.IsPasswordTransform(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(field))) {
                     ((Net.Vpc.Upa.Impl.AbstractField) field).SetFieldPersister(new Net.Vpc.Upa.Impl.Transform.PasswordTypeFieldPersister());

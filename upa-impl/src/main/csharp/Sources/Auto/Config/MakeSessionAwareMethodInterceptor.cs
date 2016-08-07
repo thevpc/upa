@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Impl.Config
 
         private readonly Net.Vpc.Upa.MethodFilter methodFilter;
 
-        private readonly T instance;
+        internal readonly T instance;
 
         private Net.Vpc.Upa.Impl.Config.DefaultUPAContext defaultUPAContext;
 
@@ -39,20 +39,11 @@ namespace Net.Vpc.Upa.Impl.Config
         public virtual object Intercept(Net.Vpc.Upa.Impl.Util.PlatformMethodProxyEvent<T> @event) /* throws System.Exception */  {
             if (methodFilter == null || methodFilter.Accept(@event.GetMethod())) {
                 System.Collections.Generic.Dictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>();
-                Net.Vpc.Upa.UPAContext context = Net.Vpc.Upa.UPA.GetContext();
-                context.BeginInvocation(@event.GetMethod(), properties);
-                object ret = null;
-                System.Exception error = null;
                 try {
-                    ret = @event.InvokeBase(instance, @event.GetArguments());
-                } catch (System.Exception e) {
-                    error = e;
+                    return Net.Vpc.Upa.UPA.GetContext().Invoke<object>(new Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptorAction<T>(this, @event));
+                } catch (Net.Vpc.Upa.Exceptions.ExecutionException e) {
+                    throw (e).InnerException;
                 }
-                context.EndInvocation(error, properties);
-                if (error != null) {
-                    throw error;
-                }
-                return ret;
             } else {
                 return @event.InvokeBase(instance, @event.GetArguments());
             }

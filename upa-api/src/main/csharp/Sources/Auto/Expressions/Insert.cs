@@ -15,7 +15,9 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public class Insert : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.UpdateStatement {
+    public class Insert : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.NonQueryStatement {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
 
 
 
@@ -38,6 +40,33 @@ namespace Net.Vpc.Upa.Expressions
         public Insert(Net.Vpc.Upa.Expressions.Insert other)  : this(){
 
             AddQuery(other);
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (entity != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
+            }
+            for (int i = 0; i < (fields).Count; i++) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i].GetVar(), new Net.Vpc.Upa.Expressions.IndexedTag("VAR", i)));
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i].GetVal(), new Net.Vpc.Upa.Expressions.IndexedTag("VAL", i)));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (ENTITY.Equals(tag)) {
+                this.entity = (Net.Vpc.Upa.Expressions.EntityName) e;
+            } else {
+                Net.Vpc.Upa.Expressions.IndexedTag ii = (Net.Vpc.Upa.Expressions.IndexedTag) tag;
+                if (ii.GetName().Equals("VAR")) {
+                    fields[ii.GetIndex()].SetVar((Net.Vpc.Upa.Expressions.Var) e);
+                } else {
+                    fields[ii.GetIndex()].SetVal(e);
+                }
+            }
         }
 
         public virtual Net.Vpc.Upa.Expressions.Insert Into(string entity) {
@@ -146,6 +175,11 @@ namespace Net.Vpc.Upa.Expressions
 
         public override bool IsValid() {
             return entity != null && (fields).Count > 0;
+        }
+
+
+        public override string GetEntityAlias() {
+            return null;
         }
     }
 }

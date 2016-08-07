@@ -16,13 +16,10 @@ namespace Net.Vpc.Upa.Expressions
 
 
     /**
-     * Created by IntelliJ IDEA.
-     * User: root
-     * Date: 22 mai 2003
-     * Time: 10:07:06
-     * To change this template use Options | File Templates.
+     * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
+     * change this template use Options | File Templates.
      */
-    public class If : Net.Vpc.Upa.Expressions.Function {
+    public class If : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -41,8 +38,14 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public If(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions) {
-            @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(2);
+            @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>((expressions).Count);
             Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(@params, expressions);
+            state = VALID;
+        }
+
+        public If(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions.Length);
+            Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(@params, new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions));
             state = VALID;
         }
 
@@ -52,15 +55,21 @@ namespace Net.Vpc.Upa.Expressions
             state = EXPECT_VALUE;
         }
 
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            @params[index]=e;
+            state = VALID;
+        }
+
         public virtual Net.Vpc.Upa.Expressions.If Then(Net.Vpc.Upa.Expressions.Expression @value) {
             if (state == EXPECT_VALUE) {
                 Add(@value);
                 state = EXPECT_CONDITION;
                 return this;
             } else if (state == VALID) {
-                throw new System.ArgumentException ("No more tokens are expected");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("No more tokens are expected");
             } else {
-                throw new System.ArgumentException ("Expected a value");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Expected a value");
             }
         }
 
@@ -70,9 +79,9 @@ namespace Net.Vpc.Upa.Expressions
                 state = VALID;
                 return this;
             } else if (state == VALID) {
-                throw new System.ArgumentException ("No more tokens are expected");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("No more tokens are expected");
             } else {
-                throw new System.ArgumentException ("Expected a value");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Expected a value");
             }
         }
 
@@ -82,9 +91,9 @@ namespace Net.Vpc.Upa.Expressions
                 state = EXPECT_VALUE;
                 return this;
             } else if (state == VALID) {
-                throw new System.ArgumentException ("No more tokens are expected");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("No more tokens are expected");
             } else {
-                throw new System.ArgumentException ("Expected a condition");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Expected a condition");
             }
         }
 

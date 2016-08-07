@@ -32,16 +32,16 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key CreateKey(params object [] keyValues) {
-            return new Net.Vpc.Upa.Impl.DefaultKey(keyValues);
+        public virtual Net.Vpc.Upa.Key CreateKey(params object [] idValues) {
+            return new Net.Vpc.Upa.Impl.DefaultKey(idValues);
         }
 
 
-        public virtual object CreateId(params object [] keyValues) {
-            if ((entity.GetPrimaryFields()).Count != keyValues.Length) {
-                throw new System.ArgumentException ("Invalid Key Size. Expected " + (entity.GetPrimaryFields()).Count + " but found " + keyValues.Length);
+        public virtual object CreateId(params object [] idValues) {
+            if ((entity.GetPrimaryFields()).Count != idValues.Length) {
+                throw new System.ArgumentException ("Invalid Key Size. Expected " + (entity.GetPrimaryFields()).Count + " but found " + idValues.Length);
             }
-            return new Net.Vpc.Upa.Impl.DefaultKey(keyValues);
+            return new Net.Vpc.Upa.Impl.DefaultKey(idValues);
         }
 
 
@@ -50,8 +50,8 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object key) {
-            return (Net.Vpc.Upa.Key) key;
+        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+            return (Net.Vpc.Upa.Key) id;
         }
     }
 }

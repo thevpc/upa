@@ -449,7 +449,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = field.GetExpression();
                 AddField(ee == null ? null : ee.Copy(), field.GetAlias());
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem compiledOrderItem in order.GetItems()) {
+            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOrderItem compiledOrderItem in other.order.GetItems()) {
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ee = compiledOrderItem.GetExpression();
                 OrderBy(ee == null ? null : ee.Copy(), compiledOrderItem.IsAsc());
             }
@@ -591,6 +591,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field in fields) {
                     if (i == index) {
                         field.SetExpression(expression);
+                        if (expression != null) {
+                            expression.SetParentExpression(this);
+                        }
                         return;
                     }
                     i++;
@@ -599,6 +602,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if (queryEntity != null) {
                 if (i == index) {
                     queryEntity = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNameOrSelect) expression;
+                    if (expression != null) {
+                        expression.SetParentExpression(this);
+                    }
                     return;
                 }
                 i++;
@@ -607,6 +613,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 for (int ii = 0; ii < (joinsTables).Count; ii++) {
                     if (i == index) {
                         joinsTables[ii]=(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledJoinCriteria) expression;
+                        if (expression != null) {
+                            expression.SetParentExpression(this);
+                        }
                         return;
                     }
                     i++;
@@ -617,6 +626,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 for (int j = 0; j < size; j++) {
                     if (i == index) {
                         groupByExpressions[j]=expression;
+                        if (expression != null) {
+                            expression.SetParentExpression(this);
+                        }
                         return;
                     }
                     i++;
@@ -627,6 +639,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                 for (int j = 0; j < size; j++) {
                     if (i == index) {
                         order.SetOrderAt(j, expression);
+                        if (expression != null) {
+                            expression.SetParentExpression(this);
+                        }
                         return;
                     }
                     i++;
@@ -635,12 +650,18 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if (where != null) {
                 if (i == index) {
                     where = expression;
+                    if (expression != null) {
+                        expression.SetParentExpression(this);
+                    }
                 }
                 i++;
             }
             if (having != null) {
                 if (i == index) {
                     having = expression;
+                    if (expression != null) {
+                        expression.SetParentExpression(this);
+                    }
                 }
                 i++;
             }
@@ -674,13 +695,16 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                     Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField fi = GetField(i);
                     Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = fi.GetExpression();
                     valueString = System.Convert.ToString(e);
+                    if (!(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledFunction) && !(e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral)) {
+                        valueString = "(" + valueString + ")";
+                    }
                     aliasString = fi.GetAlias();
                     if (started) {
                         sb.Append(",");
                     } else {
                         started = true;
                     }
-                    if (aliasString == null || valueString.Equals(aliasString)) {
+                    if (aliasString == null) {
                         sb.Append(valueString);
                     } else {
                         sb.Append(valueString);

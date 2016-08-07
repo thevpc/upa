@@ -136,10 +136,11 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void RegisterField(Net.Vpc.Upa.Field item) {
-            Net.Vpc.Upa.Entity entity = item.GetEntity();
+            Net.Vpc.Upa.Impl.DefaultEntity entity = (Net.Vpc.Upa.Impl.DefaultEntity) item.GetEntity();
             Net.Vpc.Upa.Package module = entity.GetParent();
             string s = (module == null ? "/" : module.GetPath() + "/") + entity.GetName() + "/" + item.GetName();
             fields[s]=item;
+            entity.fieldsMap[entity.GetPersistenceUnit().GetNamingStrategy().GetUniformValue(item.GetName())]=(Net.Vpc.Upa.Field) item;
         }
 
         public virtual void UnregisterField(Net.Vpc.Upa.Field item) {

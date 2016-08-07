@@ -4,7 +4,7 @@ import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.AbstractSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;

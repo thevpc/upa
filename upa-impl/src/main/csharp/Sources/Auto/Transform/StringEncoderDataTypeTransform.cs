@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class StringEncoderDataTypeTransform : Net.Vpc.Upa.Types.DataTypeTransform {
 
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             this.serializer = serializer;
             this.stringEncoder = stringEncoder;
             this.sourceType = sourceType;
-            this.targetType = new Net.Vpc.Upa.Types.StringType(null, 0, max == null ? ((int)(255)) : (max).Value, sourceType.IsNullable());
+            this.targetType = new Net.Vpc.Upa.Types.StringType(null, 0, max == null ? ((Net.Vpc.Upa.Types.DataType)(255)) : max, sourceType.IsNullable());
         }
 
         public virtual object TransformValue(object @value) {

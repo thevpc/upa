@@ -9,7 +9,7 @@ import net.vpc.upa.Entity;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface EntityConfigurator {
     void install(Entity e);

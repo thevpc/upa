@@ -56,7 +56,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         static Base64(){
             for (int i = 0; i < BASELENGTH; i++) {
-                base64Alphabet[i] = -1;
+                base64Alphabet[i] = ((byte)127);
             }
             for (int i = 'Z'; i >= 'A'; i--) {
                 base64Alphabet[i] = (byte) (i - 'A');
@@ -86,19 +86,23 @@ namespace Net.Vpc.Upa.Impl.Util
             lookUpBase64Alphabet[63] = (char) '/';
         }
 
-        protected internal static bool IsWhiteSpace(char octect) {
-            return (octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9);
+        public static void Main(string[] args) {
+            System.Console.Out.WriteLine("");
         }
 
-        protected internal static bool IsPad(char octect) {
+        internal static bool IsWhiteSpace(char octect) {
+            return (octect == ((char)0x20) || octect == ((char)0xd) || octect == ((char)0xa) || octect == ((char)0x9));
+        }
+
+        internal static bool IsPad(char octect) {
             return (octect == PAD);
         }
 
-        protected internal static bool IsData(char octect) {
+        internal static bool IsData(char octect) {
             return (base64Alphabet[octect] != -1);
         }
 
-        protected internal static bool IsBase64(char octect) {
+        internal static bool IsBase64(char octect) {
             return (IsWhiteSpace(octect) || IsPad(octect) || IsData(octect));
         }
 
@@ -141,20 +145,20 @@ namespace Net.Vpc.Upa.Impl.Util
                     if (fDebug) {
                         System.Console.Out.WriteLine("b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
                     }
-                    l = (byte) (b2 & 0x0f);
-                    k = (byte) (b1 & 0x03);
-                    byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
-                    byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
-                    byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
+                    l = (byte) (b2 & ((byte)0x0f));
+                    k = (byte) (b1 & ((byte)0x03));
+                    byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> ((byte)2)) : (byte) ((b1) >> ((byte)2) ^ 0xc0);
+                    byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> ((byte)4)) : (byte) ((b2) >> ((byte)4) ^ 0xf0);
+                    byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> ((byte)6)) : (byte) ((b3) >> ((byte)6) ^ 0xfc);
                     if (fDebug) {
                         System.Console.Out.WriteLine("val2 = " + val2);
-                        System.Console.Out.WriteLine("k4   = " + (k << 4));
-                        System.Console.Out.WriteLine("vak  = " + (val2 | (k << 4)));
+                        System.Console.Out.WriteLine("k4   = " + (k << ((byte)4)));
+                        System.Console.Out.WriteLine("vak  = " + (val2 | (k << ((byte)4))));
                     }
                     encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
-                    encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
-                    encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << 2) | val3];
-                    encodedData[encodedIndex++] = lookUpBase64Alphabet[b3 & 0x3f];
+                    encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << ((byte)4))];
+                    encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << ((byte)2)) | val3];
+                    encodedData[encodedIndex++] = lookUpBase64Alphabet[b3 & ((byte)0x3f)];
                     i++;
                 }
                 encodedData[encodedIndex++] = ((char)0xa);
@@ -166,44 +170,44 @@ namespace Net.Vpc.Upa.Impl.Util
                 if (fDebug) {
                     System.Console.Out.WriteLine("b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
                 }
-                l = (byte) (b2 & 0x0f);
-                k = (byte) (b1 & 0x03);
-                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
-                byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
-                byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
+                l = (byte) (b2 & ((byte)0x0f));
+                k = (byte) (b1 & ((byte)0x03));
+                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> ((byte)2)) : (byte) ((b1) >> ((byte)2) ^ 0xc0);
+                byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> ((byte)4)) : (byte) ((b2) >> ((byte)4) ^ 0xf0);
+                byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> ((byte)6)) : (byte) ((b3) >> ((byte)6) ^ 0xfc);
                 if (fDebug) {
                     System.Console.Out.WriteLine("val2 = " + val2);
-                    System.Console.Out.WriteLine("k4   = " + (k << 4));
-                    System.Console.Out.WriteLine("vak  = " + (val2 | (k << 4)));
+                    System.Console.Out.WriteLine("k4   = " + (k << ((byte)4)));
+                    System.Console.Out.WriteLine("vak  = " + (val2 | (k << ((byte)4))));
                 }
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << 2) | val3];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[b3 & 0x3f];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << ((byte)4))];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << ((byte)2)) | val3];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[b3 & ((byte)0x3f)];
             }
             // form integral number of 6-bit groups
             if (fewerThan24bits == EIGHTBIT) {
                 b1 = binaryData[dataIndex];
-                k = (byte) (b1 & 0x03);
+                k = (byte) (b1 & ((byte)0x03));
                 if (fDebug) {
                     System.Console.Out.WriteLine("b1=" + b1);
-                    System.Console.Out.WriteLine("b1<<2 = " + (b1 >> 2));
+                    System.Console.Out.WriteLine("b1<<2 = " + (b1 >> ((byte)2)));
                 }
-                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
+                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> ((byte)2)) : (byte) ((b1) >> ((byte)2) ^ 0xc0);
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[k << 4];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[k << ((byte)4)];
                 encodedData[encodedIndex++] = PAD;
                 encodedData[encodedIndex++] = PAD;
             } else if (fewerThan24bits == SIXTEENBIT) {
                 b1 = binaryData[dataIndex];
                 b2 = binaryData[dataIndex + 1];
-                l = (byte) (b2 & 0x0f);
-                k = (byte) (b1 & 0x03);
-                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
-                byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
+                l = (byte) (b2 & ((byte)0x0f));
+                k = (byte) (b1 & ((byte)0x03));
+                byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> ((byte)2)) : (byte) ((b1) >> ((byte)2) ^ 0xc0);
+                byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> ((byte)4)) : (byte) ((b2) >> ((byte)4) ^ 0xf0);
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
-                encodedData[encodedIndex++] = lookUpBase64Alphabet[l << 2];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << ((byte)4))];
+                encodedData[encodedIndex++] = lookUpBase64Alphabet[l << ((byte)2)];
                 encodedData[encodedIndex++] = PAD;
             }
             encodedData[encodedIndex] = ((char)0xa);
@@ -255,9 +259,9 @@ namespace Net.Vpc.Upa.Impl.Util
                 b2 = base64Alphabet[d2];
                 b3 = base64Alphabet[d3];
                 b4 = base64Alphabet[d4];
-                decodedData[encodedIndex++] = (byte) (b1 << 2 | b2 >> 4);
-                decodedData[encodedIndex++] = (byte) (((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf));
-                decodedData[encodedIndex++] = (byte) (b3 << 6 | b4);
+                decodedData[encodedIndex++] = (byte) (b1 << ((byte)2) | b2 >> ((byte)4));
+                decodedData[encodedIndex++] = (byte) (((b2 & ((byte)0xf)) << 4) | ((b3 >> ((byte)2)) & 0xf));
+                decodedData[encodedIndex++] = (byte) (b3 << ((byte)6) | b4);
             }
             if (!IsData((d1 = base64Data[dataIndex++])) || !IsData((d2 = base64Data[dataIndex++]))) {
                 return null;
@@ -271,23 +275,23 @@ namespace Net.Vpc.Upa.Impl.Util
                 //Check if they are PAD characters
                 if (IsPad(d3) && IsPad(d4)) {
                     //Two PAD e.g. 3c[Pad][Pad]
-                    if ((b2 & 0xf) != 0) {
+                    if ((b2 & ((byte)0xf)) != 0) {
                         return null;
                     }
                     byte[] tmp = new byte[i * 3 + 1];
                     System.Array.Copy(decodedData, 0, tmp, 0, i * 3);
-                    tmp[encodedIndex] = (byte) (b1 << 2 | b2 >> 4);
+                    tmp[encodedIndex] = (byte) (b1 << ((byte)2) | b2 >> ((byte)4));
                     return tmp;
                 } else if (!IsPad(d3) && IsPad(d4)) {
                     //One PAD  e.g. 3cQ[Pad]
                     b3 = base64Alphabet[d3];
-                    if ((b3 & 0x3) != 0) {
+                    if ((b3 & ((byte)0x3)) != 0) {
                         return null;
                     }
                     byte[] tmp = new byte[i * 3 + 2];
                     System.Array.Copy(decodedData, 0, tmp, 0, i * 3);
-                    tmp[encodedIndex++] = (byte) (b1 << 2 | b2 >> 4);
-                    tmp[encodedIndex] = (byte) (((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf));
+                    tmp[encodedIndex++] = (byte) (b1 << ((byte)2) | b2 >> ((byte)4));
+                    tmp[encodedIndex] = (byte) (((b2 & ((byte)0xf)) << 4) | ((b3 >> ((byte)2)) & 0xf));
                     return tmp;
                 } else {
                     return null;
@@ -296,9 +300,9 @@ namespace Net.Vpc.Upa.Impl.Util
                 //No PAD e.g 3cQl
                 b3 = base64Alphabet[d3];
                 b4 = base64Alphabet[d4];
-                decodedData[encodedIndex++] = (byte) (b1 << 2 | b2 >> 4);
-                decodedData[encodedIndex++] = (byte) (((b2 & 0xf) << 4) | ((b3 >> 2) & 0xf));
-                decodedData[encodedIndex++] = (byte) (b3 << 6 | b4);
+                decodedData[encodedIndex++] = (byte) (b1 << ((byte)2) | b2 >> ((byte)4));
+                decodedData[encodedIndex++] = (byte) (((b2 & ((byte)0xf)) << 4) | ((b3 >> ((byte)2)) & 0xf));
+                decodedData[encodedIndex++] = (byte) (b3 << ((byte)6) | b4);
             }
             return decodedData;
         }
@@ -309,7 +313,7 @@ namespace Net.Vpc.Upa.Impl.Util
              * @param data the byte array of base64 data (with WS)
              * @return the new length
              */
-        protected internal static int RemoveWhiteSpace(char[] data) {
+        internal static int RemoveWhiteSpace(char[] data) {
             if (data == null) {
                 return 0;
             }

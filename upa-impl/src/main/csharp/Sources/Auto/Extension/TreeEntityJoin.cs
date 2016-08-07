@@ -28,11 +28,11 @@ namespace Net.Vpc.Upa.Impl.Extension
 
         }
 
-        public TreeEntityJoin(Net.Vpc.Upa.Expressions.NameOrSelect table, string var1, Net.Vpc.Upa.Expressions.Expression expression)  : this(table, var1, null, expression){
+        public TreeEntityJoin(Net.Vpc.Upa.Expressions.NameOrQuery table, string var1, Net.Vpc.Upa.Expressions.Expression expression)  : this(table, var1, null, expression){
 
         }
 
-        public TreeEntityJoin(Net.Vpc.Upa.Expressions.NameOrSelect table, string var1, string var2, Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, table, var1, new Net.Vpc.Upa.Impl.Extension.TreeEntityJoinCondition(((Net.Vpc.Upa.Expressions.EntityName) table).GetName(), var1, var2 == null ? var2 + "_ancestor" : var2, expression)){
+        public TreeEntityJoin(Net.Vpc.Upa.Expressions.NameOrQuery table, string var1, string var2, Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.JoinType.INNER_JOIN, table, var1, new Net.Vpc.Upa.Impl.Extension.TreeEntityJoinCondition(((Net.Vpc.Upa.Expressions.EntityName) table).GetName(), var1, var2 == null ? var2 + "_ancestor" : var2, expression)){
 
         }
     }

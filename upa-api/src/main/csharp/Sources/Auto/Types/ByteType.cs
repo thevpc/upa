@@ -63,6 +63,9 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return;
             }
+            if (!(@value is byte?)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
+            }
             if (GetMin() != null && ((byte?) @value).Value.CompareTo(GetMin()) < 0) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("NumberTooLow", name, description, @value, GetMin());
             }

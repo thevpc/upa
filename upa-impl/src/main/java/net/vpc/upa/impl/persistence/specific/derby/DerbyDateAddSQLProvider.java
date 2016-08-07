@@ -53,7 +53,7 @@ class DerbyDateAddSQLProvider extends DerbyFunctionSQLProvider {
             return "{fn TIMESTAMPADD(SQL_TSI_MINUTE," + count + "+" + date1 + ")}";
         } else if ("second".equals(format)) {
             return "{fn TIMESTAMPADD(SQL_TSI_SECOND," + count + "+" + date1 + ")}";
-        } else if ("milli_second".equals(format)) {
+        } else if ("millisecond".equals(format)) {
             return "{fn TIMESTAMPADD(SQL_TSI_FRAC_SECOND," + count + "+" + date1 + ")}";
         } else {
             throw new RuntimeException("Adapter : incorrect format '" + format + "' for function 'dateadd'");

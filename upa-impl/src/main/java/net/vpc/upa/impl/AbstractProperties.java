@@ -263,41 +263,5 @@ public abstract class AbstractProperties implements Properties {
         setAll(other.toMap(), keys);
     }
 
-    //////////////////////////////////////
-    public Object eval(String key) {
-        if (key == null || !(key instanceof String)) {
-            return key;
-        }
-        final List<String> vars = StringUtils.parseVarsList(key);
-        switch (vars.size()) {
-            case 0: {
-                return key;
-            }
-            case 1: {
-                String v = vars.get(0);
-                Object ov = getObject(v);
-                if (ov != null || !(ov instanceof String)) {
-                    return ov;
-                }
-                return eval((String) v);
-            }
-            default: {
-                String s=key;
-                Set<String> vars2 = new LinkedHashSet<String>(vars);
-                for (String v : vars2) {
-                    Object ov = getObject(v);
-                    if (ov == null) {
-                        ov="";
-                    }else if(!(ov instanceof String)){
-                        ov=String.valueOf(ov);
-                    }else{
-                      ov=eval((String) v); 
-                    }
-                    s = s.replaceAll("\\$\\{" + v + "\\}", String.valueOf(ov));
-                }
-                return s;
-            }
-        }
-    }
 
 }

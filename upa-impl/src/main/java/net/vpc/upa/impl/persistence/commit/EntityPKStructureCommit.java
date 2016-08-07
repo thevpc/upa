@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceState;
 import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.persistence.ColumnDesc;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
@@ -39,7 +39,7 @@ public class EntityPKStructureCommit extends StructureCommit {
         if (entity.getPrimaryFields().size() > 0) {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
             UConnection b = executionContext.getConnection();
-            for (PrimitiveField primaryField : entity.getPrimitiveFields(DefaultEntity.ID)) {
+            for (PrimitiveField primaryField : entity.getPrimitiveFields(FieldFilters.id())) {
                 ColumnDesc cd = store.loadColumnDesc(primaryField, b.getMetadataAccessibleConnection());
                 if (cd.isNullable()!=null && cd.isNullable()) {
                     b.executeNonQuery(store.getAlterTableAlterColumnNullStatement(primaryField, false), null, null);

@@ -21,11 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class ByteMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            byte n = resultSet.GetByte(index);
-            if (n == 0 && resultSet.WasNull()) {
-                return null;
-            }
-            return n;
+            
+            return null;
         }
 
 
@@ -41,11 +38,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.INTEGER);
-            } else {
-                preparedStatement.SetByte(i, System.Convert.ToByte(((object) @object)));
-            }
+            
         }
 
         public ByteMarshaller() {

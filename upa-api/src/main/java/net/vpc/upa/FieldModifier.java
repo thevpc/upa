@@ -90,7 +90,7 @@ public enum FieldModifier {
     SELECT,
     SELECT_DEFAULT,
     SELECT_LIVE,
-    SELECT_COMPILED,
+    SELECT_STORED,
     SELECT_CUSTOM,
 
     REFERENCED,

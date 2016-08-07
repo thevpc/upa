@@ -23,22 +23,16 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
     * To change this template use File | Settings | File Templates.*/
     public class OrExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager;
-
-        public OrExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager) {
-            this.expressionTranslationManager = expressionTranslationManager;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileOr((Net.Vpc.Upa.Expressions.Or) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileOr((Net.Vpc.Upa.Expressions.Or) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOr CompileOr(Net.Vpc.Upa.Expressions.Or v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOr CompileOr(Net.Vpc.Upa.Expressions.Or v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left = expressionTranslationManager.CompileAny(v.GetLeft(), declarations);
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right = expressionTranslationManager.CompileAny(v.GetRight(), declarations);
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression left = manager.TranslateAny(v.GetLeft(), declarations);
+            Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression right = manager.TranslateAny(v.GetRight(), declarations);
             Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOr s = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledOr(left, right);
             //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
             return s;

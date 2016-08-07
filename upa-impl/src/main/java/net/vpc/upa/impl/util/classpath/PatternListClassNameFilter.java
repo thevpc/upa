@@ -2,8 +2,8 @@ package net.vpc.upa.impl.util.classpath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import net.vpc.upa.impl.config.ClassNameFilter;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -11,11 +11,11 @@ import net.vpc.upa.impl.config.ClassNameFilter;
  */
 public class PatternListClassNameFilter implements ClassNameFilter {
 
-    private Pattern[] patterns;
+    private PortablePattern[] patterns;
     private String[] userPatterns;
 
     public PatternListClassNameFilter(String[] filter) {
-        List<Pattern> patternsList = new ArrayList<Pattern>();
+        List<PortablePattern> patternsList = new ArrayList<PortablePattern>();
         List<String> userPatternsList = new ArrayList<String>();
         if (filter != null) {
             for (int i = 0; i < filter.length; i++) {
@@ -27,12 +27,12 @@ public class PatternListClassNameFilter implements ClassNameFilter {
                     }
                 }
                 if (f != null) {
-                    patternsList.add(Pattern.compile(convert(f)));
+                    patternsList.add(new PortablePattern(convert(f)));
                     userPatternsList.add(f);
                 }
             }
         }
-        patterns = patternsList.toArray(new Pattern[patternsList.size()]);
+        patterns = patternsList.toArray(new PortablePattern[patternsList.size()]);
         userPatterns = userPatternsList.toArray(new String[userPatternsList.size()]);
     }
 
@@ -97,7 +97,7 @@ public class PatternListClassNameFilter implements ClassNameFilter {
         if (patterns == null || patterns.length == 0) {
             return true;
         }
-        for (Pattern pattern : patterns) {
+        for (PortablePattern pattern : patterns) {
             if (pattern == null || pattern.matcher(cls).matches()) {
                 return true;
             }
@@ -105,7 +105,7 @@ public class PatternListClassNameFilter implements ClassNameFilter {
         return false;
     }
 
-    public Pattern[] getPatterns() {
+    public PortablePattern[] getPatterns() {
         return patterns;
     }
 

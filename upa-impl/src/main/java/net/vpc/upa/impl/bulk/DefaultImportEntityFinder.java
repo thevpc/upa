@@ -8,12 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Field;
-import net.vpc.upa.Index;
-import net.vpc.upa.Key;
-import net.vpc.upa.Relationship;
-import net.vpc.upa.RelationshipRole;
+
+import net.vpc.upa.*;
 import net.vpc.upa.bulk.ImportEntityFinder;
 import net.vpc.upa.bulk.ImportEntityMapper;
 import net.vpc.upa.expressions.And;
@@ -26,6 +22,7 @@ import net.vpc.upa.extensions.HierarchyExtension;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEntityMapper {
 
     public Map<String, Object> valueToMap(Entity entity, Object value) {
@@ -83,7 +80,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                     Equals e = new Equals(new Var(new Var(entity.getName()), f), values.get(f));
                     expr = (expr == null) ? e : new And(expr, e);
                 }
-                return entity.createQueryBuilder().byExpression(expr).getEntity();
+                return entity.createQueryBuilder().byExpression(expr).getFirstResultOrNull();
             }
             return null;
         } else {
@@ -103,7 +100,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                 Field field = primaryFields.get(index);
                 expr = new And(expr, new Equals(new Var(new Var(entity.getName()), field.getName()), entityToKey == null ? null : entityToKey.getObjectAt(index)));
             }
-            return entity.createQueryBuilder().byExpression(expr).getEntity();
+            return entity.createQueryBuilder().byExpression(expr).getFirstResultOrNull();
         }
     }
 

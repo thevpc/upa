@@ -21,11 +21,11 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      */
     public class PatternListPathFilter : Net.Vpc.Upa.Impl.Config.ClassNameFilter {
 
-        internal System.Text.RegularExpressions.Regex[] patterns;
+        internal Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] patterns;
 
         public PatternListPathFilter(string[] filter) {
             if (filter != null) {
-                patterns = new System.Text.RegularExpressions.Regex[filter.Length];
+                patterns = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[filter.Length];
                 for (int i = 0; i < filter.Length; i++) {
                     string f = filter[i];
                     if (f != null) {
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                         }
                     }
                     if (f != null) {
-                        patterns[i] = new System.Text.RegularExpressions.Regex(Convert(f));
+                        patterns[i] = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(Convert(f));
                     }
                 }
             }
@@ -87,8 +87,8 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             if (patterns == null || patterns.Length == 0) {
                 return true;
             }
-            foreach (System.Text.RegularExpressions.Regex pattern in patterns) {
-                if (pattern == null || (pattern.Match(cls)).Success) {
+            foreach (Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern in patterns) {
+                if (pattern == null || pattern.Matcher(cls).Matches()) {
                     return true;
                 }
             }

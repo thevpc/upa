@@ -54,12 +54,12 @@ public final class Update extends DefaultEntityStatement implements NonQueryStat
     private String entityAlias;
 
     public Update() {
-        fields = new ArrayList<VarVal>();
+        fields = new ArrayList<VarVal>(5);
     }
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(fields.size()+2);
         if (entity != null) {
             list.add(new TaggedExpression(entity, ENTITY));
         }
@@ -229,7 +229,7 @@ public final class Update extends DefaultEntityStatement implements NonQueryStat
             }
             sb.append(field);
             sb.append("=");
-            if(fieldValue instanceof Function
+            if(fieldValue instanceof FunctionExpression
                     || fieldValue instanceof Param
                     || fieldValue instanceof Literal
                     || fieldValue instanceof Var

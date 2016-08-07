@@ -53,7 +53,7 @@ public class Uplet extends DefaultExpression {
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> all = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> all = new ArrayList<TaggedExpression>(expressions.length);
         for (int i = 0; i < expressions.length; i++) {
             all.add(new TaggedExpression(expressions[i], new IndexedTag("#", i)));
         }

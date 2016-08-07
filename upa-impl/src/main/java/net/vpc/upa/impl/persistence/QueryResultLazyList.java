@@ -41,7 +41,7 @@ public abstract class QueryResultLazyList<R>  extends LazyList<R> implements Que
     }
 
     public void loadAll(){
-        size();
+        ensureLoadAll();
     }
 
 }

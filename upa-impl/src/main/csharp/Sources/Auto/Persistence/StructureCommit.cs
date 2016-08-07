@@ -33,13 +33,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
             this.typedObject = new Net.Vpc.Upa.Impl.Persistence.ObjectAndType(cls, spec);
         }
 
-        protected internal virtual Net.Vpc.Upa.PersistenceState GetObjectStatus() {
-            return persistenceUnitCommitManager.persistenceStore.GetPersistenceState(@object, typedObject.GetSpec());
+        protected internal virtual Net.Vpc.Upa.PersistenceState GetObjectStatus(Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+            return persistenceUnitCommitManager.persistenceStore.GetPersistenceState(@object, typedObject.GetSpec(), entityExecutionContext);
         }
 
         public virtual bool Commit(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Persistence.StructureStrategy option = persistenceUnitCommitManager.persistenceStore.GetConnectionProfile().GetStructureStrategy();
-            Net.Vpc.Upa.PersistenceState status = GetObjectStatus();
+            Net.Vpc.Upa.PersistenceState status = GetObjectStatus(executionContext);
             switch(option) {
                 case Net.Vpc.Upa.Persistence.StructureStrategy.DROP:
                 case Net.Vpc.Upa.Persistence.StructureStrategy.CREATE:
@@ -58,12 +58,6 @@ namespace Net.Vpc.Upa.Impl.Persistence
                                     try {
                                         Persist(executionContext, status);
                                     } catch (System.Exception e) {
-                                        Net.Vpc.Upa.PersistenceState s2 = GetObjectStatus();
-                                        try {
-                                            Persist(executionContext, status);
-                                        } catch (System.Exception e2) {
-                                        }
-                                        //
                                         throw new Net.Vpc.Upa.Exceptions.UPAException(e, new Net.Vpc.Upa.Types.I18NString("CommitFailed"));
                                     }
                                     @object.GetProperties().SetString("persistence.PersistenceAction", "ADD");

@@ -22,8 +22,6 @@ namespace Net.Vpc.Upa.Impl
 
         private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.DefaultPersistenceUnit)).FullName);
 
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter ID = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.ID));
-
         public static readonly Net.Vpc.Upa.NamingStrategy CASE_SENSITIVE_COMPARATOR = new Net.Vpc.Upa.Impl.CaseSensitiveNamingStrategy();
 
         public static readonly Net.Vpc.Upa.NamingStrategy CASE_INSENSITIVE_COMPARATOR = new Net.Vpc.Upa.Impl.CaseInsensitiveNamingStrategy();
@@ -98,8 +96,6 @@ namespace Net.Vpc.Upa.Impl
 
         private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QLParameterProcessor> parameterProcessors = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QLParameterProcessor>();
 
-        private System.Collections.Generic.IDictionary<string , System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.Trigger>> triggers = new System.Collections.Generic.Dictionary<string , System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.Trigger>>();
-
         public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.OnHoldCommitAction> commitModelActions = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.OnHoldCommitAction>();
 
         public System.Collections.Generic.IList<Net.Vpc.Upa.Impl.OnHoldCommitAction> commitStorageActions = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.OnHoldCommitAction>();
@@ -129,6 +125,8 @@ namespace Net.Vpc.Upa.Impl
         private Net.Vpc.Upa.Impl.Config.Decorations.DecorationRepository decorationRepository;
 
         private int triggerAnonymousNameIndex = 1;
+
+        private System.Collections.Generic.IDictionary<string , object> defaultHints;
 
         public DefaultPersistenceUnit() {
         }
@@ -163,10 +161,10 @@ namespace Net.Vpc.Upa.Impl
             AddDefinitionListener(new Net.Vpc.Upa.Impl.PostponeCommitHandler(), true);
             AddPersistenceUnitListener(new Net.Vpc.Upa.Impl.UPASystemEntitiesTrigger(this));
             //add default MD5 function
-            GetExpressionManager().AddFunction("MD5", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Uql.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5));
-            GetExpressionManager().AddFunction("SHA1", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Uql.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA1));
-            GetExpressionManager().AddFunction("SHA256", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Uql.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA256));
-            GetExpressionManager().AddFunction("HASH", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Uql.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5));
+            GetExpressionManager().AddFunction("MD5", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Eval.Functions.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5));
+            GetExpressionManager().AddFunction("SHA1", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Eval.Functions.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA1));
+            GetExpressionManager().AddFunction("SHA256", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Eval.Functions.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.SHA256));
+            GetExpressionManager().AddFunction("HASH", Net.Vpc.Upa.Types.StringType.UNLIMITED, new Net.Vpc.Upa.Impl.Eval.Functions.PasswordQLFunction(Net.Vpc.Upa.Impl.Transform.DefaultPasswordStrategy.MD5));
         }
 
         private void Invalidate() {
@@ -183,7 +181,7 @@ namespace Net.Vpc.Upa.Impl
                 throw new System.NullReferenceException();
             }
             if (name.Contains("/")) {
-                throw new System.ArgumentException ("Name cannot contain '/'");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Name cannot contain '/'");
             }
             string[] canonicalPathArray = Net.Vpc.Upa.Impl.Util.UPAUtils.GetCanonicalPathArray(parentPath);
             Net.Vpc.Upa.Package parentModule = null;
@@ -332,8 +330,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         protected internal virtual void CommitModelChanges() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup);
-            persistenceUnitListenerManager.FireOnModelChanged(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+            persistenceUnitListenerManager.FireOnModelChanged(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.BEFORE));
             foreach (Net.Vpc.Upa.Entity entity in GetEntities()) {
                 entity.CommitModelChanges();
                 System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.EntityExtension> extensionList = entity.GetExtensions();
@@ -349,6 +346,11 @@ namespace Net.Vpc.Upa.Impl
                 r.CommitModelChanged();
             }
             //            cache_relationsByName.put(r.getName(), r);
+            foreach (Net.Vpc.Upa.Entity entity in GetEntities()) {
+                if (entity is Net.Vpc.Upa.Impl.DefaultEntity) {
+                    ((Net.Vpc.Upa.Impl.DefaultEntity) entity).CommitExpressionModelChanges();
+                }
+            }
             System.Collections.Generic.IList<Net.Vpc.Upa.Impl.OnHoldCommitAction> model = commitModelActions;
             if ((model).Count > 0) {
                 Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(model, null);
@@ -357,7 +359,7 @@ namespace Net.Vpc.Upa.Impl
                     commitStorageActions.Add(next);
                 }
                 model.Clear();
-                persistenceUnitListenerManager.FireOnModelChanged(@event, Net.Vpc.Upa.EventPhase.AFTER);
+                persistenceUnitListenerManager.FireOnModelChanged(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.AFTER));
             }
         }
 
@@ -398,7 +400,7 @@ namespace Net.Vpc.Upa.Impl
              */
 
         public virtual void AddTrigger(string triggerName, Net.Vpc.Upa.Callbacks.EntityInterceptor interceptor, string entityNamePattern, bool system) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Impl.Config.EntityConfiguratorProcessor.ConfigureTracker(this, new Net.Vpc.Upa.Impl.Util.SimpleEntityFilter(new Net.Vpc.Upa.Impl.Util.EqualsStringFilter(entityNamePattern, false, false), system), new Net.Vpc.Upa.Impl.Config.EntityInterceptorEntityConfigurator(interceptor, triggerName));
+            Net.Vpc.Upa.Impl.Config.EntityConfiguratorProcessor.ConfigureTracker(this, new Net.Vpc.Upa.Impl.Util.SimpleEntityFilter(Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(entityNamePattern) ? null : new Net.Vpc.Upa.Impl.Util.EqualsStringFilter(entityNamePattern, false, false), system), new Net.Vpc.Upa.Impl.Config.EntityInterceptorEntityConfigurator(interceptor, triggerName));
         }
 
 
@@ -416,17 +418,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callbacks.Trigger> GetTriggers(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Callbacks.Trigger>((GetTriggersMap(entityName)).Values);
-        }
-
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.Trigger> GetTriggersMap(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.Trigger> tt = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Callbacks.Trigger>>(triggers,entityName);
-            if (tt == null) {
-                //            getEntity(entityName);
-                tt = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Callbacks.Trigger>();
-                triggers[entityName]=tt;
-            }
-            return tt;
+            return GetEntity(entityName).GetTriggers();
         }
 
 
@@ -460,7 +452,7 @@ namespace Net.Vpc.Upa.Impl
             t.SetName(desc.GetName());
             t.SetShortName(desc.GetShortName());
             if (desc.GetProperties() != null) {
-                foreach (System.Collections.Generic.KeyValuePair<string , object> e in desc.GetProperties()) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(desc.GetProperties())) {
                     t.GetProperties().SetObject((e).Key, (e).Value);
                 }
             }
@@ -495,7 +487,7 @@ namespace Net.Vpc.Upa.Impl
             if (entitySpecs != null) {
                 foreach (Net.Vpc.Upa.Extensions.EntityExtensionDefinition s in entitySpecs) {
                     bool ok = false;
-                    foreach (System.Type ext in new System.Type[] { typeof(Net.Vpc.Upa.Extensions.ViewEntityExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.SingletonExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.UnionEntityExtensionDefinition) }) {
+                    foreach (System.Type ext in new System.Collections.Generic.ICollection<System.Type>[] { typeof(Net.Vpc.Upa.Extensions.ViewEntityExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.SingletonExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.FilterEntityExtensionDefinition), typeof(Net.Vpc.Upa.Extensions.UnionEntityExtensionDefinition) }) {
                         if (ext.IsInstanceOfType(s)) {
                             ok = true;
                             t.AddExtensionDefinition(ext, s);
@@ -570,17 +562,15 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.RelationshipUpdateType detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.FLAT;
             if (relationDescriptor.GetBaseField() != null) {
                 Net.Vpc.Upa.Field baseField = GetEntity(detailEntityName).GetField(relationDescriptor.GetBaseField());
-                if (baseField.GetDataType() is Net.Vpc.Upa.Types.EntityType) {
+                if (baseField.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType) {
                     detailEntityFieldName = baseField.GetName();
                     manyToOneField = baseField;
                     detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.COMPOSED;
-                } else {
-                    if (relationDescriptor.GetMappedTo() != null && relationDescriptor.GetMappedTo().Length > 0) {
-                        if (relationDescriptor.GetMappedTo().Length > 1) {
-                            throw new System.ArgumentException ("mappedTo cannot only apply to single Entity Field");
-                        }
-                        detailEntityFieldName = GetEntity(detailEntityName).GetField(relationDescriptor.GetMappedTo()[0]).GetName();
+                } else if (relationDescriptor.GetMappedTo() != null && relationDescriptor.GetMappedTo().Length > 0) {
+                    if (relationDescriptor.GetMappedTo().Length > 1) {
+                        throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                     }
+                    detailEntityFieldName = GetEntity(detailEntityName).GetField(relationDescriptor.GetMappedTo()[0]).GetName();
                 }
             } else {
                 detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.FLAT;
@@ -601,12 +591,10 @@ namespace Net.Vpc.Upa.Impl
             if (filter != null && filter is Net.Vpc.Upa.Expressions.UserExpression) {
                 Net.Vpc.Upa.Expressions.UserExpression ff = (Net.Vpc.Upa.Expressions.UserExpression) filter;
                 string expression = ff.GetExpression();
-                if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(expression)) {
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(expression)) {
                     filter = null;
-                } else {
-                    if (ff.GetParameters().Count==0) {
-                        filter = GetExpressionManager().ParseExpression(expression);
-                    }
+                } else if ((ff.GetParameters().Count==0)) {
+                    filter = GetExpressionManager().ParseExpression(expression);
                 }
             }
             if (name == null) {
@@ -619,7 +607,7 @@ namespace Net.Vpc.Upa.Impl
                     }
                 }
             }
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), masterUpdateType)) {
+            if (!Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), masterUpdateType)) {
                 throw new Net.Vpc.Upa.Exceptions.UPAException("UnsupportedFeature", "MasterUpdateType");
             }
             if (masterEntityFieldName != null) {
@@ -627,15 +615,13 @@ namespace Net.Vpc.Upa.Impl
             }
             if (detailEntityFieldName == null) {
                 if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), detailUpdateType) && detailUpdateType != Net.Vpc.Upa.RelationshipUpdateType.FLAT) {
-                    throw new System.ArgumentException ("MissingDetailEntityFieldName");
+                    throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("MissingDetailEntityFieldName");
                 }
                 if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), detailUpdateType)) {
                     detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.FLAT;
                 }
-            } else {
-                if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), detailUpdateType)) {
-                    detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.COMPOSED;
-                }
+            } else if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipUpdateType>(typeof(Net.Vpc.Upa.RelationshipUpdateType), detailUpdateType)) {
+                detailUpdateType = Net.Vpc.Upa.RelationshipUpdateType.COMPOSED;
             }
             Net.Vpc.Upa.Relationship r = GetFactory().CreateObject<Net.Vpc.Upa.Relationship>(typeof(Net.Vpc.Upa.Relationship));
             Net.Vpc.Upa.Impl.Util.DefaultBeanAdapter adapter = Net.Vpc.Upa.Impl.Util.UPAUtils.PreparePreAdd(this, null, r, name);
@@ -650,15 +636,15 @@ namespace Net.Vpc.Upa.Impl
                 detailFields[i] = detailEntity.GetField(detailFieldNames[i]);
             }
             r.GetSourceRole().SetFields(detailFields);
-            r.SetRelationshipType(type == null ? Net.Vpc.Upa.RelationshipType.DEFAULT : type);
+            r.SetRelationshipType(type == default(Net.Vpc.Upa.RelationshipType) ? Net.Vpc.Upa.RelationshipType.DEFAULT : type);
             r.SetFilter(filter);
             r.SetNullable(nullable);
             if (detailEntityFieldName != null) {
                 Net.Vpc.Upa.Field detailEntityField = detailEntity.GetField(detailEntityFieldName);
                 r.GetSourceRole().SetEntityField(detailEntityField);
                 Net.Vpc.Upa.Types.DataType dt = detailEntityField.GetDataType();
-                if (dt is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType edt = (Net.Vpc.Upa.Types.EntityType) dt;
+                if (dt is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType edt = (Net.Vpc.Upa.Types.ManyToOneType) dt;
                     edt.SetRelationship(r);
                 }
             }
@@ -666,8 +652,8 @@ namespace Net.Vpc.Upa.Impl
                 Net.Vpc.Upa.Field masterEntityField = GetEntity(masterEntityName).GetField(masterEntityFieldName);
                 r.GetTargetRole().SetEntityField(masterEntityField);
                 Net.Vpc.Upa.Types.DataType dt = masterEntityField.GetDataType();
-                if (dt is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType edt = (Net.Vpc.Upa.Types.EntityType) dt;
+                if (dt is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType edt = (Net.Vpc.Upa.Types.ManyToOneType) dt;
                     edt.SetRelationship(r);
                 }
             }
@@ -675,7 +661,7 @@ namespace Net.Vpc.Upa.Impl
                 Net.Vpc.Upa.Impl.Extension.HierarchicalRelationshipSupport s = new Net.Vpc.Upa.Impl.Extension.HierarchicalRelationshipSupport(r);
                 r.SetHierarchyExtension(s);
                 string hierarchyPathField = relationDescriptor.GetHierarchyPathField();
-                if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(hierarchyPathField)) {
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(hierarchyPathField)) {
                     if (relationDescriptor.GetBaseField() == null) {
                         System.Text.StringBuilder n = new System.Text.StringBuilder();
                         foreach (Net.Vpc.Upa.Field detailField in detailFields) {
@@ -691,7 +677,7 @@ namespace Net.Vpc.Upa.Impl
                 }
                 s.SetHierarchyPathField(hierarchyPathField);
                 string hierarchySeparator = relationDescriptor.GetHierarchyPathSeparator();
-                if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(hierarchySeparator)) {
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(hierarchySeparator)) {
                     hierarchySeparator = "/";
                 }
                 s.SetHierarchyPathSeparator(hierarchySeparator);
@@ -710,7 +696,7 @@ namespace Net.Vpc.Upa.Impl
             //        }
             if (relationDescriptor.IsHierarchy()) {
                 Net.Vpc.Upa.Extensions.HierarchyExtension s = r.GetHierarchyExtension();
-                detailEntity.AddField(s.GetHierarchyPathField(), "system", Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM), null, null, new Net.Vpc.Upa.Types.StringType("PathFieldName", 0, 2048, true), -1);
+                detailEntity.AddField(s.GetHierarchyPathField(), "system", Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.SYSTEM), null, null, new Net.Vpc.Upa.Types.StringType("PathFieldName", 0, 2048, true), -1);
                 detailEntity.AddTrigger(detailEntity.GetName() + "_" + s.GetHierarchyPathField() + "_TRIGGER", new Net.Vpc.Upa.Impl.Extension.HierarchicalRelationshipDataInterceptor(r));
             }
             persistenceUnitListenerManager.ItemAdded(r, -1, null, Net.Vpc.Upa.EventPhase.AFTER);
@@ -755,36 +741,39 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual void Reset() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup());
-            persistenceUnitListenerManager.FireOnReset(@event, Net.Vpc.Upa.EventPhase.BEFORE);
-            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> ops = GetEntities(new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptClear(true));
-            GetPersistenceStore().SetNativeConstraintsEnabled(this, false);
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = GetPersistenceStore().CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.RESET);
-            Clear();
-            foreach (Net.Vpc.Upa.Entity entity in ops) {
-                entity.Initialize();
-            }
-            GetPersistenceStore().SetNativeConstraintsEnabled(this, true);
-            UpdateFormulas();
-            persistenceUnitListenerManager.FireOnReset(@event, Net.Vpc.Upa.EventPhase.AFTER);
+            Reset(defaultHints);
         }
 
 
-        public virtual void Clear() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void Reset(System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            persistenceUnitListenerManager.FireOnReset(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup(), Net.Vpc.Upa.EventPhase.BEFORE));
             System.Collections.Generic.IList<Net.Vpc.Upa.Entity> ops = GetEntities(new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptClear(true));
+            Clear();
+            foreach (Net.Vpc.Upa.Entity entity in ops) {
+                entity.Initialize(hints);
+            }
+            UpdateFormulas(null, hints);
+            persistenceUnitListenerManager.FireOnReset(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup(), Net.Vpc.Upa.EventPhase.AFTER));
+        }
+
+        public virtual void Clear() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Clear(null, defaultHints);
+        }
+
+
+        public virtual void Clear(Net.Vpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (entityFilter == null) {
+                entityFilter = new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptClear(true);
+            }
+            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> ops = GetEntities(entityFilter);
             GetPersistenceStore().SetNativeConstraintsEnabled(this, false);
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = GetPersistenceStore().CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CLEAR);
-            Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup());
-            persistenceUnitListenerManager.FireOnClear(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CLEAR, hints);
+            persistenceUnitListenerManager.FireOnClear(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup(), Net.Vpc.Upa.EventPhase.BEFORE));
             foreach (Net.Vpc.Upa.Entity entity in ops) {
                 entity.ClearCore(context);
             }
-            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> entities1 = GetEntities();
-            foreach (Net.Vpc.Upa.Entity entity in entities1) {
-                entity.Initialize();
-            }
             GetPersistenceStore().SetNativeConstraintsEnabled(this, true);
-            persistenceUnitListenerManager.FireOnClear(@event, Net.Vpc.Upa.EventPhase.AFTER);
+            persistenceUnitListenerManager.FireOnClear(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, GetPersistenceGroup(), Net.Vpc.Upa.EventPhase.AFTER));
         }
 
 
@@ -833,7 +822,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsForTarget(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsByTarget(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> v = new System.Collections.Generic.List<Net.Vpc.Upa.Relationship>();
             foreach (Net.Vpc.Upa.Relationship r in GetRelationships()) {
                 if (r.GetTargetRole().GetEntity().Equals(entity)) {
@@ -844,7 +833,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsForSource(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsBySource(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> v = new System.Collections.Generic.List<Net.Vpc.Upa.Relationship>();
             foreach (Net.Vpc.Upa.Relationship r in GetRelationships()) {
                 if (r.GetSourceRole().GetEntity().Equals(entity)) {
@@ -856,12 +845,15 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual void UpdateFormulas() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Entity> entities = GetEntities(new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptValidatable(true));
-            UpdateFormulas(entities.ToArray());
+            UpdateFormulas(new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptValidatable(true), defaultHints);
         }
 
 
-        public virtual void UpdateFormulas(Net.Vpc.Upa.Entity[] entities) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void UpdateFormulas(Net.Vpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (entityFilter == null) {
+                entityFilter = new Net.Vpc.Upa.Filters.DefaultEntityFilter().SetAcceptValidatable(true);
+            }
+            persistenceUnitListenerManager.FireOnUpdateFormulas(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.BEFORE));
             //        Log.method();
             //        if (monitor != null) {
             //            monitor.setMax(entities.length);
@@ -875,33 +867,11 @@ namespace Net.Vpc.Upa.Impl
             //                tab.updateFormulas(child);
             //            }
             //        } else {
-            foreach (Net.Vpc.Upa.Entity tab in entities) {
-                tab.UpdateFormulas(null);
+            foreach (Net.Vpc.Upa.Entity tab in GetEntities(entityFilter)) {
+                tab.CreateUpdateQuery().ValidateAll().SetHints(hints).Execute();
             }
-        }
-
-        public virtual int UpdateRecords(string entityName, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return GetEntity(entityName).UpdateRecords(record, condition);
-        }
-
-        public virtual void UpdateFormulas(string entityName, Net.Vpc.Upa.Filters.FieldFilter filter, Net.Vpc.Upa.Expressions.Expression expr) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            GetEntity(entityName).UpdateFormulas(filter, expr);
-        }
-
-        public virtual void UpdateFormulasById(string entityName, Net.Vpc.Upa.Filters.FieldFilter filter, object key) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            GetEntity(entityName).UpdateFormulasById(filter, key);
-        }
-
-        public virtual int UpdateRecords(System.Type entityType, Net.Vpc.Upa.Record record, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return GetEntity(entityType).UpdateRecords(record, condition);
-        }
-
-        public virtual void UpdateFormulas(System.Type entityType, Net.Vpc.Upa.Filters.FieldFilter filter, Net.Vpc.Upa.Expressions.Expression expr) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            GetEntity(entityType).UpdateFormulas(filter, expr);
-        }
-
-        public virtual void UpdateFormulasById(System.Type entityType, Net.Vpc.Upa.Filters.FieldFilter filter, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            GetEntity(entityType).UpdateFormulasById(filter, id);
+            //        }
+            persistenceUnitListenerManager.FireOnUpdateFormulas(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.AFTER));
         }
 
 
@@ -926,7 +896,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual bool IsSystemSession(Net.Vpc.Upa.Session s) {
-            return privateUUID.ToString().Equals(s.GetParam<string>(this, typeof(string), Net.Vpc.Upa.Impl.SessionParams.SYSTEM, null));
+            return privateUUID.ToString().Equals(s.GetParam<T>(this, typeof(string), Net.Vpc.Upa.Impl.SessionParams.SYSTEM, null));
         }
 
 
@@ -967,7 +937,7 @@ namespace Net.Vpc.Upa.Impl
                 throw new Net.Vpc.Upa.Exceptions.UPAException("UnableToCreatePersistenceStore", this);
             }
             this.persistenceStore = validPersistenceStore;
-            this.persistenceStore.Init(this, IsReadOnly(), connectionProfile);
+            this.persistenceStore.Init(this, IsReadOnly(), connectionProfile, GetPersistenceNameConfig());
             //        this.persistenceStore.setResources(getResources());
             //        for (PersistenceUnitListener schemaDataListener : getPersistenceUnitListeners()) {
             //            schemaDataListener.persistenceStoreChanged(this, old, persistenceStore);
@@ -987,10 +957,9 @@ namespace Net.Vpc.Upa.Impl
             }
             BeginTransaction(Net.Vpc.Upa.TransactionType.REQUIRED);
             try {
-                Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup);
-                persistenceUnitListenerManager.FireOnStart(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+                persistenceUnitListenerManager.FireOnStart(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.BEFORE));
                 CommitStructureModification();
-                persistenceUnitListenerManager.FireOnStart(@event, Net.Vpc.Upa.EventPhase.AFTER);
+                persistenceUnitListenerManager.FireOnStart(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.AFTER));
                 CommitTransaction();
                 SetLastStartSucceeded(true);
             } catch (System.Exception ex) {
@@ -1022,7 +991,7 @@ namespace Net.Vpc.Upa.Impl
             this.persistenceName = persistenceName;
         }
 
-        public virtual void DropStorage() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void DropStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
@@ -1191,19 +1160,19 @@ namespace Net.Vpc.Upa.Impl
         }
 
         protected internal virtual void AddLockingSupport(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            entity.AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName("lockId").SetFieldPath("Lock").SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM)).SetUserExcludeModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.UPDATE)).SetDataType(new Net.Vpc.Upa.Types.StringType("lockId", 0, 64, true)).SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
-            entity.AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName("lockTime").SetFieldPath("Lock").SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM)).SetUserExcludeModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.UPDATE)).SetDataType(new Net.Vpc.Upa.Types.DateType("lockTime", typeof(Net.Vpc.Upa.Types.Timestamp), true)).SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
+            entity.AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName("lockId").SetFieldPath("Lock").SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.SYSTEM)).SetUserExcludeModifiers(Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.UPDATE)).SetDataType(new Net.Vpc.Upa.Types.StringType("lockId", 0, 64, true)).SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
+            entity.AddField(new Net.Vpc.Upa.DefaultFieldDescriptor().SetName("lockTime").SetFieldPath("Lock").SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.SYSTEM)).SetUserExcludeModifiers(Net.Vpc.Upa.FlagSets.Of<E>(Net.Vpc.Upa.UserFieldModifier.UPDATE)).SetDataType(new Net.Vpc.Upa.Types.DateType("lockTime", typeof(Net.Vpc.Upa.Types.Timestamp), true)).SetAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
         }
 
         public virtual void LockEntities(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression, string id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (entity.GetEntityCount(new Net.Vpc.Upa.Expressions.And(expression, new Net.Vpc.Upa.Expressions.Different(new Net.Vpc.Upa.Expressions.Var("lockId"), null))) > 0) {
                 throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("Some Records already locked");
             }
-            System.Collections.Generic.IList<object> keys = entity.CreateQueryBuilder().SetExpression(expression).GetIdList<object>();
+            System.Collections.Generic.IList<object> keys = entity.CreateQueryBuilder().ByExpression(expression).GetIdList<K>();
             foreach (object key in keys) {
                 Net.Vpc.Upa.Record r = entity.GetBuilder().CreateRecord();
                 r.SetObject("lockId", id);
-                int i = entity.UpdateRecords(r, new Net.Vpc.Upa.Expressions.And(entity.GetBuilder().IdToExpression(key, null), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), null)));
+                long i = entity.CreateUpdateQuery().SetValues(r).ByExpression(new Net.Vpc.Upa.Expressions.And(entity.GetBuilder().IdToExpression(key, null), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), null))).Execute();
                 if (i != 1) {
                     throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("Already Locked Record");
                 }
@@ -1214,12 +1183,12 @@ namespace Net.Vpc.Upa.Impl
             if (entity.GetEntityCount(new Net.Vpc.Upa.Expressions.And(expression, new Net.Vpc.Upa.Expressions.Or(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), null), new Net.Vpc.Upa.Expressions.Different(new Net.Vpc.Upa.Expressions.Var("lockId"), lockId)))) > 0) {
                 throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("Some Records are not locked or are locked by another user");
             }
-            System.Collections.Generic.IList<object> keys = entity.CreateQueryBuilder().SetExpression(expression).GetIdList<object>();
+            System.Collections.Generic.IList<object> keys = entity.CreateQueryBuilder().ByExpression(expression).GetIdList<K>();
             foreach (object key in keys) {
                 Net.Vpc.Upa.Record r = entity.GetBuilder().CreateRecord();
                 r.SetObject("lockId", null);
                 r.SetObject("lockTime", null);
-                int i = entity.UpdateRecords(r, new Net.Vpc.Upa.Expressions.And(entity.GetBuilder().IdToExpression(key, null), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), lockId)));
+                long i = entity.CreateUpdateQuery().SetValues(r).ByExpression(new Net.Vpc.Upa.Expressions.And(entity.GetBuilder().IdToExpression(key, null), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), lockId))).Execute();
                 if (i != 1) {
                     throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("Record no Locked or is locked by another person");
                 }
@@ -1228,8 +1197,8 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.LockInfo> GetLockingInfo(Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.List<Net.Vpc.Upa.LockInfo> vector = new System.Collections.Generic.List<Net.Vpc.Upa.LockInfo>();
-            Net.Vpc.Upa.Filters.FieldFilter filter = Net.Vpc.Upa.Filters.Fields.As(ID).Or(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime"));
-            System.Collections.Generic.IList<Net.Vpc.Upa.Record> list = entity.CreateQueryBuilder().SetExpression(new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Different(new Net.Vpc.Upa.Expressions.Var("lockId"), null), expression)).SetFieldFilter(filter).GetRecordList();
+            Net.Vpc.Upa.Filters.FieldFilter filter = Net.Vpc.Upa.Filters.Fields.Id().Or(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime"));
+            System.Collections.Generic.IList<Net.Vpc.Upa.Record> list = entity.CreateQueryBuilder().ByExpression(new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Different(new Net.Vpc.Upa.Expressions.Var("lockId"), null), expression)).SetFieldFilter(filter).GetRecordList();
             foreach (Net.Vpc.Upa.Record record in list) {
                 string id = record.GetString("lockId");
                 Net.Vpc.Upa.Types.Temporal date = record.GetDate("lockTime");
@@ -1302,12 +1271,12 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.Record r = lockInfoEntity.GetBuilder().CreateRecord();
             r.SetObject("lockId", lockId);
             r.SetObject("lockTime", new Net.Vpc.Upa.Types.DateTime());
-            int ret = 0;
+            long ret = 0;
             try {
                 EnsureLockDef(entityName);
                 Net.Vpc.Upa.Expressions.And notLocked = new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName)), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), null));
                 //getEntity(entityName)
-                ret = lockInfoEntity.UpdateRecords(r, notLocked);
+                ret = lockInfoEntity.CreateUpdateQuery().SetValues(r).ByExpression(notLocked).Execute();
             } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
                 throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("entity.lockingException", GetEntity(entityName).GetI18NString());
             }
@@ -1315,7 +1284,7 @@ namespace Net.Vpc.Upa.Impl
             } else {
                 Net.Vpc.Upa.Record locked = null;
                 try {
-                    locked = lockInfoEntity.CreateQueryBuilder().SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
+                    locked = lockInfoEntity.CreateQueryBuilder().ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
                 } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
                     throw new Net.Vpc.Upa.Exceptions.AlreadyLockedPersistenceUnitException("entity.lockingException", GetEntity(entityName).GetI18NString());
                 }
@@ -1334,7 +1303,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         private Net.Vpc.Upa.LockInfo _getLockInfo(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Record rec = GetEntity(entityName).CreateQueryBuilder().SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
+            Net.Vpc.Upa.Record rec = GetEntity(entityName).CreateQueryBuilder().ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
             if (rec == null) {
                 return null;
             }
@@ -1347,10 +1316,10 @@ namespace Net.Vpc.Upa.Impl
             r.SetObject("lockId", null);
             r.SetObject("lockTime", null);
             Net.Vpc.Upa.Expressions.And locked = new Net.Vpc.Upa.Expressions.And(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName)), new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockId"), new Net.Vpc.Upa.Expressions.Param(id)));
-            int ret = entity.UpdateRecords(r, locked);
+            long ret = entity.CreateUpdateQuery().SetValues(r).ByExpression(locked).Execute();
             if (ret == 1) {
             } else {
-                Net.Vpc.Upa.Record rlocked = entity.CreateQueryBuilder().SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
+                Net.Vpc.Upa.Record rlocked = entity.CreateQueryBuilder().ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var("lockedEntity"), new Net.Vpc.Upa.Expressions.Literal(entityName))).SetFieldFilter(Net.Vpc.Upa.Filters.Fields.ByName("lockId", "lockTime")).GetRecord();
                 if (rlocked == null) {
                     rlocked = entity.GetBuilder().CreateRecord();
                 }
@@ -1386,7 +1355,7 @@ namespace Net.Vpc.Upa.Impl
             if (typeof(Net.Vpc.Upa.Extensions.SingletonExtensionDefinition).Equals(entityExtensionDefinitionType)) {
                 return typeof(Net.Vpc.Upa.Persistence.SingletonExtension);
             }
-            throw new System.ArgumentException ("Unsupported extension definition " + entityExtensionDefinitionType);
+            throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
         }
 
         public virtual void SetName(string name) {
@@ -1406,7 +1375,7 @@ namespace Net.Vpc.Upa.Impl
             if (systemParameters == null) {
                 Net.Vpc.Upa.Properties p = new Net.Vpc.Upa.Impl.DefaultProperties();
                 System.Collections.Generic.IDictionary<string , string> properties = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetSystemProperties();
-                foreach (System.Collections.Generic.KeyValuePair<string , string> entry in properties) {
+                foreach (System.Collections.Generic.KeyValuePair<string , string> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(properties)) {
                     string k = (string) (entry).Key;
                     string v = (string) (entry).Value;
                     if (k.StartsWith("upa.")) {
@@ -1451,6 +1420,22 @@ namespace Net.Vpc.Upa.Impl
             return registrationModel.ContainsEntity(entityType);
         }
 
+        public virtual Net.Vpc.Upa.Entity GetEntity(object entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (entityType is string) {
+                return GetEntity((string) entityType);
+            }
+            if (entityType is Net.Vpc.Upa.QualifiedRecord) {
+                return ((Net.Vpc.Upa.QualifiedRecord) entityType).GetEntity();
+            }
+            if (entityType is System.Type) {
+                return GetEntity((System.Type) entityType);
+            }
+            if (entityType is Net.Vpc.Upa.Record) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("UnableToResolveEntityFromRecord");
+            }
+            return GetEntity(entityType.GetType());
+        }
+
         public virtual Net.Vpc.Upa.Entity GetEntity(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return registrationModel.GetEntity(entityType);
         }
@@ -1473,6 +1458,16 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
+        public virtual void Persist(string entity, object objectOrRecord, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (!CheckSession()) {
+                sessionAwarePU.Persist(entity, objectOrRecord, hints);
+                return;
+            }
+            Net.Vpc.Upa.Entity entityManager = GetEntity(entity);
+            entityManager.Persist(objectOrRecord, hints);
+        }
+
+
         public virtual void Persist(string entity, object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!CheckSession()) {
                 sessionAwarePU.Persist(objectOrRecord);
@@ -1482,31 +1477,66 @@ namespace Net.Vpc.Upa.Impl
             entityManager.Persist(objectOrRecord);
         }
 
+
         public virtual void Persist(object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!CheckSession()) {
                 sessionAwarePU.Persist(objectOrRecord);
                 return;
             }
-            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord.GetType());
+            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord);
             entityManager.Persist(objectOrRecord);
         }
+
+        /**
+             *
+             * @param objectOrRecord
+             * @throws UPAException
+             */
 
         public virtual void Merge(object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!CheckSession()) {
                 sessionAwarePU.Merge(objectOrRecord);
                 return;
             }
-            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord.GetType());
+            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord);
             entityManager.Merge(objectOrRecord);
         }
 
-        public virtual void Remove(object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+
+        public virtual void Merge(string entityName, object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!CheckSession()) {
-                sessionAwarePU.Remove(objectOrRecord);
+                sessionAwarePU.Merge(entityName, objectOrRecord);
                 return;
             }
-            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord.GetType());
-            entityManager.Remove(objectOrRecord);
+            Net.Vpc.Upa.Entity entityManager = GetEntity(entityName);
+            entityManager.Merge(objectOrRecord);
+        }
+
+
+        public virtual Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(string entityName) {
+            Net.Vpc.Upa.Entity entityManager = GetEntity(entityName);
+            return entityManager.CreateUpdateQuery();
+        }
+
+
+        public virtual Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(System.Type entityType) {
+            Net.Vpc.Upa.Entity entityManager = GetEntity(entityType);
+            return entityManager.CreateUpdateQuery();
+        }
+
+
+        public virtual Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(object @object) {
+            Net.Vpc.Upa.Entity entityManager = GetEntity(@object);
+            return entityManager.CreateUpdateQuery().SetValues(@object);
+        }
+
+
+        public virtual Net.Vpc.Upa.RemoveTrace Remove(object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (!CheckSession()) {
+                return sessionAwarePU.Remove(objectOrRecord);
+            }
+            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord);
+            return entityManager.Remove(objectOrRecord);
         }
 
 
@@ -1514,7 +1544,7 @@ namespace Net.Vpc.Upa.Impl
             if (!CheckSession()) {
                 return sessionAwarePU.Save(objectOrRecord);
             }
-            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord.GetType());
+            Net.Vpc.Upa.Entity entityManager = GetEntity(objectOrRecord);
             return entityManager.Save(objectOrRecord);
         }
 
@@ -1532,32 +1562,12 @@ namespace Net.Vpc.Upa.Impl
                 sessionAwarePU.Update(objectOrRecord);
                 return;
             }
-            GetEntity(objectOrRecord.GetType()).Update(objectOrRecord);
+            GetEntity(objectOrRecord).Update(objectOrRecord);
         }
 
 
         public virtual void Update(string entityName, object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (!CheckSession()) {
-                sessionAwarePU.Update(entityName, objectOrRecord);
-                return;
-            }
             GetEntity(entityName).Update(objectOrRecord);
-        }
-
-        public virtual void UpdatePartial(object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (!CheckSession()) {
-                sessionAwarePU.UpdatePartial(objectOrRecord);
-                return;
-            }
-            GetEntity(objectOrRecord.GetType()).UpdatePartial(objectOrRecord);
-        }
-
-        public virtual void UpdatePartial(string entityName, object objectOrRecord) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (!CheckSession()) {
-                sessionAwarePU.UpdatePartial(entityName, objectOrRecord);
-                return;
-            }
-            GetEntity(entityName).UpdatePartial(objectOrRecord);
         }
 
 
@@ -1603,7 +1613,7 @@ namespace Net.Vpc.Upa.Impl
             if (entityName != null) {
                 return GetEntity(entityName).CreateQuery(query);
             }
-            return GetPersistenceStore().CreateQuery(query, GetPersistenceStore().CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.FIND));
+            return GetPersistenceStore().CreateQuery(query, CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.FIND, defaultHints));
         }
 
 
@@ -1624,94 +1634,114 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual  T FindByMainField<T>(string entityName, object mainFieldValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity e = GetEntity(entityName);
-            return CreateQueryBuilder(entityName).SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), e.GetMainField().GetName()), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<T>();
+            Net.Vpc.Upa.Field mainField = e.GetMainField();
+            mainField.Check(mainFieldValue);
+            return CreateQueryBuilder(entityName).ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), mainField.GetName()), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<R>();
         }
 
         public virtual  T FindByField<T>(System.Type entityType, string fieldName, object mainFieldValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity e = GetEntity(entityType);
-            return CreateQueryBuilder(entityType).SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), fieldName), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<T>();
+            return CreateQueryBuilder(entityType).ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), fieldName), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<R>();
         }
 
         public virtual  T FindByField<T>(string entityName, string fieldName, object mainFieldValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity e = GetEntity(entityName);
-            return CreateQueryBuilder(entityName).SetExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), fieldName), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<T>();
+            return CreateQueryBuilder(entityName).ByExpression(new Net.Vpc.Upa.Expressions.Equals(new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(e.GetName()), fieldName), new Net.Vpc.Upa.Expressions.Param("main", mainFieldValue))).GetSingleEntityOrNull<R>();
         }
 
         public virtual  System.Collections.Generic.IList<T> FindAll<T>(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityType).GetEntityList<T>();
+            return CreateQueryBuilder(entityType).OrderBy(GetEntity(entityType).GetListOrder()).GetEntityList<R>();
         }
 
         public virtual  System.Collections.Generic.IList<T> FindAll<T>(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityName).GetEntityList<T>();
+            return CreateQueryBuilder(entityName).OrderBy(GetEntity(entityName).GetListOrder()).GetEntityList<R>();
+        }
+
+
+        public virtual  System.Collections.Generic.IList<T> FindAllIds<T>(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return CreateQueryBuilder(entityName).GetIdList<K>();
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Record> FindAllRecords(System.Type entityType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityType).GetRecordList();
+            return CreateQueryBuilder(entityType).OrderBy(GetEntity(entityType).GetListOrder()).GetRecordList();
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Record> FindAllRecords(string entityName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityName).GetRecordList();
+            return CreateQueryBuilder(entityName).OrderBy(GetEntity(entityName).GetListOrder()).GetRecordList();
         }
 
 
         public virtual  T FindById<T>(System.Type entityType, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityType).SetId(id).GetEntity<T>();
+            return CreateQueryBuilder(entityType).ById(id).GetEntity<R>();
         }
 
 
         public virtual  T FindById<T>(string entityType, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityType).SetId(id).GetEntity<T>();
+            return CreateQueryBuilder(entityType).ById(id).GetEntity<R>();
+        }
+
+
+        public virtual bool ExistsById(string entityName, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return (CreateQueryBuilder(entityName).ById(id).GetIdList<K>()).Count > 0;
         }
 
 
         public virtual Net.Vpc.Upa.Record FindRecordById(System.Type entityType, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return CreateQueryBuilder(entityType).SetId(id).GetRecord();
+            return CreateQueryBuilder(entityType).ById(id).GetRecord();
         }
 
 
-        public virtual void BeginTransaction(Net.Vpc.Upa.TransactionType transactionType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual Net.Vpc.Upa.Record FindRecordById(string entityName, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return CreateQueryBuilder(entityName).ById(id).GetRecord();
+        }
+
+
+        public virtual bool BeginTransaction(Net.Vpc.Upa.TransactionType transactionType) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             CheckStart();
             Net.Vpc.Upa.Session currentSession = GetCurrentSession();
             currentSession.PushContext();
-            if (transactionType == null) {
+            if (transactionType == default(Net.Vpc.Upa.TransactionType)) {
                 transactionType = Net.Vpc.Upa.TransactionType.SUPPORTS;
             }
             currentSession.SetParam(this, Net.Vpc.Upa.Impl.SessionParams.TRANSACTION_TYPE, transactionType);
-            Net.Vpc.Upa.Transaction currentTransaction = currentSession.GetParam<Net.Vpc.Upa.Transaction>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
+            Net.Vpc.Upa.Transaction currentTransaction = currentSession.GetParam<T>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
             switch(transactionType) {
                 case Net.Vpc.Upa.TransactionType.MANDATORY:
                     {
                         if (currentTransaction == null) {
                             throw new Net.Vpc.Upa.Exceptions.TransactionException(new Net.Vpc.Upa.Types.I18NString("TransactionMandatoryException"));
                         }
-                        return;
+                        return false;
                     }
                 case Net.Vpc.Upa.TransactionType.SUPPORTS:
                     {
-                        return;
+                        return false;
                     }
                 case Net.Vpc.Upa.TransactionType.REQUIRED:
                     {
                         if (currentTransaction == null) {
-                            Net.Vpc.Upa.Transaction transaction = transactionManager.CreateTransaction(this, persistenceStore);
+                            Net.Vpc.Upa.Transaction transaction = transactionManager.CreateTransaction(GetConnection(), this, persistenceStore);
                             transaction.Begin();
                             currentSession.SetParam(this, Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, transaction);
+                            return true;
                         }
-                        return;
+                        return false;
                     }
             }
             throw new Net.Vpc.Upa.Exceptions.UPAException(new Net.Vpc.Upa.Types.I18NString("Unexpected"));
         }
 
+
         public virtual Net.Vpc.Upa.Session GetCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return GetPersistenceGroup().GetCurrentSession();
         }
 
+
         public virtual void CommitTransaction() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Session currentSession = GetCurrentSession();
             Net.Vpc.Upa.TransactionType tt = currentSession.GetParam<Net.Vpc.Upa.TransactionType>(this, typeof(Net.Vpc.Upa.TransactionType), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION_TYPE, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType)));
-            Net.Vpc.Upa.Transaction it = currentSession.GetImmediateParam<Net.Vpc.Upa.Transaction>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
-            Net.Vpc.Upa.Transaction t = currentSession.GetParam<Net.Vpc.Upa.Transaction>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
+            Net.Vpc.Upa.Transaction it = currentSession.GetImmediateParam<T>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
+            Net.Vpc.Upa.Transaction t = currentSession.GetParam<T>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
             switch(tt) {
                 case Net.Vpc.Upa.TransactionType.SUPPORTS:
                     {
@@ -1740,11 +1770,12 @@ namespace Net.Vpc.Upa.Impl
             currentSession.PopContext();
         }
 
+
         public virtual void RollbackTransaction() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Session currentSession = GetPersistenceGroup().GetCurrentSession();
+            Net.Vpc.Upa.Session currentSession = GetCurrentSession();
             Net.Vpc.Upa.TransactionType tt = currentSession.GetParam<Net.Vpc.Upa.TransactionType>(this, typeof(Net.Vpc.Upa.TransactionType), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION_TYPE, Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType)));
-            Net.Vpc.Upa.Transaction it = currentSession.GetImmediateParam<Net.Vpc.Upa.Transaction>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
-            Net.Vpc.Upa.Transaction t = currentSession.GetParam<Net.Vpc.Upa.Transaction>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
+            Net.Vpc.Upa.Transaction it = currentSession.GetImmediateParam<T>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
+            Net.Vpc.Upa.Transaction t = currentSession.GetParam<T>(this, typeof(Net.Vpc.Upa.Transaction), Net.Vpc.Upa.Impl.SessionParams.TRANSACTION, null);
             switch(tt) {
                 case Net.Vpc.Upa.TransactionType.SUPPORTS:
                     {
@@ -1805,13 +1836,12 @@ namespace Net.Vpc.Upa.Impl
             CommitModelChanges();
             GetPersistenceStore().RevalidateModel();
             bool someCommit = false;
-            Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup);
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = GetPersistenceStore().CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME);
-            persistenceUnitListenerManager.FireOnStorageChanged(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME, defaultHints);
+            persistenceUnitListenerManager.FireOnStorageChanged(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.BEFORE));
             System.Collections.Generic.IList<Net.Vpc.Upa.Impl.OnHoldCommitAction> model = commitStorageActions;
             Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(model, new Net.Vpc.Upa.Impl.OnHoldCommitActionComparator());
             foreach (Net.Vpc.Upa.Impl.OnHoldCommitAction next in model) {
-                next.CommitStorage(persistenceStore);
+                next.CommitStorage(context);
                 someCommit = true;
             }
             model.Clear();
@@ -1830,18 +1860,17 @@ namespace Net.Vpc.Upa.Impl
             foreach (Net.Vpc.Upa.Entity entity in initializables) {
                 entity.Initialize();
             }
-            persistenceUnitListenerManager.FireOnStorageChanged(@event, Net.Vpc.Upa.EventPhase.AFTER);
+            persistenceUnitListenerManager.FireOnStorageChanged(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.AFTER));
             this.structureModification = false;
         }
 
 
         public virtual void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = GetPersistenceStore().CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CLOSE);
-            Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event = new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup);
-            persistenceUnitListenerManager.FireOnClose(@event, Net.Vpc.Upa.EventPhase.BEFORE);
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CLOSE, defaultHints);
+            persistenceUnitListenerManager.FireOnClose(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.BEFORE));
             GetDefaulPackage().Close();
             closed = true;
-            persistenceUnitListenerManager.FireOnClose(@event, Net.Vpc.Upa.EventPhase.AFTER);
+            persistenceUnitListenerManager.FireOnClose(new Net.Vpc.Upa.Callbacks.PersistenceUnitEvent(this, persistenceGroup, Net.Vpc.Upa.EventPhase.AFTER));
         }
 
 
@@ -1863,6 +1892,7 @@ namespace Net.Vpc.Upa.Impl
             return registrationModel.GetIndexes(entityName);
         }
 
+
         public virtual Net.Vpc.Upa.Bulk.ImportExportManager GetImportExportManager() {
             if (importExportManager == null) {
                 Net.Vpc.Upa.Bulk.ImportExportManager m = GetFactory().CreateObject<Net.Vpc.Upa.Bulk.ImportExportManager>(typeof(Net.Vpc.Upa.Bulk.ImportExportManager));
@@ -1877,9 +1907,11 @@ namespace Net.Vpc.Upa.Impl
             return typeTransformFactory;
         }
 
+
         public virtual void SetTypeTransformFactory(Net.Vpc.Upa.Types.DataTypeTransformFactory typeTransformFactory) {
             this.typeTransformFactory = typeTransformFactory;
         }
+
 
         public virtual void SetPersistenceNameConfig(Net.Vpc.Upa.Persistence.PersistenceNameConfig nameStrategyModel) {
             if (IsStarted()) {
@@ -1888,13 +1920,16 @@ namespace Net.Vpc.Upa.Impl
             this.persistenceNameConfig = nameStrategyModel == null ? new Net.Vpc.Upa.Persistence.PersistenceNameConfig(Net.Vpc.Upa.Persistence.UPAContextConfig.XML_ORDER) : nameStrategyModel;
         }
 
+
         public virtual Net.Vpc.Upa.Persistence.PersistenceNameConfig GetPersistenceNameConfig() {
             return persistenceNameConfig;
         }
 
+
         public virtual bool IsAutoStart() {
             return autoStart;
         }
+
 
         public virtual void SetAutoStart(bool @value) {
             if (IsStarted()) {
@@ -1903,37 +1938,46 @@ namespace Net.Vpc.Upa.Impl
             this.autoStart = @value;
         }
 
+
         public virtual void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
             filters.Add(filter);
         }
+
 
         public virtual void RemoveContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
             filters.Remove(filter);
         }
 
+
         public virtual Net.Vpc.Upa.Config.ScanFilter[] GetContextAnnotationStrategyFilters() {
             return filters.ToArray();
         }
+
 
         public virtual Net.Vpc.Upa.Persistence.ConnectionConfig[] GetConnectionConfigs() {
             return connectionConfigs.ToArray();
         }
 
+
         public virtual Net.Vpc.Upa.Persistence.ConnectionConfig[] GetRootConnectionConfigs() {
             return rootConnectionConfigs.ToArray();
         }
+
 
         public virtual void AddConnectionConfig(Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig) {
             connectionConfigs.Add(connectionConfig);
         }
 
+
         public virtual void RemoveConnectionConfig(int index) {
             connectionConfigs.RemoveAt(index);
         }
 
+
         public virtual void AddRootConnectionConfig(Net.Vpc.Upa.Persistence.ConnectionConfig connectionConfig) {
             rootConnectionConfigs.Add(connectionConfig);
         }
+
 
         public virtual void RemoveRootConnectionConfig(int index) {
             rootConnectionConfigs.RemoveAt(index);
@@ -1951,20 +1995,18 @@ namespace Net.Vpc.Upa.Impl
             return persistenceUnitListenerManager;
         }
 
+
         public virtual Net.Vpc.Upa.UserPrincipal GetUserPrincipal() {
-            Net.Vpc.Upa.Session currentSession = GetCurrentSession();
-            if (currentSession == null) {
-                return null;
-            }
-            return currentSession.GetParam<Net.Vpc.Upa.UserPrincipal>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
+            return GetUserPrincipal(GetCurrentSession());
         }
 
         public virtual Net.Vpc.Upa.UserPrincipal GetUserPrincipal(Net.Vpc.Upa.Session currentSession) {
             if (currentSession == null) {
                 return null;
             }
-            return currentSession.GetParam<Net.Vpc.Upa.UserPrincipal>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
+            return currentSession.GetParam<T>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
         }
+
 
         public virtual void Login(string login, string credentials) {
             Net.Vpc.Upa.Session currentSession = GetCurrentSession();
@@ -1972,6 +2014,7 @@ namespace Net.Vpc.Upa.Impl
             currentSession.PushContext();
             currentSession.SetParam(this, Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, p);
         }
+
 
         public virtual void LoginPrivileged(string login) {
             Net.Vpc.Upa.Session currentSession = GetCurrentSession();
@@ -1983,12 +2026,24 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
+
         public virtual void Logout() {
-            Net.Vpc.Upa.Session currentSession = GetPersistenceGroup().GetCurrentSession();
-            Net.Vpc.Upa.UserPrincipal user = currentSession.GetImmediateParam<Net.Vpc.Upa.UserPrincipal>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
+            Net.Vpc.Upa.Session currentSession = GetCurrentSession();
+            Net.Vpc.Upa.UserPrincipal user = currentSession.GetImmediateParam<T>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
             if (user != null) {
                 currentSession.PopContext();
             } else {
+                user = currentSession.GetParam<T>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
+                if (user != null) {
+                    while (true) {
+                        currentSession.PopContext();
+                        user = currentSession.GetImmediateParam<T>(this, typeof(Net.Vpc.Upa.UserPrincipal), Net.Vpc.Upa.Impl.SessionParams.USER_PRINCIPAL, null);
+                        if (user != null) {
+                            break;
+                        }
+                    }
+                    return;
+                }
                 throw new System.Exception("Invalid Logout");
             }
         }
@@ -2004,13 +2059,26 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
+        public virtual Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.CallbackConfig callbackConfig) {
+            Net.Vpc.Upa.Callback c = GetPersistenceGroup().GetContext().CreateCallback(callbackConfig);
+            AddCallback(c);
+            return c;
+        }
+
+
         public virtual void AddCallback(Net.Vpc.Upa.Callback callback) {
             Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback b = (Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback) callback;
             System.Collections.Generic.IDictionary<string , object> c = b.GetConfiguration();
             if (callback.GetCallbackType() == Net.Vpc.Upa.CallbackType.ON_EVAL) {
-                string functionName = (string) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(c,"functionName");
+                string functionName = c == null ? null : (string) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(c,"functionName");
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(functionName)) {
+                    throw new Net.Vpc.Upa.Exceptions.UPAException("MissingCallbackFunctionName");
+                }
                 Net.Vpc.Upa.Types.DataType returnType = (Net.Vpc.Upa.Types.DataType) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(c,"returnType");
-                GetExpressionManager().AddFunction(functionName, returnType, new Net.Vpc.Upa.Impl.FunctionCallback(b));
+                if (returnType == null) {
+                    throw new Net.Vpc.Upa.Exceptions.UPAException("MissingCallbackReturnType");
+                }
+                GetExpressionManager().AddFunction(functionName, returnType, new Net.Vpc.Upa.Impl.Eval.Functions.FunctionCallback(b));
             } else {
                 persistenceUnitListenerManager.AddCallback(callback);
             }
@@ -2021,24 +2089,178 @@ namespace Net.Vpc.Upa.Impl
             Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback b = (Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback) callback;
             System.Collections.Generic.IDictionary<string , object> c = b.GetConfiguration();
             if (callback.GetCallbackType() == Net.Vpc.Upa.CallbackType.ON_EVAL) {
-                string functionName = (string) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(c,"functionName");
+                string functionName = c == null ? null : (string) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(c,"functionName");
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(functionName)) {
+                    throw new Net.Vpc.Upa.Exceptions.UPAException("MissingCallbackFunctionName");
+                }
                 GetExpressionManager().RemoveFunction(functionName);
             }
             persistenceUnitListenerManager.RemoveCallback(callback);
         }
 
 
-        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string name, bool system, Net.Vpc.Upa.EventPhase phase) {
+        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
             if (callbackType == Net.Vpc.Upa.CallbackType.ON_EVAL) {
                 System.Collections.Generic.List<Net.Vpc.Upa.Callback> all = new System.Collections.Generic.List<Net.Vpc.Upa.Callback>();
                 foreach (Net.Vpc.Upa.FunctionDefinition function in GetExpressionManager().GetFunctions()) {
-                    if (function.GetFunction() is Net.Vpc.Upa.Impl.FunctionCallback) {
-                        all.Add(((Net.Vpc.Upa.Impl.FunctionCallback) function.GetFunction()).GetCallback());
+                    if (function.GetFunction() is Net.Vpc.Upa.Impl.Eval.Functions.FunctionCallback) {
+                        all.Add(((Net.Vpc.Upa.Impl.Eval.Functions.FunctionCallback) function.GetFunction()).GetCallback());
                     }
                 }
                 return all.ToArray();
             }
-            return persistenceUnitListenerManager.GetCurrentCallbacks(callbackType, objectType, name, system, phase);
+            return persistenceUnitListenerManager.GetCurrentCallbacks(callbackType, objectType, name, system, preparedOnly, phase);
+        }
+
+
+        public virtual Net.Vpc.Upa.Persistence.UConnection GetConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Net.Vpc.Upa.Session session = GetCurrentSession();
+            Net.Vpc.Upa.Persistence.UConnection connection = session.GetParam<T>(this, typeof(Net.Vpc.Upa.Persistence.UConnection), Net.Vpc.Upa.Impl.SessionParams.CONNECTION, null);
+            if (connection == null) {
+                connection = GetPersistenceStore().CreateConnection();
+                session.SetParam(this, Net.Vpc.Upa.Impl.SessionParams.CONNECTION, connection);
+                session.AddSessionListener(new Net.Vpc.Upa.Impl.Persistence.CloseOnContextPopSessionListener(this, connection));
+            }
+            return connection;
+        }
+
+
+        public virtual void SetIdentityConstraintsEnabled(Net.Vpc.Upa.Entity entity, bool enable) {
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.COMMIT_STORAGE, defaultHints);
+            GetPersistenceStore().SetIdentityConstraintsEnabled(entity, enable, context);
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.UConnection GetMetadataConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Net.Vpc.Upa.Session session = GetCurrentSession();
+            Net.Vpc.Upa.Persistence.UConnection connection = session.GetParam<T>(this, typeof(Net.Vpc.Upa.Persistence.UConnection), Net.Vpc.Upa.Impl.SessionParams.METADATA_CONNECTION, null);
+            if (connection == null) {
+                connection = session.GetParam<T>(this, typeof(Net.Vpc.Upa.Persistence.UConnection), Net.Vpc.Upa.Impl.SessionParams.CONNECTION, null);
+            }
+            if (connection == null) {
+                connection = GetPersistenceStore().CreateConnection();
+                session.SetParam(this, Net.Vpc.Upa.Impl.SessionParams.CONNECTION, connection);
+                session.AddSessionListener(new Net.Vpc.Upa.Impl.Persistence.CloseOnContextPopSessionListener(this, connection));
+            }
+            return connection;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.EntityExecutionContext CreateContext(Net.Vpc.Upa.Persistence.ContextOperation operation, System.Collections.Generic.IDictionary<string , object> hints) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            //        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = null;
+            //        if (currentSession != null) {
+            //            context = currentSession.getParam(persistenceUnit, ExecutionContext.class, SessionParams.EXECUTION_CONTEXT, null);
+            //            if (context
+            //                    == null) {
+            //                context = persistenceUnit.getFactory().createObject(ExecutionContext.class, null);
+            //                currentSession.setParam(persistenceUnit, SessionParams.EXECUTION_CONTEXT, context);
+            //            }
+            //        } else {
+            //            context = persistenceUnit.getFactory().createObject(ExecutionContext.class, null);
+            //        }
+            context = GetFactory().CreateObject<Net.Vpc.Upa.Persistence.EntityExecutionContext>(typeof(Net.Vpc.Upa.Persistence.EntityExecutionContext));
+            context.InitPersistenceUnit(this, GetPersistenceStore(), operation);
+            context.SetHints(hints);
+            return context;
+        }
+
+        protected internal virtual Net.Vpc.Upa.InvokeContext PrepareInvokeContext(Net.Vpc.Upa.InvokeContext c) {
+            if (c == null) {
+                c = new Net.Vpc.Upa.InvokeContext();
+            } else {
+                c = c.Copy();
+            }
+            c.SetPersistenceGroup(GetPersistenceGroup());
+            c.SetPersistenceUnit(this);
+            return c;
+        }
+
+
+        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetPersistenceGroup().GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetPersistenceGroup().GetContext().Invoke<T>(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetPersistenceGroup().GetContext().Invoke(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetPersistenceGroup().GetContext().InvokePrivileged(action, PrepareInvokeContext(invokeContext));
+        }
+
+
+        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetPersistenceGroup().GetContext().Invoke<T>(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetPersistenceGroup().GetContext().InvokePrivileged<T>(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetPersistenceGroup().GetContext().Invoke(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            GetPersistenceGroup().GetContext().InvokePrivileged(action, PrepareInvokeContext(null));
+        }
+
+
+        public virtual System.Collections.Generic.IComparer<Net.Vpc.Upa.Entity> GetDependencyComparator() {
+            return Net.Vpc.Upa.Impl.DefaultEntityDependencyComparator.INSTANCE;
+        }
+
+
+        public virtual  T CopyObject<T>(T r) {
+            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(r,default(T))) {
+                return default(T);
+            }
+            return GetEntity(r).GetBuilder().CopyObject<T>(r);
+        }
+
+
+        public virtual  T CopyObject<T>(string entityName, T r) {
+            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(r,default(T))) {
+                return default(T);
+            }
+            return GetEntity(r).GetBuilder().CopyObject<T>(r);
+        }
+
+
+        public virtual  T CopyObject<T>(System.Type entityType, T r) {
+            if (System.Collections.Generic.EqualityComparer<T>.Default.Equals(r,default(T))) {
+                return default(T);
+            }
+            return GetEntity(r).GetBuilder().CopyObject<T>(r);
+        }
+
+
+        public virtual bool IsEmpty(string entityName) {
+            return GetEntity(entityName).IsEmpty();
+        }
+
+
+        public virtual bool IsEmpty(System.Type entityType) {
+            return GetEntity(entityType).IsEmpty();
+        }
+
+
+        public virtual long GetEntityCount(string entityName) {
+            return GetEntity(entityName).GetEntityCount();
+        }
+
+
+        public virtual long GetEntityCount(System.Type entityType) {
+            return GetEntity(entityType).GetEntityCount();
         }
     }
 }

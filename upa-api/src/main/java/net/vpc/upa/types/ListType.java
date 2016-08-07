@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.exceptions.UnexpectedException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +78,7 @@ public class ListType extends SeriesType implements Cloneable {
     }
 
     private void setData(List<Object> collection) {
-        elements = new ArrayList<Object>();
+        elements = new ArrayList<Object>(collection==null?1:collection.size());
         if (collection != null) {
             for (Object s : collection) {
                 if (s != null && !getPlatformType().isInstance(s)) {
@@ -168,10 +170,14 @@ public class ListType extends SeriesType implements Cloneable {
     }
 
     @Override
-    public Object clone() {
-        ListType l = (ListType) super.clone();
-        l.elements = new ArrayList<Object>(l.elements);
-        return l;
+    public Object copy() {
+        try {
+            ListType l = (ListType) clone();
+            l.elements = new ArrayList<Object>(l.elements);
+            return l;
+        } catch (CloneNotSupportedException ex) {
+            throw new UnexpectedException("Clone Not Supported", ex);
+        }
     }
 
 }

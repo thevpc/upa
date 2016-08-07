@@ -45,6 +45,18 @@ namespace Net.Vpc.Upa.Impl.Config
 
         private Net.Vpc.Upa.Impl.Event.UPAContextListenerManager listeners;
 
+        private System.Threading.ThreadLocal<Net.Vpc.Upa.Properties> threadProperties = new System.Threading.ThreadLocal<Net.Vpc.Upa.Properties>();
+
+
+        public virtual  T MakeSessionAware<T>(T instance, Net.Vpc.Upa.MethodFilter methodFilter) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return (T) Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateObjectInterceptor<T>((System.Type) instance.GetType(), new Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<?>(this, methodFilter, instance));
+        }
+
+
+        public virtual  T MakeSessionAware<T>(T instance) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return MakeSessionAware<T>(instance, (Net.Vpc.Upa.MethodFilter) null);
+        }
+
         public DefaultUPAContext() {
             listeners = new Net.Vpc.Upa.Impl.Event.UPAContextListenerManager(this);
         }
@@ -130,7 +142,7 @@ namespace Net.Vpc.Upa.Impl.Config
         }
 
         public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(name)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
                 name = "";
             }
             if (!persistenceGroups.ContainsKey(name)) {
@@ -140,14 +152,14 @@ namespace Net.Vpc.Upa.Impl.Config
         }
 
         public virtual bool ContainsPersistenceGroup(string name) {
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(name)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
                 name = "";
             }
             return persistenceGroups.ContainsKey(name);
         }
 
         public virtual Net.Vpc.Upa.PersistenceGroup AddPersistenceGroup(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(name)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name)) {
                 name = "";
             }
             if (persistenceGroups.ContainsKey(name)) {
@@ -201,18 +213,8 @@ namespace Net.Vpc.Upa.Impl.Config
         }
 
 
-        public virtual  T MakeSessionAware<T>(T instance) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return MakeSessionAware<T>(instance, (Net.Vpc.Upa.MethodFilter) null);
-        }
-
-
         public virtual  T MakeSessionAware<T>(T instance, System.Type sessionAwareMethodAnnotation) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return MakeSessionAware<T>(instance, sessionAwareMethodAnnotation == null ? null : new Net.Vpc.Upa.Impl.Config.AnnotationMethodFilter(sessionAwareMethodAnnotation, decorationRepository));
-        }
-
-
-        public virtual  T MakeSessionAware<T>(T instance, Net.Vpc.Upa.MethodFilter methodFilter) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return (T) Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateObjectInterceptor<object>(instance.GetType(), new Net.Vpc.Upa.Impl.Config.MakeSessionAwareMethodInterceptor<T>(this, methodFilter, instance));
         }
 
 
@@ -225,39 +227,53 @@ namespace Net.Vpc.Upa.Impl.Config
             if (invokeContext == null) {
                 invokeContext = emptyInvokeContext;
             }
-            Net.Vpc.Upa.PersistenceGroup persistenceGroup = Net.Vpc.Upa.UPA.GetPersistenceGroup();
-            Net.Vpc.Upa.Session s = null;
-            if (persistenceGroup.CurrentSessionExists()) {
-                s = persistenceGroup.GetCurrentSession();
+            Net.Vpc.Upa.PersistenceGroup persistenceGroup = null;
+            if (invokeContext.GetPersistenceGroup() != null) {
+                persistenceGroup = invokeContext.GetPersistenceGroup();
+            } else if (invokeContext.GetPersistenceUnit() != null) {
+                persistenceGroup = invokeContext.GetPersistenceUnit().GetPersistenceGroup();
             }
+            if (persistenceGroup == null) {
+                persistenceGroup = Net.Vpc.Upa.UPA.GetPersistenceGroup();
+            }
+            Net.Vpc.Upa.Session s = persistenceGroup.FindCurrentSession();
             bool sessionCreated = false;
             bool loginCreated = false;
             if (s == null) {
                 s = persistenceGroup.OpenSession();
                 sessionCreated = true;
             }
-            Net.Vpc.Upa.PersistenceUnit pu = persistenceGroup.GetPersistenceUnit();
+            Net.Vpc.Upa.PersistenceUnit pu = null;
+            if (invokeContext.GetPersistenceUnit() != null) {
+                pu = invokeContext.GetPersistenceUnit();
+            }
+            if (pu == null) {
+                pu = persistenceGroup.GetPersistenceUnit();
+            }
             if (invokeContext.GetLogin() != null) {
                 pu.Login(invokeContext.GetLogin(), invokeContext.GetCredentials());
                 loginCreated = true;
             }
             bool transactionCreated = false;
-            if (invokeContext.GetTransactionType() != null) {
+            if (invokeContext.GetTransactionType() != default(Net.Vpc.Upa.TransactionType)) {
                 pu.BeginTransaction(invokeContext.GetTransactionType());
                 transactionCreated = true;
             }
             T ret = default(T);
+            System.Exception anyErr = null;
             try {
                 ret = action.Run();
                 if (transactionCreated) {
                     pu.CommitTransaction();
                 }
             } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+                anyErr = e;
                 if (transactionCreated) {
                     pu.RollbackTransaction();
                 }
                 throw e;
             } catch (System.Exception e) {
+                anyErr = e;
                 if (transactionCreated) {
                     pu.RollbackTransaction();
                 }
@@ -278,37 +294,54 @@ namespace Net.Vpc.Upa.Impl.Config
             if (invokeContext == null) {
                 invokeContext = emptyInvokeContext;
             }
-            Net.Vpc.Upa.PersistenceGroup persistenceGroup = Net.Vpc.Upa.UPA.GetPersistenceGroup();
-            Net.Vpc.Upa.Session s = null;
-            if (persistenceGroup.CurrentSessionExists()) {
-                s = persistenceGroup.GetCurrentSession();
+            Net.Vpc.Upa.PersistenceGroup persistenceGroup = null;
+            Net.Vpc.Upa.PersistenceGroup _persistenceGroup = invokeContext.GetPersistenceGroup();
+            if (_persistenceGroup != null) {
+                persistenceGroup = _persistenceGroup;
+            } else if (invokeContext.GetPersistenceUnit() != null) {
+                persistenceGroup = invokeContext.GetPersistenceUnit().GetPersistenceGroup();
             }
+            if (persistenceGroup == null) {
+                persistenceGroup = Net.Vpc.Upa.UPA.GetPersistenceGroup();
+            }
+            Net.Vpc.Upa.Session s = persistenceGroup.FindCurrentSession();
             bool sessionCreated = false;
             bool loginCreated = false;
             if (s == null) {
                 s = persistenceGroup.OpenSession();
                 sessionCreated = true;
             }
-            Net.Vpc.Upa.PersistenceUnit pu = persistenceGroup.GetPersistenceUnit();
+            Net.Vpc.Upa.PersistenceUnit pu = null;
+            if (invokeContext.GetPersistenceUnit() != null) {
+                pu = invokeContext.GetPersistenceUnit();
+            }
+            if (pu == null) {
+                pu = persistenceGroup.GetPersistenceUnit();
+            }
             pu.LoginPrivileged(invokeContext.GetLogin());
             loginCreated = true;
             bool transactionCreated = false;
-            if (invokeContext.GetTransactionType() != null) {
+            if (invokeContext.GetTransactionType() != default(Net.Vpc.Upa.TransactionType)) {
                 pu.BeginTransaction(invokeContext.GetTransactionType());
                 transactionCreated = true;
             }
             T ret = default(T);
+            System.Exception anyErr = null;
             try {
                 ret = action.Run();
                 if (transactionCreated) {
                     pu.CommitTransaction();
                 }
             } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
+                anyErr = e;
+                System.Console.WriteLine(e);
                 if (transactionCreated) {
                     pu.RollbackTransaction();
                 }
                 throw e;
             } catch (System.Exception e) {
+                anyErr = e;
+                System.Console.WriteLine(e);
                 if (transactionCreated) {
                     pu.RollbackTransaction();
                 }
@@ -322,6 +355,36 @@ namespace Net.Vpc.Upa.Impl.Config
                 }
             }
             return ret;
+        }
+
+
+        public virtual  T Invoke<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return Invoke<T>(action, null);
+        }
+
+
+        public virtual  T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return InvokePrivileged<T>(action, null);
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Invoke<object>(new Net.Vpc.Upa.Impl.Config.VoidActionAdapter(action), invokeContext);
+        }
+
+
+        public virtual void Invoke(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Invoke<object>(new Net.Vpc.Upa.Impl.Config.VoidActionAdapter(action));
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            InvokePrivileged<object>(new Net.Vpc.Upa.Impl.Config.VoidActionAdapter(action), invokeContext);
+        }
+
+
+        public virtual void InvokePrivileged(Net.Vpc.Upa.VoidAction action) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            InvokePrivileged<object>(new Net.Vpc.Upa.Impl.Config.VoidActionAdapter(action));
         }
 
         public virtual void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -355,104 +418,6 @@ namespace Net.Vpc.Upa.Impl.Config
             return closeListeners.ToArray();
         }
 
-        public virtual void BeginInvocation(System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary<string , object> properties) {
-            Net.Vpc.Upa.TransactionType transactionType = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType));
-            Net.Vpc.Upa.Config.Decoration r = decorationRepository.GetMethodDecoration(method, (typeof(Net.Vpc.Upa.Config.Transactional)).FullName);
-            if (r != null) {
-                transactionType = (Net.Vpc.Upa.TransactionType)(System.Enum.Parse(typeof(Net.Vpc.Upa.TransactionType),r.GetString("value")));
-            }
-            if (transactionType == null) {
-                r = decorationRepository.GetMethodDecoration(method, "javax.ejb.TransactionAttribute");
-                if (r != null) {
-                    try {
-                        transactionType = (Net.Vpc.Upa.TransactionType)(System.Enum.Parse(typeof(Net.Vpc.Upa.TransactionType),r.GetString("value")));
-                    } catch (System.Exception e) {
-                    }
-                }
-            }
-            //not all types are supported, so ignore...
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType), transactionType)) {
-                r = decorationRepository.GetTypeDecoration((method).DeclaringType, typeof(Net.Vpc.Upa.Config.Transactional));
-                if (r != null) {
-                    transactionType = (Net.Vpc.Upa.TransactionType)(System.Enum.Parse(typeof(Net.Vpc.Upa.TransactionType),r.GetString("value")));
-                }
-            }
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType), transactionType)) {
-                r = decorationRepository.GetTypeDecoration((method).DeclaringType, "javax.ejb.TransactionAttribute");
-                if (r != null) {
-                    try {
-                        transactionType = (Net.Vpc.Upa.TransactionType)(System.Enum.Parse(typeof(Net.Vpc.Upa.TransactionType),r.GetString("value")));
-                    } catch (System.Exception e) {
-                    }
-                }
-            }
-            //not all types are supported, so ignore...
-            if (properties == null) {
-                properties = new System.Collections.Generic.Dictionary<string , object>();
-            }
-            properties[(typeof(Net.Vpc.Upa.TransactionType)).FullName]=Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType), transactionType) ? Net.Vpc.Upa.TransactionType.REQUIRED : transactionType;
-            BeginInvocation(properties);
-        }
-
-        public virtual void BeginInvocation(System.Collections.Generic.IDictionary<string , object> properties) {
-            Net.Vpc.Upa.Session s = null;
-            Net.Vpc.Upa.PersistenceGroup persistenceGroup = GetPersistenceGroup();
-            try {
-                s = persistenceGroup.GetCurrentSession();
-            } catch (Net.Vpc.Upa.Exceptions.CurrentSessionNotFoundException ignore) {
-            }
-            //ignore
-            bool sessionCreated = false;
-            if (s == null) {
-                s = persistenceGroup.OpenSession();
-                sessionCreated = true;
-            }
-            Net.Vpc.Upa.TransactionType transactionType = (Net.Vpc.Upa.TransactionType) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,(typeof(Net.Vpc.Upa.TransactionType)).FullName);
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.TransactionType>(typeof(Net.Vpc.Upa.TransactionType), transactionType)) {
-                transactionType = Net.Vpc.Upa.TransactionType.REQUIRED;
-            }
-            bool transactionCreated = false;
-            Net.Vpc.Upa.PersistenceUnit pu = persistenceGroup.GetPersistenceUnit();
-            pu.BeginTransaction(transactionType);
-            transactionCreated = true;
-            properties["sessionCreated"]=sessionCreated;
-            properties["transactionCreated"]=transactionCreated;
-        }
-
-        public virtual void EndInvocation(System.Exception error, System.Collections.Generic.IDictionary<string , object> properties) {
-            Net.Vpc.Upa.PersistenceUnit persistenceUnit = GetPersistenceUnit();
-            bool? sessionCreated = (bool?) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,"sessionCreated");
-            if (sessionCreated == null) {
-                sessionCreated = false;
-            }
-            bool? transactionCreated = (bool?) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,"transactionCreated");
-            if (transactionCreated == null) {
-                transactionCreated = false;
-            }
-            if (error == null) {
-                persistenceUnit.CommitTransaction();
-            } else {
-                if ((transactionCreated).Value) {
-                    try {
-                        persistenceUnit.RollbackTransaction();
-                    } catch (System.Exception e2) {
-                        //errors in rollback are ignored but traced
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Invocation Error",null,error));
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Rollback Error",null,e2));
-                    }
-                }
-            }
-            if ((sessionCreated).Value) {
-                try {
-                    if ((sessionCreated).Value) {
-                        GetPersistenceGroup().GetCurrentSession().Close();
-                    }
-                } catch (System.Exception e) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Failed to close session after error",null,e));
-                }
-            }
-        }
-
         public virtual void AddScanFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
             filters.Add(filter);
         }
@@ -483,8 +448,16 @@ namespace Net.Vpc.Upa.Impl.Config
         }
 
 
-        public virtual Net.Vpc.Upa.Callback CreateCallback(object instance, System.Reflection.MethodInfo m, Net.Vpc.Upa.CallbackType callbackType, System.Collections.Generic.IDictionary<string , object> configuration) {
+        public virtual Net.Vpc.Upa.Callback CreateCallback(Net.Vpc.Upa.CallbackConfig callbackConfig) {
+            object instance = callbackConfig.GetInstance();
+            System.Reflection.MethodInfo m = callbackConfig.GetMethod();
+            Net.Vpc.Upa.CallbackType callbackType = callbackConfig.GetCallbackType();
+            System.Collections.Generic.IDictionary<string , object> configuration = callbackConfig.GetConfiguration();
+            //        if (configuration == null) {
+            //            configuration = new HashMap<String, Object>();
+            //        }
             Net.Vpc.Upa.ObjectType objectType = Net.Vpc.Upa.Impl.Util.PlatformUtils.GetUndefinedValue<Net.Vpc.Upa.ObjectType>(typeof(Net.Vpc.Upa.ObjectType));
+            Net.Vpc.Upa.EventPhase phase = callbackConfig.GetPhase();
             if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.ObjectType>(typeof(Net.Vpc.Upa.ObjectType), objectType)) {
                 foreach (System.Type parameterType in Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m)) {
                     if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.ContextEvent))) {
@@ -545,7 +518,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_UPDATE:
                                 {
@@ -590,22 +563,20 @@ namespace Net.Vpc.Upa.Impl.Config
                                         if (formula) {
                                             Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaObjectEvent), 0, false) };
                                             Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                            return new Net.Vpc.Upa.Impl.Event.UpdateFormulaObjectEventCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                            return new Net.Vpc.Upa.Impl.Event.UpdateFormulaObjectEventCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                         } else {
                                             Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateObjectEvent), 0, false) };
                                             Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                            return new Net.Vpc.Upa.Impl.Event.UpdateObjectEventCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                            return new Net.Vpc.Upa.Impl.Event.UpdateObjectEventCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                         }
+                                    } else if (formula) {
+                                        Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent), 0, false) };
+                                        Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
+                                        return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                     } else {
-                                        if (formula) {
-                                            Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent), 0, false) };
-                                            Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                            return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
-                                        } else {
-                                            Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateEvent), 0, false) };
-                                            Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                            return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
-                                        }
+                                        Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateEvent), 0, false) };
+                                        Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
+                                        return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                     }
                                 }
                                 break;
@@ -632,11 +603,11 @@ namespace Net.Vpc.Upa.Impl.Config
                                     if (obj) {
                                         Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.RemoveObjectEvent), 0, false) };
                                         Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                        return new Net.Vpc.Upa.Impl.Event.RemoveObjectEventCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                        return new Net.Vpc.Upa.Impl.Event.RemoveObjectEventCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                     } else {
                                         Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.RemoveEvent), 0, false) };
                                         Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                        return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                        return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                     }
                                 }
                                 break;
@@ -646,31 +617,41 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.EntityEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_CREATE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.EntityEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.EntityEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.EntityEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_MOVE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.EntityEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                }
+                            case Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS:
+                                {
+                                    Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent), 0, false) };
+                                    Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                }
+                            default:
+                                {
+                                    throw new Net.Vpc.Upa.Exceptions.UPAException("Unsupported", "EntityCallback", callbackType);
                                 }
                         }
                     }
@@ -683,25 +664,25 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FieldEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FieldEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_MOVE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FieldEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FieldEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -718,25 +699,25 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.SectionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.SectionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_MOVE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.SectionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.SectionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -753,25 +734,25 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PackageEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PackageEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_MOVE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PackageEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PackageEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -788,25 +769,25 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_MOVE:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -823,25 +804,31 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_ALTER:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_START:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                }
+                            case Net.Vpc.Upa.CallbackType.ON_UPDATE_FORMULAS:
+                                {
+                                    Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent), 0, false) };
+                                    Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -858,13 +845,13 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.TriggerEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.TriggerEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -881,13 +868,13 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FunctionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_DROP:
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.FunctionEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             case Net.Vpc.Upa.CallbackType.ON_EVAL:
                                 {
@@ -904,7 +891,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                         Net.Vpc.Upa.Types.DataType forNativeType = Net.Vpc.Upa.Types.TypesFactory.ForPlatformType((m).ReturnType);
                                         configuration2["returnType"]=forNativeType;
                                     }
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration2);
                                 }
                             default:
                                 {
@@ -921,7 +908,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                 {
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] apiArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] { new Net.Vpc.Upa.Impl.Config.Callback.PosInvokeArgument("event", typeof(Net.Vpc.Upa.Callbacks.ContextEvent), 0, false) };
                                     Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] implicitArguments = new Net.Vpc.Upa.Impl.Config.Callback.InvokeArgument[] {};
-                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
+                                    return new Net.Vpc.Upa.Impl.Config.Callback.DefaultCallback(instance, m, callbackType, phase, objectType, Net.Vpc.Upa.Impl.Config.Callback.DefaultMethodArgumentsConverter.Create(methodArguments, apiArguments, implicitArguments), configuration);
                                 }
                             default:
                                 {
@@ -931,7 +918,14 @@ namespace Net.Vpc.Upa.Impl.Config
                     }
                     break;
             }
-            throw new System.ArgumentException ("Unsupported Callback for " + objectType + " with " + callbackType);
+            throw new Net.Vpc.Upa.Exceptions.UPAException("UnsupportedCallback", objectType, callbackType);
+        }
+
+
+        public virtual Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.CallbackConfig callbackConfig) {
+            Net.Vpc.Upa.Callback c = CreateCallback(callbackConfig);
+            AddCallback(c);
+            return c;
         }
 
 
@@ -947,9 +941,18 @@ namespace Net.Vpc.Upa.Impl.Config
             listeners.RemoveCallback(callback);
         }
 
-        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbacks = listeners.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
+        public virtual Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> callbacks = listeners.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
             return callbacks.ToArray();
+        }
+
+        public virtual Net.Vpc.Upa.Properties GetThreadProperties() {
+            Net.Vpc.Upa.Properties properties = (threadProperties).Value;
+            if (properties == null) {
+                properties = GetFactory().CreateObject<Net.Vpc.Upa.Properties>(typeof(Net.Vpc.Upa.Properties));
+                (threadProperties).Value = properties;
+            }
+            return properties;
         }
     }
 }

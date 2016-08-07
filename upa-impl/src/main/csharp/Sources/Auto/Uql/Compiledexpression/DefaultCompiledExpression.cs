@@ -37,7 +37,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
 
          Net.Vpc.Upa.Types.DataTypeTransform GetEffectiveDataType();
 
-         void SetDataType(Net.Vpc.Upa.Types.DataTypeTransform type);
+         void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform type);
 
          Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression SetClientProperty(string name, object @value);
 
@@ -48,6 +48,8 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
          Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression ReplaceExpressions(Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter filter, Net.Vpc.Upa.Impl.Uql.CompiledExpressionReplacer replacer);
 
           System.Collections.Generic.IList<T> FindExpressionsList<T>(Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter filter) where  T : Net.Vpc.Upa.Expressions.CompiledExpression;
+
+          T FindFirstExpression<T>(Net.Vpc.Upa.Impl.Uql.CompiledExpressionFilter filter) where  T : Net.Vpc.Upa.Expressions.CompiledExpression;
 
         /**
              * @param visitor

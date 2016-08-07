@@ -35,7 +35,7 @@ public class DefaultResultMetaData implements ResultMetaData {
         fields.add(field);
     }
 
-    public List<ResultField> getFields() {
+    public List<ResultField> getResultFields() {
         return Collections.unmodifiableList(fields);
     }
 

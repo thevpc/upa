@@ -18,7 +18,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#",name = "suppress")
 class DefaultXmlReaderXmlHandler extends DefaultHandler {

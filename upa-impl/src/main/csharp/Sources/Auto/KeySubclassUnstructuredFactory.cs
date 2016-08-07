@@ -21,17 +21,14 @@ namespace Net.Vpc.Upa.Impl
      */
     public class KeySubclassUnstructuredFactory : Net.Vpc.Upa.Impl.KeyFactory {
 
-        private System.Type keyType;
+        private Net.Vpc.Upa.BeanType nfo;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanAdapter nfo;
-
-        public KeySubclassUnstructuredFactory(System.Type keyType, Net.Vpc.Upa.Impl.Util.EntityBeanAdapter nfo) {
-            this.keyType = keyType;
+        public KeySubclassUnstructuredFactory(Net.Vpc.Upa.BeanType nfo) {
             this.nfo = nfo;
         }
 
         public virtual System.Type GetIdType() {
-            return keyType;
+            return nfo.GetPlatformType();
         }
 
 
@@ -50,7 +47,7 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual object GetId(Net.Vpc.Upa.Key unstructuredKey) {
-            if (keyType.IsInstanceOfType(unstructuredKey)) {
+            if (nfo.GetPlatformType().IsInstanceOfType(unstructuredKey)) {
                 return unstructuredKey;
             }
             Net.Vpc.Upa.Key o = (Net.Vpc.Upa.Key) nfo.NewInstance();
@@ -59,8 +56,8 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual Net.Vpc.Upa.Key GetKey(object key) {
-            return (Net.Vpc.Upa.Key) key;
+        public virtual Net.Vpc.Upa.Key GetKey(object id) {
+            return (Net.Vpc.Upa.Key) id;
         }
     }
 }

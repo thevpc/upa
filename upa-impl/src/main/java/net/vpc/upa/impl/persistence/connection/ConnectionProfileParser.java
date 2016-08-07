@@ -1,13 +1,13 @@
 package net.vpc.upa.impl.persistence.connection;
 
 import net.vpc.upa.Properties;
+import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.regexp.PortablePattern;
+import net.vpc.upa.impl.util.regexp.PortablePatternMatcher;
 import net.vpc.upa.persistence.*;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import net.vpc.upa.impl.DefaultProperties;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -16,13 +16,13 @@ import net.vpc.upa.impl.DefaultProperties;
 public class ConnectionProfileParser {
 
     private static String[] IGNORED_OPTIONS = new String[]{ConnectionOption.CONNECTION_DRIVER,
-        ConnectionOption.CONNECTION_DRIVER_VERSION,
-        ConnectionOption.DATABASE_PRODUCT,
-        ConnectionOption.DATABASE_PRODUCT_VERSION,
-        ConnectionOption.DATABASE_PRODUCT_VERSION};
+            ConnectionOption.CONNECTION_DRIVER_VERSION,
+            ConnectionOption.DATABASE_PRODUCT,
+            ConnectionOption.DATABASE_PRODUCT_VERSION,
+            ConnectionOption.DATABASE_PRODUCT_VERSION};
     private static Set<String> IGNORED_OPTIONS_SET = new HashSet<String>(Arrays.asList(IGNORED_OPTIONS));
 
-    public List<ConnectionProfile> parseEnabled(DefaultProperties p2, ConnectionConfig[] connectionConfigsArr, String prefix0) {
+    public List<ConnectionProfile> parseEnabled(Properties p2, ConnectionConfig[] connectionConfigsArr, String prefix0) {
         List<ConnectionProfile> found = new ArrayList<ConnectionProfile>();
         for (int i = 0; i < connectionConfigsArr.length; i++) {
             ConnectionConfig connectionConfig = connectionConfigsArr[i];
@@ -62,41 +62,32 @@ public class ConnectionProfileParser {
         return found;
     }
 
-    public DefaultConnectionProfileData parseDefaultConnectionProfileData(String connectionString){
-        //"derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8"
+//    public static void main(String[] args) {
+////        System.out.println("\r".matches("."));
+//        ConnectionProfileParser p = new ConnectionProfileParser();
+//        String connectionString = "derby#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi\na=6;\nb=8";
+//        DefaultProperties props = new DefaultProperties();
+//        props.setString(UPA.CONNECTION_STRING, connectionString);
+//        ConnectionProfile d = p.parse(props, UPA.CONNECTION_STRING);
+//        System.out.println(d);
+//    }
 
-        /**
-         * @PortabilityHint(target="C#",name="replace")
-         * var match = System.Text.RegularExpressions.Regex.Match(connectionString, "^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;]*)([;](.*))?$");
-         * if (match!=null){
-         *   DefaultConnectionProfileData d = new DefaultConnectionProfileData();
-         *   d.databaseProductName = match.Groups[1].Value;
-         *   d.databaseProductVersion = match.Groups[3].Value;
-         *   d.connectionDriverName = match.Groups[5].Value;
-         *   d.connectionDriverVersion = match.Groups[7].Value;
-         *   d.server = match.Groups[10].Value;
-         *   d.port = match.Groups[12].Value;
-         *   d.pathAndName = match.Groups[13].Value;
-         *   d.paramsString = match.Groups[15].Value;
-         *   return d;
-         * }
-         */
-        {
-            Pattern pattern = Pattern.compile("^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;]*)([;](.*))?$");
-            Matcher matcher = pattern.matcher(connectionString);
-            boolean matchFound = matcher.find();
-            if (matchFound) {
-                DefaultConnectionProfileData d = new DefaultConnectionProfileData();
-                d.databaseProductName = matcher.group(1);
-                d.databaseProductVersion = matcher.group(3);
-                d.connectionDriverName = matcher.group(5);
-                d.connectionDriverVersion = matcher.group(7);
-                d.server = matcher.group(10);
-                d.port = matcher.group(12);
-                d.pathAndName = matcher.group(13);
-                d.paramsString = matcher.group(15);
-                return d;
-            }
+    public DefaultConnectionProfileData parseDefaultConnectionProfileData(String connectionString) {
+        //"derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8"
+        PortablePattern pattern = new PortablePattern("^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;\n]*)([;\n]((.|\n)*))?$");
+        PortablePatternMatcher matcher = pattern.matcher(connectionString);
+        boolean matchFound = matcher.find();
+        if (matchFound) {
+            DefaultConnectionProfileData d = new DefaultConnectionProfileData();
+            d.setDatabaseProductName(matcher.group(1));
+            d.setDatabaseProductVersion(matcher.group(3));
+            d.setConnectionDriverName(matcher.group(5));
+            d.setConnectionDriverVersion(matcher.group(7));
+            d.setServer(matcher.group(10));
+            d.setPort(matcher.group(12));
+            d.setPathAndName(matcher.group(13));
+            d.setParamsString(matcher.group(15));
+            return d;
         }
         return null;
 
@@ -110,20 +101,21 @@ public class ConnectionProfileParser {
         }
         DefaultConnectionProfileData matchFound = parseDefaultConnectionProfileData(connectionString);
 
-        if (matchFound!=null) {
+        if (matchFound != null) {
 //            for (int i=0; i<=matcher.groupCount(); i++) {
 //                String groupStr = matcher.group(i);
 //                System.out.println("group "+i+" : <"+groupStr+">");
 //            }
+            DefaultVarContext varContext=new DefaultVarContext(parameters);
             DefaultConnectionProfile profile = new DefaultConnectionProfile();
-            String databaseProductName = (String) parameters.eval(matchFound.databaseProductName);
-            String databaseProductVersion = (String) parameters.eval(matchFound.databaseProductVersion);
-            String connectionDriverName = (String) parameters.eval(matchFound.connectionDriverName);
-            String connectionDriverVersion = (String) parameters.eval(matchFound.connectionDriverVersion);
-            String server = (String) parameters.eval(matchFound.server);
-            String port = (String) parameters.eval(matchFound.port);
-            String pathAndName = (String) parameters.eval(matchFound.pathAndName);
-            String params = (String) parameters.eval(matchFound.paramsString);
+            String databaseProductName = varContext.eval(matchFound.getDatabaseProductName());
+            String databaseProductVersion = varContext.eval(matchFound.getDatabaseProductVersion());
+            String connectionDriverName = varContext.eval(matchFound.getConnectionDriverName());
+            String connectionDriverVersion = varContext.eval(matchFound.getConnectionDriverVersion());
+            String server = varContext.eval(matchFound.getServer());
+            String port = varContext.eval(matchFound.getPort());
+            String pathAndName = varContext.eval(matchFound.getPathAndName());
+            String params = varContext.eval(matchFound.getParamsString());
             profile.setProperties(new HashMap<String, String>());
 
             setParam(profile, ConnectionOption.DATABASE_PRODUCT, databaseProductName, parameters, connectionStringPropertyName);
@@ -151,69 +143,11 @@ public class ConnectionProfileParser {
             setParam(profile, ConnectionOption.SERVER_PORT, port, parameters, connectionStringPropertyName);
 
             if (params != null) {
-                if(!params.startsWith(";")){
-                    params=";"+params;
-                }
-                char[] chars = params.toCharArray();
-                int i = 0;
-                while (i < chars.length) {
-                    if (chars[i] != ';') {
-                        throw new IllegalArgumentException("Expected ;");
-                    }
-                    i++;
-                    int j = params.indexOf('=', i);
-                    if (j < 0) {
-                        setParam(profile, params.substring(i), "", parameters, connectionStringPropertyName);
-                        i = chars.length + 1;
-                    } else {
-                        String n = params.substring(i, j);
-                        i = j + 1;
-                        if (i < chars.length) {
-                            if (chars[i] == '\"') {
-                                StringBuilder v = new StringBuilder();
-                                int k = i + 1;
-                                while (k < chars.length) {
-                                    if (chars[k] == '\\') {
-                                        k++;
-                                        v.append(chars[k]);
-                                    } else if (chars[k] == '\"') {
-                                        break;
-                                    } else {
-                                        v.append(chars[k]);
-                                    }
-                                    k++;
-                                }
-                                setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
-                                i = k;
-                            }else if (chars[i] == '\'') {
-                                StringBuilder v = new StringBuilder();
-                                int k = i + 1;
-                                while (k < chars.length) {
-                                    if (chars[k] == '\\') {
-                                        k++;
-                                        v.append(chars[k]);
-                                    } else if (chars[k] == '\'') {
-                                        break;
-                                    } else {
-                                        v.append(chars[k]);
-                                    }
-                                    k++;
-                                }
-                                setParam(profile, n, v.toString(), parameters, connectionStringPropertyName);
-                                i = k;
-                            } else {
-                                int e = params.indexOf(';', i);
-                                if (e < 0) {
-                                    setParam(profile, n, params.substring(i), parameters, connectionStringPropertyName);
-                                    i = chars.length + 1;
-                                } else {
-                                    setParam(profile, n, params.substring(i, e), parameters, connectionStringPropertyName);
-                                    i = e - 1;
-                                }
-                            }
-                        }
-                    }
-                    i++;
+                Map<String,String> m=StringUtils.readEscapedKeyValMap(
+                        params.toCharArray(),",;\n\r","=:"
+                );
+                for (Map.Entry<String,String> e : m.entrySet()) {
+                    setParam(profile, e.getKey(), e.getValue(), parameters, connectionStringPropertyName);
                 }
             }
             for (Map.Entry<String, Object> e : parameters.toMap().entrySet()) {
@@ -227,7 +161,7 @@ public class ConnectionProfileParser {
             }
             return profile;
         }
-        throw new IllegalArgumentException("invalid connection string. Expected 'product:driver://info' Found : "+connectionString);
+        throw new IllegalArgumentException("invalid connection string. Expected 'product:driver://info' Found : " + connectionString);
     }
 
     protected void setParam(DefaultConnectionProfile d, String propertyName, String propertyValue, Properties parameters, String connectionStringPropertyName) {

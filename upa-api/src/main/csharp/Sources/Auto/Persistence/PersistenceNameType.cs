@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Persistence
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public sealed class PersistenceNameType {
 
@@ -53,17 +53,17 @@ namespace Net.Vpc.Upa.Persistence
         public static Net.Vpc.Upa.Persistence.PersistenceNameType ValueOf(string name) {
             Net.Vpc.Upa.Persistence.PersistenceNameType f = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Persistence.PersistenceNameType>(values,name);
             if (f == null) {
-                throw new System.ArgumentException ("PersistenceNameType not found " + name);
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("PersistenceNameType not found " + name);
             }
             return f;
         }
 
         public static Net.Vpc.Upa.Persistence.PersistenceNameType Create(string name, bool globalScope) {
             if (name == null || (name).Length == 0 || (name.Trim()).Length != (name).Length) {
-                throw new System.ArgumentException ("Invalid PersistenceNameType Name " + name);
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Invalid PersistenceNameType Name " + name);
             }
             if (values.ContainsKey(name)) {
-                throw new System.ArgumentException ("PersistenceNameType already exists " + name);
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("PersistenceNameType already exists " + name);
             }
             Net.Vpc.Upa.Persistence.PersistenceNameType t = new Net.Vpc.Upa.Persistence.PersistenceNameType(name, globalScope);
             values[t.Name()]=t;

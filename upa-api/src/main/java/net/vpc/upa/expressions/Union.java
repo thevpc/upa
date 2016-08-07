@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class Union extends DefaultEntityStatement implements QueryStatement {
 
-    private List<QueryStatement> queryStatements = new ArrayList<QueryStatement>();
+    private List<QueryStatement> queryStatements = new ArrayList<QueryStatement>(2);
 
     @Override
     public List<TaggedExpression> getChildren() {
@@ -84,7 +84,7 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
 
     //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnit database) {
-//        throw new IllegalArgumentException("Unsupported");
+//        throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported");
 //    }
     @Override
     public int countFields() {

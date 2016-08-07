@@ -9,7 +9,7 @@ import java.net.URL;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface ClassPathFilter {
 

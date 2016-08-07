@@ -35,19 +35,19 @@ namespace Net.Vpc.Upa.Impl.Event
 
         public override void AfterDeleteHelper(Net.Vpc.Upa.Callbacks.RemoveEvent @event, Net.Vpc.Upa.Expressions.Expression updatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = @event.GetEntity();
-            entity.UpdateFormulasCore(GetFields(entity), updatedExpression, @event.GetContext());
+            entity.CreateUpdateQuery().Validate(GetFields(entity)).ByExpression(updatedExpression).Execute();
         }
 
 
         public override void AfterUpdateHelper(Net.Vpc.Upa.Callbacks.UpdateEvent @event, Net.Vpc.Upa.Expressions.Expression updatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = @event.GetEntity();
-            entity.UpdateFormulasCore(GetFields(entity), updatedExpression, @event.GetContext());
+            entity.CreateUpdateQuery().Validate(GetFields(entity)).ByExpression(updatedExpression).Execute();
         }
 
 
-        public override void AfterInsertHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event, Net.Vpc.Upa.Expressions.Expression translatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override void AfterPersistHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event, Net.Vpc.Upa.Expressions.Expression translatedExpression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Entity entity = @event.GetEntity();
-            entity.UpdateFormulasCore(GetFields(entity), translatedExpression, @event.GetContext());
+            entity.CreateUpdateQuery().Validate(GetFields(entity)).ByExpression(translatedExpression).Execute();
         }
     }
 }

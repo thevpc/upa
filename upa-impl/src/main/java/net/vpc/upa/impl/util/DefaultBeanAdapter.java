@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.BeanAdapter;
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -9,7 +9,7 @@ import net.vpc.upa.BeanType;
  */
 public class DefaultBeanAdapter implements BeanAdapter {
 
-    private BeanType beanType;
+    private PlatformBeanType platformBeanType;
     private Object instance;
 
     public DefaultBeanAdapter(Object obj) {
@@ -18,16 +18,16 @@ public class DefaultBeanAdapter implements BeanAdapter {
     }
 
     public DefaultBeanAdapter(Class cls) {
-        this.beanType = PlatformBeanTypeRepository.getInstance().getBeanType(cls);
+        this.platformBeanType = PlatformBeanTypeRepository.getInstance().getBeanType(cls);
     }
 
     public Object newInstance() {
-        return beanType.newInstance();
+        return platformBeanType.newInstance();
     }
 
     @Override
-    public BeanType getBeanType() {
-        return beanType;
+    public PlatformBeanType getPlatformBeanType() {
+        return platformBeanType;
     }
     //    public <R> void resetToDefaultValue(T o, String field) throws UPAException{
 //        BeanAdapterAttribute<R> attrAdapter = getAttrAdapter(field);
@@ -74,27 +74,27 @@ public class DefaultBeanAdapter implements BeanAdapter {
     //        return set;
     //    }
     public boolean containsProperty(String property) {
-        return beanType.containsProperty(property);
+        return platformBeanType.containsProperty(property);
 
     }
 
     public Object getProperty(String field) {
-        return beanType.getProperty(instance, field);
+        return platformBeanType.getProperty(instance, field);
     }
 
 //    public Object getProperty(Object instance, String field) {
-//        return beanType.getProperty(instance,field);
+//        return platformBeanType.getProperty(instance,field);
 //    }
 
     public void injectNull(String property) {
-        beanType.inject(instance, property, (Object) null);
+        platformBeanType.inject(instance, property, (Object) null);
     }
 
     public void setProperty(String property, Object value) {
-        beanType.inject(instance, property, value);
+        platformBeanType.inject(instance, property, value);
     }
 
     public void inject(String property, Object value) {
-        beanType.inject(instance, property, value);
+        platformBeanType.inject(instance, property, value);
     }
 }

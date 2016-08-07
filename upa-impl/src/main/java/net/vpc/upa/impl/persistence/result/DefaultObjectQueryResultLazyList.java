@@ -21,10 +21,10 @@ import java.util.*;
 public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> {
     protected boolean updatable;
     protected boolean loadManyToOneRelations;
-    protected TypeInfo[] typeInfos;
+    TypeInfo[] typeInfos;
     protected ResultMetaData metaData;
 //    protected int entityIndex = 0;
-    protected LinkedHashMap<String, TypeInfo> bindingToTypeInfos;
+    LinkedHashMap<String, TypeInfo> bindingToTypeInfos;
     protected CacheMap<NamedId, Object> referencesCache;
     protected Map<String, Object> hints;
     protected ObjectFactory ofactory;
@@ -35,7 +35,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private LoaderContext loaderContext;
 //    private Command[] parseCommands;
 
-    public DefaultObjectQueryResultLazyList(QueryExecutor queryExecutor,
+    public DefaultObjectQueryResultLazyList(
+                                            PersistenceUnit pu,
+                                            QueryExecutor queryExecutor,
                                             boolean loadManyToOneRelations,
                                             boolean defaultsToRecord,
                                             boolean relationAsRecord,
@@ -67,7 +69,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         }
         loaderContext=new LoaderContext(referencesCache,hints);
         LinkedHashMap<String, TypeInfo> bindingToTypeInfos0 = new LinkedHashMap<String, TypeInfo>();
-        ofactory = UPA.getPersistenceUnit().getFactory();
+        ofactory = pu.getFactory();
         NativeField[] fields = queryExecutor.getFields();
         for (int i = 0; i < fields.length; i++) {
             NativeField nativeField = fields[i];
@@ -115,7 +117,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if (t.leadPrimaryField == null && f.nativeField.getField() != null && f.nativeField.getField().isId()) {
                 t.leadPrimaryField = f;
             }
-            if (t.leadField == null) {
+            if (t.entity!=null && t.leadField == null) {
                 t.leadField = f;
             }
             f.setterMethodName = PlatformUtils.setterName(nativeField.getName());
@@ -126,7 +128,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
         // all indexes to fill with values from the query
         Set<Integer> allIndexes=new HashSet<Integer>();
-        for (int i = 0; i < metaData.getFields().size(); i++) {
+        for (int i = 0; i < metaData.getResultFields().size(); i++) {
             allIndexes.add(i);
         }
         // map expression to relative TypeInfo/FieldInfo
@@ -151,7 +153,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if(typeInfo.entity==null) {
                 typeInfo.update=true;
             }else {
-                List<ResultField> fields1 = metaData.getFields();
+                List<ResultField> fields1 = metaData.getResultFields();
                 for (int i1 = 0; i1 < fields1.size(); i1++) {
                     ResultField resultField = fields1.get(i1);
                     if (resultField.getExpression().toString().equals(typeInfo.binding)) {
@@ -170,7 +172,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         //when an expression is to be expanded twice, implementation ignores second expansion
         // so we must find the equivalent expression index to handle
         for (Integer remaining : allIndexes) {
-            String k = metaData.getFields().get(remaining).getExpression().toString();
+            String k = metaData.getResultFields().get(remaining).getExpression().toString();
             Object o = visitedIndexes.get(k);
             if(o instanceof TypeInfo){
                 ((TypeInfo) o).indexesToUpdate.add(remaining);
@@ -235,7 +237,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     }
     public T parse(final QueryResult result) throws UPAException {
         Map<String,Object> groupValues=new HashMap<String, Object>();
-        ResultColumn[] values=new ResultColumn[metaData.getFields().size()];
+        ResultColumn[] values=new ResultColumn[metaData.getResultFields().size()];
         for (int i = 0; i < values.length; i++) {
             values[i]=new ResultColumn();
         }

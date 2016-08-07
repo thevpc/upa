@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class ClassPathRoot : System.Collections.Generic.IEnumerable<Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource> {
 
@@ -67,7 +67,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
         public virtual Net.Vpc.Upa.Impl.Util.Classpath.ClassPathResource Find(string path) /* throws System.IO.IOException */  {
             if (folder != null) {
                 string f = Net.Vpc.Upa.Impl.FwkConvertUtils.ConcatFilePath(folder, path);
-                if (f.Exists()) {
+                if (Net.Vpc.Upa.Impl.FwkConvertUtils.FileExists(f)) {
                     return new Net.Vpc.Upa.Impl.Util.Classpath.FileClassPathResource(path, f);
                 }
                 return null;
@@ -81,28 +81,6 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
         }
 
         public virtual bool Contains(string path) /* throws System.IO.IOException */  {
-            if (folder != null) {
-                string f = Net.Vpc.Upa.Impl.FwkConvertUtils.ConcatFilePath(folder, path);
-                if (f.Exists()) {
-                    return true;
-                }
-                return false;
-            }
-            Java.Util.Jar.JarInputStream jar = null;
-            try {
-                jar = new Java.Util.Jar.JarInputStream(Net.Vpc.Upa.Impl.FwkConvertUtils.OpenURLStream(url));
-                Java.Util.Zip.ZipEntry nextEntry;
-                while ((nextEntry = jar.GetNextEntry()) != null) {
-                    string path2 = nextEntry.GetName();
-                    if (path2.Equals(path)) {
-                        return true;
-                    }
-                }
-            } finally {
-                if (jar != null) {
-                    jar.Close();
-                }
-            }
             return false;
         }
     }

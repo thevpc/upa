@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public sealed class AnnotationDecoration : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecoration {
 
@@ -52,7 +52,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         }
 
         public override string GetName() {
-            return (ann.AnnotationType).FullName;
+            return (ann.GetType()).FullName;
         }
 
         public override int GetPosition() {
@@ -91,10 +91,10 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         public override Net.Vpc.Upa.Config.ConfigInfo GetConfig() {
             if (configInfo == null) {
                 try {
-                    System.Reflection.MethodInfo method = ann.AnnotationType.GetMethod("config");
+                    System.Reflection.MethodInfo method = ann.GetType().GetMethod("config");
                     if (method != null && ((method).ReturnType).FullName.Equals((typeof(Net.Vpc.Upa.Config.Config)).FullName)) {
                         object t = method.Invoke(ann, new object[0]);
-                        Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration c = new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) t, null, null, null, null, 0);
+                        Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration c = new Net.Vpc.Upa.Impl.Config.Decorations.AnnotationDecoration((System.Attribute) t, default(Net.Vpc.Upa.Config.DecorationSourceType), default(Net.Vpc.Upa.Config.DecorationTarget), null, null, 0);
                         configInfo = new Net.Vpc.Upa.Config.ConfigInfo(c.GetInt("order"), (Net.Vpc.Upa.Config.ConfigAction)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.ConfigAction),c.GetString("action"))), c.GetString("persistenceGroup"), c.GetString("persistenceUnit"));
                     }
                 } catch (System.Exception e) {
@@ -112,9 +112,9 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             if (values == null) {
                 System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Config.DecorationValue> map = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Config.DecorationValue>();
                 int pos = 0;
-                foreach (System.Reflection.MethodInfo declaredMethod in ann.AnnotationType.GetMethods()) {
+                foreach (System.Reflection.MethodInfo declaredMethod in ann.GetType().GetMethods()) {
                     string mname = (declaredMethod).Name;
-                    if (declaredMethod.GetParameterCount() == 0 && !mname.Equals("equals") && !mname.Equals("hashCode") && !mname.Equals("toString")) {
+                    if (declaredMethod.GetParameters().Length == 0 && !mname.Equals("equals") && !mname.Equals("hashCode") && !mname.Equals("toString")) {
                         //                    System.out.println(declaredMethod);
                         try {
                             object v = declaredMethod.Invoke(ann, new object[0]);
@@ -135,7 +135,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             b.Append("@").Append(GetName());
             b.Append("[");
-            if (targetType == null) {
+            if (targetType == default(Net.Vpc.Upa.Config.DecorationTarget)) {
                 b.Append("EMBEDDED").Append(":");
             }
             b.Append(type);

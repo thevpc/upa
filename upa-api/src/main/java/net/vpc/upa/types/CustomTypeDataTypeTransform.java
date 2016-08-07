@@ -36,7 +36,7 @@ package net.vpc.upa.types;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class CustomTypeDataTypeTransform implements DataTypeTransformConfig {
 

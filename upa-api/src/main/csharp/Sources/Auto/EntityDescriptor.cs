@@ -35,6 +35,10 @@ namespace Net.Vpc.Upa
 
          string GetPackagePath();
 
+         string GetListOrder();
+
+         string GetArchivingOrder();
+
          int GetPosition();
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Extensions.EntityExtensionDefinition> GetEntityExtensions();

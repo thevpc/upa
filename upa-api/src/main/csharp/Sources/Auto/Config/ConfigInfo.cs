@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Config
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class ConfigInfo : System.IComparable<Net.Vpc.Upa.Config.ConfigInfo> {
 
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Config
         public override int GetHashCode() {
             int hash = 7;
             hash = 67 * hash + this.configOrder;
-            hash = 67 * hash + (this.configAction != null ? this.configAction.GetHashCode() : 0);
+            hash = 67 * hash + (this.configAction != default(Net.Vpc.Upa.Config.ConfigAction) ? this.configAction.GetHashCode() : 0);
             hash = 67 * hash + (this.persistenceGroup != null ? this.persistenceGroup.GetHashCode() : 0);
             hash = 67 * hash + (this.persistenceUnit != null ? this.persistenceUnit.GetHashCode() : 0);
             return hash;

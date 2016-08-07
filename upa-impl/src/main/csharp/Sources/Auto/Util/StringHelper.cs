@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class StringHelper {
 
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public virtual string Format(string s) {
-            if (Net.Vpc.Upa.Impl.Util.Strings.IsUndefined(s)) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(s)) {
                 return undefinedValue;
             }
             if (s == null) {

@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class IdentifierStoreTranslatorMixedDoubleQuote : Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslator {
 

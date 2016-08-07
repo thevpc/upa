@@ -34,12 +34,20 @@
  */
 package net.vpc.upa.expressions;
 
-public final class StrFormat extends Function implements Cloneable {
+public final class StrFormat extends FunctionExpression implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private Expression[] expressions;
     private Literal pattern;
 
+    public StrFormat(Expression[] expressions) {
+        if(expressions.length<1) {
+            checkArgCount(getName(), expressions, 1);
+        }
+        this.pattern = (Literal)expressions[0];
+        this.expressions = new Expression[expressions.length-1];
+        System.arraycopy(this.expressions, 1, this.expressions, 0, expressions.length - 1);
+    }
     public StrFormat(String pattern, Expression... expressions) {
         this.expressions = expressions;
         this.pattern = new Literal(pattern);

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Config
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public interface Decoration : Net.Vpc.Upa.Config.DecorationValue {
 

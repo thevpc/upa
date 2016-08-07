@@ -7,7 +7,7 @@ package net.vpc.upa.impl.util;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class StringHelper {
     public static final StringHelper EMPTY_STRING=new StringHelper("", "", "", true);

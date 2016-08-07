@@ -282,7 +282,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public List<String> getOrderedFields(String[] fields) ;
 
-    public Expression simplifyExpression(Expression e) ;
+    public Expression toIdListExpression(Expression e) ;
 
     public String getShortName() ;
 
@@ -441,5 +441,5 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public List<Record> findAllRecords() ;
 
-    public BeanType getBeanType();
+    public PlatformBeanType getPlatformBeanType();
 }

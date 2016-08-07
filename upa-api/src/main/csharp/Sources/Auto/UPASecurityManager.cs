@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa
 
          bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsAllowedRemove(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -43,19 +43,21 @@ namespace Net.Vpc.Upa
 
          bool IsAllowedLoad(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, string navigationMode) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsAllowedRead(Net.Vpc.Upa.Field entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsAllowedRead(Net.Vpc.Upa.Entity entity, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRead(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         bool IsAllowedRead(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsAllowedWrite(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsAllowedKey(Net.Vpc.Upa.Entity entity, string key) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 

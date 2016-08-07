@@ -25,17 +25,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public static System.Collections.Generic.IDictionary<string , string> GetAttributes(System.Xml.XmlElement e, Net.Vpc.Upa.Impl.Util.XmlAttrListFilter names) {
             System.Collections.Generic.IDictionary<string , string> values = new System.Collections.Generic.Dictionary<string , string>();
-            Org.W3c.Dom.NamedNodeMap attr = e.GetAttributes();
-            for (int i = 0; i < attr.GetLength(); i++) {
-                System.Xml.XmlNode a = attr.Item(i);
-                string n = UniformName(a.GetNodeName());
-                string n2 = names.AcceptAndConvert(n);
-                if (n2 != null) {
-                    values[n2]=(a).Value;
-                } else {
-                    throw new System.ArgumentException ("Unsupported atribute " + n + " for tag " + (e).Name);
-                }
-            }
+            
             return values;
         }
 

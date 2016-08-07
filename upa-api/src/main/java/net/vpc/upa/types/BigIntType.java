@@ -97,11 +97,6 @@ public class BigIntType extends NumberType implements Cloneable {
     }
 
     @Override
-    public Object clone() {
-        return super.clone();
-    }
-
-    @Override
     public String toString() {
         return "BigIntType{" + "min=" + min + ", max=" + max + '}';
     }

@@ -38,14 +38,23 @@ package net.vpc.upa.expressions;
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
  * change this template use Options | File Templates.
  */
-public class DateAdd extends Function {
+public class DateAdd extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
     private DatePartType type;
     private Expression count;
     private Expression date;
 
+    public DateAdd(Expression[] expressions) {
+        checkArgCount(getName(),expressions,3);
+        init((DatePartType) ((Cst)expressions[0]).getValue(),expressions[1],expressions[2]);
+    }
+
     public DateAdd(DatePartType type, Expression count, Expression date) {
+        init(type, count, date);
+    }
+
+    private void init(DatePartType type, Expression count, Expression date) {
         this.type = type;
         this.count = count;
         this.date = date;

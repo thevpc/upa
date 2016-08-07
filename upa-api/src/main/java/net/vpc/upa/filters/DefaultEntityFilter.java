@@ -41,7 +41,7 @@ import net.vpc.upa.exceptions.UPAException;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class DefaultEntityFilter implements EntityFilter {
+public class DefaultEntityFilter extends AbstractRichEntityFilter {
     private int acceptCloneable = 0;
     private int acceptValidatable = 0;
     private int acceptUpdatable = 0;

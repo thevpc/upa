@@ -16,21 +16,15 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class MaxExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public MaxExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileMax((Max) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileMax((Max) o, declarations);
-    }
-
-    protected CompiledMax compileMax(Max v, ExpressionDeclarationList declarations) {
+    protected CompiledMax compileMax(Max v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledMax s = new CompiledMax(outer.compileAny(v.getArgument(0), declarations));
+        CompiledMax s = new CompiledMax(manager.translateAny(v.getArgument(0), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

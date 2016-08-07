@@ -38,6 +38,11 @@ namespace Net.Vpc.Upa.Impl.Context
         }
 
 
+        public override string ToString() {
+            return "PUKey{" + persistenceUnit + ", '" + key + '\'' + '}';
+        }
+
+
         public override int GetHashCode() {
             int hash = 5;
             hash = 71 * hash + (this.persistenceUnit != null ? this.persistenceUnit.GetHashCode() : 0);

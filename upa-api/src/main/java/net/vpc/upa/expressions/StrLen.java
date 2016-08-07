@@ -41,18 +41,23 @@ package net.vpc.upa.expressions;
  * Time: 12:21:56
  * To change this template use Options | File Templates.
  */
-public class StrLen extends Function {
+public class StrLen extends FunctionExpression {
     private static final long serialVersionUID = 1L;
-    private Expression value;
+    private Expression expression;
 
-    public StrLen(Expression value) {
-        this.value = value;
+    public StrLen(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
+    }
+
+    public StrLen(Expression expression) {
+        this.expression = expression;
     }
 
     @Override
     public void setArgument(int index, Expression e) {
         if(index==0){
-            this.value=e;
+            this.expression =e;
         }else{
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -60,7 +65,7 @@ public class StrLen extends Function {
 
     @Override
     public Expression copy() {
-        StrLen o = new StrLen(value.copy());
+        StrLen o = new StrLen(expression.copy());
         return o;
     }
 
@@ -78,7 +83,7 @@ public class StrLen extends Function {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return value;
+                return expression;
         }
         throw new ArrayIndexOutOfBoundsException();
     }

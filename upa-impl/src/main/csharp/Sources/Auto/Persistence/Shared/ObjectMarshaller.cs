@@ -21,7 +21,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class ObjectMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            return resultSet.GetObject(index);
+            
+            return null;
         }
 
         public override string ToSQLLiteral(object @object) {
@@ -33,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            preparedStatement.SetObject(i, @object);
+            
         }
 
 

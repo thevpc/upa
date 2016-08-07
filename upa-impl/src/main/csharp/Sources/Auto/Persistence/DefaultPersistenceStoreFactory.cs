@@ -26,7 +26,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
         private System.Collections.Generic.IDictionary<Net.Vpc.Upa.Persistence.DatabaseProduct , System.Type> puStoresByDialect = new System.Collections.Generic.Dictionary<Net.Vpc.Upa.Persistence.DatabaseProduct , System.Type>();
 
         public DefaultPersistenceStoreFactory() {
-            SetDialectPersistenceUnitManager(Net.Vpc.Upa.Persistence.DatabaseProduct.SQLSERVER, typeof(Net.Vpc.Upa.Impl.Persistence.Specific.Mssqlserver.MSSQLServerPersistenceStore));
+            
+            
+            
         }
 
         private void SetDialectPersistenceUnitManager(Net.Vpc.Upa.Persistence.DatabaseProduct databaseProduct, System.Type type) {

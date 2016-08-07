@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class OnHoldCommitActionComparator : System.Collections.Generic.IComparer<Net.Vpc.Upa.Impl.OnHoldCommitAction> {
 

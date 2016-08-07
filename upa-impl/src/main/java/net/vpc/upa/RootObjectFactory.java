@@ -36,7 +36,7 @@ import net.vpc.upa.impl.bulk.text.DefaultTextCSVParser;
 import net.vpc.upa.impl.bulk.xml.DefaultXmlParser;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.transform.DefaultDataTypeTransformFactory;
-import net.vpc.upa.impl.uql.DefaultQLEvaluator;
+import net.vpc.upa.impl.eval.DefaultQLEvaluator;
 import net.vpc.upa.impl.uql.DefaultQLExpressionParser;
 import net.vpc.upa.impl.util.DefaultBeanAdapterFactory;
 import net.vpc.upa.types.DataTypeTransformFactory;
@@ -88,9 +88,12 @@ public class RootObjectFactory implements ObjectFactory {
         register(ViewEntityExtension.class, DefaultViewEntityExtension.class);
         register(FilterEntityExtension.class, DefaultFilterEntityExtension.class);
         register(QLExpressionParser.class, DefaultQLExpressionParser.class);
+        register(BeanAdapterFactory.class, DefaultBeanAdapterFactory.class);
+        register(QLEvaluator.class, DefaultQLEvaluator.class);
+        register(Properties.class, DefaultProperties.class);
 
         /**
-         * @PortabilityHint(target = "C#",name = "suppress")
+         * @PortabilityHint(target = "C#",name = "todo")
          */
         {
             register(TextFixedWidthParser.class, DefaultTextFixedWidthParser.class);
@@ -101,17 +104,12 @@ public class RootObjectFactory implements ObjectFactory {
             register(TextFixedWidthFormatter.class, DefaultTextFixedWidthFormatter.class);
             register(SheetFormatter.class, DefaultSheetFormatter.class);
             register(XmlFormatter.class, DefaultXmlFormatter.class);
+            register(ImportDataManager.class, DefaultImportDataManager.class);
+            register(ParseFormatManager.class, DefaultParseFormatManager.class);
+            register(ImportExportManager.class, DefaultImportExportManager.class);
+            register(ImportEntityFinder.class, DefaultImportEntityFinder.class);
+            register(ImportEntityMapper.class, DefaultImportEntityFinder.class);
         }
-
-        register(ImportDataManager.class, DefaultImportDataManager.class);
-        register(ParseFormatManager.class, DefaultParseFormatManager.class);
-        register(ImportExportManager.class, DefaultImportExportManager.class);
-        register(ImportEntityFinder.class, DefaultImportEntityFinder.class);
-        register(ImportEntityMapper.class, DefaultImportEntityFinder.class);
-
-        register(BeanAdapterFactory.class, DefaultBeanAdapterFactory.class);
-        register(QLEvaluator.class, DefaultQLEvaluator.class);
-        register(Properties.class, DefaultProperties.class);
     }
 
     public final void register(Class contract, Class impl) {

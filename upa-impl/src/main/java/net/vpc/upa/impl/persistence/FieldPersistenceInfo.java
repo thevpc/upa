@@ -139,7 +139,7 @@ public class FieldPersistenceInfo {
                 updateFormulaPass = 0;
                 postUpdateFormula = false;
             } else if (updateFormula instanceof ExpressionFormula) {
-                RebuildExpressionInfo re = rebuildExpression((ExpressionFormula) persistFormula);
+                RebuildExpressionInfo re = rebuildExpression((ExpressionFormula) updateFormula);
                 if (re.rebuiltFormula != null) {
                     field.setUpdateFormula(re.rebuiltFormula);
                 }

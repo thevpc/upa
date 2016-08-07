@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa.Callbacks
      */
     public interface SingleEntityListener : Net.Vpc.Upa.Callbacks.EntityInterceptor {
 
-         void BeforeInsert(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void BeforePersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void AfterInsert(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void AfterPersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void BeforeUpdate(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 

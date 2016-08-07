@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa
      */
     public enum MissingStrategy {
 
-        ERROR, NULL, CREATE
+        DEFAULT, ERROR, NULL, CREATE
     }
 }

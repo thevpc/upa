@@ -48,13 +48,13 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
                     }
                 }
             } else if (c is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) {
-                object co = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) c).GetObject();
+                object co = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) c).GetValue();
                 if (co != null && persistenceUnit.ContainsEntity(co.GetType())) {
                     Net.Vpc.Upa.Entity rr = persistenceUnit.GetEntity(co.GetType());
                     if (treeEntity == null) {
                         treeEntity = rr;
                     }
-                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) c).SetObject(rr.GetBuilder().EntityToId(co));
+                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) c).SetValue(rr.GetBuilder().ObjectToId(co));
                 }
             }
             //            Object co = ((CompiledParam) c).getEffectiveDataType();
@@ -72,17 +72,17 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
                     }
                 }
             } else if (p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) {
-                object co = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).GetObject();
+                object co = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).GetValue();
                 if (co != null && persistenceUnit.ContainsEntity(co.GetType())) {
-                    Net.Vpc.Upa.Entity rr = persistenceUnit.GetEntity(co.GetType());
+                    Net.Vpc.Upa.Entity rr = persistenceUnit.FindEntity(co.GetType());
                     if (treeEntity == null) {
                         treeEntity = rr;
                     }
-                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).SetObject(rr.GetBuilder().EntityToId(co));
+                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).SetValue(rr.GetBuilder().ObjectToId(co));
                     if ((rr.GetPrimaryFields()).Count > 1) {
                         throw new System.ArgumentException ("Not supported");
                     }
-                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).SetDataType(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(rr.GetPrimaryFields()[0]));
+                    ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) p).SetTypeTransform(Net.Vpc.Upa.Impl.Util.UPAUtils.GetTypeTransformOrIdentity(rr.GetPrimaryFields()[0]));
                 }
             }
             //            Object co = ((CompiledParam) c).getEffectiveDataType();

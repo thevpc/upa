@@ -25,7 +25,7 @@ namespace Net.Vpc.Upa.Expressions
 
         public static readonly Net.Vpc.Upa.Expressions.Literal ZERO = DZERO;
 
-        public static readonly Net.Vpc.Upa.Expressions.Literal NULL = new Net.Vpc.Upa.Expressions.Literal(0);
+        public static readonly Net.Vpc.Upa.Expressions.Literal NULL = new Net.Vpc.Upa.Expressions.Literal(null, null);
 
         public static readonly Net.Vpc.Upa.Expressions.Literal TRUE = new Net.Vpc.Upa.Expressions.Literal(true);
 
@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Expressions
             //                && !(value instanceof Date)
             //                && !(value instanceof Boolean)
             //        ) {
-            //            throw new RuntimeException("bad sql value : " + value.getClass().getName() + " ==> " + value);
+            //            throw new IllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
             //        } else {
             this.@value = @value;
             if (type == null) {
@@ -90,6 +90,16 @@ namespace Net.Vpc.Upa.Expressions
                 }
             }
             this.type = type;
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            throw new System.Exception("Not supported yet.");
         }
 
         public static bool IsNull(Net.Vpc.Upa.Expressions.Expression e) {
@@ -120,6 +130,10 @@ namespace Net.Vpc.Upa.Expressions
 
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
             return new Net.Vpc.Upa.Expressions.Literal(@value, type);
+        }
+
+        public static Net.Vpc.Upa.Expressions.Literal ValueOf(bool @value) {
+            return @value ? TRUE : FALSE;
         }
     }
 }

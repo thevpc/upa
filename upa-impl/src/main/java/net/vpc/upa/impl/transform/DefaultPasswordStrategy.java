@@ -39,7 +39,6 @@ public class DefaultPasswordStrategy implements PasswordStrategy {
             MessageDigest md = MessageDigest.getInstance(digest);
             /**@PortabilityHint(target = "C#", name = "suppress")*/
             hash = md.digest(bytesOfMessage);
-            /**@PortabilityHint(target = "C#", name = "suppress")*/
             return StringUtils.toHexString(hash);
         } catch (Exception ex) {
             throw new RuntimeException(ex);

@@ -65,7 +65,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
                 return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) o).GetValue();
             }
             if (o is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) {
-                return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) o).GetObject();
+                return ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) o).GetValue();
             }
             return o;
         }

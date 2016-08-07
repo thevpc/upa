@@ -16,9 +16,9 @@ namespace Net.Vpc.Upa.Impl.Config
 
 
     /**
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
-    public sealed class EntityConfiguratorProcessor : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter {
+    public sealed class EntityConfiguratorProcessor : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter, Net.Vpc.Upa.Callbacks.EntityDefinitionListener {
 
         private Net.Vpc.Upa.Filters.EntityFilter filter;
 
@@ -55,8 +55,10 @@ namespace Net.Vpc.Upa.Impl.Config
         public override void OnCreateEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
             Net.Vpc.Upa.Entity e = @event.GetEntity();
             if (filter.Accept(e)) {
-                added.Add(e.GetName());
-                configurator.Install(e);
+                if (!added.Contains(e.GetName())) {
+                    added.Add(e.GetName());
+                    configurator.Install(e);
+                }
             }
         }
 

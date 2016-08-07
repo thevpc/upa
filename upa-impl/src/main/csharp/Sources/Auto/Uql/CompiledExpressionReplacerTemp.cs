@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Uql
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class CompiledExpressionReplacerTemp : Net.Vpc.Upa.Impl.Uql.CompiledExpressionReplacer {
 

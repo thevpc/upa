@@ -10,7 +10,7 @@ import net.vpc.upa.config.DecorationTarget;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface DecorationFilter {
 

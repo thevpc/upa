@@ -66,7 +66,7 @@ public class ExpressionFactory {
                 try {
                     c = defaultInstance.getConstructor(new Class[]{Object.class});
                 } catch (NoSuchMethodException e2) {
-                    throw new IllegalArgumentException("Could not cast " + e + " as Expression");
+                    throw new IllegalArgumentException("Could not cast " + e + " as Expression",e1);
                 }
             }
             try {

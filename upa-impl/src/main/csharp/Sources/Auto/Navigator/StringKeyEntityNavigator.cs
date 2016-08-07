@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
             string idName = field.GetName();
             string goodId = null;
             for (int i = 0; i < asynchNbrTry; i++) {
-                System.Collections.Generic.HashSet<string> requestedIds = new System.Collections.Generic.HashSet<string>();
+                System.Collections.Generic.SortedSet<string> requestedIds = new System.Collections.Generic.SortedSet<string>();
                 Net.Vpc.Upa.Expressions.InCollection idsSet = new Net.Vpc.Upa.Expressions.InCollection(new Net.Vpc.Upa.Expressions.Var(idName));
                 for (int j = 0; j < synchNbrTry; j++) {
                     string id = (string) GenerateValue(field);
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                     requestedIds.Add(id);
                 }
                 System.Collections.Generic.IList<Net.Vpc.Upa.Record> recordList = entity.CreateQuery((new Net.Vpc.Upa.Expressions.Select()).From(entity.GetName()).Field(new Net.Vpc.Upa.Expressions.Var(idName)).Where(idsSet)).GetRecordList();
-                System.Collections.Generic.HashSet<string> foundIds = new System.Collections.Generic.HashSet<string>();
+                System.Collections.Generic.SortedSet<string> foundIds = new System.Collections.Generic.SortedSet<string>();
                 foreach (Net.Vpc.Upa.Record record in recordList) {
                     foundIds.Add(record.GetString());
                 }
@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                 if ((requestedIds.Count==0)) {
                     continue;
                 }
-                goodId = requestedIds.First();
+                goodId = Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionSetFirst<string>(requestedIds);
                 break;
             }
             return goodId;

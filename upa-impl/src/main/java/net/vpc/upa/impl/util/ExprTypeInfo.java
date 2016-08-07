@@ -9,7 +9,7 @@ import net.vpc.upa.types.DataTypeTransform;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ExprTypeInfo {
     private DataTypeTransform transform;

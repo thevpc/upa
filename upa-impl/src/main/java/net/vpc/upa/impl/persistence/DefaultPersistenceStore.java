@@ -2,20 +2,19 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.*;
+import net.vpc.upa.exceptions.IllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.SessionParams;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
-import net.vpc.upa.impl.persistence.shared.ConstantDataMarshallerFactory;
-import net.vpc.upa.impl.persistence.shared.DefaultSerializablePlatformObjectMarshaller;
-import net.vpc.upa.impl.persistence.shared.TypeMarshallerUtils;
-import net.vpc.upa.impl.persistence.specific.derby.FloatAsDoubleMarshaller;
+import net.vpc.upa.impl.persistence.shared.marshallers.ConstantDataMarshallerFactory;
+import net.vpc.upa.impl.persistence.shared.marshallers.DefaultSerializablePlatformObjectMarshaller;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
@@ -23,6 +22,7 @@ import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
 import net.vpc.upa.impl.util.*;
+import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
@@ -30,6 +30,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,14 +42,9 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public static final String DRIVER_TYPE_DATASOURCE = "DATASOURCE";
     public static final String DRIVER_TYPE_GENERIC = "GENERIC";
     public static final String DRIVER_TYPE_ODBC = "ODBC";
-    protected static final DefaultSerializablePlatformObjectMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
+    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
 
     protected static Logger log = Logger.getLogger(DefaultPersistenceStore.class.getName());
-    protected static final FieldFilter ID = Fields.regular().and(Fields.byModifiersAllOf(FieldModifier.ID));
-    protected static final FieldFilter READABLE = Fields.regular().and(
-            Fields.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-                    FieldModifier.SELECT_COMPILED,
-                    FieldModifier.SELECT_LIVE)).andNot(Fields.byAllAccessLevel(AccessLevel.PRIVATE));
 
     protected static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
     protected static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
@@ -59,7 +55,10 @@ public class DefaultPersistenceStore implements PersistenceStore {
     private String persistenceUnitName;
     private ObjectFactory factory;
     private IdentifierStoreTranslator identifierStoreTranslator;
-    private PlatformLenientType DBCP_TYPE = new PlatformLenientType("org.apache.commons.dbcp.BasicDataSource");
+    private static PlatformLenientType JAVAMELODY_JDBCDRIVER=new PlatformLenientType("net.bull.javamelody.JdbcDriver");
+
+
+
     //    private StatementDelegate statement;
 //    private ConnectionProfile profile;
 //    private String dbName;
@@ -82,6 +81,18 @@ public class DefaultPersistenceStore implements PersistenceStore {
     private ConnectionProfile connectionProfile;
     boolean isUpdateComplexValuesStatementSupported;
     boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
+
+    @PortabilityHint(target = "C#", name = "suppress")
+    private final Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
+    @PortabilityHint(target = "C#", name = "suppress")
+    private EmbeddedDatasourceFactoryComparator embeddedDatasourceFactoryComparator = DefaultEmbeddedDatasourceFactoryComparator.INSTANCE;
+    @PortabilityHint(target = "C#", name = "suppress")
+    private List<EmbeddedDatasourceFactory> embeddedDatasourceFactories = new ArrayList<EmbeddedDatasourceFactory>();
+    @PortabilityHint(target = "C#", name = "suppress")
+    private EmbeddedDatasourceFactory currentEmbeddedDatasourceFactory = null;
+    @PortabilityHint(target = "C#", name = "suppress")
+    private Boolean embeddedDataSourceSupported = null;
+
     //    protected static Hashtable litteralConverters=new Hashtable();
 //    protected static LitteralConverter nullLitteralConverter;
 //    static final public FunctionHandler DEFAULT_HANDLER=new FunctionHandler() {
@@ -108,15 +119,27 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //    public static final DataWrapperFactory F_DATE = new DateDataMarshallerFactory();
 //    private Hashtable registredFunctionsMap=new Hashtable();
 
+
     @Override
     public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile, PersistenceNameConfig nameConfig) throws UPAException {
         this.persistenceUnitName = persistenceUnit.toString();
         this.nameConfig = nameConfig;
         this.readOnly = readOnly;
         this.connectionProfile = connectionProfile;
+
+        embeddedDataSourceSupported=null;
+        /**
+         * @PortabilityHint(target = "C#", name = "suppress")
+         */
+        embeddedDatasourceFactories.add(DBCPv1EmbeddedDatasourceFactory.INSTANCE);
+        /**
+         * @PortabilityHint(target = "C#", name = "suppress")
+         */
+        embeddedDatasourceFactories.add(DBCPv2EmbeddedDatasourceFactory.INSTANCE);
+
         PersistenceNameStrategy c = persistenceUnit.getFactory().createObject(PersistenceNameStrategy.class);
         setPersistenceNameStrategy(c);
-        BeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
+        PlatformBeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
         b.inject(persistenceNameStrategy, "persistenceStore", this);
         b.inject(persistenceNameStrategy, "persistenceUnit", persistenceUnit);
         commitManager.init(persistenceUnit, this);
@@ -175,7 +198,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //        setWrapper(java.sql.Date.class,DATE);
 //        setWrapper(java.sql.Time.class,TIME);
 //        setWrapper(java.sql.Timestamp.class,TIMESTAMP);
-        getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller());
         getMarshallManager().setTypeMarshaller(Object.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
         getMarshallManager().setTypeMarshaller(FileData.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
         getMarshallManager().setTypeMarshaller(DataType.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
@@ -184,6 +206,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
         getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
         getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
+
     }
 
     public boolean isComplexSelectSupported() {
@@ -470,6 +493,9 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
     protected void reconfigureStore(UConnection connection) {
         if (!getProperties().containsKey("configured")) {
+            /**
+             * @PortabilityHint(target = "C#",name = "todo")
+             */
             try {
                 DatabaseMetaData metaData = connection.getMetadataAccessibleConnection().getMetaData();
                 getProperties().setString("configured", String.valueOf(true));
@@ -531,13 +557,13 @@ public class DefaultPersistenceStore implements PersistenceStore {
              * @PortabilityHint(target="C#",name="suppress")
              */
             if (DRIVER_TYPE_DATASOURCE.equalsIgnoreCase(connectionDriver)) {
-                return createNativeDataSourceConnection(p);
+                return createDataSourceConnection(p);
             }
             if (DRIVER_TYPE_GENERIC.equalsIgnoreCase(connectionDriver)) {
-                return createNativeGenericConnection(p);
+                return createPlatformGenericConnection(p);
             }
             if (DRIVER_TYPE_ODBC.equalsIgnoreCase(connectionDriver)) {
-                return createNativeOdbcConnection(p);
+                return createOdbcConnection(p);
             }
             return createCustomPlatformConnection(p);
         } catch (UPAException e) {
@@ -548,7 +574,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
-    protected Connection createNativeDataSourceConnection(ConnectionProfile p) throws UPAException {
+    protected Connection createDataSourceConnection(ConnectionProfile p) throws UPAException {
         try {
             Map<String, String> properties = p.getProperties();
             InitialContext ic = new InitialContext();
@@ -574,22 +600,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         }
     }
 
-    private Integer embeddedDataSourceSupported;
-    private static final int DS_DBCP = 1;
-    private Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
-
-    protected boolean isPoolableDataSourceSupported() {
-        if (embeddedDataSourceSupported == null) {
-            if (DBCP_TYPE.isValid()) {
-                embeddedDataSourceSupported = DS_DBCP;
-            }
-            if (embeddedDataSourceSupported == null) {
-                embeddedDataSourceSupported = 0;
-            }
-        }
-        return embeddedDataSourceSupported != 0;
-    }
-
+    @PortabilityHint(target = "C#", name = "suppress")
     protected DataSource resolvePoolableDataSource(
             String driver,
             String url,
@@ -597,39 +608,39 @@ public class DefaultPersistenceStore implements PersistenceStore {
             String password,
             Map<String, String> properties
     ) throws UPAException {
-        if (!isPoolableDataSourceSupported()) {
+
+        if (embeddedDataSourceSupported == null) {
+            synchronized (embeddedDataSources) {
+                if (embeddedDataSourceSupported == null) {
+                    boolean supported = false;
+                    if (!embeddedDatasourceFactories.isEmpty()) {
+                        Collections.sort(embeddedDatasourceFactories, embeddedDatasourceFactoryComparator);
+                        for (EmbeddedDatasourceFactory fac : embeddedDatasourceFactories) {
+                            if (fac.isSupported()) {
+                                currentEmbeddedDatasourceFactory = fac;
+                                supported = true;
+                                break;
+                            }
+                        }
+                    }
+                    this.embeddedDataSourceSupported = supported;
+                }
+            }
+        }
+
+        if (!embeddedDataSourceSupported) {
             return null;
         }
-        String k = driver + "\n" + url + user + password;
+        String k = driver + "\n" + url + "\n" + user + "\n" + password;
         DataSource ds = embeddedDataSources.get(k);
         if (ds == null) {
-            if (embeddedDataSourceSupported == DS_DBCP) {
-                ds = (DataSource) DBCP_TYPE.newInstance();
-                DBCP_TYPE.invokeInstance(ds, "setDriverClassName", new Class[]{String.class}, new Object[]{driver});
-                DBCP_TYPE.invokeInstance(ds, "setUsername", new Class[]{String.class}, new Object[]{user});
-                DBCP_TYPE.invokeInstance(ds, "setPassword", new Class[]{String.class}, new Object[]{password});
-                DBCP_TYPE.invokeInstance(ds, "setUrl", new Class[]{String.class}, new Object[]{url});
-                if (properties.containsKey("poolMinSize")) {
-                    DBCP_TYPE.invokeInstance(ds, "setMinIdle", new Class[]{Integer.TYPE}, new Object[]{
-                            Integer.parseInt(properties.get("poolMinSize"))
-                    });
-                }
-                if (properties.containsKey("poolMaxSize")) {
-                    DBCP_TYPE.invokeInstance(ds, "setMaxIdle", new Class[]{Integer.TYPE}, new Object[]{
-                            Integer.parseInt(properties.get("poolMaxSize"))
-                    });
-                }
-            } else {
-                //
-            }
-            if (ds != null) {
-                embeddedDataSources.put(k, ds);
-            }
+            ds = currentEmbeddedDatasourceFactory.createDataSource(driver, url, user, password, properties);
+            embeddedDataSources.put(k, ds);
         }
         return ds;
     }
 
-    protected Connection createNativeGenericConnection(ConnectionProfile p) throws UPAException {
+    protected Connection createPlatformGenericConnection(ConnectionProfile p) throws UPAException {
         try {
             Map<String, String> properties = p.getProperties();
             String driver = properties.get(ConnectionOption.DRIVER);
@@ -650,18 +661,60 @@ public class DefaultPersistenceStore implements PersistenceStore {
                                                   String password,
                                                   Map<String, String> properties) throws UPAException {
         try {
-            boolean pool = "true".equals(properties.get("pool"));
-
-            if (pool) {
-                DataSource ds = resolvePoolableDataSource(driver, url, user, password, properties);
-                if (ds != null) {
-                    return ds.getConnection();
-                }
-                log.severe("Datasource is not supported, ignored pooling");
+            Map<String, String> jdbcProperties=new HashMap<String, String>();
+            if(properties!=null){
+                jdbcProperties.putAll(properties);
             }
+            if (user != null) {
+                jdbcProperties.put("user", user);
+            }
+            if (password != null) {
+                jdbcProperties.put("password", password);
+            }
+
             /**
-             * @PortabilityHint(target="C#",name="replace") return new
-             * System.Data.OleDb.OleDbConnection(oledbURL);
+             * @PortabilityHint(target="C#",name="replace")
+             * // monitoring is not supprted in C#
+             */
+            {
+                String monitor = jdbcProperties.get("monitor");
+                if(monitor!=null){
+                    for (String mon : monitor.split(" ,;\n")) {
+                        if("javamelody".equalsIgnoreCase(mon)){
+                            if(JAVAMELODY_JDBCDRIVER.isValid()){
+                                jdbcProperties.put("driver",driver);
+                                driver=JAVAMELODY_JDBCDRIVER.getTypeName();
+                            }
+                        }
+                    }
+                }
+            }
+
+            /**
+             * @PortabilityHint(target="C#",name="replace")
+             * // pooling is managed virtually in C#
+             */
+            {
+                String poolName = jdbcProperties.get("pool");
+                if(poolName==null){
+                    poolName="";
+                }
+                poolName=poolName.trim();
+                boolean pool = poolName.length()>0 && !("false".equalsIgnoreCase(poolName));
+                if (pool) {
+                    DataSource ds = resolvePoolableDataSource(driver, url, user, password, jdbcProperties);
+                    if (ds != null) {
+                        return ds.getConnection();
+                    }
+                    log.severe("Datasource is not supported, ignored pooling");
+                }
+            }
+
+
+
+            /**
+             * @PortabilityHint(target="C#",name="replace")
+             * return new System.Data.OleDb.OleDbConnection(url);
              */
             {
                 if (!StringUtils.isNullOrEmpty(driver)) {
@@ -671,7 +724,9 @@ public class DefaultPersistenceStore implements PersistenceStore {
                         throw new DriverNotFoundException(driver);
                     }
                 }
-                return DriverManager.getConnection(url, user, password);
+                Properties info = new Properties();
+                info.putAll(jdbcProperties);
+                return DriverManager.getConnection(url, info);
             }
         } catch (UPAException e) {
             throw e;
@@ -680,7 +735,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         }
     }
 
-    protected Connection createNativeOdbcConnection(ConnectionProfile p) throws UPAException {
+    protected Connection createOdbcConnection(ConnectionProfile p) throws UPAException {
         try {
             Map<String, String> properties = p.getProperties();
             String user = properties.get(ConnectionOption.USER_NAME);
@@ -690,8 +745,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
             boolean trustedBoolean = false;
 
             if (trustedString != null) {
-                String trustredLowered = trustedString.toLowerCase();
-                if (trustredLowered.equals("true") || trustredLowered.equals("on") || trustredLowered.equals("yes")) {
+                String trustedLowered = trustedString.toLowerCase();
+                if (trustedLowered.equals("true") || trustedLowered.equals("on") || trustedLowered.equals("yes")) {
                     trustedBoolean = true;
                 }
             }
@@ -813,7 +868,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
 
         if (defaultFieldFilter == null) {
-            defaultFieldFilter = READABLE;
+            defaultFieldFilter = Fields2.READ;
         }
         ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
         ResultMetaData m = expressionManager.createMetaData((EntityStatement) baseExpression, defaultFieldFilter);
@@ -866,6 +921,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setExpandFields(true);
         config.setValidate(true);
         config.setHints(hints);
+        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?statement.getEntityName():statement.getEntityAlias());
 
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
@@ -884,7 +940,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
                         .setExpandEntityFilter(true)
                         .setExpandFieldFilter(defaultFieldFilter)
                         .setExpandFields(true)
-                        .setValidate(true);
+                        .setValidate(true)
+                        .setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?statement.getEntityName():statement.getEntityAlias());
 
                 hints.put(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
                 config.setHints(hints);
@@ -1122,7 +1179,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         Select s = new Select();
         for (PrimitiveField key : keys) {
             FlagSet<FieldModifier> modifiers = key.getModifiers();
-            if (modifiers.contains(FieldModifier.SELECT_COMPILED)) {
+            if (modifiers.contains(FieldModifier.SELECT_STORED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (modifiers.contains(FieldModifier.SELECT_DEFAULT)) {
@@ -1216,7 +1273,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public String getDropTablePKConstraintStatement(Entity entity) throws UPAException {
         StringBuilder sb = new StringBuilder();
         if (!entity.getShield().isTransient()) {
-            List<Field> pk = entity.getFields(ID);
+            List<Field> pk = entity.getFields(FieldFilters.id());
             if (pk.size() > 0) {
                 sb.append("Alter Table ").append(getValidIdentifier(getTableName(entity))).append(" Drop Constraint ").append(getValidIdentifier(getTablePKName(entity)));
                 return (sb.toString());
@@ -1247,7 +1304,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         sb.append("(");
         boolean first = true;
         List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(
-                Fields.regular().and(Fields.byList(index.getFields())));
+                FieldFilters.regular().and(FieldFilters.byList(index.getFields())));
         for (PrimitiveField field : primitiveFields) {
             if (first) {
                 first = false;
@@ -1342,40 +1399,45 @@ public class DefaultPersistenceStore implements PersistenceStore {
         String tableName = null;
         String columnName = null;
         try {
-            ResultSet rs = null;
-            try {
-                tableName = getPersistenceName(field.getEntity());
-                columnName = getPersistenceName(field);
+            /**
+             * @PortabilityHint(target = "C#", name = "todo")
+             */
+            {
+                ResultSet rs = null;
+                try {
+                    tableName = getPersistenceName(field.getEntity());
+                    columnName = getPersistenceName(field);
 //                    Connection connection = getConnection().getNativeConnection();
-                String catalog = connection.getCatalog();
-                String schema = connection.getSchema();
-                rs = connection.getMetaData().getColumns(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), getIdentifierStoreTranslator().translateIdentifier(columnName));
-                if (rs.next()) {
-                    c.setCatalogName(rs.getString("TABLE_CAT"));
-                    c.setSchemaName(rs.getString("TABLE_SCHEM"));
-                    c.setTableName(rs.getString("TABLE_NAME"));
-                    c.setColumnName(rs.getString("COLUMN_NAME"));
-                    c.setDefaultExpression(rs.getString("COLUMN_DEF"));
-                    c.setSqlTypeCode(rs.getInt("DATA_TYPE"));
-                    c.setSqlTypeName(rs.getString("TYPE_NAME"));
-                    c.setColumnSize(rs.getInt("COLUMN_SIZE"));
-                    c.setDecimalDigits(rs.getInt("DECIMAL_DIGITS"));
-                    c.setAutoIncrement(yesNoToBoolean(rs.getString("IS_AUTOINCREMENT")));
-                    c.setGenerated(yesNoToBoolean(rs.getString("IS_GENERATEDCOLUMN")));
-                    switch (rs.getInt("NULLABLE")) {
-                        case DatabaseMetaData.columnNoNulls: {
-                            c.setNullable(false);
-                            break;
-                        }
-                        case DatabaseMetaData.columnNullable: {
-                            c.setNullable(true);
-                            break;
+                    String catalog = connection.getCatalog();
+                    String schema = connection.getSchema();
+                    rs = connection.getMetaData().getColumns(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), getIdentifierStoreTranslator().translateIdentifier(columnName));
+                    if (rs.next()) {
+                        c.setCatalogName(rs.getString("TABLE_CAT"));
+                        c.setSchemaName(rs.getString("TABLE_SCHEM"));
+                        c.setTableName(rs.getString("TABLE_NAME"));
+                        c.setColumnName(rs.getString("COLUMN_NAME"));
+                        c.setDefaultExpression(rs.getString("COLUMN_DEF"));
+                        c.setSqlTypeCode(rs.getInt("DATA_TYPE"));
+                        c.setSqlTypeName(rs.getString("TYPE_NAME"));
+                        c.setColumnSize(rs.getInt("COLUMN_SIZE"));
+                        c.setDecimalDigits(rs.getInt("DECIMAL_DIGITS"));
+                        c.setAutoIncrement(yesNoToBoolean(rs.getString("IS_AUTOINCREMENT")));
+                        c.setGenerated(yesNoToBoolean(rs.getString("IS_GENERATEDCOLUMN")));
+                        switch (rs.getInt("NULLABLE")) {
+                            case DatabaseMetaData.columnNoNulls: {
+                                c.setNullable(false);
+                                break;
+                            }
+                            case DatabaseMetaData.columnNullable: {
+                                c.setNullable(true);
+                                break;
+                            }
                         }
                     }
-                }
-            } finally {
-                if (rs != null) {
-                    rs.close();
+                } finally {
+                    if (rs != null) {
+                        rs.close();
+                    }
                 }
             }
             return c;
@@ -1409,7 +1471,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         StringBuilder sb = new StringBuilder();
         if (!entityManager.getShield().isTransient()) {
             List<PrimitiveField> pk = new ArrayList<PrimitiveField>();
-            for (PrimitiveField primitiveField : entityManager.getPrimitiveFields(ID)) {
+            for (PrimitiveField primitiveField : entityManager.getPrimitiveFields(FieldFilters.id())) {
                 fillPrimitiveField(primitiveField, pk);
             }
             if (pk.size() > 0) {
@@ -1443,7 +1505,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         StringBuilder sb = new StringBuilder();
         if (!entity.getShield().isTransient()) {
             sb.append("Create Table ").append(getValidIdentifier(getTableName(entity))).append('(').append("\n").append("\t");
-            List<PrimitiveField> keys = entity.getPrimitiveFields(Fields.byModifiersNoneOf(FieldModifier.TRANSIENT));
+            List<PrimitiveField> keys = entity.getPrimitiveFields(FieldFilters.byModifiersNoneOf(FieldModifier.TRANSIENT));
             boolean firstElement = true;
             for (PrimitiveField key : keys) {
                 if (key.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
@@ -1989,7 +2051,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
         }
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     public PersistenceState getIndexPersistenceState(Index object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         if (spec == null) {
             ResultSet rs = null;
@@ -1997,32 +2058,40 @@ public class DefaultPersistenceStore implements PersistenceStore {
             String indexName = getPersistenceName(object, spec);
             String tableName = getPersistenceName(object.getEntity(), null);
             boolean unique = object.isUnique();
-            try {
+            {
                 try {
+                    /**
+                     * @PortabilityHint(target = "C#", name = "todo")
+                     * System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+                     * System.Data.DataTable found = dconnection.GetSchema("Indexes", new string[] { connection.Database, null, tableName, indexName});
+                     * return (found.Rows.Count != 0)?Net.Vpc.Upa.PersistenceState.VALID:Net.Vpc.Upa.PersistenceState.DIRTY;
+                     */
+                    try {
 //                    Connection connection = getConnection().getNativeConnection();
-                    String catalog = connection.getCatalog();
-                    String schema = connection.getSchema();
-                    rs = connection.getMetaData().getIndexInfo(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), false, true);
-                    while (rs.next()) {
-                        String n = rs.getString("INDEX_NAME");
-                        boolean u = !rs.getBoolean("NON_UNIQUE");
-                        if (getIdentifierStoreTranslator().translateIdentifier(indexName).equals(n)) {
-                            if (u != unique) {
-                                log.log(Level.SEVERE, "Index {0} found but its unicity is invalid (expected={1})", new Object[]{indexName, unique});
-                                status = PersistenceState.DIRTY;
-                            } else {
-                                status = PersistenceState.VALID;
+                        String catalog = connection.getCatalog();
+                        String schema = connection.getSchema();
+                        rs = connection.getMetaData().getIndexInfo(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), false, true);
+                        while (rs.next()) {
+                            String n = rs.getString("INDEX_NAME");
+                            boolean u = !rs.getBoolean("NON_UNIQUE");
+                            if (getIdentifierStoreTranslator().translateIdentifier(indexName).equals(n)) {
+                                if (u != unique) {
+                                    log.log(Level.SEVERE, "Index {0} found but its unicity is invalid (expected={1})", new Object[]{indexName, unique});
+                                    status = PersistenceState.DIRTY;
+                                } else {
+                                    status = PersistenceState.VALID;
+                                }
+                                break;
                             }
-                            break;
+                        }
+                    } finally {
+                        if (rs != null) {
+                            rs.close();
                         }
                     }
-                } finally {
-                    if (rs != null) {
-                        rs.close();
-                    }
+                } catch (SQLException ex) {
+                    throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Index " + tableName + "." + indexName);
                 }
-            } catch (SQLException ex) {
-                throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Index " + tableName + "." + indexName);
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return status;
@@ -2043,6 +2112,9 @@ public class DefaultPersistenceStore implements PersistenceStore {
             String tableName = getPersistenceName(object.getEntity());
             String columnName = getPersistenceName(object);
             status = PersistenceState.UNKNOWN;
+            /**
+             * @PortabilityHint(target = "C#", name = "todo")
+             */
             try {
                 ResultSet rs = null;
                 try {
@@ -2100,23 +2172,38 @@ public class DefaultPersistenceStore implements PersistenceStore {
     }
 
     public IdentifierStoreTranslator createIdentifierStoreTranslator(UConnection connection) throws SQLException {
-        DatabaseMetaData m = connection.getMetadataAccessibleConnection().getMetaData();
-        if (m.storesMixedCaseIdentifiers()) {
-            return IdentifierStoreTranslators.MIXED;
-        }
-        if (m.storesUpperCaseIdentifiers()) {
-            return IdentifierStoreTranslators.UPPER;
-        }
-        if (m.storesLowerCaseIdentifiers()) {
-            return IdentifierStoreTranslators.LOWER;
+        /**
+         *  @PortabilityHint(target = "C#", name = "todo")
+         */
+        {
+            DatabaseMetaData m = connection.getMetadataAccessibleConnection().getMetaData();
+            if (m.storesMixedCaseIdentifiers()) {
+                return IdentifierStoreTranslators.MIXED;
+            }
+            if (m.storesUpperCaseIdentifiers()) {
+                return IdentifierStoreTranslators.UPPER;
+            }
+            if (m.storesLowerCaseIdentifiers()) {
+                return IdentifierStoreTranslators.LOWER;
+            }
         }
         return IdentifierStoreTranslators.UPPER;
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     protected boolean tableExists(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+             *        System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
+             *        if (connection is System.Data.Common.DbConnection)
+             *        {
+             *          System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+             *          System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceName, "BASE TYPE" });
+             *          return (found.Rows.Count != 0);
+             *        }
+             */
             try {
                 Connection connection = entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 //connection.getMetaData().storesLowerCaseIdentifiers();
@@ -2143,10 +2230,20 @@ public class DefaultPersistenceStore implements PersistenceStore {
         return identifierStoreTranslator;
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     protected boolean viewExists(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+             *  System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
+             *  if (connection is System.Data.Common.DbConnection)
+             *  {
+             *    System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+             *    System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceName, "VIEW" });
+             *    return (found.Rows.Count != 0);
+             *  }
+             */
             try {
                 Connection connection = entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
@@ -2168,10 +2265,20 @@ public class DefaultPersistenceStore implements PersistenceStore {
         return false;
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     protected boolean pkConstraintsExists(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+            System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
+            if (connection is System.Data.Common.DbConnection)
+            {
+            System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+            System.Data.DataTable found = dconnection.GetSchema("IndexColumns", new string[] { connection.Database, null, tableName, constraintsName, null });
+            return (found.Rows.Count != 0);
+            }
+             */
             try {
                 Connection connection = entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
@@ -2198,10 +2305,20 @@ public class DefaultPersistenceStore implements PersistenceStore {
         return false;
     }
 
-    @PortabilityHint(target = "C#", name = "ignore")
     protected boolean foreignKeyExists(String tableName, String constraintName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+            System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
+            if (connection is System.Data.Common.DbConnection)
+            {
+            System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+            System.Data.DataTable found = dconnection.GetSchema("ForeignKeys", new string[] { connection.Database, null, tableName, constraintName });
+            return (found.Rows.Count != 0);
+            }
+             */
             try {
                 Connection connection = entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
@@ -2273,4 +2390,45 @@ public class DefaultPersistenceStore implements PersistenceStore {
         }
     }
 
+    /**
+     *
+     *
+     *
+     protected internal virtual bool IndexExists(string tableName, string indexName,bool unique)
+     {
+     try
+     {
+     System.Data.IDbConnection connection = GetConnection().GetPlatformConnection();
+     if (connection is System.Data.Common.DbConnection)
+     {
+     System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+     System.Data.DataTable found = dconnection.GetSchema("Indexes", new string[] { connection.Database, null, tableName, indexName});
+     return (found.Rows.Count != 0);
+     }
+     }
+     catch (System.Exception ex)
+     {
+     throw CreateUPAException(ex, "UnableToGetEntityStorageStatus", "Table " + tableName);
+     }
+     return false;
+     }
+
+     protected internal virtual bool ColumnExists(string tableName, string columnName)
+     {
+     try
+     {
+     System.Data.IDbConnection connection = GetConnection().GetPlatformConnection();
+     if (connection is System.Data.Common.DbConnection)
+     {
+     System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
+     System.Data.DataTable found = dconnection.GetSchema("Indexes", new string[] { connection.Database, null, tableName, columnName });
+     return (found.Rows.Count != 0);
+     }
+     }
+     catch (System.Exception ex)
+     {
+     throw CreateUPAException(ex, "UnableToGetEntityStorageStatus", "Table " + tableName);
+     }
+     return false;
+     }     */
 }

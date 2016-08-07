@@ -43,6 +43,9 @@ namespace Net.Vpc.Upa.Types
             if (@value == null) {
                 return;
             }
+            if (!(@value is Net.Vpc.Upa.Types.FileData)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, maxSize);
+            }
             Net.Vpc.Upa.Types.FileData fileData = ((Net.Vpc.Upa.Types.FileData) @value);
             string fileName = fileData.GetSourceName();
             if (extensions != null && extensions.Length != 0 && fileName != null) {

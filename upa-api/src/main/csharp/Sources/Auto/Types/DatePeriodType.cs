@@ -75,27 +75,27 @@ namespace Net.Vpc.Upa.Types
 
         public virtual Net.Vpc.Upa.FieldDescriptor[] GetComposingFields(Net.Vpc.Upa.FieldDescriptor fieldDescriptor) {
             string[] names = new string[] { fieldDescriptor.GetName() + char.ToUpper(countName[0]) + countName.Substring(1), fieldDescriptor.GetName() + char.ToUpper(periodTypeName[0]) + periodTypeName.Substring(1) };
-            if (fieldDescriptor.GetInsertFormula() != null) {
-                throw new System.ArgumentException ("Unsupported composing Persist Formula");
+            if (fieldDescriptor.GetPersistFormula() != null) {
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Persist Formula");
             }
             if (fieldDescriptor.GetUpdateFormula() != null) {
-                throw new System.ArgumentException ("Unsupported composing Update Formula");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Update Formula");
             }
             if (fieldDescriptor.GetSelectFormula() != null) {
-                throw new System.ArgumentException ("Unsupported composing Select Formula");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Select Formula");
             }
             Net.Vpc.Upa.FieldDescriptor[] fieldDescriptors = new Net.Vpc.Upa.FieldDescriptor[names.Length];
             object[] def = GetPrimitiveValues(fieldDescriptor.GetDefaultObject());
             object[] uns = GetPrimitiveValues(fieldDescriptor.GetUnspecifiedObject());
             for (int i = 0; i < fieldDescriptors.Length; i++) {
                 Net.Vpc.Upa.DefaultFieldDescriptor d = new Net.Vpc.Upa.DefaultFieldDescriptor();
-                d.SetSelectAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
+                d.SetReadAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
                 d.SetDataType(i == 0 ? Net.Vpc.Upa.Types.TypesFactory.INT : Net.Vpc.Upa.Types.TypesFactory.INT);
                 d.SetDefaultObject(def == null ? null : def[i]);
                 d.SetUnspecifiedObject(uns == null ? null : uns[i]);
-                d.SetInsertAccessLevel(fieldDescriptor.GetInsertAccessLevel());
+                d.SetPersistAccessLevel(fieldDescriptor.GetPersistAccessLevel());
                 d.SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM));
-                d.SetUpdateAccessLevel(fieldDescriptor.GetInsertAccessLevel());
+                d.SetUpdateAccessLevel(fieldDescriptor.GetPersistAccessLevel());
                 fieldDescriptors[i] = d;
             }
             return fieldDescriptors;

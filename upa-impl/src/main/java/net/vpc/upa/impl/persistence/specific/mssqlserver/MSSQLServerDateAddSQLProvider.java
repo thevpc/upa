@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledDateAdd;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Time: 17:26:10
  * To change this template use Options | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 class MSSQLServerDateAddSQLProvider extends MSSQLServerFunctionSQLProvider {
     public MSSQLServerDateAddSQLProvider() {
         super(CompiledDateAdd.class);
@@ -32,7 +34,7 @@ class MSSQLServerDateAddSQLProvider extends MSSQLServerFunctionSQLProvider {
         } else if ("hour".equals(format)) {
         } else if ("minute".equals(format)) {
         } else if ("second".equals(format)) {
-        } else if ("milli_second".equals(format)) {
+        } else if ("millisecond".equals(format)) {
             format = "millisecond";
         } else {
             throw new RuntimeException("Adapter : incorrect format '" + format + "' for function 'dateadd'");

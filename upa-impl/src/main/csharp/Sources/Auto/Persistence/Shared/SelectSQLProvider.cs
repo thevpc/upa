@@ -123,7 +123,11 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
                 for (int i = 0; i < o.CountFields(); i++) {
                     Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField fi = o.GetField(i);
                     Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e = fi.GetExpression();
+                    bool fieldIsSelect = e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledSelect;
                     valueString = sqlManager.GetSQL(e, context, declarations);
+                    if (fieldIsSelect) {
+                        valueString = "(" + valueString + ")";
+                    }
                     aliasString = fi.GetAlias();
                     if (started) {
                         sb.Append(",");

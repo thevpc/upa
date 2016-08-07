@@ -4,7 +4,8 @@
  */
 package net.vpc.upa.impl.uql.compiler;
 
-import java.util.logging.Level;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
@@ -17,30 +18,33 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class VarExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
 
-    public VarExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public VarExpressionTranslator() {
+
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileVar((Var) o, declarations);
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileVar((Var) o, manager,declarations);
     }
     
-    protected CompiledVar compileVar(Var v, ExpressionDeclarationList declarations) {
+    protected CompiledVar compileVar(Var v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledVar p = null;
-        if (v.getParent() != null) {
-            p = compileVar(v.getParent(), declarations);
+        CompiledExpression p = null;
+        if (v.getApplier() != null) {
+            p = manager.translateAny(v.getApplier(), declarations);
         }
         if (p == null) {
             return new CompiledVar(v.getName());
         } else {
             CompiledVar r = new CompiledVar(v.getName());
-            ((CompiledVar)p.getFinest()).setChild(r);
-            return p;
+            if(p instanceof CompiledVar) {
+                ((CompiledVar) ((CompiledVar)p).getFinest()).setChild(r);
+                return (CompiledVar) p;
+            }else{
+                throw new UPAException("Unsupported");
+            }
         }
     }
 }

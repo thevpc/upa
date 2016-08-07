@@ -15,7 +15,7 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public sealed class Concat : Net.Vpc.Upa.Expressions.Function {
+    public sealed class Concat : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -25,11 +25,16 @@ namespace Net.Vpc.Upa.Expressions
             elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(1);
         }
 
-        public Concat(params Net.Vpc.Upa.Expressions.Expression [] expressions)  : this(){
-
+        public Concat(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            elements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions.Length);
             foreach (Net.Vpc.Upa.Expressions.Expression expression in expressions) {
                 Add(expression);
             }
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            elements[index]=e;
         }
 
         public Net.Vpc.Upa.Expressions.Concat Clear() {

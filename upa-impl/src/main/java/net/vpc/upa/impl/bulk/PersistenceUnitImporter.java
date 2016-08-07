@@ -14,73 +14,17 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.EntityFilter;
 import net.vpc.upa.QueryHints;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
-import net.vpc.upa.impl.util.CacheSet;
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.bulk.ImportPersistenceUnitListener;
 import net.vpc.upa.types.I18NString;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class PersistenceUnitImporter {
     private static final Logger log=Logger.getLogger(PersistenceUnitImporter.class.getName());
-    private static class IdCache {
-        Object id;
-        String entityName;
-
-        public IdCache(Object id, String entityName) {
-            this.id = id;
-            this.entityName = entityName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof IdCache)) return false;
-
-            IdCache idCache = (IdCache) o;
-
-            if (!id.equals(idCache.id)) return false;
-            return entityName.equals(idCache.entityName);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = id.hashCode();
-            result = 31 * result + entityName.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return entityName+"[" +
-                    id +
-                    ']';
-        }
-    }
-    private static class ExecInfo {
-
-        EntityFilter filter;
-        ImportPersistenceUnitListener listener;
-        PersistenceUnit source;
-        PersistenceUnit target;
-        boolean deleteExisting;
-        SyncStat globalStat = new SyncStat();
-        Map<String, SyncStat> stats = new TreeMap<String, SyncStat>();
-        List<Entity> entities;
-        Set<String> finishedProcessingEntityNames =new HashSet<String>();
-        CacheSet<IdCache> idCaches=new CacheSet<IdCache>(1000);
-        public SyncStat getStat(String entityName){
-            SyncStat s = stats.get(entityName);
-            if(s==null){
-                s=new SyncStat();
-                stats.put(entityName, s);
-            }
-            return s;
-        }
-    }
 
     public void importObjectById(PersistenceUnit source, PersistenceUnit target, String entityName, int sourceId, ImportPersistenceUnitListener listener) {
         ExecInfo ii = new ExecInfo();
@@ -133,25 +77,25 @@ public class PersistenceUnitImporter {
             importEntity(ii.entities.get(j).getName(), j, ii);
         }
         for (Map.Entry<String, SyncStat> entry : ii.stats.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue().debugString());
+//            System.out.println(entry.getKey() + " : " + entry.getValue().debugString());
         }
-        System.out.println("GLOBAL" + " : " + ii.globalStat.debugString());
+//        System.out.println("GLOBAL" + " : " + ii.globalStat.debugString());
     }
 
     private void importEntity(String entityName, int index, ExecInfo ii) {
         Entity de = ii.source.getEntity(entityName);
         String tab_progress = (index + 1) + "/" + ii.entities.size();
         SyncStat estat = ii.getStat(de.getName());
-        System.out.println(">> " + tab_progress + " : copying " + de);
+//        System.out.println(">> " + tab_progress + " : copying " + de);
         Entity me = ii.target.getEntity(de.getName());
         List<Object> a = de.findAllIds();
         for (int i = 0; i < a.size(); i++) {
             Object ob = a.get(i);
-            System.out.println(">>\t " + tab_progress + "-" + ((i + 1) + "/" + a.size()) + " : " + de);
+//            System.out.println(">>\t " + tab_progress + "-" + ((i + 1) + "/" + a.size()) + " : " + de);
             importObjectById(me.getName(), ob, ii);
         }
         ii.finishedProcessingEntityNames.add(entityName);
-        System.out.println(">>>>>> " + de.getName() + " : " + estat.debugString());
+//        System.out.println(">>>>>> " + de.getName() + " : " + estat.debugString());
     }
 
     private static Object resolveId(String entityName, Object t, PersistenceUnit pu) {
@@ -161,48 +105,6 @@ public class PersistenceUnitImporter {
         }
         return entity.getBuilder().objectToId(t);
 
-    }
-
-    private static class Obj {
-
-        String name;
-        Object value;
-
-        public Obj(String name, Object value) {
-            this.name = name;
-            this.value = value;
-        }
-
-    }
-
-    private static class SyncStat {
-
-        long validMerges;
-        long validPersists;
-        long erronousPersists;
-        long erronousMerges;
-
-        public void add(SyncStat o) {
-            validMerges += o.validMerges;
-            validPersists += o.validPersists;
-            erronousPersists += o.erronousPersists;
-            erronousMerges += o.erronousMerges;
-        }
-
-        public String debugString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("persists : " + (validPersists + erronousPersists) + "=" + validPersists + "ok + " + erronousPersists + "ko");
-            sb.append(" ;; ");
-            sb.append("merges   : " + (validMerges + erronousMerges) + "=" + validMerges + "ok + " + erronousMerges + "ko");
-            return sb.toString();
-        }
-
-    }
-
-    private static class UniqueValue {
-
-        String[] properties;
-        Object[] values;
     }
 
     public static UniqueValue[] resolveUnique(String entityName, Object t, PersistenceUnit pu) {
@@ -260,7 +162,7 @@ public class PersistenceUnitImporter {
         Entity entity = source.getEntity(type);
         QueryBuilder queryBuilder = entity.createQueryBuilder();
         queryBuilder.setHints(configureHints(entity));
-        Object reloaded = queryBuilder.byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 1).getEntity();
+        Object reloaded = queryBuilder.byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 1).getFirstResultOrNull();
         return reloaded;
     }
 
@@ -312,7 +214,7 @@ public class PersistenceUnitImporter {
         EntityBuilder eb = entity.getBuilder();
         Object instance0 = loadSourceObject(entityName, id, ii.source);
         Object instance = (instance0 instanceof Record) ? eb.copyRecord((Record) instance0) : eb.copyObject(instance0);
-        System.out.println(">>>>\t\t" + prefix + " import" + (importRelations ? " " : "*") + " " + entityName + " : " + id + " = " + instance);
+//        System.out.println(">>>>\t\t" + prefix + " import" + (importRelations ? " " : "*") + " " + entityName + " : " + id + " = " + instance);
         SyncStat istat = new SyncStat();
         Boolean persist = null;
         for (UniqueValue uniqueValue : resolveUnique(entityName, instance, ii.target)) {
@@ -320,7 +222,7 @@ public class PersistenceUnitImporter {
             for (int i = 0; i < uniqueValue.properties.length; i++) {
                 b.byField(uniqueValue.properties[i], uniqueValue.values[i]);
             }
-            Object foundObject = b.getEntity();
+            Object foundObject = b.getFirstResultOrNull();
             Object id2 = resolveId(entityName, foundObject, ii.target);
             if (foundObject == null) {
                 //do nothing

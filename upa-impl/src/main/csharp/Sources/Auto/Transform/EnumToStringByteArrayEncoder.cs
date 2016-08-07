@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class EnumToStringByteArrayEncoder : Net.Vpc.Upa.Types.ByteArrayEncoder {
 
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (o == null) {
                 return null;
             }
-            return System.Convert.ToString(o).GetBytes();
+            return System.Text.Encoding.UTF8.GetBytes(System.Convert.ToString(o));
         }
 
         public virtual object Decode(byte[] bytes) {
@@ -41,7 +41,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                 return null;
             }
             string sval = System.Text.Encoding.Default.GetString(bytes);
-            if (sval.Length==0) {
+            if ((sval.Length==0)) {
                 return null;
             }
             try {

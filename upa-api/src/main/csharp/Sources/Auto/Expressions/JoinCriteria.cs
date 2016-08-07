@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Expressions
 
         private Net.Vpc.Upa.Expressions.JoinType type;
 
-        private Net.Vpc.Upa.Expressions.NameOrSelect entity;
+        private Net.Vpc.Upa.Expressions.NameOrQuery entity;
 
         private string alias;
 
@@ -29,11 +29,18 @@ namespace Net.Vpc.Upa.Expressions
             return type;
         }
 
-        public virtual Net.Vpc.Upa.Expressions.NameOrSelect GetEntity() {
+        public virtual string GetEntityName() {
+            if (entity is Net.Vpc.Upa.Expressions.EntityName) {
+                return ((Net.Vpc.Upa.Expressions.EntityName) entity).GetName();
+            }
+            return null;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.NameOrQuery GetEntity() {
             return entity;
         }
 
-        public virtual void SetEntity(Net.Vpc.Upa.Expressions.NameOrSelect entity) {
+        public virtual void SetEntity(Net.Vpc.Upa.Expressions.NameOrQuery entity) {
             this.entity = entity;
         }
 
@@ -49,7 +56,7 @@ namespace Net.Vpc.Upa.Expressions
             return condition;
         }
 
-        public JoinCriteria(Net.Vpc.Upa.Expressions.JoinType type, Net.Vpc.Upa.Expressions.NameOrSelect entity, string alias, Net.Vpc.Upa.Expressions.Expression condition) {
+        public JoinCriteria(Net.Vpc.Upa.Expressions.JoinType type, Net.Vpc.Upa.Expressions.NameOrQuery entity, string alias, Net.Vpc.Upa.Expressions.Expression condition) {
             this.type = type;
             this.entity = entity;
             this.alias = alias;

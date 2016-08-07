@@ -45,7 +45,7 @@ namespace Net.Vpc.Upa.Impl.Event
              * @throws net.vpc.upa.exceptions.UPAException
              */
 
-        public override bool AcceptInsertRecordHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool AcceptPersistRecordHelper(Net.Vpc.Upa.Callbacks.PersistEvent @event) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return false;
         }
 

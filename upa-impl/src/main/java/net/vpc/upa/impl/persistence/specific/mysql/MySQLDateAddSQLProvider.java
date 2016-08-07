@@ -45,7 +45,7 @@ class MySQLDateAddSQLProvider extends DerbyFunctionSQLProvider {
             mySqlType="MINUTE";
         } else if ("second".equals(format)) {
             mySqlType="SECOND";
-        } else if ("milli_second".equals(format)) {
+        } else if ("millisecond".equals(format)) {
             mySqlType="MICROSECOND";
             count="("+count+")*1000";
         } else {

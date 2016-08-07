@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa
      */
     public enum PropertyAccessType {
 
-        /**
+        DEFAULT, /**
              * Field-based access is used
              */
         FIELD, /**

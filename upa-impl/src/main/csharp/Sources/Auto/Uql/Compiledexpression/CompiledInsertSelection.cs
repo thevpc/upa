@@ -131,7 +131,13 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             if (entity != null) {
                 all.Add(entity);
             }
-            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(all, fields);
+            /**
+                     * this will not work because in C# all and fields have different types
+                     */
+            //all.addAll(fields);
+            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar field in fields) {
+                all.Add(field);
+            }
             all.Add(selection);
             return all.ToArray();
         }

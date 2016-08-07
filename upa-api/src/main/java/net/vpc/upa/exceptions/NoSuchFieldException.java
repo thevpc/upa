@@ -39,12 +39,8 @@ import net.vpc.upa.types.I18NString;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class NoSuchFieldException extends PersistenceUnitException {
-    public NoSuchFieldException(String name) {
-        this(name, null);
-    }
-
-    public NoSuchFieldException(String name, Exception cause) {
-        super(cause, new I18NString("NoSuchFieldException"), name);
+public class NoSuchFieldException extends EntityException {
+    public NoSuchFieldException(String entityName, String contextName, String fieldName, Exception cause) {
+        super(cause, new I18NString("NoSuchFieldException"), entityName,contextName,fieldName);
     }
 }

@@ -38,7 +38,7 @@ public class TreeUC {
             List<Category> entityList;
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             pu.reset();
-            entityList = pu.createQuery("Select a from Category a").getEntityList();
+            entityList = pu.createQuery("Select a from Category a").getResultList();
 
             Assert.assertSame(entityList.size(), 0);
 
@@ -68,21 +68,21 @@ public class TreeUC {
             Category c122 = new Category("1.2.2", c12);
             pu.persist(c122);
 
-            entityList = pu.createQuery("Select a from Category a").getEntityList();
+            entityList = pu.createQuery("Select a from Category a").getResultList();
             Assert.assertSame(entityList.size(), 5);
 
             c121.setParent(c11);
             pu.update(c121);
 
-            entityList = pu.createQuery("Select a from Category a").getEntityList();
+            entityList = pu.createQuery("Select a from Category a").getResultList();
 //            for (Category c : entityList) {
 //                System.out.println(c);
 //            }
 //            Assert.assertSame(entityList.size(), 4);
 
-            entityList = pu.createQuery("Select a from Category a where isHierarchyDescedent(a,"+c1.getId()+",null)").getEntityList();
-            entityList = pu.createQuery("Select a from Category a where treeAncestor("+c1.getId()+",a)").getEntityList();
-            entityList = pu.createQuery("Select a from Category a where treeAncestor(:c1,a)").setParameter("c1", c1).getEntityList();
+            entityList = pu.createQuery("Select a from Category a where isHierarchyDescedent(a,"+c1.getId()+",null)").getResultList();
+            entityList = pu.createQuery("Select a from Category a where treeAncestor("+c1.getId()+",a)").getResultList();
+            entityList = pu.createQuery("Select a from Category a where treeAncestor(:c1,a)").setParameter("c1", c1).getResultList();
 //            entityList = pu.createQuery("Select a from Category a where treeAncestor(a,:c1,Category)").setParameter("c1", c1).getEntityList();
 //            entityList = pu.createQuery("Select a from Category a where treeAncestor(a,:c1)").getEntityList();
 //            entityList = pu.createQuery("Select a from Category a where treeAncestor(:c1,:c12,Category)").getEntityList();

@@ -39,13 +39,20 @@ namespace Net.Vpc.Upa.Expressions
      *          the date at the end of the next "count" month. when count=0, the end of the current month
      * </pre>
      */
-    public class MonthEnd : Net.Vpc.Upa.Expressions.Function {
+    public class MonthEnd : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
         private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>();
 
         public MonthEnd() {
+        }
+
+        public MonthEnd(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            if (expressions.Length != 0 && expressions.Length != 1 && expressions.Length != 2) {
+                CheckArgCount(GetName(), expressions, 1);
+            }
+            Net.Vpc.Upa.FwkConvertUtils.ListAddRange(this.expressions, new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions));
         }
 
         public MonthEnd(Net.Vpc.Upa.Expressions.Expression date, Net.Vpc.Upa.Expressions.Expression count) {
@@ -55,6 +62,11 @@ namespace Net.Vpc.Upa.Expressions
 
         public MonthEnd(Net.Vpc.Upa.Expressions.Expression count) {
             expressions.Add(count);
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            expressions[index]=e;
         }
 
 

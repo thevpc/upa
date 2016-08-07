@@ -22,6 +22,8 @@ namespace Net.Vpc.Upa.Persistence
 
         private System.Collections.Generic.IDictionary<string , string> aliasToEntityContext;
 
+        private System.Collections.Generic.IDictionary<string , object> hints;
+
         private bool validate = true;
 
         private bool expandFields = true;
@@ -43,7 +45,11 @@ namespace Net.Vpc.Upa.Persistence
             if (aliasToEntityContext == null) {
                 aliasToEntityContext = new System.Collections.Generic.Dictionary<string , string>();
             }
-            aliasToEntityContext[alias]=entityName;
+            if (entityName == null) {
+                aliasToEntityContext.Remove(alias);
+            } else {
+                aliasToEntityContext[alias]=entityName;
+            }
             return this;
         }
 
@@ -94,6 +100,24 @@ namespace Net.Vpc.Upa.Persistence
 
         public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetThisAlias(string thisAlias) {
             this.thisAlias = thisAlias;
+            return this;
+        }
+
+        public virtual System.Collections.Generic.IDictionary<string , object> GetHints() {
+            return hints;
+        }
+
+        public virtual object GetHint(string hintName) {
+            return hints == null ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+        }
+
+        public virtual object GetHint(string hintName, object defaultValue) {
+            object c = hints == null ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            return c == null ? defaultValue : c;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+            this.hints = hints;
             return this;
         }
 

@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Types
 
         protected internal virtual void SetEncoderObject(object encoder) {
             if (!(encoder == null || encoder is string || encoder is System.Type || encoder is Net.Vpc.Upa.Types.CharArrayEncoder)) {
-                throw new System.ArgumentException ("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
             }
             this.encoder = encoder;
         }

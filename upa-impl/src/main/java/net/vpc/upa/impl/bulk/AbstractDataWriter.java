@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.bulk;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataRowConverter;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataRow;
@@ -14,6 +15,7 @@ import net.vpc.upa.exceptions.UPAException;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public abstract class AbstractDataWriter implements DataWriter {
 
     protected DataColumn[] parserColumns;

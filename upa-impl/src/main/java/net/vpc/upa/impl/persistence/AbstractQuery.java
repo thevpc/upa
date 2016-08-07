@@ -3,6 +3,8 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.MultiRecord;
 import net.vpc.upa.Record;
+import net.vpc.upa.exceptions.NoResultException;
+import net.vpc.upa.exceptions.NonUniqueResultException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.Query;
@@ -113,18 +115,20 @@ public abstract class AbstractQuery implements Query {
         }
     }
 
-    public <R> R getSingleEntity() throws UPAException {
+    public <R> R getSingleResult() throws UPAException {
         List<R> entityList = null;
         try {
-            entityList = getEntityList();
+            entityList = getResultList();
             if (entityList.isEmpty()) {
-                throw new UPAException("Not found");
+                throw new NoResultException();
             }
+            //do not call size, as it will load all entities if fount
+            //just iterate and throw exception if ambiguity
             int x = 0;
             for (Object object : entityList) {
                 x++;
                 if (x > 1) {
-                    throw new UPAException("Ambiguity");
+                    throw new NonUniqueResultException();
                 }
             }
             return entityList.get(0);
@@ -133,10 +137,10 @@ public abstract class AbstractQuery implements Query {
         }
     }
 
-    public <R> R getSingleEntityOrNull() throws UPAException {
+    public <R> R getSingleResultOrNull() throws UPAException {
         List<R> entityList = null;
         try {
-            entityList = getEntityList();
+            entityList = getResultList();
             if (entityList.isEmpty()) {
                 return null;
             }
@@ -144,8 +148,21 @@ public abstract class AbstractQuery implements Query {
             for (Object object : entityList) {
                 x++;
                 if (x > 1) {
-                    throw new UPAException("Ambiguity");
+                    throw new NonUniqueResultException();
                 }
+            }
+            return entityList.get(0);
+        } finally {
+            UPAUtils.close(entityList);
+        }
+    }
+
+    public <R> R getFirstResultOrNull() throws UPAException {
+        List<R> entityList = null;
+        try {
+            entityList = getResultList();
+            if (entityList.isEmpty()) {
+                return null;
             }
             return entityList.get(0);
         } finally {

@@ -29,6 +29,29 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
+        public virtual bool? GetBoolean() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return (bool?) GetSingleValue();
+        }
+
+
+        public virtual int? GetInteger() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            object n = (object) GetSingleValue();
+            return n == null ? null : System.Convert.ToInt32(n);
+        }
+
+
+        public virtual long? GetLong() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            object n = (object) GetSingleValue();
+            return n == null ? null : System.Convert.ToInt32(n);
+        }
+
+
+        public virtual double? GetDouble() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            object n = (object) GetSingleValue();
+            return n == null ? null : System.Convert.ToDouble(n);
+        }
+
+
         public virtual string GetString() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return (string) GetSingleValue();
         }
@@ -49,7 +72,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (mergedRecord == null) {
                 return defaultValue;
             }
-            return mergedRecord.GetSingleResult<object>();
+            return mergedRecord.GetSingleResult<T>();
         }
 
 
@@ -142,14 +165,26 @@ namespace Net.Vpc.Upa.Impl.Persistence
         public virtual void SetUpdatable(bool forUpdate) {
             this.updatable = forUpdate;
         }
-
-        public abstract Net.Vpc.Upa.Entity GetDefaultEntity();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract Net.Vpc.Upa.Query SetHint(string arg1, object arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<K> GetIdList<K>();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract object GetHint(string arg1);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract Net.Vpc.Upa.Query SetHints(System.Collections.Generic.IDictionary<string , object> arg1);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract object GetHint(string arg1, object arg2);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<T> GetTypeList<T>(System.Type arg1, string[] arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.IDictionary<string , object> GetHints();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.ISet<T> GetValueSet<T>(string arg1);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract Net.Vpc.Upa.Query SetParameter(string arg1, object arg2);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.IList<T> GetResultList<T>();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void Close();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
@@ -161,17 +196,29 @@ namespace Net.Vpc.Upa.Impl.Persistence
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract Net.Vpc.Upa.Persistence.ResultMetaData GetMetaData();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract Net.Vpc.Upa.Query RemoveParameter(string arg1);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<T> GetValueList<T>(string arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract Net.Vpc.Upa.Query SetLazyListLoadingEnabled(bool arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract bool IsLazyListLoadingEnabled();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.ISet<T> GetTypeSet<T>(System.Type arg1, string[] arg2);
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<T> GetValueList<T>(int arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
-        public abstract System.Collections.Generic.IList<Net.Vpc.Upa.Key> GetKeyList();
+        public abstract System.Collections.Generic.ISet<K> GetIdSet<K>();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.ISet<Net.Vpc.Upa.Key> GetKeySet();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.ISet<T> GetResultSet<T>();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.ISet<T> GetValueSet<T>(int arg1);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<R> GetEntityList<R>();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract System.Collections.Generic.IList<Net.Vpc.Upa.Key> GetKeyList();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract System.Collections.Generic.IList<Net.Vpc.Upa.Record> GetRecordList();
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
@@ -180,5 +227,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         public abstract Net.Vpc.Upa.Query SetParameter(int arg1, object arg2);
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         public abstract void UpdateCurrent();
+        // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
+        public abstract Net.Vpc.Upa.Query RemoveParameter(int arg1);
     }
 }

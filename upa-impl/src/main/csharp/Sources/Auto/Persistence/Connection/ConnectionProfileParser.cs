@@ -34,8 +34,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
                 p2.SetString(prefix + ".password", connectionConfig.GetPassword());
                 p2.SetString(prefix + ".userName", connectionConfig.GetUserName());
                 p2.SetString(prefix + ".enabled", connectionConfig.IsEnabled() == null ? "true" : System.Convert.ToString(connectionConfig.IsEnabled()));
-                p2.SetString(prefix + ".structure", connectionConfig.GetStructureStrategy() == null ? null : connectionConfig.GetStructureStrategy().ToString());
-                foreach (System.Collections.Generic.KeyValuePair<string , string> entry in connectionConfig.GetProperties()) {
+                p2.SetString(prefix + ".structure", connectionConfig.GetStructureStrategy() == default(Net.Vpc.Upa.Persistence.StructureStrategy) ? null : connectionConfig.GetStructureStrategy().ToString());
+                foreach (System.Collections.Generic.KeyValuePair<string , string> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(connectionConfig.GetProperties())) {
                     p2.SetString(prefix + "." + (entry).Key, (entry).Value);
                 }
             }
@@ -65,26 +65,22 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
             return found;
         }
 
-        public static void Main(string[] args) {
-            Net.Vpc.Upa.Impl.Persistence.Connection.ConnectionProfileParser cp = new Net.Vpc.Upa.Impl.Persistence.Connection.ConnectionProfileParser();
-            Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfileData d = cp.ParseDefaultConnectionProfileData("derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8");
-            System.Console.Out.WriteLine(d);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfileData ParseDefaultConnectionProfileData(string connectionString) {
+        public virtual Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfileData ParseDefaultConnectionProfileData(string connectionString) {
             //"derbyAsProduct#v12.5:defaultAsDriver#v8.699://helloAsServer:988AsPort/worldAsPath/anyThing?a=hello&b=titi;a=6;b=8"
-            var match = System.Text.RegularExpressions.Regex.Match(connectionString, "^([^:#]+)(#([^:]+))?(:([^:#]+)(#([^:]+))?)?://((([^/:]+)(:([^/:]+))?)/)?([^;]*)([;](.*))$");
-            if (match!=null){
-            DefaultConnectionProfileData d = new DefaultConnectionProfileData();
-            d.databaseProductName = match.Groups[1].Value;
-            d.databaseProductVersion = match.Groups[3].Value;
-            d.connectionDriverName = match.Groups[5].Value;
-            d.connectionDriverVersion = match.Groups[7].Value;
-            d.server = match.Groups[10].Value;
-            d.port = match.Groups[12].Value;
-            d.pathAndName = match.Groups[13].Value;
-            d.paramsString = match.Groups[15].Value;
-            return d;
+            Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern = new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern("^([^:#;]+)(#([^:;]+))?(:([^:#;]+)(#([^:;]+))?)?://((([^/:;]+)(:([^/:;]+))?)/)?([^;]*)([;](.*))?$");
+            Net.Vpc.Upa.Impl.Util.Regexp.PortablePatternMatcher matcher = pattern.Matcher(connectionString);
+            bool matchFound = matcher.Find();
+            if (matchFound) {
+                Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfileData d = new Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfileData();
+                d.databaseProductName = matcher.Group(1);
+                d.databaseProductVersion = matcher.Group(3);
+                d.connectionDriverName = matcher.Group(5);
+                d.connectionDriverVersion = matcher.Group(7);
+                d.server = matcher.Group(10);
+                d.port = matcher.Group(12);
+                d.pathAndName = matcher.Group(13);
+                d.paramsString = matcher.Group(15);
+                return d;
             }
             return null;
         }
@@ -116,7 +112,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
                 SetParam(profile, Net.Vpc.Upa.Persistence.ConnectionOption.CONNECTION_DRIVER, connectionDriverName, parameters, connectionStringPropertyName);
                 SetParam(profile, Net.Vpc.Upa.Persistence.ConnectionOption.CONNECTION_DRIVER_VERSION, connectionDriverVersion, parameters, connectionStringPropertyName);
                 //pathAndName
-                if (Net.Vpc.Upa.Impl.Util.Strings.IsNullOrEmpty(pathAndName)) {
+                if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(pathAndName)) {
                     pathAndName = null;
                 }
                 pathAndName = ReplaceVars(pathAndName, parameters);
@@ -162,6 +158,23 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
                                         } else {
                                             v.Append(chars[k]);
                                         }
+                                        k++;
+                                    }
+                                    SetParam(profile, n, v.ToString(), parameters, connectionStringPropertyName);
+                                    i = k;
+                                } else if (chars[i] == '\'') {
+                                    System.Text.StringBuilder v = new System.Text.StringBuilder();
+                                    int k = i + 1;
+                                    while (k < chars.Length) {
+                                        if (chars[k] == '\\') {
+                                            k++;
+                                            v.Append(chars[k]);
+                                        } else if (chars[k] == '\'') {
+                                            break;
+                                        } else {
+                                            v.Append(chars[k]);
+                                        }
+                                        k++;
                                     }
                                     SetParam(profile, n, v.ToString(), parameters, connectionStringPropertyName);
                                     i = k;
@@ -180,7 +193,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
                         i++;
                     }
                 }
-                foreach (System.Collections.Generic.KeyValuePair<string , object> e in parameters.ToMap()) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(parameters.ToMap())) {
                     string key = (e).Key;
                     if (key.StartsWith(connectionStringPropertyName + ".")) {
                         string k = key.Substring((connectionStringPropertyName).Length + 1);
@@ -191,7 +204,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Connection
                 }
                 return profile;
             }
-            throw new System.ArgumentException ("expected product:driver://info");
+            throw new System.ArgumentException ("invalid connection string. Expected 'product:driver://info' Found : " + connectionString);
         }
 
         protected internal virtual void SetParam(Net.Vpc.Upa.Impl.Persistence.Connection.DefaultConnectionProfile d, string propertyName, string propertyValue, Net.Vpc.Upa.Properties parameters, string connectionStringPropertyName) {

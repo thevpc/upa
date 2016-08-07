@@ -238,9 +238,9 @@ public interface PersistenceUnit extends Closeable {
 //    boolean checkCreatedPersistenceUnit(boolean ask) ;
     boolean isValidPersistenceUnit() ;
 
-    DBConfigModel getDBConfigModel() ;
+//    DBConfigModel getDBConfigModel() ;
 
-    void setDBConfigModel(DBConfigModel dbConfigModel) ;
+//    void setDBConfigModel(DBConfigModel dbConfigModel) ;
 
     public void clear(EntityFilter entityFilter,Map<String,Object> hints)  ;
     
@@ -534,8 +534,6 @@ public interface PersistenceUnit extends Closeable {
     public void beginStructureModification() ;
 
     public void commitStructureModification() ;
-
-    public void close() ;
 
     public boolean isClosed() ;
 

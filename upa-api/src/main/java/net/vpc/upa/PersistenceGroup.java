@@ -82,11 +82,10 @@ public interface PersistenceGroup extends Closeable {
 
     public void setCurrentSession(Session session) throws UPAException;
 
-    public Session openSession() throws UPAException;
+    public Session openSession() ;
 
-    public boolean isClosed() throws UPAException;
+    public boolean isClosed() ;
 
-    public void close() throws UPAException;
 
     public void addPersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
 
@@ -110,19 +109,19 @@ public interface PersistenceGroup extends Closeable {
 
     public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly,EventPhase phase);
 
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invoke(Action<T> action) throws UPAException;
+    public <T> T invoke(Action<T> action) ;
 
-    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invokePrivileged(Action<T> action) throws UPAException;
+    public <T> T invokePrivileged(Action<T> action) ;
 
-    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    public void invoke(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invoke(VoidAction action) throws UPAException;
+    public void invoke(VoidAction action) ;
 
-    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invokePrivileged(VoidAction action) throws UPAException;
+    public void invokePrivileged(VoidAction action) ;
 }

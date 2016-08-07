@@ -22,12 +22,12 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
      */
     public class PatternListClassNameFilter : Net.Vpc.Upa.Impl.Config.ClassNameFilter {
 
-        private System.Text.RegularExpressions.Regex[] patterns;
+        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] patterns;
 
         private string[] userPatterns;
 
         public PatternListClassNameFilter(string[] filter) {
-            System.Collections.Generic.IList<System.Text.RegularExpressions.Regex> patternsList = new System.Collections.Generic.List<System.Text.RegularExpressions.Regex>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern> patternsList = new System.Collections.Generic.List<Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern>();
             System.Collections.Generic.IList<string> userPatternsList = new System.Collections.Generic.List<string>();
             if (filter != null) {
                 for (int i = 0; i < filter.Length; i++) {
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
                         }
                     }
                     if (f != null) {
-                        patternsList.Add(new System.Text.RegularExpressions.Regex(Convert(f)));
+                        patternsList.Add(new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(Convert(f)));
                         userPatternsList.Add(f);
                     }
                 }
@@ -114,15 +114,15 @@ namespace Net.Vpc.Upa.Impl.Util.Classpath
             if (patterns == null || patterns.Length == 0) {
                 return true;
             }
-            foreach (System.Text.RegularExpressions.Regex pattern in patterns) {
-                if (pattern == null || (pattern.Match(cls)).Success) {
+            foreach (Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern in patterns) {
+                if (pattern == null || pattern.Matcher(cls).Matches()) {
                     return true;
                 }
             }
             return false;
         }
 
-        public virtual System.Text.RegularExpressions.Regex[] GetPatterns() {
+        public virtual Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern[] GetPatterns() {
             return patterns;
         }
 

@@ -16,7 +16,7 @@ import net.vpc.upa.config.ConfigInfo;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class SimpleDecoration extends AbstractDecoration {
 

@@ -33,10 +33,9 @@ public interface DataType extends Cloneable {
 
     Object rewrite(Object value, String name, String description) throws ConstraintsException;
 
-    @PortabilityHint(target = "C#", name = "virtual")
     void check(Object value, String name, String description) throws ConstraintsException;
 
-    Object clone();
+    Object copy();
 
     List<TypeValueValidator> getValueValidators();
 
@@ -60,7 +59,6 @@ public interface DataType extends Cloneable {
 
     void cast(DataType type);
 
-    @PortabilityHint(target = "C#", name = "virtual")
     Object convert(Object value);
 
     String getName();

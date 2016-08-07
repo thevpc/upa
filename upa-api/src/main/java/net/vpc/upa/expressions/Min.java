@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-public final class Min extends Function
+public final class Min extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
@@ -45,6 +45,10 @@ public final class Min extends Function
 //    }
     public Min(Expression expression) {
         this.expression = expression;
+    }
+    public Min(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
     }
 
     @Override

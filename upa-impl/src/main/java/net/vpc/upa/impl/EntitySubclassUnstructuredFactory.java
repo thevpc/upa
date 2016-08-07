@@ -35,13 +35,13 @@ public class EntitySubclassUnstructuredFactory extends AbstractEntityFactory {
 
 
     @Override
-    public Object recordToObject(Record record) {
+    public <R> R recordToObject(Record record) {
         if (recordType.isInstance(record)) {
-            return record;
+            return (R) record;
         } else {
             Object ur = createRecord();
             ((Record) ur).setAll(record);
-            return ur;
+            return (R) ur;
         }
     }
 

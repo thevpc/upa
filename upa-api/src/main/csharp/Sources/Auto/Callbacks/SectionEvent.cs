@@ -35,7 +35,9 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.Section oldParent;
 
-        public SectionEvent(Net.Vpc.Upa.Section item, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Section parent, int index, Net.Vpc.Upa.Section oldParent, int oldIndex) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public SectionEvent(Net.Vpc.Upa.Section item, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Entity entity, Net.Vpc.Upa.Section parent, int index, Net.Vpc.Upa.Section oldParent, int oldIndex, Net.Vpc.Upa.EventPhase phase) {
             this.persistenceUnit = persistenceUnit;
             this.item = item;
             this.parent = parent;
@@ -43,6 +45,11 @@ namespace Net.Vpc.Upa.Callbacks
             this.oldParent = oldParent;
             this.oldIndex = oldIndex;
             this.entity = entity;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {

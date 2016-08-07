@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class PlainStringEncoder : Net.Vpc.Upa.Types.StringEncoder {
 
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (@value == null) {
                 return null;
             }
-            return @value.GetBytes();
+            return System.Text.Encoding.UTF8.GetBytes(@value);
         }
 
 

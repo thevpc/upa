@@ -1,17 +1,18 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
-import net.vpc.upa.impl.persistence.shared.ConstantDataMarshallerFactory;
-import net.vpc.upa.impl.persistence.shared.NullValANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.marshallers.ConstantDataMarshallerFactory;
+import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import net.vpc.upa.filters.Fields;
+
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 @PortabilityHint(target = "C#", name = "suppress")
@@ -120,7 +121,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         sb.append("(");
         boolean first = true;
         List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(
-                Fields.regular().and(Fields.byList(index.getFields()))
+                FieldFilters.regular().and(FieldFilters.byList(index.getFields()))
         );
         for (Field field : primitiveFields) {
             if (first) {

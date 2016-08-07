@@ -35,13 +35,14 @@
 package net.vpc.upa.expressions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
  * change this template use Options | File Templates.
  */
-public class Decode extends Function implements Cloneable {
+public class Decode extends FunctionExpression implements Cloneable {
 
     private static final long serialVersionUID = 1L;
     private ArrayList<Expression> params;
@@ -51,6 +52,11 @@ public class Decode extends Function implements Cloneable {
 
     private Decode() {
         params = new ArrayList<Expression>(2);
+    }
+
+    public Decode(Expression[] expressions) {
+        params = new ArrayList<Expression>(Arrays.asList(expressions));
+        state = VALID;
     }
 
     public Decode(List<Expression> expressions) {

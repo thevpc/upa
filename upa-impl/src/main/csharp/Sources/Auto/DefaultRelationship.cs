@@ -63,8 +63,8 @@ namespace Net.Vpc.Upa.Impl
             if (sourceEntity == null || targetEntity == null) {
                 throw new Net.Vpc.Upa.Exceptions.UPAException("InvalidRelationDefinition");
             }
-            if (!sourceEntity.GetUserExcludeModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_INSERT)) {
-                sourceEntity.GetModifiers().Add(Net.Vpc.Upa.EntityModifier.VALIDATE_INSERT);
+            if (!sourceEntity.GetUserExcludeModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_PERSIST)) {
+                sourceEntity.GetModifiers().Add(Net.Vpc.Upa.EntityModifier.VALIDATE_PERSIST);
             }
             if (!sourceEntity.GetUserExcludeModifiers().Contains(Net.Vpc.Upa.EntityModifier.VALIDATE_UPDATE)) {
                 sourceEntity.GetModifiers().Add(Net.Vpc.Upa.EntityModifier.VALIDATE_UPDATE);
@@ -92,7 +92,7 @@ namespace Net.Vpc.Upa.Impl
                 dataType = targetEntity.GetDataType();
             }
             if (dataType.IsNullable() != nullable) {
-                Net.Vpc.Upa.Types.DataType trCloned = (Net.Vpc.Upa.Types.DataType) dataType.Clone();
+                Net.Vpc.Upa.Types.DataType trCloned = (Net.Vpc.Upa.Types.DataType) dataType.Copy();
                 trCloned.SetNullable(nullable);
                 dataType = trCloned;
             }
@@ -110,7 +110,7 @@ namespace Net.Vpc.Upa.Impl
                 }
                 this.sourceToTargetKeyMap[sourceFields[i].GetName()]=targetFields[i].GetName();
                 this.targetToSourceKeyMap[targetFields[i].GetName()]=sourceFields[i].GetName();
-                targetFields[i].AddTargetRelationship(this);
+                //            targetFields[i].addManyToOneRelation(this);
                 ((Net.Vpc.Upa.Impl.AbstractField) sourceFields[i]).SetEffectiveModifiers(sourceFields[i].GetModifiers().Add(Net.Vpc.Upa.FieldModifier.FOREIGN));
                 ((Net.Vpc.Upa.Impl.AbstractField) targetFields[i]).SetEffectiveModifiers(targetFields[i].GetModifiers().Add(Net.Vpc.Upa.FieldModifier.REFERENCED));
                 //            if (sourceFields[i].getTitle() == null) {
@@ -121,7 +121,7 @@ namespace Net.Vpc.Upa.Impl
                     if (tr.IsNullable() == nullable) {
                         sourceFields[i].SetDataType(tr);
                     } else {
-                        Net.Vpc.Upa.Types.DataType trCloned = (Net.Vpc.Upa.Types.DataType) tr.Clone();
+                        Net.Vpc.Upa.Types.DataType trCloned = (Net.Vpc.Upa.Types.DataType) tr.Copy();
                         trCloned.SetNullable(nullable);
                         sourceFields[i].SetDataType(trCloned);
                     }
@@ -130,16 +130,16 @@ namespace Net.Vpc.Upa.Impl
             if (GetSourceRole().GetEntityField() != null) {
                 Net.Vpc.Upa.Field sourceEntityField = GetSourceRole().GetEntityField();
                 Net.Vpc.Upa.Types.DataType dt = sourceEntityField.GetDataType();
-                if (dt is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType edt = (Net.Vpc.Upa.Types.EntityType) dt;
+                if (dt is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType edt = (Net.Vpc.Upa.Types.ManyToOneType) dt;
                     edt.SetRelationship(this);
                 }
             }
             if (GetTargetRole().GetEntityField() != null) {
                 Net.Vpc.Upa.Field targetEntityField = GetTargetRole().GetEntityField();
                 Net.Vpc.Upa.Types.DataType dt = targetEntityField.GetDataType();
-                if (dt is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType edt = (Net.Vpc.Upa.Types.EntityType) dt;
+                if (dt is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType edt = (Net.Vpc.Upa.Types.ManyToOneType) dt;
                     edt.SetRelationship(this);
                 }
             }
@@ -215,11 +215,11 @@ namespace Net.Vpc.Upa.Impl
         public virtual System.Collections.Generic.IDictionary<string , string> GetSourceToTargetFieldNamesMap(bool absolute) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IDictionary<string , string> m = new System.Collections.Generic.Dictionary<string , string>((GetSourceToTargetFieldsMap()).Count);
             if (absolute) {
-                foreach (System.Collections.Generic.KeyValuePair<string , string> e in sourceToTargetKeyMap) {
+                foreach (System.Collections.Generic.KeyValuePair<string , string> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(sourceToTargetKeyMap)) {
                     m[GetSourceRole().GetEntity().GetField((e).Key).GetName()]=GetTargetRole().GetEntity().GetField((e).Value).GetName();
                 }
             } else {
-                foreach (System.Collections.Generic.KeyValuePair<string , string> e in sourceToTargetKeyMap) {
+                foreach (System.Collections.Generic.KeyValuePair<string , string> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(sourceToTargetKeyMap)) {
                     m[(e).Key]=(e).Value;
                 }
             }
@@ -229,11 +229,11 @@ namespace Net.Vpc.Upa.Impl
         public virtual System.Collections.Generic.IDictionary<string , string> GetTargetToSourceFieldNamesMap(bool absolute) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             System.Collections.Generic.IDictionary<string , string> m = new System.Collections.Generic.Dictionary<string , string>((GetSourceToTargetFieldsMap()).Count);
             if (absolute) {
-                foreach (System.Collections.Generic.KeyValuePair<string , string> e in targetToSourceKeyMap) {
+                foreach (System.Collections.Generic.KeyValuePair<string , string> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(targetToSourceKeyMap)) {
                     m[GetTargetRole().GetEntity().GetField((e).Key).GetName()]=GetSourceRole().GetEntity().GetField((e).Value).GetName();
                 }
             } else {
-                foreach (System.Collections.Generic.KeyValuePair<string , string> e in targetToSourceKeyMap) {
+                foreach (System.Collections.Generic.KeyValuePair<string , string> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,string>>(targetToSourceKeyMap)) {
                     m[(e).Key]=(e).Value;
                 }
             }
@@ -276,13 +276,13 @@ namespace Net.Vpc.Upa.Impl
                 try {
                     System.Collections.Generic.IList<Net.Vpc.Upa.Record> list = GetSourceRole().GetEntity().CreateQuery(new Net.Vpc.Upa.Expressions.Select().Uplet(lvar, "lvar").Where(sourceCondition)).GetRecordList();
                     int j = 0;
-                    Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression inCollection = new Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression(rvar);
+                    Net.Vpc.Upa.Expressions.IdCollectionExpression inCollection = new Net.Vpc.Upa.Expressions.IdCollectionExpression(rvar);
                     foreach (Net.Vpc.Upa.Record r in list) {
                         j++;
                         if (j > tuningMaxInline) {
                             return new Net.Vpc.Upa.Expressions.InSelection(lvar, new Net.Vpc.Upa.Expressions.Select().From(GetSourceRole().GetEntity().GetName()).Uplet(lvar).Where(sourceCondition));
                         }
-                        inCollection.Add(new Net.Vpc.Upa.Expressions.Param(null, r.GetSingleResult<object>()));
+                        inCollection.Add(new Net.Vpc.Upa.Expressions.Param(null, r.GetSingleResult<T>()));
                     }
                     //inCollection.add(new Litteral(rs.getObject(1)));
                     return inCollection;
@@ -298,16 +298,16 @@ namespace Net.Vpc.Upa.Impl
             //Key Rkey=getTargetTable().getKeyForExpression(targetCondition);
             Net.Vpc.Upa.Field[] sourceFields = GetSourceRole().GetFields().ToArray();
             Net.Vpc.Upa.Field[] targetFields = GetTargetRole().GetFields().ToArray();
-            if (targetCondition is Net.Vpc.Upa.Impl.Uql.Expression.KeyExpression) {
-                Net.Vpc.Upa.Key Rkey = targetRole.GetEntity().GetBuilder().IdToKey(((Net.Vpc.Upa.Impl.Uql.Expression.KeyExpression) targetCondition).GetKey());
+            if (targetCondition is Net.Vpc.Upa.Expressions.IdExpression) {
+                Net.Vpc.Upa.Key Rkey = targetRole.GetEntity().GetBuilder().IdToKey(((Net.Vpc.Upa.Expressions.IdExpression) targetCondition).GetId());
                 if (sourceFields.Length == 1) {
                     Net.Vpc.Upa.Expressions.Var lvar = (sourceAlias == null) ? new Net.Vpc.Upa.Expressions.Var(sourceFields[0].GetName()) : new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(sourceAlias), sourceFields[0].GetName());
-                    return new Net.Vpc.Upa.Expressions.Equals(lvar, new Net.Vpc.Upa.Expressions.Literal(Rkey.GetValue()[0], targetFields[0].GetDataType()));
+                    return new Net.Vpc.Upa.Expressions.Equals(lvar, new Net.Vpc.Upa.Expressions.Literal(Rkey == null ? null : Rkey.GetValue()[0], targetFields[0].GetDataType()));
                 } else {
                     Net.Vpc.Upa.Expressions.Expression a = null;
                     for (int i = 0; i < sourceFields.Length; i++) {
                         Net.Vpc.Upa.Expressions.Var lvar = (sourceAlias == null) ? new Net.Vpc.Upa.Expressions.Var(sourceFields[i].GetName()) : new Net.Vpc.Upa.Expressions.Var(new Net.Vpc.Upa.Expressions.Var(sourceAlias), sourceFields[i].GetName());
-                        Net.Vpc.Upa.Expressions.Expression rvar = new Net.Vpc.Upa.Expressions.Literal(Rkey.GetObjectAt(i), targetFields[i].GetDataType());
+                        Net.Vpc.Upa.Expressions.Expression rvar = new Net.Vpc.Upa.Expressions.Literal(Rkey == null ? null : Rkey.GetObjectAt(i), targetFields[i].GetDataType());
                         Net.Vpc.Upa.Expressions.Expression e = new Net.Vpc.Upa.Expressions.Equals(lvar, rvar);
                         a = a == null ? e : a;
                     }
@@ -323,13 +323,13 @@ namespace Net.Vpc.Upa.Impl
                 try {
                     System.Collections.Generic.IList<Net.Vpc.Upa.Record> list = GetTargetRole().GetEntity().CreateQuery(new Net.Vpc.Upa.Expressions.Select().Uplet(rvar, "rval").Where(targetCondition)).GetRecordList();
                     int j = 0;
-                    Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression inCollection = new Net.Vpc.Upa.Impl.Uql.Expression.KeyCollectionExpression(lvar);
+                    Net.Vpc.Upa.Expressions.IdCollectionExpression inCollection = new Net.Vpc.Upa.Expressions.IdCollectionExpression(lvar);
                     foreach (Net.Vpc.Upa.Record r in list) {
                         j++;
                         if (j > tuningMaxInline) {
                             return new Net.Vpc.Upa.Expressions.InSelection(lvar, new Net.Vpc.Upa.Expressions.Select().From(GetTargetRole().GetEntity().GetName()).Uplet(rvar).Where(targetCondition));
                         }
-                        inCollection.Add(new Net.Vpc.Upa.Expressions.Param(null, r.GetSingleResult<object>()));
+                        inCollection.Add(new Net.Vpc.Upa.Expressions.Param(null, r.GetSingleResult<T>()));
                     }
                     //inCollection.add(new Litteral(rs.getObject(1)));
                     return inCollection;
@@ -402,33 +402,33 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual Net.Vpc.Upa.Entity GetTargetEntity() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return targetRole.GetEntity();
+            return targetRole == null ? null : targetRole.GetEntity();
         }
 
         public virtual Net.Vpc.Upa.Entity GetSourceEntity() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return sourceRole.GetEntity();
+            return sourceRole == null ? null : sourceRole.GetEntity();
         }
 
         public override void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
-        public virtual Net.Vpc.Upa.Key GetKey(Net.Vpc.Upa.Record sourceRecord) {
+        public virtual Net.Vpc.Upa.Key ExtractKey(Net.Vpc.Upa.Record sourceRecord) {
             switch(GetSourceRole().GetRelationshipUpdateType()) {
                 case Net.Vpc.Upa.RelationshipUpdateType.COMPOSED:
                     {
-                        object targetEntityVal = sourceRecord.GetObject<object>(GetSourceRole().GetEntityField().GetName());
+                        object targetEntityVal = sourceRecord.GetObject<T>(GetSourceRole().GetEntityField().GetName());
                         if (targetEntityVal == null) {
                             return null;
                         }
                         Net.Vpc.Upa.EntityBuilder targetConverter = GetTargetRole().GetEntity().GetBuilder();
-                        return targetConverter.EntityToKey(targetEntityVal);
+                        return targetConverter.ObjectToKey(targetEntityVal);
                     }
                 case Net.Vpc.Upa.RelationshipUpdateType.FLAT:
                     {
                         System.Collections.Generic.IList<Net.Vpc.Upa.Field> relFields = GetSourceRole().GetFields();
                         System.Collections.Generic.List<object> keys = new System.Collections.Generic.List<object>((relFields).Count);
                         foreach (Net.Vpc.Upa.Field field in relFields) {
-                            object keyPart = sourceRecord.GetObject<object>(field.GetName());
+                            object keyPart = sourceRecord.GetObject<T>(field.GetName());
                             if (keyPart == null) {
                                 return null;
                             }
@@ -440,12 +440,64 @@ namespace Net.Vpc.Upa.Impl
             return null;
         }
 
+        public virtual object ExtractIdByEntityField(Net.Vpc.Upa.Record sourceRecord) {
+            object targetEntityVal = sourceRecord.GetObject<T>(GetSourceRole().GetEntityField().GetName());
+            if (targetEntityVal == null) {
+                return null;
+            }
+            Net.Vpc.Upa.EntityBuilder targetConverter = GetTargetRole().GetEntity().GetBuilder();
+            return targetConverter.ObjectToId(targetEntityVal);
+        }
+
+        public virtual object ExtractIdByForeignFields(Net.Vpc.Upa.Record sourceRecord) {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Field> relFields = GetSourceRole().GetFields();
+            System.Collections.Generic.List<object> keys = new System.Collections.Generic.List<object>((relFields).Count);
+            foreach (Net.Vpc.Upa.Field field in relFields) {
+                object keyPart = sourceRecord.GetObject<T>(field.GetName());
+                if (keyPart == null) {
+                    return null;
+                }
+                keys.Add(keyPart);
+            }
+            return GetTargetRole().GetEntity().CreateId(keys.ToArray());
+        }
+
+        public virtual object ExtractId(Net.Vpc.Upa.Record sourceRecord) {
+            switch(GetSourceRole().GetRelationshipUpdateType()) {
+                case Net.Vpc.Upa.RelationshipUpdateType.COMPOSED:
+                    {
+                        object o = ExtractIdByEntityField(sourceRecord);
+                        return o;
+                    }
+                case Net.Vpc.Upa.RelationshipUpdateType.FLAT:
+                    {
+                        return ExtractIdByForeignFields(sourceRecord);
+                    }
+            }
+            return null;
+        }
+
         public virtual Net.Vpc.Upa.Extensions.HierarchyExtension GetHierarchyExtension() {
             return hierarchyExtension;
         }
 
         public virtual void SetHierarchyExtension(Net.Vpc.Upa.Extensions.HierarchyExtension hierarchyExtension) {
             this.hierarchyExtension = hierarchyExtension;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Expression CreateTargetListExpression(object currentInstance, string alias) {
+            if (filter == null) {
+                return null;
+            }
+            System.Collections.Generic.Dictionary<string , object> v = new System.Collections.Generic.Dictionary<string , object>();
+            v["this"]=currentInstance;
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(alias)) {
+                alias = GetTargetEntity().GetName();
+            }
+            string alias2 = alias;
+            Net.Vpc.Upa.Expressions.Expression filter2 = GetPersistenceUnit().GetExpressionManager().SimplifyExpression(filter.Copy(), v);
+            filter2.Visit(new Net.Vpc.Upa.Impl.Uql.Util.ThatExpressionReplacer(alias2));
+            return filter2;
         }
     }
 }

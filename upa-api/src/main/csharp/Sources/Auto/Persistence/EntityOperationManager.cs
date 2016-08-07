@@ -28,9 +28,9 @@ namespace Net.Vpc.Upa.Persistence
 
          void SetUpdateOperation(Net.Vpc.Upa.Persistence.EntityUpdateOperation operation);
 
-         Net.Vpc.Upa.Persistence.EntityPersistOperation GetInsertOperation();
+         Net.Vpc.Upa.Persistence.EntityPersistOperation GetPersistOperation();
 
-         void SetInsertOperation(Net.Vpc.Upa.Persistence.EntityPersistOperation operation);
+         void SetPersistOperation(Net.Vpc.Upa.Persistence.EntityPersistOperation operation);
 
          Net.Vpc.Upa.Persistence.EntityFindOperation GetFindOperation();
 

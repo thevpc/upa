@@ -1,49 +1,18 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.Entity;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/5/13 11:20 PM
- */ //    private class FieldAttrAdapter<R> extends AbstractBeanAdapterAttribute<R> {
-//
-//        private Field field;
-//        private Class cls;
-//
-//        private FieldAttrAdapter(Field field, Class cls) {
-//            super(field.getName(), field.getDataType());
-//            this.field = field;
-//            this.cls = cls;
-//            field.setAccessible(true);
-//        }
-//
-//        @Override
-//        public R getValue(Object o) {
-//            try {
-//                return (R) field.get(o);
-//            } catch (IllegalAccessException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//
-//        @Override
-//        public void setValue(Object o, R value) {
-//            try {
-//                field.set(o, value);
-//            } catch (IllegalAccessException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-class BeanAdapterGetterSetterAttribute extends AbstractBeanAdapterAttribute {
+ */
+class DefaultPlatformBeanProperty extends AbstractPlatformBeanProperty {
 
     private Method getter;
     private Method setter;
 
-    BeanAdapterGetterSetterAttribute(String field, Class fieldType, Method getter, Method setter) {
+    DefaultPlatformBeanProperty(String field, Class fieldType, Method getter, Method setter) {
         super(field, fieldType);
         this.getter = getter;
         if (getter != null) {
@@ -91,7 +60,7 @@ class BeanAdapterGetterSetterAttribute extends AbstractBeanAdapterAttribute {
         try {
             setter.invoke(o, new Object[]{value});
         } catch (Exception e) {
-            //throw new IllegalArgumentException("Unable to set value " + (value == null ? "null" : value.getClass()) + " for property " + getName() + ". Expected Type is " + getFieldType(), e);
+            //throw new IllegalArgumentException("Unable to set value " + (value == null ? "null" : value.getClass()) + " for property " + getName() + ". Expected Type is " + getPlatformType(), e);
             if (e instanceof InvocationTargetException) {
                 e= (Exception)((InvocationTargetException)e).getTargetException();
             }
@@ -100,5 +69,15 @@ class BeanAdapterGetterSetterAttribute extends AbstractBeanAdapterAttribute {
             }
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean isWriteSupported() {
+        return setter!=null;
+    }
+
+    @Override
+    public boolean isReadSupported() {
+        return getter!=null;
     }
 }

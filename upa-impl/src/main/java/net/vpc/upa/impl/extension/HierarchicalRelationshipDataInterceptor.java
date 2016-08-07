@@ -3,7 +3,7 @@ package net.vpc.upa.impl.extension;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -52,7 +52,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         String pathFieldName = support.getHierarchyPathField();
         Entity entity = relation.getSourceRole().getEntity();
         if (parent_id != null) {
-            Record r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(Fields.byName(pathFieldName)).getRecord();
+            Record r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(FieldFilters.byName(pathFieldName)).getRecord();
             if (r != null) {
                 path = r.getString(pathFieldName) + path;
             }

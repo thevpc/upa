@@ -20,9 +20,15 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
      */
     public class CompiledQueryField : Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledNamedExpression {
 
+        private int index = -1;
+
+        private bool expanded = false;
+
         private string alias;
 
         private string binding;
+
+        private string aliasBinding;
 
         private static string ResolveName(string alias, Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression) {
             if (alias != null) {
@@ -74,8 +80,36 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             return binding;
         }
 
-        public virtual void SetBinding(string binding) {
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetBinding(string binding) {
             this.binding = binding;
+            return this;
+        }
+
+        public virtual string GetAliasBinding() {
+            return aliasBinding;
+        }
+
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetAliasBinding(string aliasBinding) {
+            this.aliasBinding = aliasBinding;
+            return this;
+        }
+
+        public virtual int GetIndex() {
+            return index;
+        }
+
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetIndex(int index) {
+            this.index = index;
+            return this;
+        }
+
+        public virtual bool IsExpanded() {
+            return expanded;
+        }
+
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField SetExpanded(bool expanded) {
+            this.expanded = expanded;
+            return this;
         }
     }
 }

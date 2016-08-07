@@ -25,23 +25,12 @@ namespace Net.Vpc.Upa.Expressions
 
         private string alias;
 
-        private string name;
-
         private Net.Vpc.Upa.Expressions.Expression expression;
 
         public QueryField(string alias, Net.Vpc.Upa.Expressions.Expression expression) {
             /*, Object relative*/
             this.expression = expression;
             this.alias = alias;
-            if (alias != null) {
-                name = alias;
-            } else if (expression is Net.Vpc.Upa.Expressions.Var) {
-                name = ((Net.Vpc.Upa.Expressions.Var) expression).GetName();
-            }
-        }
-
-        public virtual string GetName() {
-            return name;
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression GetExpression() {

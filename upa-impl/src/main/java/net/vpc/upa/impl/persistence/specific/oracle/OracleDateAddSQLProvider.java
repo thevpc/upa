@@ -35,7 +35,7 @@ class OracleDateAddSQLProvider extends OracleFunctionSQLProvider {
         } else if ("hour".equals(format)) {
         } else if ("minute".equals(format)) {
         } else if ("second".equals(format)) {
-        } else if ("milli_second".equals(format)) {
+        } else if ("millisecond".equals(format)) {
             format = "millisecond";
         } else {
             throw new RuntimeException("Adapter : incorrect format '" + format + "' for function 'dateadd'");

@@ -15,7 +15,7 @@ public interface MarshallManager {
 
     void setTypeMarshaller(Class platformType, TypeMarshaller wrapper);
 
-    void setTypeMarshallerFactory(Class platformType, TypeMarshallerFactory wrapperFactory);
+    void setTypeMarshallerFactory(Class dataType, TypeMarshallerFactory wrapperFactory);
 
     TypeMarshaller getTypeMarshaller(DataTypeTransform someClass);
 

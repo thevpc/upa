@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Event
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class RelationshipTargetFormulaUpdaterInterceptorSupportBaseInterceptor : Net.Vpc.Upa.Callbacks.UpdateFormulaInterceptor {
 

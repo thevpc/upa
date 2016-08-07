@@ -57,7 +57,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
         }
 
         public virtual bool IsUnique() {
-            return ((bool?) unique.GetValue(true)).Value;
+            return ((bool?) unique.GetValue(new System.Nullable<bool>(true))).Value;
         }
     }
 }

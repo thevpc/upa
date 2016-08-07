@@ -45,7 +45,7 @@ namespace Net.Vpc.Upa.Impl
             if (l == null) {
                 tabInfos[table]=count;
             } else {
-                tabInfos[table]=(l).Value + count;
+                tabInfos[table]=l + count;
             }
         }
 
@@ -59,7 +59,7 @@ namespace Net.Vpc.Upa.Impl
             System.Collections.Generic.IDictionary<string , long?> m = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.RelationshipType,System.Collections.Generic.IDictionary<string , long?>>(infos,type);
             System.Collections.Generic.List<Net.Vpc.Upa.DeletionTraceElement> elements = new System.Collections.Generic.List<Net.Vpc.Upa.DeletionTraceElement>();
             if (m != null) {
-                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in m) {
+                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,long?>>(m)) {
                     string tabName = (e2).Key;
                     long tabCount = ((e2).Value).Value;
                     if (tabCount > 0) {
@@ -72,9 +72,9 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual Net.Vpc.Upa.DeletionTraceElement[] GetTrace() {
             System.Collections.Generic.IList<Net.Vpc.Upa.DeletionTraceElement> elements = new System.Collections.Generic.List<Net.Vpc.Upa.DeletionTraceElement>();
-            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in infos) {
+            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType,System.Collections.Generic.IDictionary<string , long?>>>(infos)) {
                 Net.Vpc.Upa.RelationshipType type = (e).Key;
-                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in (e).Value) {
+                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,long?>>((e).Value)) {
                     string tabName = (e2).Key;
                     long tabCount = ((e2).Value).Value;
                     if (tabCount > 0) {
@@ -89,11 +89,11 @@ namespace Net.Vpc.Upa.Impl
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             bool first = true;
             sb.Append("DeleteInfo : ");
-            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in infos) {
+            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType,System.Collections.Generic.IDictionary<string , long?>>>(infos)) {
                 Net.Vpc.Upa.RelationshipType k = (Net.Vpc.Upa.RelationshipType) (e).Key;
                 string typeName = k.ToString();
                 sb.Append("[").Append(typeName).Append("]=").Append("{");
-                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in (e).Value) {
+                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,long?>>((e).Value)) {
                     string tabName = (e2).Key;
                     long tabCount = ((e2).Value).Value;
                     if (tabCount > 0) {
@@ -121,8 +121,8 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual long GetRemoveCount() {
             long count = 0;
-            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in infos) {
-                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in (e).Value) {
+            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType,System.Collections.Generic.IDictionary<string , long?>>>(infos)) {
+                foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,long?>>((e).Value)) {
                     long tabCount = ((e2).Value).Value;
                     count += tabCount;
                 }
@@ -132,10 +132,10 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual long GetRemoveCount(Net.Vpc.Upa.RelationshipType type) {
             long count = 0;
-            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in infos) {
+            foreach (System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType , System.Collections.Generic.IDictionary<string , long?>> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<Net.Vpc.Upa.RelationshipType,System.Collections.Generic.IDictionary<string , long?>>>(infos)) {
                 Net.Vpc.Upa.RelationshipType k = (e).Key;
                 if (k == type) {
-                    foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in (e).Value) {
+                    foreach (System.Collections.Generic.KeyValuePair<string , long?> e2 in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,long?>>((e).Value)) {
                         long tabCount = ((e2).Value).Value;
                         count += tabCount;
                     }

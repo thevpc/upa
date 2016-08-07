@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class DefaultEntityPrivateRemoveItemInterceptor : Net.Vpc.Upa.Impl.Util.ItemInterceptor<Net.Vpc.Upa.EntityPart> {
 

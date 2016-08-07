@@ -55,12 +55,20 @@ public class DefaultTextCSVFormatter extends TextCSVFormatter {
         }
     }
 
-    public void close() throws Exception {
+    public void close() {
         if (target != null) {
             if (target instanceof OutputStream) {
-                ((OutputStream) target).close();
+                try {
+                    ((OutputStream) target).close();
+                } catch (IOException e) {
+                    throw new UPAException("IOException",e);
+                }
             } else if (target instanceof Writer) {
-                ((Writer) target).close();
+                try{
+                    ((Writer) target).close();
+                } catch (IOException e) {
+                    throw new UPAException("IOException",e);
+                }
             }
         }
     }

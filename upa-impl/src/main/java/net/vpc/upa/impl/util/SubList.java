@@ -14,7 +14,7 @@ import net.vpc.upa.PortabilityHint;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class SubList<E> extends AbstractList<E> implements List<E> {
 

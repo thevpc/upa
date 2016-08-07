@@ -21,6 +21,6 @@ namespace Net.Vpc.Upa
      */
     public interface TransactionManager {
 
-         Net.Vpc.Upa.Transaction CreateTransaction(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Transaction CreateTransaction(Net.Vpc.Upa.Persistence.UConnection connection, Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
     }
 }

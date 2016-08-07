@@ -9,7 +9,7 @@ import net.vpc.upa.types.ByteArrayEncoder;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ChainByteArrayEncoder implements ByteArrayEncoder {
 

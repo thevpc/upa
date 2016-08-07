@@ -27,6 +27,16 @@ namespace Net.Vpc.Upa.Expressions
             this.expression = qlString;
         }
 
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            throw new System.Exception("Not supported yet.");
+        }
+
         public virtual Net.Vpc.Upa.Expressions.UserExpression SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
             if (parameters != null) {
                 if (this.parameters == null) {
@@ -45,7 +55,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual System.Collections.Generic.IDictionary<string , object> GetParameters() {
-            if (parameters != null) {
+            if (parameters == null) {
                 //could not be supported safely on C#
                 //return Collections.EMPTY_MAP;
                 return new System.Collections.Generic.Dictionary<string , object>();

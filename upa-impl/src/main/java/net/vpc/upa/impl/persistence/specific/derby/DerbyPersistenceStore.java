@@ -8,10 +8,12 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.*;
-import net.vpc.upa.impl.persistence.shared.CastANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.SignANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.marshallers.FloatAsDoubleMarshaller;
+import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.marshallers.StringToBlobDataMarshallerFactory;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
@@ -76,6 +78,8 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
 //        DataWrapperUtils.setWrapperFactory(StringType.class, F_STRING);
 //        DataWrapperUtils.setWrapperFactory(BooleanType.class, F_BOOLEAN_FROM_NUMBER);
 //        DataWrapperUtils.setWrapperFactory(ListType.class, F_LIST);
+        getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller());
+        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(32672));
 
     }
 
@@ -347,7 +351,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         sb.append("(");
         boolean first = true;
         List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(
-                Fields.regular().and(Fields.byList(index.getFields())));
+                FieldFilters.regular().and(FieldFilters.byList(index.getFields())));
         for (PrimitiveField field : primitiveFields) {
             if (first) {
                 first = false;
@@ -398,7 +402,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
 
         Select s = new Select();
         for (PrimitiveField key : keys) {
-            if (key.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
+            if (key.getModifiers().contains(FieldModifier.SELECT_STORED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (!key.getModifiers().contains(FieldModifier.TRANSIENT)) {

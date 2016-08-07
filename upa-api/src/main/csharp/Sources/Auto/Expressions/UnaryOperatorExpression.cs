@@ -14,7 +14,10 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public abstract class UnaryOperatorExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+
+    public abstract class UnaryOperatorExpression : Net.Vpc.Upa.Expressions.OperatorExpression {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag EXPR = new Net.Vpc.Upa.Expressions.DefaultTag("Expr");
 
 
 
@@ -30,9 +33,28 @@ namespace Net.Vpc.Upa.Expressions
             this.expression = expression;
         }
 
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (expression != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(expression, EXPR));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (tag.Equals(EXPR)) {
+                this.expression = e;
+            } else {
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported");
+            }
+        }
+
         public virtual int Size() {
             return 1;
         }
+
 
         public override bool IsValid() {
             return expression.IsValid();

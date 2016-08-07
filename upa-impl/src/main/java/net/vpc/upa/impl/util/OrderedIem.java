@@ -8,7 +8,7 @@ package net.vpc.upa.impl.util;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class OrderedIem<T> implements Comparable<OrderedIem<T>>{
     public int order;

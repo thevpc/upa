@@ -11,7 +11,7 @@ import net.vpc.upa.expressions.Var;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ThisReplacerFilter implements ExpressionFilter {
     
@@ -25,7 +25,7 @@ public class ThisReplacerFilter implements ExpressionFilter {
     public boolean accept(Expression expression) {
         if (expression instanceof Var) {
             Var v = (Var) expression;
-            if (v.getParent() == null && "this".equals(v.getName())) {
+            if (v.getApplier() == null && "this".equals(v.getName())) {
                 v.setName(oldAlias);
             }
         }

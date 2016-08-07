@@ -29,17 +29,18 @@ namespace Net.Vpc.Upa.Impl
         }
 
 
-        public virtual void CommitStorage(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void CommitStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore = context.GetPersistenceStore();
             Net.Vpc.Upa.Persistence.StructureStrategy option = persistenceStore.GetConnectionProfile().GetStructureStrategy();
             switch(option) {
                 case Net.Vpc.Upa.Persistence.StructureStrategy.DROP:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
-                            persistenceStore.CreateStorage();
+                            persistenceStore.CreateStorage(context);
                         } else {
-                            persistenceStore.DropStorage();
-                            persistenceStore.DropStorage();
-                            persistenceStore.CreateStorage();
+                            persistenceStore.DropStorage(context);
+                            persistenceStore.DropStorage(context);
+                            persistenceStore.CreateStorage(context);
                         }
                         break;
                     }
@@ -47,14 +48,14 @@ namespace Net.Vpc.Upa.Impl
                 case Net.Vpc.Upa.Persistence.StructureStrategy.SYNCHRONIZE:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
-                            persistenceStore.CreateStorage();
+                            persistenceStore.CreateStorage(context);
                         }
                         break;
                     }
                 case Net.Vpc.Upa.Persistence.StructureStrategy.MANDATORY:
                     {
                         if (!persistenceStore.IsCreatedStorage()) {
-                            throw new Net.Vpc.Upa.Exceptions.NoSuchPersistenceUnitException(persistenceStore.GetPersistenceUnit().GetName());
+                            throw new Net.Vpc.Upa.Exceptions.NoSuchPersistenceUnitException(context.GetPersistenceUnit().GetName());
                         }
                         //                        if (!isValidPersistenceUnit()) {
                         //                            throw new NoSuchPersistenceUnitException(getName(), null);

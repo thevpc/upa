@@ -14,18 +14,32 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public sealed class Count : Net.Vpc.Upa.Expressions.Function {
+    public sealed class Count : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
-        private Net.Vpc.Upa.Expressions.Expression @value;
+        private Net.Vpc.Upa.Expressions.Expression expression;
 
         public Count(Net.Vpc.Upa.Expressions.Expression expression) {
-            this.@value = expression;
+            this.expression = expression;
         }
 
-        public Net.Vpc.Upa.Expressions.Expression GetValue() {
-            return @value;
+        public Count(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 1);
+            this.expression = expressions[0];
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            if (index == 0) {
+                this.expression = e;
+            } else {
+                throw new System.IndexOutOfRangeException();
+            }
+        }
+
+        public Net.Vpc.Upa.Expressions.Expression GetExpression() {
+            return expression;
         }
 
         public int Size() {
@@ -33,7 +47,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public override bool IsValid() {
-            return @value.IsValid();
+            return expression.IsValid();
         }
 
 
@@ -51,12 +65,12 @@ namespace Net.Vpc.Upa.Expressions
             if (index != 0) {
                 throw new System.IndexOutOfRangeException();
             }
-            return @value;
+            return expression;
         }
 
 
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Count o = new Net.Vpc.Upa.Expressions.Count(@value.Copy());
+            Net.Vpc.Upa.Expressions.Count o = new Net.Vpc.Upa.Expressions.Count(expression.Copy());
             return o;
         }
     }

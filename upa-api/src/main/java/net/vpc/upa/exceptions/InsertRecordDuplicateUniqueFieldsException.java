@@ -55,8 +55,9 @@ public class InsertRecordDuplicateUniqueFieldsException extends EntityException 
         if (index != null) {
             this.indexName = index.getName();
             this.entityName = index.getEntity().getName();
-            this.fieldNames = new ArrayList<String>();
-            for (Field field : index.getFields()) {
+            Field[] fields = index.getFields();
+            this.fieldNames = new ArrayList<String>(fields.length);
+            for (Field field : fields) {
                 this.fieldNames.add(field.getName());
             }
         }

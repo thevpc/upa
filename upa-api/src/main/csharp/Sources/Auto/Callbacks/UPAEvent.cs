@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class UPAEvent {
     }

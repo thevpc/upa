@@ -11,7 +11,7 @@ import net.vpc.upa.impl.util.ItemInterceptor;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class DefaultEntityPrivateRemoveItemInterceptor implements ItemInterceptor<EntityPart> {
 

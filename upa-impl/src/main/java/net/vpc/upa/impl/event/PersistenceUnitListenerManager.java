@@ -150,7 +150,9 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                                             .setBaseField(field.getName())
                                             .setNullable(dt.isNullable())
                                             .setSourceEntity(entity.getName())
+                                            .setSourceEntityType(entity.getEntityType())
                                             .setTargetEntity(((ManyToOneType) dt).getTargetEntityName())
+                                            .setTargetEntityType(((ManyToOneType) dt).getPlatformType())
                                             .setSourceFields(new String[]{field.getName()})
                             );
                         }
@@ -295,7 +297,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             Field field = (Field) object;
             if (phase == EventPhase.BEFORE) {
                 if (!model.containsField(field)) {
-                    throw new net.vpc.upa.exceptions.NoSuchFieldException(field.getAbsoluteName());
+                    throw new net.vpc.upa.exceptions.NoSuchFieldException(field.getEntity()==null?null:field.getEntity().getName(), field.getAbsoluteName(),field.getName(),null);
                 }
                 fireFieldRemoved(field, position, phase);
             } else {

@@ -29,9 +29,9 @@ namespace Net.Vpc.Upa.Impl.Util
 
         private System.Type fieldType;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanAdapter entityBeanAdapter;
+        private Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter;
 
-        internal EntityBeanGetterSetterAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanAdapter entityBeanAdapter, string fieldName, System.Type fieldType, System.Type type)  : base(entityBeanAdapter, fieldName, fieldType){
+        internal EntityBeanGetterSetterAttribute(Net.Vpc.Upa.Impl.Util.EntityBeanType entityBeanAdapter, string fieldName, System.Type fieldType, System.Type type)  : base(entityBeanAdapter, fieldName, fieldType){
 
             this.entityBeanAdapter = entityBeanAdapter;
             this.fieldName = fieldName;

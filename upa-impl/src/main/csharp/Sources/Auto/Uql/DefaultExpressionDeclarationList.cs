@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl.Uql
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> GetExportedDeclarations() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> emptyList = Net.Vpc.Upa.Impl.Util.PlatformUtils.EmptyList<T>();
             return exportedDeclarations == null ? emptyList : exportedDeclarations;
         }
 

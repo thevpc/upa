@@ -12,13 +12,12 @@ package net.vpc.upa.impl.event;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Relationship;
 import net.vpc.upa.callbacks.EntityTriggerContext;
-import net.vpc.upa.callbacks.UpdateFormulaInterceptor;
 import net.vpc.upa.callbacks.UpdateRelationshipTargetFormulaInterceptor;
 import net.vpc.upa.callbacks.UpdateEvent;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 
 public class RelationshipTargetFormulaUpdaterInterceptorSupport extends FormulaUpdaterInterceptorSupport {
     private UpdateRelationshipTargetFormulaInterceptor entityTargetFormulaUpdaterInterceptor;
@@ -45,9 +44,9 @@ public class RelationshipTargetFormulaUpdaterInterceptorSupport extends FormulaU
             return true;
         }
         if(relationFilter==null){
-            relationFilter=Fields.regular().and(Fields.byList(relation.getSourceRole().getFields()));
+            relationFilter= FieldFilters.regular().and(FieldFilters.byList(relation.getSourceRole().getFields()));
         }
-        FieldFilter actualFilter=Fields.as(conditionFields).or(relationFilter);
+        FieldFilter actualFilter= FieldFilters.as(conditionFields).or(relationFilter);
         Entity entityManager = event.getEntity();
         for (String updatedField : event.getUpdatesRecord().keySet()) {
             if (actualFilter.accept(entityManager.getField(updatedField))) {
@@ -60,7 +59,7 @@ public class RelationshipTargetFormulaUpdaterInterceptorSupport extends FormulaU
     @Override
     public boolean acceptUpdateTableOlderValuesHelper(UpdateEvent event) throws UPAException {
         if(relationFilter==null){
-            relationFilter=Fields.regular().and(Fields.byList(relation.getSourceRole().getFields()));
+            relationFilter= FieldFilters.regular().and(FieldFilters.byList(relation.getSourceRole().getFields()));
         }
         Entity entityManager = event.getEntity();
         for (String updatedField : event.getUpdatesRecord().keySet()) {

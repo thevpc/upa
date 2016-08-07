@@ -14,7 +14,7 @@ import net.vpc.upa.impl.bulk.sheet.XLSXHelper;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#",name = "suppress")
 class DefaultExcelDataSAXReaderThreadThread extends Thread {

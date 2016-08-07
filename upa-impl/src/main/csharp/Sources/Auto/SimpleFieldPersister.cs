@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl
      */
     public class SimpleFieldPersister : Net.Vpc.Upa.Impl.FieldPersister {
 
-        public virtual void PrepareFieldForInsert(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertNonNullable, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertWithDefaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void PrepareFieldForPersist(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> persistNonNullable, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> persistWithDefaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             Net.Vpc.Upa.Expressions.Expression valueExpression = (@value is Net.Vpc.Upa.Expressions.Expression) ? ((Net.Vpc.Upa.Expressions.Expression)((Net.Vpc.Upa.Expressions.Expression) @value)) : new Net.Vpc.Upa.Expressions.Param(field.GetName(), @value);
             persistentRecord.SetObject(field.GetName(), valueExpression);
         }

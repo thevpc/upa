@@ -64,7 +64,7 @@ public class I18NString {
 
     public I18NString(List<String> keys) {
         if (keys == null) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
         this.keys = new ArrayList<String>(keys);
     }
@@ -79,7 +79,7 @@ public class I18NString {
 
     public I18NString append(I18NString path) {
         if (path == null) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
         LinkedHashSet<String> a = new LinkedHashSet<String>();
         for (String key1 : keys) {
@@ -95,9 +95,9 @@ public class I18NString {
 
     public I18NString append(String path) {
         if (path == null || path.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
-        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<String>(keys.size());
         for (String key : keys) {
             a.add(key.isEmpty() ? path : key + "." + path);
         }
@@ -105,7 +105,7 @@ public class I18NString {
     }
 
     public I18NString union(I18NString other) {
-        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<String>(this.keys.size()+other.keys.size());
         a.addAll(this.keys);
         a.addAll(other.keys);
         I18NString b = new I18NString(a);
@@ -119,9 +119,9 @@ public class I18NString {
 
     public I18NString union(String other) {
         if (other == null || other.isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
-        ArrayList<String> a = new ArrayList<String>();
+        ArrayList<String> a = new ArrayList<String>(this.keys.size()+1);
         a.addAll(this.keys);
         a.add(other);
         return new I18NString(a);

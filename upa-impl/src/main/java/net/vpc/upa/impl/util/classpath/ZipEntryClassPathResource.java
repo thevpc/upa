@@ -13,7 +13,7 @@ import net.vpc.upa.PortabilityHint;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#", name = "ignore")
 public class ZipEntryClassPathResource implements ClassPathResource {

@@ -76,7 +76,7 @@ public class RelationFormulaUC {
             for (Record r : q.getRecordList()) {
                 System.out.println("record : " + r);
             }
-            for (Person r : q.<Person>getEntityList()) {
+            for (Person r : q.<Person>getResultList()) {
                 System.out.println("person : " + r);
             }
         }

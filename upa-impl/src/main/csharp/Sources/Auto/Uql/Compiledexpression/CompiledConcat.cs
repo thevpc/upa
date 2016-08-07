@@ -55,7 +55,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
                     System.Type platformType = expression.GetTypeTransform().GetTargetType().GetPlatformType();
                     if (platformType.Equals(typeof(int?)) || platformType.Equals(typeof(int)) || platformType.Equals(typeof(System.Numerics.BigInteger?))) {
                         expression = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledI2V(expression);
-                    } else if (platformType.Equals(typeof(double?)) || platformType.Equals(typeof(double)) || platformType.Equals(typeof(System.Decimal))) {
+                    } else if (platformType.Equals(typeof(double?)) || platformType.Equals(typeof(double)) || platformType.Equals(typeof(System.Decimal?))) {
                         expression = new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledD2V(expression);
                     }
                 }

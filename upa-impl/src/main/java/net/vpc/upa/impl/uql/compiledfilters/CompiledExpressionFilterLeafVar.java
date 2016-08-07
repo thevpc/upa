@@ -11,7 +11,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class CompiledExpressionFilterLeafVar implements CompiledExpressionFilter {
     public static final CompiledExpressionFilter INSTANCE=new CompiledExpressionFilterLeafVar(); 

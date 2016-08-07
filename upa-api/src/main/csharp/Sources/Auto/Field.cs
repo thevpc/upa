@@ -45,23 +45,23 @@ namespace Net.Vpc.Upa
 
          object GetDefaultObject();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationships();
+         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetManyToOneRelationships();
 
          void SetFormula(string formula);
 
          void SetFormula(Net.Vpc.Upa.Formula formula);
 
-         void SetInsertFormula(string formula);
+         void SetPersistFormula(string formula);
 
-         void SetInsertFormula(Net.Vpc.Upa.Formula formula);
+         void SetPersistFormula(Net.Vpc.Upa.Formula formula);
 
-         Net.Vpc.Upa.Formula GetInsertFormula();
+         Net.Vpc.Upa.Formula GetPersistFormula();
 
-         int GetInsertFormulaOrder();
+         int GetPersistFormulaOrder();
 
          void SetFormulaOrder(int order);
 
-         void SetInsertFormulaOrder(int order);
+         void SetPersistFormulaOrder(int order);
 
          Net.Vpc.Upa.Formula GetUpdateFormula();
 
@@ -81,17 +81,17 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Types.DataType GetDataType();
 
-         Net.Vpc.Upa.AccessLevel GetInsertAccessLevel();
+         Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
 
          Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
 
-         Net.Vpc.Upa.AccessLevel GetSelectAccessLevel();
+         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
 
-         void SetInsertAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
          void SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
-         void SetSelectAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+         void SetReadAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
          void SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
@@ -120,10 +120,6 @@ namespace Net.Vpc.Upa
              *
              * @param r
              */
-         void AddTargetRelationship(Net.Vpc.Upa.Relationship r);
-
-         Net.Vpc.Upa.Relationship[] GetTargetRelationships();
-
          Net.Vpc.Upa.SearchOperator GetSearchOperator();
 
          void SetSearchOperator(Net.Vpc.Upa.SearchOperator @operator);
@@ -131,5 +127,23 @@ namespace Net.Vpc.Upa
          void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform transform);
 
          Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform();
+
+        /**
+             * value of the field for the given instance
+             * @param instance object instance
+             * @return value of the field
+             */
+         object GetValue(object instance);
+
+        /**
+             * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
+             * @param instance instance to get value on
+             * @return displayable value
+             */
+         object GetMainValue(object instance);
+
+         void SetValue(object instance, object @value);
+
+         void Check(object @value);
     }
 }

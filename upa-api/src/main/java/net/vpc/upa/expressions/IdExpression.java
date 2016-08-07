@@ -22,7 +22,7 @@ public class IdExpression extends DefaultExpression implements Cloneable {
 
     public IdExpression(Entity entity, Object id, String alias) {
         if (id == null) {
-            throw new IllegalArgumentException("Key could not be null");
+            throw new IllegalArgumentException("Id could not be null");
         }
 //        entity.getIdType().cast(key);
         this.id = id;
@@ -33,7 +33,7 @@ public class IdExpression extends DefaultExpression implements Cloneable {
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(1);
         return list;
     }
 

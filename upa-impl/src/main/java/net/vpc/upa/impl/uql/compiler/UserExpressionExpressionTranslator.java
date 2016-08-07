@@ -19,18 +19,12 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class UserExpressionExpressionTranslator implements ExpressionTranslator {
 
-    private final ExpressionTranslationManager outer;
-
-    public UserExpressionExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
-    }
-
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         UserExpression v = (UserExpression) o;
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression compiledExpression = outer.compileAny(outer.getExpressionManager().parseExpression(v), declarations);
+        DefaultCompiledExpression compiledExpression = manager.translateAny(manager.getExpressionManager().parseExpression(v), declarations);
         List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
         for (CompiledParam e : cvalues) {
             if (v.containsParameter(e.getName())) {

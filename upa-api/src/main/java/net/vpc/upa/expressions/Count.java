@@ -34,27 +34,32 @@
  */
 package net.vpc.upa.expressions;
 
-public final class Count extends Function
+public final class Count extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private Expression value;
+    private Expression expression;
 
     public Count(Expression expression) {
-        this.value = expression;
+        this.expression = expression;
+    }
+
+    public Count(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
     }
 
     @Override
     public void setArgument(int index, Expression e) {
         if (index == 0) {
-            this.value = e;
+            this.expression = e;
         }else{
             throw new ArrayIndexOutOfBoundsException();
         }
     }
 
-    public Expression getValue() {
-        return value;
+    public Expression getExpression() {
+        return expression;
     }
 
     public int size() {
@@ -62,7 +67,7 @@ public final class Count extends Function
     }
 
     public boolean isValid() {
-        return value.isValid();
+        return expression.isValid();
     }
 
     @Override
@@ -80,12 +85,12 @@ public final class Count extends Function
         if (index != 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        return value;
+        return expression;
     }
 
     @Override
     public Expression copy() {
-        Count o = new Count(value.copy());
+        Count o = new Count(expression.copy());
         return o;
     }
 }

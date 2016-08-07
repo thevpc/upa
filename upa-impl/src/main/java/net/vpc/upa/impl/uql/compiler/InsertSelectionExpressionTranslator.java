@@ -18,17 +18,11 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class InsertSelectionExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public InsertSelectionExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileInsertSelection((InsertSelection) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileInsertSelection((InsertSelection) o, declarations);
-    }
-
-    protected CompiledInsertSelection compileInsertSelection(InsertSelection v, ExpressionDeclarationList declarations) {
+    protected CompiledInsertSelection compileInsertSelection(InsertSelection v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
@@ -38,7 +32,7 @@ public class InsertSelectionExpressionTranslator implements ExpressionTranslator
             Var fvar = v.getField(i);
             s.field(fvar.getName());
         }
-        s.from((CompiledQueryStatement) outer.compileAny(v.getSelection(), declarations));
+        s.from((CompiledQueryStatement) manager.translateAny(v.getSelection(), declarations));
         return s;
     }
     

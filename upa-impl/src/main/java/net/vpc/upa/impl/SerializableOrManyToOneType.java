@@ -6,7 +6,7 @@ import net.vpc.upa.types.DefaultDataType;
  * type to be resolved as Entity (with relation) otherwise will be resolved as
  * Serializable
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class SerializableOrManyToOneType extends DefaultDataType implements Cloneable {
 
@@ -24,10 +24,6 @@ public class SerializableOrManyToOneType extends DefaultDataType implements Clon
     }
 
 
-    @Override
-    public Object clone() {
-        return super.clone();
-    }
 
     @Override
     public String toString() {

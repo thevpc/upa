@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public sealed class SimpleDecoration : Net.Vpc.Upa.Impl.Config.Decorations.AbstractDecoration {
 
@@ -98,7 +98,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             b.Append("@").Append(GetName());
             b.Append("[");
-            if (targetType == null) {
+            if (targetType == default(Net.Vpc.Upa.Config.DecorationTarget)) {
                 b.Append("EMBEDDED").Append(":");
             }
             b.Append(type);

@@ -26,5 +26,10 @@ namespace Net.Vpc.Upa.Types
         public SerializableType(string name, System.Type platformType, bool nullable)  : base(name, platformType, nullable){
 
         }
+
+
+        public override string ToString() {
+            return "SerializableType{" + GetPlatformType() + "}";
+        }
     }
 }

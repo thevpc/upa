@@ -13,7 +13,7 @@ import net.vpc.upa.filters.FieldFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class RelationshipSourceFormulaUpdaterInterceptorSupportBaseInterceptor implements UpdateFormulaInterceptor {
     private final UpdateRelationshipSourceFormulaInterceptor entityDetailFormulaUpdaterInterceptor;

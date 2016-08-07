@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return System.Convert.ToString(replacement);
             }
             if (record != null && record.IsSet(v)) {
-                return System.Convert.ToString(record.GetObject<object>(v));
+                return System.Convert.ToString(record.GetObject<T>(v));
             }
             Net.Vpc.Upa.Expressions.Select s = new Net.Vpc.Upa.Expressions.Select();
             s.Field(new Net.Vpc.Upa.Expressions.UserExpression(v), "customValue");

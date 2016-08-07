@@ -122,21 +122,21 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter isAllOfFirstsAndNoneOfSeconds(FieldModifier[] modifierYes, FieldModifier[] modifierNo) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
         }
         return or(modifierYes, modifierNo);
     }
 
     public FieldModifierFilter orIsAllOfFirstsAndNoneOfSeconds(FieldModifier[] modifierYes, FieldModifier[] modifierNo) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
         }
         return or(modifierYes, modifierNo);
     }
 
     public FieldModifierFilter isOneOfFirstsAndNoneOfSeconds(FieldModifier[] modifierYes, FieldModifier[] modifierNo) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
         }
         FieldModifierFilter x = this;
         for (int i = 0; i < modifierYes.length; i++) {
@@ -147,7 +147,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter orIsOneOfFirstsAndNoneOfSeconds(FieldModifier[] modifierYes, FieldModifier[] modifierNo) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
         }
         FieldModifierFilter x = this;
         for (int i = 0; i < modifierYes.length; i++) {
@@ -158,14 +158,14 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter isAllOf(FieldModifier... modifiers) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsAllOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsAllOf instead");
         }
         return or(modifiers);
     }
 
     public FieldModifierFilter isAnyOf(FieldModifier... modifiers) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsOneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsOneOf instead");
         }
         FieldModifierFilter x = this;
         for (FieldModifier m : modifiers) {
@@ -176,7 +176,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter orIsOneOf(FieldModifier... modifiers) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isOneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isOneOf instead");
         }
         FieldModifierFilter x = this;
         for (FieldModifier m : modifiers) {
@@ -187,7 +187,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter isNotAllOf(FieldModifier... modifiers) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsNotOneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsNotOneOf instead");
         }
         FieldModifierFilter x = this;
         for (FieldModifier m : modifiers) {
@@ -198,7 +198,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter orIsNotAllOf(FieldModifier... modifiers) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isNotOneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isNotOneOf instead");
         }
         FieldModifierFilter x = this;
         for (FieldModifier m : modifiers) {
@@ -209,21 +209,21 @@ public class FieldModifierFilter extends AbstractFieldFilter {
 
     public FieldModifierFilter isNoneOf(FieldModifier... modifiers) {
         if (accepted.length != 0) {
-            throw new IllegalArgumentException("use orIsNoneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use orIsNoneOf instead");
         }
         return orNot(modifiers);
     }
 
     public FieldModifierFilter orIsAllOf(FieldModifier... modifiers) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isAllOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isAllOf instead");
         }
         return or(modifiers);
     }
 
     public FieldModifierFilter orIsNoneOf(FieldModifier... modifiers) {
         if (accepted.length == 0) {
-            throw new IllegalArgumentException("use isNoneOf instead");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("use isNoneOf instead");
         }
         return orNot(modifiers);
     }

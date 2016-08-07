@@ -14,37 +14,24 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public sealed class Not : Net.Vpc.Upa.Expressions.DefaultExpression {
 
-        private Net.Vpc.Upa.Expressions.Expression expression;
-
+    public sealed class Not : Net.Vpc.Upa.Expressions.UnaryOperatorExpression {
 
 
-        public Not(Net.Vpc.Upa.Expressions.Expression expression) {
-            this.expression = expression;
-        }
 
-        public int Size() {
-            return 1;
-        }
+        public Not(Net.Vpc.Upa.Expressions.Expression expression)  : base(Net.Vpc.Upa.Expressions.UnaryOperator.NOT, "!", expression){
 
-        public Net.Vpc.Upa.Expressions.Expression GetNegatedExpression() {
-            return expression;
-        }
-
-        public override bool IsValid() {
-            return expression.IsValid();
         }
 
 
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
-            Net.Vpc.Upa.Expressions.Not o = new Net.Vpc.Upa.Expressions.Not(expression.Copy());
+            Net.Vpc.Upa.Expressions.Not o = new Net.Vpc.Upa.Expressions.Not(GetExpression().Copy());
             return o;
         }
 
 
         public override string ToString() {
-            return "not(" + expression + ')';
+            return "not(" + GetExpression() + ')';
         }
     }
 }

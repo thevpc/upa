@@ -37,7 +37,12 @@ package net.vpc.upa;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import net.vpc.upa.expressions.ExpressionTag;
+import net.vpc.upa.expressions.ExpressionVisitor;
+import net.vpc.upa.expressions.Var;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.types.DataType;
 
@@ -108,4 +113,6 @@ public interface Relationship extends UPAObject {
     public HierarchyExtension getHierarchyExtension();
 
     public void setHierarchyExtension(HierarchyExtension extension);
+
+    public Expression createTargetListExpression(Object currentInstance, String alias);
 }

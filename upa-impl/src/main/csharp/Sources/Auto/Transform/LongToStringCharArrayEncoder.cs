@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class LongToStringCharArrayEncoder : Net.Vpc.Upa.Types.CharArrayEncoder {
 

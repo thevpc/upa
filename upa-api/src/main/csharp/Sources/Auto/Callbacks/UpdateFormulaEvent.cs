@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class UpdateFormulaEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
 
@@ -25,7 +25,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.Expressions.Expression filterExpression;
 
-        public UpdateFormulaEvent(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext)  : base(entityExecutionContext){
+        public UpdateFormulaEvent(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.updates = updates;
             this.filterExpression = filterExpression;

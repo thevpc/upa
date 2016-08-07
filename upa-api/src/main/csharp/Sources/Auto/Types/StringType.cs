@@ -14,7 +14,7 @@
 namespace Net.Vpc.Upa.Types
 {
 
-    public class StringType : Net.Vpc.Upa.Types.DataType {
+    public class StringType : Net.Vpc.Upa.Types.DefaultDataType {
 
         public static readonly Net.Vpc.Upa.Types.StringType DEFAULT = new Net.Vpc.Upa.Types.StringType("String", 0, 255, true);
 
@@ -48,6 +48,9 @@ namespace Net.Vpc.Upa.Types
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
+            }
+            if (!(@value is string)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
             string sval = (string) @value;
             if (GetMin() >= 0 && (sval).Length < GetMin()) {

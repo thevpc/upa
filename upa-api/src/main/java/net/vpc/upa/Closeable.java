@@ -45,5 +45,5 @@ public interface Closeable {
      * Called to close (perform all cleanup code)
      * @throws Exception whenever an error is encountered while closing
      */
-    void close() throws Exception;
+    void close() /*throws Exception*/;
 }

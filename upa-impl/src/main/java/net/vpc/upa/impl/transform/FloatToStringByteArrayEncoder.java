@@ -9,7 +9,7 @@ import net.vpc.upa.types.ByteArrayEncoder;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class FloatToStringByteArrayEncoder implements ByteArrayEncoder {
     public static final FloatToStringByteArrayEncoder INSTANCE=new FloatToStringByteArrayEncoder();

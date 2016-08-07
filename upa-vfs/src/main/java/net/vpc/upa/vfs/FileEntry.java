@@ -12,7 +12,7 @@ import net.vpc.common.vfs.VFileType;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @Entity
 @Path("FileSystem")

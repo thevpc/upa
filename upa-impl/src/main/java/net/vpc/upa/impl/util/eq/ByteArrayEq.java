@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ByteArrayEq implements EqualHelper {
 

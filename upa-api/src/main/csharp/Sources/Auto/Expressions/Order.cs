@@ -69,6 +69,24 @@ namespace Net.Vpc.Upa.Expressions
             return this;
         }
 
+        public virtual Net.Vpc.Upa.Expressions.Order SetOrderAt(int index, bool asc) {
+            Net.Vpc.Upa.Expressions.OrderItem o = fields[index];
+            fields[index]=new Net.Vpc.Upa.Expressions.OrderItem(o.GetExpression(), asc);
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Order SetOrderAt(int index, Net.Vpc.Upa.Expressions.Expression e, bool asc) {
+            Net.Vpc.Upa.Expressions.OrderItem o = fields[index];
+            fields[index]=new Net.Vpc.Upa.Expressions.OrderItem(e, asc);
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Expressions.Order SetOrderAt(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            Net.Vpc.Upa.Expressions.OrderItem o = fields[index];
+            fields[index]=new Net.Vpc.Upa.Expressions.OrderItem(e, o.IsAsc());
+            return this;
+        }
+
         public virtual Net.Vpc.Upa.Expressions.Expression GetOrderAt(int index) {
             return fields[index].GetExpression();
         }

@@ -24,11 +24,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             System.Type t = left.GetTypeTransform().GetSourceType().GetPlatformType();
             System.Type r = left.GetTypeTransform().GetSourceType().GetPlatformType();
             if (typeof(System.Numerics.BigInteger?).Equals(t) || typeof(System.Numerics.BigInteger?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BIGINT);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BIGINT);
             } else if (typeof(long?).Equals(t) || typeof(long?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.LONG);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.LONG);
             } else if (typeof(int?).Equals(t) || typeof(int?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT);
             }
         }
 
@@ -37,11 +37,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             System.Type t = left.GetTypeTransform().GetSourceType().GetPlatformType();
             System.Type r = left.GetTypeTransform().GetSourceType().GetPlatformType();
             if (typeof(System.Numerics.BigInteger?).Equals(t) || typeof(System.Numerics.BigInteger?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BIGINT);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.BIGINT);
             } else if (typeof(long?).Equals(t) || typeof(long?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.LONG);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.LONG);
             } else if (typeof(int?).Equals(t) || typeof(int?).Equals(r)) {
-                SetDataType(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT);
+                SetTypeTransform(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT);
             }
         }
     }

@@ -21,42 +21,48 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class DefaultUConnection : Net.Vpc.Upa.Persistence.UConnection {
 
+        private static System.Collections.Generic.ISet<string> _conn_attr_based_wrappers = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(new[]{"org.apache.tomcat.dbcp.dbcp.PoolableConnection", "org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper", "org.apache.commons.dbcp.PoolableConnection", "org.apache.commons.dbcp.PoolingDataSource$PoolGuardConnectionWrapper"}));
+
+        private string name;
+
+        private string nameDebugString;
+
         private System.Data.IDbConnection connection;
+
+        private System.Data.IDbConnection metadataAccessibleConnection;
 
         private Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager;
 
         private Net.Vpc.Upa.Impl.Persistence.Connection.CloseListenerSupport support;
 
+        private System.Collections.Generic.IDictionary<string , object> properties;
+
         private bool closed = false;
 
         private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Persistence.DefaultUConnection)).FullName);
 
-        public DefaultUConnection(System.Data.IDbConnection connection, Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+        public DefaultUConnection(string name, System.Data.IDbConnection connection, Net.Vpc.Upa.Impl.Persistence.MarshallManager marshallManager) {
+            this.name = name;
             this.connection = connection;
             this.marshallManager = marshallManager;
             this.support = new Net.Vpc.Upa.Impl.Persistence.Connection.CloseListenerSupport();
+            nameDebugString = Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(name) ? "[]" : ("[" + name + "]");
         }
 
         public virtual Net.Vpc.Upa.Persistence.QueryResult ExecuteQuery(string query, Net.Vpc.Upa.Types.DataTypeTransform[] types, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.Parameter> queryParameters, bool updatable) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (closed) {
                 throw new System.ArgumentException ("Connection closed");
             }
+            long startTime = System.DateTime.Now.Ticks;
+            System.Exception error = null;
             try {
                 try {
-                    //                long startTime = System.currentTimeMillis();
-                    if (/*IsLoggable=*/true) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("executeQuery {0} :: parameters = {1}",null,new object[] { query, queryParameters }));
-                    }
                     System.Data.IDbCommand s = null;
-                    s = connection.CreateCommand();
+                    s =connection.CreateCommand();
                     s.CommandText=query;
                     s.CommandType=System.Data.CommandType.Text;
-                    int index = 1;
-                    Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers = new Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[types.Length];
-                    for (int i = 0; i < marshallers.Length; i++) {
-                        marshallers[i] = marshallManager.GetTypeMarshaller(types[i]);
-                    }
                     int mi = 0;
+                    int index = 1;
                     if (queryParameters != null) {
                         foreach (Net.Vpc.Upa.Persistence.Parameter @value in queryParameters) {
                             Net.Vpc.Upa.Types.DataTypeTransform transform = @value.GetTypeTransform();
@@ -66,12 +72,37 @@ namespace Net.Vpc.Upa.Impl.Persistence
                             mi++;
                         }
                     }
+                    System.Data.IDataReader resultSet = s.ExecuteReader();
+                    if (types == null) {
+                        int columnCount;
+                        System.Type[] colTypes;
+                        columnCount=resultSet.FieldCount;
+                        colTypes = new System.Type[columnCount];
+                        for (int i = 0; i < columnCount; i++) {
+                        colTypes[i] = resultSet.GetFieldType(i);
+                        }
+                        types = new Net.Vpc.Upa.Types.DataTypeTransform[columnCount];
+                        for (int i = 0; i < types.Length; i++) {
+                            types[i] = new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(Net.Vpc.Upa.Types.TypesFactory.ForPlatformType(colTypes[i]));
+                        }
+                    }
+                    Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[] marshallers = new Net.Vpc.Upa.Impl.Persistence.TypeMarshaller[types.Length];
+                    for (int i = 0; i < marshallers.Length; i++) {
+                        marshallers[i] = marshallManager.GetTypeMarshaller(types[i]);
+                    }
                     //        Log.log(PersistenceUnitManager.DB_PRE_NATIVE_QUERY_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-                    return new Net.Vpc.Upa.Impl.Persistence.DefaultQueryResult(s.ExecuteQuery(), s, marshallers, types);
+                    return new Net.Vpc.Upa.Impl.Persistence.DefaultQueryResult(resultSet, s, marshallers, types);
                 } catch (System.Exception ee) {
-                    log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("[Error] executeQuery " + query + " :: parameters = " + queryParameters,ee));
+                    error = ee;
                     throw ee;
                 } finally {
+                    if (/*IsLoggable=*/true) {
+                        if (error != null) {
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters,error));
+                        } else {
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
+                        }
+                    }
                 }
             } catch (System.Exception ex) {
                 throw CreateUPAException(ex, "ExecuteQueryFailedException", query);
@@ -82,12 +113,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
             if (closed) {
                 throw new System.ArgumentException ("Connection closed");
             }
+            System.Exception error = null;
             int count = -1;
             bool gen = generatedKeys != null && (generatedKeys).Count > 0;
-            //        Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-            if (/*IsLoggable=*/true) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("executeNonQuery {0}" + ((queryParameters != null && !(queryParameters.Count==0)) ? "\n\tqueryParameters={1}" : ""),null,new object[] { query, queryParameters }));
-            }
             long startTime = System.DateTime.Now.Ticks;
             try {
                 System.Data.IDbCommand s = null;
@@ -104,24 +132,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     }
                 }
                 count = s.ExecuteNonQuery();
-                if (gen) {
-                    System.Data.IDataReader rs = s.GetGeneratedKeys();
-                    if (rs.Next()) {
-                        index = 1;
-                        foreach (Net.Vpc.Upa.Persistence.Parameter entry in generatedKeys) {
-                            Net.Vpc.Upa.Types.DataTypeTransform chain = entry.GetTypeTransform();
-                            Net.Vpc.Upa.Impl.Persistence.TypeMarshaller marshaller = marshallManager.GetTypeMarshaller(chain);
-                            entry.SetValue(marshaller.Read(index, rs));
-                            index += marshaller.GetSize();
-                        }
-                    }
-                }
+                
             } catch (System.Exception ee) {
-                log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("[Error] executeNonQuery " + query + " :: parameters = " + queryParameters,ee));
+                error = ee;
                 //            Log.log(PersistenceUnitManager.DB_ERROR_LOG,"[Error] "+currentQueryInfo+" :=" + currentQuery);
                 throw CreateUPAException(ee, "ExecuteUpdateFailedException", query);
             } finally {
-                long endTime = System.DateTime.Now.Ticks;
+                if (/*IsLoggable=*/true) {
+                    if (error != null) {
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery " + query + " :: parameters = " + queryParameters,error));
+                    } else {
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} executeNonQuery {1}" + ((queryParameters != null && !(queryParameters.Count==0)) ? "\n\tqueryParameters={2}" : "") + " ;; time = {3}",null,new object[] { nameDebugString, query, queryParameters, (System.DateTime.Now.Ticks - startTime) }));
+                    }
+                }
             }
             //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);
             return count;
@@ -142,9 +165,9 @@ namespace Net.Vpc.Upa.Impl.Persistence
                         ExecuteNonQuery(script.GetStatement(i), null, null);
                     } catch (Net.Vpc.Upa.Exceptions.UPAException sqle) {
                         errorsCount++;
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("[Error] executeNonQuery @" + i + " : " + script.GetStatement(i),sqle));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter(nameDebugString + " [Error] executeNonQuery @" + i + " : " + script.GetStatement(i),sqle));
                         //                    log.log(Level.SEVERE,"Error @" + i + " : " + script.getStatement(i));
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Error @{0} : {1}",null,new object[] { i, script.GetStatement(i) }));
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("{0} Error @{1} : {2}",null,new object[] { nameDebugString, i, script.GetStatement(i) }));
                         if (exitOnError) {
                             throw sqle;
                         }
@@ -185,11 +208,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             //            throw createUPAException(e, "CloseFailed", connection);
             //        }
             support.BeforeClose(this);
-            try {
-                connection.Commit();
-            } catch (System.Exception e) {
-                throw CreateUPAException(e, "CloseFailed", connection);
-            }
+            
             try {
                 connection.Close();
             } catch (System.Exception e) {
@@ -201,35 +220,58 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
 
         public virtual System.Data.IDbConnection GetMetadataAccessibleConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Data.IDbConnection retConn = connection;
-            while (true) {
-                if ((retConn.GetType()).FullName.Equals("org.apache.tomcat.dbcp.dbcp.PoolingDataSource$PoolGuardConnectionWrapper")) {
-                    System.Reflection.FieldInfo f;
-                    try {
-                        f = (retConn.GetType()).BaseType.GetField("_conn", System.Reflection.BindingFlags.Default|System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Instance);
-                        //f.SetAccessible(true);
-                        retConn = (System.Data.IDbConnection) f.GetValue(retConn);
-                    } catch (System.Exception ex) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to rerive MetadataAccessibleConnection from dbcp PoolGuardConnectionWrapper",ex));
-                        retConn = connection;
+            if (metadataAccessibleConnection == null) {
+                System.Data.IDbConnection retConn = connection;
+                while (true) {
+                    string connClassName = (retConn.GetType()).FullName;
+                    if (_conn_attr_based_wrappers.Contains(connClassName)) {
+                        System.Reflection.FieldInfo f;
+                        try {
+                            f = (retConn.GetType()).BaseType.GetField("_conn", System.Reflection.BindingFlags.Default|System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Instance);
+                            //f.SetAccessible(true);
+                            retConn = (System.Data.IDbConnection) f.GetValue(retConn);
+                        } catch (System.Exception ex) {
+                            log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to retrieve MetadataAccessibleConnection from Pool Type " + connClassName + "",ex));
+                            retConn = connection;
+                            break;
+                        }
+                    } else {
                         break;
                     }
-                } else if ((retConn.GetType()).FullName.Equals("org.apache.tomcat.dbcp.dbcp.PoolableConnection")) {
-                    System.Reflection.FieldInfo f;
-                    try {
-                        f = (retConn.GetType()).BaseType.GetField("_conn", System.Reflection.BindingFlags.Default|System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Instance);
-                        //f.SetAccessible(true);
-                        retConn = (System.Data.IDbConnection) f.GetValue(retConn);
-                    } catch (System.Exception ex) {
-                        log.TraceEvent(System.Diagnostics.TraceEventType.Error,100,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Unable to rerive MetadataAccessibleConnection from dbcp PoolableConnection",ex));
-                        retConn = connection;
-                        break;
-                    }
-                } else {
-                    break;
                 }
+                metadataAccessibleConnection = retConn;
             }
-            return retConn;
+            return metadataAccessibleConnection;
+        }
+
+
+        public virtual object GetProperty(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (properties == null) {
+                return null;
+            }
+            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(properties,name);
+        }
+
+
+        public virtual System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (properties == null) {
+                return new System.Collections.Generic.Dictionary<string,object>();
+            }
+            return new System.Collections.Generic.Dictionary<string,object>(properties);
+        }
+
+
+        public virtual void SetProperty(string name, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (@value == null) {
+                if (properties != null) {
+                    properties.Remove(name);
+                }
+            } else {
+                if (properties == null) {
+                    properties = new System.Collections.Generic.Dictionary<string , object>();
+                }
+                properties[name]=@value;
+            }
         }
 
 

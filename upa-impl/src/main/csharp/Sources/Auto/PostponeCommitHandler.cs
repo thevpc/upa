@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 1/8/13 1:45 AM
      */
-    internal class PostponeCommitHandler : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter {
+    internal class PostponeCommitHandler : Net.Vpc.Upa.Callbacks.DefinitionListenerAdapter, Net.Vpc.Upa.Callbacks.EntityDefinitionListener, Net.Vpc.Upa.Callbacks.FieldDefinitionListener, Net.Vpc.Upa.Callbacks.SectionDefinitionListener, Net.Vpc.Upa.Callbacks.TriggerDefinitionListener, Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener, Net.Vpc.Upa.Callbacks.IndexDefinitionListener {
 
         internal PostponeCommitHandler() {
         }

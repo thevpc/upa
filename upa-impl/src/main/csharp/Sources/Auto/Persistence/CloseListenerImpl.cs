@@ -17,13 +17,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     internal class CloseListenerImpl<R> : Net.Vpc.Upa.CloseListener {
 
-        private readonly Net.Vpc.Upa.Impl.Persistence.QueryResultIteratorList<R> outer;
+        private readonly Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer;
 
-        public CloseListenerImpl(Net.Vpc.Upa.Impl.Persistence.QueryResultIteratorList<R> outer) {
+        public CloseListenerImpl(Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<R> outer) {
             this.outer = outer;
         }
 
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
 
         public virtual void AfterClose(object source) {
-            outer.nativeSQL.GetConnection().RemoveCloseListener(this);
+            outer.queryExecutor.GetConnection().RemoveCloseListener(this);
         }
     }
 }

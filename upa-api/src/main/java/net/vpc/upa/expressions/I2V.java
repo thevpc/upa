@@ -36,26 +36,30 @@ package net.vpc.upa.expressions;
 
 // Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 //            Expression
-public class I2V extends Function {
+public class I2V extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private Expression value;
+    private Expression expression;
 
     public I2V(Expression expression) {
-        this.value = expression;
+        this.expression = expression;
+    }
+    public I2V(Expression[] expressions) {
+        checkArgCount(getName(),expressions,1);
+        this.expression = expressions[0];
     }
 
     @Override
     public void setArgument(int index, Expression e) {
         if (index == 0) {
-            this.value = e;
+            this.expression = e;
         } else {
             throw new ArrayIndexOutOfBoundsException();
         }
     }
 
-    public Expression getValue() {
-        return value;
+    public Expression getExpression() {
+        return expression;
     }
 
     //    public String toSQL(boolean integrated, PersistenceUnit database) {
@@ -79,12 +83,12 @@ public class I2V extends Function {
         if (index != 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        return value;
+        return expression;
     }
 
     @Override
     public Expression copy() {
-        I2V o = new I2V(value.copy());
+        I2V o = new I2V(expression.copy());
         return o;
     }
 }

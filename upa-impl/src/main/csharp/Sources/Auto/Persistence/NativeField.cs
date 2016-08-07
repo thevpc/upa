@@ -21,7 +21,15 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class NativeField {
 
+        private int index;
+
+        private bool expanded;
+
         private string groupName;
+
+        private string fullBinding;
+
+        private string exprString;
 
         private string name;
 
@@ -29,15 +37,31 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private Net.Vpc.Upa.Field field;
 
-        public NativeField(string name, string groupName, Net.Vpc.Upa.Field field, Net.Vpc.Upa.Types.DataTypeTransform typeChain) {
+        public NativeField(string name, string groupName, string exprString, int index, bool expanded, Net.Vpc.Upa.Field field, Net.Vpc.Upa.Types.DataTypeTransform typeChain) {
             this.groupName = groupName;
+            this.expanded = expanded;
+            this.index = index;
+            this.exprString = exprString;
             this.name = name;
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(groupName)) {
+                fullBinding = name;
+            } else {
+                fullBinding = groupName + "." + name;
+            }
             this.field = field;
             this.typeTransform = typeChain;
             //REMOVE ME
             if (typeChain == null) {
                 throw new System.ArgumentException ("Null DataType");
             }
+        }
+
+        public virtual int GetIndex() {
+            return index;
+        }
+
+        public virtual string GetFullBinding() {
+            return fullBinding;
         }
 
         public virtual string GetGroupName() {
@@ -59,6 +83,14 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         public override string ToString() {
             return "NativeField{" + "groupName=" + groupName + ", name=" + name + ", typeChain=" + typeTransform + ", field=" + field + '}';
+        }
+
+        public virtual string GetExprString() {
+            return exprString;
+        }
+
+        public virtual bool IsExpanded() {
+            return expanded;
         }
     }
 }

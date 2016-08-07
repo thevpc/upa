@@ -1,13 +1,13 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.Function;
+import net.vpc.upa.expressions.FunctionExpression;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/14/12 12:00 AM
  */
-public class QLFunctionExpression extends Function {
+public class QLFunctionExpression extends FunctionExpression {
 
     private String name;
     private Expression[] arguments;

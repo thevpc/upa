@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.interbase;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.persistence.shared.SelectSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.SelectSQLProvider;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change

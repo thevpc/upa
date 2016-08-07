@@ -23,24 +23,24 @@ namespace Net.Vpc.Upa.Impl
 
         private System.Type keyType;
 
-        private Net.Vpc.Upa.Impl.Util.EntityBeanAdapter nfo;
+        private Net.Vpc.Upa.BeanType nfo;
 
         private object userObject;
 
         public BeanAdapterKey(System.Type keyType, object userObject, Net.Vpc.Upa.Entity entity) {
             this.keyType = keyType;
             this.userObject = userObject;
-            nfo = new Net.Vpc.Upa.Impl.Util.EntityBeanAdapter(keyType, entity);
+            nfo = Net.Vpc.Upa.Impl.Util.PlatformBeanTypeRepository.GetInstance().GetBeanType(keyType);
         }
 
 
         public override object[] GetValue() {
             object o = userObject;
-            System.Collections.Generic.IList<string> names = nfo.GetFieldNames();
+            System.Collections.Generic.ISet<string> names = nfo.GetPropertyNames();
             object[] v = new object[(names).Count];
             int i = 0;
             foreach (string name in names) {
-                v[i] = nfo.GetProperty<object>(o, name);
+                v[i] = nfo.GetProperty(o, name);
                 i++;
             }
             return v;
@@ -49,10 +49,10 @@ namespace Net.Vpc.Upa.Impl
 
         public override void SetValue(object[] @value) {
             object o = userObject;
-            System.Collections.Generic.IList<string> names = nfo.GetFieldNames();
+            System.Collections.Generic.ISet<string> names = nfo.GetPropertyNames();
             int i = 0;
             foreach (string name in names) {
-                nfo.SetProperty<object>(o, name, @value[i]);
+                nfo.SetProperty(o, name, @value[i]);
                 i++;
             }
         }

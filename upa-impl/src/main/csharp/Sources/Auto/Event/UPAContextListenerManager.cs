@@ -99,19 +99,19 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPreInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            return GetEffectiveCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.BEFORE);
+            return GetEffectiveCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.BEFORE);
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackPostInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system) {
-            return GetEffectiveCallbacks(callbackType, objectType, nameFilter, system, Net.Vpc.Upa.EventPhase.AFTER);
+            return GetEffectiveCallbacks(callbackType, objectType, nameFilter, system, false, Net.Vpc.Upa.EventPhase.AFTER);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetEffectiveCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetEffectiveCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         }
     }
 }

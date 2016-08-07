@@ -87,7 +87,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
             }
             if (other.condition != null) {
                 if (condition == null) {
-                    Where(condition.Copy());
+                    Where(other.condition.Copy());
                 } else {
                     Where(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledAnd(condition, other.condition.Copy()));
                 }

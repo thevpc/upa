@@ -65,7 +65,7 @@ public class Insert extends DefaultEntityStatement implements NonQueryStatement,
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(fields.size()+1);
         if (entity != null) {
             list.add(new TaggedExpression(entity, ENTITY));
         }

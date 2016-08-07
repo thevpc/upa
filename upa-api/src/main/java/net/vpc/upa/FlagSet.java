@@ -70,8 +70,7 @@ public final class FlagSet<E extends Enum<E>> implements Cloneable, Serializable
         return enumSet.iterator();
     }
 
-    @Override
-    public FlagSet<E> clone() {
+    public FlagSet<E> copy() {
         try {
             return (FlagSet<E>) super.clone();
         } catch (CloneNotSupportedException e) {

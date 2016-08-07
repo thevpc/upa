@@ -21,17 +21,11 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
      */
     public class InsertExpressionTranslator : Net.Vpc.Upa.Impl.Uql.ExpressionTranslator {
 
-        private readonly Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer;
-
-        public InsertExpressionTranslator(Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager outer) {
-            this.outer = outer;
+        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+            return CompileInsert((Net.Vpc.Upa.Expressions.Insert) o, manager, declarations);
         }
 
-        public virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression TranslateExpression(object o, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager expressionTranslationManager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
-            return CompileInsert((Net.Vpc.Upa.Expressions.Insert) o, declarations);
-        }
-
-        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert CompileInsert(Net.Vpc.Upa.Expressions.Insert v, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledInsert CompileInsert(Net.Vpc.Upa.Expressions.Insert v, Net.Vpc.Upa.Impl.Uql.ExpressionTranslationManager manager, Net.Vpc.Upa.Impl.Uql.ExpressionDeclarationList declarations) {
             if (v == null) {
                 return null;
             }
@@ -40,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiler
             for (int i = 0; i < v.CountFields(); i++) {
                 Net.Vpc.Upa.Expressions.Var fvar = v.GetField(i);
                 Net.Vpc.Upa.Expressions.Expression fvalue = v.GetFieldValue(i);
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression vv = outer.CompileAny(fvalue, declarations);
+                Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression vv = manager.TranslateAny(fvalue, declarations);
                 s.Set(fvar.GetName(), vv);
             }
             return s;

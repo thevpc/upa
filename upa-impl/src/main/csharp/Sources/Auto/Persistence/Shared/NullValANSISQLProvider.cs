@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
 
         public override string Simplify(string functionName, string[] @params, System.Collections.Generic.IDictionary<string , object> context) {
             if (@params.Length != 1) {
-                throw new System.ArgumentException ("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + Net.Vpc.Upa.Impl.Util.Strings.Format(@params) + ")");
+                throw new System.ArgumentException ("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + Net.Vpc.Upa.Impl.Util.StringUtils.Format(@params) + ")");
             }
             return "Null";
         }

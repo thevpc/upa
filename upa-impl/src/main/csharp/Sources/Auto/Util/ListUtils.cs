@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Impl.Util
      */
     public class ListUtils {
 
-        public static  void Add<T>(System.Collections.Generic.IList<T> items, T child, int index, Net.Vpc.Upa.UPAObject newParent, Net.Vpc.Upa.UPAObject propertyChangeSupport, Net.Vpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.Vpc.Upa.UPAObject {
+        public static  void Add<T>(System.Collections.Generic.IList<T> items, T child, int index, Net.Vpc.Upa.UPAObject newParent, Net.Vpc.Upa.UPAObject obj, Net.Vpc.Upa.Impl.Util.ItemInterceptor<T> interceptor) where  T : Net.Vpc.Upa.UPAObject {
             if (index < 0) {
                 index = (items).Count + index + 1;
             }
@@ -34,7 +34,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (interceptor != null) {
                 interceptor.Before(child, index);
             }
-            Net.Vpc.Upa.UPAObjectListener[] objectListeners = propertyChangeSupport.GetObjectListeners();
+            Net.Vpc.Upa.UPAObjectListener[] objectListeners = obj.GetObjectListeners();
             foreach (Net.Vpc.Upa.UPAObjectListener li in objectListeners) {
                 li.ItemAdded(child, index, newParent, Net.Vpc.Upa.EventPhase.BEFORE);
             }

@@ -21,46 +21,30 @@ namespace Net.Vpc.Upa.Impl.Persistence
      */
     public class DefaultResultMetaData : Net.Vpc.Upa.Persistence.ResultMetaData {
 
-        private System.Collections.Generic.IList<string> fieldNames = new System.Collections.Generic.List<string>();
+        private System.Collections.Generic.IDictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>();
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Types.DataTypeTransform> fieldTypes = new System.Collections.Generic.List<Net.Vpc.Upa.Types.DataTypeTransform>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ResultField>();
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Field> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Field>();
+        private Net.Vpc.Upa.Expressions.EntityStatement statement;
 
-        public virtual void AddField(string name, Net.Vpc.Upa.Types.DataTypeTransform type, Net.Vpc.Upa.Field field) {
-            fieldNames.Add(name);
-            fieldTypes.Add(type);
+        public virtual Net.Vpc.Upa.Expressions.EntityStatement GetStatement() {
+            return statement;
+        }
+
+        public virtual void SetStatement(Net.Vpc.Upa.Expressions.EntityStatement statement) {
+            this.statement = statement;
+        }
+
+        public virtual void AddField(Net.Vpc.Upa.Persistence.ResultField field) {
             fields.Add(field);
         }
 
-
-        public virtual int GetFieldsCount() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return (fields).Count;
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> GetFields() {
+            return new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ResultField>(fields);
         }
 
-
-        public virtual string GetFieldName(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return fieldNames[index];
-        }
-
-
-        public virtual Net.Vpc.Upa.Types.DataType GetFieldType(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return fieldTypes[index].GetSourceType();
-        }
-
-        public virtual Net.Vpc.Upa.Types.DataTypeTransform GetFieldTransform(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return fieldTypes[index];
-        }
-
-
-        public virtual Net.Vpc.Upa.Field GetField(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return fields[index];
-        }
-
-
-        public virtual Net.Vpc.Upa.Entity GetEntity(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Field f = GetField(index);
-            return f == null ? null : f.GetEntity();
+        public virtual System.Collections.Generic.IDictionary<string , object> GetProperties() {
+            return properties;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Impl.Util
 
 
         public virtual V Convert(K k) {
-            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<,>(map,k);
+            return Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<K,V>(map,k);
         }
     }
 }

@@ -1,4 +1,3 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -6,11 +5,45 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-impl</artifactId>
     <name>net.vpc.upa.upa-impl</name>
-    <version>1.2.0.24.0</version>
+    <version>1.2.0.25.0</version>
     <packaging>jar</packaging>
-    <url>http://maven.apache.org</url>
+    <url>https://github.com/thevpc/upa/wiki</url>
+
+    <organization>
+        <name>vpc opensource initative</name>
+        <url>http://tahabensalah.net</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>vpc</id>
+            <name>Taha Ben Salah</name>
+            <email>taha.bensalah@gmail.com</email>
+            <url>http://tahabensalah.net</url>
+            <organization>vpc opensource initative</organization>
+            <organizationUrl>http://tahabensalah.net</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>Africa/Tunis</timezone>
+            <properties>
+                <picUrl>https://gravatar.com/avatar/977025550163b4a91397007f6ea9ee17</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License Version 3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <github.global.server>github</github.global.server>
     </properties>
     <distributionManagement>
@@ -24,12 +57,12 @@
             <name>Temporary Staging Repository</name>
             <url>file://${project.build.directory}/vpc-public-maven</url>
         </repository>
-    </distributionManagement>    
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-api</artifactId>
-            <version>1.2.0.24</version>
+            <version>1.2.0.25</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -65,6 +98,7 @@
             <version>3.9</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -72,8 +106,22 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <showDeprecation>true</showDeprecation>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -106,18 +154,12 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.1</version>
                 <configuration>
-                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/vpc-public-maven</altDeploymentRepository>
+                    <altDeploymentRepository>
+                        internal.repo::default::file://${project.build.directory}/vpc-public-maven
+                    </altDeploymentRepository>
                 </configuration>
             </plugin>
             <plugin>
@@ -128,7 +170,8 @@
                 <configuration>
                     <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
                     <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-                    <outputDirectory>${project.build.directory}/vpc-public-maven</outputDirectory> <!-- matches distribution management repository url above -->
+                    <outputDirectory>${project.build.directory}/vpc-public-maven
+                    </outputDirectory> <!-- matches distribution management repository url above -->
                     <branch>refs/heads/master</branch>                       <!-- remote branch name -->
                     <includes>
                         <include>**/*</include>

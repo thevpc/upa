@@ -23,14 +23,14 @@ namespace Net.Vpc.Upa.Impl.Transform
 
         private static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.Impl.Transform.PasswordTypeFieldPersister)).FullName);
 
-        public virtual void PrepareFieldForInsert(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertNonNullable, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertWithDefaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void PrepareFieldForPersist(Net.Vpc.Upa.Field field, object @value, Net.Vpc.Upa.Record userRecord, Net.Vpc.Upa.Record persistentRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertNonNullable, System.Collections.Generic.ISet<Net.Vpc.Upa.Field> insertWithDefaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             object userValue = null;
             bool userValueFound = false;
             if (!(@value is Net.Vpc.Upa.Expressions.Expression)) {
                 userValueFound = true;
                 userValue = @value;
             } else if (@value is Net.Vpc.Upa.Expressions.Param) {
-                object o = ((Net.Vpc.Upa.Expressions.Param) @value).GetObject();
+                object o = ((Net.Vpc.Upa.Expressions.Param) @value).GetValue();
                 //            if (o instanceof String) {
                 userValue = o;
                 userValueFound = true;
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (!type.IsInstance(@value)) {
                 if (type is Net.Vpc.Upa.Types.ByteArrayType) {
                     if (@value is string) {
-                        @value = ((string) @value).GetBytes();
+                        @value = System.Text.Encoding.UTF8.GetBytes(((string) @value));
                     } else {
                         throw new System.ArgumentException ("Unvalid  Value " + @value + " for type " + type);
                     }
@@ -120,7 +120,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                 userValueFound = true;
                 userValue = @value;
             } else if (@value is Net.Vpc.Upa.Expressions.Param) {
-                object o = ((Net.Vpc.Upa.Expressions.Param) @value).GetObject();
+                object o = ((Net.Vpc.Upa.Expressions.Param) @value).GetValue();
                 //            if (o instanceof String) {
                 userValue = o;
                 userValueFound = true;

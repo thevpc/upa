@@ -16,13 +16,10 @@ namespace Net.Vpc.Upa.Expressions
 
 
     /**
-     * Created by IntelliJ IDEA.
-     * User: root
-     * Date: 22 mai 2003
-     * Time: 10:07:06
-     * To change this template use Options | File Templates.
+     * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 10:07:06 To
+     * change this template use Options | File Templates.
      */
-    public class Decode : Net.Vpc.Upa.Expressions.Function {
+    public class Decode : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -38,6 +35,11 @@ namespace Net.Vpc.Upa.Expressions
             @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(2);
         }
 
+        public Decode(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions));
+            state = VALID;
+        }
+
         public Decode(System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> expressions) {
             @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(expressions);
             state = VALID;
@@ -47,6 +49,12 @@ namespace Net.Vpc.Upa.Expressions
             @params = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(2);
             Add(expression);
             state = EXPECT_CONDITION;
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            @params[index]=e;
+            state = VALID;
         }
 
         public virtual Net.Vpc.Upa.Expressions.Decode Map(Net.Vpc.Upa.Expressions.Expression oldValue, Net.Vpc.Upa.Expressions.Expression newValue) {

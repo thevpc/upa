@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledexpression
         }
 
         public CompiledLiteral(bool @value) {
-            SetValue((@value) ? true : false);
+            SetValue((@value) ? new System.Nullable<bool>(true) : new System.Nullable<bool>(false));
         }
 
         public CompiledLiteral(long @value) {

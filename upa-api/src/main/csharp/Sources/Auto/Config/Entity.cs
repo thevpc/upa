@@ -154,6 +154,29 @@ namespace Net.Vpc.Upa.Config
 
 
         /**
+             * list order is the default order used if no order is specified.
+             * This can be useful for natural ordering (names, dates,...)
+             * @return order expression with no UPAQL prefixes
+             */
+        private string _ListOrder = "";
+        public  string ListOrder{
+            get {return _ListOrder;}
+            set {_ListOrder=value;}
+        }
+
+
+        /**
+             * archiving order is the default order used when importing/exporting items.
+             * @return order expression with no UPAQL prefixes
+             */
+        private string _ArchivingOrder = "";
+        public  string ArchivingOrder{
+            get {return _ArchivingOrder;}
+            set {_ArchivingOrder=value;}
+        }
+
+
+        /**
              * annotation config defines how this annotation must be handled
              *
              * @return annotation configuration

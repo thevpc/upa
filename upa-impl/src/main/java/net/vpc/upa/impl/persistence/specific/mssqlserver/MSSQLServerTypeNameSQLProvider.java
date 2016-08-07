@@ -1,9 +1,10 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.AbstractSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -15,6 +16,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * Time: 11:46 PM
  * To change this template use File | Settings | File Templates.
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class MSSQLServerTypeNameSQLProvider extends AbstractSQLProvider {
     public MSSQLServerTypeNameSQLProvider() {
         super(CompiledTypeName.class);

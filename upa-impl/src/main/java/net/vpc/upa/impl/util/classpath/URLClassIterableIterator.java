@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 class URLClassIterableIterator implements Iterator<Class> {
     private final URLClassIterable outer;

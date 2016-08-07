@@ -17,13 +17,13 @@ namespace Net.Vpc.Upa.Impl.Util
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
-    public class SimpexpStringFilter : Net.Vpc.Upa.Impl.Util.ObjectFilter<string> {
+    public class SimpexpStringFilter : Net.Vpc.Upa.Filters.ObjectFilter<string> {
 
         private string patternString;
 
-        private System.Text.RegularExpressions.Regex pattern;
+        private Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern pattern;
 
         private bool nullIsEmpty;
 
@@ -31,7 +31,8 @@ namespace Net.Vpc.Upa.Impl.Util
 
         public SimpexpStringFilter(string patternString, bool nullIsEmpty, bool ignoreCase) {
             this.patternString = (nullIsEmpty && patternString == null) ? "" : patternString;
-            this.pattern = this.patternString == null ? null : new System.Text.RegularExpressions.Regex(Net.Vpc.Upa.Impl.Util.Strings.SimpexpToRegexp(patternString), (ignoreCase ? System.Text.RegularExpressions.RegexOptions.IgnoreCase : 0));
+            string pattern = Net.Vpc.Upa.Impl.Util.StringUtils.SimpexpToRegexp(patternString, Net.Vpc.Upa.Impl.Util.PatternType.DOT_PATH);
+            this.pattern = this.patternString == null ? null : new Net.Vpc.Upa.Impl.Util.Regexp.PortablePattern(ignoreCase ? pattern.ToLower() : pattern);
             this.nullIsEmpty = nullIsEmpty;
             this.ignoreCase = ignoreCase;
         }
@@ -40,7 +41,7 @@ namespace Net.Vpc.Upa.Impl.Util
             if (nullIsEmpty && s == null) {
                 s = "";
             }
-            return (pattern.Match(s)).Success;
+            return pattern.Matcher(ignoreCase ? s.ToLower() : s).Matches();
         }
     }
 }

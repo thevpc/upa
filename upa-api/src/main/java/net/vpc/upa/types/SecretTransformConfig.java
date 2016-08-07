@@ -72,7 +72,7 @@ public class SecretTransformConfig implements DataTypeTransformConfig, Serializa
             throw new NullPointerException();
         }
         if (!(secretStrategy instanceof String || secretStrategy instanceof Class || secretStrategy instanceof SecretStrategy || (secretStrategy instanceof SecretStrategyType && !secretStrategy.equals(SecretStrategyType.CUSTOM)))) {
-            throw new IllegalArgumentException("secretStrategy shoud be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+            throw new net.vpc.upa.exceptions.IllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
         }
         this.secretStrategy = secretStrategy;
     }

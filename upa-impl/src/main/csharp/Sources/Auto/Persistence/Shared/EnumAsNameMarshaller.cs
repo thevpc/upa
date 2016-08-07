@@ -48,15 +48,8 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            string n = System.Convert.ToString(resultSet[index]);
-            if (n == null) {
-                return null;
-            }
-            try {
-                return System.Enum.Parse(type,n);
-            } catch (System.ArgumentException  e) {
-                return null;
-            }
+            
+            return null;
         }
 
 
@@ -68,15 +61,12 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             if (@object == null) {
                 return base.ToSQLLiteral(@object);
             }
-            return System.Convert.ToString(((Java.Lang.Enum<E>) @object).ToString());
+            //return String.valueOf(((Enum) object).name());
+            return @object.ToString();
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.VARCHAR);
-            } else {
-                preparedStatement.SetString(i, ((Java.Lang.Enum<E>) @object).ToString());
-            }
+            
         }
 
 

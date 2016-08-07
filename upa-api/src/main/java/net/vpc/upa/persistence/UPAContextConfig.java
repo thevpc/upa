@@ -40,14 +40,14 @@ import net.vpc.upa.config.ScanFilter;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class UPAContextConfig {
     public static final int XML_ORDER=Integer.MAX_VALUE;
     
     private Boolean autoScan;
-    private List<PersistenceGroupConfig> persistenceGroups = new ArrayList<PersistenceGroupConfig>();
-    private List<ScanFilter> filters = new ArrayList<ScanFilter>();
+    private List<PersistenceGroupConfig> persistenceGroups = new ArrayList<PersistenceGroupConfig>(2);
+    private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
 
     public Boolean getAutoScan() {
         return autoScan;

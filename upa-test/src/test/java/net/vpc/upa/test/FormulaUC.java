@@ -46,7 +46,7 @@ public class FormulaUC {
         public void testQuery2() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Person2 a");
-            List<Person2> r = q.getEntityList();
+            List<Person2> r = q.getResultList();
             if (r.size() == 0) {
                 Person2 p = new Person2();
                 p.setName("hello");
@@ -56,7 +56,7 @@ public class FormulaUC {
                 pu.persist(ph);
                 p.setPhone(ph);
                 pu.persist(p);
-                r = q.getEntityList();
+                r = q.getResultList();
             }
             for (Person2 record : r) {
                 System.out.println(">> " + record);
@@ -66,7 +66,7 @@ public class FormulaUC {
         public void testQuery3() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Person3 a");
-            List<Person2> r = q.getEntityList();
+            List<Person2> r = q.getResultList();
             if (r.size() == 0) {
                 Person3 person = new Person3();
                 person.setName("hello");
@@ -83,7 +83,7 @@ public class FormulaUC {
                 person.setPhone(phone);
 
                 pu.persist(person);
-                r = q.getEntityList();
+                r = q.getResultList();
             }
             for (Person2 record : r) {
                 System.out.println(">> " + record);

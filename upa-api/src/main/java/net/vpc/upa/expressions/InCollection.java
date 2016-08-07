@@ -81,13 +81,13 @@ public class InCollection extends OperatorExpression
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(right.size()+1);
         if (left != null) {
             list.add(new TaggedExpression(left, LEFT));
         }
         for (int i = 0; i < right.size(); i++) {
             Expression r = right.get(i);
-            list.add(new TaggedExpression(r, new IndexedTag("RIGTH", i)));
+            list.add(new TaggedExpression(r, new IndexedTag("RIGHT", i)));
         }
         return list;
     }

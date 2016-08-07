@@ -36,7 +36,7 @@ namespace Net.Vpc.Upa.Filters
 
         private int acceptEmpty = 0;
 
-        private int acceptInsertable = 0;
+        private int acceptPersistable = 0;
 
         private int acceptNavigatable = 0;
 
@@ -166,17 +166,17 @@ namespace Net.Vpc.Upa.Filters
             return acceptEmpty == -1;
         }
 
-        public virtual bool IsAcceptInsertable() {
-            return acceptInsertable == 1;
+        public virtual bool IsAcceptPersistable() {
+            return acceptPersistable == 1;
         }
 
-        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptInsertable(bool acceptInsertable) {
-            this.acceptInsertable = acceptInsertable ? 1 : -1;
+        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptPersistable(bool acceptPersistable) {
+            this.acceptPersistable = acceptPersistable ? 1 : -1;
             return this;
         }
 
-        public virtual bool IsRejectInsertable() {
-            return acceptInsertable == -1;
+        public virtual bool IsRejectPersistable() {
+            return acceptPersistable == -1;
         }
 
         public virtual bool IsAcceptNavigatable() {
@@ -294,10 +294,10 @@ namespace Net.Vpc.Upa.Filters
             } catch (Net.Vpc.Upa.Exceptions.UPAException e) {
                 return false;
             }
-            if (IsAcceptInsertable() && !v.IsPersistSupported()) {
+            if (IsAcceptPersistable() && !v.IsPersistSupported()) {
                 return false;
             }
-            if (IsRejectInsertable() && v.IsPersistSupported()) {
+            if (IsRejectPersistable() && v.IsPersistSupported()) {
                 return false;
             }
             if (IsAcceptNavigatable() && !v.IsNavigateSupported()) {

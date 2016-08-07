@@ -74,7 +74,7 @@ namespace Net.Vpc.Upa.Impl.Util
             simpleFieldTypes.Add(typeof(float?));
             simpleFieldTypes.Add(typeof(float));
             simpleFieldTypes.Add(typeof(System.Numerics.BigInteger?));
-            simpleFieldTypes.Add(typeof(System.Decimal));
+            simpleFieldTypes.Add(typeof(System.Decimal?));
             simpleFieldTypes.Add(typeof(byte[]));
             simpleFieldTypes.Add(typeof(char[]));
             simpleFieldTypes.Add(typeof(byte?[]));
@@ -385,7 +385,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 try {
                     try {
                         inputStream = Net.Vpc.Upa.Impl.Util.UPAUtils.LoadResourceAsStream(name);
-                        r = new System.IO.StreamReader(new System.IO.StreamReader(inputStream));
+                        r = new System.IO.StreamReader(inputStream);
                         string line = null;
                         while ((line = r.ReadLine()) != null) {
                             line = line.Trim();
@@ -411,7 +411,7 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static bool IsSimpleDataType(Net.Vpc.Upa.Types.DataType dataType) {
-            return !(dataType is Net.Vpc.Upa.Types.EntityType);
+            return !(dataType is Net.Vpc.Upa.Types.ManyToOneType);
         }
 
         public static Net.Vpc.Upa.Types.DataTypeTransform ResolveDataTypeTransform(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
@@ -419,6 +419,10 @@ namespace Net.Vpc.Upa.Impl.Util
         }
 
         public static Net.Vpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e) {
+            return ResolveExprTypeInfo(e, true);
+        }
+
+        public static Net.Vpc.Upa.Impl.Util.ExprTypeInfo ResolveExprTypeInfo(Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression e, bool byBrother) {
             if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) {
                 e = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetFinest();
                 object r = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod) e).GetReferrer();
@@ -438,18 +442,32 @@ namespace Net.Vpc.Upa.Impl.Util
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod v = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) e).GetVar();
                 return ResolveExprTypeInfo(v);
             }
-            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral || e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) {
+            Net.Vpc.Upa.Types.DataTypeTransform typeTransform = e.GetTypeTransform();
+            if (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam || e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) {
                 Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression p = e.GetParentExpression();
                 if (p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarVal) {
                     return ResolveExprTypeInfo(p);
-                } else if ((p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEquals) || (p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledDifferent)) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression o = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).GetOther(e);
-                    return ResolveExprTypeInfo(o);
+                } else {
+                    object @object = (e is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) ? ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam) e).GetValue() : ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledLiteral) e).GetValue();
+                    Net.Vpc.Upa.Types.DataType sourceType = typeTransform.GetSourceType();
+                    Net.Vpc.Upa.Types.DataTypeTransform bestType = typeTransform;
+                    if ((p is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) && (((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).IsSameOperandsType())) {
+                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression o = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledBinaryOperatorExpression) p).GetOther(e);
+                        if (byBrother) {
+                            return ResolveExprTypeInfo(o, false);
+                        }
+                    }
+                    if (@object != null && (typeTransform.Equals(Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.OBJECT) || !sourceType.IsInstance(@object))) {
+                        bestType = Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.ForNativeType(@object.GetType());
+                    }
+                    Net.Vpc.Upa.Impl.Util.ExprTypeInfo typeInfo1 = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
+                    typeInfo1.SetTransform(bestType);
+                    return typeInfo1;
                 }
             }
-            Net.Vpc.Upa.Impl.Util.ExprTypeInfo ii = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
-            ii.SetTransform(e.GetTypeTransform());
-            return ii;
+            Net.Vpc.Upa.Impl.Util.ExprTypeInfo typeInfo2 = new Net.Vpc.Upa.Impl.Util.ExprTypeInfo();
+            typeInfo2.SetTransform(typeTransform);
+            return typeInfo2;
         }
 
         public static object CreateValue(Net.Vpc.Upa.Property info) {
@@ -503,7 +521,7 @@ namespace Net.Vpc.Upa.Impl.Util
                 }
                 if ((format).Length > 0) {
                     try {
-                        return new Java.Text.SimpleDateFormat(format).Parse(@value);
+                        return Net.Vpc.Upa.Impl.Util.DateUtils.ParseDateTime(@value, format);
                     } catch (System.Exception ex) {
                         throw new System.ArgumentException ("Unable to parse date " + @value);
                     }
@@ -567,6 +585,63 @@ namespace Net.Vpc.Upa.Impl.Util
                 return new Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform(f.GetDataType());
             }
             return t;
+        }
+
+        public static string DotConcat(params string [] all) {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (string s in all) {
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s)) {
+                    if ((sb).Length > 0) {
+                        sb.Append(".");
+                    }
+                    sb.Append(s);
+                }
+            }
+            return sb.ToString();
+        }
+
+        public static string GetValidBinding(Net.Vpc.Upa.Persistence.ResultField s) {
+            if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(s.GetAlias())) {
+                Net.Vpc.Upa.Expressions.Expression ss = s.GetExpression();
+                return ss == null ? "" : ss.ToString();
+            }
+            return s.GetAlias();
+        }
+
+        public static object UnwrapLiteral(object o) {
+            if (o is Net.Vpc.Upa.Expressions.Literal) {
+                return ((Net.Vpc.Upa.Expressions.Literal) o).GetValue();
+            }
+            if (o is Net.Vpc.Upa.Expressions.Cst) {
+                return ((Net.Vpc.Upa.Expressions.Cst) o).GetValue();
+            }
+            return o;
+        }
+
+        public static Net.Vpc.Upa.Impl.Util.XNumber ToNumberOrError(object o) {
+            if (o == null) {
+                return null;
+            }
+            if (o is string) {
+                return new Net.Vpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
+            }
+            if (o is object) {
+                return new Net.Vpc.Upa.Impl.Util.XNumber((object) o);
+            }
+            throw new System.Exception("Not a number " + o);
+        }
+
+        public static Net.Vpc.Upa.Impl.Util.XNumber ToNumber(object o) {
+            if (o == null) {
+                return new Net.Vpc.Upa.Impl.Util.XNumber(0);
+            }
+            if (o is string) {
+                return new Net.Vpc.Upa.Impl.Util.XNumber(System.Convert.ToDouble((string) o));
+            }
+            if (o is object) {
+                return new Net.Vpc.Upa.Impl.Util.XNumber((object) o);
+            }
+            return null;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class StringToByteArrayEncoder : Net.Vpc.Upa.Types.ByteArrayEncoder {
 
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (o == null) {
                 return null;
             }
-            return (((string) o)).GetBytes();
+            return System.Text.Encoding.UTF8.GetBytes((((string) o)));
         }
 
         public virtual object Decode(byte[] bytes) {

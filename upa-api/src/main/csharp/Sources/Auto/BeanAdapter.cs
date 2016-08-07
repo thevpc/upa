@@ -16,16 +16,16 @@ namespace Net.Vpc.Upa
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public interface BeanAdapter {
 
-         object NewInstance();
-
-         bool ContainsProperty(string property);
+         Net.Vpc.Upa.BeanType GetBeanType();
 
          object GetProperty(string field);
 
          void SetProperty(string property, object @value);
+
+         void Inject(string property, object @value);
     }
 }

@@ -43,13 +43,16 @@ import java.util.List;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class EntityOrFilter implements EntityFilter {
+public class EntityOrFilter extends AbstractRichEntityFilter {
     private List<Entity> v = new ArrayList<Entity>(2);
 
     public EntityOrFilter() {
     }
 
     public EntityOrFilter or(Entity filter) {
+        if(filter==null){
+            throw new NullPointerException();
+        }
         v.add(filter);
         return this;
     }

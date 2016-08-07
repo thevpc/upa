@@ -32,13 +32,20 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
 
         private System.Collections.Generic.IDictionary<string , object> configuration;
 
-        public DefaultCallback(object o, System.Reflection.MethodInfo m, Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, Net.Vpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter, System.Collections.Generic.IDictionary<string , object> configuration) {
+        private Net.Vpc.Upa.EventPhase phase;
+
+        public DefaultCallback(object o, System.Reflection.MethodInfo m, Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.ObjectType objectType, Net.Vpc.Upa.Impl.Config.Callback.MethodArgumentsConverter converter, System.Collections.Generic.IDictionary<string , object> configuration) {
             this.converter = converter;
             this.instance = o;
             this.method = m;
             this.objectType = objectType;
             this.callbackType = callbackType;
             this.configuration = configuration;
+            this.phase = phase;
+        }
+
+        public virtual Net.Vpc.Upa.EventPhase GetPhase() {
+            return phase;
         }
 
         public virtual System.Collections.Generic.IDictionary<string , object> GetConfiguration() {
@@ -58,9 +65,7 @@ namespace Net.Vpc.Upa.Impl.Config.Callback
             try {
                 return method.Invoke(instance, converter.Convert(arguments));
             } catch (System.Exception e) {
-                throw new System.ArgumentException ("IllegalArgumentException", e);
-            } catch (System.Exception e) {
-                throw new System.ArgumentException ("IllegalArgumentException", e);
+                throw Net.Vpc.Upa.Impl.Util.PlatformUtils.CreateRuntimeException(e);
             }
         }
 

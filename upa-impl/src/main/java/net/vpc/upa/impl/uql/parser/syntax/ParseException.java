@@ -2,6 +2,7 @@
 /* JavaCCOptions:KEEP_LINE_COL=null */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.PlatformUtils;
 
@@ -29,6 +30,7 @@ public class ParseException extends UPAException {
    * a new object of this type with the fields "currentToken",
    * "expectedTokenSequences", and "tokenImage" set.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   public ParseException(Token currentTokenVal,
                         int[][] expectedTokenSequencesVal,
                         String[] tokenImageVal
@@ -65,6 +67,7 @@ public class ParseException extends UPAException {
    * this object has been created due to a parse error, the token
    * followng this token will (therefore) be the first error token.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   public Token currentToken;
 
   /**
@@ -72,6 +75,7 @@ public class ParseException extends UPAException {
    * of integers represents a sequence of tokens (by their ordinal
    * values) that is expected at this point of the parse.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   public int[][] expectedTokenSequences;
 
   /**
@@ -79,6 +83,7 @@ public class ParseException extends UPAException {
    * parser within which the parse error occurred.  This array is
    * defined in the generated ...Constants interface.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   public String[] tokenImage;
 
   /**
@@ -88,6 +93,7 @@ public class ParseException extends UPAException {
    * from the parser) the correct error message
    * gets displayed.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   private static String initialise(Token currentToken,
                            int[][] expectedTokenSequences,
                            String[] tokenImage) {
@@ -134,6 +140,7 @@ public class ParseException extends UPAException {
   /**
    * The end of line string for this machine.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   protected String eol = PlatformUtils.getSystemLineSeparator();
 
   /**
@@ -141,6 +148,7 @@ public class ParseException extends UPAException {
    * when these raw version cannot be used as part of an ASCII
    * string literal.
    */
+  @PortabilityHint(target = "C#",name = "todo")
   static String add_escapes(String str) {
       StringBuffer retval = new StringBuffer();
       char ch;

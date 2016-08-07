@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Callbacks
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 11/27/12 11:15 PM
      */
-    public class DefinitionListenerAdapter : Net.Vpc.Upa.Callbacks.DefinitionListener, Net.Vpc.Upa.Callbacks.PackageDefinitionListener, Net.Vpc.Upa.Callbacks.SectionDefinitionListener, Net.Vpc.Upa.Callbacks.EntityDefinitionListener, Net.Vpc.Upa.Callbacks.FieldDefinitionListener, Net.Vpc.Upa.Callbacks.IndexDefinitionListener, Net.Vpc.Upa.Callbacks.TriggerDefinitionListener, Net.Vpc.Upa.Callbacks.RelationshipDefinitionListener, Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener, Net.Vpc.Upa.Callbacks.PersistenceGroupDefinitionListener {
+    public class DefinitionListenerAdapter {
 
         public virtual void OnPreCreateEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
         }
@@ -151,6 +151,12 @@ namespace Net.Vpc.Upa.Callbacks
         }
 
         public virtual void OnDropPersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
+        }
+
+        public virtual void OnPreInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        }
+
+        public virtual void OnInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
         }
     }
 }

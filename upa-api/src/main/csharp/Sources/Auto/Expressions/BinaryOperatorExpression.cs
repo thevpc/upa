@@ -14,7 +14,12 @@
 namespace Net.Vpc.Upa.Expressions
 {
 
-    public abstract class BinaryOperatorExpression : Net.Vpc.Upa.Expressions.DefaultExpression {
+
+    public abstract class BinaryOperatorExpression : Net.Vpc.Upa.Expressions.OperatorExpression {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag LEFT = new Net.Vpc.Upa.Expressions.DefaultTag("Left");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag RIGHT = new Net.Vpc.Upa.Expressions.DefaultTag("Right");
 
 
 
@@ -40,6 +45,29 @@ namespace Net.Vpc.Upa.Expressions
 
         public virtual Net.Vpc.Upa.Expressions.Expression GetRight() {
             return right;
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (left != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
+            }
+            if (right != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(right, RIGHT));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (tag.Equals(LEFT)) {
+                this.left = e;
+            } else if (tag.Equals(RIGHT)) {
+                this.right = e;
+            } else {
+                throw new System.ArgumentException ("Insuppoerted");
+            }
         }
 
 

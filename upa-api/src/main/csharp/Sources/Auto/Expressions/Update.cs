@@ -15,7 +15,11 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public sealed class Update : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.UpdateStatement {
+    public sealed class Update : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.NonQueryStatement {
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag ENTITY = new Net.Vpc.Upa.Expressions.DefaultTag("ENTITY");
+
+        private static readonly Net.Vpc.Upa.Expressions.DefaultTag COND = new Net.Vpc.Upa.Expressions.DefaultTag("COND");
 
 
 
@@ -29,6 +33,38 @@ namespace Net.Vpc.Upa.Expressions
 
         public Update() {
             fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.VarVal>();
+        }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            if (entity != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
+            }
+            for (int i = 0; i < (fields).Count; i++) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i].GetVar(), new Net.Vpc.Upa.Expressions.IndexedTag("VAR", i)));
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(fields[i].GetVal(), new Net.Vpc.Upa.Expressions.IndexedTag("VAL", i)));
+            }
+            if (COND != null) {
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(condition, COND));
+            }
+            return list;
+        }
+
+
+        public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
+            if (ENTITY.Equals(tag)) {
+                this.entity = (Net.Vpc.Upa.Expressions.EntityName) e;
+            } else if (COND.Equals(tag)) {
+                this.condition = e;
+            } else {
+                Net.Vpc.Upa.Expressions.IndexedTag ii = (Net.Vpc.Upa.Expressions.IndexedTag) tag;
+                if (ii.GetName().Equals("VAR")) {
+                    fields[ii.GetIndex()].SetVar((Net.Vpc.Upa.Expressions.Var) e);
+                } else {
+                    fields[ii.GetIndex()].SetVal(e);
+                }
+            }
         }
 
         public System.Collections.Generic.IDictionary<Net.Vpc.Upa.Expressions.Var , Net.Vpc.Upa.Expressions.Expression> GetUpdatesMapping() {
@@ -63,7 +99,7 @@ namespace Net.Vpc.Upa.Expressions
             return entity;
         }
 
-        public string GetEntityAlias() {
+        public override string GetEntityAlias() {
             return entityAlias == null ? (entity == null ? null : entity.GetName()) : entityAlias;
         }
 
@@ -114,6 +150,10 @@ namespace Net.Vpc.Upa.Expressions
             return this;
         }
 
+        public void RemoveFieldAt(int index) {
+            fields.RemoveAt(index);
+        }
+
         public Net.Vpc.Upa.Expressions.Update Where(Net.Vpc.Upa.Expressions.Expression condition) {
             this.condition = condition;
             return this;
@@ -125,6 +165,10 @@ namespace Net.Vpc.Upa.Expressions
 
         public int CountFields() {
             return (fields).Count;
+        }
+
+        public Net.Vpc.Upa.Expressions.VarVal GetVarVal(int i) {
+            return fields[i];
         }
 
         public Net.Vpc.Upa.Expressions.Var GetField(int i) {
@@ -161,7 +205,14 @@ namespace Net.Vpc.Upa.Expressions
                     sb.Append(", ");
                 }
                 sb.Append(field);
-                sb.Append("=").Append(fieldValue);
+                sb.Append("=");
+                if (fieldValue is Net.Vpc.Upa.Expressions.FunctionExpression || fieldValue is Net.Vpc.Upa.Expressions.Param || fieldValue is Net.Vpc.Upa.Expressions.Literal || fieldValue is Net.Vpc.Upa.Expressions.Var || fieldValue is Net.Vpc.Upa.Expressions.Cst) {
+                    sb.Append(fieldValue);
+                } else {
+                    sb.Append("(");
+                    sb.Append(fieldValue);
+                    sb.Append(")");
+                }
             }
             if (GetCondition() != null && GetCondition().IsValid()) {
                 sb.Append(" Where ").Append(GetCondition());

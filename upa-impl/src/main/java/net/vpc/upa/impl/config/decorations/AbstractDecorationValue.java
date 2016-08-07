@@ -13,7 +13,7 @@ import net.vpc.upa.config.ConfigInfo;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public abstract class AbstractDecorationValue implements DecorationValue {
 

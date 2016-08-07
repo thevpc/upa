@@ -10,7 +10,7 @@ import net.vpc.upa.config.*;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @Entity
 @Path("FileSystem")

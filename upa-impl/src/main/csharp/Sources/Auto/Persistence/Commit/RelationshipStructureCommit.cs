@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Commit
             Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore persistenceUnitManager = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) executionContext.GetPersistenceStore();
             log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.Impl.FwkConvertUtils.LogMessageExceptionFormatter("Commit {0} / {1} : found {2}, persist",null,new object[] { @object, typedObject, status }));
             if (!relation.IsTransient() && persistenceUnitManager.IsReferencingSupported()) {
-                Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetPersistenceStore().GetConnection();
+                Net.Vpc.Upa.Persistence.UConnection b = executionContext.GetConnection();
                 b.ExecuteNonQuery(persistenceUnitManager.GetCreateRelationshipStatement(relation), null, null);
             }
         }

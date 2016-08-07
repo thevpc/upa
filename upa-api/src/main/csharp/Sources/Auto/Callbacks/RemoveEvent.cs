@@ -17,13 +17,13 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class RemoveEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
 
         private Net.Vpc.Upa.Expressions.Expression filterExpression;
 
-        public RemoveEvent(Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext)  : base(entityExecutionContext){
+        public RemoveEvent(Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.filterExpression = filterExpression;
         }

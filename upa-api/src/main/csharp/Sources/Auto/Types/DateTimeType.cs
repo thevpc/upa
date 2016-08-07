@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Types
         public DateTimeType(string name, System.Type type, Net.Vpc.Upa.Types.DateTime min, Net.Vpc.Upa.Types.DateTime max, bool nullable)  : base(name, type == null ? typeof(Net.Vpc.Upa.Types.DateTime) : type, 0, 0, nullable){
 
             if (type != null && !type.Equals(typeof(Net.Vpc.Upa.Types.DateTime)) && !type.Equals(typeof(Net.Vpc.Upa.Types.Temporal)) && !type.Equals(typeof(Net.Vpc.Upa.Types.Timestamp))) {
-                throw new System.ArgumentException ("Invalid Temporal Type " + type);
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Invalid Temporal Type " + type);
             }
             this.min = min;
             this.max = max;
@@ -60,6 +60,9 @@ namespace Net.Vpc.Upa.Types
             base.Check(@value, name, description);
             if (@value == null) {
                 return;
+            }
+            if (!(@value is Net.Vpc.Upa.Types.Date)) {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
             if (GetMin() != null && GetMin().CompareTo((Net.Vpc.Upa.Types.Temporal) @value) > 0) {
                 throw new Net.Vpc.Upa.Types.ConstraintsException("DateTooEarly", name, description, @value, min);
@@ -93,7 +96,7 @@ namespace Net.Vpc.Upa.Types
             } else if (typeof(Net.Vpc.Upa.Types.Temporal).IsAssignableFrom(type)) {
                 return new Net.Vpc.Upa.Types.DateTime(time);
             } else {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
             }
         }
     }

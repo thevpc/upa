@@ -100,8 +100,8 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
             if (IsManyToOne()) {
                 System.Type nativeClass = GetFieldType();
                 if (!Net.Vpc.Upa.Impl.Util.UPAUtils.IsSimpleFieldType(nativeClass)) {
-                    Net.Vpc.Upa.Types.EntityType entityType = new Net.Vpc.Upa.Types.EntityType(name, nativeClass, null, true, nullable);
-                    preferredDataType = (entityType);
+                    Net.Vpc.Upa.Types.ManyToOneType manyToOneType = new Net.Vpc.Upa.Types.ManyToOneType(name, nativeClass, null, true, nullable);
+                    preferredDataType = (manyToOneType);
                 }
             }
         }
@@ -125,6 +125,9 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 targetEntity = baseFieldInfo.GetEntityInfo().GetName();
                 System.Type entityType = baseFieldInfo.GetEntityInfo().GetEntityType();
                 targetEntityType = entityType;
+                if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.RelationshipType>(typeof(Net.Vpc.Upa.RelationshipType), relationType)) {
+                    relationType = Net.Vpc.Upa.RelationshipType.COMPOSITION;
+                }
                 System.Type nativeClass = GetFieldType();
                 if (!nativeClass.Equals(entityType)) {
                     throw new System.ArgumentException ("Tree Relationship invalid as " + nativeClass + " <> " + entityType);
@@ -162,7 +165,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 if (_mappedTo.Length != 0) {
                     mappedTo = _mappedTo;
                 }
-                if (gid.GetEnum<Net.Vpc.Upa.RelationshipType>("type", typeof(Net.Vpc.Upa.RelationshipType)) != Net.Vpc.Upa.RelationshipType.DEFAULT) {
+                if (!System.Collections.Generic.EqualityComparer<Net.Vpc.Upa.RelationshipType>.Default.Equals(gid.GetEnum<Net.Vpc.Upa.RelationshipType>("type", typeof(Net.Vpc.Upa.RelationshipType)),Net.Vpc.Upa.RelationshipType.DEFAULT)) {
                     relationType = gid.GetEnum<Net.Vpc.Upa.RelationshipType>("type", typeof(Net.Vpc.Upa.RelationshipType));
                 }
                 if ((gid.GetString("filter")).Length > 0) {

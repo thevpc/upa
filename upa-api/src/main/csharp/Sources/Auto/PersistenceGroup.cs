@@ -56,13 +56,13 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Session GetCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
+         Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
          void SetCurrentSession(Net.Vpc.Upa.Session session) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Session OpenSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Session OpenSession();
 
-         bool IsClosed() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsClosed();
 
          void AddPersistenceUnitDefinitionListener(Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener definitionListener);
 
@@ -84,6 +84,22 @@ namespace Net.Vpc.Upa
 
          void RemoveCallback(Net.Vpc.Upa.Callback callback);
 
-         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, Net.Vpc.Upa.EventPhase phase);
+         Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType nameFilter, Net.Vpc.Upa.ObjectType objectType, string name, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase);
+
+          T Invoke<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+
+          T Invoke<T>(Net.Vpc.Upa.Action<T> action);
+
+          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action, Net.Vpc.Upa.InvokeContext invokeContext);
+
+          T InvokePrivileged<T>(Net.Vpc.Upa.Action<T> action);
+
+         void Invoke(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+
+         void Invoke(Net.Vpc.Upa.VoidAction action);
+
+         void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
+
+         void InvokePrivileged(Net.Vpc.Upa.VoidAction action);
     }
 }

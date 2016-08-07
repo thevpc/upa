@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Uql
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultQLExpressionParser : Net.Vpc.Upa.QLExpressionParser {
 
@@ -26,11 +26,11 @@ namespace Net.Vpc.Upa.Impl.Uql
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression Parse(string reader) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return new Net.Vpc.Upa.Impl.Uql.Parser.Syntax.UQLParser(new System.IO.StringReader(reader)).Any();
+            return null;
         }
 
         public virtual Net.Vpc.Upa.Expressions.Expression Parse(System.IO.Stream inputStream) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return new Net.Vpc.Upa.Impl.Uql.Parser.Syntax.UQLParser(inputStream).Any();
+            return null;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Transform
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class HexaEncoder : Net.Vpc.Upa.Types.StringEncoder {
 
@@ -27,14 +27,14 @@ namespace Net.Vpc.Upa.Impl.Transform
             if (bytes == null) {
                 return null;
             }
-            return Net.Vpc.Upa.Impl.Util.Strings.ToHexString(bytes);
+            return Net.Vpc.Upa.Impl.Util.StringUtils.ToHexString(bytes);
         }
 
         public virtual byte[] Decode(string @value) {
             if (@value == null) {
                 return null;
             }
-            return Net.Vpc.Upa.Impl.Util.Strings.ParseHexString(@value);
+            return Net.Vpc.Upa.Impl.Util.StringUtils.ParseHexString(@value);
         }
 
 

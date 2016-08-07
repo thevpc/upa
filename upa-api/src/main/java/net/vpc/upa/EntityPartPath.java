@@ -47,7 +47,7 @@ public class EntityPartPath {
     public EntityPartPath(Entity entity, List<EntityPart> path) {
         this.entity = entity;
         if (path == null) {
-            this.path = new ArrayList<EntityPart>();
+            this.path = new ArrayList<EntityPart>(5);
         } else {
             this.path = new ArrayList<EntityPart>(path);
         }

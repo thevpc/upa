@@ -7,7 +7,7 @@ package net.vpc.upa.impl.util;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public interface XmlAttrListFilter {
 

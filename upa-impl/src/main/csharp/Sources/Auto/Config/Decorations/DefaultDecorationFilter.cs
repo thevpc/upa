@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class DefaultDecorationFilter : Net.Vpc.Upa.Impl.Config.Decorations.DecorationFilter {
 
@@ -34,13 +34,13 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
         public virtual Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.Config.DecorationTarget> GetDecorationTargets() {
             Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.Config.DecorationTarget> i = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.Config.DecorationTarget>();
             if ((typeAnnotations).Count > 0) {
-                i.Add(Net.Vpc.Upa.Config.DecorationTarget.TYPE);
+                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.TYPE);
             }
             if ((methodsAnnotations).Count > 0) {
-                i.Add(Net.Vpc.Upa.Config.DecorationTarget.METHOD);
+                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.METHOD);
             }
             if ((fieldsAnnotations).Count > 0) {
-                i.Add(Net.Vpc.Upa.Config.DecorationTarget.FIELD);
+                i = i.Add(Net.Vpc.Upa.Config.DecorationTarget.FIELD);
             }
             //        i += HIERARCHICAL;
             return i;
@@ -56,28 +56,18 @@ namespace Net.Vpc.Upa.Impl.Config.Decorations
 
         public virtual Net.Vpc.Upa.Impl.Config.Decorations.DefaultDecorationFilter AddDecorations(params System.Type [] all) {
             foreach (System.Type c in all) {
-                Java.Lang.Annotation.Target t = (Java.Lang.Annotation.Target) (Java.Lang.Annotation.Target)Net.Vpc.Upa.Impl.FwkConvertUtils.GetTypeCustomAttribute(c, typeof(Java.Lang.Annotation.Target));
+                System.AttributeUsageAttribute t = (System.AttributeUsageAttribute) Net.Vpc.Upa.Impl.FwkConvertUtils.GetTypeCustomAttribute(c, typeof(System.AttributeUsageAttribute));
                 if (t == null) {
                     throw new System.ArgumentException (c + " seems not to be an annotation");
                 }
-                foreach (Java.Lang.Annotation.ElementType et in t.Value) {
-                    switch(et) {
-                        case Java.Lang.Annotation.ElementType.TYPE:
-                            {
-                                typeAnnotations.Add((c).FullName);
-                                break;
-                            }
-                        case Java.Lang.Annotation.ElementType.FIELD:
-                            {
-                                fieldsAnnotations.Add((c).FullName);
-                                break;
-                            }
-                        case Java.Lang.Annotation.ElementType.METHOD:
-                            {
-                                fieldsAnnotations.Add((c).FullName);
-                                break;
-                            }
-                    }
+                if ((t.ValidOn & System.AttributeTargets.Class) != 0) {
+                typeAnnotations.Add((c).FullName);
+                }
+                if ((t.ValidOn & System.AttributeTargets.Field) != 0) {
+                fieldsAnnotations.Add((c).FullName);
+                }
+                if ((t.ValidOn & System.AttributeTargets.Method) != 0) {
+                methodsAnnotations.Add((c).FullName);
                 }
             }
             return this;

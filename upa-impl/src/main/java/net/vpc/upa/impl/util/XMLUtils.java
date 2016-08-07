@@ -20,15 +20,20 @@ public class XMLUtils {
 
     public static Map<String, String> getAttributes(Element e, XmlAttrListFilter names) {
         Map<String, String> values = new HashMap<String, String>();
-        NamedNodeMap attr = e.getAttributes();
-        for (int i = 0; i < attr.getLength(); i++) {
-            org.w3c.dom.Node a = attr.item(i);
-            String n = uniformName(a.getNodeName());
-            String n2 = names.acceptAndConvert(n);
-            if (n2 != null) {
-                values.put(n2, a.getNodeValue());
-            } else {
-                throw new IllegalArgumentException("Unsupported atribute " + n + " for tag " + e.getTagName());
+        /**
+         * @PortabilityHint(target="C#",name="todo")
+         */
+        {
+            NamedNodeMap attr = e.getAttributes();
+            for (int i = 0; i < attr.getLength(); i++) {
+                org.w3c.dom.Node a = attr.item(i);
+                String n = uniformName(a.getNodeName());
+                String n2 = names.acceptAndConvert(n);
+                if (n2 != null) {
+                    values.put(n2, a.getNodeValue());
+                } else {
+                    throw new IllegalArgumentException("Unsupported atribute " + n + " for tag " + e.getTagName());
+                }
             }
         }
         return values;

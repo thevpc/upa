@@ -22,20 +22,13 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
     public class ByteRefArrayToBlobMarshaller : Net.Vpc.Upa.Impl.Persistence.SimpleTypeMarshaller {
 
         public override object Read(int index, System.Data.IDataReader resultSet) /* throws System.Exception */  {
-            Java.Sql.Blob t = resultSet.GetBlob(index);
-            if (t == null) {
-                return null;
-            }
-            try {
-                return Net.Vpc.Upa.Impl.Util.IOUtils.ToByteRefArray(Net.Vpc.Upa.Impl.Util.IOUtils.ToByteArray(t.GetBinaryStream()));
-            } catch (System.Exception e) {
-                //                    Log.bug(e);
-                return null;
-            }
+            
+            return null;
         }
 
 
         public override void Write(object @object, int i, System.Data.IDataReader updatableResultSet) /* throws System.Exception */  {
+            
         }
 
 
@@ -47,11 +40,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
         }
 
         public override void Write(object @object, int i, System.Data.IDbCommand preparedStatement) /* throws System.Exception */  {
-            if (@object == null) {
-                preparedStatement.SetNull(i, Java.Sql.Types.BLOB);
-            } else {
-                preparedStatement.SetBlob(i, new Java.Io.ByteArrayInputStream((byte[]) @object));
-            }
+            
         }
 
         public ByteRefArrayToBlobMarshaller() {

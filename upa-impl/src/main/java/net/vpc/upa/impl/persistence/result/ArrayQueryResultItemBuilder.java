@@ -2,12 +2,10 @@ package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.persistence.DefaultResultMetaData;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.persistence.ResultMetaData;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by vpc on 6/26/16.
@@ -16,7 +14,7 @@ public class ArrayQueryResultItemBuilder implements QueryResultItemBuilder {
     private static String CACHE_KEY = "ArrayQueryResultItemBuilder.binding";
     @Override
     public Object createResult(ResultColumn[] row, ResultMetaData metadata) {
-        List<ResultField> fields = metadata.getFields();
+        List<ResultField> fields = metadata.getResultFields();
         DefaultResultMetaData d=(DefaultResultMetaData) metadata;
         String[] bindings=(String[]) d.getProperties().get(CACHE_KEY);
         if(bindings==null){

@@ -36,7 +36,8 @@ namespace Net.Vpc.Upa.Impl.Event
             this.group = group;
         }
 
-        public virtual void FireOnCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnCreatePersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
@@ -55,7 +56,8 @@ namespace Net.Vpc.Upa.Impl.Event
             }
         }
 
-        public virtual void FireOnDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event, Net.Vpc.Upa.EventPhase phase) {
+        public virtual void FireOnDropPersistenceUnit(Net.Vpc.Upa.Callbacks.PersistenceUnitEvent @event) {
+            Net.Vpc.Upa.EventPhase phase = @event.GetPhase();
             Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener[] interceptorList = GetPersistenceUnitDefinitionListeners();
             if (phase == Net.Vpc.Upa.EventPhase.BEFORE) {
                 foreach (Net.Vpc.Upa.Callbacks.PersistenceUnitDefinitionListener listener in interceptorList) {
@@ -107,13 +109,13 @@ namespace Net.Vpc.Upa.Impl.Event
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbackEffectiveInvokers(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
-            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(group.GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, phase)));
+            System.Collections.Generic.IList<Net.Vpc.Upa.Callback> allCallbacks = callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, false, phase);
+            Net.Vpc.Upa.Impl.FwkConvertUtils.ListAddRange(allCallbacks, new System.Collections.Generic.List<Net.Vpc.Upa.Callback>(group.GetContext().GetCallbacks(callbackType, objectType, nameFilter, system, false, phase)));
             return allCallbacks;
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, Net.Vpc.Upa.EventPhase phase) {
-            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, phase);
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Callback> GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase) {
+            return callbackManager.GetCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         }
     }
 }

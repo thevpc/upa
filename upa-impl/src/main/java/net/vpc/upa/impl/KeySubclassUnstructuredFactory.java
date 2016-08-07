@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.Key;
 
 /**
@@ -8,9 +8,9 @@ import net.vpc.upa.Key;
  * @creationdate 8/27/12 1:51 AM
  */
 public class KeySubclassUnstructuredFactory implements KeyFactory {
-    private BeanType nfo;
+    private PlatformBeanType nfo;
 
-    public KeySubclassUnstructuredFactory(BeanType nfo) {
+    public KeySubclassUnstructuredFactory(PlatformBeanType nfo) {
         this.nfo = nfo;
     }
 

@@ -1,3 +1,15 @@
+/*********************************************************
+ *********************************************************
+ **   DO NOT EDIT                                       **
+ **                                                     **
+ **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   BY UPA PORTABLE GENERATOR                         **
+ **   (c) vpc                                           **
+ **                                                     **
+ *********************************************************
+ ********************************************************/
+
+
 /**
    
    * The <code>StreamTokenizer</code> class takes an input stream and
@@ -29,6 +41,7 @@
    * it returns the value <code>TT_EOF</code>.
    * 
    * This code is provided by riyadparvez at https://gist.github.com/riyadparvez/4365600
+   * and was modified by taha.bensalah to add sval implementation
    *
    */
 
@@ -39,12 +52,12 @@ using System;
   namespace J2CS.IO{
       public class StreamTokenizer : IEnumerable<int>
       {
-    
+
           /* Only one of these will be non-null */
-          private StreamReader reader = null;
-    
+          private TextReader reader = null;
+
           private List<char> buf = new List<char>();
-    
+
           /**
            * The next character to be considered by the nextToken method.  May also
            * be NEED_CHAR to indicate that a new character should be Read, or SKIP_LF
@@ -53,27 +66,27 @@ using System;
            * Read.
            */
           private int peekc = NEED_CHAR;
-    
+
           private const int NEED_CHAR = System.Int32.MaxValue;
           private const int SKIP_LF = System.Int32.MaxValue - 1;
-    
+
           private bool pushedBack;
           private bool forceLower;
           /** The line number of the last token Read */
-    
+
           private bool eolIsSignificantP = false;
           private bool slashSlashCommentsP = false;
           private bool slashStarCommentsP = false;
-    
+
           private byte[] characterType = new byte[256];
           private const byte CT_WHITESPACE = 1;
           private const byte CT_DIGIT = 2;
           private const byte CT_ALPHA = 4;
           private const byte CT_QUOTE = 8;
           private const byte CT_COMMENT = 16;
-    
+
           public int LineNumber { get; private set; }
-    
+
           /**
            * After a call to the <code>nextToken</code> method, this field
            * contains the type of the token just Read. For a single character
@@ -95,33 +108,33 @@ using System;
            *
            */
           public int ttype = TT_NOTHING;
-    
+
           /**
            * A constant indicating that the end of the stream has been Read.
            */
           public const int TT_EOF = -1;
-    
+
           /**
            * A constant indicating that the end of the line has been Read.
            */
           public const int TT_EOL = '\n';
-    
+
           /**
            * A constant indicating that a number token has been Read.
            */
           public const int TT_NUMBER = -2;
-    
+
           /**
            * A constant indicating that a word token has been Read.
            */
           public const int TT_WORD = -3;
-    
+
           /* A constant indicating that no token has been Read, used for
            * initializing ttype.  FIXME This could be made public and
            * made available as the part of the API in a future release.
            */
           private const int TT_NOTHING = -4;
-    
+
           /**
            * If the current token is a word token, this field contains a
            * string giving the characters of the word token. When the current
@@ -139,8 +152,8 @@ using System;
            * @see     java.io.StreamTokenizer#TT_WORD
            * @see     java.io.StreamTokenizer#ttype
            */
-          public string StringValue { get; private set; }
-    
+          public string sval { get; private set; }
+
           /**
            * If the current token is a number, this field contains the value
            * of that number. The current token is a number when the value of
@@ -148,10 +161,10 @@ using System;
            * <p>
            * The initial value of this field is 0.0.
            */
-          public double NumberValue { get; private set; }
-    
+          public double nval { get; private set; }
+
           /** Private constructor that initializes everything except the streams. */
-          private StreamTokenizer() 
+          private StreamTokenizer()
           {
               WordChars('a', 'z');
               WordChars('A', 'Z');
@@ -163,31 +176,31 @@ using System;
               ParseNumbers();
               LineNumber = 1;
           }
-    
+
           /**
            * Create a tokenizer that parses the given character stream.
            *
            * @param r  a Reader object providing the input stream.
            */
-          public StreamTokenizer(StreamReader r) : this()
+          public StreamTokenizer(TextReader r) : this()
           {
-              if (r == null) 
+              if (r == null)
               {
                   throw new ArgumentNullException();
               }
               reader = r;
           }
-    
+
           /**
            * Resets this tokenizer's syntax table so that all characters are
            * "ordinary." See the <code>ordinaryChar</code> method
            * for more information on a character being ordinary.
            */
-          public void ResetSyntax() 
+          public void ResetSyntax()
           {
               Array.Clear(characterType, 0, characterType.Length);
           }
-    
+
           /**
            * Specifies that all characters <i>c</i> in the range
            * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -197,7 +210,7 @@ using System;
            * @param   low   the low end of the range.
            * @param   hi    the high end of the range.
            */
-          public void WordChars(int low, int hi) 
+          public void WordChars(int low, int hi)
           {
               if (low < 0)
               {
@@ -212,7 +225,7 @@ using System;
                   characterType[low++] |= CT_ALPHA;
               }
           }
-    
+
           /**
            * Specifies that all characters <i>c</i> in the range
            * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -225,7 +238,7 @@ using System;
            * @param   low   the low end of the range.
            * @param   hi    the high end of the range.
            */
-          public void WhitespaceChars(int low, int hi) 
+          public void WhitespaceChars(int low, int hi)
           {
               if (low < 0)
               {
@@ -240,7 +253,7 @@ using System;
                   characterType[low++] = CT_WHITESPACE;
               }
           }
-    
+
           /**
            * Specifies that all characters <i>c</i> in the range
            * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -252,7 +265,7 @@ using System;
            * @param   hi    the high end of the range.
            * @see     java.io.StreamTokenizer#ordinaryChar(int)
            */
-          public void OrdinaryChars(int low, int hi) 
+          public void OrdinaryChars(int low, int hi)
           {
               if (low < 0)
               {
@@ -283,12 +296,12 @@ using System;
            *
            * @param   ch   the character.
            */
-          public void OrdinaryChar(int ch) 
+          public void OrdinaryChar(int ch)
           {
               if (ch >= 0 && ch < characterType.Length)
                   characterType[ch] = 0;
           }
-    
+
           /**
            * Specified that the character argument starts a single-line
            * comment. All characters from the comment character to the end of
@@ -298,14 +311,14 @@ using System;
            *
            * @param   ch   the character.
            */
-          public void CommentChar(int ch) 
+          public void CommentChar(int ch)
           {
               if (ch >= 0 && ch < characterType.Length)
               {
                   characterType[ch] = CT_COMMENT;
               }
           }
-          
+
           /**
            * Specifies that matching pairs of this character delimit string
            * constants in this tokenizer.
@@ -331,7 +344,7 @@ using System;
               if (ch >= 0 && ch < characterType.Length)
               characterType[ch] = CT_QUOTE;
           }
-    
+
           /**
            * Specifies that numbers should be parsed by this tokenizer. The
            * syntax table of this tokenizer is modified so that each of the twelve
@@ -348,7 +361,7 @@ using System;
            * field to the value <code>TT_NUMBER</code> and putting the numeric
            * value of the token into the <code>nval</code> field.
            */
-          public void ParseNumbers() 
+          public void ParseNumbers()
           {
               for (int i = '0'; i <= '9'; i++)
               {
@@ -357,7 +370,7 @@ using System;
               characterType['.'] |= CT_DIGIT;
               characterType['-'] |= CT_DIGIT;
           }
-    
+
           /**
            * Determines whether or not ends of line are treated as tokens.
            * If the flag argument is true, this tokenizer treats end of lines
@@ -378,11 +391,11 @@ using System;
            *                 are separate tokens; <code>false</code> indicates that
            *                 end-of-line characters are white space.
            */
-          public void EolIsSignificant(bool flag) 
+          public void EolIsSignificant(bool flag)
           {
               eolIsSignificantP = flag;
           }
-    
+
           /**
            * Determines whether or not the tokenizer recognizes C-style comments.
            * If the flag argument is <code>true</code>, this stream tokenizer
@@ -395,12 +408,12 @@ using System;
            * @param   flag   <code>true</code> indicates to recognize and ignore
            *                 C-style comments.
            */
-          public bool SlashStarComments 
+          public bool SlashStarComments
           {
               get { return slashStarCommentsP; }
               set { slashStarCommentsP=value; }
           }
-    
+
           /**
            * Determines whether or not the tokenizer recognizes C++-style comments.
            * If the flag argument is <code>true</code>, this stream tokenizer
@@ -414,12 +427,12 @@ using System;
            * @param   flag   <code>true</code> indicates to recognize and ignore
            *                 C++-style comments.
            */
-          public bool SlashSlashComments 
+          public bool SlashSlashComments
           {
               get { return slashSlashCommentsP; }
               set { slashSlashCommentsP = value; }
           }
-    
+
           /**
            * Determines whether or not word token are automatically lowercased.
            * If the flag argument is <code>true</code>, then the value in the
@@ -434,11 +447,11 @@ using System;
            * @param   fl   <code>true</code> indicates that all word tokens should
            *               be lowercased.
            */
-          public bool LowerCaseMode 
+          public bool LowerCaseMode
           {
               set{ forceLower = value; }
           }
-    
+
           /** Read the next character */
           private int Read()
           {
@@ -451,7 +464,7 @@ using System;
                   throw new Exception();
               }
           }
-    
+
           /**
            * Parses the next token from the input stream of this tokenizer.
            * The type of the next token is returned in the <code>ttype</code>
@@ -468,14 +481,14 @@ using System;
            */
           public int NextToken()
           {
-              if (pushedBack) 
+              if (pushedBack)
               {
                   pushedBack = false;
                   return ttype;
               }
               byte[] ct = characterType;
-              StringValue = null;
-    
+              sval = null;
+
               int c = peekc;
               if (c < 0)
                   c = NEED_CHAR;
@@ -492,12 +505,12 @@ using System;
                   return ttype = TT_EOF;
               }
               ttype = c;      /* Just to be safe */
-    
+
               /* Set peekc so that the next invocation of nextToken will Read
                * another character unless peekc is reset in this invocation
                */
               peekc = NEED_CHAR;
-    
+
               int ctype = c < 256 ? ct[c] : CT_ALPHA;
               while ((ctype & CT_WHITESPACE) != 0) {
                   if (c == '\r') {
@@ -522,7 +535,7 @@ using System;
                   return ttype = TT_EOF;
                   ctype = c < 256 ? ct[c] : CT_ALPHA;
               }
-    
+
               if ((ctype & CT_DIGIT) != 0) {
                   bool neg = false;
                   if (c == '-') {
@@ -557,10 +570,10 @@ using System;
                   /* Do one division of a likely-to-be-more-accurate number */
                   v = v / denom;
                   }
-                  NumberValue = neg ? -v : v;
+                  nval = neg ? -v : v;
                   return ttype = TT_NUMBER;
               }
-    
+
               if ((ctype & CT_ALPHA) != 0) {
                   int i = 0;
                   do {
@@ -569,12 +582,12 @@ using System;
                   ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
                   } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
                   peekc = c;
-                  StringValue = new string(buf.ToArray(), 0, i);
+                  sval = new string(buf.ToArray(), 0, i);
                   if (forceLower)
-                  StringValue = StringValue.ToLower();
+                  sval = sval.ToLower();
                   return ttype = TT_WORD;
               }
-    
+
               if ((ctype & CT_QUOTE) != 0) {
                   ttype = c;
                   int i = 0;
@@ -632,17 +645,17 @@ using System;
                   }
                   buf[i++] = (char)c;
                   }
-    
+
                   /* If we broke out of the loop because we found a matching quote
                    * character then arrange to Read a new character next time
                    * around; otherwise, save the character.
                    */
                   peekc = (d == ttype) ? NEED_CHAR : d;
-    
-                  StringValue = new string(buf.ToArray(), 0, i);
+
+                  sval = new string(buf.ToArray(), 0, i);
                   return ttype;
               }
-    
+
               if (c == '/' && (slashSlashCommentsP || slashStarCommentsP)) {
                   c = Read();
                   if (c == '*' && slashStarCommentsP) {
@@ -681,16 +694,16 @@ using System;
                           }
                   }
                   }
-    
+
                   if ((ctype & CT_COMMENT) != 0) {
                       while ((c = Read()) != '\n' && c != '\r' && c >= 0);
                       peekc = c;
                       return NextToken();
                   }
-    
+
               return ttype = c;
           }
-    
+
           /**
            * Causes the next call to the <code>nextToken</code> method of this
            * tokenizer to return the current value in the <code>ttype</code>
@@ -704,7 +717,7 @@ using System;
                   pushedBack = true;
               }
           }
-    
+
           /**
            * Returns the string representation of the current stream token and
            * the line number it occurs on.
@@ -716,7 +729,7 @@ using System;
            *
            * @return  a string representation of the token
            */
-          public override string ToString() 
+          public override string ToString()
           {
               string ret;
               switch (ttype) {
@@ -727,27 +740,27 @@ using System;
                   ret = "EOL";
                   break;
                 case TT_WORD:
-                  ret = StringValue;
+                  ret = sval;
                   break;
                 case TT_NUMBER:
-                  ret = "n=" + NumberValue;
+                  ret = "n=" + nval;
                   break;
                 case TT_NOTHING:
                   ret = "NOTHING";
                   break;
                 default: {
-                  /* 
+                  /*
                    * ttype is the first character of either a quoted string or
                    * is an ordinary character. ttype can definitely not be less
                    * than 0, since those are reserved values used in the previous
                    * case statements
                    */
-                  if (ttype < 256 && 
+                  if (ttype < 256 &&
                       ((characterType[ttype] & CT_QUOTE) != 0)) {
-                      ret = StringValue;
+                      ret = sval;
                       break;
                   }
-    
+
                   char[] s = new char[3];
                   s[0] = s[2] = '\'';
                   s[1] = (char) ttype;
@@ -757,8 +770,8 @@ using System;
               }
               return "Token[" + ret + "], line " + LineNumber;
           }
-    
-    
+
+
           public IEnumerator<int> GetEnumerator()
           {
               ResetSyntax();
@@ -772,7 +785,7 @@ using System;
                   yield return token;
               }
           }
-    
+
           System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
           {
               return GetEnumerator();

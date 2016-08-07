@@ -21,16 +21,8 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface ResultMetaData {
 
-         int GetFieldsCount() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.EntityStatement GetStatement();
 
-         string GetFieldName(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         Net.Vpc.Upa.Types.DataType GetFieldType(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         Net.Vpc.Upa.Types.DataTypeTransform GetFieldTransform(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         Net.Vpc.Upa.Field GetField(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         Net.Vpc.Upa.Entity GetEntity(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> GetFields();
     }
 }

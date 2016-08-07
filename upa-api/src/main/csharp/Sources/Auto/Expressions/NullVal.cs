@@ -15,14 +15,30 @@ namespace Net.Vpc.Upa.Expressions
 {
 
 
-    public sealed class NullVal : Net.Vpc.Upa.Expressions.Function {
+    public sealed class NullVal : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
         private Net.Vpc.Upa.Types.DataType type;
 
+        public NullVal(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            if (expressions.Length != 0 && expressions.Length != 1 && expressions.Length != 2) {
+                CheckArgCount(GetName(), expressions, 1);
+            }
+            this.type = (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) expressions[0]).GetValue();
+        }
+
         public NullVal(Net.Vpc.Upa.Types.DataType type) {
             this.type = type;
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            if (index == 0) {
+                this.type = (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) e).GetValue();
+            } else {
+                throw new System.IndexOutOfRangeException();
+            }
         }
 
 

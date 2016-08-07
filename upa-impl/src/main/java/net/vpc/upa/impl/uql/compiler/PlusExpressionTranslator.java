@@ -15,22 +15,16 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 * To change this template use File | Settings | File Templates.
 */
 public class PlusExpressionTranslator implements ExpressionTranslator {
-    private ExpressionTranslationManager expressionTranslationManager;
-
-    public PlusExpressionTranslator(ExpressionTranslationManager expressionTranslationManager) {
-        this.expressionTranslationManager = expressionTranslationManager;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compilePlus((Plus) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compilePlus((Plus) o, declarations);
-    }
-
-    protected CompiledPlus compilePlus(Plus v, ExpressionDeclarationList declarations) {
+    protected CompiledPlus compilePlus(Plus v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = expressionTranslationManager.compileAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = expressionTranslationManager.compileAny(v.getRight(), declarations);
+        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
+        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
         CompiledPlus s = new CompiledPlus(left, right);
 //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

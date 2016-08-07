@@ -21,44 +21,52 @@ namespace Net.Vpc.Upa.Impl
      */
     public class EntitySubclassUnstructuredFactory : Net.Vpc.Upa.Impl.AbstractEntityFactory {
 
+        private Net.Vpc.Upa.Entity entity;
+
         private System.Type recordType;
 
         private Net.Vpc.Upa.ObjectFactory objectFactory;
 
-        public EntitySubclassUnstructuredFactory(System.Type recordType, Net.Vpc.Upa.ObjectFactory objectFactory) {
+        public EntitySubclassUnstructuredFactory(System.Type recordType, Net.Vpc.Upa.ObjectFactory objectFactory, Net.Vpc.Upa.Entity entity) {
             this.recordType = recordType;
             this.objectFactory = objectFactory;
+            this.entity = entity;
         }
 
         public override Net.Vpc.Upa.Record CreateRecord() {
-            return (Net.Vpc.Upa.Record) objectFactory.CreateObject<Net.Vpc.Upa.Record>(recordType);
+            return (Net.Vpc.Upa.Record) objectFactory.CreateObject<object>(recordType);
         }
 
         public override  R CreateObject<R>() {
             return (R) CreateRecord();
         }
 
-        public override  Net.Vpc.Upa.Record GetRecord<R>(R entity, bool ignoreUnspecified) {
-            return (Net.Vpc.Upa.Record) entity;
+        public override Net.Vpc.Upa.Record ObjectToRecord(object @object, bool ignoreUnspecified) {
+            return (Net.Vpc.Upa.Record) @object;
         }
 
 
-        public override  R GetEntity<R>(Net.Vpc.Upa.Record unstructuredRecord) {
-            if (recordType.IsInstanceOfType(unstructuredRecord)) {
-                return (R) unstructuredRecord;
+        public override  R RecordToObject<R>(Net.Vpc.Upa.Record record) {
+            if (recordType.IsInstanceOfType(record)) {
+                return (R) record;
             } else {
-                R ur = (R) CreateRecord();
-                ((Net.Vpc.Upa.Record) ur).SetAll(unstructuredRecord);
-                return ur;
+                object ur = CreateRecord();
+                ((Net.Vpc.Upa.Record) ur).SetAll(record);
+                return (R) ur;
             }
         }
 
-        public override void SetProperty(object entityObject, string property, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            ((Net.Vpc.Upa.Record) entityObject).SetObject(property, @value);
+        public override void SetProperty(object @object, string property, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            ((Net.Vpc.Upa.Record) @object).SetObject(property, @value);
         }
 
-        public override object GetProperty(object entityObject, string property) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return ((Net.Vpc.Upa.Record) entityObject).GetObject<object>(property);
+        public override object GetProperty(object @object, string property) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return ((Net.Vpc.Upa.Record) @object).GetObject<T>(property);
+        }
+
+
+        protected internal override Net.Vpc.Upa.Entity GetEntity() {
+            return entity;
         }
     }
 }

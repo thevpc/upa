@@ -9,7 +9,7 @@ import java.beans.PropertyChangeListener;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/8/13 2:20 AM
  */
-public class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
+class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
 
     private final QueryResult result;
     private final TypeInfo typeInfo;

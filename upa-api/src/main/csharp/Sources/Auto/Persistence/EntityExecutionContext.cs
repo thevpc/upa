@@ -25,7 +25,32 @@ namespace Net.Vpc.Upa.Persistence
 
          System.Collections.Generic.IDictionary<string , object> GetValues();
 
+         System.Collections.Generic.IDictionary<string , object> GetHints();
+
+         object GetHint(string hintName);
+
+         object GetHint(string hintName, object defaultValue);
+
+         Net.Vpc.Upa.Persistence.EntityExecutionContext ResetHints();
+
+        /**
+             * add or remove (if value is null) hint
+             * @param name
+             * @param value
+             */
+         Net.Vpc.Upa.Persistence.EntityExecutionContext SetHint(string name, object @value);
+
+        /**
+             * merges hints
+             * @param hints
+             */
+         Net.Vpc.Upa.Persistence.EntityExecutionContext SetHints(System.Collections.Generic.IDictionary<string , object> hints);
+
          Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit();
+
+         Net.Vpc.Upa.Persistence.UConnection GetConnection();
+
+         Net.Vpc.Upa.Session GetSession();
 
          Net.Vpc.Upa.Persistence.PersistenceStore GetPersistenceStore();
 

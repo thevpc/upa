@@ -23,9 +23,9 @@ namespace Net.Vpc.Upa.Impl
 
         protected internal Net.Vpc.Upa.Types.DataType dataType;
 
-        protected internal Net.Vpc.Upa.Formula insertFormula;
+        protected internal Net.Vpc.Upa.Formula persistFormula;
 
-        protected internal int insertFormulaOrder;
+        protected internal int persistFormulaOrder;
 
         protected internal Net.Vpc.Upa.Formula updateFormula;
 
@@ -51,13 +51,11 @@ namespace Net.Vpc.Upa.Impl
 
         protected internal object unspecifiedValue = Net.Vpc.Upa.UnspecifiedValue.DEFAULT;
 
-        private Net.Vpc.Upa.Relationship[] rightsRelations = new Net.Vpc.Upa.Relationship[0];
-
-        private Net.Vpc.Upa.AccessLevel insertAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
+        private Net.Vpc.Upa.AccessLevel persistAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
 
         private Net.Vpc.Upa.AccessLevel updateAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
 
-        private Net.Vpc.Upa.AccessLevel selectAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
+        private Net.Vpc.Upa.AccessLevel readAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
 
         private Net.Vpc.Upa.Impl.FieldPersister fieldPersister;
 
@@ -97,9 +95,9 @@ namespace Net.Vpc.Upa.Impl
             return GetModifiers().Contains(Net.Vpc.Upa.FieldModifier.SUMMARY);
         }
 
-        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationships() {
+        public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetManyToOneRelationships() {
             System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> relations = new System.Collections.Generic.List<Net.Vpc.Upa.Relationship>();
-            foreach (Net.Vpc.Upa.Relationship r in GetPersistenceUnit().GetRelationshipsForSource(GetEntity())) {
+            foreach (Net.Vpc.Upa.Relationship r in GetPersistenceUnit().GetRelationshipsBySource(GetEntity())) {
                 Net.Vpc.Upa.Field entityField = r.GetSourceRole().GetEntityField();
                 if (entityField != null && entityField.Equals(this)) {
                     relations.Add(r);
@@ -116,7 +114,7 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void SetFormula(Net.Vpc.Upa.Formula formula) {
-            SetInsertFormula(formula);
+            SetPersistFormula(formula);
             SetUpdateFormula(formula);
         }
 
@@ -125,13 +123,13 @@ namespace Net.Vpc.Upa.Impl
             SetFormula(formula == null ? null : new Net.Vpc.Upa.ExpressionFormula(formula));
         }
 
-        public virtual void SetInsertFormula(Net.Vpc.Upa.Formula formula) {
-            this.insertFormula = formula;
+        public virtual void SetPersistFormula(Net.Vpc.Upa.Formula formula) {
+            this.persistFormula = formula;
         }
 
 
-        public virtual void SetInsertFormula(string formula) {
-            SetInsertFormula(formula == null ? null : new Net.Vpc.Upa.ExpressionFormula(formula));
+        public virtual void SetPersistFormula(string formula) {
+            SetPersistFormula(formula == null ? null : new Net.Vpc.Upa.ExpressionFormula(formula));
         }
 
         public virtual void SetUpdateFormula(Net.Vpc.Upa.Formula formula) {
@@ -145,13 +143,13 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual void SetFormulaOrder(int order) {
-            SetInsertFormulaOrder(order);
+            SetPersistFormulaOrder(order);
             SetUpdateFormulaOrder(order);
         }
 
 
-        public virtual void SetInsertFormulaOrder(int order) {
-            this.insertFormulaOrder = order;
+        public virtual void SetPersistFormulaOrder(int order) {
+            this.persistFormulaOrder = order;
         }
 
 
@@ -163,8 +161,8 @@ namespace Net.Vpc.Upa.Impl
             return updateFormulaOrder;
         }
 
-        public virtual int GetInsertFormulaOrder() {
-            return insertFormulaOrder;
+        public virtual int GetPersistFormulaOrder() {
+            return persistFormulaOrder;
         }
 
         public virtual Net.Vpc.Upa.Formula GetUpdateFormula() {
@@ -194,8 +192,8 @@ namespace Net.Vpc.Upa.Impl
             return entity.GetPersistenceUnit();
         }
 
-        public virtual Net.Vpc.Upa.Formula GetInsertFormula() {
-            return insertFormula;
+        public virtual Net.Vpc.Upa.Formula GetPersistFormula() {
+            return persistFormula;
         }
 
         public virtual Net.Vpc.Upa.Entity GetEntity() {
@@ -277,29 +275,6 @@ namespace Net.Vpc.Upa.Impl
             }
         }
 
-        /**
-             * called by PersistenceUnitFilter You should not use it
-             *
-             * @param r relation
-             */
-        public virtual void AddTargetRelationship(Net.Vpc.Upa.Relationship r) {
-            int max = rightsRelations.Length;
-            for (int i = 0; i < rightsRelations.Length; i++) {
-                Net.Vpc.Upa.Relationship relation = rightsRelations[i];
-                if (relation.Equals(r)) {
-                    return;
-                }
-            }
-            Net.Vpc.Upa.Relationship[] rr = new Net.Vpc.Upa.Relationship[max + 1];
-            System.Array.Copy(rightsRelations, 0, rr, 0, max);
-            rr[max] = r;
-            rightsRelations = rr;
-        }
-
-        public virtual Net.Vpc.Upa.Relationship[] GetTargetRelationships() {
-            return rightsRelations;
-        }
-
         public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
             this.entity = entity;
         }
@@ -352,15 +327,15 @@ namespace Net.Vpc.Upa.Impl
             return (v == @value || (v != null && v.Equals(@value)));
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetInsertAccessLevel() {
-            return insertAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetPersistAccessLevel() {
+            return persistAccessLevel;
         }
 
-        public virtual void SetInsertAccessLevel(Net.Vpc.Upa.AccessLevel insertAccessLevel) {
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), insertAccessLevel) || insertAccessLevel == Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                insertAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
+        public virtual void SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel persistAccessLevel) {
+            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), persistAccessLevel)) {
+                persistAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
             }
-            this.insertAccessLevel = insertAccessLevel;
+            this.persistAccessLevel = persistAccessLevel;
         }
 
         public virtual Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel() {
@@ -368,27 +343,27 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual void SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel updateAccessLevel) {
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), updateAccessLevel) || updateAccessLevel == Net.Vpc.Upa.AccessLevel.DEFAULT) {
+            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), updateAccessLevel)) {
                 updateAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
             }
             this.updateAccessLevel = updateAccessLevel;
         }
 
-        public virtual Net.Vpc.Upa.AccessLevel GetSelectAccessLevel() {
-            return selectAccessLevel;
+        public virtual Net.Vpc.Upa.AccessLevel GetReadAccessLevel() {
+            return readAccessLevel;
         }
 
-        public virtual void SetSelectAccessLevel(Net.Vpc.Upa.AccessLevel selectAccessLevel) {
-            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), selectAccessLevel) || selectAccessLevel == Net.Vpc.Upa.AccessLevel.DEFAULT) {
-                selectAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
+        public virtual void SetReadAccessLevel(Net.Vpc.Upa.AccessLevel readAccessLevel) {
+            if (Net.Vpc.Upa.Impl.Util.PlatformUtils.IsUndefinedValue<Net.Vpc.Upa.AccessLevel>(typeof(Net.Vpc.Upa.AccessLevel), readAccessLevel)) {
+                readAccessLevel = Net.Vpc.Upa.AccessLevel.PUBLIC;
             }
-            this.selectAccessLevel = selectAccessLevel;
+            this.readAccessLevel = readAccessLevel;
         }
 
         public virtual void SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel) {
-            SetInsertAccessLevel(accessLevel);
+            SetPersistAccessLevel(accessLevel);
             SetUpdateAccessLevel(accessLevel);
-            SetSelectAccessLevel(accessLevel);
+            SetReadAccessLevel(accessLevel);
         }
 
         public virtual Net.Vpc.Upa.SearchOperator GetSearchOperator() {
@@ -421,6 +396,37 @@ namespace Net.Vpc.Upa.Impl
 
         public virtual void SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType accessType) {
             this.accessType = accessType;
+        }
+
+
+        public virtual object GetMainValue(object instance) {
+            object v = GetValue(instance);
+            if (v != null) {
+                Net.Vpc.Upa.Types.DataType d = GetDataType();
+                if (d is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType ed = (Net.Vpc.Upa.Types.ManyToOneType) d;
+                    v = ed.GetRelationship().GetTargetEntity().GetBuilder().GetMainValue(v);
+                }
+            }
+            return v;
+        }
+
+
+        public virtual object GetValue(object instance) {
+            if (instance is Net.Vpc.Upa.Record) {
+                return ((Net.Vpc.Upa.Record) instance).GetObject<T>(GetName());
+            }
+            return GetEntity().GetBuilder().GetProperty(instance, GetName());
+        }
+
+
+        public virtual void SetValue(object instance, object @value) {
+            GetEntity().GetBuilder().SetProperty(instance, GetName(), @value);
+        }
+
+
+        public virtual void Check(object @value) {
+            GetDataType().Check(@value, GetName(), null);
         }
     }
 }

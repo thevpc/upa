@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Callbacks
 
     /**
      *
-     * @author vpc
+     * @author taha.bensalah@gmail.com
      */
     public class UpdateEvent : Net.Vpc.Upa.Callbacks.EntityEvent {
 
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         private Net.Vpc.Upa.Expressions.Expression filterExpression;
 
-        public UpdateEvent(Net.Vpc.Upa.Record updatesRecord, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext)  : base(entityExecutionContext){
+        public UpdateEvent(Net.Vpc.Upa.Record updatesRecord, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.updatesRecord = updatesRecord;
             this.filterExpression = filterExpression;
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         public virtual object GetUpdatesObject() {
             if (updatesObject == null && updatesRecord != null) {
-                updatesObject = GetContext().GetEntity().GetBuilder().RecordToEntity<object>(updatesRecord);
+                updatesObject = GetContext().GetEntity().GetBuilder().RecordToObject<object>(updatesRecord);
             }
             return updatesObject;
         }

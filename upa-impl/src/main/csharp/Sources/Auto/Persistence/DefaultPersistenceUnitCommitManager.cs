@@ -58,7 +58,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         private Net.Vpc.Upa.Persistence.UConnection GetConnection(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) {
-            return executionContext.GetPersistenceStore().GetConnection();
+            return executionContext.GetConnection();
         }
 
         public virtual void AlterPersistenceUnitAddObject(Net.Vpc.Upa.UPAObject @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
@@ -101,7 +101,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         public virtual bool CommitStructure() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            Net.Vpc.Upa.Persistence.EntityExecutionContext context = persistenceStore.CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME);
+            Net.Vpc.Upa.Persistence.EntityExecutionContext context = ((Net.Vpc.Upa.Impl.DefaultPersistenceUnit) persistenceUnit).CreateContext(Net.Vpc.Upa.Persistence.ContextOperation.CREATE_PERSISTENCE_NAME, null);
             Net.Vpc.Upa.Impl.FwkConvertUtils.ListSort(storage, structureCommitComparator);
             bool someCommit = false;
             foreach (Net.Vpc.Upa.Impl.Persistence.StructureCommit next in storage) {

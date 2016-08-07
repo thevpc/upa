@@ -49,7 +49,7 @@ public class RelationQueryHintsUC {
 //            for (Record record : r) {
 //                System.out.println(r);
 //            }
-            List<Person> r = q.getEntityList();
+            List<Person> r = q.getResultList();
             r.size();
             for (Person record : r) {
                 System.out.println(r);

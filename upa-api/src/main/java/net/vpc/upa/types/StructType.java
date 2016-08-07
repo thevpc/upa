@@ -41,17 +41,19 @@ import java.util.Map;
 
 public class StructType extends DefaultDataType implements Cloneable {
     public static final Object OLD_VALUE = new Object();
-    private Map<String, DataType> elementsMap = new HashMap<String, DataType>();
-    private List<String> elementsList = new ArrayList<String>();
+    private Map<String, DataType> elementsMap ;
+    private List<String> elementsList ;
 
     public StructType(String name, Class clazz, String[] fieldNames, DataType[] datatypes, boolean nullable) {
         super(name, clazz, datatypes.length, 0, nullable);
         if (fieldNames.length != datatypes.length) {
-            throw new IllegalArgumentException();
+            throw new net.vpc.upa.exceptions.IllegalArgumentException();
         }
+        elementsMap = new HashMap<String, DataType>(fieldNames.length);
+        elementsList = new ArrayList<String>(fieldNames.length);
         for (int i = 0; i < fieldNames.length; i++) {
             if (elementsMap.containsKey(fieldNames[i])) {
-                throw new IllegalArgumentException();
+                throw new net.vpc.upa.exceptions.IllegalArgumentException();
             }
             elementsMap.put(fieldNames[i], datatypes[i]);
             elementsList.add(fieldNames[i]);

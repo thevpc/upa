@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public final class TaggedExpression {
 

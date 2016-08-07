@@ -8,8 +8,9 @@ import net.vpc.upa.*;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.filters.Fields;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
@@ -20,6 +21,7 @@ import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
@@ -40,14 +42,6 @@ public class ExpressionValidationManager {
 
     private static Logger log = Logger.getLogger(ExpressionValidationManager.class.getName());
     private PersistenceUnit persistenceUnit;
-    private static final FieldFilter READABLE = Fields.regular().and(
-            Fields.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-                    FieldModifier.SELECT_COMPILED,
-                    FieldModifier.SELECT_LIVE)).andNot(Fields.byAllAccessLevel(AccessLevel.PRIVATE));
-    private static final FieldFilter READABLE_NON_ENTITY = Fields.regular().and(
-            Fields.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-                    FieldModifier.SELECT_COMPILED,
-                    FieldModifier.SELECT_LIVE)).andNot(Fields.byEntityType());
 
     public ExpressionValidationManager(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
@@ -83,9 +77,9 @@ public class ExpressionValidationManager {
                 CompiledVar fvar = ci.getField(i);
                 DefaultCompiledExpression vv = ci.getFieldValue(i);
 
-                if (!(fvar.getReferrer() instanceof Field)) {
-                    System.out.println("How come");
-                }
+//                if (!(fvar.getReferrer() instanceof Field)) {
+//                    System.out.println("How come");
+//                }
                 Field f = (Field) fvar.getReferrer();
                 if (config.isValidate()) {
                     if (f == null) {
@@ -409,12 +403,12 @@ public class ExpressionValidationManager {
     }
 
     private void expandEntityFieldsJoinFetch(CompiledSelect qs, int index,Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
-        for (Field field : e.getFields(Fields.as(fieldFilter).and(READABLE))) {
+        for (Field field : e.getFields(FieldFilters.as(fieldFilter).and(Fields2.READ))) {
             if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                 expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
             } else if (field.getDataType() instanceof ManyToOneType) {
                 ExpansionVisitTracker c = visitedEntities.copy();
-                expandManyToOneFieldJoinFetch(qs, index,field, entityAlias, binding, UPAUtils.dotConcat(aliasBinding, field.getName()), fieldFilter, c);
+                expandManyToOneFieldJoinFetch(qs, index, field, entityAlias, binding, UPAUtils.dotConcat(aliasBinding, field.getName()), fieldFilter, c);
             } else {
                 CompiledVar vv = new CompiledVar(entityAlias, e);
                 vv.setChild(new CompiledVar(field));
@@ -429,7 +423,7 @@ public class ExpressionValidationManager {
     }
 
     private void expandEntityFieldsSelectFetch(CompiledSelect qs,int index, Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
-        for (Field field : e.getFields(Fields.as(fieldFilter).and(READABLE))) {
+        for (Field field : e.getFields(FieldFilters.as(fieldFilter).and(Fields2.READ))) {
             if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                 expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
             } else if (field.getDataType() instanceof ManyToOneType) {
@@ -469,8 +463,8 @@ public class ExpressionValidationManager {
             return;
         }
         BindingJoinInfo d = addBindingJoin(qs, field, entityAlias,
-                (StringUtils.isNullOrEmpty(binding) ? field.getName() : (binding + "." + field.getName())),
-                (StringUtils.isNullOrEmpty(aliasBinding) ? field.getName() : (aliasBinding + "." + field.getName()))
+                (StringUtils.isNullOrEmpty(binding) ? ExpressionHelper.escapeIdentifier(field.getName()) : (binding + "." + ExpressionHelper.escapeIdentifier(field.getName()))),
+                (StringUtils.isNullOrEmpty(aliasBinding) ?ExpressionHelper.escapeIdentifier(field.getName()) : (aliasBinding + "." + ExpressionHelper.escapeIdentifier(field.getName())))
         );
         expandEntityFieldsJoinFetch(qs, index,masterEntity, d.alias, d.binding, aliasBinding, fieldFilter, dived);
     }
@@ -740,7 +734,7 @@ public class ExpressionValidationManager {
                 Field f = (Field) p1.getReferrer();
                 if (f.getDataType() instanceof ManyToOneType) {
                     CompiledQueryField cqf = CompiledExpressionHelper.findRootCompiledQueryField(p1);
-                    BindingJoinInfo alias = addBindingJoin(s, f, p2.getName(), createBindingID(p1), cqf == null ? null : cqf.getAlias());
+                    BindingJoinInfo alias = addBindingJoin(s, f, ExpressionHelper.escapeIdentifier(p2.getName()), createBindingID(p1), cqf == null ? null : cqf.getAlias());
                     p2.setName(alias.alias);
                     p2.setReferrer(alias.entity);
 
@@ -768,7 +762,7 @@ public class ExpressionValidationManager {
             if (s.length() > 0) {
                 s.insert(0, ".");
             }
-            s.insert(0, t.getName());
+            s.insert(0, ExpressionHelper.escapeIdentifier(t.getName()));
             DefaultCompiledExpression pe = t.getParentExpression();
             if (pe instanceof CompiledVarOrMethod) {
                 t = (CompiledVarOrMethod) pe;
@@ -892,7 +886,7 @@ public class ExpressionValidationManager {
             }
             //TODO remove me
 //            validateCompiledVar(v, config);
-            throw new IllegalArgumentException("Field or alias not found : " + v.getName());
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
         } else {
             String before = p.toString();
             /*p =*/
@@ -907,7 +901,7 @@ public class ExpressionValidationManager {
                 } else if ("*".equals(v.getName())) {
                     return v;
                 }
-                throw new IllegalArgumentException("Field not found " + v.getName());
+                throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
             } else if (ref instanceof Field) {
                 DataType dataType = ((Field) ref).getDataType();
                 if (dataType instanceof ManyToOneType) {
@@ -920,9 +914,12 @@ public class ExpressionValidationManager {
                     } else if ("*".equals(v.getName())) {
                         return v;
                     }
+                }else{
+                    log.severe("Type Cast Exception "+((Field) ref).getAbsoluteName()+" is not of type "+ManyToOneType.class.getName()+" but "+dataType);
+                    throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
                 }
             }
-            throw new IllegalArgumentException("Field not found " + v.getName());
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
         }
 //        return defaultReferrer;
     }

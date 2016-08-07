@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class UQLExpressionUC {
 
@@ -26,7 +26,7 @@ public class UQLExpressionUC {
 
     @Test
     public void crudMixedRecordsAndEntities() {
-        QLExpressionParser p = UPA.getBootstrapFactory().createObject(QLExpressionParser.class);
+        QLExpressionParser p = UPA.getBootstrap().getFactory().createObject(QLExpressionParser.class);
         Expression e = p.parse("select * from autres where EMAIL<>null and NOT EMAIL like '*1*'");
 //        Expression e = p.parse("select * from T where 1=1 and not(1)");
         System.out.println(e);

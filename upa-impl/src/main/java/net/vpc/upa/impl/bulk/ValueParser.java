@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.bulk;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.util.DateUtils;
 import net.vpc.upa.types.*;
 
@@ -11,6 +12,7 @@ import net.vpc.upa.types.*;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class ValueParser {
 
     public static Object parse(Object value, DataType type) {

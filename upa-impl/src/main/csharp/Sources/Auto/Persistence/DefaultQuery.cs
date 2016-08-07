@@ -25,36 +25,55 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
         private Net.Vpc.Upa.Persistence.EntityExecutionContext context;
 
-        private Net.Vpc.Upa.Entity defaultEntity;
-
-        private Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement query;
-
-        private Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData metadata;
+        private Net.Vpc.Upa.Expressions.EntityStatement query;
 
         private Net.Vpc.Upa.Persistence.QueryResult result;
 
-        private Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore puManager;
+        private Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore store;
 
         private bool lazyListLoadingEnabled = true;
 
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter ID = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAllOf(Net.Vpc.Upa.FieldModifier.ID));
-
-        private static readonly Net.Vpc.Upa.Filters.FieldFilter READABLE = Net.Vpc.Upa.Filters.Fields.Regular().And(Net.Vpc.Upa.Filters.Fields.ByModifiersAnyOf(Net.Vpc.Upa.FieldModifier.SELECT_DEFAULT, Net.Vpc.Upa.FieldModifier.SELECT_COMPILED, Net.Vpc.Upa.FieldModifier.SELECT_LIVE)).AndNot(Net.Vpc.Upa.Filters.Fields.ByAllAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE));
+        private System.Collections.Generic.IDictionary<string , object> hints = new System.Collections.Generic.Dictionary<string , object>();
 
         private System.Collections.Generic.IList<object> allResults = new System.Collections.Generic.List<object>();
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Impl.Persistence.NativeSQL> precompiledNativeSQLMap = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Impl.Persistence.NativeSQL>();
+        private Net.Vpc.Upa.Impl.Persistence.QueryExecutor lastQueryExecutor = null;
 
         private Net.Vpc.Upa.Impl.Persistence.DefaultQuery sessionAwareInstance;
+
+        private System.Collections.Generic.IDictionary<string , object> parametersByName;
+
+        private System.Collections.Generic.IDictionary<int? , object> parametersByIndex;
 
         protected internal DefaultQuery() {
         }
 
-        public DefaultQuery(Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement query, Net.Vpc.Upa.Entity defaultEntity, Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+        public DefaultQuery(Net.Vpc.Upa.Expressions.EntityStatement query, Net.Vpc.Upa.Entity defaultEntity, Net.Vpc.Upa.Persistence.EntityExecutionContext context) {
+            this.query = query;
+            if (defaultEntity != null) {
+                if (query is Net.Vpc.Upa.Expressions.Select) {
+                    Net.Vpc.Upa.Expressions.Select select = (Net.Vpc.Upa.Expressions.Select) query;
+                    if (select.GetEntity() == null) {
+                        select.From(defaultEntity.GetName());
+                    }
+                } else if (query is Net.Vpc.Upa.Expressions.Insert) {
+                    if (((Net.Vpc.Upa.Expressions.Insert) query).GetEntity() == null) {
+                        ((Net.Vpc.Upa.Expressions.Insert) query).Into(defaultEntity.GetName());
+                    }
+                } else if (query is Net.Vpc.Upa.Expressions.Update) {
+                    if (((Net.Vpc.Upa.Expressions.Update) query).GetEntity() == null) {
+                        ((Net.Vpc.Upa.Expressions.Update) query).Entity(defaultEntity.GetName());
+                    }
+                } else if (query is Net.Vpc.Upa.Expressions.Delete) {
+                    if (((Net.Vpc.Upa.Expressions.Delete) query).GetEntity() == null) {
+                        ((Net.Vpc.Upa.Expressions.Delete) query).From(defaultEntity.GetName());
+                    }
+                }
+            }
             this.context = context;
-            this.query = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement) query.Copy();
-            this.defaultEntity = defaultEntity;
-            puManager = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) context.GetPersistenceStore();
+            //        this.cquery = (CompiledEntityStatement) query.copy();
+            //        this.defaultEntity = defaultEntity;
+            store = (Net.Vpc.Upa.Impl.Persistence.DefaultPersistenceStore) context.GetPersistenceStore();
         }
 
         public override int ExecuteNonQuery() {
@@ -65,57 +84,38 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.ExecuteNonQuery();
             }
             //
-            Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = CreateNativeSQL(null, null);
-            Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData m = new Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData();
-            m.AddField("result", Net.Vpc.Upa.Impl.Transform.IdentityDataTypeTransform.INT, null);
-            this.metadata = m;
-            nativeSQL.Execute();
-            return nativeSQL.GetResultCount();
+            Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = CreateNativeSQL(null);
+            return queryExecutor.Execute().GetResultCount();
+        }
+
+        protected internal virtual Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement CreateCompiledEntityStatement() {
+            Net.Vpc.Upa.Persistence.ExpressionCompilerConfig config = new Net.Vpc.Upa.Persistence.ExpressionCompilerConfig();
+            string alias = null;
+            string ent = null;
+            if (query is Net.Vpc.Upa.Expressions.Select) {
+                Net.Vpc.Upa.Expressions.Select d = (Net.Vpc.Upa.Expressions.Select) query;
+                string entityAlias = d.GetEntityAlias();
+                Net.Vpc.Upa.Expressions.EntityName entityName = (d.GetEntity() is Net.Vpc.Upa.Expressions.EntityName) ? ((Net.Vpc.Upa.Expressions.EntityName) d.GetEntity()) : null;
+                if (entityAlias != null) {
+                    alias = entityAlias;
+                    ent = entityName == null ? null : entityName.GetName();
+                } else {
+                    ent = entityName == null ? null : entityName.GetName();
+                    alias = ent;
+                }
+            }
+            if (alias != null) {
+                config.SetThisAlias(alias);
+            }
+            config.SetExpandFields(false);
+            config.SetExpandEntityFilter(false);
+            config.SetValidate(false);
+            return (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement) context.GetPersistenceUnit().GetExpressionManager().CompileExpression(query, config);
         }
 
 
         public override  System.Collections.Generic.IList<R2> GetEntityList<R2>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (!context.GetPersistenceUnit().GetPersistenceGroup().CurrentSessionExists()) {
-                if (sessionAwareInstance == null) {
-                    sessionAwareInstance = context.GetPersistenceUnit().GetPersistenceGroup().GetContext().MakeSessionAware<Net.Vpc.Upa.Impl.Persistence.DefaultQuery>(this);
-                }
-                return sessionAwareInstance.GetEntityList<R2>();
-            }
-            try {
-                string aliasName = null;
-                if (query is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) {
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> queryStatements = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) query).GetQueryStatements();
-                    if ((queryStatements.Count==0)) {
-                        throw new System.ArgumentException ("Empty Union");
-                    }
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> declarations = queryStatements[0].GetExportedDeclarations();
-                    foreach (Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d in declarations) {
-                        if (d.GetReferrerType() == Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY) {
-                            aliasName = d.GetValidName();
-                            break;
-                        }
-                    }
-                } else {
-                    // select
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> declarations = query.GetExportedDeclarations();
-                    foreach (Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d in declarations) {
-                        if (d.GetReferrerType() == Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY) {
-                            aliasName = d.GetValidName();
-                            break;
-                        }
-                    }
-                }
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                Net.Vpc.Upa.Impl.Persistence.SingleEntityQueryResult<R2> r = new Net.Vpc.Upa.Impl.Persistence.SingleEntityQueryResult<R2>(nativeSQL, aliasName);
-                allResults.Add(r);
-                if (!IsLazyListLoadingEnabled()) {
-                    //force loading
-                    r.LoadAll();
-                }
-                return r;
-            } catch (System.Exception e) {
-                throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("FindFailed"));
-            }
+            return GetResultList<T>();
         }
 
 
@@ -127,8 +127,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.GetMultiRecordList();
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                Net.Vpc.Upa.Impl.Persistence.MultiRecordList r = new Net.Vpc.Upa.Impl.Persistence.MultiRecordList(nativeSQL, IsUpdatable());
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
+                Net.Vpc.Upa.Impl.Persistence.MultiRecordList r = new Net.Vpc.Upa.Impl.Persistence.MultiRecordList(queryExecutor, IsUpdatable());
                 allResults.Add(r);
                 if (!IsLazyListLoadingEnabled()) {
                     //force loading
@@ -149,10 +149,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.IsEmpty();
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
                 Net.Vpc.Upa.Persistence.QueryResult r = null;
                 try {
-                    r = nativeSQL.GetQueryResult();
+                    r = queryExecutor.GetQueryResult();
                     return !r.HasNext();
                 } finally {
                     if (r != null) {
@@ -164,17 +164,46 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
+        public override  System.Collections.Generic.IList<T> GetResultList<T>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetResultList<T>(new Net.Vpc.Upa.Impl.Persistence.Result.ObjectOrArrayQueryResultItemBuilder());
+        }
 
-        public override System.Collections.Generic.IList<Net.Vpc.Upa.Record> GetRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override  System.Collections.Generic.ISet<T> GetResultSet<T>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<T> set = new System.Collections.Generic.HashSet<T>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, this.GetResultList<T>(new Net.Vpc.Upa.Impl.Persistence.Result.ObjectOrArrayQueryResultItemBuilder()));
+            return set;
+        }
+
+        public virtual  System.Collections.Generic.IList<T> GetResultList<T>(Net.Vpc.Upa.Impl.Persistence.Result.QueryResultItemBuilder builder) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!context.GetPersistenceUnit().GetPersistenceGroup().CurrentSessionExists()) {
                 if (sessionAwareInstance == null) {
                     sessionAwareInstance = context.GetPersistenceUnit().GetPersistenceGroup().GetContext().MakeSessionAware<Net.Vpc.Upa.Impl.Persistence.DefaultQuery>(this);
                 }
-                return sessionAwareInstance.GetRecordList();
+                return sessionAwareInstance.GetResultList<T>(builder);
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                Net.Vpc.Upa.Impl.Persistence.MergedRecordList r = new Net.Vpc.Upa.Impl.Persistence.MergedRecordList(nativeSQL, context.GetPersistenceUnit());
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
+                Net.Vpc.Upa.QueryFetchStrategy fetchStrategy = (Net.Vpc.Upa.QueryFetchStrategy) Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(queryExecutor.GetHints(),Net.Vpc.Upa.QueryHints.FETCH_STRATEGY);
+                if (fetchStrategy == default(Net.Vpc.Upa.QueryFetchStrategy)) {
+                    fetchStrategy = Net.Vpc.Upa.QueryFetchStrategy.JOIN;
+                }
+                bool itemAsRecord = builder is Net.Vpc.Upa.Impl.Persistence.Result.RecordQueryResultItemBuilder;
+                bool relationAsRecord = false;
+                bool supportCache = false;
+                Net.Vpc.Upa.Impl.Persistence.Result.QueryResultRelationLoader loader = null;
+                switch(fetchStrategy) {
+                    case Net.Vpc.Upa.QueryFetchStrategy.JOIN:
+                        {
+                            break;
+                        }
+                    case Net.Vpc.Upa.QueryFetchStrategy.SELECT:
+                        {
+                            supportCache = true;
+                            loader = new Net.Vpc.Upa.Impl.Persistence.Result.QueryRelationLoaderSelectObject();
+                            break;
+                        }
+                }
+                Net.Vpc.Upa.Impl.Persistence.QueryResultLazyList<T> r = new Net.Vpc.Upa.Impl.Persistence.Result.DefaultObjectQueryResultLazyList<T>(queryExecutor, fetchStrategy != Net.Vpc.Upa.QueryFetchStrategy.JOIN, itemAsRecord, relationAsRecord, supportCache, IsUpdatable(), loader, builder);
                 allResults.Add(r);
                 if (!IsLazyListLoadingEnabled()) {
                     //force loading
@@ -185,6 +214,12 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("FindFailed"));
             }
         }
+
+
+        public override System.Collections.Generic.IList<Net.Vpc.Upa.Record> GetRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetResultList<T>(new Net.Vpc.Upa.Impl.Persistence.Result.RecordQueryResultItemBuilder());
+        }
+
 
         public override  System.Collections.Generic.IList<T> GetValueList<T>(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!context.GetPersistenceUnit().GetPersistenceGroup().CurrentSessionExists()) {
@@ -194,11 +229,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.GetValueList<T>(index);
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                if (index < 0 || index > nativeSQL.GetFields().Length) {
-                    throw new System.IndexOutOfRangeException("Invalid inex " + index);
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
+                if (index < 0 || index > (queryExecutor.GetMetaData().GetFields()).Count) {
+                    throw new System.IndexOutOfRangeException("Invalid index " + index);
                 }
-                Net.Vpc.Upa.Impl.Persistence.ValueList<T> r = new Net.Vpc.Upa.Impl.Persistence.ValueList<T>(nativeSQL, index);
+                Net.Vpc.Upa.Impl.Persistence.ValueList<T> r = new Net.Vpc.Upa.Impl.Persistence.ValueList<T>(queryExecutor, index);
                 allResults.Add(r);
                 if (!IsLazyListLoadingEnabled()) {
                     //force loading
@@ -210,6 +245,21 @@ namespace Net.Vpc.Upa.Impl.Persistence
             }
         }
 
+
+        public override  System.Collections.Generic.ISet<T> GetValueSet<T>(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<T> set = new System.Collections.Generic.HashSet<T>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, this.GetValueList<T>(index));
+            return set;
+        }
+
+
+        public override  System.Collections.Generic.ISet<T> GetValueSet<T>(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<T> set = new System.Collections.Generic.HashSet<T>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, this.GetValueList<T>(name));
+            return set;
+        }
+
+
         public override  System.Collections.Generic.IList<T> GetValueList<T>(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!context.GetPersistenceUnit().GetPersistenceGroup().CurrentSessionExists()) {
                 if (sessionAwareInstance == null) {
@@ -218,11 +268,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.GetValueList<T>(name);
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                Net.Vpc.Upa.Impl.Persistence.NativeField[] ne = nativeSQL.GetFields();
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
+                System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> ne = queryExecutor.GetMetaData().GetFields();
                 int index = -1;
-                for (int i = 0; i < ne.Length; i++) {
-                    if (name.Equals(ne[i].GetName())) {
+                for (int i = 0; i < (ne).Count; i++) {
+                    if (name.Equals(ne[i].GetAlias())) {
                         index = i;
                         break;
                     }
@@ -230,7 +280,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 if (index < 0) {
                     throw new System.Exception("Field " + name + " not found");
                 }
-                Net.Vpc.Upa.Impl.Persistence.ValueList<T> r = new Net.Vpc.Upa.Impl.Persistence.ValueList<T>(nativeSQL, index);
+                Net.Vpc.Upa.Impl.Persistence.ValueList<T> r = new Net.Vpc.Upa.Impl.Persistence.ValueList<T>(queryExecutor, index);
                 if (!IsLazyListLoadingEnabled()) {
                     //force loading
                     r.LoadAll();
@@ -250,8 +300,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.GetTypeList<T>(type, fields);
             }
             try {
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("READABLE", READABLE);
-                Net.Vpc.Upa.Impl.Persistence.TypeList<T> r = new Net.Vpc.Upa.Impl.Persistence.TypeList<T>(nativeSQL, type, fields);
+                Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Impl.Util.Filters.Fields2.READ);
+                Net.Vpc.Upa.Impl.Persistence.TypeList<T> r = new Net.Vpc.Upa.Impl.Persistence.TypeList<T>(queryExecutor, type, fields);
                 allResults.Add(r);
                 if (!IsLazyListLoadingEnabled()) {
                     //force loading
@@ -264,6 +314,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
 
+        public override  System.Collections.Generic.ISet<T> GetTypeSet<T>(System.Type type, params string [] fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<T> set = new System.Collections.Generic.HashSet<T>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, GetTypeList<T>(type, fields));
+            return set;
+        }
+
+
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Key> GetKeyList() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             if (!context.GetPersistenceUnit().GetPersistenceGroup().CurrentSessionExists()) {
                 if (sessionAwareInstance == null) {
@@ -271,9 +328,24 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 }
                 return sessionAwareInstance.GetKeyList();
             }
-            Net.Vpc.Upa.Impl.Util.ConvertedList<object , Net.Vpc.Upa.Key> r = new Net.Vpc.Upa.Impl.Util.ConvertedList<object , Net.Vpc.Upa.Key>(GetIdList<object>(), new Net.Vpc.Upa.Impl.IdToKeyConverter<object>(defaultEntity));
-            allResults.Add(r);
-            return r;
+            if ((query is Net.Vpc.Upa.Expressions.QueryStatement)) {
+                Net.Vpc.Upa.Entity entity = ResolveDefaultEntity();
+                if (entity != null) {
+                    Net.Vpc.Upa.Impl.Util.ConvertedList<object , Net.Vpc.Upa.Key> r = new Net.Vpc.Upa.Impl.Util.ConvertedList<object , Net.Vpc.Upa.Key>(GetIdList<K2>(), new Net.Vpc.Upa.Impl.IdToKeyConverter<object>(entity));
+                    allResults.Add(r);
+                    return r;
+                }
+            }
+            throw new Net.Vpc.Upa.Exceptions.FindException(new Net.Vpc.Upa.Types.I18NString("InvalidQuery"));
+        }
+
+        private Net.Vpc.Upa.Entity ResolveDefaultEntity() {
+            string[] a = Net.Vpc.Upa.Impl.Uql.Util.UQLUtils.ResolveEntityAndAlias((Net.Vpc.Upa.Expressions.QueryStatement) query);
+            Net.Vpc.Upa.Entity entity = null;
+            if (a != null) {
+                entity = context.GetPersistenceUnit().GetEntity(a[0]);
+            }
+            return entity;
         }
 
 
@@ -285,93 +357,89 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 return sessionAwareInstance.GetIdList<K2>();
             }
             try {
-                Net.Vpc.Upa.Entity entity = null;
-                if (query is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) {
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement> queryStatements = ((Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledUnion) query).GetQueryStatements();
-                    if ((queryStatements.Count==0)) {
-                        throw new System.ArgumentException ("Empty Union");
-                    }
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> declarations = queryStatements[0].GetExportedDeclarations();
-                    foreach (Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d in declarations) {
-                        if (d.GetReferrerType() == Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY) {
-                            entity = puManager.GetPersistenceUnit().GetEntity((string) d.GetReferrerName());
-                            break;
+                if ((query is Net.Vpc.Upa.Expressions.QueryStatement)) {
+                    Net.Vpc.Upa.Entity entity = ResolveDefaultEntity();
+                    if (entity != null) {
+                        Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = ExecuteQuery(Net.Vpc.Upa.Filters.Fields.Id());
+                        Net.Vpc.Upa.Impl.Persistence.SingleEntityKeyList<K2> r = new Net.Vpc.Upa.Impl.Persistence.SingleEntityKeyList<K2>(queryExecutor, entity);
+                        allResults.Add(r);
+                        if (!IsLazyListLoadingEnabled()) {
+                            //force loading
+                            r.LoadAll();
                         }
-                    }
-                } else {
-                    // select
-                    System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration> declarations = query.GetExportedDeclarations();
-                    foreach (Net.Vpc.Upa.Impl.Uql.ExpressionDeclaration d in declarations) {
-                        if (d.GetReferrerType() == Net.Vpc.Upa.Impl.Uql.DecObjectType.ENTITY) {
-                            entity = puManager.GetPersistenceUnit().GetEntity((string) d.GetReferrerName());
-                            break;
-                        }
+                        return r;
                     }
                 }
-                if (entity == null) {
-                    entity = GetDefaultEntity();
-                }
-                Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = ExecuteQuery("ID", ID);
-                Net.Vpc.Upa.Impl.Persistence.SingleEntityKeyList<K2> r = new Net.Vpc.Upa.Impl.Persistence.SingleEntityKeyList<K2>(nativeSQL, entity);
-                allResults.Add(r);
-                if (!IsLazyListLoadingEnabled()) {
-                    //force loading
-                    r.LoadAll();
-                }
-                return r;
             } catch (System.Exception e) {
                 throw new Net.Vpc.Upa.Exceptions.FindException(e, new Net.Vpc.Upa.Types.I18NString("FindFailed"));
             }
+            throw new Net.Vpc.Upa.Exceptions.FindException(new Net.Vpc.Upa.Types.I18NString("InvalidQuery"));
         }
 
-        public override Net.Vpc.Upa.Entity GetDefaultEntity() {
-            if (defaultEntity == null) {
-                throw new System.ArgumentException ("No Default Entity is associated to this Find Query");
-            }
-            return defaultEntity;
+
+        public override  System.Collections.Generic.ISet<K> GetIdSet<K>() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<K> set = new System.Collections.Generic.HashSet<K>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, this.GetIdList<K>());
+            return set;
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Persistence.NativeSQL ExecuteQuery(string filterdKey, Net.Vpc.Upa.Filters.FieldFilter fieldFilter) {
+
+        public override System.Collections.Generic.ISet<Net.Vpc.Upa.Key> GetKeySet() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            System.Collections.Generic.HashSet<Net.Vpc.Upa.Key> set = new System.Collections.Generic.HashSet<Net.Vpc.Upa.Key>();
+            Net.Vpc.Upa.Impl.FwkConvertUtils.CollectionAddRange(set, this.GetKeyList());
+            return set;
+        }
+
+        protected internal virtual Net.Vpc.Upa.Impl.Persistence.QueryExecutor ExecuteQuery(Net.Vpc.Upa.Filters.FieldFilter fieldFilter) {
             //        if (result != null) {
             //            throw new FindException("QueryAlreadyExecutedException");
             //        }
-            Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL = CreateNativeSQL(filterdKey, fieldFilter);
-            Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData m = new Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData();
-            foreach (Net.Vpc.Upa.Impl.Persistence.NativeField x in nativeSQL.GetFields()) {
-                m.AddField(x.GetName(), x.GetTypeTransform(), x.GetField());
-            }
-            this.metadata = m;
-            nativeSQL.SetUpdatable(IsUpdatable());
-            nativeSQL.Execute();
-            result = nativeSQL.GetQueryResult();
-            return nativeSQL;
+            Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor = CreateNativeSQL(fieldFilter);
+            //        DefaultResultMetaData m = new DefaultResultMetaData();
+            //        for (NativeField x : queryExecutor.getFields()) {
+            //            m.addField(x.getName(), x.getTypeTransform(), x.getField());
+            //        }
+            //        this.metadata = m;
+            queryExecutor.Execute();
+            result = queryExecutor.GetQueryResult();
+            return queryExecutor;
         }
 
-        protected internal virtual Net.Vpc.Upa.Impl.Persistence.NativeSQL CreateNativeSQL(string key, Net.Vpc.Upa.Filters.FieldFilter fieldFilter) {
-            Net.Vpc.Upa.Impl.Persistence.NativeSQL s = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Impl.Persistence.NativeSQL>(precompiledNativeSQLMap,key);
-            if (s == null) {
-                s = puManager.NativeSQL(query, fieldFilter, context);
-                precompiledNativeSQLMap[key]=s;
-            }
-            return s;
+        protected internal virtual Net.Vpc.Upa.Impl.Persistence.QueryExecutor CreateNativeSQL(Net.Vpc.Upa.Filters.FieldFilter fieldFilter) {
+            //        applyParameters();
+            lastQueryExecutor = store.CreateExecutor(query, parametersByName, parametersByIndex, IsUpdatable(), fieldFilter, context.SetHints(GetHints()));
+            Net.Vpc.Upa.Expressions.EntityStatement statement = lastQueryExecutor.GetMetaData().GetStatement();
+            return lastQueryExecutor;
         }
 
 
         public override Net.Vpc.Upa.Query SetParameter(string name, object @value) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam> @params = query.FindExpressionsList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam>(new Net.Vpc.Upa.Impl.Persistence.CompiledParamFilter(name));
-            if ((@params.Count==0)) {
-                throw new System.ArgumentException ("Parameter not found " + name);
+            if (parametersByName == null) {
+                parametersByName = new System.Collections.Generic.Dictionary<string , object>();
             }
-            foreach (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam p in @params) {
-                p.SetObject(@value);
-                p.SetUnspecified(false);
+            parametersByName[name]=@value;
+            return this;
+        }
+
+
+        public override Net.Vpc.Upa.Query RemoveParameter(string name) {
+            if (parametersByName != null) {
+                parametersByName.Remove(name);
+            }
+            return this;
+        }
+
+
+        public override Net.Vpc.Upa.Query RemoveParameter(int index) {
+            if (parametersByIndex != null) {
+                parametersByIndex.Remove(index);
             }
             return this;
         }
 
         public override Net.Vpc.Upa.Query SetParameters(System.Collections.Generic.IDictionary<string , object> parameters) {
             if (parameters != null) {
-                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in parameters) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> entry in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(parameters)) {
                     SetParameter((entry).Key, (entry).Value);
                 }
             }
@@ -380,47 +448,19 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
 
         public override Net.Vpc.Upa.Query SetParameter(int index, object @value) {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam> @params = query.FindExpressionsList<Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam>(Net.Vpc.Upa.Impl.Uql.CompiledExpressionHelper.PARAM_FILTER);
-            if ((@params).Count <= index) {
-                throw new System.ArgumentException ("Parameter not found " + index);
+            if (parametersByIndex == null) {
+                parametersByIndex = new System.Collections.Generic.Dictionary<int? , object>();
             }
-            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledParam p = @params[index];
-            if (p == null) {
-                throw new System.ArgumentException ("Parameter not found " + index);
-            }
-            p.SetObject(@value);
-            p.SetUnspecified(false);
+            parametersByIndex[index]=@value;
             return this;
         }
 
 
         public override Net.Vpc.Upa.Persistence.ResultMetaData GetMetaData() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            if (metadata == null) {
-                Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData m = new Net.Vpc.Upa.Impl.Persistence.DefaultResultMetaData();
-                Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement query2 = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityStatement) puManager.GetPersistenceUnit().GetExpressionManager().CompileExpression(query, new Net.Vpc.Upa.Persistence.ExpressionCompilerConfig().SetValidate(true));
-                if (query2 is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) {
-                    Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement qs = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryStatement) query2;
-                    for (int i = 0; i < qs.CountFields(); i++) {
-                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledQueryField field = qs.GetField(i);
-                        Net.Vpc.Upa.Impl.Uql.Compiledexpression.DefaultCompiledExpression expression = field.GetExpression();
-                        string validName = field.GetName() != null ? field.GetName() : expression.ToString();
-                        if (validName == null) {
-                            validName = "#" + i;
-                        }
-                        Net.Vpc.Upa.Field f = null;
-                        if (expression is Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) {
-                            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar v = (Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVar) expression;
-                            Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledVarOrMethod finest = v.GetFinest();
-                            if (finest != null && finest.GetReferrer() is Net.Vpc.Upa.Field) {
-                                f = (Net.Vpc.Upa.Field) finest.GetReferrer();
-                            }
-                        }
-                        m.AddField(validName, expression.GetTypeTransform(), f);
-                    }
-                }
-                this.metadata = m;
+            if (lastQueryExecutor == null) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("NoQueryExecutedYet");
             }
-            return metadata;
+            return lastQueryExecutor.GetMetaData();
         }
 
         public override bool IsLazyListLoadingEnabled() {
@@ -444,6 +484,39 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 Net.Vpc.Upa.Impl.Util.UPAUtils.Close(@object);
             }
             allResults.Clear();
+        }
+
+
+        public override Net.Vpc.Upa.Query SetHint(string key, object @value) {
+            if (@value == null) {
+                hints.Remove(key);
+            } else {
+                hints[key]=@value;
+            }
+            return this;
+        }
+
+
+        public override Net.Vpc.Upa.Query SetHints(System.Collections.Generic.IDictionary<string , object> hints) {
+            if (hints != null) {
+                foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(hints)) {
+                    SetHint((e).Key, (e).Value);
+                }
+            }
+            return this;
+        }
+
+        public override System.Collections.Generic.IDictionary<string , object> GetHints() {
+            return hints;
+        }
+
+        public override object GetHint(string hintName) {
+            return hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+        }
+
+        public override object GetHint(string hintName, object defaultValue) {
+            object c = hints == null ? null : Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<string,object>(hints,hintName);
+            return c == null ? defaultValue : c;
         }
     }
 }

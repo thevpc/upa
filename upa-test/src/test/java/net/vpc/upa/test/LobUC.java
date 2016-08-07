@@ -44,7 +44,7 @@ public class LobUC {
             root.setContent("hello".getBytes());
             pu.persist(root);
 
-            List<DBFile> entityList = pu.createQuery("Select a from DBFile a").getEntityList();
+            List<DBFile> entityList = pu.createQuery("Select a from DBFile a").getResultList();
             for (DBFile c : entityList) {
                 System.out.println(c);
             }

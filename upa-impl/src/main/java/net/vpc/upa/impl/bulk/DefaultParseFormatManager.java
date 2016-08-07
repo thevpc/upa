@@ -9,6 +9,7 @@ package net.vpc.upa.impl.bulk;
 
 import java.io.IOException;
 import net.vpc.upa.ObjectFactory;
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.UPA;
 import net.vpc.upa.bulk.*;
 
@@ -16,6 +17,7 @@ import net.vpc.upa.bulk.*;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
+@PortabilityHint(target = "C#",name = "suppress")
 public class DefaultParseFormatManager implements ParseFormatManager {
 
     private ObjectFactory factory;
@@ -25,7 +27,7 @@ public class DefaultParseFormatManager implements ParseFormatManager {
      * @return
      */
     public ObjectFactory getFactory() {
-        return factory == null ? UPA.getBootstrapFactory() : factory;
+        return factory == null ? UPA.getBootstrap().getFactory() : factory;
     }
 
     /**

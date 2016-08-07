@@ -7,9 +7,9 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.UConnection;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
-import net.vpc.upa.impl.persistence.shared.CastAsSQLProvider;
-import net.vpc.upa.impl.persistence.shared.CoalesceANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.NullValANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.CastAsSQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.CoalesceANSISQLProvider;
+import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
 import net.vpc.upa.persistence.ConnectionOption;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.types.DateTime;
@@ -24,6 +24,7 @@ import java.util.*;
 import java.util.logging.Level;
 import net.vpc.upa.impl.util.PlatformUtils;
 
+@PortabilityHint(target = "C#",name = "suppress")
 public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 
     private Set<String> keywords;

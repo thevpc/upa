@@ -12,7 +12,7 @@ import net.vpc.upa.PortabilityHint;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 @PortabilityHint(target = "C#",name = "suppress")
 class DefaultXmlReaderThreadImpl extends Thread {

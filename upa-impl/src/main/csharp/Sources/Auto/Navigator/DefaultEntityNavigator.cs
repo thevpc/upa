@@ -71,7 +71,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                 }
                 Net.Vpc.Upa.Record next = entity.GetPersistenceUnit().CreateQuery(s).GetRecord();
                 if (next != null) {
-                    object o = next.GetObject<object>("next");
+                    object o = next.GetObject<T>("next");
                     if (o != null) {
                         return entity.CreateId(o);
                     }
@@ -109,7 +109,7 @@ namespace Net.Vpc.Upa.Impl.Navigator
                 if (r != null) {
                     object[] k = new object[(pk).Count];
                     for (int i = 0; i < k.Length; i++) {
-                        k[i] = r.GetObject<object>(pk[i].GetName());
+                        k[i] = r.GetObject<T>(pk[i].GetName());
                     }
                     return entity.CreateId(k);
                 }

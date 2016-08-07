@@ -65,14 +65,10 @@ namespace Net.Vpc.Upa
             Register(typeof(Net.Vpc.Upa.Persistence.ViewEntityExtension), typeof(Net.Vpc.Upa.Impl.Extension.DefaultViewEntityExtension));
             Register(typeof(Net.Vpc.Upa.Persistence.FilterEntityExtension), typeof(Net.Vpc.Upa.Impl.Extension.DefaultFilterEntityExtension));
             Register(typeof(Net.Vpc.Upa.QLExpressionParser), typeof(Net.Vpc.Upa.Impl.Uql.DefaultQLExpressionParser));
-            Register(typeof(Net.Vpc.Upa.Bulk.ImportDataManager), typeof(Net.Vpc.Upa.Impl.Bulk.DefaultImportDataManager));
-            Register(typeof(Net.Vpc.Upa.Bulk.ParseFormatManager), typeof(Net.Vpc.Upa.Impl.Bulk.DefaultParseFormatManager));
-            Register(typeof(Net.Vpc.Upa.Bulk.ImportExportManager), typeof(Net.Vpc.Upa.Impl.Bulk.DefaultImportExportManager));
-            Register(typeof(Net.Vpc.Upa.Bulk.ImportEntityFinder), typeof(Net.Vpc.Upa.Impl.Bulk.DefaultImportEntityFinder));
-            Register(typeof(Net.Vpc.Upa.Bulk.ImportEntityMapper), typeof(Net.Vpc.Upa.Impl.Bulk.DefaultImportEntityFinder));
             Register(typeof(Net.Vpc.Upa.BeanAdapterFactory), typeof(Net.Vpc.Upa.Impl.Util.DefaultBeanAdapterFactory));
-            Register(typeof(Net.Vpc.Upa.QLEvaluator), typeof(Net.Vpc.Upa.Impl.Uql.DefaultQLEvaluator));
+            Register(typeof(Net.Vpc.Upa.QLEvaluator), typeof(Net.Vpc.Upa.Impl.Eval.DefaultQLEvaluator));
             Register(typeof(Net.Vpc.Upa.Properties), typeof(Net.Vpc.Upa.Impl.DefaultProperties));
+            
         }
 
         public void Register(System.Type contract, System.Type impl) {

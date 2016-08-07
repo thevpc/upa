@@ -20,9 +20,9 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser.Syntax
      *
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    internal class FunctionFactory {
+    public class FunctionFactory {
 
-        public static Net.Vpc.Upa.Expressions.Function CreateFunction(string name, System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> args) {
+        public static Net.Vpc.Upa.Expressions.FunctionExpression CreateFunction(string name, System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> args) {
             string uniformName = name.ToLower();
             if (uniformName.Equals("average")) {
                 CheckArgCount(name, args, 1);
@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser.Syntax
                     } else if ("boolean".Equals(s)) {
                         d = Net.Vpc.Upa.Types.TypesFactory.BOOLEAN;
                     } else {
-                        d = new Net.Vpc.Upa.Types.EntityType(name, null, name, true, true);
+                        d = new Net.Vpc.Upa.Types.ManyToOneType(name, null, name, true, true);
                     }
                 } else {
                     throw new System.ArgumentException ("Unupported cast type");

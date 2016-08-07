@@ -20,7 +20,8 @@ public class ProductMO {
      * change constraints on existing field
      * use FieldDesc not to alter any other information (use existing type)
      */
-    @Field(min = "3",modifiers = UserFieldModifier.MAIN)
+    @Main
+    @Field(min = "3")
     FieldDesc name;
 
     @Summary

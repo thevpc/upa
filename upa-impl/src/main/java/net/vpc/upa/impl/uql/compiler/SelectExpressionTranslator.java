@@ -23,24 +23,18 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class SelectExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public SelectExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileSelect((Select) o, manager,declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileSelect((Select) o, declarations);
-    }
-
-    protected CompiledSelect compileSelect(Select v, ExpressionDeclarationList declarations) {
+    protected CompiledSelect compileSelect(Select v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
         CompiledSelect s = new CompiledSelect();
         s.setDistinct(v.isDistinct());
         s.setTop(v.getTop());
-        CompiledNameOrSelect nameOrSelect = (CompiledNameOrSelect) outer.compileAny(v.getEntity(), declarations);
+        CompiledNameOrSelect nameOrSelect = (CompiledNameOrSelect) manager.translateAny(v.getEntity(), declarations);
         String entityAlias = v.getEntityAlias();
         HashSet<String> aliases = new HashSet<String>();
         if (entityAlias == null) {
@@ -63,7 +57,7 @@ public class SelectExpressionTranslator implements ExpressionTranslator {
         s.from(nameOrSelect, entityAlias);
         for (int i = 0; i < v.countJoins(); i++) {
             JoinCriteria c = v.getJoin(i);
-            CompiledNameOrSelect jnameOrSelect = (CompiledNameOrSelect) outer.compileAny(c.getEntity(), declarations);
+            CompiledNameOrSelect jnameOrSelect = (CompiledNameOrSelect) manager.translateAny(c.getEntity(), declarations);
             entityAlias = c.getEntityAlias();
             if (entityAlias == null) {
                 if (nameOrSelect instanceof CompiledEntityName) {
@@ -82,22 +76,22 @@ public class SelectExpressionTranslator implements ExpressionTranslator {
                     i++;
                 }
             }
-            CompiledJoinCriteria cc = new CompiledJoinCriteria(c.getJoinType(), jnameOrSelect, entityAlias, outer.compileAny(c.getCondition(), declarations));
+            CompiledJoinCriteria cc = new CompiledJoinCriteria(c.getJoinType(), jnameOrSelect, entityAlias, manager.translateAny(c.getCondition(), declarations));
             s.join(cc);
         }
         for (int i = 0; i < v.countFields(); i++) {
             QueryField field = v.getField(i);
-            s.field(outer.compileAny(field.getExpression(), declarations), field.getAlias());
+            s.field(manager.translateAny(field.getExpression(), declarations), field.getAlias());
         }
-        s.where(outer.compileAny(v.getWhere(), declarations));
-        s.having(outer.compileAny(v.getHaving(), declarations));
+        s.where(manager.translateAny(v.getWhere(), declarations));
+        s.having(manager.translateAny(v.getHaving(), declarations));
         for (int i = 0; i < v.countGroupByItems(); i++) {
             Expression c = v.getGroupBy(i);
-            s.groupBy(outer.compileAny(c, declarations));
+            s.groupBy(manager.translateAny(c, declarations));
         }
         for (int i = 0; i < v.countOrderByItems(); i++) {
             Expression c = v.getOrderBy(i);
-            s.orderBy(outer.compileAny(c, declarations), v.isOrderAscending(i));
+            s.orderBy(manager.translateAny(c, declarations), v.isOrderAscending(i));
         }
         return s;
     }

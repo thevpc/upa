@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 import net.vpc.upa.expressions.*;
@@ -16,9 +17,9 @@ import net.vpc.upa.types.ManyToOneType;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-class FunctionFactory {
+public class FunctionFactory {
 
-    public static Function createFunction(String name, List<Expression> args) {
+    public static FunctionExpression createFunction(String name, List<Expression> args) {
         String uniformName = name.toLowerCase();
         if (uniformName.equals("average")) {
             checkArgCount(name, args, 1);

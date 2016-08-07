@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa
 
     /**
      * AccessLevel defines access level for field manipulation and retrieval. Default value is PUBLIC.
-     * For each field, an persistAccessLevel, updateAccessLevel and readAccessLevel are defined.
+     * For each field, an insertAccessLevel, updateAccessLevel and readAccessLevel are defined.
      * <p>
      * Public access level means that every end used should have the ability
      * to modify/query the field (for insertion, for update or for retrieval)

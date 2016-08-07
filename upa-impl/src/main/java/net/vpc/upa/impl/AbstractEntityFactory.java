@@ -103,7 +103,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
             final String name = field.getName();
-            if(!entity.getBeanType().isDefaultValue(object,name)){
+            if(!entity.getPlatformBeanType().isDefaultValue(object,name)){
                 rawKey[i] = getProperty(object, name);
             }else {
                 return null;
@@ -146,7 +146,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
             final String name = field.getName();
-            if(!entity.getBeanType().isDefaultValue(object,name)){
+            if(!entity.getPlatformBeanType().isDefaultValue(object,name)){
                 rawKey[i] = getProperty(object, name);
             }else {
                 return null;

@@ -20,7 +20,7 @@ class MakeSessionAwareMethodInterceptor2<T> implements PlatformMethodProxy<T> {
     @Override
     public Object intercept(PlatformMethodProxyEvent<T> event) throws Throwable {
         if (methodFilter == null || methodFilter.accept(event.getMethod())) {
-            return UPA.getContext().invoke(new MakeSessionAwareMethodInterceptor2Action(event), null);
+            return UPA.getContext().invoke(new MakeSessionAwareMethodInterceptor2Action<T>(event), null);
         } else {
             return event.invokeBase(event.getObject(), event.getArguments());
         }

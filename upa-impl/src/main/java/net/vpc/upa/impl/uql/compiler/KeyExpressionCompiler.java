@@ -22,7 +22,7 @@ import net.vpc.upa.impl.util.UPAUtils;
 public class KeyExpressionCompiler implements ExpressionTranslator {
 
     @Override
-    public DefaultCompiledExpression translateExpression(Object x, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) throws UPAException {
+    public DefaultCompiledExpression translateExpression(Object x, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) throws UPAException {
         IdExpression o = (IdExpression) x;
         DefaultCompiledExpression ret = null;
 
@@ -30,7 +30,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
         if (o.getEntity() != null) {
             entity = o.getEntity();
         }
-        PersistenceUnit persistenceUnit = expressionTranslationManager.getPersistenceUnit();
+        PersistenceUnit persistenceUnit = manager.getPersistenceUnit();
         if (entity == null && o.getEntityName() != null) {
             entity = persistenceUnit.getEntity(o.getEntityName());
         }

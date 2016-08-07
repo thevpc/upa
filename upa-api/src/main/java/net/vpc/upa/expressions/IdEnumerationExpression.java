@@ -20,7 +20,7 @@ public class IdEnumerationExpression extends DefaultExpression implements Clonea
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> all = new ArrayList<TaggedExpression>();
+        List<TaggedExpression> all = new ArrayList<TaggedExpression>(1);
         if (alias != null) {
             all.add(new TaggedExpression(alias, ALIAS));
         }

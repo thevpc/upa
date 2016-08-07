@@ -50,6 +50,8 @@ namespace Net.Vpc.Upa.Types
                 if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((byte?[]) @value).Length) {
                     throw new Net.Vpc.Upa.Types.ConstraintsException("FileSizeTooSmall", name, description, @value, maxSize);
                 }
+            } else {
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, maxSize);
             }
         }
 

@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Impl.Uql
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      * @creationdate 12/14/12 12:00 AM
      */
-    public class QLFunctionExpression : Net.Vpc.Upa.Expressions.Function {
+    public class QLFunctionExpression : Net.Vpc.Upa.Expressions.FunctionExpression {
 
         private string name;
 
@@ -43,6 +43,11 @@ namespace Net.Vpc.Upa.Impl.Uql
 
         public override Net.Vpc.Upa.Expressions.Expression GetArgument(int index) {
             return arguments[index];
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            arguments[index] = e;
         }
 
 

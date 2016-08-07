@@ -108,15 +108,6 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
     }
 
     @Override
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         String valueString = String.valueOf(entity);

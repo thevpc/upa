@@ -33,15 +33,15 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             Net.Vpc.Upa.Types.DataTypeTransform d = null;
             if (ei.GetOldReferrer() != null) {
                 Net.Vpc.Upa.Field oldField = (Net.Vpc.Upa.Field) ei.GetOldReferrer();
-                if (oldField.GetDataType() is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType et = (Net.Vpc.Upa.Types.EntityType) oldField.GetDataType();
-                    objectValue = et.GetRelationship().GetTargetEntity().GetBuilder().EntityToId(objectValue);
+                if (oldField.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType et = (Net.Vpc.Upa.Types.ManyToOneType) oldField.GetDataType();
+                    objectValue = et.GetRelationship().GetTargetEntity().GetBuilder().ObjectToId(objectValue);
                 }
             } else if (ei.GetReferrer() != null && ei.GetReferrer() is Net.Vpc.Upa.Field) {
                 Net.Vpc.Upa.Field field = (Net.Vpc.Upa.Field) ei.GetReferrer();
-                if (field.GetDataType() is Net.Vpc.Upa.Types.EntityType) {
-                    Net.Vpc.Upa.Types.EntityType et = (Net.Vpc.Upa.Types.EntityType) field.GetDataType();
-                    objectValue = et.GetRelationship().GetTargetEntity().GetBuilder().EntityToId(objectValue);
+                if (field.GetDataType() is Net.Vpc.Upa.Types.ManyToOneType) {
+                    Net.Vpc.Upa.Types.ManyToOneType et = (Net.Vpc.Upa.Types.ManyToOneType) field.GetDataType();
+                    objectValue = et.GetRelationship().GetTargetEntity().GetBuilder().ObjectToId(objectValue);
                     System.Collections.Generic.IList<Net.Vpc.Upa.Field> tf = et.GetRelationship().GetTargetEntity().GetPrimaryFields();
                     if ((tf).Count != 1) {
                         throw new System.ArgumentException ("Unsupported");

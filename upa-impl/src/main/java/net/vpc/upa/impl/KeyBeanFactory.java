@@ -2,7 +2,7 @@ package net.vpc.upa.impl;
 
 import java.util.ArrayList;
 
-import net.vpc.upa.BeanType;
+import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
 
@@ -18,7 +18,7 @@ import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 public class KeyBeanFactory implements KeyFactory {
 
     private boolean isEntityKey;
-    private BeanType bnfo;
+    private PlatformBeanType bnfo;
     private Class idType;
     private String[] fieldNames;
     private Entity entity;

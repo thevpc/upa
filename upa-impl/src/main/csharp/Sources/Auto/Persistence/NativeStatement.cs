@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
 
     public interface NativeStatement {
 
-         void Execute(Net.Vpc.Upa.Impl.Persistence.NativeSQL nativeSQL) /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Execute(Net.Vpc.Upa.Impl.Persistence.QueryExecutor queryExecutor) /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void Dispose() /* throws System.Exception, Net.Vpc.Upa.Exceptions.UPAException */ ;
     }

@@ -12,7 +12,7 @@ import net.vpc.upa.types.DataType;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class DefaultFieldDescriptor implements FieldDescriptor {
 

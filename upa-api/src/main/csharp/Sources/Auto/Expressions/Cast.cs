@@ -19,7 +19,7 @@ namespace Net.Vpc.Upa.Expressions
      * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:21:56 To
      * change this template use Options | File Templates.
      */
-    public class Cast : Net.Vpc.Upa.Expressions.Function {
+    public class Cast : Net.Vpc.Upa.Expressions.FunctionExpression {
 
 
 
@@ -27,7 +27,16 @@ namespace Net.Vpc.Upa.Expressions
 
         private Net.Vpc.Upa.Types.DataType targetType;
 
+        public Cast(Net.Vpc.Upa.Expressions.Expression[] expressions) {
+            CheckArgCount(GetName(), expressions, 2);
+            Init(expressions[0], (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) expressions[1]).GetValue());
+        }
+
         public Cast(Net.Vpc.Upa.Expressions.Expression @value, Net.Vpc.Upa.Types.DataType primitiveType) {
+            Init(@value, primitiveType);
+        }
+
+        private void Init(Net.Vpc.Upa.Expressions.Expression @value, Net.Vpc.Upa.Types.DataType primitiveType) {
             this.@value = @value;
             this.targetType = primitiveType;
         }
@@ -48,6 +57,15 @@ namespace Net.Vpc.Upa.Expressions
 
         public override int GetArgumentsCount() {
             return 2;
+        }
+
+
+        public override void SetArgument(int index, Net.Vpc.Upa.Expressions.Expression e) {
+            if (index == 0) {
+                this.@value = e;
+            } else {
+                this.targetType = (Net.Vpc.Upa.Types.DataType) ((Net.Vpc.Upa.Expressions.Cst) e).GetValue();
+            }
         }
 
 

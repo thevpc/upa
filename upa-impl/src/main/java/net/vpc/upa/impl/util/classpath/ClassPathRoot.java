@@ -19,7 +19,7 @@ import net.vpc.upa.PortabilityHint;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class ClassPathRoot implements Iterable<ClassPathResource> {
 
@@ -84,28 +84,34 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
     }
 
     public boolean contains(String path) throws IOException {
-        if (folder != null) {
-            File f = new File(folder, path);
-            if (f.exists()) {
-                return true;
+        /**
+         * @PortabilityHint(target = "C#",name = "todo")
+         * return false;
+         **/
+        {
+            if (folder != null) {
+                File f = new File(folder, path);
+                if (f.exists()) {
+                    return true;
+                }
+                return false;
+            }
+            JarInputStream jar = null;
+            try {
+                jar = new JarInputStream(url.openStream());
+                ZipEntry nextEntry;
+                while ((nextEntry = jar.getNextEntry()) != null) {
+                    String path2 = nextEntry.getName();
+                    if (path2.equals(path)) {
+                        return true;
+                    }
+                }
+            } finally {
+                if (jar != null) {
+                    jar.close();
+                }
             }
             return false;
         }
-        JarInputStream jar = null;
-        try {
-            jar = new JarInputStream(url.openStream());
-            ZipEntry nextEntry;
-            while ((nextEntry = jar.getNextEntry()) != null) {
-                String path2 = nextEntry.getName();
-                if (path2.equals(path)) {
-                    return true;
-                }
-            }
-        } finally {
-            if (jar != null) {
-                jar.close();
-            }
-        }
-        return false;
     }
 }

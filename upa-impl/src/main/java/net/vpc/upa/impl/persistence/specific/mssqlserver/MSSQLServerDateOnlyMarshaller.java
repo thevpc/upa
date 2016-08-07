@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
@@ -13,6 +14,7 @@ import java.sql.Types;
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 * @creationdate 11/22/12 10:00 PM
 */
+@PortabilityHint(target = "C#",name = "suppress")
 class MSSQLServerDateOnlyMarshaller
         extends SimpleTypeMarshaller {
 

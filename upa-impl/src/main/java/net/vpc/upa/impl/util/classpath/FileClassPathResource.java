@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class FileClassPathResource implements ClassPathResource {
 

@@ -16,21 +16,17 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class DateDiffExpressionTranslator implements ExpressionTranslator {
-    private final ExpressionTranslationManager outer;
-
-    public DateDiffExpressionTranslator(final ExpressionTranslationManager outer) {
-        this.outer = outer;
+    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+        return compileDateDiff((DateDiff) o,manager, declarations);
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations) {
-        return compileDateDiff((DateDiff) o, declarations);
-    }
-
-    protected CompiledDateDiff compileDateDiff(DateDiff v, ExpressionDeclarationList declarations) {
+    protected CompiledDateDiff compileDateDiff(DateDiff v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledDateDiff s = new CompiledDateDiff(v.getDatePartType(), outer.compileAny(v.getStart(), declarations), outer.compileAny(v.getEnd(), declarations));
+        CompiledDateDiff s = new CompiledDateDiff(v.getDatePartType()
+                , manager.translateAny(v.getStart(), declarations)
+                , manager.translateAny(v.getEnd(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }

@@ -21,7 +21,10 @@ namespace Net.Vpc.Upa.Impl
      */
     public class EntityUnstructuredFactory : Net.Vpc.Upa.Impl.AbstractEntityFactory {
 
-        public EntityUnstructuredFactory() {
+        private Net.Vpc.Upa.Entity entity;
+
+        public EntityUnstructuredFactory(Net.Vpc.Upa.Entity entity) {
+            this.entity = entity;
         }
 
         public override Net.Vpc.Upa.Record CreateRecord() {
@@ -33,22 +36,26 @@ namespace Net.Vpc.Upa.Impl
             return (R) (object) new Net.Vpc.Upa.Impl.DefaultRecord();
         }
 
-        public override  Net.Vpc.Upa.Record GetRecord<R>(R entity, bool ignoreUnspecified) {
-            //double cast is needed in c#
-            return (Net.Vpc.Upa.Record) (object) entity;
+        public override Net.Vpc.Upa.Record ObjectToRecord(object @object, bool ignoreUnspecified) {
+            return (Net.Vpc.Upa.Record) @object;
         }
 
 
-        public override  R GetEntity<R>(Net.Vpc.Upa.Record unstructuredRecord) {
-            return (R) unstructuredRecord;
+        public override  R RecordToObject<R>(Net.Vpc.Upa.Record record) {
+            return (R) record;
         }
 
-        public override void SetProperty(object entityObject, string property, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            ((Net.Vpc.Upa.Record) entityObject).SetObject(property, @value);
+        public override void SetProperty(object @object, string property, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            ((Net.Vpc.Upa.Record) @object).SetObject(property, @value);
         }
 
-        public override object GetProperty(object entityObject, string property) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return ((Net.Vpc.Upa.Record) entityObject).GetObject<object>(property);
+        public override object GetProperty(object @object, string property) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return ((Net.Vpc.Upa.Record) @object).GetObject<T>(property);
+        }
+
+
+        protected internal override Net.Vpc.Upa.Entity GetEntity() {
+            return entity;
         }
     }
 }

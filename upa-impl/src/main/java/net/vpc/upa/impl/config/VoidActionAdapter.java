@@ -10,7 +10,7 @@ import net.vpc.upa.VoidAction;
 
 /**
  *
- * @author vpc
+ * @author taha.bensalah@gmail.com
  */
 public class VoidActionAdapter implements Action<Object>{
     private VoidAction action;

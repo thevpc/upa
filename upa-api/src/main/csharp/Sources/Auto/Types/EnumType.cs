@@ -30,7 +30,7 @@ namespace Net.Vpc.Upa.Types
         public override void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
             base.Check(@value, name, description);
             if (@value != null && !enumClass.IsInstanceOfType(@value)) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidEnum");
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value);
             }
         }
 

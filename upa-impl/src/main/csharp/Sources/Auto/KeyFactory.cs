@@ -21,12 +21,12 @@ namespace Net.Vpc.Upa.Impl
      */
     public interface KeyFactory {
 
-         Net.Vpc.Upa.Key CreateKey(params object [] keyValues);
+         Net.Vpc.Upa.Key CreateKey(params object [] idValues);
 
-         object CreateId(params object [] keyValues);
+         object CreateId(params object [] idValues);
 
          object GetId(Net.Vpc.Upa.Key unstructuredKey);
 
-         Net.Vpc.Upa.Key GetKey(object key);
+         Net.Vpc.Upa.Key GetKey(object id);
     }
 }

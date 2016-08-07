@@ -1,0 +1,34 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ *
+ * and open the template in the editor.
+ */
+package net.vpc.upa.impl.eval.functions;
+
+import net.vpc.upa.EvalContext;
+import net.vpc.upa.Function;
+import net.vpc.upa.expressions.Literal;
+
+import java.io.File;
+
+/**
+ * @author taha.bensalah@gmail.com
+ */
+public class FileExistsEvaluator implements net.vpc.upa.Function {
+    public static final Function INSTANCE=new FileExistsEvaluator();
+
+    public FileExistsEvaluator() {
+    }
+
+    @Override
+    public Object eval(EvalContext evalContext) {
+        Object o = evalContext.getArguments()[0];
+        String file = o == null ? "" : o.toString();
+        if (file == null) {
+            return Literal.FALSE;
+        }
+        return new File(file).exists() ? Literal.TRUE : Literal.FALSE;
+    }
+
+
+}
