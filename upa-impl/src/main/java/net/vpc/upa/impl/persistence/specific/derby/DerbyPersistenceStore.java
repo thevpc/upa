@@ -80,6 +80,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
 //        DataWrapperUtils.setWrapperFactory(ListType.class, F_LIST);
         getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller());
         getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(32672));
+        map.setInt("maxQueryColumnsCount", 1012);
 
     }
 

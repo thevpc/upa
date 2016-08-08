@@ -35,10 +35,22 @@ class TypeInfo {
 
     public TypeInfo(String binding, Entity entity) {
         this.binding = binding;
+        // TODO : what to do if binding names contains '.'
+        //   example :  `right.thing`.`right`
+        //   i guess should never happen for now as we are mapping
+        //   class and table names
         int dotPos = binding == null ? -1 : binding.lastIndexOf('.');
         if (dotPos > 0) {
             this.parentBinding = binding.substring(0, dotPos);
+            //handle anti-quoted names
+            if(this.parentBinding.startsWith("`")){
+                this.parentBinding=this.parentBinding.substring(1, this.parentBinding.length()-1);
+            }
             this.bindingName = binding.substring(dotPos + 1);
+            //handle anti-quoted names
+            if(this.bindingName.startsWith("`")){
+                this.bindingName=this.bindingName.substring(1, this.bindingName.length()-1);
+            }
         }
         this.entity = entity;
         if (entity != null) {

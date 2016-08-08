@@ -797,8 +797,11 @@ public class DefaultPersistenceStore implements PersistenceStore {
         throw new UPAException(new I18NString("CreateCustomNativeConnectionNotSupported"));
     }
 
-    protected int getMaxJoinCount() {
+    protected int getMaxQueryJoinCount() {
         return getProperties().getInt("maxQueryJoinCount", -1);
+    }
+    protected int getMaxQueryColumnsCount() {
+        return getProperties().getInt("maxQueryColumnsCount", -1);
     }
 
     public QueryExecutor createExecutor(
@@ -914,7 +917,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
             hints = new HashMap<String, Object>();
         }
 
-        int maxJoinCount = getMaxJoinCount();
+        int maxQueryJoinCount = getMaxQueryJoinCount();
+        int maxQueryColumnsCount = getMaxQueryColumnsCount();
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
         config.setExpandEntityFilter(true);
         config.setExpandFieldFilter(defaultFieldFilter);
@@ -925,13 +929,16 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
-        if (maxJoinCount > 0) {
+        if (maxQueryJoinCount > 0 || maxQueryColumnsCount >0) {
             for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                 CompiledSelect cs = (CompiledSelect) ce;
-                if (cs.getJoins().length >= maxJoinCount) {
-                    log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :" + statement);
+                if (maxQueryJoinCount>0 && cs.getJoins().length >= maxQueryJoinCount) {
+                    log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                     reeavluateWithLessJoin = true;
                     break;
+                }else if(maxQueryColumnsCount>0 && cs.getFields().size()>maxQueryColumnsCount){
+                    log.warning("this query is very likely to fail. It uses " + cs.getFields().size() + " > " + maxQueryColumnsCount + " columns : " + statement);
+                    reeavluateWithLessJoin = true;
                 }
             }
             if (reeavluateWithLessJoin) {
@@ -949,10 +956,13 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 reeavluateWithLessJoin = false;
                 for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                     CompiledSelect cs = (CompiledSelect) ce;
-                    if (cs.getJoins().length >= maxJoinCount) {
-                        log.warning("this query is very likely to fail. It still uses " + cs.getJoins().length + " > " + maxJoinCount + " join tables :" + statement);
+                    if (maxQueryJoinCount>0 && cs.getJoins().length >= maxQueryJoinCount) {
+                        log.warning("this query is very likely to fail. It STILL uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                         reeavluateWithLessJoin = true;
                         break;
+                    }else if(maxQueryColumnsCount>0 && cs.getFields().size()>maxQueryColumnsCount){
+                        log.warning("this query is very likely to fail. It STILL uses " + cs.getFields().size() + " > " + maxQueryColumnsCount + " columns : " + statement);
+                        reeavluateWithLessJoin = true;
                     }
                 }
             }
