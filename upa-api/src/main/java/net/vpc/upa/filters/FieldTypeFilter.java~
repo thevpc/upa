@@ -1,0 +1,29 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.DynamicField;
+import net.vpc.upa.Field;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/15/12
+ * Time: 7:22 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class FieldTypeFilter extends AbstractFieldFilter {
+    private Class<? extends Field> type;
+
+    public FieldTypeFilter(Class<? extends Field> type) {
+        this.type = type;
+    }
+
+    @Override
+    public boolean acceptDynamic() {
+        return DynamicField.class.isAssignableFrom(type);
+    }
+
+    @Override
+    public boolean accept(Field f) {
+        return type.isAssignableFrom(f.getClass());
+    }
+}

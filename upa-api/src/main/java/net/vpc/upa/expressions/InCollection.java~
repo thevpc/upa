@@ -1,0 +1,122 @@
+package net.vpc.upa.expressions;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class InCollection extends DefaultExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+
+    private Expression left;
+    protected List<Expression> right;
+
+    public InCollection(Expression left) {
+        this(left, (List<Expression>) null);
+    }
+
+    public InCollection(Expression[] left) {
+        this(new Uplet(left), (List<Expression>) null);
+    }
+
+//    public InCollection(String left,DataPrimitiveType type,Collection collection) {
+//        this(new Var(left,type),collection);
+//    }
+
+//    public InCollection(String left,DataPrimitiveType type,Object[] collection) {
+//        this(new Var(left,type),collection!=null ? Arrays.asList(collection) : null);
+//    }
+
+    public InCollection(Expression[] left, List<Expression> collection) {
+        this(new Uplet(left), collection);
+    }
+
+    public InCollection(Expression left, Expression[] collection) {
+        this(left, collection != null ? Arrays.asList(collection) : null);
+    }
+
+    public InCollection(Expression left, List<Expression> collection) {
+        this.left = left;
+        right = new ArrayList<Expression>(1);
+        if (collection != null) {
+            for (Object aCollection : collection) {
+                add(aCollection);
+            }
+        }
+    }
+
+    public int size() {
+        return 2;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public void add(Object e) {
+        right.add(ExpressionFactory.toExpression(e, Literal.class));
+    }
+
+    public void add(Expression e) {
+        right.add(e);
+    }
+
+    public void add(Expression[] e) {
+        right.add(new Uplet(e));
+    }
+
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        StringBuffer sb = new StringBuffer();
+//        int mySize=right.size();
+//        if ( mySize== 0) {
+//            sb.append("1 <> 1");
+//        }else {
+//            if (mySize == 1) {
+//                sb.append(left.toSQL(database));
+//                Expression e = (Expression) right.get(0);
+//                if (e == null || (e instanceof Literal && ((Literal)e).getValue()==null)) {
+//                    sb.append(" IS NULL");
+//                } else {
+//                    sb.append(" = ");
+//                    sb.append(e.toSQL(true, database));
+//                }
+//            } else {
+//                sb.append(left.toSQL(database));
+//                sb.append(" IN (");
+//                for (int i = 0; i < mySize; i++) {
+//                    if (i > 0)
+//                        sb.append(",");
+//                    Expression e = (Expression) right.get(i);
+//                    if(e==null){
+//                        sb.append("NULL");
+//                    }else{
+//                        sb.append(e.toSQL(true, database));
+//                    }
+//                }
+//
+//                sb.append(")");
+//            }
+//        }
+//        return integrated ? '(' + sb.toString() + ')' : sb.toString();
+//    }
+
+    public int getRightSize() {
+        return right.size();
+    }
+
+    public Expression getRight(int i) {
+        return right.get(i);
+    }
+
+    @Override
+    public Expression copy() {
+        InCollection o = new InCollection(left.copy());
+        for (Expression expression : right) {
+            o.add(expression);
+        }
+        return o;
+    }
+
+
+}

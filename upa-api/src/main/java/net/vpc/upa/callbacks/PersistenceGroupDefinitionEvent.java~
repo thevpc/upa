@@ -1,0 +1,38 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceGroup;
+import net.vpc.upa.UPAContext;
+
+import java.io.Serializable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class PersistenceGroupDefinitionEvent extends UPAEvent {
+    private UPAContext context;
+    private PersistenceGroup persistenceGroup;
+    private boolean before;
+
+    public PersistenceGroupDefinitionEvent(PersistenceGroup persistenceGroup, UPAContext context, boolean before) {
+        this.persistenceGroup = persistenceGroup;
+        this.context = context;
+        this.before = before;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public boolean isAfter() {
+        return !before;
+    }
+
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceGroup;
+    }
+
+    public UPAContext getContext() {
+        return context;
+    }
+}

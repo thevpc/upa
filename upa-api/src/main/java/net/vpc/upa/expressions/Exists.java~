@@ -1,0 +1,59 @@
+package net.vpc.upa.expressions;
+
+//            Expression, Select
+public final class Exists extends Function
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private QueryStatement query;
+
+    public Exists() {
+    }
+
+    public Exists(QueryStatement query) {
+        setQuery(query);
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    public void setQuery(QueryStatement query) {
+        this.query = query;
+    }
+
+    public QueryStatement getQuery() {
+        return query;
+    }
+
+    public boolean isValid() {
+        return query.isValid();
+    }
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "Exists(" + query.toSQL(database) + ")";
+//    }
+
+    @Override
+    public String getName() {
+        return "Exists";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return query;
+    }
+
+    @Override
+    public Expression copy() {
+        Exists o = new Exists((QueryStatement) query.copy());
+        return o;
+    }
+}

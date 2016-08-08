@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Closeable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface QueryResult extends Closeable {
+
+    public int getFieldsCount();
+
+    public <T> T read(int index);
+
+    public <T> void write(int index, T value);
+
+    public boolean hasNext();
+
+    public void close();
+
+    public void updateCurrent();
+}

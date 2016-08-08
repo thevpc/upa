@@ -1,0 +1,12 @@
+package net.vpc.upa.exceptions;
+
+
+public class PersistenceUnitLockingException extends PersistenceUnitException {
+    public PersistenceUnitLockingException() {
+        super("PersistenceUnitLockingException");
+    }
+
+    public PersistenceUnitLockingException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+}

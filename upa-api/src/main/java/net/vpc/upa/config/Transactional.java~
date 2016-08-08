@@ -1,0 +1,24 @@
+package net.vpc.upa.config;
+
+import net.vpc.upa.TransactionType;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/30/12 11:42 PM
+ */
+@Target(value = {ElementType.METHOD, ElementType.TYPE})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Transactional {
+    TransactionType value() default TransactionType.SUPPORTS;
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

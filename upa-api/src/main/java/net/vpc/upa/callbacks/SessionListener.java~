@@ -1,0 +1,16 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Session;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 3:33 PM
+ */
+public interface SessionListener {
+
+    public void closeSession(Session session);
+
+    public void pushContext(Session session);
+
+    public void popContext(Session session);
+}

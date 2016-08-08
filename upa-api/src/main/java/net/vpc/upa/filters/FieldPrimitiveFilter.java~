@@ -1,0 +1,68 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Field;
+import net.vpc.upa.PrimitiveField;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/15/12
+ * Time: 7:15 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class FieldPrimitiveFilter extends AbstractFieldFilter {
+    private FieldFilter base;
+
+    public FieldPrimitiveFilter(FieldFilter base) {
+        this.base = base;
+    }
+
+    @Override
+    public boolean acceptDynamic() {
+        return false;
+    }
+
+    @Override
+    public boolean accept(Field f) {
+        return (f instanceof PrimitiveField) && (base == null || base.accept(f));
+    }
+
+    @Override
+    public PrimitiveField[] filter(PrimitiveField[] fields) {
+        if (fields == null || base == null) {
+            return fields;
+        }
+        return toAbstractFieldFilter(base).filter(fields);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + (this.base != null ? this.base.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        final FieldPrimitiveFilter other = (FieldPrimitiveFilter) obj;
+        if (this.base != other.base && (this.base == null || !this.base.equals(other.base))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Primitive(" + (base == null ? "" : base.toString()) + ")";
+    }
+
+}

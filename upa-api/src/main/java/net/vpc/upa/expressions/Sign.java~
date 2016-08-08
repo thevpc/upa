@@ -1,0 +1,46 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 12:21:56
+ * To change this template use Options | File Templates.
+ */
+public class Sign extends Function {
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+
+    public Sign(Expression value) {
+        this.value = value;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    @Override
+    public String getName() {
+        return "Sign";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return value;
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        Sign o = new Sign(value.copy());
+        return o;
+    }
+}

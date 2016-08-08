@@ -1,0 +1,46 @@
+package net.vpc.upa.types;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 29 avr. 2003
+ * Time: 10:38:06
+ * To change this template use Options | File Templates.
+ */
+public class DatePeriodType extends TemporalType {
+    private String countName;
+    private String periodTypeName;
+    private NumberType countDataType;
+    private DataType periodTypeDataType;
+
+    public DatePeriodType(String name, String countName, String periodTypeName, boolean nullable) {
+        this(name, countName, periodTypeName, new IntType("PERIOD", 0, null, nullable,false));
+    }
+
+    public DatePeriodType(String name, String countName, String periodTypeName, NumberType countDataType) {
+        super(name, DatePeriod.class, countDataType.isNullable());
+        this.countName = countName;
+        this.periodTypeName = periodTypeName;
+        this.countDataType = countDataType;
+        this.periodTypeDataType = new EnumType(PeriodOption.class, countDataType.isNullable());
+        setDefaultNonNullValue(new DatePeriod((Integer) countDataType.getDefaultNonNullValue(), PeriodOption.DAY));
+    }
+
+    public String getCountName() {
+        return countName;
+    }
+
+    public String getPeriodTypeName() {
+        return periodTypeName;
+    }
+
+    public DataType getPeriodTypeDataType() {
+        return periodTypeDataType;
+    }
+
+    public NumberType getCountDataType() {
+        return countDataType;
+    }
+
+
+}

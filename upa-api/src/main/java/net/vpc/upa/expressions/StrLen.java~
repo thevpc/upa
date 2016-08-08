@@ -1,0 +1,44 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 12:21:56
+ * To change this template use Options | File Templates.
+ */
+public class StrLen extends Function {
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+
+    public StrLen(Expression value) {
+        this.value = value;
+    }
+
+    @Override
+    public Expression copy() {
+        StrLen o = new StrLen(value.copy());
+        return o;
+    }
+
+    @Override
+    public String getName() {
+        return "StrLen";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return value;
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+
+}

@@ -1,0 +1,14 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/24/12 9:53 PM
+ */
+public interface DeletionTraceElement {
+
+    public String getEntityName();
+
+    public RelationshipType getRelationshipType();
+
+    public long getCount();
+}

@@ -1,0 +1,45 @@
+package net.vpc.upa.expressions;
+//            Expression
+
+public class D2V extends Function {
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+
+    public D2V(Expression expression) {
+        this.value = expression;
+    }
+
+//    public String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "d2v("+e.toSQL(true, database)+")";
+//    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+
+    @Override
+    public String getName() {
+        return "d2v";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new IndexOutOfBoundsException();
+        }
+        return value;
+    }
+
+    @Override
+    public Expression copy() {
+        D2V o = new D2V(value.copy());
+        return o;
+    }
+
+}

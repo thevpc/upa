@@ -1,0 +1,14 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public final class FieldPersistenceModifier {
+
+    public static final long DEFAULT = 0L; // 0x0
+    public static final long STORE_GENERATED = 1L; // 0x0
+}

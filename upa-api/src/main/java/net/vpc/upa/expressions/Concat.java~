@@ -1,0 +1,79 @@
+package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+
+public final class Concat extends Function
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private ArrayList<Expression> elements;
+
+    public Concat() {
+        elements = new ArrayList<Expression>(1);
+    }
+
+    public Concat(Expression... expressions) {
+        this();
+        for (Expression expression : expressions) {
+            add(expression);
+        }
+    }
+
+    public Concat clear() {
+        elements.clear();
+        return this;
+    }
+
+    public Concat addAll(Concat other) {
+        for (int i = 0; i < other.getArgumentsCount(); i++) {
+            add((Expression) other.getArgument(i));
+        }
+
+        return this;
+    }
+
+    public Concat add(Expression expression) {
+        if (expression == this) {
+            throw new NullPointerException();
+        } else {
+            elements.add(expression);
+            return this;
+        }
+    }
+
+    public int getArgumentsCount() {
+        return elements.size();
+    }
+
+    public Expression getArgument(int i) {
+        return (Expression) elements.get(i);
+    }
+
+    public boolean isValid() {
+        int max = getArgumentsCount();
+        boolean valid = false;
+        for (int i = 0; i < max; i++) {
+            Expression e = getArgument(i);
+            if (e.isValid()) {
+                valid = true;
+            }
+        }
+
+        return valid;
+    }
+
+    @Override
+    public String getName() {
+        return "Concat";
+    }
+
+    @Override
+    public Expression copy() {
+        Concat o = new Concat();
+        for (Expression element : elements) {
+            o.add((element).copy());
+        }
+        return o;
+    }
+
+}

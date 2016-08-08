@@ -1,0 +1,16 @@
+package net.vpc.upa.callback;
+
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.filters.FieldFilter;
+
+public interface UpdateRelationshipTargetFormulaInterceptor extends EntityInterceptor {
+    public String getRelationshipName();
+
+    public FieldFilter getFormulaFields();
+
+    public FieldFilter getConditionFields();
+
+    public Expression translateExpression(Expression e) throws UPAException;
+}

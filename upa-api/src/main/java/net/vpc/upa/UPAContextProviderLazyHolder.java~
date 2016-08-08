@@ -1,0 +1,16 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 1/2/13 12:53 PM
+ */
+class UPAContextProviderLazyHolder {
+
+    static UPAContextProvider INSTANCE = create();
+
+    public static UPAContextProvider create() {
+        UPAContextProvider o = UPA.getBootstrapFactory().createObject(UPAContextProvider.class);
+        UPA.contextProviderCreated = true;
+        return o;
+    }
+}

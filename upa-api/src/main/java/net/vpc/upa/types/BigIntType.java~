@@ -1,0 +1,81 @@
+package net.vpc.upa.types;
+
+import java.math.BigInteger;
+
+// Referenced classes of package org.vpc.lib.util:
+//            DataType, ConstraintsException
+public class BigIntType extends NumberType implements Cloneable {
+
+    public static final BigIntType DEFAULT = new BigIntType(null, null, true);
+    protected BigInteger min;
+    protected BigInteger max;
+
+    public BigIntType(BigInteger min, BigInteger max, boolean nullable) {
+        this("BIGINT", min, max, nullable);
+    }
+
+    /**
+     * @param min minimum value (compared to value * multiplier). if null, no
+     * constraints
+     * @param max maximum value (compared to value * multiplier). if null, no
+     * constraints
+     * @param nullable null accept if true
+     */
+    public BigIntType(String name, BigInteger min, BigInteger max, boolean nullable) {
+        super(name, BigInteger.class, (Math.max((min == null ? Integer.MAX_VALUE : String.valueOf(min).length()), (max == null ? Integer.MAX_VALUE : String.valueOf(max).length()))), 0, nullable);
+        this.min = min;
+        this.max = max;
+        setDefaultNonNullValue(BigInteger.ZERO);
+    }
+
+    public BigInteger getMin() {
+        return min;
+    }
+
+    public void setMin(BigInteger min) {
+        this.min = min;
+    }
+
+    public BigInteger getMax() {
+        return max;
+    }
+
+    public void setMax(BigInteger max) {
+        this.max = max;
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        //@PortabilityHint(
+        if (getMin() != null && ((BigInteger) value).compareTo(getMin()) < 0) {
+            throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
+        }
+        if (getMax() != null && ((BigInteger) value).compareTo(getMax()) > 0) {
+            throw new ConstraintsException("NumberTooHigh", name, description, value, getMax());
+        }
+    }
+
+    @Override
+    public Object clone() {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "BigIntType{" + "min=" + min + ", max=" + max + '}';
+    }
+
+    @Override
+    public Number parse(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return new BigInteger(value);
+    }
+
+}

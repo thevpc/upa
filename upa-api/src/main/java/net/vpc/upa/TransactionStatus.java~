@@ -1,0 +1,14 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 4:55 PM
+ */
+public enum TransactionStatus {
+    NOT_ACTIVE,
+    ACTIVE,
+    COMMITTED,
+    ROLLED_BACK,
+    FAILED_COMMIT,
+    CLOSED
+}

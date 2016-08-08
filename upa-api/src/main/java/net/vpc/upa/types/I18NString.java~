@@ -1,0 +1,144 @@
+package net.vpc.upa.types;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/23/12 2:30 AM
+ */
+public class I18NString {
+
+    private List<String> keys;
+    private String defaultValue;
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public I18NString setDefaultValue(String defaultValue) {
+        I18NString n = new I18NString(keys);
+        n.defaultValue = defaultValue;
+        return n;
+    }
+
+    public I18NString(String... keys) {
+        this(Arrays.asList(keys));
+    }
+
+    public I18NString(List<String> keys) {
+        if (keys == null) {
+            throw new IllegalArgumentException();
+        }
+        this.keys = new ArrayList<String>(keys);
+    }
+
+    public String getKey(int index) {
+        return keys.get(index);
+    }
+
+    public List<String> getKeys() {
+        return keys;
+    }
+
+    public I18NString append(I18NString path) {
+        if (path == null) {
+            throw new IllegalArgumentException();
+        }
+        LinkedHashSet<String> a = new LinkedHashSet<String>();
+        for (String key1 : keys) {
+            for (String key2 : path.keys) {
+                String s = key1.isEmpty() ? key2 : key2.isEmpty() ? key1 : (key1 + "." + key2);
+                if (!a.contains(s)) {
+                    a.add(s);
+                }
+            }
+        }
+        return new I18NString(a.toArray(new String[a.size()]));
+    }
+
+    public I18NString append(String path) {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        ArrayList<String> a = new ArrayList<String>();
+        for (String key : keys) {
+            a.add(key.isEmpty() ? path : key + "." + path);
+        }
+        return new I18NString(a);
+    }
+
+    public I18NString union(I18NString other) {
+        ArrayList<String> a = new ArrayList<String>();
+        a.addAll(this.keys);
+        a.addAll(other.keys);
+        I18NString b = new I18NString(a);
+        String t = defaultValue;
+        if (t == null) {
+            t = other.defaultValue;
+        }
+        b.defaultValue = t;
+        return b;
+    }
+
+    public I18NString union(String other) {
+        if (other == null || other.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        ArrayList<String> a = new ArrayList<String>();
+        a.addAll(this.keys);
+        a.add(other);
+        return new I18NString(a);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        if(defaultValue!=null){
+            b.append(defaultValue);
+            if(!keys.isEmpty()){
+                b.append(":");
+            }
+        }
+        for (String key : keys) {
+            if (b.length() > 0) {
+                b.append("|");
+            }
+            b.append(key);
+        }
+        return b.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        I18NString that = (I18NString) o;
+
+        if (defaultValue != null ? !defaultValue.equals(that.defaultValue) : that.defaultValue != null) {
+            return false;
+        }
+
+        if (keys != null ? !keys.equals(that.keys) : that.keys != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + (this.keys != null ? this.keys.hashCode() : 0);
+        hash = 71 * hash + (this.defaultValue != null ? this.defaultValue.hashCode() : 0);
+        return hash;
+    }
+
+}

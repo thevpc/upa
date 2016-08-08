@@ -1,0 +1,44 @@
+package net.vpc.upa.types;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/29/12 1:45 AM
+ */
+public class StringTypeCharValidator implements TypeValueValidator {
+    protected String chars;
+    protected boolean positive;
+
+    public StringTypeCharValidator(String chars, boolean positive) {
+        this.chars = chars;
+        this.positive = positive;
+    }
+
+    public String getChars() {
+        return chars;
+    }
+
+    public boolean isPositive() {
+        return positive;
+    }
+
+    @Override
+    public void validateValue(Object typeValue, String name, String description, DataType type) throws ConstraintsException {
+        if (typeValue == null) {
+            return;
+        }
+        String sval = (String) typeValue;
+        if (positive) {
+            for (int i = 0; i < sval.length(); i++) {
+                if (chars.indexOf(sval.charAt(i)) < 0) {
+                    throw new ConstraintsException("StringBadChars", name, description, typeValue, "" + sval.charAt(i));
+                }
+            }
+        } else {
+            for (int i = 0; i < sval.length(); i++) {
+                if (chars.indexOf(sval.charAt(i)) >= 0) {
+                    throw new ConstraintsException("StringBadChars", name, description, typeValue, "" + sval.charAt(i));
+                }
+            }
+        }
+    }
+}

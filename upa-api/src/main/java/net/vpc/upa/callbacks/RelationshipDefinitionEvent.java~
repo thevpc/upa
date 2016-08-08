@@ -1,0 +1,33 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.Relationship;
+
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class RelationshipDefinitionEvent extends UPAEvent {
+    private final PersistenceUnit persistenceUnit;
+    private final Relationship relationship;
+    private final boolean before;
+
+    public RelationshipDefinitionEvent(Relationship relation, PersistenceUnit persistenceUnit, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.relationship = relation;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public Relationship getRelationship() {
+        return relationship;
+    }
+}

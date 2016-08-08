@@ -1,0 +1,32 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.CloseListener;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.NativeScript;
+
+import java.sql.Connection;
+import java.util.List;
+import net.vpc.upa.types.DataTypeTransform;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 2/3/13 7:17 PM
+ */
+public interface UConnection {
+
+    public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException;
+
+    public int executeNonQuery(String currentQuery, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException;
+
+    public int executeScript(NativeScript script, boolean exitOnError) throws UPAException;
+
+    public void close() throws UPAException;
+
+    public void addCloseListener(CloseListener closeListener);
+
+    public void removeCloseListener(CloseListener closeListener);
+
+    public Connection getNativeConnection() throws UPAException;
+
+    public Connection getMetadataAccessibleConnection() throws UPAException;
+}

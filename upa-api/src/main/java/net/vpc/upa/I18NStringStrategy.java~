@@ -1,0 +1,33 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface I18NStringStrategy {
+
+    public I18NString getPackageString(String module);
+
+    public I18NString getSectionString(Entity entity, String section);
+
+    public I18NString getRelationshipRoleString(RelationshipRole role);
+
+    public I18NString getRelationshipString(Relationship relation);
+
+    public I18NString getEntityString(Entity entity);
+
+    public I18NString getEntityString(String entity);
+
+    public I18NString getRelationshipString(String relation);
+
+    public I18NString getFieldListString(String entity);
+
+    public I18NString getFieldString(Field field);
+
+    public I18NString getFieldString(String entity, Field field);
+}

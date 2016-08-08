@@ -1,0 +1,50 @@
+package net.vpc.upa.expressions;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression, Litteral
+
+public class Between extends DefaultExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private Expression left;
+    private Expression min;
+    private Expression max;
+
+    private Between() {
+
+    }
+
+    public Between(Expression expression, Object min, Object max) {
+        this(expression, ExpressionFactory.toLiteral(min), ExpressionFactory.toLiteral(max));
+    }
+
+    public Between(Expression expression, Expression min, Expression max) {
+        left = expression;
+        this.min = min;
+        this.max = max;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getMin() {
+        return min;
+    }
+
+    public Expression getMax() {
+        return max;
+    }
+
+    public boolean isValid() {
+        return (left != null && left.isValid()) && (min != null && min.isValid()) && (max != null && max.isValid());
+    }
+
+    public Expression copy() {
+        Between o = new Between();
+        o.left = left.copy();
+        o.min = min.copy();
+        o.max = max.copy();
+        return o;
+    }
+}

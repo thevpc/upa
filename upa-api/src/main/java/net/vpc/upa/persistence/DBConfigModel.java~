@@ -1,0 +1,19 @@
+package net.vpc.upa.persistence;
+
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 9 mai 2003
+ * Time: 11:34:42
+ * To change this template use Options | File Templates.
+ */
+public interface DBConfigModel {
+    public String[] getConnectionStringArray();
+
+    public void setConnectionStringArray(String[] adapters);
+
+    public String getConnectionString();
+
+    public void setConnectionString(String adapter);
+}

@@ -1,0 +1,102 @@
+package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 10:07:06
+ * To change this template use Options | File Templates.
+ */
+public class Decode extends Function implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private ArrayList<Expression> params;
+    private final int EXPECT_CONDITION = 0;
+    private final int VALID = 2;
+    private int state = 0;
+
+    private Decode() {
+        params = new ArrayList<Expression>(2);
+    }
+
+    public Decode(List<Expression> expressions) {
+        params = new ArrayList<Expression>(expressions);
+        state = VALID;
+    }
+
+    public Decode(Expression expression) {
+        params = new ArrayList<Expression>(2);
+        add(expression);
+        state = EXPECT_CONDITION;
+    }
+
+//    public If Then(Object value){
+//        return Then(Litteral.toExpression(value));
+//    }
+
+    public Decode map(Expression oldValue, Expression newValue) {
+        if (state != VALID) {
+            add(oldValue);
+            add(newValue);
+            return this;
+        } else {
+            throw new IllegalArgumentException("No more tokens are expected");
+        }
+    }
+
+//    public If Else(Object value){
+//        return Else(Litteral.toExpression(value));
+//    }
+
+    public Decode otherwise(Expression value) {
+        if (state != VALID) {
+            add(value);
+            state = VALID;
+            return this;
+        } else {
+            throw new IllegalArgumentException("Expected a value");
+        }
+    }
+
+    private void add(Expression expression) {
+        params.add(expression);
+    }
+
+    @Override
+    public boolean isValid() {
+        return state == VALID;
+    }
+
+//    public String toSQL(boolean flag, PersistenceUnit database) {
+//        throw new IllegalArgumentException("Not supported");
+//    }
+
+    @Override
+    public String getName() {
+        return "Decode";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return params.size();
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        return params.get(index);
+    }
+
+    @Override
+    public Expression copy() {
+        Decode o = new Decode();
+        for (Expression param : params) {
+            o.params.add(param.copy());
+        }
+        o.state = state;
+        return o;
+    }
+
+
+}

@@ -1,0 +1,47 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Field;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/15/12
+ * Time: 7:29 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class FieldAnyFilter extends AbstractFieldFilter {
+
+    public FieldAnyFilter() {
+    }
+
+    @Override
+    public boolean accept(Field f) {
+        return true;
+    }
+
+    @Override
+    public boolean acceptDynamic() {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 732;
+    }
+
+    @Override
+    public String toString() {
+        return "true";
+    }
+
+
+}

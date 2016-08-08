@@ -1,0 +1,26 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa;
+
+
+public interface DeletionTrace {
+
+    public void addTrace(String trace);
+
+    public void add(RelationshipType type, Entity entity, long count);
+
+//    public void add(DeletionTrace other);
+
+    public DeletionTraceElement[] getTrace(RelationshipType type);
+
+    public DeletionTraceElement[] getTrace();
+
+    public String toString();
+
+    public long getDeletedItemsCount();
+
+    public long getDeletedItemsCount(RelationshipType type);
+
+
+}

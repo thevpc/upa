@@ -1,0 +1,69 @@
+package net.vpc.upa;
+
+import net.vpc.upa.callback.PersistenceUnitDefinitionListener;
+import net.vpc.upa.config.ScanSource;
+import net.vpc.upa.exceptions.UPAException;
+
+import java.util.List;
+import net.vpc.upa.config.ScanFilter;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/11/12 9:38 PM
+ */
+public interface PersistenceGroup extends Closeable {
+
+    void scan(ScanSource strategy, ScanListener listener, boolean configure) throws UPAException;
+
+    public String getName() throws UPAException;
+
+    /**
+     * if true, when no scan filter is specified will scan all class-path
+     *
+     * @return true if auto scan is enabled
+     */
+    public boolean isAutoScan();
+
+    public void setAutoScan(boolean autoScan);
+
+    public UPAContext getContext();
+
+    public PersistenceUnit getPersistenceUnit() throws UPAException;
+
+    public void setPersistenceUnit(String name) throws UPAException;
+
+    public List<PersistenceUnit> getPersistenceUnits() throws UPAException;
+
+    public PersistenceUnit getPersistenceUnit(String name) throws UPAException;
+
+    public ObjectFactory getFactory() throws UPAException;
+
+    public boolean containsPersistenceUnit(String name) throws UPAException;
+
+    public PersistenceUnit addPersistenceUnit(String name) throws UPAException;
+
+    public void removePersistenceUnit(String name) throws UPAException;
+
+    public boolean currentSessionExists();
+
+    public Session getCurrentSession() throws UPAException;
+
+    public void setCurrentSession(Session session) throws UPAException;
+
+    public Session openSession() throws UPAException;
+
+    public boolean isClosed() throws UPAException;
+
+    public void close() throws UPAException;
+
+    public void addPersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
+
+    public void removePersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
+
+    public void addContextAnnotationStrategyFilter(ScanFilter filter);
+
+    public void removeContextAnnotationStrategyFilter(ScanFilter filter);
+
+    public ScanFilter[] getContextAnnotationStrategyFilters();
+
+}

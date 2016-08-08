@@ -1,0 +1,13 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public enum SearchOperator {
+
+    DEFAULT, CONTAINS, STARTS_WITH, ENDS_WITH, EQ, LT, LTE, GT, GTE, NE
+}

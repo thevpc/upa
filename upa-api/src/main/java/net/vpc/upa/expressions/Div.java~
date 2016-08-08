@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class Div extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Div(Expression left, Object right) {
+        super(BinaryOperator.DIV, left, right);
+    }
+
+    public Div(Expression left, Expression right) {
+        super(BinaryOperator.DIV, left, right);
+    }
+}

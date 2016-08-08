@@ -1,0 +1,9 @@
+package net.vpc.upa.types;
+
+// Referenced classes of package org.vpc.lib.util:
+//            ConstraintsEvent
+
+public interface ConstraintsListener {
+
+    public abstract void unrespectedConstraints(ConstraintsEvent constraintsevent);
+}

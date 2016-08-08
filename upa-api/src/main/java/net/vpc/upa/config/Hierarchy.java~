@@ -1,0 +1,28 @@
+package net.vpc.upa.config;
+
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * function TreeAncestor is made available for tree relations
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/28/12 8:28 PM
+ */
+@Target(value = {ElementType.FIELD, ElementType.METHOD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Hierarchy {
+
+    String separator() default "/";
+
+    String path() default "";
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

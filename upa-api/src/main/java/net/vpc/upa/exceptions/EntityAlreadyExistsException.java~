@@ -1,0 +1,17 @@
+package net.vpc.upa.exceptions;
+
+/**
+ * Created by IntelliJ IDEA. User: vpc Date: 25 juin 2006 Time: 15:03:00 To
+ * change this template use File | Settings | File Templates.
+ */
+public class EntityAlreadyExistsException extends EntityException {
+
+    /**
+     * @param entityName       name of the cashing Entity
+     * @param source           Source for the clashing Entity
+     * @param registererSource Source for already registered Entity
+     */
+    public EntityAlreadyExistsException(String entityName, Object source, Object registererSource) {
+        super("EntityAlreadyExistsException", entityName, source, registererSource);
+    }
+}

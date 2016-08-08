@@ -1,0 +1,18 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+/**
+ * Custom Default Object defines a simple manner for introducing dynamic values of a field's default value.
+ * @see {@link net.vpc.upa.Field#setDefaultObject}
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface CustomDefaultObject {
+    /**
+     * hold value
+     * @return value
+     */
+    public Object getObject();
+}

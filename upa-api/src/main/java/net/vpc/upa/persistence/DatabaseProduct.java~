@@ -1,0 +1,15 @@
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/12/12 8:03 AM
+ */
+public enum DatabaseProduct {
+    ORACLE,
+    INTERBASE,
+    SQLSERVER,
+    MYSQL,
+    MCKOI,
+    DERBY,
+    UNKNOWN
+}

@@ -1,0 +1,14 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/16/12
+ * Time: 6:36 AM
+ * To change this template use File | Settings | File Templates.
+ */
+public interface QueryResultParser<T> {
+    public T parse(QueryResult result) throws UPAException;
+}

@@ -1,0 +1,65 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class SheetColumn extends DataColumn implements Cloneable {
+
+    private int skippedColumns;
+
+    public SheetColumn() {
+    }
+
+    public int getSkippedColumns() {
+        return skippedColumns;
+    }
+
+    public void setSkippedColumns(int skippedColumns) {
+        this.skippedColumns = skippedColumns;
+    }
+
+    public SheetColumn updateSkippedColumns(int skippedColumns) {
+        setSkippedColumns(skippedColumns);
+        return this;
+    }
+
+    @Override
+    public SheetColumn updateTrimValue(boolean trimValue) {
+        return (SheetColumn) super.updateTrimValue(trimValue);
+    }
+
+    @Override
+    public SheetColumn updateRawValueConverter(ValueConverter rawValueConverter) {
+        return (SheetColumn) super.updateRawValueConverter(rawValueConverter);
+    }
+
+    @Override
+    public SheetColumn updateValueValidator(ValueValidator valueValidator) {
+        return (SheetColumn) super.updateValueValidator(valueValidator);
+    }
+
+    @Override
+    public SheetColumn updateValueConverter(ValueConverter valueConverter) {
+        return (SheetColumn) super.updateValueConverter(valueConverter);
+    }
+
+    @Override
+    public SheetColumn updateTitle(String title) {
+        return (SheetColumn) super.updateTitle(title);
+    }
+
+    @Override
+    public SheetColumn updateName(String name) {
+        return (SheetColumn) super.updateName(name);
+    }
+
+    @Override
+    public SheetColumn updateIndex(int index) {
+        return (SheetColumn) super.updateIndex(index);
+    }
+
+}

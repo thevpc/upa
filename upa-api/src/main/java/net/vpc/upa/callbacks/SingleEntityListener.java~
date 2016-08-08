@@ -1,0 +1,28 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Record;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/10/12 12:38 AM
+ */
+public interface SingleEntityListener extends EntityInterceptor {
+    public void beforeInsert(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+    public void afterInsert(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+    public void beforeUpdate(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+    public void afterUpdate(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+    public void beforeDelete(EntityTriggerContext context, Object id) throws UPAException;
+
+    public void afterDelete(EntityTriggerContext context, Object id) throws UPAException;
+
+    public void beforeUpdateFormulas(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+    public void afterUpdateFormulas(EntityTriggerContext context, Object id, Record record) throws UPAException;
+
+
+}

@@ -1,0 +1,12 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/16/12 11:21 PM
+ */
+public enum SequenceType {
+    DEFAULT,
+    INSERT,
+    UPDATE,
+    BOTH
+}

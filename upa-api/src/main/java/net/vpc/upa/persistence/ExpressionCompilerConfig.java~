@@ -1,0 +1,86 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.filters.FieldFilter;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class ExpressionCompilerConfig {
+
+    private Map<String, String> aliasToEntityContext;
+    private boolean validate = true;
+    private boolean expandFields = true;
+    private FieldFilter expandFieldFilter;
+    private boolean expandEntityFilter = true;
+    private String thisAlias = null;
+
+    public ExpressionCompilerConfig() {
+    }
+
+    public Map<String, String> getAliasToEntityContext() {
+        return aliasToEntityContext;
+    }
+
+    public void bindAliastoEntity(String alias, String entityName) {
+        if (aliasToEntityContext == null) {
+            aliasToEntityContext = new HashMap<String, String>();
+        }
+        aliasToEntityContext.put(alias, entityName);
+    }
+
+    public void setAliasToEntityContext(Map<String, String> aliasToEntityContext) {
+        this.aliasToEntityContext = aliasToEntityContext;
+    }
+
+    public boolean isExpandFields() {
+        return expandFields;
+    }
+
+    public void setExpandFields(boolean expandFields) {
+        this.expandFields = expandFields;
+    }
+
+    public FieldFilter getExpandFieldFilter() {
+        return expandFieldFilter;
+    }
+
+    public void setExpandFieldFilter(FieldFilter expandFieldFilter) {
+        this.expandFieldFilter = expandFieldFilter;
+    }
+
+    public boolean isExpandEntityFilter() {
+        return expandEntityFilter;
+    }
+
+    public void setExpandEntityFilter(boolean expandEntityFilter) {
+        this.expandEntityFilter = expandEntityFilter;
+    }
+
+    public boolean isValidate() {
+        return validate;
+    }
+
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+
+    public String getThisAlias() {
+        return thisAlias;
+    }
+
+    public void setThisAlias(String thisAlias) {
+        this.thisAlias = thisAlias;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpressionCompilerConfig{" + "aliasToEntityContext=" + aliasToEntityContext + ", validate=" + validate + ", expandFields=" + expandFields + ", expandFieldFilter=" + expandFieldFilter + ", expandEntityFilter=" + expandEntityFilter + ", thisAlias=" + thisAlias + '}';
+    }
+}

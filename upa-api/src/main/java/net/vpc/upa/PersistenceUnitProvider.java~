@@ -1,0 +1,11 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/11/12 11:57 PM
+ */
+public interface PersistenceUnitProvider {
+    public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup);
+
+    public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit current);
+}

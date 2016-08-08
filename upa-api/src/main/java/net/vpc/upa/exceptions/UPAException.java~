@@ -1,0 +1,54 @@
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class UPAException extends RuntimeException {
+    private I18NString messageId;
+    private Object[] parameters;
+
+    public UPAException() {
+        this("UPAException");
+    }
+
+    public UPAException(String message, Object... parameters) {
+        this(new I18NString(message), parameters);
+    }
+
+    public UPAException(I18NString message, Object... parameters) {
+        this(null, message, parameters);
+    }
+
+    public UPAException(Throwable cause, I18NString messageId, Object... parameters) {
+        super(buildMessage(messageId, parameters), cause);
+        this.messageId = messageId;
+        this.parameters = parameters;
+    }
+
+
+    public I18NString getMessageId() {
+        return messageId;
+    }
+
+    public Object[] getParameters() {
+        return parameters;
+    }
+
+    private static String buildMessage(I18NString messageId, Object... parameters) {
+        StringBuilder b = new StringBuilder();
+        b.append(messageId == null ? "UPAException" : messageId.toString());
+        if (parameters.length > 0) {
+            b.append("(");
+            for (int i = 0; i < parameters.length; i++) {
+                if (i > 0) {
+                    b.append(",");
+                }
+                b.append(parameters[i]);
+            }
+            b.append(")");
+        }
+        return b.toString();
+    }
+}

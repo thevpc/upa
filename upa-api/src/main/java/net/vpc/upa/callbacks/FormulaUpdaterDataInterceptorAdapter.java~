@@ -1,0 +1,21 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.filters.FieldFilter;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/10/12 1:25 AM
+ */
+public abstract class FormulaUpdaterDataInterceptorAdapter implements UpdateFormulaInterceptor {
+    private FieldFilter formulaFields;
+
+    public FormulaUpdaterDataInterceptorAdapter(FieldFilter formulaFields) {
+        this.formulaFields = formulaFields;
+    }
+
+    @Override
+    public FieldFilter getFormulaFields() throws UPAException {
+        return formulaFields;
+    }
+}

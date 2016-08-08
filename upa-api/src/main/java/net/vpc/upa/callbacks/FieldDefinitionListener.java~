@@ -1,0 +1,15 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 8:55 PM
+ */
+public interface FieldDefinitionListener extends DefinitionListener {
+    public void fieldAdded(FieldDefinitionEvent event) throws UPAException;
+
+    public void fieldRemoved(FieldDefinitionEvent event) throws UPAException;
+
+    public void fieldMoved(FieldDefinitionEvent event) throws UPAException;
+}

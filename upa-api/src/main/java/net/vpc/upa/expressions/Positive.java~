@@ -1,0 +1,17 @@
+package net.vpc.upa.expressions;
+
+public final class Positive extends UnaryOperatorExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+
+    public Positive(Expression expression) {
+        super(UnaryOperator.POSITIVE,"+", expression);
+    }
+
+    @Override
+    public Expression copy() {
+        Positive o = new Positive(getExpression().copy());
+        return o;
+    }
+
+}

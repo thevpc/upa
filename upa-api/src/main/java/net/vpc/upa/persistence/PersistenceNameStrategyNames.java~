@@ -1,0 +1,11 @@
+//package net.vpc.upa.persistence;
+//
+///**
+// * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+// * @creationdate 1/1/13 1:17 AM
+// */
+//public final class PersistenceNameStrategyNames {
+//    public static final String DEFAULT = "DEFAULT";
+//    public static final String ALIAS = "ALIAS";
+//    public static final String PK_CONSTRAINT = "PK_CONSTRAINT";
+//}

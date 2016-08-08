@@ -1,0 +1,17 @@
+package net.vpc.upa.expressions;
+
+
+public final class And extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public And(Expression left, Object right) {
+        super(BinaryOperator.AND, left, right);
+    }
+
+    public And(Expression left, Expression right) {
+        super(BinaryOperator.AND, left, right);
+    }
+
+}

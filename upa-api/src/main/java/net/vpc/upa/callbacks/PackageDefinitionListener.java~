@@ -1,0 +1,13 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/18/12 9:10 PM
+ */
+public interface PackageDefinitionListener extends DefinitionListener {
+    public void packageAdded(PackageDefinitionEvent event);
+
+    public void packageRemoved(PackageDefinitionEvent event);
+
+    public void packageMoved(PackageDefinitionEvent event);
+}

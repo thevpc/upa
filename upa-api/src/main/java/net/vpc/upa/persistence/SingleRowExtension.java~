@@ -1,0 +1,9 @@
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/28/12 8:28 PM
+ */
+public interface SingleRowExtension extends EntityExtension {
+    boolean isAutoCreate();
+}

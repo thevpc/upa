@@ -1,0 +1,64 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+package net.vpc.upa.bulk;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public abstract class TextFixedWidthFormatter extends AbstractDataFormatter {
+
+    private boolean writeHeader;
+    private String newLine;
+    private int skipRows;
+    private List<TextFixedWidthColumn> columns = new ArrayList<TextFixedWidthColumn>();
+
+    public List<TextFixedWidthColumn> getColumns() {
+        return columns;
+    }
+
+    public boolean isWriteHeader() {
+        return writeHeader;
+    }
+
+    public void setWriteHeader(boolean writeHeader) {
+        this.writeHeader = writeHeader;
+    }
+
+    public int getSkipRows() {
+        return skipRows;
+    }
+
+    public void setSkipRows(int skipRows) {
+        this.skipRows = skipRows;
+    }
+
+    public String getNewLine() {
+        return newLine;
+    }
+
+    public void setNewLine(String newLine) {
+        this.newLine = newLine;
+    }
+
+    public abstract DataWriter format(Writer writer) throws IOException;
+
+
+}

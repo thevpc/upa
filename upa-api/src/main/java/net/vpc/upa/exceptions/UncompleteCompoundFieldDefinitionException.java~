@@ -1,0 +1,25 @@
+package net.vpc.upa.exceptions;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 25 avr. 2003
+ * Time: 12:56:55
+ * To change this template use Options | File Templates.
+ */
+public class UncompleteCompoundFieldDefinitionException extends RuntimeException {
+    public UncompleteCompoundFieldDefinitionException() {
+    }
+
+    public UncompleteCompoundFieldDefinitionException(String message) {
+        super(message);
+    }
+
+    public UncompleteCompoundFieldDefinitionException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public UncompleteCompoundFieldDefinitionException(Throwable cause) {
+        super(cause);
+    }
+}

@@ -1,0 +1,22 @@
+package net.vpc.upa.exceptions;
+
+import java.util.Arrays;
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class MultipleEntityMatchForTypeException extends EntityException {
+
+    private String[] names;
+
+    public MultipleEntityMatchForTypeException(Class entityType, String[] names) {
+        super((Throwable) null, new I18NString("MultipleEntityMatchForType"), entityType, Arrays.asList(names));
+        this.names = names;
+    }
+
+    public String[] getNames() {
+        return names;
+    }
+
+}

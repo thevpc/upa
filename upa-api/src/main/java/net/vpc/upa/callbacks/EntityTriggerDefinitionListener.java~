@@ -1,0 +1,12 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:17 PM
+ */
+public interface EntityTriggerDefinitionListener extends DefinitionListener {
+    public void entityTriggerAdded(EntityTriggerDefinitionEvent event);
+
+    public void entityTriggerRemoved(EntityTriggerDefinitionEvent event);
+
+}

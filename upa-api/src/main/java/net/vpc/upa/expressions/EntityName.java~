@@ -1,0 +1,37 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/16/12
+ * Time: 10:12 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class EntityName extends DefaultExpression implements NameOrSelect {
+    private String name;
+
+    public EntityName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
+    @Override
+    public Expression copy() {
+        EntityName o = new EntityName(name);
+        return o;
+    }
+
+    @Override
+    public String toString() {
+        return ExpressionHelper.escapeIdentifier(name);
+    }
+
+}

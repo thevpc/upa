@@ -1,0 +1,36 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.types.DataType;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface ExpressionManager {
+
+    public Expression parseExpression(String expression);
+
+    public net.vpc.upa.expressions.CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
+
+    public net.vpc.upa.expressions.CompiledExpression compileExpression(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig config);
+
+    public QLFunctionDefinition addFunction(String name, DataType type, Function function);
+
+    public void removeFunction(String name);
+
+    public List<QLFunctionDefinition> getFunctions();
+
+    public Set<String> getFunctionNames();
+
+    public boolean containsFunction(String name);
+
+    public QLFunctionDefinition getFunction(String name);
+}

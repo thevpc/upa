@@ -1,0 +1,9 @@
+package net.vpc.upa.expressions;
+
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression, SQLContext
+
+public interface EntityStatement extends Expression {
+    public String getEntityName();
+}

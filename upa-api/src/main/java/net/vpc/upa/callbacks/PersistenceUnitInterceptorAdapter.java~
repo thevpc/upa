@@ -1,0 +1,38 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.persistence.EntityExecutionContext;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/8/12 10:17 PM
+ */
+public class PersistenceUnitInterceptorAdapter implements PersistenceUnitInterceptor {
+    @Override
+    public void clearing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void initializing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void resetting(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void creating(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void committingModelChanges(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void committingStorageChanges(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+
+    @Override
+    public void closing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+    }
+}

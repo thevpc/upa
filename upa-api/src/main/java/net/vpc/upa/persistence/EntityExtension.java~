@@ -1,0 +1,18 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.extensions.EntityExtensionDefinition;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/28/12 8:28 PM
+ */
+public interface EntityExtension {
+
+    public EntityExtensionDefinition getDefinition();
+
+    public void install(Entity entity, EntityPersister entityPersister, EntityExtensionDefinition definition) throws UPAException;
+
+    public void commitModelChanges() throws UPAException;
+}

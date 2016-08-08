@@ -1,0 +1,82 @@
+package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression
+
+/**
+ * the date at the end of the next "count" month of the given "date"
+ * <pre>
+ * monthend()
+ *      params
+ *          N/A
+ *      Synopsis :
+ *          the date at the end of the current month
+ *          equivalent to : monthend(CurrentTimestamp(),0) : the date at the end of the month
+ *
+ * monthend(count)
+ *      params
+ *          count : integer expression
+ *      Synopsis :
+ *          the date at the end of the next "count" month. when count=0, the end of the current month
+ *          equivalent to : monthend(CurrentTimestamp(),count)
+ * monthend(date,count)
+ *      params
+ *          date  : date expression
+ *          count : integer expression
+ *      Synopsis  :
+ *          the date at the end of the next "count" month. when count=0, the end of the current month
+ * </pre>
+ */
+public class MonthEnd extends Function {
+    private static final long serialVersionUID = 1L;
+    private List<Expression> expressions = new ArrayList<Expression>();
+
+    public MonthEnd() {
+
+    }
+
+    public MonthEnd(Expression date, Expression count) {
+        expressions.add(date);
+        expressions.add(count);
+    }
+
+    public MonthEnd(Expression count) {
+        expressions.add(count);
+    }
+
+//    public String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "i2v("+e.toSQL(true, database)+")";
+//    }
+
+//    public static Expression toExpression(Object value) {
+//        return ((Expression) (value == null || !(value instanceof Expression) ? new I2V((String)(value)) : (Expression) value));
+//    }
+
+    @Override
+    public String getName() {
+        return "MonthEnd";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return expressions.size();
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        return expressions.get(index);
+    }
+
+    @Override
+    public Expression copy() {
+        MonthEnd o = new MonthEnd();
+        for (Expression expression : expressions) {
+            o.expressions.add(expression.copy());
+        }
+        return o;
+    }
+}

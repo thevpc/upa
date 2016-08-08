@@ -1,0 +1,64 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.Section;
+
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class SectionDefinitionEvent extends UPAEvent {
+    private PersistenceUnit persistenceUnit;
+    private int index;
+    private int oldIndex;
+    private boolean before;
+    private Entity entity;
+    private Section item;
+    private Section parent;
+    private Section oldParent;
+
+    public SectionDefinitionEvent(Section item, PersistenceUnit persistenceUnit, Entity entity, Section parent, int index, Section oldParent, int oldIndex, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.item = item;
+        this.parent = parent;
+        this.index = index;
+        this.oldParent = oldParent;
+        this.oldIndex = oldIndex;
+        this.before = before;
+        this.entity = entity;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getOldIndex() {
+        return oldIndex;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public Section getItem() {
+        return item;
+    }
+
+    public Section getParent() {
+        return parent;
+    }
+
+    public Section getOldParent() {
+        return oldParent;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+}

@@ -1,0 +1,56 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceUnit;
+
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class DefinitionEvent<I, P> extends UPAEvent{
+    private PersistenceUnit persistenceUnit;
+    private int index;
+    private int oldIndex;
+    private boolean before;
+    private I item;
+    private P parent;
+    private P oldParent;
+
+    public DefinitionEvent(PersistenceUnit persistenceUnit, I item, P parent, int index, P oldParent, int oldIndex, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.item = item;
+        this.parent = parent;
+        this.index = index;
+        this.oldParent = oldParent;
+        this.oldIndex = oldIndex;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getOldIndex() {
+        return oldIndex;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public I getItem() {
+        return item;
+    }
+
+    public P getParent() {
+        return parent;
+    }
+
+    public P getOldParent() {
+        return oldParent;
+    }
+}

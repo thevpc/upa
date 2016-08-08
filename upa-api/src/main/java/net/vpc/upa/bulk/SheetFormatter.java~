@@ -1,0 +1,75 @@
+package net.vpc.upa.bulk;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public abstract class SheetFormatter extends AbstractDataFormatter {
+
+    private boolean writeHeader;
+    private int skipRows;
+    private boolean trimValues = true;
+    private int sheetIndex = 0;
+    private String sheetName;
+    private SheetContentType contentType;
+
+    private List<SheetColumn> columns = new ArrayList<SheetColumn>();
+
+    public List<SheetColumn> getColumns() {
+        return columns;
+    }
+
+    public boolean isWriteHeader() {
+        return writeHeader;
+    }
+
+    public void setWriteHeader(boolean writeHeader) {
+        this.writeHeader = writeHeader;
+    }
+
+    public boolean isTrimValues() {
+        return trimValues;
+    }
+
+    public void setTrimValues(boolean trimValues) {
+        this.trimValues = trimValues;
+    }
+
+    public int getSheetIndex() {
+        return sheetIndex;
+    }
+
+    public void setSheetIndex(int sheetIndex) {
+        this.sheetIndex = sheetIndex;
+    }
+
+    public String getSheetName() {
+        return sheetName;
+    }
+
+    public void setSheetName(String sheetName) {
+        this.sheetName = sheetName;
+    }
+
+    public int getSkipRows() {
+        return skipRows;
+    }
+
+    public void setSkipRows(int skipRows) {
+        this.skipRows = skipRows;
+    }
+
+    public SheetContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(SheetContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    public abstract boolean isSupported(SheetContentType contentType);
+
+    public abstract SheetContentType getDefaultContentType();
+}

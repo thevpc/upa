@@ -1,0 +1,18 @@
+package net.vpc.upa;
+
+import java.util.List;
+
+public interface UniqueConstraint extends UPAObject {
+
+    public void commitModelChanges();
+
+    public List<Field> getFields();
+
+    public List<String> getFieldNames();
+
+    public Entity getEntity();
+
+    public String getEntityName();
+
+    public boolean isUnique();
+}

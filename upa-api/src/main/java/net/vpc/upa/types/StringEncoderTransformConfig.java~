@@ -1,0 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.types;
+
+import java.io.Serializable;
+import net.vpc.upa.config.StringEncoderType;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class StringEncoderTransformConfig implements DataTypeTransformConfig, Serializable {
+
+    private Object encoder;
+    private int size;
+
+    public void setEncoder(String stringEncoder) {
+        setEncoderObject(stringEncoder);
+    }
+
+    public void setEncoder(StringEncoder stringEncoder) {
+        setEncoderObject(stringEncoder);
+    }
+
+    public void setEncoder(StringEncoderType stringEncoder) {
+        setEncoderObject(stringEncoder);
+    }
+
+    protected void setEncoderObject(Object stringifyStrategy) {
+        if (!(stringifyStrategy == null
+                || stringifyStrategy instanceof String
+                || stringifyStrategy instanceof Class
+                || stringifyStrategy instanceof StringEncoder
+                || (stringifyStrategy instanceof StringEncoderType && !stringifyStrategy.equals(StringEncoderType.CUSTOM)))) {
+            throw new IllegalArgumentException("secretStrategy shoud be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+        }
+        this.encoder = stringifyStrategy;
+    }
+
+    public Object getEncoder() {
+        return encoder;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+}

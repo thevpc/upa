@@ -1,0 +1,7 @@
+package net.vpc.upa.expressions;
+
+public abstract interface Expression extends Cloneable, java.io.Serializable {
+    public boolean isValid();
+
+    public Expression copy();
+}

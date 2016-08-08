@@ -1,0 +1,8 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:13 PM
+ */
+public interface DefinitionListener {
+}

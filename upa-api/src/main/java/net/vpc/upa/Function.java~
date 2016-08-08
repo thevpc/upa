@@ -1,0 +1,9 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/13/12 11:42 PM
+ */
+public interface Function {
+    Object eval(String name, Object[] args, PersistenceUnit persistenceUnit);
+}

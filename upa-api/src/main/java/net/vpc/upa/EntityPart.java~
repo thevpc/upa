@@ -1,0 +1,20 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa;
+
+public interface EntityPart extends UPAObject {
+
+//    public static final EntityItem[] EMPTY_ARRAY = new EntityItem[0];
+
+//    public String getName();
+
+    public Entity getEntity();
+
+    public EntityPart getParent();
+
+    // -------------------------- PATH SUPPORT
+    public String getPath();
+
+//    public void close() throws UPAException;
+}

@@ -1,0 +1,103 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author vpc
+ */
+public class PersistenceNameConfig {
+
+    private int configOrder;
+    private List<PersistenceName> names = new ArrayList<PersistenceName>();
+    private String globalPersistenceName;
+    private String localPersistenceName;
+
+    private String persistenceNameEscape;
+
+    public PersistenceNameConfig(int configOrder) {
+        this.configOrder=configOrder;
+    }
+
+    public int getConfigOrder() {
+        return configOrder;
+    }
+
+    public void setConfigOrder(int configOrder) {
+        this.configOrder = configOrder;
+    }
+
+    public String getGlobalPersistenceName() {
+        return globalPersistenceName;
+    }
+
+    public void setGlobalPersistenceName(String globalPersistenceName) {
+        this.globalPersistenceName = globalPersistenceName;
+    }
+
+    public String getPersistenceNameEscape() {
+        return persistenceNameEscape;
+    }
+
+    public void setPersistenceNameEscape(String persistenceNameEscape) {
+        this.persistenceNameEscape = persistenceNameEscape;
+    }
+
+    public List<PersistenceName> getNames() {
+        return names;
+    }
+
+    public String getLocalPersistenceName() {
+        return localPersistenceName;
+    }
+
+    public void setLocalPersistenceName(String localPersistenceName) {
+        this.localPersistenceName = localPersistenceName;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (this.names != null ? this.names.hashCode() : 0);
+        hash = 59 * hash + (this.globalPersistenceName != null ? this.globalPersistenceName.hashCode() : 0);
+        hash = 59 * hash + (this.localPersistenceName != null ? this.localPersistenceName.hashCode() : 0);
+        hash = 59 * hash + (this.persistenceNameEscape != null ? this.persistenceNameEscape.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersistenceNameConfig other = (PersistenceNameConfig) obj;
+        if (this.names != other.names && (this.names == null || !this.names.equals(other.names))) {
+            return false;
+        }
+        if ((this.globalPersistenceName == null) ? (other.globalPersistenceName != null) : !this.globalPersistenceName.equals(other.globalPersistenceName)) {
+            return false;
+        }
+        if ((this.localPersistenceName == null) ? (other.localPersistenceName != null) : !this.localPersistenceName.equals(other.localPersistenceName)) {
+            return false;
+        }
+        if ((this.persistenceNameEscape == null) ? (other.persistenceNameEscape != null) : !this.persistenceNameEscape.equals(other.persistenceNameEscape)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistenceNameStrategyModel{" + "names=" + names + ", globalPersistenceName=" + globalPersistenceName + ", localPersistenceName=" + localPersistenceName + ", persistenceNameEscape=" + persistenceNameEscape + '}';
+    }
+
+}

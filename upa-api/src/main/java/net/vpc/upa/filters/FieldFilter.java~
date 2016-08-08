@@ -1,0 +1,13 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UPAException;
+
+// Referenced classes of package org.vpc.lib.database:
+//            Field
+public interface FieldFilter {
+
+    public abstract boolean acceptDynamic() throws UPAException;
+
+    public abstract boolean accept(Field f) throws UPAException;
+}

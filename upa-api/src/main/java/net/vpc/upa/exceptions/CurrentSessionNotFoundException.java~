@@ -1,0 +1,10 @@
+package net.vpc.upa.exceptions;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class CurrentSessionNotFoundException extends UPAException {
+    public CurrentSessionNotFoundException() {
+        super("CurrentSessionNotFoundException");
+    }
+}

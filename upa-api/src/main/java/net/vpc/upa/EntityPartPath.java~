@@ -1,0 +1,42 @@
+package net.vpc.upa;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class EntityPartPath {
+    private Entity entity;
+    private List<EntityPart> path;
+
+    public EntityPartPath(Entity entity, List<EntityPart> path) {
+        this.entity = entity;
+        if (path == null) {
+            this.path = new ArrayList<EntityPart>();
+        } else {
+            this.path = new ArrayList<EntityPart>(path);
+        }
+    }
+
+    public void add(EntityPart part) {
+        path.add(part);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder(entity.getName());
+        for (EntityPart p : path) {
+            sb.append("/");
+            sb.append(p.getName());
+        }
+        return sb.toString();
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public List<EntityPart> getPath() {
+        return path;
+    }
+}

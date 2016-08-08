@@ -1,0 +1,84 @@
+package net.vpc.upa.expressions;
+//            Expression
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserExpression extends DefaultExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private String expression;
+    private Map<String, Object> parameters = null;
+
+    public UserExpression(String qlString) {
+        this.expression = qlString;
+    }
+
+    public UserExpression setParameters(Map<String, Object> parameters) {
+        if (parameters != null) {
+            if (this.parameters == null) {
+                this.parameters = new HashMap<String, Object>();
+            }
+            this.parameters.putAll(parameters);
+        }
+        return this;
+    }
+
+    public Object getParameter(String name) {
+        if (parameters != null) {
+            return parameters.get(name);
+        }
+        return null;
+    }
+
+    public Map<String, Object> getParameters() {
+        if (parameters != null) {
+            return Collections.EMPTY_MAP;
+        }
+        return new HashMap<String, Object>(parameters);
+    }
+
+    public UserExpression setParameter(String name, Object value) {
+        if (parameters == null) {
+            parameters = new HashMap<String, Object>();
+        }
+        parameters.put(name, value);
+        return this;
+    }
+
+    public UserExpression removeParameter(String name, Object value) {
+        if (parameters != null) {
+            parameters.remove(name);
+        }
+        return this;
+    }
+
+    public boolean containsParameter(String name) {
+        if (parameters != null) {
+            return parameters.containsKey(name);
+        }
+        return false;
+    }
+
+    //    public String toSQL(boolean integrated, PersistenceUnit database) {
+//
+//        return //integrated? '(' + value + ')' : value;
+//        value;
+//    }
+    public String getExpression() {
+        return expression;
+    }
+
+    @Override
+    public Expression copy() {
+        UserExpression o = new UserExpression(expression);
+        return o;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(expression);
+    }
+}

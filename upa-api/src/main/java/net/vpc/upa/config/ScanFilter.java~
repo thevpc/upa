@@ -1,0 +1,89 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.config;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class ScanFilter {
+
+    private int configOrder;
+    private String libs;
+    private String types;
+    /**
+     * When true, filter is inherited in children items. Inheritance mean that
+     * filter defined in context will be appended (as OR operator) to filters of
+     * persistenceGroup and persistenceUnits; and persistenceGroup filter will
+     * be appended to persistenceUnitFilter
+     */
+    private boolean propagate;
+
+    public ScanFilter(String libs, String types, boolean propagate, int configOrder) {
+        this.libs = libs == null ? "" : libs.trim();
+        this.types = types == null ? "" : types.trim();
+        this.propagate = propagate;
+        this.configOrder = configOrder;
+    }
+
+    public int getConfigOrder() {
+        return configOrder;
+    }
+
+    public void setConfigOrder(int configOrder) {
+        this.configOrder = configOrder;
+    }
+
+    public boolean isPropagate() {
+        return propagate;
+    }
+
+    public void setPropagate(boolean propagate) {
+        this.propagate = propagate;
+    }
+
+    public String getLibs() {
+        return libs;
+    }
+
+    public String getTypes() {
+        return types;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (this.libs != null ? this.libs.hashCode() : 0);
+        hash = 59 * hash + (this.types != null ? this.types.hashCode() : 0);
+        hash = 59 * hash + (this.propagate ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ScanFilter other = (ScanFilter) obj;
+        if ((this.libs == null) ? (other.libs != null) : !this.libs.equals(other.libs)) {
+            return false;
+        }
+        if ((this.types == null) ? (other.types != null) : !this.types.equals(other.types)) {
+            return false;
+        }
+        if (this.propagate != other.propagate) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ContextAnnotationStrategyFilter{" + "libs=" + libs + ", types=" + types + ", propagate=" + propagate + '}';
+    }
+
+}

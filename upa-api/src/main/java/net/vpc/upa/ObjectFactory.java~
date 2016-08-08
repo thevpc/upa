@@ -1,0 +1,20 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/11/12 9:19 PM
+ */
+public interface ObjectFactory {
+
+    int getContextSupportLevel();
+
+    void setParentFactory(ObjectFactory factory);
+
+    <T> T createObject(Class<T> type, String name);
+
+    <T> T createObject(String typeName, String name);
+    
+    <T> T createObject(Class<T> type);
+
+    <T> T createObject(String typeName);
+}

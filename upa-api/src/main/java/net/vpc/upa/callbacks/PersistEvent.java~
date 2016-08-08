@@ -1,0 +1,42 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Record;
+import net.vpc.upa.persistence.EntityExecutionContext;
+
+/**
+ *
+ * @author vpc
+ */
+public class PersistEvent extends EntityEvent {
+
+    private Object objectId;
+    private Record objectRecord;
+    private Object objectValue;
+
+    public PersistEvent(Object objectId, Record objectRecord, EntityExecutionContext entityExecutionContext) {
+        super(entityExecutionContext);
+        this.objectId = objectId;
+        this.objectRecord = objectRecord;
+    }
+
+    public Object getObjectId() {
+        return objectId;
+    }
+
+    public Record getObjectRecord() {
+        return objectRecord;
+    }
+
+    public Object getObjectValue() {
+        if (objectValue == null && objectRecord != null) {
+            objectValue = getEntityExecutionContext().getEntity().getBuilder().recordToEntity(objectRecord);
+        }
+        return objectValue;
+    }
+
+}

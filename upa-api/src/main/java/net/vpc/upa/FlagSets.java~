@@ -1,0 +1,31 @@
+package net.vpc.upa;
+
+
+import java.util.EnumSet;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 1/27/13 1:02 AM
+ */
+@PortabilityHint(target = "C#", name = "ignore")
+public class FlagSets {
+    public static <E extends Enum<E>> FlagSet<E> of(E first, E... others) {
+        return new FlagSet<E>((Class<E>) first.getClass(), EnumSet.of(first, others));
+    }
+
+    public static <E extends Enum<E>> FlagSet<E> ofType(Class<E> elementType) {
+        return noneOf(elementType);
+    }
+
+    public static <E extends Enum<E>> FlagSet<E> noneOf(Class<E> elementType) {
+        return new FlagSet<E>(elementType, EnumSet.noneOf(elementType));
+    }
+
+    public static <E extends Enum<E>> FlagSet<E> allOf(Class<E> elementType) {
+        return new FlagSet<E>(elementType, EnumSet.allOf(elementType));
+    }
+
+    public static <E extends Enum<E>> FlagSet<E> copyOf(FlagSet<E> s) {
+        return s.clone();
+    }
+}

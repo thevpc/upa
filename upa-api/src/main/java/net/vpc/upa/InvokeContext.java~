@@ -1,0 +1,52 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import java.io.Serializable;
+
+/**
+ *
+ * @author vpc
+ */
+public class InvokeContext implements Serializable{
+    private String login;
+    private String credentials;
+    private boolean privileged;
+    private TransactionType transactionType=TransactionType.REQUIRED;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(String credentials) {
+        this.credentials = credentials;
+    }
+
+    public boolean isPrivileged() {
+        return privileged;
+    }
+
+    public void setPrivileged(boolean privileged) {
+        this.privileged = privileged;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+    
+}

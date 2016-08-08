@@ -1,0 +1,16 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.persistence.EntityExecutionContext;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/9/12 11:54 PM
+ */
+public interface EntityTriggerContext {
+    public Entity getEntity();
+
+    public EntityTrigger getTrigger();
+
+    public EntityExecutionContext getEntityExecutionContext();
+}

@@ -1,0 +1,17 @@
+package net.vpc.upa.expressions;
+
+public final class Complement extends UnaryOperatorExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+
+    public Complement(Expression expression) {
+        super(UnaryOperator.COMPLEMENT,"~", expression);
+    }
+
+    @Override
+    public Expression copy() {
+        Complement o = new Complement(getExpression().copy());
+        return o;
+    }
+
+}

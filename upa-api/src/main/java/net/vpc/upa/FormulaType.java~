@@ -1,0 +1,12 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/16/12 4:29 PM
+ */
+public enum FormulaType {
+    INSERT,
+    UPDATE,
+    LIVE,
+    COMPILED,
+}

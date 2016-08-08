@@ -1,0 +1,31 @@
+package net.vpc.upa;
+
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.UserExpression;
+
+public final class ExpressionFormula implements Formula {
+
+    private Expression expression;
+
+    public ExpressionFormula(String expression) {
+        this(expression == null ? null : new UserExpression(expression));
+    }
+
+    public ExpressionFormula(Expression expression) {
+        if (expression == null) {
+            throw new NullPointerException();
+        } else {
+
+            this.expression = expression;
+        }
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(expression);
+    }
+}

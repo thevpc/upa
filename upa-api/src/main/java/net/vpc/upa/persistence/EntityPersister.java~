@@ -1,0 +1,42 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/30/12 1:14 AM
+ */
+public interface EntityPersister {
+
+    public void init(Entity entityManager, PersistenceStore persistenceStore);
+
+    public EntityDeleteAction getDeleteAction();
+
+    public void setDeleteAction(EntityDeleteAction action);
+
+    public EntityUpdateAction getUpdateAction();
+
+    public void setUpdateAction(EntityUpdateAction action);
+
+    public EntityInsertAction getInsertAction();
+
+    public void setInsertAction(EntityInsertAction action);
+
+    public EntityFindAction getFindAction();
+
+    public void setFindAction(EntityFindAction action);
+
+    public EntityResetAction getResetAction();
+
+    public void setResetAction(EntityResetAction action);
+
+    public EntityClearAction getClearAction();
+
+    public void setClearAction(EntityClearAction action);
+
+    public EntityInitializeAction getInitializeAction();
+
+    public void setInitAction(EntityInitializeAction action);
+
+    public PersistenceStore getPersistenceStore();
+}

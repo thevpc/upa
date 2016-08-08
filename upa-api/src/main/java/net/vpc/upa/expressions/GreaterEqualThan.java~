@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class GreaterEqualThan extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public GreaterEqualThan(Expression left, Object right) {
+        super(BinaryOperator.GE, left, right);
+    }
+
+    public GreaterEqualThan(Expression left, Expression right) {
+        super(BinaryOperator.GE, left, right);
+    }
+}

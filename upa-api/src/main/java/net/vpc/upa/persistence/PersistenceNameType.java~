@@ -1,0 +1,92 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.LinkedHashMap;
+
+/**
+ *
+ * @author vpc
+ */
+public final class PersistenceNameType {
+
+    private static final LinkedHashMap<String, PersistenceNameType> values = new LinkedHashMap<String, PersistenceNameType>();
+
+    private final String name;
+    private final boolean global;
+
+    public static final PersistenceNameType TABLE = create("TABLE", true);
+//    public static final PersistenceNameType TREE_TABLE = create("TREE_TABLE", true);
+    public static final PersistenceNameType UNION_TABLE = create("UNION_TABLE", true);
+    public static final PersistenceNameType VIEW = create("VIEW", true);
+    public static final PersistenceNameType IMPLICIT_VIEW = create("IMPLICIT_VIEW", true);
+    public static final PersistenceNameType COLUMN = create("COLUMN", false);
+    public static final PersistenceNameType FK_CONSTRAINT = create("FK_CONSTRAINT", true);
+    public static final PersistenceNameType PK_CONSTRAINT = create("PK_CONSTRAINT", true);
+    public static final PersistenceNameType INDEX = create("INDEX", true);
+    public static final PersistenceNameType ALIAS = create("ALIAS", false);
+
+    private PersistenceNameType(String name, boolean global) {
+        this.name = name;
+        this.global = global;
+    }
+
+    public static PersistenceNameType valueOf(String name) {
+        PersistenceNameType f = values.get(name);
+        if (f == null) {
+            throw new IllegalArgumentException("PersistenceNameType not found " + name);
+        }
+        return f;
+    }
+
+    public static PersistenceNameType create(String name, boolean globalScope) {
+        if (name == null || name.length() == 0 || name.trim().length() != name.length()) {
+            throw new IllegalArgumentException("Invalid PersistenceNameType Name " + name);
+        }
+        if (values.containsKey(name)) {
+            throw new IllegalArgumentException("PersistenceNameType already exists " + name);
+        }
+        PersistenceNameType t = new PersistenceNameType(name, globalScope);
+        values.put(t.name(), t);
+        return t;
+    }
+
+    public String name() {
+        return this.name;
+    }
+
+    public boolean isGlobal() {
+        return global;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersistenceNameType other = (PersistenceNameType) obj;
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistenceNameType{" + "name=" + name + ", global=" + global + '}';
+    }
+
+}

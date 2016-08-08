@@ -1,0 +1,116 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.PortabilityHint;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class TimeType extends TemporalType implements Cloneable {
+    public static final TimeType DEFAULT = new TimeType("DATE", Time.class, null, null, true);
+
+    @PortabilityHint(target = "C#", name = "suppress")
+    public static final TimeType JAVA_SQL = new TimeType("DATE", java.sql.Time.class, null, null, true);
+
+    @PortabilityHint(target = "C#", name = "suppress")
+    public static final TimeType JAVA_UTIL = new TimeType("DATE", java.util.Date.class, null, null, true);
+
+    protected Time min = null;
+    protected Time max = null;
+
+    public TimeType(boolean nullable) {
+        this("TIME", Time.class, null, null, nullable);
+    }
+
+    public TimeType(Time min, Time max, boolean nullable) {
+        this("TIME", Time.class, min, max, nullable);
+    }
+
+    public TimeType(Class<? extends Date> type, boolean nullable) {
+        this("TIME", type, null, null, nullable);
+    }
+
+    public TimeType(Class<? extends Date> type, Time min, Time max, boolean nullable) {
+        this("TIME", type, min, max, nullable);
+    }
+
+    public TimeType(String name, Class<? extends Date> type, boolean nullable) {
+        this(name, type, null, null, nullable);
+    }
+
+    public TimeType(String name, Class<? extends Date> type, Time min, Time max, boolean nullable) {
+        super(name, type == null ? net.vpc.upa.types.Time.class : type, 0, 0, nullable);
+        if (
+                type != null &&
+                        /**@PortabilityHint(target="C#",name="suppress",value="begin")*/
+                        !java.sql.Time.class.equals(type) &&
+                        /**@PortabilityHint(target="C#",name="suppress",value="end")*/
+                        !Time.class.equals(type) && !java.util.Date.class.equals(type)) {
+            throw new IllegalArgumentException("Invalid Temporal Type " + type);
+        }
+        this.min = min;
+        this.max = max;
+        setDefaultNonNullValue(convert(new java.util.Date(0, 0, 1)));
+    }
+
+    public Time getMin() {
+        return min;
+    }
+
+    public Time getMax() {
+        return max;
+    }
+
+    public void setMin(Time newMin) {
+        min = newMin;
+    }
+
+    public void setMax(Time newMax) {
+        max = newMax;
+    }
+
+    @Override
+    public void check(Object value, String name, String description) throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        if (getMin() != null && getMin().compareTo((Date) value) > 0) {
+            throw new ConstraintsException("DateTooEarly", name, description, value, min);
+        }
+        if (getMax() != null && getMax().compareTo((Date) value) < 0) {
+            throw new ConstraintsException("DateTooLate", name, description, value, max);
+        }
+    }
+
+    @Override
+    public Object convert(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof Date) {
+            return validateDate((Date) value);
+        }
+        return super.convert(value);
+    }
+
+
+    public Date validateDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Class type = getPlatformType();
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        long time = date.getTime();
+        if (java.sql.Time.class.isAssignableFrom(type)) {
+            return new java.sql.Time(time);
+        } else if (Time.class.isAssignableFrom(type)) {
+            return new Time(time);
+        } else if (java.util.Date.class.isAssignableFrom(type)) {
+            return new java.util.Date(time);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+}

@@ -1,0 +1,65 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.types.I18NString;
+
+import java.beans.PropertyChangeListener;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface UPAObject {
+
+    public String getName();
+
+    public String getAbsoluteName();
+
+    public void setName(String name);
+
+    public String getPersistenceName();
+
+    public void setPersistenceName(String persistenceName);
+
+    public PersistenceUnit getPersistenceUnit();
+
+    public I18NString getTitle();
+
+    public void setTitle(I18NString title);
+
+    public I18NString getDescription();
+
+    public void setDescription(I18NString description);
+
+    public I18NString getI18NString();
+
+    public void setI18NString(I18NString i18NString);
+
+    //--------------------------- PROPERTIES SUPPORT
+    public Properties getProperties();
+
+    //    public void prepare() throws UPAException;
+//    public void setStatus(PersistenceState status);
+    public PersistenceState getPersistenceState();
+
+    public void addObjectListener(UPAObjectListener listener);
+
+    public void removeObjectListener(UPAObjectListener listener);
+
+    public UPAObjectListener[] getObjectListeners();
+
+    public void addPropertyChangeListener(String property, PropertyChangeListener listener);
+
+    public void removePropertyChangeListener(String property, PropertyChangeListener listener);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener);
+
+    public void removePropertyChangeListener(PropertyChangeListener listener);
+
+    @Override
+    public boolean equals(Object other);
+
+    @Override
+    public int hashCode();
+
+    public void close() throws UPAException;
+}

@@ -1,0 +1,65 @@
+package net.vpc.upa.types;
+
+public class StringType extends DataType implements Cloneable {
+
+    public static final StringType DEFAULT = new StringType("String", null, 255, true);
+    public static final StringType UNLIMITED = new StringType("String", null, null, true);
+    protected Integer min;
+    protected Integer max;
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public StringType(String name) {
+        this(name, null, 255, true);
+    }
+
+    public StringType(String name, Integer min, Integer max, boolean nullable) {
+        this(name, min, max, nullable, false);
+    }
+
+    public StringType(String name, Integer min, Integer max, boolean nullable, boolean isPassword) {
+        super(name, String.class, max, 0, nullable);
+        this.max = max;
+        this.min = min;
+        setDefaultNonNullValue("");
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        String sval = (String) value;
+        if (getMin() != null && getMin() >= 0 && sval.length() < getMin()) {
+            throw new ConstraintsException("StringTooShort", name, description, value, min);
+        }
+        if (getMax() != null && getMax() >= 0 && sval.length() > getMax()) {
+            throw new ConstraintsException("StringTooLong", name, description, value, max);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("String");
+        if (max != null || (min != null && ((Integer) min).intValue() > 0)) {
+            s.append("[");
+            if (min != null && ((Integer) min).intValue() > 0) {
+                s.append(min);
+                s.append("...");
+            }
+            if (max != null) {
+                s.append(max);
+            }
+            s.append("]");
+        }
+        return s.toString();
+    }
+}

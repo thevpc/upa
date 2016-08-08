@@ -1,0 +1,32 @@
+package net.vpc.upa.config;
+
+import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/29/12 12:27 AM
+ */
+@Target(value = {ElementType.TYPE})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface UnionEntity {
+
+    UnionEntityEntry[] entities();
+
+    String[] fields();
+
+    String discriminator();
+
+    Class<? extends UnionEntityExtensionDefinition> spec() default UnionEntityExtensionDefinition.class;
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

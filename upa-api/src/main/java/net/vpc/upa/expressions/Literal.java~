@@ -1,0 +1,114 @@
+package net.vpc.upa.expressions;
+
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.TypesFactory;
+
+import java.util.Date;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression
+public final class Literal extends DefaultExpression
+        implements Cloneable {
+    public static final Literal IONE = new Literal(1);
+    public static final Literal IZERO = new Literal(0);
+    public static final Literal DZERO = new Literal(0.0);
+    public static final Literal ZERO = DZERO;
+    public static final Literal NULL = new Literal(0);
+    public static final Literal TRUE = new Literal(true);
+    public static final Literal FALSE = new Literal(false);
+    public static final Literal EMPTY_STRING = new Literal("");
+    private static final long serialVersionUID = 1L;
+    private DataType type;
+    private Object value;
+
+    public Literal(Date date) {
+        setValue(date);
+    }
+
+    public Literal(int value) {
+        setValue(value);
+    }
+
+    public Literal(boolean value) {
+        setValue((value) ? Boolean.TRUE : Boolean.FALSE);
+    }
+
+    public Literal(long value) {
+        setValue(value);
+    }
+
+    public Literal(float value) {
+        setValue(value);
+    }
+
+    public Literal(double value) {
+        setValue(value);
+    }
+
+    public Literal(char value) {
+        setValue(value);
+    }
+
+    public Literal(String value) {
+        setValue(value);
+    }
+
+    public Literal(Object value, DataType type) {
+
+//        if (
+//                value != null
+//                && !(value instanceof String)
+//                && !(value instanceof Number)
+//                && !(value instanceof Date)
+//                && !(value instanceof Boolean)
+//        ) {
+//            throw new RuntimeException("bad sql value : " + value.getClass().getName() + " ==> " + value);
+//        } else {
+        this.value = value;
+
+        if (type == null) {
+            if (value == null) {
+                type = TypesFactory.OBJECT;
+            } else {
+                type = TypesFactory.forNativeType(value.getClass());
+            }
+        }
+        this.type = type;
+//            return;
+//        }
+    }
+
+//    public String toSQL(boolean integrated, PersistenceUnit database) {
+//        return database.getPersistenceManager().literal(value);
+//    }
+
+    public static boolean isNull(Expression e) {
+        return e == null || ((e instanceof Literal) && (((Literal) e).value == null));
+    }
+
+    @Override
+    public String toString() {
+        if (value instanceof String) {
+            return ExpressionHelper.escapeSimpleQuoteStringLiteral((String) value);
+        }
+        return String.valueOf(value);
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    private void setValue(Object o) {
+        this.value = o;
+        if (o == null) {
+            type = TypesFactory.OBJECT;
+        } else {
+            type = TypesFactory.forNativeType(o.getClass());
+        }
+    }
+
+    @Override
+    public Expression copy() {
+        return new Literal(value, type);
+    }
+}

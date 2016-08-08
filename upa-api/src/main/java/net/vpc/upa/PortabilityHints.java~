@@ -1,0 +1,14 @@
+package net.vpc.upa;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/18/12 12:16 PM
+ */
+//@Target()
+@Retention(value = RetentionPolicy.SOURCE)
+public @interface PortabilityHints {
+    PortabilityHint[] value();
+}

@@ -1,0 +1,12 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 12:29 AM To change
+ * this template use File | Settings | File Templates.
+ */
+public interface QueryStatement extends EntityStatement {
+
+    public int countFields();
+
+    public QueryField getField(int i);
+}

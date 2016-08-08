@@ -1,0 +1,28 @@
+package net.vpc.upa;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/17/12
+ * Time: 2:57 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public interface MultiRecord {
+
+    public int entitySize();
+
+    public int fieldSize();
+
+    public Record getPlainRecord();
+
+    public Record getPlainRecord(boolean create);
+
+    public Record getRecord(String entityName);
+
+    public void setRecord(String entityName, Record record);
+
+    public Record getSingleRecord();
+
+    public Record merge();
+
+}

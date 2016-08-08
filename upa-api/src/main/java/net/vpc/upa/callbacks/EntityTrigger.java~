@@ -1,0 +1,23 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.UPAObject;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/9/12 4:09 PM
+ */
+public interface EntityTrigger extends UPAObject {
+//    public DataInterceptor getInterceptor();
+
+    public Entity getEntity();
+
+    public EntityInterceptor getInterceptor();
+
+    public void setInterceptor(EntityInterceptor interceptor);
+
+    public EntityListener getListener();
+
+//    public void setEntityName(String entityName) ;
+//    public void setInterceptor(DataInterceptor interceptor) ;
+}

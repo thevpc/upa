@@ -1,0 +1,13 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.persistence.PersistenceStore;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 4:47 PM
+ */
+public interface TransactionManager {
+
+    public Transaction createTransaction(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore) throws UPAException;
+}

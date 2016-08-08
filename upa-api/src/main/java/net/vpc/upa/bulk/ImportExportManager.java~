@@ -1,0 +1,15 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface ImportExportManager extends ParseFormatManager {
+
+    public void importEntity(Class entityType, DataReader dataIterator, ImportDataConfig config);
+
+    public void importEntity(String entityName, DataReader dataIterator, ImportDataConfig config);
+}

@@ -1,0 +1,12 @@
+package net.vpc.upa.callback;
+
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.filters.FieldFilter;
+
+public interface UpdateFormulaInterceptor extends EntityInterceptor {
+    public FieldFilter getFormulaFields() throws UPAException;
+
+    public Expression translateExpression(Expression e) throws UPAException;
+}

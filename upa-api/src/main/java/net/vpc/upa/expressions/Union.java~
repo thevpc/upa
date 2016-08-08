@@ -1,0 +1,91 @@
+package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 12:34 AM To change
+ * this template use File | Settings | File Templates.
+ */
+public class Union extends DefaultEntityStatement implements QueryStatement {
+
+    private List<QueryStatement> queryStatements = new ArrayList<QueryStatement>();
+
+    public void add(QueryStatement s) {
+        queryStatements.add(s);
+    }
+
+    public List<QueryStatement> getQueryStatements() {
+        return new ArrayList<QueryStatement>(queryStatements);
+    }
+
+    public String getEntityName() {
+        for (QueryStatement q : queryStatements) {
+            String n = q.getEntityName();
+            if (n != null) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    //    @Override
+//    public String toSQL(boolean integrated, PersistenceUnit database) {
+//        throw new IllegalArgumentException("Unsupported");
+//    }
+    @Override
+    public int countFields() {
+        return queryStatements.get(0).countFields();
+    }
+
+    @Override
+    public QueryField getField(int i) {
+        return queryStatements.get(0).getField(i);
+    }
+
+    @Override
+    public boolean isValid() {
+        if (queryStatements.isEmpty()) {
+            return false;
+        }
+        for (QueryStatement queryStatement : queryStatements) {
+            if (!queryStatement.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Union union = (Union) o;
+
+        if (queryStatements != null ? !queryStatements.equals(union.queryStatements) : union.queryStatements != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return queryStatements != null ? queryStatements.hashCode() : 0;
+    }
+
+    @Override
+    public Expression copy() {
+        Union o = new Union();
+        for (QueryStatement queryStatement : queryStatements) {
+            o.add((QueryStatement) queryStatement.copy());
+        }
+        return o;
+    }
+
+}

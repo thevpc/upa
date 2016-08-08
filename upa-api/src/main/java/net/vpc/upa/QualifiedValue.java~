@@ -1,0 +1,23 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/3/12 1:19 AM
+ */
+public class QualifiedValue {
+    private Entity entityManager;
+    private Object value;
+
+    public QualifiedValue(Entity entityManager, Object value) {
+        this.entityManager = entityManager;
+        this.value = value;
+    }
+
+    public Entity getEntity() {
+        return entityManager;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+}

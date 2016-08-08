@@ -1,0 +1,16 @@
+package net.vpc.upa.expressions;
+
+
+public final class BitOr extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public BitOr(Expression left, Object right) {
+        super(BinaryOperator.BIT_OR, left, right);
+    }
+
+    public BitOr(Expression left, Expression right) {
+        super(BinaryOperator.BIT_OR, left, right);
+    }
+}

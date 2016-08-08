@@ -1,0 +1,93 @@
+package net.vpc.upa.config;
+
+import net.vpc.upa.RelationshipType;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @ManyToOne are equivalents to JPA's ManyToOne
+ * <p/>
+ * Example 1 : countryId defines a FK to Country Entity. No extra field will be created
+ * <pre>
+ *  public class Client {
+ *     @ManyToOne(targetEntityType=Country.class)
+ *     int countryId;
+ *  }
+ * </pre>
+ * <p/>
+ * <p/>
+ * <p/>
+ * <p/>
+ * Example 2 : country defines a FK to Entity named "Country"
+ * <pre>
+ *  public class Client {
+ *     @ManyToOne(targetEntityType="Country")
+ *     int countryId;
+ *  }
+ * </pre>
+ * <p/>
+ * <p/>
+ * Example 3 : country defines a FK to Country Entity. updates to countryId are ignore and
+ * overridden by associated country updates (country is actually readOnly)
+ * <pre>
+ *  public class Client {
+ *     int countryId;
+ *     @ManyToOne(mappedTo="countryId")
+ *     Country country;
+ *  }
+ * </pre>
+ * <p/>
+ * Example 4 : country defines a FK to Country Entity. updates to country are ignore and
+ * overridden by associated countryId updates (countryId is actually readOnly)
+ * <pre>
+ *  public class Client {
+ *     @ManyToOne(mappedTo="country")
+ *     int countryId;
+ *     Country country;
+ *  }
+ * </pre>
+ * <p/>
+ * In this example, Country reference is updatable via countryId and not country
+ * <p/>
+ * <pre>
+ *  public class Client {
+ *     @ManyToOne
+ *     int countryId;
+ *     @ManyToOne(mappedBy="countryId")
+ *     Country country;
+ *  }
+ * </pre>
+ * @creationdate 8/28/12 10:17 PM
+ */
+@Target(value = {ElementType.METHOD, ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface ManyToOne {
+
+    String name() default "";
+
+    /**
+     * relation expression
+     *
+     * @return
+     */
+    String filter() default "";
+
+    String[] mappedTo() default {};
+
+    RelationshipType type() default RelationshipType.DEFAULT;
+
+    String targetEntity() default "";
+
+    Class targetEntityType() default void.class;
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

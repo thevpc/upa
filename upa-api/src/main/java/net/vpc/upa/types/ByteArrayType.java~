@@ -1,0 +1,63 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.PortabilityHint;
+
+/**
+ * User: taha Date: 16 juin 2003 Time: 15:47:42
+ */
+public class ByteArrayType extends LOBType {
+//    public static final FileType ANY_FILE=new FileType(true);
+//    public static final FileType REQUIERED_FILE=new FileType(false);
+
+    @PortabilityHint(target = "C#", name = "new")
+    public static final ByteArrayType BYTES = new ByteArrayType("FILE", false, null, true);
+    public static final ByteArrayType BYTE_REFS = new ByteArrayType("FILE", true, null, true);
+    private Integer maxSize;
+
+    public ByteArrayType(String name, Integer maxSize, boolean nullable) {
+        this(name, false, maxSize, nullable);
+    }
+
+    public ByteArrayType(String name, boolean refs, Integer maxSize, boolean nullable) {
+        super(name, refs ? Byte[].class : byte[].class, nullable);
+        this.maxSize = maxSize;
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        if (value instanceof byte[]) {
+            if (getMaxSize() > 0 && getMaxSize() < ((byte[]) value).length) {
+                throw new ConstraintsException("FileSizeTooBig", name, description, value, maxSize);
+            }
+        } else if (value instanceof Byte[]) {
+            if (getMaxSize() > 0 && getMaxSize() < ((Byte[]) value).length) {
+                throw new ConstraintsException("FileSizeTooSmall", name, description, value, maxSize);
+            }
+        }
+    }
+
+    public Integer getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("ByteArrayType");
+        if (maxSize != null) {
+            s.append("[");
+            s.append(maxSize);
+            s.append("]");
+        }
+        return s.toString();
+    }
+
+}

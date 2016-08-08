@@ -1,0 +1,23 @@
+package net.vpc.upa.config;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/4/12 11:00 PM
+ */
+@Target(value = ElementType.TYPE)
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Callback {
+
+    String name() default "";
+
+    String filter() default "";
+
+    boolean trackSystemObjects() default false;
+
+    Config config() default @Config();
+}

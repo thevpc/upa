@@ -1,0 +1,16 @@
+package net.vpc.upa;
+
+import net.vpc.upa.types.DataType;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/13/12 11:42 PM
+ */
+public interface QLFunctionDefinition {
+
+    public String getName();
+
+    public DataType getDataType();
+
+    public Function getHandler();
+}

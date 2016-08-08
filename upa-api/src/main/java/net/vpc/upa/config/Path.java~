@@ -1,0 +1,29 @@
+package net.vpc.upa.config;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * corresponds to the JPA
+ *
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @Id
+ * @creationdate 8/28/12 10:17 PM
+ */
+@Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Path {
+
+    String value() default "";
+
+    int position() default Integer.MIN_VALUE;
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

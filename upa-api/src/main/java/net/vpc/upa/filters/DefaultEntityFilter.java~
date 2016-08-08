@@ -1,0 +1,349 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.EntityShield;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class DefaultEntityFilter implements EntityFilter {
+    private int acceptCloneable = 0;
+    private int acceptValidatable = 0;
+    private int acceptUpdatable = 0;
+    private int acceptTransient = 0;
+    private int acceptSystem = 0;
+    private int acceptPrivate = 0;
+    private int acceptDeletable = 0;
+    private int acceptEmpty = 0;
+    private int acceptInsertable = 0;
+    private int acceptNavigatable = 0;
+    //    private int acceptPrintable=0;
+    private int acceptKeyGeneratable = 0;
+    private int acceptKeyEditable = 0;
+    private int acceptRenamable = 0;
+    private int acceptReset = 0;
+    private Class rootClass;
+
+    public DefaultEntityFilter() {
+    }
+
+    public Class getRootTableClass() {
+        return rootClass;
+    }
+
+    public DefaultEntityFilter setAcceptRootEntityClass(Class entity) {
+        rootClass = entity;
+        return this;
+    }
+
+    public boolean isAcceptCloneable() {
+        return acceptCloneable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptCloneable(boolean acceptCloneable) {
+        this.acceptCloneable = acceptCloneable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectCloneable() {
+        return acceptCloneable == -1;
+    }
+
+    public boolean isAcceptValidatable() {
+        return acceptValidatable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptValidatable(boolean acceptValidatable) {
+        this.acceptValidatable = acceptValidatable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectValidatable() {
+        return acceptValidatable == -1;
+    }
+
+    public boolean isAcceptUpdatable() {
+        return acceptUpdatable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptUpdatable(boolean acceptUpdatable) {
+        this.acceptUpdatable = acceptUpdatable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectUpdatable() {
+        return acceptUpdatable == -1;
+    }
+
+    public boolean isAcceptTransient() {
+        return acceptTransient == 1;
+    }
+
+    public DefaultEntityFilter setAcceptTransient(boolean acceptTransient) {
+        this.acceptTransient = acceptTransient ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectTransient() {
+        return acceptTransient == -1;
+    }
+
+    public boolean isAcceptSystem() {
+        return acceptSystem == 1;
+    }
+
+    public DefaultEntityFilter setAcceptSystem(boolean acceptSystem) {
+        this.acceptSystem = acceptSystem ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectSystem() {
+        return acceptSystem == -1;
+    }
+
+    public boolean isAcceptPrivate() {
+        return acceptPrivate == 1;
+    }
+
+    public DefaultEntityFilter setAcceptPrivate(boolean acceptPrivate) {
+        this.acceptPrivate = acceptPrivate ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectPrivate() {
+        return acceptPrivate == -1;
+    }
+
+    public boolean isAcceptDeletable() {
+        return acceptDeletable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptDeletable(boolean acceptDeletable) {
+        this.acceptDeletable = acceptDeletable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectDeletable() {
+        return acceptDeletable == -1;
+    }
+
+    public boolean isAcceptEmpty() {
+        return acceptEmpty == 1;
+    }
+
+    public DefaultEntityFilter setAcceptEmpty(boolean acceptEmpty) {
+        this.acceptEmpty = acceptEmpty ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectEmpty() {
+        return acceptEmpty == -1;
+    }
+
+    public boolean isAcceptInsertable() {
+        return acceptInsertable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptInsertable(boolean acceptInsertable) {
+        this.acceptInsertable = acceptInsertable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectInsertable() {
+        return acceptInsertable == -1;
+    }
+
+    public boolean isAcceptNavigatable() {
+        return acceptNavigatable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptNavigatable(boolean acceptNavigatable) {
+        this.acceptNavigatable = acceptNavigatable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectNavigatable() {
+        return acceptNavigatable == -1;
+    }
+
+//    public boolean isAcceptPrintable() {
+//        return acceptPrintable==1;
+//    }
+//    public boolean isRejectPrintable() {
+//        return acceptPrintable==-1;
+//    }
+//
+//    public DefaultEntityFilter setAcceptPrintable(boolean acceptPrintable) {
+//        this.acceptPrintable = acceptPrintable ? 1 :-1;
+//        return this;
+//    }
+
+    public boolean isAcceptKeyGeneratable() {
+        return acceptKeyGeneratable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptKeyGeneratable(boolean acceptKeyGeneratable) {
+        this.acceptKeyGeneratable = acceptKeyGeneratable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectKeyGeneratable() {
+        return acceptKeyGeneratable == -1;
+    }
+
+    public boolean isAcceptKeyEditable() {
+        return acceptKeyEditable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptKeyEditable(boolean acceptKeyEditable) {
+        this.acceptKeyEditable = acceptKeyEditable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectKeyEditable() {
+        return acceptKeyEditable == -1;
+    }
+
+    public boolean isAcceptRenamable() {
+        return acceptRenamable == 1;
+    }
+
+    public DefaultEntityFilter setAcceptRenamable(boolean acceptRenamable) {
+        this.acceptRenamable = acceptRenamable ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectRenamable() {
+        return acceptRenamable == -1;
+    }
+
+    public boolean isAcceptReset() {
+        return acceptReset == 1;
+    }
+
+    public DefaultEntityFilter setAcceptReset(boolean acceptReset) {
+        this.acceptReset = acceptReset ? 1 : -1;
+        return this;
+    }
+
+    public boolean isRejectReset() {
+        return acceptReset == -1;
+    }
+
+    public boolean accept(Entity entity) throws UPAException {
+        Object source = entity.getEntityDescriptor().getSource();
+        if (rootClass != null && (source == null || !rootClass.isAssignableFrom(source.getClass()))) {
+            return false;
+        }
+        EntityShield v = entity.getShield();
+        if (isAcceptCloneable() && !v.isCloneSupported()) {
+            return false;
+        }
+        if (isRejectCloneable() && v.isCloneSupported()) {
+            return false;
+        }
+        if (isAcceptKeyEditable() && !v.isKeyEditionSupported()) {
+            return false;
+        }
+        if (isRejectKeyEditable() && v.isKeyEditionSupported()) {
+            return false;
+        }
+
+        if (isAcceptRenamable() && !v.isRenameSupported()) {
+            return false;
+        }
+        if (isRejectRenamable() && v.isRenameSupported()) {
+            return false;
+        }
+
+        if (isAcceptReset() && !v.isResetSupported()) {
+            return false;
+        }
+        if (isRejectReset() && v.isResetSupported()) {
+            return false;
+        }
+
+        if (isAcceptDeletable() && !v.isDeleteSupported()) {
+            return false;
+        }
+        if (isRejectDeletable() && v.isDeleteSupported()) {
+            return false;
+        }
+
+        try {
+            if (isAcceptEmpty() && !entity.isEmpty()) {
+                return false;
+            }
+        } catch (UPAException e) {
+            return false;
+        }
+        try {
+            if (isRejectEmpty() && entity.isEmpty()) {
+                return false;
+            }
+        } catch (UPAException e) {
+            return false;
+        }
+        if (isAcceptInsertable() && !v.isPersistSupported()) {
+            return false;
+        }
+        if (isRejectInsertable() && v.isPersistSupported()) {
+            return false;
+        }
+        if (isAcceptNavigatable() && !v.isNavigateSupported()) {
+            return false;
+        }
+        if (isRejectNavigatable() && v.isNavigateSupported()) {
+            return false;
+        }
+
+//        if(isAcceptPrintable() && !v.isPrintSupported()){
+//            return false;
+//        }
+//        if(isRejectPrintable() && v.isPrintSupported()){
+//            return false;
+//        }
+        if (isAcceptKeyGeneratable() && !v.isGeneratedId()) {
+            return false;
+        }
+        if (isRejectKeyGeneratable() && v.isGeneratedId()) {
+            return false;
+        }
+        if (isAcceptSystem() && !v.isSystem()) {
+            return false;
+        }
+        if (isRejectSystem() && v.isSystem()) {
+            return false;
+        }
+        if (isAcceptPrivate() && !v.isPrivate()) {
+            return false;
+        }
+        if (isRejectPrivate() && v.isPrivate()) {
+            return false;
+        }
+
+        if (isAcceptTransient() && !v.isTransient()) {
+            return false;
+        }
+        if (isRejectTransient() && v.isTransient()) {
+            return false;
+        }
+
+        if (isAcceptUpdatable() && !v.isUpdateSupported()) {
+            return false;
+        }
+
+        if (isRejectUpdatable() && v.isUpdateSupported()) {
+            return false;
+        }
+
+        if (isAcceptValidatable() && !v.isUpdateFormulaSupported()) {
+            return false;
+        }
+        if (isRejectValidatable() && v.isUpdateFormulaSupported()) {
+            return false;
+        }
+        return true;
+    }
+}

@@ -1,0 +1,64 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 12:07:34
+ * To change this template use Options | File Templates.
+ */
+public class DateAdd extends Function {
+    private static final long serialVersionUID = 1L;
+    private DatePartType type;
+    private Expression count;
+    private Expression date;
+
+    public DateAdd(DatePartType type, Expression count, Expression date) {
+        this.type = type;
+        this.count = count;
+        this.date = date;
+    }
+
+    public DatePartType getDatePartType() {
+        return type;
+    }
+
+    public Expression getCount() {
+        return count;
+    }
+
+    public Expression getDate() {
+        return date;
+    }
+
+    @Override
+    public String getName() {
+        return "DateAdd";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 3;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return new Cst(type);
+            case 1:
+                return count;
+            case 2:
+                return date;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        DateAdd o = new DateAdd(type, count.copy(), date.copy());
+        return o;
+    }
+
+
+}

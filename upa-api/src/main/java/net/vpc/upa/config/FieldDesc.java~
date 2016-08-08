@@ -1,0 +1,181 @@
+package net.vpc.upa.config;
+
+import net.vpc.upa.FieldModifier;
+import net.vpc.upa.FlagSet;
+import net.vpc.upa.FlagSets;
+import net.vpc.upa.UnspecifiedValue;
+import net.vpc.upa.types.DataType;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/28/12 10:42 PM
+ */
+public class FieldDesc {
+
+    private int configOrder = 100;
+    private String name;
+    private DataType type;
+    private FlagSet<FieldModifier> modifiers = FlagSets.noneOf(FieldModifier.class);
+    private FlagSet<FieldModifier> excludeModifiers = FlagSets.noneOf(FieldModifier.class);
+    private net.vpc.upa.Formula insertFormula;
+    private net.vpc.upa.Formula updateFormula;
+    private boolean insertFormulaSet;
+    private boolean updateFormulaSet;
+    private Object defaultValue;
+    private boolean defaultValueSet;
+    private Object unspecifiedValue = UnspecifiedValue.DEFAULT;
+    private boolean unspecifiedValueSet;
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isInsertFormulaSet() {
+        return insertFormulaSet;
+    }
+
+    public FieldDesc setInsertFormulaSet(boolean insertFormulaSet) {
+        this.insertFormulaSet = insertFormulaSet;
+        if (!insertFormulaSet) {
+            insertFormula = null;
+        }
+        return this;
+    }
+
+    public boolean isUpdateFormulaSet() {
+        return updateFormulaSet;
+    }
+
+    public FieldDesc setUpdateFormulaSet(boolean updateFormulaSet) {
+        this.updateFormulaSet = updateFormulaSet;
+        if (!updateFormulaSet) {
+            updateFormula = null;
+        }
+        return this;
+    }
+
+    public boolean isDefaultValueSet() {
+        return defaultValueSet;
+    }
+
+    public FieldDesc setDefaultValueSet(boolean defaultValueSet) {
+        this.defaultValueSet = defaultValueSet;
+        if (!defaultValueSet) {
+            defaultValue = null;
+        }
+        return this;
+    }
+
+    public boolean isUnspecifiedValueSet() {
+        return unspecifiedValueSet;
+    }
+
+    public FieldDesc setUnspecifiedValueSet(boolean unspecifiedValueSet) {
+        this.unspecifiedValueSet = unspecifiedValueSet;
+        if (!unspecifiedValueSet) {
+            unspecifiedValue = UnspecifiedValue.DEFAULT;
+        }
+        return this;
+    }
+
+    public FieldDesc setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public FlagSet<FieldModifier> getModifiers() {
+        return modifiers;
+    }
+
+    public FieldDesc setModifiers(FlagSet<FieldModifier> modifiers) {
+        this.modifiers = modifiers;
+        return this;
+    }
+
+    public FlagSet<FieldModifier> getExcludeModifiers() {
+        return excludeModifiers;
+    }
+
+    public FieldDesc setExcludeModifiers(FlagSet<FieldModifier> modifiers) {
+        this.excludeModifiers = excludeModifiers;
+        return this;
+    }
+
+    public FieldDesc addModifiers(FlagSet<FieldModifier> modifiers) {
+        return setModifiers(getModifiers().addAll(modifiers));
+    }
+
+    public FieldDesc removeModifiers(FlagSet<FieldModifier> modifiers) {
+        return setModifiers(getModifiers().removeAll(modifiers));
+    }
+
+    public FieldDesc addExcludeModifiers(FlagSet<FieldModifier> modifiers) {
+        return setExcludeModifiers(getExcludeModifiers().addAll(modifiers));
+    }
+
+    public FieldDesc removeExcludeModifiers(FlagSet<FieldModifier> modifiers) {
+        return setExcludeModifiers(getExcludeModifiers().removeAll(modifiers));
+    }
+
+    public net.vpc.upa.Formula getInsertFormula() {
+        return insertFormula;
+    }
+
+    public net.vpc.upa.Formula getUpdateFormula() {
+        return updateFormula;
+    }
+
+    public FieldDesc setFormula(net.vpc.upa.Formula formula) {
+        setInsertFormula(formula);
+        setUpdateFormula(formula);
+        return this;
+    }
+
+    public FieldDesc setInsertFormula(net.vpc.upa.Formula insertFormula) {
+        this.insertFormula = insertFormula;
+        this.insertFormulaSet = true;
+        return this;
+    }
+
+    public FieldDesc setUpdateFormula(net.vpc.upa.Formula updateFormula) {
+        this.updateFormula = updateFormula;
+        this.updateFormulaSet = true;
+        return this;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
+
+    public FieldDesc setDefaultValue(Object defaultValue) {
+        this.defaultValue = defaultValue;
+        this.defaultValueSet = true;
+        return this;
+    }
+
+    public DataType getDataType() {
+        return type;
+    }
+
+    public FieldDesc setDataType(DataType type) {
+        this.type = type;
+        return this;
+    }
+
+    public Object getUnspecifiedValue() {
+        return unspecifiedValue;
+    }
+
+    public void setUnspecifiedValue(Object unspecifiedValue) {
+        this.unspecifiedValue = unspecifiedValue;
+        this.unspecifiedValueSet = true;
+    }
+
+    public int getConfigOrder() {
+        return configOrder;
+    }
+
+    public void setConfigOrder(int configOrder) {
+        this.configOrder = configOrder;
+    }
+}

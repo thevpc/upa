@@ -1,0 +1,26 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.io.IOException;
+import net.vpc.upa.Closeable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface DataFormatter extends Closeable {
+
+    void configure(Object target) throws IOException;
+
+    public void setDataSerializer(DataSerializer dataSerializer);
+
+    public DataSerializer getDataSerializer();
+
+    DataWriter createWriter() throws IOException;
+//    DataWriter format(OutputStream outputStream) throws IOException;
+//
+//    DataWriter format(File file) throws IOException;
+
+}

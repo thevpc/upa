@@ -1,0 +1,12 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:17 PM
+ */
+public interface PersistenceUnitTriggerDefinitionListener extends DefinitionListener {
+    public void persistenceUnitTriggerAdded(PersistenceUnitTriggerDefinitionEvent event);
+
+    public void persistenceUnitTriggerRemoved(PersistenceUnitTriggerDefinitionEvent event);
+
+}

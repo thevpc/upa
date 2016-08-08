@@ -1,0 +1,25 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Field;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/25/12 11:56 AM
+ */
+public class FieldFilterAdapter extends AbstractFieldFilter {
+    private FieldFilter base;
+
+    public FieldFilterAdapter(FieldFilter base) {
+        this.base = base;
+    }
+
+    @Override
+    public boolean acceptDynamic() {
+        return base.acceptDynamic();
+    }
+
+    @Override
+    public boolean accept(Field f) {
+        return base.accept(f);
+    }
+}

@@ -1,0 +1,12 @@
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class NoSuchRelationshipException extends EntityException {
+    public NoSuchRelationshipException(String relationAbsoluteName, Exception cause) {
+        super(cause, new I18NString("NoSuchRelationException"), relationAbsoluteName);
+    }
+}

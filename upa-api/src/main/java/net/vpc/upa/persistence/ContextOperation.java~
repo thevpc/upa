@@ -1,0 +1,23 @@
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/8/12 10:54 PM
+ */
+public enum ContextOperation {
+    INITIALIZE,
+    INSERT,
+    UPDATE,
+    DELETE,
+    DELETE_SIMULATION,
+    RENAME,
+    CLONE,
+    RESET,
+    CLEAR,
+    VALIDATE,
+    CREATE_PERSISTENCE_NAME,
+    FIND,
+    COMMIT_STRUCTURE,
+    COMMIT_STORAGE,
+    CLOSE
+}

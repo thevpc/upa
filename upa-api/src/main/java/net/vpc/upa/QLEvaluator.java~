@@ -1,0 +1,23 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.expressions.Expression;
+
+/**
+ *
+ * @author vpc
+ */
+public interface QLEvaluator {
+
+    public Object evalString(String expression, Object context);
+
+    public Object evalObject(Expression expression, Object context);
+
+    public void registerTypeEvaluator(Class type, QLTypeEvaluator t);
+
+    public QLTypeEvaluator getTypeEvaluator(Class type);
+}

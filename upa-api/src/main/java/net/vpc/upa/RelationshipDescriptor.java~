@@ -1,0 +1,41 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.expressions.Expression;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface RelationshipDescriptor {
+
+    public int getHierarchyConfigOrder();
+
+    public String getHierarchyPathSeparator();
+
+    public boolean isHierarchy();
+
+    public String getHierarchyPathField();
+
+    public String getSourceEntity();
+
+    public Class getSourceEntityType();
+
+    public String getTargetEntity();
+
+    public Class getTargetEntityType();
+
+    public Expression getFilter();
+
+    public String getBaseField();
+
+    public String[] getMappedTo();
+
+    public String[] getSourceFields();
+
+    public String getName();
+
+    public RelationshipType getRelationshipType();
+}

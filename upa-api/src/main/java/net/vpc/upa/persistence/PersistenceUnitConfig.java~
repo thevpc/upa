@@ -1,0 +1,130 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.vpc.upa.config.ScanFilter;
+
+/**
+ *
+ * @author vpc
+ */
+public class PersistenceUnitConfig {
+
+    private int configOrder;
+    private String name;
+    private String persistenceGroup;
+    private PersistenceNameConfig model;
+    private Boolean autoStart;
+    private Boolean autoScan;
+    private List<ConnectionConfig> rootConnections = new ArrayList<ConnectionConfig>();
+    private List<ConnectionConfig> connections = new ArrayList<ConnectionConfig>();
+    private Map<String, Object> properties = new HashMap<String, Object>();
+    private final List<ScanFilter> filters = new ArrayList<ScanFilter>();
+
+    public PersistenceUnitConfig() {
+    }
+
+    public int getConfigOrder() {
+        return configOrder;
+    }
+
+    public void setConfigOrder(int configOrder) {
+        this.configOrder = configOrder;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPersistenceGroup() {
+        return persistenceGroup;
+    }
+
+    public void setPersistenceGroup(String persistenceGroup) {
+        this.persistenceGroup = persistenceGroup;
+    }
+
+    public PersistenceNameConfig getModel() {
+        return model;
+    }
+
+    public void setModel(PersistenceNameConfig model) {
+        this.model = model;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
+    public Boolean getAutoStart() {
+        return autoStart;
+    }
+
+    public void setAutoStart(Boolean autoStart) {
+        this.autoStart = autoStart;
+    }
+
+    public Boolean getAutoScan() {
+        return autoScan;
+    }
+
+    public void setAutoScan(Boolean autoScan) {
+        this.autoScan = autoScan;
+    }
+
+    public void setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
+        this.filters.clear();
+        if (filters != null) {
+            this.filters.addAll(filters);
+        }
+    }
+
+    public void addContextAnnotationStrategyFilter(ScanFilter filter) {
+        filters.add(filter);
+    }
+
+    public void removeContextAnnotationStrategyFilter(ScanFilter filter) {
+        filters.remove(filter);
+    }
+
+    public ScanFilter[] getFilters() {
+        return filters.toArray(new ScanFilter[filters.size()]);
+    }
+
+    public List<ConnectionConfig> getRootConnections() {
+        return rootConnections;
+    }
+
+    public void setRootConnections(List<ConnectionConfig> rootConnections) {
+        this.rootConnections = rootConnections;
+    }
+
+    public List<ConnectionConfig> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<ConnectionConfig> connections) {
+        this.connections = connections;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistenceUnitConfig{" + "name=" + name + ", persistenceGroup=" + persistenceGroup + ", model=" + model + ", autoStart=" + autoStart + ", rootConnections=" + rootConnections + ", connections=" + connections + ", properties=" + properties + ", filters=" + filters + '}';
+    }
+
+}

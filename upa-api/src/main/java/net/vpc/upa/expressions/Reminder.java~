@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class Reminder extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Reminder(Expression left, Object right) {
+        super(BinaryOperator.REM, left, right);
+    }
+
+    public Reminder(Expression left, Expression right) {
+        super(BinaryOperator.REM, left, right);
+    }
+}

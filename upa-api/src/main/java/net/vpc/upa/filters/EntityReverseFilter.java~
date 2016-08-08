@@ -1,0 +1,19 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class EntityReverseFilter implements EntityFilter {
+    private EntityFilter base;
+
+    public EntityReverseFilter(EntityFilter base) {
+        this.base = base;
+    }
+
+    public boolean accept(Entity entity) throws UPAException {
+        return !base.accept(entity);
+    }
+}

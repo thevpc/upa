@@ -1,0 +1,11 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/7/12 8:13 PM
+ */
+public enum MissingStrategy {
+    ERROR,
+    NULL,
+    CREATE
+}

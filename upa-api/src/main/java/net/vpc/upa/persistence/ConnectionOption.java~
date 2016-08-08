@@ -1,0 +1,28 @@
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/22/12 6:48 PM
+ */
+public final class ConnectionOption {
+    public static final String DATABASE_PRODUCT = "databaseProduct";
+    public static final String CONNECTION_DRIVER = "connectionDriver";
+    public static final String DATABASE_PRODUCT_VERSION = "databaseProductVersion";
+    public static final String CONNECTION_DRIVER_VERSION = "connectionDriverVersion";
+    public static final String URL = "url";
+    public static final String DRIVER = "driver";
+    public static final String PASSWORD = "password";
+    public static final String USER_NAME = "userName";
+    public static final String TRUSTED = "trusted";
+
+    public static final String DATABASE_NAME = "databaseName";
+    public static final String DATABASE_PATH = "databasePath";
+    public static final String SERVER_ADDRESS = "serverAddress";
+    public static final String SERVER_PORT = "port";
+    public static final String PROFILE_NAME = "profileName";
+    public static final String DATASOURCE = "datasource";
+    public static final String STRUCTURE = "structure";
+
+    private ConnectionOption() {
+    }
+}

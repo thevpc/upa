@@ -1,0 +1,142 @@
+package net.vpc.upa.expressions;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            StatementExpression, Expression, Litteral, SQLContext
+public class Insert extends DefaultEntityStatement implements UpdateStatement, Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private List<VarVal> fields;
+    private EntityName entity;
+
+    public Insert() {
+        fields = new ArrayList<VarVal>();
+    }
+
+    public Insert(String entityName, String[] fields, Object[] values) {
+        this();
+        into(entityName);
+        for (int i = 0; i < fields.length; i++) {
+            set(fields[i], values[i]);
+        }
+
+    }
+
+    public Insert(Insert other) {
+        this();
+        addQuery(other);
+    }
+
+    public Insert into(String entity) {
+        this.entity = new EntityName(entity);
+        return this;
+    }
+
+    public EntityName getEntity() {
+        return entity;
+    }
+
+    public String getEntityName() {
+        EntityName e = getEntity();
+        return (e != null) ? ((EntityName) e).getName() : null;
+    }
+
+    public int size() {
+        return 3;
+    }
+
+    public Insert addQuery(Insert other) {
+        if (other == null) {
+            return this;
+        }
+        if (other.entity != null) {
+            entity = (EntityName) other.entity.copy();
+        }
+        for (int i = 0; i < other.fields.size(); i++) {
+            set(other.getField(i).getName(), other.getFieldValue(i).copy());
+        }
+        return this;
+    }
+
+    public Expression copy() {
+        Insert o = new Insert();
+        o.addQuery(this);
+        return o;
+    }
+
+    public Insert set(String key, Object value) {
+        if (value != null && (value instanceof Expression)) {
+            return set(key, (Expression) value);
+        } else {
+            return set(key, ((Expression) (new Literal(value, null))));
+        }
+    }
+
+    public Insert set(String key, Expression value) {
+        fields.add(new VarVal(new Var(key), value));
+        return this;
+    }
+
+    public Insert set(int index, Expression value) {
+        fields.add(index, new VarVal(fields.get(index).getVar(), value));
+        return this;
+    }
+
+    public Insert set(String[] keys, Object[] values) {
+        for (int i = 0; i < keys.length; i++) {
+            set(keys[i], values[i]);
+        }
+
+        return this;
+    }
+
+    public Insert set(Map<String, Object> keysValues) {
+        for (Map.Entry<String, Object> e : keysValues.entrySet()) {
+            set(e.getKey(), e.getValue());
+        }
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Insert Into " + entity);
+//        if (entityAlias != null) {
+//            sb.append(" ").append(entityAlias);
+//        }
+        sb.append("(");
+        StringBuilder sbVals = new StringBuilder();
+        boolean isFirst = true;
+        for (VarVal varVal : fields) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+                sbVals.append(", ");
+            }
+            sb.append(varVal.getVar());
+            sbVals.append(varVal.getVal());
+        }
+
+        return sb.append(") Values (").append(sbVals).append(")").toString();
+    }
+
+    public int countFields() {
+        return fields.size();
+    }
+
+    public Var getField(int i) {
+        return fields.get(i).getVar();
+    }
+
+    public Expression getFieldValue(int i) {
+        return fields.get(i).getVal();
+    }
+
+    @Override
+    public boolean isValid() {
+        return entity != null && fields.size() > 0;
+    }
+}

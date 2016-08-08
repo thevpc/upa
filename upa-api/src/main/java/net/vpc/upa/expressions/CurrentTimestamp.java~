@@ -1,0 +1,37 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 17:00:10
+ * To change this template use Options | File Templates.
+ */
+public class CurrentTimestamp extends Function {
+    private static final long serialVersionUID = 1L;
+
+    public CurrentTimestamp() {
+    }
+
+    @Override
+    public String getName() {
+        return "CurrentTimestamp";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 0;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        CurrentTimestamp o = new CurrentTimestamp();
+        return o;
+    }
+
+}

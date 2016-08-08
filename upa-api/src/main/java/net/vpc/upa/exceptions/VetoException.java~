@@ -1,0 +1,24 @@
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/7/12 9:27 PM
+ */
+public class VetoException extends UPAException {
+    public VetoException() {
+    }
+
+    public VetoException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public VetoException(I18NString message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public VetoException(Throwable cause, I18NString messageId, Object... parameters) {
+        super(cause, messageId, parameters);
+    }
+}

@@ -1,0 +1,51 @@
+package net.vpc.upa.expressions;
+
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 10 juin 2003
+ * Time: 16:29:33
+ * To change this template use Options | File Templates.
+ */
+public class Uplet extends DefaultExpression {
+    private static final long serialVersionUID = 1L;
+    private Expression[] expressions;
+
+    public Uplet(Expression[] expressions) {
+        super();
+        this.expressions = expressions;
+    }
+
+//    public String toSQL(boolean flag, PersistenceUnit database) {
+//        Expression sql;
+//        if(expressions.length>1){
+//            Concat concat=new Concat();
+//            for(int i=0;i<expressions.length;i++){
+//                if(i>0){
+//                    concat.add(new Literal('~'));
+//                }
+//                concat.add(expressions[i]);
+//            }
+//            sql=concat;
+//        }else{
+//            sql=expressions[0];
+//        }
+//        return sql.toSQL(flag, database);
+//    }
+
+
+    public Expression[] getExpressions() {
+        return expressions;
+    }
+
+    @Override
+    public Expression copy() {
+        Expression[] expressions2 = new Expression[expressions.length];
+        for (int i = 0; i < expressions2.length; i++) {
+            expressions2[i] = expressions[i].copy();
+        }
+        Uplet o = new Uplet(expressions2);
+        return o;
+    }
+}

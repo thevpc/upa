@@ -1,0 +1,38 @@
+package net.vpc.upa.expressions;
+
+public final class StrFormat extends Function implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private Expression[] expressions;
+    private Literal pattern;
+
+    public StrFormat(String pattern, Expression... expressions) {
+        this.expressions = expressions;
+        this.pattern = new Literal(pattern);
+    }
+
+    @Override
+    public String getName() {
+        return "strformat";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return expressions.length + 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        return index == 0 ? pattern : expressions[index - 1];
+    }
+
+    @Override
+    public Expression copy() {
+        StrFormat o = new StrFormat((String) (pattern.getValue()));
+        o.expressions = new Expression[expressions.length];
+        for (int i = 0; i < expressions.length; i++) {
+            o.expressions[i] = expressions[i].copy();
+        }
+        return o;
+    }
+}

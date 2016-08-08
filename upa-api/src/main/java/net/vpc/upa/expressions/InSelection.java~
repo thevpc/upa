@@ -1,0 +1,48 @@
+package net.vpc.upa.expressions;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression, Select
+
+public final class InSelection extends DefaultExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private Expression[] left;
+    private Select query;
+
+    public InSelection(Expression left, Select query) {
+        this(new Expression[]{
+                left
+        }, query);
+    }
+
+    public InSelection(Expression[] left, Select query) {
+        this.left = left;
+        this.query = query;
+    }
+
+    public int size() {
+        return 2;
+    }
+
+    public Expression[] getLeft() {
+        return left;
+    }
+
+    public Select getSelection() {
+        return query;
+    }
+
+    public boolean isValid() {
+        return query.isValid();
+    }
+
+    @Override
+    public Expression copy() {
+        Expression[] left2 = new Expression[left.length];
+        for (int i = 0; i < left2.length; i++) {
+            left2[i] = left2[i].copy();
+        }
+        return new InSelection(left2, (Select) query.copy());
+    }
+
+}

@@ -1,0 +1,39 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.Properties;
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.types.DataType;
+
+import java.util.List;
+import java.util.Map;
+
+public interface EntityExecutionContext extends Properties {
+
+    public void initPersistenceUnit(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore, ContextOperation contextOperation);
+
+    public ContextOperation getOperation();
+
+    public Entity getEntity();
+
+    public Map<String, Object> getValues();
+
+    public PersistenceUnit getPersistenceUnit();
+
+    public PersistenceStore getPersistenceStore();
+
+    public EntityPersister getEntityPersister();
+
+    void initEntity(Entity currentEntity, EntityPersister entityPersister);
+
+    public void addGeneratedValue(String name, DataType type);
+
+    public void removeGeneratedValue(Parameter parameter);
+
+    public List<Parameter> getGeneratedValues();
+
+    public Parameter getGeneratedValue(String name);
+}

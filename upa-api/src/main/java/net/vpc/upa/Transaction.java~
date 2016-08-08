@@ -1,0 +1,24 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 4:19 PM
+ */
+public interface Transaction {
+
+    TransactionStatus getStatus();
+
+    void begin() throws UPAException;
+
+    void commit() throws UPAException;
+
+    void rollback() throws UPAException;
+
+    void close() throws UPAException;
+
+    void addTransactionListener(TransactionListener transactionListener);
+
+    void removeTransactionListener(TransactionListener transactionListener);
+}

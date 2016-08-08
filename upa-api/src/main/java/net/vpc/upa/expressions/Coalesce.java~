@@ -1,0 +1,114 @@
+package net.vpc.upa.expressions;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Coalesce extends Function
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+
+    private ArrayList<Expression> elements;
+
+    public Coalesce() {
+        elements = new ArrayList<Expression>(1);
+    }
+
+    public Coalesce(List<Expression> expressions) {
+        this();
+        for (Expression expression : expressions) {
+            add(expression);
+        }
+    }
+
+    public Coalesce(Expression expression1, Expression expression2) {
+        this();
+        add(expression1);
+        add(expression2);
+    }
+
+    public Coalesce(Expression expression1, Expression expression2, Expression expression3) {
+        this();
+        add(expression1);
+        add(expression2);
+        add(expression3);
+    }
+
+    public Coalesce clear() {
+        elements.clear();
+        return this;
+    }
+
+    public Coalesce add(Object varName) {
+        return add(ExpressionFactory.toVar(varName));
+    }
+
+    public Coalesce add(Expression expression) {
+        elements.add(expression);
+        return this;
+    }
+
+    public int size() {
+        return elements.size();
+    }
+
+    public Expression get(int i) {
+        return elements.get(i);
+    }
+
+    public boolean isValid() {
+        int max = size();
+        boolean valid = false;
+        for (int i = 0; i < max; i++) {
+            Expression e = get(i);
+            if (e.isValid())
+                valid = true;
+        }
+
+        return valid;
+    }
+
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        StringBuffer sb = new StringBuffer("Coalesce(");
+//        int max = size();
+//        boolean started = false;
+//        for (int i = 0; i < max; i++) {
+//            Expression e = get(i);
+//            if (e.isValid()) {
+//                if (started){
+//                    sb.append(", ");
+//                }else{
+//                    started = true;
+//                }
+//                sb.append(e.toSQL(true, database));
+//            }
+//        }
+//        sb.append(')');
+//        return sb.toString();
+//    }
+
+    public Expression copy() {
+        Coalesce o = new Coalesce();
+        o.elements = new ArrayList<Expression>();
+        for (Expression element : elements) {
+            o.add(element.copy());
+        }
+
+        return o;
+    }
+
+    @Override
+    public String getName() {
+        return "Coalesce";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return elements.size();
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        return elements.get(index);
+    }
+}

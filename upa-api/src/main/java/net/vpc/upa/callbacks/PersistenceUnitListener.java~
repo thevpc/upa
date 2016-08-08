@@ -1,0 +1,14 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceUnit;
+
+public interface PersistenceUnitListener {
+
+    public void modelChanged(PersistenceUnit persistenceUnit);
+
+    public void storageChanged(PersistenceUnit persistenceUnit);
+
+    public void started(PersistenceUnit persistenceUnit);
+
+    public void closed(PersistenceUnit persistenceUnit);
+}

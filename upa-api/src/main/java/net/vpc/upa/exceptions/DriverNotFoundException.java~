@@ -1,0 +1,20 @@
+package net.vpc.upa.exceptions;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class DriverNotFoundException extends ConnectionException {
+    private String driverName;
+
+    public DriverNotFoundException() {
+    }
+
+    public DriverNotFoundException(String driverName) {
+        super("DriverNotFoundException",driverName);
+        this.driverName = driverName;
+    }
+
+    public String getDriverName() {
+        return driverName;
+    }
+}

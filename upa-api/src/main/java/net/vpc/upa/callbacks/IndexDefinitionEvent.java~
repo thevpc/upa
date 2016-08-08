@@ -1,0 +1,35 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Index;
+import net.vpc.upa.PersistenceUnit;
+
+import java.io.Serializable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class IndexDefinitionEvent extends UPAEvent {
+    private PersistenceUnit persistenceUnit;
+    private Index index;
+    private boolean before;
+
+    public IndexDefinitionEvent(Index index, PersistenceUnit persistenceUnit, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.index = index;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public Index getIndex() {
+        return index;
+    }
+
+}

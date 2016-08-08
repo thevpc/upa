@@ -1,0 +1,23 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.PortabilityHint;
+
+import java.util.Date;
+
+/**
+ * User: taha
+ * Date: 5 sept. 2003
+ * Time: 12:57:26
+ */
+@PortabilityHint(target = "C#", name = "ignore", value = "true")
+public abstract class Temporal extends Date implements Cloneable {
+
+    public Temporal() {
+        super();
+    }
+
+    public Temporal(long date) {
+        super(date);
+    }
+
+}

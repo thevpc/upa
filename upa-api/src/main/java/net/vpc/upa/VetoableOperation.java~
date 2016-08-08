@@ -1,0 +1,37 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/24/12 1:04 AM
+ */
+public enum VetoableOperation {
+    //        validateSupported,
+//        validateOnInsertSupported,
+//        validateOnUpdateSupported,
+//        lockingSupported,
+//        insertSupported,
+//        updateSupported,
+//        deleteSupported,
+//        cloneSupported,
+//        renameSupported,
+//        keyEditionSupported,
+//        navigateSupported,
+//        newKeySupported,
+//        resetSupported,
+    checkInsert,
+    checkUpdate,
+    checkClone,
+    checkRename,
+    checkLoad,
+    checkNavigate,
+    checkDelete,
+    deletableRecord,
+    updatableRecord,
+    insertEnabled,
+    updateEnabled,
+    deleteEnabled,
+    renameEnabled,
+    cloneEnabled,
+    fieldEditable,
+    fieldVisible,
+}

@@ -1,0 +1,54 @@
+package net.vpc.upa;
+
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Order;
+import net.vpc.upa.filters.FieldFilter;
+
+import java.io.Serializable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/9/12 9:59 AM
+ */
+public interface QueryBuilder extends Query, Serializable {
+
+    public Entity getEntityType();
+
+    public QueryBuilder addAndExpression(String expression);
+
+    public QueryBuilder setExpression(String expression);
+
+    public QueryBuilder addAndExpression(Expression expression);
+
+    public QueryBuilder setExpression(Expression expression);
+
+    public QueryBuilder setOrder(Order order);
+
+    public QueryBuilder setFieldFilter(FieldFilter fieldFilter);
+
+    public QueryBuilder setId(Object id);
+
+    public QueryBuilder setKey(Key key);
+
+    public QueryBuilder setPrototype(Object prototype);
+
+    public QueryBuilder setRecordPrototype(Record prototype);
+
+    public Expression getExpression();
+
+    public Order getOrder();
+
+    public FieldFilter getFieldFilter();
+
+    public Object getId();
+
+    public Key getKey();
+
+    public Object getPrototype();
+
+    public Record getRecordPrototype();
+
+    public String getEntityAlias();
+
+    public QueryBuilder setEntityAlias(String entityAlias);
+}

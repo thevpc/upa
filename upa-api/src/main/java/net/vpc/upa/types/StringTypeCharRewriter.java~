@@ -1,0 +1,37 @@
+package net.vpc.upa.types;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/29/12 1:45 AM
+ */
+public class StringTypeCharRewriter implements TypeValueRewriter {
+    protected String from;
+    protected String to;
+
+    public StringTypeCharRewriter(String from, String to) {
+        this.from = from;
+        this.to = to;
+        if (from == null || to == null || from.length() == 0 || from.length() != to.length()) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public Object rewriteValue(Object typeValue, String name, String description, DataType type) throws ConstraintsException {
+        if (typeValue != null && typeValue instanceof String) {
+            char[] c = ((String) typeValue).toCharArray();
+            boolean updated = false;
+            for (int i = 0; i < c.length; i++) {
+                int j = from.indexOf(c[i]);
+                if (j >= 0) {
+                    c[i] = to.charAt(j);
+                    updated = true;
+                }
+            }
+            return updated ? new String(c) : typeValue;
+        }
+        return typeValue;
+    }
+
+
+}

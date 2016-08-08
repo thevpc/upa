@@ -1,0 +1,61 @@
+package net.vpc.upa.expressions;
+
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class Param extends DefaultExpression {
+    private static final long serialVersionUID = 1L;
+    private Object object;
+    private String name;
+    private boolean unspecified;
+
+    public Param() {
+        this(null);
+    }
+
+    public Param(String name) {
+        this.unspecified = true;
+        this.name = name;
+    }
+
+    public Param(String name, Object object) {
+        this.unspecified = false;
+        this.object = object;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public boolean isUnspecified() {
+        return unspecified;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
+
+    @Override
+    public Expression copy() {
+        Param o = unspecified ? new Param(name) : new Param(name, object);
+        return o;
+    }
+
+    //    public String toSQL(boolean flag, PersistenceUnit database) {
+    //        return "?";
+    //    }
+    @Override
+    public String toString() {
+        if (isUnspecified()) {
+            return ":" + getName();
+        }
+        return ":" + getName() + "(=" + getObject() + ")";
+    }
+
+}

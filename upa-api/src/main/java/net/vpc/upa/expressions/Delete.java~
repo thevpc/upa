@@ -1,0 +1,88 @@
+package net.vpc.upa.expressions;
+
+public class Delete extends DefaultEntityStatement
+        implements Cloneable, UpdateStatement {
+
+    private static final long serialVersionUID = 1L;
+    protected Expression condition;
+    protected EntityName entity;
+    protected String entityAlias;
+
+    public Delete(Delete other) {
+        this();
+        addQuery(other);
+    }
+
+    public Delete() {
+        entity = null;
+        entityAlias = null;
+    }
+
+    private Delete from(String entity, String alias) {
+        this.entity = new EntityName(entity);
+        entityAlias = alias;
+        return this;
+    }
+
+    public Delete from(String entity) {
+        return from(entity, null);
+    }
+
+    public EntityName getEntity() {
+        return entity;
+    }
+
+    public String getEntityName() {
+        EntityName e = getEntity();
+        return (e != null) ? ((EntityName) e).getName() : null;
+    }
+
+    public String getEntityAlias() {
+        return entityAlias == null ? entity.getName() : entityAlias;
+    }
+
+    public Delete where(Expression condition) {
+        this.condition = condition;
+        return this;
+    }
+
+    public Expression getCondition() {
+        return condition;
+    }
+
+    public Expression copy() {
+        Delete o = new Delete();
+        o.addQuery(this);
+        return o;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Delete From " + entity);
+        if (entityAlias != null) {
+            sb.append(" ").append(ExpressionHelper.escapeIdentifier(entityAlias));
+        }
+        if (condition != null && condition.isValid()) {
+            sb.append(" Where ").append(getCondition().toString());
+        }
+        return sb.toString();
+    }
+
+    public int size() {
+        return 3;
+    }
+
+    public Delete addQuery(Delete other) {
+        if (other == null) {
+            return this;
+        }
+        if (other.entity != null) {
+            entity = (EntityName) other.entity.copy();
+        }
+        if (other.entityAlias != null) {
+            entityAlias = other.entityAlias;
+        }
+        other.condition = condition.copy();
+        return this;
+    }
+}

@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Sun Jul 31 13:11:03 CET 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0156-40dd-5abf-000012257df8 
+on database directory /home/vpc/Data/xprojects/net/vpc/upa/upa-test/db-embedded/upatest  with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/home/vpc/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_91-b14
+user.dir=/home/vpc/Data/xprojects/net/vpc/upa/upa-test
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

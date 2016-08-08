@@ -1,0 +1,19 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import net.vpc.upa.Entity;
+
+import java.util.Map;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface ImportEntityMapper {
+
+    Map<String, Object> valueToMap(Entity entity, Object value);
+
+    boolean accept(Entity entity);
+}

@@ -1,0 +1,105 @@
+package net.vpc.upa.config;
+
+import net.vpc.upa.EntityModifier;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Specifies that the class is an entity or is an Entity Descriptor. To Its
+ * simplest form, this annotation is similar to JPA @Entity Annotation.
+ *
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @Entity
+ * @creationdate 8/28/12 10:14 PM
+ */
+@Target(value = ElementType.TYPE)
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Entity {
+
+    /**
+     * Entity Name
+     *
+     * @return Entity Name
+     */
+    String name() default "";
+
+    String shortName() default "";
+
+    /**
+     * Entity Instances Type. When Not specified (or when it is set to
+     * java.lang.Object), the current class is considered to be Entity Instances
+     * Type (as does JPA). When Specified, the current class is an Entity
+     * Descriptor rather than an Entity it self. In that case, the Entity Type
+     * is given by the value of this property.
+     *
+     * @return entity Type
+     */
+    Class entityType() default void.class;
+
+    /**
+     * Entity ID Class Type. When Not Specified will be guessed by the
+     * framework. Composite Types are resolved as net.vpc.upa.Key Type
+     *
+     * @return Entity ID Class Type
+     */
+    Class idType() default void.class;
+
+    /**
+     * Entity Modifiers
+     *
+     * @return Entity Modifiers
+     */
+    EntityModifier[] modifiers() default {};
+
+    /**
+     * Entity Modifiers
+     *
+     * @return Entity Modifiers
+     */
+    EntityModifier[] excludeModifiers() default {};
+
+    /**
+     * '/' Separated Entity Path as sequence of parent Package names
+     *
+     * @return Entity Path
+     */
+    String path() default "";
+
+    /**
+     * When true (default) the Entity Class is parsed for fields. This is
+     * helpful when defining an Entity Descriptor (entityType value specified)
+     * while ignoring all already defined fields in the target entityType.
+     *
+     * @return true if the Entity Class is parsed for fields
+     */
+    boolean useEntityTypeFields() default true;
+
+    /**
+     * When true (default) the Entity Class is parsed for modifiers. This is
+     * helpful when defining an Entity Descriptor (entityType value specified)
+     * while ignoring all already defined modifiers in the target entityType.
+     *
+     * @return true if the Entity Class is parsed for modifiers
+     */
+    boolean useEntityTypeModifiers() default true;
+
+    /**
+     * When true (default) the Entity Class is parsed for modifiers. This is
+     * helpful when defining an Entity Descriptor (entityType value specified)
+     * while ignoring all already defined modifiers in the target entityType.
+     *
+     * @return true if the Entity Class is parsed for modifiers
+     */
+    boolean useEntityTypeExtensions() default true;
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+
+}

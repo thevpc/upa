@@ -1,0 +1,4 @@
+package net.vpc.upa;
+
+public interface DynamicField extends Field {
+}

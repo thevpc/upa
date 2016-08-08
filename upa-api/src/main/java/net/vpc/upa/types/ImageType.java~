@@ -1,0 +1,50 @@
+package net.vpc.upa.types;
+
+/**
+ * User: taha Date: 16 juin 2003 Time: 15:47:42
+ */
+public class ImageType extends FileType {
+//    public static final ImageType ANY_IMAGE=new ImageType(true);
+//    public static final ImageType REQUIERED_IMAGE=new ImageType(false);
+
+    private int width;
+    private int height;
+
+    public ImageType(String name, boolean nullable) {
+        this(name, -1, -1, -1, nullable);
+    }
+
+    public ImageType(String name, int width, int height, int maxSize, boolean nullable) {
+        super(name, maxSize, null, nullable);
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        if (getMaxSize() > 0 && getMaxSize() < ((FileData) value).size()) {
+            throw new ConstraintsException("ImageSizeTooBig", name, description, value, getMaxSize());
+        }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+}

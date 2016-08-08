@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class LessEqualThan extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public LessEqualThan(Expression left, Object right) {
+        super(BinaryOperator.LE, left, right);
+    }
+
+    public LessEqualThan(Expression left, Expression right) {
+        super(BinaryOperator.LE, left, right);
+    }
+}

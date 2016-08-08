@@ -1,0 +1,21 @@
+package net.vpc.upa.types;
+
+import java.util.List;
+
+public abstract class SeriesType extends DataType implements Cloneable {
+
+    protected SeriesType(String name, Class platformType) {
+        super(name, platformType);
+    }
+
+    protected SeriesType(String name, Class platformType, boolean nullable) {
+        super(name, platformType, nullable);
+    }
+
+    protected SeriesType(String name, Class platformType, int scale, int precision, boolean nullable) {
+        super(name, platformType, scale, precision, nullable);
+    }
+
+    public abstract List<Object> getValues();
+    
+}

@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class Or extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Or(Expression left, Object right) {
+        super(BinaryOperator.OR, left, right);
+    }
+
+    public Or(Expression left, Expression right) {
+        super(BinaryOperator.OR, left, right);
+    }
+}

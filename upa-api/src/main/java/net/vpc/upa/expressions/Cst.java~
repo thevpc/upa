@@ -1,0 +1,27 @@
+package net.vpc.upa.expressions;
+
+
+public final class Cst extends DefaultExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+
+    private Object value;
+
+    public Cst(Object value) {
+        this.value = value;
+    }
+
+    public boolean isValid() {
+        return true;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    @Override
+    public Expression copy() {
+        return new Cst(value);
+    }
+
+}

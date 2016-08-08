@@ -1,0 +1,28 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.io.IOException;
+import net.vpc.upa.Closeable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface DataParser extends Closeable {
+
+    /**
+     *
+     * @param source File or InputStream or URL Reader
+     * @throws IOException
+     */
+    void configure(Object source) throws IOException;
+
+    public void setDataDeserializer(DataDeserializer dataDeserializer);
+
+    public DataDeserializer getDataDeserializer();
+
+    DataReader parse() throws IOException;
+
+}

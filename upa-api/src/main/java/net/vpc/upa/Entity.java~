@@ -1,0 +1,379 @@
+package net.vpc.upa;
+
+import net.vpc.upa.callback.EntityInterceptor;
+import net.vpc.upa.callback.DefinitionListener;
+import net.vpc.upa.callback.EntityTrigger;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.EntityStatement;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Order;
+import net.vpc.upa.extensions.EntityExtensionDefinition;
+import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.persistence.EntityExtension;
+import net.vpc.upa.persistence.EntityExecutionContext;
+import net.vpc.upa.persistence.PersistenceStore;
+import net.vpc.upa.types.DataType;
+
+import java.util.List;
+import java.util.Set;
+import net.vpc.upa.persistence.EntityPersister;
+
+public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
+
+    public FlagSet<EntityModifier> getUserModifiers() throws UPAException;
+
+    public void setUserModifiers(FlagSet<EntityModifier> modifiers) throws UPAException;
+
+    public FlagSet<EntityModifier> getUserExcludeModifiers() throws UPAException;
+
+    public void setUserExcludeModifiers(FlagSet<EntityModifier> modifiers) throws UPAException;
+
+    public FlagSet<EntityModifier> getModifiers() throws UPAException;
+
+    public boolean exists() throws UPAException;
+
+    public Entity getParentEntity() throws UPAException;
+
+    public EntityDescriptor getEntityDescriptor() throws UPAException;
+
+    public Relationship getCompositionRelation() throws UPAException;
+
+    public List<Relationship> getRelationships() throws UPAException;
+
+    public String getParentSecurityAction() throws UPAException;
+
+    public void setParentSecurityAction(String parentSecurityAction) throws UPAException;
+
+    public Index addIndex(String name, boolean unique, List<String> fields) throws UPAException;
+
+    public List<Index> getIndexes(Boolean unique) throws UPAException;
+
+    public void removePart(int index) throws UPAException;
+
+    public void movePart(int index, int newIndex) throws UPAException;
+
+    public void movePart(String partName, int newIndex) throws UPAException;
+
+    public List<EntityPart> getParts() throws UPAException;
+
+    public int indexOfPart(EntityPart part) throws UPAException;
+
+    public int indexOfPart(String partName) throws UPAException;
+
+    public int indexOfPart(String partName, boolean countSections,
+            boolean countCompoundFields, boolean countFieldsInCompoundFields,
+            boolean countFieldsInSections) throws UPAException;
+
+    public List<Section> getSections() throws UPAException;
+
+    public Section getSection(String sectionPath) throws UPAException;
+
+    public Section findSection(String path) throws UPAException;
+
+    public Section getSection(String path, MissingStrategy missingStrategy) throws UPAException;
+
+    public Section addSection(String name, String parentPath) throws UPAException;
+
+    public Section addSection(String name, String parentPath, int index) throws UPAException;
+
+    public Section addSection(String name, int index) throws UPAException;
+
+    public Section addSection(String name) throws UPAException;
+
+    public Class getEntityType() throws UPAException;
+
+    public Class getIdType() throws UPAException;
+
+    public boolean needsView() throws UPAException;
+
+    public DataType getDataType() throws UPAException;
+
+    public void setDataType(DataType newDataType) throws UPAException;
+
+    public boolean isDependentOnEntity(String entityName);
+
+    public Set<String> getDependencyEntities() throws UPAException;
+
+    //    public void addSecuritySupport() throws UPAException;
+//    public String getPersistenceName();
+//
+//    public void setPersistenceName(String persistenceName);
+    public Field addField(Field field, String sectionPath) throws UPAException;
+
+    public Field addField(Field field, String sectionPath, int index) throws UPAException;
+
+    public Field addField(FieldDescriptor fieldDescriptor) throws UPAException;
+
+    public Field addField(String name, String sectionPath, FlagSet<FieldModifier> modifiers, Object defaultValue, DataType type) throws UPAException;
+
+    public Field addField(String name, String sectionPath, FlagSet<FieldModifier> modifiers, FlagSet<FieldModifier> excludeModifiers, Object defaultValue, DataType type, int index) throws UPAException;
+
+    public Field getMainField() throws UPAException;
+
+    public String getMainFieldValue(Object o) throws UPAException;
+
+    public EntityNavigator getNavigator() throws UPAException;
+
+    public void setNavigator(EntityNavigator newNavigator);
+
+    // ------------------------------------------------------------------------------
+    public int getFieldsCount() throws UPAException;
+
+    public boolean containsField(String key) throws UPAException;
+
+    public List<DynamicField> getDynamicFields() throws UPAException;
+
+    public Field getField(String fieldName) throws UPAException;
+
+    public Field findField(String fieldName) throws UPAException;
+
+    public List<Field> getPrimaryFields() throws UPAException;
+
+    public List<String> getFieldNames(FieldFilter fieldFilter) throws UPAException;
+
+    //    public int indexOfField(String key) throws UPAException;
+    public Object cloneRecord(Object oldId, Object newId) throws UPAException;
+
+    public Object rename(Object oldId, Object newId) throws UPAException;
+
+    public Object getNextId(Object id) throws UPAException;
+
+    public Object getFirstId() throws UPAException;
+
+    public Object getLastId() throws UPAException;
+
+    public Object getPreviousId(Object id) throws UPAException;
+
+    public boolean hasNext(Object id) throws UPAException;
+
+    public boolean hasPrevious(Object id) throws UPAException;
+
+    public boolean isEmpty() throws UPAException;
+
+    public long getEntityCount() throws UPAException;
+
+    public long getEntityCount(Expression booleanExpression) throws UPAException;
+
+    public <K> K nextId() throws UPAException;
+
+    public void insertRecord(Record values) throws UPAException;
+
+    public void insert(Object entity) throws UPAException;
+
+    public void persist(Object entity) throws UPAException;
+
+    public boolean insertOrUpdate(Object values) throws UPAException;
+
+    public void initialize() throws UPAException;
+
+    public void clear() throws UPAException;
+
+    public void reset() throws UPAException;
+
+    public Expression getUnicityExpressionForInsert(Object entity) throws UPAException;
+
+    public DeletionTrace delete(Expression expression, boolean recurse, boolean simulate, DeletionTrace deleteInfo) throws UPAException;
+
+    public DeletionTrace delete(
+            Expression expression, boolean recurse, boolean simulate,
+            DeletionTrace deleteInfo, Relationship relation)
+            throws UPAException;
+
+    public DeletionTrace deleteByKey(Key key) throws UPAException;
+
+    public DeletionTrace deleteByKey(Key key, boolean simulate) throws UPAException;
+
+    public DeletionTrace deleteByKey(List<Key> keys, boolean simulate) throws UPAException;
+
+    public DeletionTrace remove(Object entity) throws UPAException;
+
+    public DeletionTrace delete(Object idOrExpression) throws UPAException;
+
+    public DeletionTrace delete(Object idOrExpression, boolean simulate) throws UPAException;
+
+    public DeletionTrace delete(List<Object> keys, boolean simulate) throws UPAException;
+
+    public DeletionTrace delete(Expression whereClause, boolean simulate) throws UPAException;
+
+    public Field[] toFieldArray(String[] s) throws UPAException;
+
+    public boolean contains(Object id) throws UPAException;
+
+    public void update(Object entity) throws UPAException;
+
+    public void merge(Object entity) throws UPAException;
+
+    public void updatePartial(Object entity) throws UPAException;
+
+    public void updatePartial(Object entity, Object id) throws UPAException;
+
+    public void updateRecord(Record record, Key key) throws UPAException;
+
+    public void updateRecord(Record record) throws UPAException;
+
+    public int updateRecords(Record record, Expression condition) throws UPAException;
+
+    public void updateFormulas(FieldFilter filter, Expression expr) throws UPAException;
+
+    public void updateFormulasById(FieldFilter filter, Object key) throws UPAException;
+
+    public void updateFormulas() throws UPAException;
+
+    public void updateFormulasById(Object id) throws UPAException;
+
+    public void updateFormulas(Expression condition) throws UPAException;
+
+    public Order getUpdateFormulasOrder();
+
+    public String getIdName(Object id) throws UPAException;
+
+    public List<Field> getValidFields(String... fieldNames) throws UPAException;
+
+    public List<Field> getFields(String... fieldNames) throws UPAException;
+
+    public List<Field> getFields(FieldFilter filter) throws UPAException;
+
+    public Order getArchivingOrder();
+
+    public Field getLeadingPrimaryField() throws UPAException;
+
+    public List<String> getOrderedFields(String[] fields) throws UPAException;
+
+    public Expression simplifyExpression(Expression e) throws UPAException;
+
+    public String getShortName() throws UPAException;
+
+    public void setShortName(String shortName) throws UPAException;
+
+    public String getShortNameOrName() throws UPAException;
+
+    public Order getListDefaultOrder() throws UPAException;
+
+    public void setListDefaultOrder(Order listDefaultOrder) throws UPAException;
+
+    public List<PrimitiveField> getPrimitiveFields(FieldFilter fieldFilter) throws UPAException;
+
+    public PrimitiveField getPrimitiveField(String fieldName) throws UPAException;
+
+    public PrimitiveField findPrimitiveField(String fieldName) throws UPAException;
+
+    public <T extends EntityPart> List<PrimitiveField> getPrimitiveFields(List<T> parts) throws UPAException;
+
+    public List<Field> getFields(List<EntityPart> parts) throws UPAException;
+
+    public List<PrimitiveField> getPrimitiveFields(String... fieldNames) throws UPAException;
+
+    public EntityBuilder getBuilder() throws UPAException;
+
+    public QueryBuilder createQueryBuilder() throws UPAException;
+
+    public Query createQuery(EntityStatement query) throws UPAException;
+
+    public Query createQuery(String query) throws UPAException;
+
+    public List<EntityTrigger> getTriggers() throws UPAException;
+
+    /**
+     * Triggers with VM support (having listener!=null)
+     *
+     * @return
+     * @throws UPAException
+     */
+    public List<EntityTrigger> getSoftTriggers() throws UPAException;
+
+    public <S extends EntityExtensionDefinition> void addExtensionDefinition(Class<S> extensionType, S extensionObject) throws UPAException;
+
+    public <S extends EntityExtensionDefinition> void removeExtensionDefinition(Class<S> extensionType, S extensionObject);
+
+    public List<EntityExtensionDefinition> getExtensionDefinitions();
+
+    public <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type);
+
+    public List<EntityExtension> getExtensions();
+
+    public <S extends EntityExtension> List<S> getExtensions(Class<S> type);
+
+    public <S extends EntityExtension> S getExtension(Class<S> type) throws UPAException;
+
+    public EntityPersister getEntityPersister();
+
+    public EntityShield getShield();
+
+    public void setShield(EntityShield shield) throws UPAException;
+
+    public Expression childToParentExpression(Record child) throws UPAException;
+
+    public Expression childToParentExpression(Expression childExpression) throws UPAException;
+
+    public Expression parentToChildExpression(Expression parentExpression) throws UPAException;
+
+    public Key createKey(Object... keyValues) throws UPAException;
+
+    public Object createId(Object... keyValues) throws UPAException;
+
+    public QualifiedRecord createQualifiedRecord() throws UPAException;
+
+    public Record createRecord() throws UPAException;
+
+    public <R> R createEntity() throws UPAException;
+
+    public EntityTrigger addTrigger(String name, EntityInterceptor trigger) throws UPAException;
+
+    public void removeTrigger(String triggerName) throws UPAException;
+
+//    public void addEntityListener(EntityListener listener) throws UPAException;
+//
+//    public void removeEntityListener(EntityListener listener) throws UPAException;
+    void addDefinitionListener(DefinitionListener definitionListener) throws UPAException;
+
+    void removeDefinitionListener(DefinitionListener definitionListener) throws UPAException;
+
+    //////////////////////////////////////////////////////////
+    //
+    //    CORE
+    //
+    //////////////////////////////////////////////////////////
+    public int updateCore(Record updates, Expression condition, EntityExecutionContext executionContext) throws UPAException;
+
+    public void insertCore(Record values, EntityExecutionContext executionContext) throws UPAException;
+
+    public int deleteCore(Expression condition, boolean recurse, DeletionTrace deleteInfo, EntityExecutionContext executionContext) throws UPAException;
+
+    public int resetCore(EntityExecutionContext executionContext) throws UPAException;
+
+    public int clearCore(EntityExecutionContext executionContext) throws UPAException;
+
+    public int initializeCore(EntityExecutionContext executionContext) throws UPAException;
+
+    public void updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) throws UPAException;
+
+    public Object compile(Expression expression) throws UPAException;
+
+    public void addFilter(String name, String expression) throws UPAException;
+
+    public void addFilter(String name, Expression expression) throws UPAException;
+
+    public Expression getFilter(String name) throws UPAException;
+
+    public void removeFilter(String name) throws UPAException;
+
+    public Set<String> getFilterNames() throws UPAException;
+
+    public boolean isSystem() throws UPAException;
+
+    // Framework Friend Methods
+    public void setModifiers(FlagSet<EntityModifier> modifiers) throws UPAException;
+
+    public void attach(PersistenceStore persistenceUnitManager) throws UPAException;
+
+    public void start() throws UPAException;
+
+    public void commitModelChanges() throws UPAException;
+
+    public void addDependencyOnEntity(String entityName);
+
+    /**
+     * called by PersistenceUnit
+     */
+    void setCompositionRelationship(Relationship compositionRelation) throws UPAException;
+}

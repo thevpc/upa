@@ -1,0 +1,13 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface ImportDataConverter {
+
+    Object convertEntity(DataRow row, Object oldValue);
+}

@@ -1,0 +1,24 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import java.net.URL;
+import net.vpc.upa.config.ScanFilter;
+import net.vpc.upa.config.ScanSource;
+
+/**
+ *
+ * @author vpc
+ */
+public interface UPAContextFactory extends ObjectFactory {
+
+    public ScanSource createURLScanSource(URL[] urls, ScanFilter[] filters, boolean noIgnore);
+
+    public ScanSource createContextScanSource(boolean noIgnore);
+
+    public ScanSource createClassScanSource(Class[] classes, boolean noIgnore);
+
+}

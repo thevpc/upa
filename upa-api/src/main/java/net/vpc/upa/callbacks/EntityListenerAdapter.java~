@@ -1,0 +1,75 @@
+package net.vpc.upa.callback;
+
+public class EntityListenerAdapter implements EntityListener {
+
+    @Override
+    public void onPrePersist(PersistEvent event) {
+
+    }
+
+    @Override
+    public void onPreUpdate(UpdateEvent event) {
+
+    }
+
+    @Override
+    public void onPreRemove(RemoveEvent event) {
+
+    }
+
+    @Override
+    public void onPreUpdateFormula(UpdateFormulaEvent event) {
+
+    }
+
+    @Override
+    public void onPreInitialize(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onPreClear(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onPreReset(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onPersist(PersistEvent event) {
+
+    }
+
+    @Override
+    public void onUpdate(UpdateEvent event) {
+
+    }
+
+    @Override
+    public void onRemove(RemoveEvent event) {
+
+    }
+
+    @Override
+    public void onUpdateFormula(UpdateFormulaEvent event) {
+
+    }
+
+    @Override
+    public void onInitialize(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onClear(EntityEvent event) {
+
+    }
+
+    @Override
+    public void onReset(EntityEvent event) {
+
+    }
+
+}

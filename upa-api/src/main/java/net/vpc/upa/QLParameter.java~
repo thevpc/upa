@@ -1,0 +1,59 @@
+package net.vpc.upa;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: vpc
+ * Date: 29 janv. 2006
+ * Time: 15:26:00
+ * To change this template use File | Settings | File Templates.
+ */
+public class QLParameter {
+
+    private QLParameterType type;
+    private String typeName;
+    private String id;
+    private String title;
+    private String description;
+    private String expression;
+
+    public QLParameter(QLParameterType QLParameterType, String typeName, String expression, String name, String title, String description) {
+        this.type = QLParameterType;
+        this.typeName = typeName;
+        this.expression = expression;
+        this.id = name;
+        this.title = title;
+        this.description = description;
+        this.expression = expression;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getId(int index) {
+        if (index == 0) {
+            return getId();
+        }
+        return getId() + "." + (index + 1);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public QLParameterType getParameterType() {
+        return type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+}

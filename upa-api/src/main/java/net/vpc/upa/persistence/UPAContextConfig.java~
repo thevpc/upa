@@ -1,0 +1,54 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.ArrayList;
+import java.util.List;
+import net.vpc.upa.config.ScanFilter;
+
+/**
+ *
+ * @author vpc
+ */
+public class UPAContextConfig {
+    public static final int XML_ORDER=Integer.MAX_VALUE;
+    
+    private Boolean autoScan;
+    private List<PersistenceGroupConfig> persistenceGroups = new ArrayList<PersistenceGroupConfig>();
+    private List<ScanFilter> filters = new ArrayList<ScanFilter>();
+
+    public Boolean getAutoScan() {
+        return autoScan;
+    }
+
+    public void setAutoScan(Boolean autoScan) {
+        this.autoScan = autoScan;
+    }
+
+    
+    public List<ScanFilter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<ScanFilter> filters) {
+        this.filters = filters;
+    }
+
+    public List<PersistenceGroupConfig> getPersistenceGroups() {
+        return persistenceGroups;
+    }
+
+    public void setPersistenceGroups(List<PersistenceGroupConfig> persistenceGroups) {
+        this.persistenceGroups = persistenceGroups;
+    }
+
+    
+    @Override
+    public String toString() {
+        return "UPAContextConfig{" + "persistenceGroups=" + persistenceGroups + ", filters=" + filters + '}';
+    }
+
+}

@@ -1,0 +1,11 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.expressions.QueryStatement;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/28/12 8:28 PM
+ */
+public interface ViewEntityExtension extends EntityExtension {
+    public QueryStatement getQuery();
+}

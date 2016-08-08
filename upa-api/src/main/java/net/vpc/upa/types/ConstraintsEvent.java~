@@ -1,0 +1,100 @@
+package net.vpc.upa.types;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Referenced classes of package org.vpc.lib.util:
+//            ConstraintsException, Utils
+public class ConstraintsEvent {
+
+    private List<ConstraintsException> errors = new ArrayList<ConstraintsException>();
+
+    /**
+     * The object on which the Event initially occurred.
+     */
+    protected transient Object source;
+
+    /**
+     * Constructs a prototypical Event.
+     *
+     * @param source The object on which the Event initially occurred.
+     * @throws IllegalArgumentException if source is null.
+     */
+    public ConstraintsEvent(Object source) {
+        if (source == null)
+            throw new IllegalArgumentException("null source");
+
+        this.source = source;
+    }
+
+    /**
+     * The object on which the Event initially occurred.
+     *
+     * @return The object on which the Event initially occurred.
+     */
+    public Object getSource() {
+        return source;
+    }
+
+    public ConstraintsEvent add(ConstraintsException e) {
+        errors.add(e);
+        return this;
+    }
+
+    public ConstraintsEvent remove(ConstraintsException e) {
+        errors.remove(e);
+        return this;
+    }
+
+    public int countErrors() {
+        return errors.size();
+    }
+
+    public ConstraintsException getConstraints(int pos) {
+        return (ConstraintsException) errors.get(pos);
+    }
+
+    @Override
+    public String toString() {
+        return "ConstraintsEvent{" + getClass().getName() + "[source=" + source + "]" + __concatPaths(errors.toArray(), ",\n", true) + '}';
+    }
+
+    private static String __concatPaths(Object[] paths, String separator, boolean ignoreNull) {
+        if (paths == null || paths.length == 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        if (paths[0] != null && paths[0].toString().length() > 0) {
+            sb.append(paths[0]);
+        } else if (!ignoreNull) {
+            sb.append(separator);
+        }
+        for (int i = 1; i < paths.length; i++) {
+            if (paths[i] != null && paths[i].toString().length() != 0 || !ignoreNull) {
+                int x = 0;
+                if (sb.length() > separator.length() - 1 && sb.substring(sb.length() - separator.length()).equals(separator)) {
+                    x++;
+                }
+                if (paths[i].toString().substring(0, separator.length()).equals(separator)) {
+                    x += 2;
+                }
+                switch (x) {
+                    case 0: // '\0'
+                        sb.append(separator).append(paths[i]);
+                        break;
+
+                    case 1: // '\001'
+                    case 2: // '\002'
+                        sb.append(paths[i]);
+                        break;
+
+                    case 3: // '\003'
+                        sb.deleteCharAt(sb.length() - 1).append(paths[i]);
+                        break;
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+}

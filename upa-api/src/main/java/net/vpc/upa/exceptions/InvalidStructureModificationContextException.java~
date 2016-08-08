@@ -1,0 +1,12 @@
+package net.vpc.upa.exceptions;
+
+
+public class InvalidStructureModificationContextException extends PersistenceUnitLockingException {
+    public InvalidStructureModificationContextException() {
+        this("InvalidStructureModificationContextException");
+    }
+
+    public InvalidStructureModificationContextException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+}

@@ -1,0 +1,49 @@
+package net.vpc.upa.expressions;
+
+
+public final class Max extends Function implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private Expression expression;
+
+    public Max(Expression expression) {
+        this.expression = expression;
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    public boolean isValid() {
+        return expression.isValid();
+    }
+
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "Max(" + expression.toSQL(database) + ")";
+//    }
+
+
+    @Override
+    public String getName() {
+        return "Max";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return expression;
+    }
+
+    @Override
+    public Expression copy() {
+        Max o = new Max(expression.copy());
+        return o;
+    }
+
+}

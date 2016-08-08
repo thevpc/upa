@@ -1,0 +1,30 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa;
+
+import java.util.Date;
+
+public class LockInfo implements java.io.Serializable {
+    private Object entity;
+    private String user;
+    private Date date;
+
+    public LockInfo(Object entity, Date date, String user) {
+        this.entity = entity;
+        this.date = date;
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Object getEntity() {
+        return entity;
+    }
+}

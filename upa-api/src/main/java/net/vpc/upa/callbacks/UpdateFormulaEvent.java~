@@ -1,0 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Record;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.persistence.EntityExecutionContext;
+
+/**
+ *
+ * @author vpc
+ */
+public class UpdateFormulaEvent extends EntityEvent {
+
+    private Record updates;
+    private Expression filterExpression;
+
+    public UpdateFormulaEvent(Record updates, Expression filterExpression, EntityExecutionContext entityExecutionContext) {
+        super(entityExecutionContext);
+        this.updates = updates;
+        this.filterExpression = filterExpression;
+    }
+
+    public Record getUpdates() {
+        return updates;
+    }
+
+    public Expression getFilterExpression() {
+        return filterExpression;
+    }
+
+}

@@ -1,0 +1,318 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.filters;
+
+import net.vpc.upa.EffectiveFieldModifier;
+import net.vpc.upa.Field;
+import net.vpc.upa.FlagSet;
+import net.vpc.upa.FlagSets;
+import net.vpc.upa.exceptions.UPAException;
+
+public class FieldModifierFilter extends AbstractFieldFilter {
+
+    private FlagSet<EffectiveFieldModifier>[] accepted;
+    private FlagSet<EffectiveFieldModifier>[] rejected;
+    private boolean acceptDynamic;
+
+    public FieldModifierFilter() {
+        accepted = new FlagSet[0];
+        rejected = new FlagSet[0];
+    }
+
+    private FieldModifierFilter(FlagSet<EffectiveFieldModifier>[] accepted, FlagSet<EffectiveFieldModifier>[] rejected, boolean acceptDynamic) {
+        this.accepted = accepted;
+        this.rejected = rejected;
+        this.acceptDynamic = acceptDynamic;
+    }
+
+    @Override
+    public boolean acceptDynamic() {
+        return acceptDynamic;
+    }
+
+    public boolean isAcceptDynamic() {
+        return acceptDynamic;
+    }
+
+    public FieldModifierFilter setAcceptDynamic(boolean acceptDynamic) {
+        if (this.acceptDynamic == acceptDynamic) {
+            return this;
+        }
+        return new FieldModifierFilter(accepted, rejected, acceptDynamic);
+    }
+
+    public boolean accept(FlagSet<EffectiveFieldModifier> modifiersValue) throws UPAException {
+        for (int i = 0; i < accepted.length; i++) {
+            if (accept(modifiersValue, i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean accept(FlagSet<EffectiveFieldModifier> modifiersValue, int i) throws UPAException {
+        FlagSet<EffectiveFieldModifier> a = accepted[i];
+        FlagSet<EffectiveFieldModifier> r = rejected[i];
+        for (EffectiveFieldModifier m : a) {
+            if (!modifiersValue.contains(m)) {
+                return false;
+            }
+        }
+        for (EffectiveFieldModifier m : r) {
+            if (modifiersValue.contains(m)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean accept(Field f) throws UPAException {
+        FlagSet<EffectiveFieldModifier> modifiersValue = f.getEffectiveModifiers();
+        return accept(modifiersValue);
+    }
+
+    private FieldModifierFilter or(EffectiveFieldModifier[] modifierYes, EffectiveFieldModifier[] modifierNo) {
+        FlagSet<EffectiveFieldModifier> y = modifierYes == null ? FlagSets.noneOf(EffectiveFieldModifier.class) : FlagSets.noneOf(EffectiveFieldModifier.class).addAll(modifierYes);
+        FlagSet<EffectiveFieldModifier> n = modifierNo == null ? FlagSets.noneOf(EffectiveFieldModifier.class) : FlagSets.noneOf(EffectiveFieldModifier.class).addAll(modifierNo);
+        for (int i = 0; i < accepted.length; i++) {
+            if (accepted[i].equals(y) && rejected[i].equals(n)) {
+                return this;
+            }
+        }
+        FlagSet<EffectiveFieldModifier>[] na = new FlagSet[accepted.length + 1];
+        FlagSet<EffectiveFieldModifier>[] nr = new FlagSet[rejected.length + 1];
+        System.arraycopy(accepted, 0, na, 0, accepted.length);
+        System.arraycopy(rejected, 0, nr, 0, rejected.length);
+        na[na.length - 1] = y;
+        nr[nr.length - 1] = n;
+        return new FieldModifierFilter(na, nr, acceptDynamic);
+    }
+
+    public FieldModifierFilter isAllOfFirstsAndNoneOfSeconds(EffectiveFieldModifier[] modifierYes, EffectiveFieldModifier[] modifierNo) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+        }
+        return or(modifierYes, modifierNo);
+    }
+
+    public FieldModifierFilter orIsAllOfFirstsAndNoneOfSeconds(EffectiveFieldModifier[] modifierYes, EffectiveFieldModifier[] modifierNo) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+        }
+        return or(modifierYes, modifierNo);
+    }
+
+    public FieldModifierFilter isOneOfFirstsAndNoneOfSeconds(EffectiveFieldModifier[] modifierYes, EffectiveFieldModifier[] modifierNo) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+        }
+        FieldModifierFilter x = this;
+        for (int i = 0; i < modifierYes.length; i++) {
+            x = or(new EffectiveFieldModifier[]{modifierYes[i]}, modifierNo);
+        }
+        return x;
+    }
+
+    public FieldModifierFilter orIsOneOfFirstsAndNoneOfSeconds(EffectiveFieldModifier[] modifierYes, EffectiveFieldModifier[] modifierNo) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+        }
+        FieldModifierFilter x = this;
+        for (int i = 0; i < modifierYes.length; i++) {
+            x = or(new EffectiveFieldModifier[]{modifierYes[i]}, modifierNo);
+        }
+        return x;
+    }
+
+    public FieldModifierFilter isAllOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsAllOf instead");
+        }
+        return or(modifiers);
+    }
+
+    public FieldModifierFilter isAnyOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsOneOf instead");
+        }
+        FieldModifierFilter x = this;
+        for (EffectiveFieldModifier m : modifiers) {
+            x = x.or(new EffectiveFieldModifier[]{m});
+        }
+        return x;
+    }
+
+    public FieldModifierFilter orIsOneOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isOneOf instead");
+        }
+        FieldModifierFilter x = this;
+        for (EffectiveFieldModifier m : modifiers) {
+            x = or(new EffectiveFieldModifier[]{m});
+        }
+        return x;
+    }
+
+    public FieldModifierFilter isNotAllOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsNotOneOf instead");
+        }
+        FieldModifierFilter x = this;
+        for (EffectiveFieldModifier m : modifiers) {
+            x = orNot(new EffectiveFieldModifier[]{m});
+        }
+        return x;
+    }
+
+    public FieldModifierFilter orIsNotAllOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isNotOneOf instead");
+        }
+        FieldModifierFilter x = this;
+        for (EffectiveFieldModifier m : modifiers) {
+            x = orNot(new EffectiveFieldModifier[]{m});
+        }
+        return x;
+    }
+
+    public FieldModifierFilter isNoneOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length != 0) {
+            throw new IllegalArgumentException("use orIsNoneOf instead");
+        }
+        return orNot(modifiers);
+    }
+
+    public FieldModifierFilter orIsAllOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isAllOf instead");
+        }
+        return or(modifiers);
+    }
+
+    public FieldModifierFilter orIsNoneOf(EffectiveFieldModifier... modifiers) {
+        if (accepted.length == 0) {
+            throw new IllegalArgumentException("use isNoneOf instead");
+        }
+        return orNot(modifiers);
+    }
+
+    private FieldModifierFilter or(EffectiveFieldModifier[] modifiers) {
+        return or(modifiers, null);
+    }
+
+    private FieldModifierFilter orNot(EffectiveFieldModifier[] modifiers) {
+        return or(null, modifiers);
+    }
+
+    //    public FieldFilter or(Field fields[]) {
+//        checkLock();
+//        acceptedFields.add(Arrays.asList(fields));
+//        return this;
+//    }
+//
+//    public FieldFilter orNot(Field fields[]) {
+//        checkLock();
+//        nonAcceptedFields.add(Arrays.asList(fields));
+//        return this;
+//    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("EffectiveModifiers(");
+        for (int i = 0; i < accepted.length; i++) {
+            if (i > 0) {
+                sb.append(") or (");
+            }
+            boolean first = true;
+            for (EffectiveFieldModifier e : accepted[i]) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(" and ");
+                }
+                sb.append(e);
+            }
+            for (EffectiveFieldModifier e : rejected[i]) {
+                if (first) {
+                    sb.append("not ");
+                    first = false;
+                } else {
+                    sb.append(" and not ");
+                }
+                sb.append(e);
+            }
+        }
+
+        sb.append(")");
+//        sb.append(acceptedFields);
+//        sb.append(" !");
+//        sb.append(nonAcceptedFields);
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || !(other instanceof FieldModifierFilter)) {
+            return false;
+        }
+        FieldModifierFilter m = (FieldModifierFilter) other;
+        if (m.accepted.length != accepted.length) {
+            return false;
+        }
+        for (int i = 0; i < m.accepted.length; i++) {
+            boolean found = false;
+            for (int j = 0; j < accepted.length; j++) {
+                if ((m.accepted[i].equals(accepted[j])) && (m.rejected[i] == rejected[j])) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        for (int i = 0; i < accepted.length; i++) {
+            boolean found = false;
+            for (int j = 0; j < m.accepted.length; j++) {
+                if ((accepted[i].equals(m.accepted[j])) && (rejected[i] == m.rejected[j])) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + arrayHash(this.accepted);
+        hash = 97 * hash + arrayHash(this.rejected);
+        hash = 97 * hash + (this.acceptDynamic ? 1 : 0);
+        return hash;
+    }
+
+    /**
+     * Arrays.deepHashCode not used because java sepcific
+     *
+     * @param arr
+     * @return
+     */
+    private int arrayHash(Object[] arr) {
+        int x = 0;
+        if (arr != null) {
+            for (Object o : arr) {
+                if (o != null) {
+                    x += 31 * o.hashCode();
+                }
+            }
+        }
+        return x;
+    }
+}

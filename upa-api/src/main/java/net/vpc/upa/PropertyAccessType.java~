@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public enum PropertyAccessType {
+
+    /**
+     * Field-based access is used
+     */
+    FIELD,
+    /**
+     * Property-based access is used
+     */
+    PROPERTY,
+    /**
+     * Accessor Property-based access is used.
+     * This is the same as PROPERTY in Java Language.
+     */
+    ACCESSOR
+}

@@ -1,0 +1,21 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.types.DataTypeTransform;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface Parameter {
+
+    public String getName();
+
+    public DataTypeTransform getDataTypeTransform();
+
+    public Object getValue();
+
+    public void setValue(Object value);
+}

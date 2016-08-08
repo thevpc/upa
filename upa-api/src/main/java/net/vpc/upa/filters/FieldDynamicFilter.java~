@@ -1,0 +1,30 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.DynamicField;
+import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+* Created by vpc on 1/4/14.
+*/
+class FieldDynamicFilter extends AbstractFieldFilter {
+
+    public FieldDynamicFilter() {
+    }
+
+    @Override
+    public boolean acceptDynamic() throws UPAException {
+        return true;
+    }
+
+    @Override
+    public boolean accept(Field f) throws UPAException {
+        return (f instanceof DynamicField);
+    }
+
+    @Override
+    public String toString() {
+        return "dynamic";
+    }
+
+}

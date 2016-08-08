@@ -1,0 +1,89 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 11:15 PM
+ */
+public class DefinitionListenerAdapter implements DefinitionListener
+//        ,PackageDefinitionListener
+//        ,SectionDefinitionListener
+//        ,EntityDefinitionListener
+//        ,FieldDefinitionListener
+//        ,IndexDefinitionListener
+//        ,EntityTriggerDefinitionListener
+//        ,PersistenceUnitTriggerDefinitionListener
+//        ,RelationDefinitionListener
+//        ,PersistenceUnitDefinitionListener
+{
+
+    public void entityAdded(EntityDefinitionEvent event) {
+    }
+
+
+    public void entityRemoved(EntityDefinitionEvent event) {
+    }
+
+
+    public void entityMoved(EntityDefinitionEvent event) {
+    }
+
+    public void entityTriggerAdded(EntityTriggerDefinitionEvent event) {
+    }
+
+    public void entityTriggerRemoved(EntityTriggerDefinitionEvent event) {
+    }
+
+    public void fieldAdded(FieldDefinitionEvent event) throws UPAException {
+    }
+
+    public void fieldRemoved(FieldDefinitionEvent event) throws UPAException {
+    }
+
+    public void fieldMoved(FieldDefinitionEvent event) throws UPAException {
+    }
+
+    public void indexAdded(IndexDefinitionEvent event) {
+    }
+
+    public void indexRemoved(IndexDefinitionEvent event) {
+    }
+
+    public void packageAdded(PackageDefinitionEvent event) {
+    }
+
+    public void packageRemoved(PackageDefinitionEvent event) {
+    }
+
+    public void packageMoved(PackageDefinitionEvent event) {
+    }
+
+    public void sectionAdded(SectionDefinitionEvent event) {
+    }
+
+    public void sectionRemoved(SectionDefinitionEvent event) {
+    }
+
+    public void sectionMoved(SectionDefinitionEvent event) {
+    }
+
+    public void persistenceUnitTriggerAdded(PersistenceUnitTriggerDefinitionEvent event) {
+    }
+
+    public void persistenceUnitTriggerRemoved(PersistenceUnitTriggerDefinitionEvent event) {
+    }
+
+    public void relationshipAdded(RelationshipDefinitionEvent event) {
+    }
+
+    public void relationshipRemoved(RelationshipDefinitionEvent event) {
+    }
+
+    public void persistenceUnitAdded(PersistenceUnitDefinitionEvent event) {
+    }
+
+    public void persistenceUnitRemoved(PersistenceUnitDefinitionEvent event) {
+    }
+
+}

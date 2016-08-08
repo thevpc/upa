@@ -1,0 +1,18 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Record;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface FieldPersister {
+
+    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException;
+
+    public void afterPersist(Record record, EntityExecutionContext context) throws UPAException;
+}

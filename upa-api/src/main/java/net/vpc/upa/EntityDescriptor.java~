@@ -1,0 +1,44 @@
+package net.vpc.upa;
+
+import net.vpc.upa.EntityModifier;
+import net.vpc.upa.extensions.EntityExtensionDefinition;
+
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/27/12 10:23 PM
+ */
+public interface EntityDescriptor extends Serializable {
+
+    String getName();
+
+    String getShortName();
+
+    Class getIdType();
+
+    Class getEntityType();
+
+    Set<EntityModifier> getModifiers();
+
+    Set<EntityModifier> getExcludeModifiers();
+
+    String getPackagePath();
+
+    Integer getPosition();
+
+    List<EntityExtensionDefinition> getEntityExtensions();
+
+    Object getSource();
+
+    public List<FieldDescriptor> getFieldDescriptors();
+
+    public List<IndexDescriptor> getIndexDescriptors();
+
+    public List<RelationshipDescriptor> getRelationshipDescriptors();
+
+    public LinkedHashMap<String, Object> getEntityParams();
+}

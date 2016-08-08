@@ -1,0 +1,77 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ *
+ * @author vpc
+ */
+public class ConnectionConfig {
+
+    private String connectionString;
+    private Boolean enabled;
+    private String userName;
+    private String password;
+    private StructureStrategy structureStrategy;
+    private Map<String, String> properties = new LinkedHashMap<String, String>();
+
+    public String getConnectionString() {
+        return connectionString;
+    }
+
+    public void setConnectionString(String connectionString) {
+        this.connectionString = connectionString;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public StructureStrategy getStructureStrategy() {
+        return structureStrategy;
+    }
+
+    public void setStructureStrategy(StructureStrategy structureStrategy) {
+        this.structureStrategy = structureStrategy;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionConfig{" + "connectionString=" + connectionString + ", userName=" + userName + ", password=" + password + ", structureStrategy=" + structureStrategy + ", properties=" + properties + '}';
+    }
+
+}

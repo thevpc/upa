@@ -1,0 +1,86 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.UserExpression;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.StructType;
+
+import java.util.List;
+
+
+public class KeyType extends StructType {
+    //    private KeyInputType keyInputType;
+    private Expression filter;
+    private Relationship relationship;
+    private Entity entity;
+
+    public KeyType(Entity entity, String filter, boolean nullable) throws UPAException {
+        this(entity, filter == null ? null : new UserExpression(filter), nullable);
+    }
+
+    public KeyType(Entity entity, Expression filter, boolean nullable) throws UPAException {
+        super(entity.getName(), Key.class, constructorFieldNames(entity), constructorFieldTypes(entity), nullable);
+        this.entity = entity;
+        this.filter = filter;
+    }
+
+    public Expression getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Expression filter) {
+        this.filter = filter;
+    }
+
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public Relationship getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(Relationship r) {
+        relationship = r;
+    }
+
+    private static String[] constructorFieldNames(Entity entity) throws UPAException {
+        List<Field> primaryFields = entity.getPrimaryFields();
+        String[] fs = new String[primaryFields.size()];
+        for (int i = 0; i < fs.length; i++) {
+            fs[i] = primaryFields.get(i).getName();
+        }
+        return fs;
+    }
+
+    private static DataType[] constructorFieldTypes(Entity entity) throws UPAException {
+
+        List<Field> primaryFields = entity.getPrimaryFields();
+        DataType[] dt = new DataType[primaryFields.size()];
+        for (int i = 0; i < dt.length; i++) {
+            dt[i] = primaryFields.get(i).getDataType();
+        }
+        return dt;
+    }
+
+    @Override
+    public Object getItemValueAt(int index, Object value) {
+        return value == null ? null : ((Key) value).getValue()[index];
+    }
+
+    @Override
+    public Object getObjectForArray(Object[] value) {
+        return entity.createId(value);
+    }
+
+    @Override
+    public Object[] getArrayForObject(Object value) {
+        return value == null ? null : ((Key) value).getValue();
+    }
+
+}

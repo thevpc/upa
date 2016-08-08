@@ -1,0 +1,19 @@
+package net.vpc.upa.types;
+
+// Referenced classes of package org.vpc.lib.util:
+//            DataType, ConstraintsException
+public abstract class NumberType extends DataType implements Cloneable {
+    protected NumberType(String name, Class platformType) {
+        super(name, platformType);
+    }
+
+    protected NumberType(String name, Class platformType, boolean nullable) {
+        super(name, platformType, nullable);
+    }
+
+    protected NumberType(String name, Class platformType, int scale, int precision, boolean nullable) {
+        super(name, platformType, scale, precision, nullable);
+    }
+    
+    public abstract Number parse(String value);
+}

@@ -1,0 +1,47 @@
+package net.vpc.upa.config;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/4/12 11:00 PM
+ */
+@Target(value = ElementType.TYPE)
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface PersistenceNameStrategy {
+
+    String persistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
+
+    Class custom() default net.vpc.upa.persistence.PersistenceNameStrategy.class;
+
+    PersistenceName[] names() default {};
+
+    /**
+     * Top level pattern applied for Top Level Object names. This pattern will
+     * be applied to Tables and constraints for instance but not to Column
+     * names. Note that this naming strategy is applied after any specific
+     * strategy defined in names() Pattern can include the following variables
+     * <ul>
+     * <li> * : replaces the exact value of the name</li>
+     * <li> {ObjectName} : replaces the name in the given form</li>
+     * <li> {object_name} : replaces the name in the given form</li>
+     * </ul>
+     *
+     * @return Naming pattern for global scope objects
+     */
+    String globalPersistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
+
+    String localPersistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
+
+    String escape() default net.vpc.upa.UPA.UNDEFINED_STRING;
+
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    Config config() default @Config();
+}

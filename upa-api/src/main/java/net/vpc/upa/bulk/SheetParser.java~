@@ -1,0 +1,80 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public abstract class SheetParser extends AbstractDataParser {
+
+    private boolean containsHeader;
+    private boolean trimValues = true;
+    private int sheetIndex = 0;
+    private int skipRows = 0;
+    private int minColumns = 0;
+    private boolean skipEmptyRows = false;
+    private List<SheetColumn> columns = new ArrayList<SheetColumn>();
+
+    public List<SheetColumn> getColumns() {
+        return columns;
+    }
+
+    public boolean isContainsHeader() {
+        return containsHeader;
+    }
+
+    public void setContainsHeader(boolean containsHeader) {
+        this.containsHeader = containsHeader;
+    }
+
+    public boolean isTrimValues() {
+        return trimValues;
+    }
+
+    public void setTrimValues(boolean trimValues) {
+        this.trimValues = trimValues;
+    }
+
+    public int getSheetIndex() {
+        return sheetIndex;
+    }
+
+    public void setSheetIndex(int sheetIndex) {
+        this.sheetIndex = sheetIndex;
+    }
+
+    public int getSkipRows() {
+        return skipRows;
+    }
+
+    public void setSkipRows(int skipRows) {
+        this.skipRows = skipRows;
+    }
+
+    public int getMinColumns() {
+        return minColumns;
+    }
+
+    public void setMinColumns(int minColumns) {
+        this.minColumns = minColumns;
+    }
+
+    public boolean isSkipEmptyRows() {
+        return skipEmptyRows;
+    }
+
+    public void setSkipEmptyRows(boolean skipEmptyRows) {
+        this.skipEmptyRows = skipEmptyRows;
+    }
+
+    public abstract String[] getSheetNames() throws IOException;
+}

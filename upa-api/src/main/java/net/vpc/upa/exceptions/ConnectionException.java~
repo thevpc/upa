@@ -1,0 +1,23 @@
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.types.I18NString;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class ConnectionException extends UPAException {
+    public ConnectionException() {
+    }
+
+    public ConnectionException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public ConnectionException(I18NString message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public ConnectionException(Throwable cause, I18NString messageId, Object... parameters) {
+        super(cause, messageId, parameters);
+    }
+}

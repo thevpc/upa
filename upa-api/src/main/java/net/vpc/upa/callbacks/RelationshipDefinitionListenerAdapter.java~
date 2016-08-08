@@ -1,0 +1,16 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 11:24 PM
+ */
+public class RelationshipDefinitionListenerAdapter implements RelationshipDefinitionListener {
+
+    @Override
+    public void relationshipRemoved(RelationshipDefinitionEvent event) {
+    }
+
+    @Override
+    public void relationshipAdded(RelationshipDefinitionEvent event) {
+    }
+}

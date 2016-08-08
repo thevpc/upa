@@ -1,0 +1,43 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa;
+
+
+import net.vpc.upa.exceptions.UPAException;
+
+import java.util.List;
+
+public class QualifiedIdentifier {
+    private Object id;
+    private Entity entity;
+
+    public QualifiedIdentifier(Entity entity, Object id) {
+        this.id = id;
+        this.entity = entity;
+    }
+
+    public Key getKey() throws UPAException {
+        return entity.getBuilder().idToKey(id);
+    }
+
+    public Object getId() {
+        return id;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public Object getValue(String fieldName) throws UPAException {
+        List<Field> f = entity.getPrimaryFields();
+        Key uKey = getKey();
+        for (int i = 0; i < f.size(); i++) {
+            if (f.get(i).getName().equals(fieldName)) {
+                return uKey.getObjectAt(i);
+            }
+        }
+        throw new IllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
+    }
+
+}

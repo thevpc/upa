@@ -1,0 +1,13 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.exceptions;
+
+
+import net.vpc.upa.Entity;
+
+public class LoadRecordNotAllowedException extends EntityException {
+    public LoadRecordNotAllowedException(Entity entity) {
+        super(entity, "loadRecord.NotAllowed");
+    }
+}

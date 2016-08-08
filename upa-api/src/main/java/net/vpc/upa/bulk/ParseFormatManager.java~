@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.io.IOException;
+import net.vpc.upa.ObjectFactory;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface ParseFormatManager {
+
+    public ObjectFactory getFactory();
+
+    public void setFactory(ObjectFactory factory);
+
+    public TextFixedWidthParser createTextFixedWidthParser(Object source) throws IOException;
+
+    public TextCSVParser createTextCSVParser(Object source) throws IOException;
+
+    public SheetParser createSheetParser(Object source) throws IOException;
+
+    public XmlParser createXmlParser(Object source) throws IOException;
+
+    public TextFixedWidthFormatter createTextFixedWidthFormatter(Object target) throws IOException;
+
+    public TextCSVFormatter createTextCSVFormatter(Object target) throws IOException;
+
+    public SheetFormatter createSheetFormatter(Object target) throws IOException;
+
+    public XmlFormatter createXmlFormatter(Object target) throws IOException;
+
+}

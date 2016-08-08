@@ -1,0 +1,47 @@
+package net.vpc.upa.expressions;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression
+public class I2V extends Function {
+
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+
+    public I2V(Expression expression) {
+        this.value = expression;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    //    public String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "i2v("+e.toSQL(true, database)+")";
+//    }
+//    public static Expression toExpression(Object value) {
+//        return ((Expression) (value == null || !(value instanceof Expression) ? new I2V((String)(value)) : (Expression) value));
+//    }
+    @Override
+    public String getName() {
+        return "i2v";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return value;
+    }
+
+    @Override
+    public Expression copy() {
+        I2V o = new I2V(value.copy());
+        return o;
+    }
+}

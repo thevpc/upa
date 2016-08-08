@@ -1,0 +1,9 @@
+package net.vpc.upa.config;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/24/12 2:57 AM
+ */
+public interface ScanSource {
+    boolean isNoIgnore();
+}

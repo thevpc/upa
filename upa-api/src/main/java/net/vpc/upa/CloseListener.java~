@@ -1,0 +1,20 @@
+package net.vpc.upa;
+
+/**
+ * Listener for closable objects
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/23/12 12:15 PM
+ */
+public interface CloseListener {
+    /**
+     * called before source is being closed
+     * @param source object to be closed
+     */
+    public void beforeClose(Object source);
+
+    /**
+     * called after the source has been closed
+     * @param source object closed
+     */
+    public void afterClose(Object source);
+}

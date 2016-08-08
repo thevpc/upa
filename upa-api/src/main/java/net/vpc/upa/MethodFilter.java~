@@ -1,0 +1,20 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import java.lang.reflect.Method;
+
+/**
+ * General Use Methof Filter Interface
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface MethodFilter {
+    /**
+     * return true if the given method is accepted
+     * @param method method to test acceptance
+     * @return true if the given method is accepted
+     */
+    boolean accept(Method method);
+}

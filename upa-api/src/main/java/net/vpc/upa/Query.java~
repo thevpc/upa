@@ -1,0 +1,75 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.persistence.ResultMetaData;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:07 PM To change
+ * this template use File | Settings | File Templates.
+ */
+public interface Query extends Closeable {
+
+    public Date getDate() throws UPAException;
+
+    public String getString() throws UPAException;
+
+    public Number getNumber() throws UPAException;
+
+    public Object getSingleValue() throws UPAException;
+
+    public Object getSingleValue(Object defaultValue) throws UPAException;
+
+    public MultiRecord getMultiRecord() throws UPAException;
+
+    public Record getRecord() throws UPAException;
+
+    //    <R2> List<R2> getEntityList(Entity e) throws UPAException;
+//    <K2> List<K2> getIdList(Entity e) throws UPAException;
+    <R> List<R> getEntityList() throws UPAException;
+
+    <R> R getSingleEntity() throws UPAException;
+
+    public <R> R getSingleEntityOrNull() throws UPAException;
+
+    <R> R getEntity() throws UPAException;
+
+    <K> List<K> getIdList() throws UPAException;
+
+    List<Key> getKeyList() throws UPAException;
+
+    public List<MultiRecord> getMultiRecordList() throws UPAException;
+
+    public List<Record> getRecordList() throws UPAException;
+
+    public <T> List<T> getValueList(int index) throws UPAException;
+
+    public <T> List<T> getValueList(String name) throws UPAException;
+
+    public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
+
+    public ResultMetaData getMetaData() throws UPAException;
+
+    Query setParameter(String name, Object value);
+
+    Query setParameters(Map<String, Object> parameters);
+
+    Query setParameter(int index, Object value);
+
+    public void setUpdatable(boolean forUpdate);
+
+    public boolean isLazyListLoadingEnabled();
+
+    public Query setLazyListLoadingEnabled(boolean lazyLoadingEnabled);
+
+    public boolean isUpdatable();
+
+    public void updateCurrent();
+
+    public int executeNonQuery();
+
+    public void close();
+}

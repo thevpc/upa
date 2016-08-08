@@ -1,0 +1,26 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Session;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class SessionListenerAdapter implements SessionListener {
+
+    public void closeSession(Session session) {
+
+    }
+
+    public void pushContext(Session session) {
+
+    }
+
+    public void popContext(Session session) {
+
+    }
+
+}

@@ -1,0 +1,81 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.CompoundField;
+import net.vpc.upa.Field;
+import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.exceptions.UPAException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+// Referenced classes of package org.vpc.lib.database:
+//            Field
+
+public abstract class AbstractFieldFilter implements FieldFilter {
+    public abstract boolean acceptDynamic() throws UPAException;
+
+    public abstract boolean accept(Field f) throws UPAException;
+
+    public static AbstractFieldFilter toAbstractFieldFilter(FieldFilter filter) {
+        if (filter == null) {
+            return new FieldAnyFilter();
+        } else if (filter instanceof AbstractFieldFilter) {
+            return (AbstractFieldFilter) filter;
+        } else {
+            return new FieldFilterAdapter(filter);
+        }
+    }
+
+    public List<Field> filter(List<Field> fields) throws UPAException {
+        List<Field> v = new ArrayList<Field>(fields.size());
+        for (Field field : fields) {
+            if (accept(field)) {
+                v.add(field);
+            }
+        }
+        return v;
+    }
+
+    public Field[] filter(Field[] fields) throws UPAException {
+        List<Field> v = new ArrayList<Field>(fields.length);
+        for (Field field : fields) {
+            if (accept(field)) {
+                v.add(field);
+            }
+        }
+        return v.toArray(new Field[v.size()]);
+    }
+
+    public PrimitiveField[] filter(PrimitiveField[] fields) throws UPAException {
+        ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>(fields.length);
+        for (Field field : fields) {
+            if (accept(field)) {
+                v.add((PrimitiveField) field);
+            }
+        }
+        return v.toArray(new PrimitiveField[v.size()]);
+    }
+
+    public CompoundField[] filter(CompoundField[] fields) throws UPAException {
+        ArrayList<CompoundField> v = new ArrayList<CompoundField>(fields.length);
+        for (Field field : fields) {
+            if (accept(field)) {
+                v.add((CompoundField) field);
+            }
+        }
+        return v.toArray(new CompoundField[v.size()]);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 731;
+    }
+}

@@ -1,0 +1,11 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface EntityFilter {
+    public boolean accept(Entity entity) throws UPAException;
+}

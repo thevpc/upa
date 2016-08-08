@@ -1,0 +1,56 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.types.I18NString;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class EntityException extends UPAException {
+    public EntityException(String message) {
+        super(message);
+    }
+
+    public EntityException(Entity entity, String operationName) {
+        super(entity.getI18NString().append(operationName), entity.getTitle());
+    }
+
+    public EntityException(Entity entity, String operationName, Object... params) {
+        super(entity.getI18NString().append(operationName), combineParams(entity.getTitle(), params));
+    }
+
+    public EntityException(Throwable cause, Entity entity, String operationName, Object... params) {
+        super(cause, entity.getI18NString().append(operationName), combineParams(entity.getTitle(), params));
+    }
+
+    public EntityException() {
+    }
+
+    public EntityException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public EntityException(I18NString message, Object... parameters) {
+        super(message, parameters);
+    }
+
+    public EntityException(Throwable cause, I18NString messageId, Object... parameters) {
+        super(cause, messageId, parameters);
+    }
+
+    private static Object[] combineParams(I18NString entityTitle, Object[] params) {
+        ArrayList<Object> a = new ArrayList<Object>(params.length + 1);
+        a.add(entityTitle);
+        a.addAll(Arrays.asList(params));
+        return a.toArray();
+    }
+
+    public String toString() {
+        String s = getClass().getName();
+        String message = getLocalizedMessage();
+        return (message != null) ? (message) : s;
+    }
+}

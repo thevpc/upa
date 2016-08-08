@@ -1,0 +1,38 @@
+package net.vpc.upa.expressions;
+
+public abstract class UnaryOperatorExpression extends DefaultExpression
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private String operatorString;
+    private UnaryOperator unaryOperator;
+    private Expression expression;
+
+    public UnaryOperatorExpression(UnaryOperator unaryOperator,String operatorString, Expression expression) {
+        this.operatorString = operatorString;
+        this.unaryOperator = unaryOperator;
+        this.expression = expression;
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    public boolean isValid() {
+        return expression.isValid();
+    }
+
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        return operator + expression.toSQL(true, database);
+//    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public String getOperatorString() {
+        return operatorString;
+    }
+    public UnaryOperator getOperator() {
+        return unaryOperator;
+    }
+}

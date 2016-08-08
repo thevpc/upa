@@ -1,0 +1,12 @@
+package net.vpc.upa.callback;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:17 PM
+ */
+public interface IndexDefinitionListener extends DefinitionListener {
+    public void indexAdded(IndexDefinitionEvent event);
+
+    public void indexRemoved(IndexDefinitionEvent event);
+
+}

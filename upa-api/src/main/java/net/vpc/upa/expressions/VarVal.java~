@@ -1,0 +1,37 @@
+package net.vpc.upa.expressions;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/29/12 5:50 PM
+ */
+public class VarVal {
+    private Var var;
+    private Expression val;
+
+    public VarVal(Var var, Expression val) {
+        this.setVar(var);
+        this.setVal(val);
+    }
+
+    public Var getVar() {
+        return var;
+    }
+
+    public void setVar(Var var) {
+        this.var = var;
+    }
+
+    public Expression getVal() {
+        return val;
+    }
+
+    public void setVal(Expression val) {
+        this.val = val;
+    }
+
+    @Override
+    public String toString() {
+        return var + "=" + val;
+    }
+
+}

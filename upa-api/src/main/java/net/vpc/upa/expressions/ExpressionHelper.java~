@@ -1,0 +1,224 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.expressions;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class ExpressionHelper {
+
+    public static final Set<String> RESERVED_WORDS = Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList(
+                    "select", "update", "delete", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like")));
+
+    public static boolean isReservedWord(String s) {
+        return s != null && RESERVED_WORDS.contains(s.toLowerCase());
+    }
+
+    public static boolean isEscapeIdentifier(String s) {
+        if (isReservedWord(s)) {
+            return true;
+        }
+        if (s == null) {
+            s = "";
+        }
+        if (s.length() == 0) {
+            return true;
+        }
+        if (!Character.isJavaIdentifierStart(s.charAt(0))) {
+            return true;
+        }
+        for (char c : s.substring(1).toCharArray()) {
+            if (!Character.isJavaIdentifierPart(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String escapeIdentifier(String s) {
+        if (isEscapeIdentifier(s)) {
+            return "`" + escapeStringLiteral(s, false, false, true) + "`";
+        }
+        return s;
+    }
+
+    public static String escapeSimpleQuoteStringLiteral(String s) {
+        if (s == null) {
+            return "null";
+        }
+        return "\'" + escapeStringLiteral(s, false, true, false) + "\'";
+    }
+
+    public static String escapeDoubleQuoteStringLiteral(String s) {
+        if (s == null) {
+            return "null";
+        }
+        return "\'" + escapeStringLiteral(s, false, true, false) + "\'";
+    }
+
+    public static String escapeStringLiteral(String str, boolean escapeDoubleQuote, boolean escapeSingleQuote, boolean escapeAntiQuote) {
+        StringBuilder out = new StringBuilder();
+        if (str == null) {
+            return null;
+        }
+        int sz;
+        sz = str.length();
+        for (int i = 0; i < sz; i++) {
+            char ch = str.charAt(i);
+
+            // handle unicode
+            if (ch > 0xfff) {
+                out.append("\\u").append(hex(ch));
+            } else if (ch > 0xff) {
+                out.append("\\u0").append(hex(ch));
+            } else if (ch > 0x7f) {
+                out.append("\\u00").append(hex(ch));
+            } else if (ch < 32) {
+                switch (ch) {
+                    case '\b':
+                        out.append('\\');
+                        out.append('b');
+                        break;
+                    case '\n':
+                        out.append('\\');
+                        out.append('n');
+                        break;
+                    case '\t':
+                        out.append('\\');
+                        out.append('t');
+                        break;
+                    case '\f':
+                        out.append('\\');
+                        out.append('f');
+                        break;
+                    case '\r':
+                        out.append('\\');
+                        out.append('r');
+                        break;
+                    default:
+                        if (ch > 0xf) {
+                            out.append("\\u00").append(hex(ch));
+                        } else {
+                            out.append("\\u000").append(hex(ch));
+                        }
+                        break;
+                }
+            } else {
+                switch (ch) {
+                    case '\'':
+                        if (escapeSingleQuote) {
+                            out.append('\\');
+                        }
+                        out.append('\'');
+                        break;
+                    case '`':
+                        if (escapeAntiQuote) {
+                            out.append('\\');
+                        }
+                        out.append('`');
+                        break;
+                    case '"':
+                        if (escapeDoubleQuote) {
+                            out.append('\\');
+                        }
+                        out.append('"');
+                        break;
+                    case '\\':
+                        out.append('\\');
+                        out.append('\\');
+                        break;
+                    default:
+                        out.append(ch);
+                        break;
+                }
+            }
+        }
+        return out.toString();
+    }
+
+    private static String hex(char ch) {
+        return Integer.toHexString(ch).toUpperCase();
+    }
+
+    public static String unescapeString(String str) {
+        if (str == null) {
+            return null;
+        }
+        StringBuilder out = new StringBuilder();
+        int sz = str.length();
+        StringBuffer unicode = new StringBuffer(4);
+        boolean encountredSlash = false;
+        boolean unicodeStr = false;
+        for (int i = 0; i < sz; i++) {
+            char ch = str.charAt(i);
+            if (unicodeStr) {
+                unicode.append(ch);
+                if (unicode.length() == 4) {
+                    try {
+                        int value = Integer.parseInt(unicode.toString(), 16);
+                        out.append((char) value);
+                        unicode.setLength(0);
+                        unicodeStr = false;
+                        encountredSlash = false;
+                    } catch (NumberFormatException nfe) {
+                        throw new RuntimeException("Unable to parse unicode value: " + unicode, nfe);
+                    }
+                }
+                continue;
+            }
+            if (encountredSlash) {
+                encountredSlash = false;
+                switch (ch) {
+                    case '\\':
+                        out.append('\\');
+                        break;
+                    case '\'':
+                        out.append('\'');
+                        break;
+                    case '\"':
+                        out.append('"');
+                        break;
+                    case 'r':
+                        out.append('\r');
+                        break;
+                    case 'f':
+                        out.append('\f');
+                        break;
+                    case 't':
+                        out.append('\t');
+                        break;
+                    case 'n':
+                        out.append('\n');
+                        break;
+                    case 'b':
+                        out.append('\b');
+                        break;
+                    case 'u': {
+                        unicodeStr = true;
+                        break;
+                    }
+                    default:
+                        out.append(ch);
+                        break;
+                }
+                continue;
+            } else if (ch == '\\') {
+                encountredSlash = true;
+                continue;
+            }
+            out.append(ch);
+        }
+        if (encountredSlash) {
+            out.append('\\');
+        }
+        return out.toString();
+    }
+}

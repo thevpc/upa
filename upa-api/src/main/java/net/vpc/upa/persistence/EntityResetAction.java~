@@ -1,0 +1,12 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/30/12 1:05 AM
+ */
+public interface EntityResetAction {
+    public int reset(Entity entity, EntityExecutionContext executionContext) throws UPAException;
+}

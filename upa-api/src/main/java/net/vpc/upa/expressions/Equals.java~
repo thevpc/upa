@@ -1,0 +1,16 @@
+package net.vpc.upa.expressions;
+//            BinaryExpression, Expression
+
+public final class Equals extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Equals(Expression left, Object right) {
+        super(BinaryOperator.EQ, left, right);
+    }
+
+    public Equals(Expression left, Expression right) {
+        super(BinaryOperator.EQ, left, right);
+    }
+}

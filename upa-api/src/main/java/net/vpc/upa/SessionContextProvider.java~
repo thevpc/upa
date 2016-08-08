@@ -1,0 +1,11 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/12/12 12:02 AM
+ */
+public interface SessionContextProvider {
+    public Session getSession(PersistenceGroup persistenceGroup);
+
+    public void setSession(PersistenceGroup persistenceGroup, Session session);
+}

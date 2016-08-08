@@ -1,0 +1,8 @@
+package net.vpc.upa.exceptions;
+
+
+public class AlreadyLockedPersistenceUnitException extends PersistenceUnitLockingException {
+    public AlreadyLockedPersistenceUnitException(String message, Object... parameters) {
+        super(message, parameters);
+    }
+}

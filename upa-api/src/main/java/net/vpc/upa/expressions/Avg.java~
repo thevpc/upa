@@ -1,0 +1,57 @@
+package net.vpc.upa.expressions;
+
+
+public final class Avg extends Function
+        implements Cloneable {
+    private static final long serialVersionUID = 1L;
+    private Expression expression;
+
+//    public Average(String fieldName,DataPrimitiveType type) {
+//        this(new Var(fieldName,type));
+//    }
+
+    public Avg(Expression expression) {
+        this.expression = expression;
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    @Override
+    public boolean isValid() {
+        return expression.isValid();
+    }
+
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "Avg(" + expression.toSQL(database) + ")";
+//    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    @Override
+    public String getName() {
+        return "Avg";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return expression;
+    }
+
+    @Override
+    public Expression copy() {
+        Avg o = new Avg(expression.copy());
+        return o;
+    }
+}

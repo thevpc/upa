@@ -1,0 +1,104 @@
+package net.vpc.upa.expressions;
+
+//            Expression, Select
+public final class IsHierarchyDescendent extends Function
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private EntityName entityName;
+    private Expression ancestorExpression;
+    private Expression childExpression;
+
+    public IsHierarchyDescendent(Expression ancestorExpression, Expression childExpression, Expression entityName) {
+        if (entityName != null) {
+            if (entityName instanceof EntityName) {
+                this.entityName = (EntityName) entityName;
+            } else if (entityName instanceof Var) {
+                Var v = (Var) entityName;
+                if (v.getParent() != null) {
+                    throw new IllegalArgumentException("Invalid EntityName");
+                }
+                this.entityName = new EntityName(v.getName());
+            } else if (entityName instanceof Literal) {
+                Literal v = (Literal) entityName;
+                if (!(v.getValue() instanceof String)) {
+                    throw new IllegalArgumentException("Invalid EntityName");
+                }
+                this.entityName = new EntityName((String) v.getValue());
+            } else {
+                throw new IllegalArgumentException("Invalid EntityName");
+            }
+        }else{
+                this.entityName = new EntityName("");
+        }
+        this.ancestorExpression = ancestorExpression;
+        this.childExpression = childExpression;
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    public boolean isValid() {
+        return entityName.isValid() && ancestorExpression.isValid() && childExpression.isValid();
+    }
+//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+//        return "Exists(" + query.toSQL(database) + ")";
+//    }
+
+    @Override
+    public String getName() {
+        return "TreeAncestor";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 3;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0: {
+                return ancestorExpression;
+            }
+            case 1: {
+                return childExpression;
+            }
+            case 2: {
+                return entityName;
+            }
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+    public EntityName getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(EntityName entityName) {
+        this.entityName = entityName;
+    }
+
+    public Expression getAncestorExpression() {
+        return ancestorExpression;
+    }
+
+    public void setAncestorExpression(Expression ancestorExpression) {
+        this.ancestorExpression = ancestorExpression;
+    }
+
+    public Expression getChildExpression() {
+        return childExpression;
+    }
+
+    public void setChildExpression(Expression childExpression) {
+        this.childExpression = childExpression;
+    }
+
+    @Override
+    public Expression copy() {
+        IsHierarchyDescendent o = new IsHierarchyDescendent(ancestorExpression.copy(), childExpression.copy(), (EntityName) entityName.copy());
+        return o;
+    }
+}

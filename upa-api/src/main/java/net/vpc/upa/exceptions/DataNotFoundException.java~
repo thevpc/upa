@@ -1,0 +1,16 @@
+package net.vpc.upa.exceptions;
+
+import net.vpc.upa.Entity;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: vpc
+ * Date: 25 juin 2006
+ * Time: 15:03:00
+ * To change this template use File | Settings | File Templates.
+ */
+public class DataNotFoundException extends EntityException {
+    public DataNotFoundException(Entity entity) {
+        super(entity, "DataNotFoundException");
+    }
+}

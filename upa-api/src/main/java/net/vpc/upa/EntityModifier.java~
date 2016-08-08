@@ -1,0 +1,23 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/27/12 10:36 PM
+ */
+public enum EntityModifier {
+
+    PRIVATE,
+    TRANSIENT,
+    INSERT,
+    UPDATE,
+    DELETE,
+    CLONE,
+    RENAME,
+    LOCK,
+    NAVIGATE,
+    USER_ID,
+    VALIDATE_INSERT,
+    VALIDATE_UPDATE,
+    RESET,
+    SYSTEM,
+}

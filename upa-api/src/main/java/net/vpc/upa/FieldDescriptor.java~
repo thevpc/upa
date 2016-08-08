@@ -1,0 +1,64 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import net.vpc.upa.types.DataType;
+
+import java.util.Map;
+import net.vpc.upa.types.DataTypeTransformConfig;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface FieldDescriptor {
+
+    String getName();
+
+    String getFieldPath();
+
+    Object getDefaultObject();
+
+    Object getUnspecifiedObject();
+//    AnyFormulaInfo anyFormula = new AnyFormulaInfo();
+
+    DataType getDataType();
+
+//    DataType getTargetType();
+
+    DataTypeTransformConfig[] getTypeTransform();
+    //    Formula formula;
+
+    Formula getInsertFormula();
+
+    Formula getUpdateFormula();
+
+    Formula getSelectFormula();
+
+    int getInsertFormulaOrder();
+
+    int getUpdateFormulaOrder();
+
+    int getSelectFormulaOrder();
+
+    FlagSet<FieldModifier> getModifiers();
+
+    FlagSet<FieldModifier> getExcludeModifiers();
+
+    AccessLevel getInsertAccessLevel();
+
+    AccessLevel getUpdateAccessLevel();
+
+    AccessLevel getSelectAccessLevel();
+
+    public Map<String, Object> getFieldParams();
+
+    public PropertyAccessType getPropertyAccessType();
+
+//    public CipherStrategyType getCipherStrategyType();
+//
+//    public String getCipherStrategyImpl();
+//
+//    public String getCipherStrategyValue();
+}

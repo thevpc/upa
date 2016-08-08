@@ -1,0 +1,42 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class ImportDataConfig {
+
+    private ImportDataMode mode = ImportDataMode.ADD_UPDATE;
+    private List<ImportEntityFinder> entityFinders = new ArrayList<ImportEntityFinder>();
+    private List<ImportEntityMapper> entityMappers = new ArrayList<ImportEntityMapper>();
+
+    public ImportDataMode getMode() {
+        return mode;
+    }
+
+    public void setMode(ImportDataMode mode) {
+        this.mode = mode;
+    }
+
+    public List<ImportEntityFinder> getEntityFinders() {
+        return entityFinders;
+    }
+
+    public List<ImportEntityMapper> getEntityMappers() {
+        return entityMappers;
+    }
+
+    public ImportDataConfig copy() {
+        ImportDataConfig other = new ImportDataConfig();
+        other.setMode(mode);
+        other.getEntityFinders().addAll(getEntityFinders());
+        other.getEntityMappers().addAll(getEntityMappers());
+        return other;
+    }
+}

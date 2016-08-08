@@ -1,0 +1,17 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.PortabilityHint;
+
+/**
+ * User: taha Date: 16 juin 2003 Time: 15:47:42
+ */
+public class SerializableType extends LOBType {
+
+    @PortabilityHint(target = "C#", name = "new")
+    public static final SerializableType DEFAULT = new SerializableType("SERIALIZABLE", Object.class, true);
+
+    public SerializableType(String name, Class platformType, boolean nullable) {
+        super(name, platformType, nullable);
+    }
+
+}

@@ -1,0 +1,14 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.Query;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.QueryStatement;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/30/12 1:05 AM
+ */
+public interface EntityFindAction {
+    public Query createQuery(Entity e, QueryStatement query, EntityExecutionContext context) throws UPAException;
+}

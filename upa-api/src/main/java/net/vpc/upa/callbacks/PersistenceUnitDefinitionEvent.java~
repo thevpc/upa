@@ -1,0 +1,37 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceGroup;
+import net.vpc.upa.PersistenceUnit;
+
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class PersistenceUnitDefinitionEvent extends UPAEvent {
+    private PersistenceGroup persistenceGroup;
+    private PersistenceUnit persistenceUnit;
+    private boolean before;
+
+    public PersistenceUnitDefinitionEvent(PersistenceUnit persistenceUnit, PersistenceGroup persistenceGroup, boolean before) {
+        this.persistenceGroup = persistenceGroup;
+        this.persistenceUnit = persistenceUnit;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public boolean isAfter() {
+        return !before;
+    }
+
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceGroup;
+    }
+}

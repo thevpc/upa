@@ -1,0 +1,48 @@
+package net.vpc.upa.expressions;
+
+public final class Count extends Function
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+
+    public Count(Expression expression) {
+        this.value = expression;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    public int size() {
+        return 1;
+    }
+
+    public boolean isValid() {
+        return value.isValid();
+    }
+
+    @Override
+    public String getName() {
+        return "Count";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        if (index != 0) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return value;
+    }
+
+    @Override
+    public Expression copy() {
+        Count o = new Count(value.copy());
+        return o;
+    }
+}

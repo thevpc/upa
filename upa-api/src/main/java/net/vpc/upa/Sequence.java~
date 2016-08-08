@@ -1,0 +1,75 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public final class Sequence implements Formula {
+
+    private SequenceStrategy strategy = SequenceStrategy.AUTO;
+    private int initialValue = 1;
+    private int allocationSize = 50;
+    private String format;
+    private String group;
+    private String name;
+
+    public Sequence(SequenceStrategy strategy) {
+        this(strategy, 1, 50, null, null, null);
+    }
+
+    public Sequence(SequenceStrategy strategy, int initialValue, int allocationSize) {
+        this(strategy, initialValue, allocationSize, null, null, null);
+    }
+
+    public Sequence(SequenceStrategy strategy, int seed, int allocationSize, String name, String group, String format) {
+        this.strategy = strategy;
+        this.initialValue = seed;
+        this.allocationSize = allocationSize;
+        this.format = format;
+        this.group = group;
+        this.name = name;
+    }
+
+    public SequenceStrategy getStrategy() {
+        return strategy;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getInitialValue() {
+        return initialValue;
+    }
+
+    public void setInitialValue(int seed) {
+        this.initialValue = seed;
+    }
+
+    public int getAllocationSize() {
+        return allocationSize;
+    }
+
+    public void setAllocationSize(int increment) {
+        this.allocationSize = increment;
+    }
+}

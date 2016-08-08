@@ -1,0 +1,22 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+/**
+ *
+ * @author vpc
+ */
+public interface Action<T> {
+    /**
+     * Performs the computation.  This method will be called by
+     * @return a class-dependent value that may represent the results of the
+     *         computation. Each class that implements
+     *         {@code PrivilegedAction}
+     *         should document what (if anything) this value represents.
+     * @see PeristsenceUnit#doPrivileged(PrivilegedAction)
+     */
+    T run();
+}

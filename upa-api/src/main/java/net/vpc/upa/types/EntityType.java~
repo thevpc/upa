@@ -1,0 +1,57 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.Relationship;
+
+public class EntityType extends DataType implements Cloneable {
+
+    private String referencedEntityName;
+    private Relationship relationship;
+    private boolean updatable;
+
+//    public EntityType(String name, Class platformType, boolean updatable) {
+//        super(name, platformType);
+//        this.updatable = updatable;
+//    }
+    public EntityType(String typeName, Class entityType, String entityName, boolean updatable, boolean nullable) {
+        super(typeName, entityType, nullable);
+        this.updatable = updatable;
+        this.referencedEntityName=entityName;
+    }
+
+    public String getReferencedEntityName() {
+        return referencedEntityName;
+    }
+
+    public void setReferencedEntityName(String referencedEntityName) {
+        this.referencedEntityName = referencedEntityName;
+    }
+
+    public Relationship getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(Relationship relationship) {
+        this.relationship = relationship;
+    }
+
+    public boolean isUpdatable() {
+        return updatable;
+    }
+
+    @Override
+    public Object clone() {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        String n = getPlatformType() == null ? null : getPlatformType().getName();
+        if (n == null) {
+            n = getReferencedEntityName();
+        } else if (getReferencedEntityName() != null) {
+            n = n + ":" + getReferencedEntityName();
+        }
+        return "EntityType{" + n + ", updatable=" + updatable + '}';
+    }
+
+}

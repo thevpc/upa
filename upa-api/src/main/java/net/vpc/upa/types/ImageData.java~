@@ -1,0 +1,110 @@
+//package net.vpc.common.types;
+//
+//
+//import javax.swing.*;
+//import java.io.File;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.net.URL;
+//import java.util.HashMap;
+//
+//public final class ImageData extends FileData {
+//    public static final long serialVersionUID = 1L;
+//
+////    static {
+////        final java.util.Properties bug=new Properties();
+////        try {
+////            bug.load(new FileInputStream("imageSizes.prp"));
+////            Log.debug("<<<StreamerBUG>>>> image sizes loaded");
+////        } catch (IOException e) {
+////
+////        }
+////        boolean bugActivated="true".equals(bug.getProperty("bug"));
+////        if(!bugActivated){//correct
+////            Log.debug("<<<StreamerBUG>>>> disactivated");
+////            SimpleStream.register(new Processor(ImageData.class,serialVersionUID) {
+////                public void write(Output out, Object o) throws IOException {
+////                    out.writeUTF(((ImageData)o).sourceName);
+////                    out.writeInt(((ImageData)o).data.length);
+////                    out.write(((ImageData)o).data);
+////                }
+////
+////                public Object read(Input in) throws IOException {
+////                    String s=in.readUTF();
+////                    int l=in.readInt();
+////                    byte[] b=new byte[l];
+////                    in.readFully(b);
+////                    return new ImageData(s,b);
+////                }
+////            });
+////        }else{
+////            //bug workaround
+////            SimpleStream.register(new SimpleStream.Processor(ImageData.class,serialVersionUID) {
+////                int counter=1;
+////                public void write(Output out, Object o) throws IOException {
+////                    out.writeUTF(((ImageData)o).sourceName);
+////                    out.write(((ImageData)o).data.length);
+////                    out.write(((ImageData)o).data);
+////                }
+////
+////                public Object read(Input in) throws IOException {
+////                    String s=in.readUTF();
+////                    int l=in.read();
+////                    String sc=bug.getProperty(String.valueOf(counter));
+////                    int x= Integer.valueOf(sc).intValue();
+////                    if((x&255)==l){
+////                        Log.debug("<<<StreamerBUG>>>> okkay found "+counter);
+////                        System.out.println("<<<StreamerBUG>>>> okkay found "+counter);
+////                        byte[] b=new byte[l];
+////                        in.read(b);
+////                        b=new byte[x-l];
+////                        in.read(b);
+////                    }else{
+////                        Log.debug("<<<StreamerBUG>>>> not found "+counter+" expected "+l);
+////                        System.out.println("<<<StreamerBUG>>>> not found "+counter+" expected "+l);
+////                        byte[] b=new byte[l];
+////                        in.read(b);
+////                    }
+////                    counter++;
+////                    return null;
+////                }
+////            });
+////        }
+////    }
+//
+//    public ImageData(String sourceName, byte[] data) {
+//        super(sourceName, data);
+//    }
+//
+//    public ImageData(File file)
+//            throws IOException {
+//        super(file);
+//    }
+//
+//    public ImageData(InputStream inputStream)
+//            throws IOException {
+//        super(inputStream);
+//    }
+//
+//    public ImageData(String file)
+//            throws IOException {
+//        super(file);
+//    }
+//
+//    public ImageData(URL url)
+//            throws IOException {
+//        super(url);
+//    }
+//
+//    public ImageIcon getImage() {
+//        if (image == null && data != null)
+//            image = new ImageIcon(data);
+//        return image;
+//    }
+//
+////    public String getHumanReadableString(HashMap context) {
+////        return "image";//todo Swings.getResources().get("image");
+////    }
+//
+//    private transient ImageIcon image;
+//}

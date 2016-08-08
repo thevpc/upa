@@ -1,0 +1,116 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.expressions;
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Order implements Serializable, Cloneable {
+    private ArrayList<OrderItem> fields = new ArrayList<OrderItem>(1);
+
+    public Order() {
+    }
+
+    public Order ascendent(Expression field) {
+        return addOrder(field, true);
+    }
+
+    public Order descendent(Expression field) {
+        return addOrder(field, false);
+    }
+
+    public Order addOrder(Order order) {
+        for (OrderItem field : order.fields) {
+            fields.add(new OrderItem(field.getExpression(), field.isAsc()));
+        }
+        return this;
+    }
+
+    public Order addOrder(Expression field, boolean is_asc) {
+        fields.add(new OrderItem(field, is_asc));
+        return this;
+    }
+
+    public int indexOf(Expression field) {
+        for (int i = 0; i < fields.size(); i++) {
+            if (fields.get(i).getExpression().equals(field)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Order removeOrder(Expression field) {
+
+        int i = indexOf(field);
+        if (i >= 0) {
+            fields.remove(i);
+        }
+        return this;
+    }
+
+    public Order removeOrder(int index) {
+        fields.remove(index);
+        return this;
+    }
+
+    public Order insertOrder(int index, Expression field, boolean is_asc) {
+        fields.add(index, new OrderItem(field, is_asc));
+        return this;
+    }
+
+//    public void setOrderAt(int index,Expression expression) {
+//        fields.get(index).expression=expression;
+//    }
+
+    public Expression getOrderAt(int index) {
+        return fields.get(index).getExpression();
+    }
+
+    public boolean isAscendentAt(int index) {
+        return fields.get(index).isAsc();
+    }
+
+    public int size() {
+        return fields.size();
+    }
+
+    public Order clear() {
+        fields.clear();
+        return this;
+    }
+
+    public Order noOrder() {
+        fields.clear();
+        return this;
+    }
+
+    public Order copy() {
+        Order o = new Order();
+        for (OrderItem i : fields) {
+            o.fields.add(new OrderItem(i.getExpression().copy(), i.isAsc()));
+        }
+        return o;
+    }
+
+//    public String toSQL(PersistenceUnit database){
+//        int max=fields.size();
+//        if(max==0) return "";
+//        StringBuffer sb=new StringBuffer("ORDER BY ");
+//        for (int i = 0; i < max; i++) {
+//            if (i > 0)
+//                sb.append(", ");
+//            sb.append(((Expression) fields.get(i)).toSQL(database));
+//            if(((Boolean) asc.get(i))==Boolean.TRUE){
+//                sb.append(" ASC ");
+//            }else{
+//                sb.append(" DESC ");
+//            }
+//        }
+//        return sb.toString();
+//    }
+
+
+}

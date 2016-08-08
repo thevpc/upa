@@ -1,0 +1,9 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 4:50 PM
+ */
+public interface TransactionListener {
+    public void closing(Transaction transaction);
+}

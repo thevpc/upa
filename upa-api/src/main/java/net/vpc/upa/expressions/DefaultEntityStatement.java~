@@ -1,0 +1,14 @@
+package net.vpc.upa.expressions;
+
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            Expression, SQLContext
+
+public abstract class DefaultEntityStatement extends DefaultExpression
+        implements EntityStatement, Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public DefaultEntityStatement() {
+    }
+}

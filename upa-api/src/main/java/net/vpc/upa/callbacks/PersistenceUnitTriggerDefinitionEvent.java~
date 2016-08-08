@@ -1,0 +1,33 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceUnit;
+
+import java.io.Serializable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class PersistenceUnitTriggerDefinitionEvent extends UPAEvent {
+    private PersistenceUnit persistenceUnit;
+    private PersistenceUnitTrigger persistenceUnitTrigger;
+    private boolean before;
+
+    public PersistenceUnitTriggerDefinitionEvent(PersistenceUnitTrigger persistenceUnitTrigger, PersistenceUnit persistenceUnit, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.persistenceUnitTrigger = persistenceUnitTrigger;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public PersistenceUnitTrigger getPersistenceUnitTrigger() {
+        return persistenceUnitTrigger;
+    }
+}

@@ -1,0 +1,17 @@
+package net.vpc.upa.types;
+
+// Referenced classes of package org.vpc.lib.util:
+//            DataType, ConstraintsException
+public abstract class TemporalType extends DataType implements Cloneable {
+    protected TemporalType(String name, Class platformType) {
+        super(name, platformType);
+    }
+
+    protected TemporalType(String name, Class platformType, boolean nullable) {
+        super(name, platformType, nullable);
+    }
+
+    protected TemporalType(String name, Class platformType, int scale, int precision, boolean nullable) {
+        super(name, platformType, scale, precision, nullable);
+    }
+}

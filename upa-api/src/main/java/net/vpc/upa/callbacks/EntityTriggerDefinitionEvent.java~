@@ -1,0 +1,33 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.PersistenceUnit;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class EntityTriggerDefinitionEvent extends UPAEvent {
+
+    private Entity entity;
+    private EntityTrigger entityTrigger;
+    private boolean before;
+
+    public EntityTriggerDefinitionEvent(EntityTrigger entityTrigger, Entity entity, boolean before) {
+        this.entity = entity;
+        this.entityTrigger = entityTrigger;
+        this.before = before;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public EntityTrigger getEntityTrigger() {
+        return entityTrigger;
+    }
+}

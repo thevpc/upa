@@ -1,0 +1,37 @@
+package net.vpc.upa;
+
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface RelationshipRole extends UPAObject {
+
+    public Relationship getRelationship();
+
+    public RelationshipUpdateType getRelationshipUpdateType();
+
+    public RelationshipRoleType getRelationshipRoleType();
+
+    public Entity getEntity();
+
+    public void setEntity(Entity entity);
+
+    public int indexOf(String fieldName);
+
+    public Field getField(int i);
+
+    public Field getEntityField();
+
+    public List<Field> getFields();
+
+    public void setFields(Field[] fields);
+
+    public void setEntityField(Field field);
+
+    public void setRelationship(Relationship relation);
+
+    public void setRelationshipRoleType(RelationshipRoleType relationRoteType);
+
+    public void setRelationshipUpdateType(RelationshipUpdateType relationUpdateType);
+}

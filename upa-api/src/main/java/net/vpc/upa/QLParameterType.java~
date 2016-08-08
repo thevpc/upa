@@ -1,0 +1,10 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/30/12 2:08 PM
+ */
+public enum QLParameterType {
+    ENTITY,
+    FIELD
+}

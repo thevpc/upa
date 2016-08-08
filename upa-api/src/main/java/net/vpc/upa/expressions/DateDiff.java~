@@ -1,0 +1,69 @@
+package net.vpc.upa.expressions;
+
+import java.util.Date;
+
+/**
+ * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
+ * change this template use Options | File Templates.
+ */
+public class DateDiff extends Function {
+
+    private static final long serialVersionUID = 1L;
+    private DatePartType type;
+    private Expression start;
+    private Expression end;
+
+    public DateDiff(DatePartType datePartType, Date date1, Date date2) {
+        this(datePartType, new Literal(date1), new Literal(date2));
+    }
+
+    public DateDiff(DatePartType datePartType, Expression startDate, Expression endDate) {
+        this.type = datePartType;
+        this.start = startDate;
+        this.end = endDate;
+    }
+
+    public DatePartType getDatePartType() {
+        return type;
+    }
+
+    public Expression getStart() {
+        return start;
+    }
+
+    public Expression getEnd() {
+        return end;
+    }
+    //    public String toSQL(boolean flag, PersistenceUnit database) {
+//        return "DateDiff("+type.getName().toLowerCase()+","+start.toSQL(true, database)+","+end.toSQL(true, database)+")";
+//    }
+
+    @Override
+    public String getName() {
+        return "DateDiff";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 3;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return new Cst(type);
+            case 1:
+                return start;
+            case 2:
+                return end;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        DateDiff o = new DateDiff(type, start.copy(), end.copy());
+        return o;
+    }
+}

@@ -1,0 +1,42 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ *//*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public abstract class XmlFormatter extends AbstractDataFormatter {
+
+    private boolean containsHeader;
+    private boolean trimValues = true;
+    private List<XmlColumn> columns = new ArrayList<XmlColumn>();
+
+    public List<XmlColumn> getColumns() {
+        return columns;
+    }
+
+    public boolean isContainsHeader() {
+        return containsHeader;
+    }
+
+    public void setContainsHeader(boolean containsHeader) {
+        this.containsHeader = containsHeader;
+    }
+
+    public boolean isTrimValues() {
+        return trimValues;
+    }
+
+    public void setTrimValues(boolean trimValues) {
+        this.trimValues = trimValues;
+    }
+
+}

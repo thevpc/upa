@@ -1,0 +1,19 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.Query;
+import net.vpc.upa.Record;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Update;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/30/12 1:05 AM
+ */
+public interface EntityUpdateAction {
+
+    public int update(Entity entity, EntityExecutionContext context, Record updates, Expression condition) throws UPAException;
+
+    public Query createQuery(Entity e, Update query, EntityExecutionContext context) throws UPAException;
+}

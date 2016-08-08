@@ -1,0 +1,17 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+package net.vpc.upa.exceptions;
+
+
+import net.vpc.upa.Entity;
+
+public class UpdateRecordNotAllowedException extends EntityException {
+    public UpdateRecordNotAllowedException(Entity entity) {
+        super(entity, "update.NotAllowed");
+    }
+
+    public UpdateRecordNotAllowedException(Entity entity, String operationName) {
+        super(entity, operationName);
+    }
+}

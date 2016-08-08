@@ -1,0 +1,59 @@
+package net.vpc.upa.expressions;
+
+/**
+ * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:54 PM To change
+ * this template use File | Settings | File Templates.
+ */
+public class IndexedVar extends Var {
+    private Expression[] arguments;
+
+    public IndexedVar(String field, Expression... arguments) {
+        this(null, field, arguments);
+    }
+
+    public IndexedVar(Var parent, String name, Expression... arguments) {
+        super(parent, name);
+        this.arguments = arguments;
+    }
+
+
+    @Override
+    public Expression copy() {
+        IndexedVar o = new IndexedVar(getParent(), getName(), getArguments());
+        return o;
+    }
+
+
+    public int getArgumentsCount() {
+        return arguments.length;
+    }
+
+    public Expression getArgument(int index) {
+        return arguments[index];
+    }
+
+    public Expression[] getArguments() {
+        int max = getArgumentsCount();
+        Expression[] p = new Expression[max];
+        for (int i = 0; i < max; i++) {
+            p[i] = getArgument(i);
+        }
+        return p;
+    }
+
+    @Override
+    public String toString() {
+        if (getParent() != null) {
+            return getParent().toString() + "." + getName();
+        }
+        StringBuilder s = new StringBuilder(getName()).append("(");
+        for (int i = 0; i < getArgumentsCount(); i++) {
+            if (i > 0) {
+                s.append(",");
+            }
+            s.append(getArgument(i));
+        }
+        s.append(")");
+        return s.toString();
+    }
+}

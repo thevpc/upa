@@ -1,0 +1,84 @@
+package net.vpc.upa.types;
+
+import java.math.BigInteger;
+
+public class ByteType extends NumberType implements Cloneable {
+
+    public static final ByteType DEFAULT = new ByteType(null, null, true, false);
+    protected Byte min;
+    protected Byte max;
+
+    public ByteType(Byte min, Byte max, boolean nullable, boolean primitiveType) {
+        this("BYTE", min, max, nullable, primitiveType);
+    }
+
+    /**
+     * @param min minimum value (compared to value * multiplier). if null, no
+     * constraints
+     * @param max maximum value (compared to value * multiplier). if null, no
+     * constraints
+     * @param nullable null accept if true
+     */
+    public ByteType(String name, Byte min, Byte max, boolean nullable, boolean primitiveType) {
+        super(name, primitiveType ? Byte.TYPE : Byte.class, 10, 0, nullable);
+        this.min = min;
+        this.max = max;
+        setDefaultNonNullValue((byte) 0);
+    }
+
+    public Byte getMin() {
+        return min;
+    }
+
+    public void setMin(Byte min) {
+        this.min = min;
+    }
+
+    public Byte getMax() {
+        return max;
+    }
+
+    public void setMax(Byte max) {
+        this.max = max;
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        if (getMin() != null && ((Byte) value).compareTo(getMin()) < 0) {
+            throw new ConstraintsException("NumberTooLow", name, description, value, getMin());
+        }
+        if (getMax() != null && ((Byte) value).compareTo(getMax()) > 0) {
+            throw new ConstraintsException("NumberTooHigh", name, description, value, getMax());
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("Byte");
+        if (min != null || max != null) {
+            s.append("[");
+            if (min != null) {
+                s.append(min);
+            }
+            s.append("...");
+            if (max != null) {
+                s.append(max);
+            }
+            s.append("]");
+        }
+        return s.toString();
+    }
+
+    @Override
+    public Number parse(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return Byte.parseByte(value);
+    }
+}

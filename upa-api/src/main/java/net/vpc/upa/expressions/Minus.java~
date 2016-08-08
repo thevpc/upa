@@ -1,0 +1,15 @@
+package net.vpc.upa.expressions;
+
+public final class Minus extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Minus(Expression left, Object right) {
+        super(BinaryOperator.MINUS, left, right);
+    }
+
+    public Minus(Expression left, Expression right) {
+        super(BinaryOperator.MINUS, left, right);
+    }
+}

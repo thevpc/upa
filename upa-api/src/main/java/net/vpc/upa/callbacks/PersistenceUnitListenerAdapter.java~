@@ -1,0 +1,37 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package net.vpc.upa.callback;
+
+import net.vpc.upa.PersistenceUnit;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public abstract class PersistenceUnitListenerAdapter implements PersistenceUnitListener {
+
+    @Override
+    public void started(PersistenceUnit persistenceUnit) {
+
+    }
+
+    public void closed(PersistenceUnit persistenceUnit) {
+
+    }
+
+
+//    @Override
+//    public void persistenceManagerChanged(PersistenceUnit database, PersistenceUnitManager oldValue, PersistenceUnitManager newValue) {
+//
+//    }
+
+    @Override
+    public void modelChanged(PersistenceUnit persistenceUnit) {
+    }
+
+    @Override
+    public void storageChanged(PersistenceUnit persistenceUnit) {
+    }
+}

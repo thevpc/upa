@@ -1,0 +1,38 @@
+package net.vpc.upa.types;
+
+// Referenced classes of package org.vpc.lib.util:
+//            DataType, ConstraintsException
+import java.util.ArrayList;
+import java.util.List;
+
+public class BooleanType extends SeriesType implements Cloneable {
+
+    public static final BooleanType BOOLEAN = new BooleanType("BOOLEAN", false, true);
+    public static final BooleanType BOOLEAN_REF = new BooleanType("BOOLEAN", true, false);
+
+    public BooleanType(String name, boolean nullable, boolean primitiveType) {
+        super(name, primitiveType ? Boolean.TYPE : Boolean.class, nullable);
+        setDefaultNonNullValue(false);
+    }
+
+    @Override
+    public List<Object> getValues() {
+        List<Object> list = new ArrayList<Object>();
+        list.add(Boolean.TRUE);
+        list.add(Boolean.FALSE);
+        return list;
+    }
+
+    @Override
+    public String toString() {
+        return "Boolean{null=" + isNullable() + '}';
+    }
+
+    public Boolean parse(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return Boolean.parseBoolean(value);
+    }
+
+}

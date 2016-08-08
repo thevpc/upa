@@ -1,0 +1,39 @@
+package net.vpc.upa.callback;
+
+public interface EntityListener extends EntityInterceptor{
+
+//    public void onBeforeInsert(Entity entity, Object insertedId, Record insertedRecord);
+    public void onPrePersist(PersistEvent event);
+
+    public void onPersist(PersistEvent event);
+
+    public void onPreUpdate(UpdateEvent event);
+
+    public void onUpdate(UpdateEvent event);
+
+    public void onPreRemove(RemoveEvent event);
+
+    public void onRemove(RemoveEvent event);
+
+    public void onPreUpdateFormula(UpdateFormulaEvent event);
+
+    public void onUpdateFormula(UpdateFormulaEvent event);
+
+    public void onPreInitialize(EntityEvent event);
+
+    /**
+     * called when Entity is initialized aka default entities / records where
+     * inserted
+     *
+     * @param event
+     */
+    public void onInitialize(EntityEvent event);
+
+    public void onPreClear(EntityEvent event);
+
+    public void onClear(EntityEvent event);
+
+    public void onPreReset(EntityEvent event);
+
+    public void onReset(EntityEvent event);
+}

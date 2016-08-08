@@ -1,0 +1,48 @@
+package net.vpc.upa.types;
+
+import net.vpc.upa.PortabilityHint;
+
+/**
+ * User: taha Date: 16 juin 2003 Time: 15:47:42
+ */
+public class CharArrayType extends LOBType {
+    @PortabilityHint(target = "C#", name = "new")
+    public static final CharArrayType CHARS = new CharArrayType("FILE", false, null, true);
+    public static final CharArrayType CHAR_REFS = new CharArrayType("FILE", true, null, true);
+    private Integer maxSize;
+
+    public CharArrayType(String name, Integer maxSize, boolean nullable) {
+        this(name, false, maxSize, nullable);
+    }
+
+    public CharArrayType(String name, boolean ref, Integer maxSize, boolean nullable) {
+        super(name, ref ? Character[].class : char[].class, nullable);
+        this.maxSize = maxSize;
+    }
+
+    @Override
+    public void check(Object value, String name, String description)
+            throws ConstraintsException {
+        super.check(value, name, description);
+        if (value == null) {
+            return;
+        }
+        if (value instanceof char[]) {
+            if (getMaxSize() > 0 && getMaxSize() < ((byte[]) value).length) {
+                throw new ConstraintsException("ArraySizeTooLong", name, description, value, maxSize);
+            }
+        } else if (value instanceof Character[]) {
+            if (getMaxSize() > 0 && getMaxSize() < ((Byte[]) value).length) {
+                throw new ConstraintsException("ArraySizeTooShort", name, description, value, maxSize);
+            }
+        }
+    }
+
+    public Integer getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
+    }
+}

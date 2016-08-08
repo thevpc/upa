@@ -1,0 +1,62 @@
+package net.vpc.upa.expressions;
+
+import java.util.Date;
+
+/**
+ * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:07:34 To
+ * change this template use Options | File Templates.
+ */
+public class DatePart extends Function {
+
+    private static final long serialVersionUID = 1L;
+    private DatePartType type;
+    private Expression value;
+
+    public DatePart(DatePartType type, Date date) {
+        this(type, new Literal(date));
+    }
+
+    public DatePart(DatePartType type, String varDate) {
+        this(type, new UserExpression(varDate));
+    }
+
+    public DatePart(DatePartType type, Expression val) {
+        this.type = type;
+        this.value = val;
+    }
+
+    public DatePartType getDatePartType() {
+        return type;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    @Override
+    public String getName() {
+        return "datepart";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 2;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return new Cst(type);
+            case 1:
+                return value;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        DatePart o = new DatePart(type, value);
+        return o;
+    }
+}

@@ -1,0 +1,16 @@
+package net.vpc.upa.types;
+
+/**
+ * User: taha Date: 16 juin 2003 Time: 15:47:42
+ */
+public class LOBType extends DataType {
+//    public static final LOBType DEFAULT = new LOBType("LOB", Object.class, true);
+
+    public LOBType(String name, Class platformType) {
+        super(name, platformType);
+    }
+
+    public LOBType(String name, Class platformType, boolean nullable) {
+        super(name, platformType, nullable);
+    }
+}

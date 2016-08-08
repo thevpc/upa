@@ -1,0 +1,92 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.persistence;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.vpc.upa.config.ScanFilter;
+
+/**
+ *
+ * @author vpc
+ */
+public class PersistenceGroupConfig {
+
+    private int configOrder;
+    private String name;
+    private Boolean autoScan;
+    private List<PersistenceUnitConfig> persistenceUnits = new ArrayList<PersistenceUnitConfig>();
+    private List<ScanFilter> filters = new ArrayList<ScanFilter>();
+    private Map<String, Object> properties = new HashMap<String, Object>();
+
+    public PersistenceGroupConfig(int configOrder) {
+        this.configOrder=configOrder;
+    }
+
+    public int getConfigOrder() {
+        return configOrder;
+    }
+
+    public void setConfigOrder(int configOrder) {
+        this.configOrder = configOrder;
+    }
+
+    public Boolean getAutoScan() {
+        return autoScan;
+    }
+
+    public void setAutoScan(Boolean autoScan) {
+        this.autoScan = autoScan;
+    }
+
+    public List<ScanFilter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<ScanFilter> filters) {
+        this.filters = filters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
+    public List<PersistenceUnitConfig> getPersistenceUnits() {
+        return persistenceUnits;
+    }
+
+    public void setPersistenceUnits(List<PersistenceUnitConfig> persistenceUnits) {
+        this.persistenceUnits = persistenceUnits;
+    }
+
+    public List<ScanFilter> getContextAnnotationStrategyFilters() {
+        return filters;
+    }
+
+    public void setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
+        this.filters = filters == null ? new ArrayList<ScanFilter>() : new ArrayList<ScanFilter>(filters);
+    }
+
+    @Override
+    public String toString() {
+        return "PersistenceGroupConfig{" + "name=" + name + ", persistenceUnits=" + persistenceUnits + ", filters=" + filters + ", properties=" + properties + '}';
+    }
+
+}

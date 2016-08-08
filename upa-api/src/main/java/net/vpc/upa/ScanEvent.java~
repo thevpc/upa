@@ -1,0 +1,57 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+import sun.font.Decoration;
+
+
+/**
+ *
+ * @author vpc
+ */
+public class ScanEvent {
+
+    private UPAContext context;
+    private PersistenceGroup persistenceGroup;
+    private PersistenceUnit persistenceUnit;
+    private Class contract;
+    private Class type;
+    private Object instance;
+
+    public ScanEvent(UPAContext context, PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit, Class contract, Class type, Object instance) {
+        this.context = context;
+        this.persistenceGroup = persistenceGroup;
+        this.persistenceUnit = persistenceUnit;
+        this.contract = contract;
+        this.type = type;
+        this.instance = instance;
+    }
+
+    public Object getInstance() {
+        return instance;
+    }
+
+    public UPAContext getContext() {
+        return context;
+    }
+
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceGroup;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public Class getContract() {
+        return contract;
+    }
+
+    public Class getType() {
+        return type;
+    }
+
+}

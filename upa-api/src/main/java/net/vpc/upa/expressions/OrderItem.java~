@@ -1,0 +1,23 @@
+package net.vpc.upa.expressions;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/24/12 1:24 AM
+ */
+class OrderItem {
+    private Expression expression;
+    private boolean asc;
+
+    public OrderItem(Expression expression, boolean asc) {
+        this.expression = expression;
+        this.asc = asc;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public boolean isAsc() {
+        return asc;
+    }
+}

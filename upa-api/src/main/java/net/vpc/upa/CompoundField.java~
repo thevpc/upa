@@ -1,0 +1,115 @@
+/*
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>.
+ */
+package net.vpc.upa;
+
+import java.util.List;
+
+/**
+ * A compound field defines a simple way for embeddable structures in Entities.
+ * A compound Field defines a "super" field that is composed of a set of primitive fields.
+ * Compound fields can not include other compound fields.
+ */
+public interface CompoundField extends Field {
+
+    /**
+     * add new primitive field at the end of the fields list
+     *
+     * @param child new enclosed primitive field
+     */
+    public void addField(PrimitiveField child);
+
+    /**
+     * add new primitive field at the given position (may translate other fields' positions).
+     *
+     * @param child new enclosed primitive field
+     * @param index position of the new field. position may be negative in such
+     *              case the field will be added relatively to the end
+     */
+    public void addField(PrimitiveField child, int index);
+
+    /**
+     * remove field at the given position
+     *
+     * @param index index of the field to remove
+     * @return removed field
+     */
+    public PrimitiveField removeFieldAt(int index);
+
+    /**
+     * remove field by name
+     *
+     * @param name name of the field to remove
+     * @return removed field
+     */
+    public PrimitiveField removeField(String name);
+
+    /**
+     * moves field position
+     *
+     * @param index    old position
+     * @param newIndex new position
+     */
+    public void moveField(int index, int newIndex);
+
+    /**
+     * all inner fields
+     *
+     * @return all fields
+     */
+    public List<PrimitiveField> getFields();
+
+    /**
+     * field by position
+     * @param index position
+     * @return Field at the given position
+     */
+    public PrimitiveField getFieldAt(int index);
+
+    /**
+     * field by name
+     * @param name name of the field
+     * @return Field with the given name
+     */
+    public PrimitiveField getField(String name);
+
+    /**
+     * return index of the given field or -1 if not found
+     * @param child field to look for
+     * @return index of the given field or -1 if not found
+     */
+    public int indexOfField(PrimitiveField child);
+
+    /**
+     * return index of the given field or -1 if not found
+     * @param fieldName field to look for
+     * @return index of the given field or -1 if not found
+     */
+    public int indexOfField(String fieldName);
+
+    /**
+     * leading (very first) field
+     * @return leading (very first) field
+     */
+    public PrimitiveField getLeadingField();
+
+    /**
+     * number of primitive fields in the compound field
+     * @return number of primitive fields in the compound field
+     */
+    public int getFieldsCount();
+
+    /**
+     * flatten an object value to resolve every primitive field value
+     * @param object to flatten
+     * @return array of primitive value (in the same order of the fields definition)
+     */
+    public abstract Object[] getPrimitiveValues(Object object);
+
+    /**
+     * composed single value equivalent to the given array
+     * @param values flattened values to compose
+     * @return composed single value equivalent to the given array
+     */
+    public abstract Object getCompoundValue(Object[] values);
+}

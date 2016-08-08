@@ -1,0 +1,17 @@
+package net.vpc.upa.expressions;
+
+// Referenced classes of package org.vpc.lib.database.sql:
+//            BinaryExpression, Expression
+public final class Like extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public Like(Expression left, Object right) {
+        super(BinaryOperator.LIKE, left, right);
+    }
+
+    public Like(Expression left, Expression right) {
+        super(BinaryOperator.LIKE, left, right);
+    }
+}

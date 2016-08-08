@@ -1,0 +1,13 @@
+package net.vpc.upa.expressions;
+
+public abstract class DefaultExpression implements Expression {
+
+    private static final long serialVersionUID = 1L;
+
+    protected DefaultExpression() {
+    }
+
+    public boolean isValid() {
+        return true;
+    }
+}

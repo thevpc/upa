@@ -1,0 +1,27 @@
+package net.vpc.upa.persistence;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.QualifiedIdentifier;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.expressions.QueryStatement;
+
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/29/12 12:27 AM
+ */
+public interface UnionEntityExtension extends EntityExtension {
+
+    public List<Entity> getEntities() throws UPAException;
+
+    public String getUpdatedField(String viewFieldName, Entity entity) throws UPAException;
+
+    public String getDiscriminator() throws UPAException;
+
+    public int indexOf(Entity entity) throws UPAException;
+
+    public QualifiedIdentifier getViewElementKey(QualifiedIdentifier viewKey) throws UPAException;
+
+    public QueryStatement getQuery() throws UPAException;
+}

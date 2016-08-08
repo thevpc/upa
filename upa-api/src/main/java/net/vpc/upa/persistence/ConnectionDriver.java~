@@ -1,0 +1,18 @@
+package net.vpc.upa.persistence;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/12/12 8:03 AM
+ */
+public enum ConnectionDriver {
+    EMBEDDED,
+    DEFAULT,
+    INTERBASE,
+    MYSQL,
+    JTDS,
+    ORACLE,
+    MCKOI,
+    ODBC,
+    DATASOURCE,
+    GENERIC,
+}

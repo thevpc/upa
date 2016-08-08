@@ -1,0 +1,16 @@
+package net.vpc.upa.expressions;
+
+
+public final class URShift extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public URShift(Expression left, Object right) {
+        super(BinaryOperator.URSHIFT, left, right);
+    }
+
+    public URShift(Expression left, Expression right) {
+        super(BinaryOperator.URSHIFT, left, right);
+    }
+}

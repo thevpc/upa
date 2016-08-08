@@ -1,0 +1,17 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public interface SessionContext {
+
+    public void setParam(PersistenceUnit persistenceUnit, String name, Object value);
+
+    public boolean containsParam(PersistenceUnit persistenceUnit, String name);
+
+    public <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+}

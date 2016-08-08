@@ -1,0 +1,16 @@
+package net.vpc.upa.expressions;
+
+
+public final class RShift extends BinaryOperatorExpression
+        implements Cloneable {
+
+    private static final long serialVersionUID = 1L;
+
+    public RShift(Expression left, Object right) {
+        super(BinaryOperator.RSHIFT, left, right);
+    }
+
+    public RShift(Expression left, Expression right) {
+        super(BinaryOperator.RSHIFT, left, right);
+    }
+}

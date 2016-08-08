@@ -1,0 +1,58 @@
+package net.vpc.upa.callback;
+
+import net.vpc.upa.Package;
+import net.vpc.upa.PersistenceUnit;
+
+import java.io.Serializable;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 11/27/12 9:52 PM
+ */
+public class PackageDefinitionEvent extends UPAEvent {
+    private PersistenceUnit persistenceUnit;
+    private int index;
+    private int oldIndex;
+    private boolean before;
+    private Package item;
+    private Package parent;
+    private Package oldParent;
+
+    public PackageDefinitionEvent(Package item, PersistenceUnit persistenceUnit, Package parent, int index, Package oldParent, int oldIndex, boolean before) {
+        this.persistenceUnit = persistenceUnit;
+        this.item = item;
+        this.parent = parent;
+        this.index = index;
+        this.oldParent = oldParent;
+        this.oldIndex = oldIndex;
+        this.before = before;
+    }
+
+    public PersistenceUnit getPersistenceUnit() {
+        return persistenceUnit;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public int getOldIndex() {
+        return oldIndex;
+    }
+
+    public boolean isBefore() {
+        return before;
+    }
+
+    public Package getItem() {
+        return item;
+    }
+
+    public net.vpc.upa.Package getParent() {
+        return parent;
+    }
+
+    public Package getOldParent() {
+        return oldParent;
+    }
+}

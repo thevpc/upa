@@ -1,0 +1,21 @@
+package net.vpc.upa.extensions;
+
+import net.vpc.upa.Entity;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 8/31/12 1:24 PM
+ */
+public class DefaultUnionEntityExtensionDefinition implements UnionEntityExtensionDefinition {
+    private UnionQueryInfo info;
+
+    public DefaultUnionEntityExtensionDefinition(UnionQueryInfo info) {
+        this.info = info;
+    }
+
+    @Override
+    public UnionQueryInfo getQueryInfo(Entity entity) {
+        return info;
+    }
+
+}

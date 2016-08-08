@@ -1,0 +1,56 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+
+/**
+ * Created with IntelliJ IDEA. User: vpc Date: 8/22/12 Time: 4:13 AM To change
+ * this template use File | Settings | File Templates.
+ */
+public interface UPASecurityManager {
+
+    public void init(PersistenceUnit persistenceUnit) throws UPAException;
+
+    public boolean isAllowedPersist(Entity entity) throws UPAException;
+
+    public boolean isAllowedPersist(Entity entity, Object instance) throws UPAException;
+
+    public boolean isAllowedUpdate(Entity entity) throws UPAException;
+
+    public boolean isAllowedUpdate(Entity entity, Object id) throws UPAException;
+
+    public boolean isAllowedDelete(Entity entity) throws UPAException;
+
+    public boolean isAllowedDelete(Entity entity, Object id) throws UPAException;
+
+    public boolean isAllowedClone(Entity entity) throws UPAException;
+
+    public boolean isAllowedClone(Entity entity, Object instance, Object newId) throws UPAException;
+
+    public boolean isAllowedRename(Entity entity) throws UPAException;
+
+    public boolean isAllowedRename(Entity entity, Object instance, Object newId) throws UPAException;
+
+    public boolean isAllowedLoad(Entity entity) throws UPAException;
+
+    public boolean isAllowedLoad(Entity entity, Object id) throws UPAException;
+
+    public boolean isAllowedNavigate(Entity entity) throws UPAException;
+
+    public boolean isAllowedNavigate(Entity entity, String navigationMode) throws UPAException;
+
+    public boolean isAllowedRead(Field entity) throws UPAException;
+
+    public boolean isAllowedRead(Entity entity, Object id) throws UPAException;
+
+    public boolean isAllowedWrite(Field field) throws UPAException;
+
+    public boolean isAllowedWrite(Field field, Object id) throws UPAException;
+
+    public boolean isAllowedKey(String key) throws UPAException;
+
+    public UserPrincipal getUserPrincipal() throws UPAException;
+
+    public UserPrincipal login(String login, String credentials) throws UPAException;
+
+    public UserPrincipal loginPrivileged(String login) throws UPAException;
+}

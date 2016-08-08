@@ -1,0 +1,153 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package net.vpc.upa.bulk;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class TextFixedWidthColumn extends DataColumn implements Cloneable {
+
+    private int skippedColumns;
+    private String skippedColumnsChars;
+    private int columnWidth;
+    private TextAlignment textAlignment;
+    private String defaultPaddingChars;
+    private String leftPaddingChars;
+    private String rightPaddingChars;
+
+    public TextFixedWidthColumn() {
+    }
+
+    public TextFixedWidthColumn(int columnWidth) {
+        this.columnWidth = columnWidth;
+    }
+
+    public int getSkippedColumns() {
+        return skippedColumns;
+    }
+
+    public void setSkippedColumns(int skippedColumns) {
+        this.skippedColumns = skippedColumns;
+    }
+
+    public TextFixedWidthColumn updateSkippedColumns(int skippedColumns) {
+        setSkippedColumns(skippedColumns);
+        return this;
+    }
+
+    public int getColumnWidth() {
+        return columnWidth;
+    }
+
+    public void setColumnWidth(int columnWidth) {
+        this.columnWidth = columnWidth;
+    }
+
+    public TextFixedWidthColumn updateColumnWidth(int columnWidth) {
+        setColumnWidth(columnWidth);
+        return this;
+    }
+
+    public TextAlignment getTextAlignment() {
+        return textAlignment;
+    }
+
+    public void setTextAlignment(TextAlignment textAlignment) {
+        this.textAlignment = textAlignment;
+    }
+
+    public TextFixedWidthColumn updateTextAlignment(TextAlignment textAlignment) {
+        setTextAlignment(textAlignment);
+        return this;
+    }
+
+    public String getDefaultPaddingChars() {
+        return defaultPaddingChars;
+    }
+
+    public void setDefaultPaddingChars(String defaultPaddingChars) {
+        this.defaultPaddingChars = defaultPaddingChars;
+    }
+
+    public TextFixedWidthColumn updateDefaultPaddingChars(String defaultPaddingChars) {
+        setDefaultPaddingChars(defaultPaddingChars);
+        return this;
+    }
+
+    public String getLeftPaddingChars() {
+        return leftPaddingChars;
+    }
+
+    public void setLeftPaddingChars(String leftPaddingChars) {
+        this.leftPaddingChars = leftPaddingChars;
+    }
+
+    public TextFixedWidthColumn updateLeftPaddingChars(String leftPaddingChars) {
+        setLeftPaddingChars(leftPaddingChars);
+        return this;
+    }
+
+    public String getRightPaddingChars() {
+        return rightPaddingChars;
+    }
+
+    public void setRightPaddingChars(String rightPaddingChars) {
+        this.rightPaddingChars = rightPaddingChars;
+    }
+
+    public TextFixedWidthColumn updateRightPaddingChars(String rightPaddingChars) {
+        setRightPaddingChars(rightPaddingChars);
+        return this;
+    }
+
+    public String getSkippedColumnsChars() {
+        return skippedColumnsChars;
+    }
+
+    public void setSkippedColumnsChars(String skippedColumnsChars) {
+        this.skippedColumnsChars = skippedColumnsChars;
+    }
+
+    public TextFixedWidthColumn updateSkippedColumnsChars(String skippedColumnsChars) {
+        setSkippedColumnsChars(skippedColumnsChars);
+        return this;
+    }
+
+    @Override
+    public TextFixedWidthColumn updateTrimValue(boolean trimValue) {
+        return (TextFixedWidthColumn) super.updateTrimValue(trimValue);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateRawValueConverter(ValueConverter rawValueConverter) {
+        return (TextFixedWidthColumn) super.updateRawValueConverter(rawValueConverter);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateValueValidator(ValueValidator valueValidator) {
+        return (TextFixedWidthColumn) super.updateValueValidator(valueValidator);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateValueConverter(ValueConverter valueConverter) {
+        return (TextFixedWidthColumn) super.updateValueConverter(valueConverter);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateTitle(String title) {
+        return (TextFixedWidthColumn) super.updateTitle(title);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateName(String name) {
+        return (TextFixedWidthColumn) super.updateName(name);
+    }
+
+    @Override
+    public TextFixedWidthColumn updateIndex(int index) {
+        return (TextFixedWidthColumn) super.updateIndex(index);
+    }
+
+}

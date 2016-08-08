@@ -1,0 +1,20 @@
+package net.vpc.upa;
+
+import net.vpc.upa.exceptions.UPAException;
+
+// Referenced classes of package org.vpc.lib.database:
+//            Table, Key
+
+public abstract interface EntityNavigator {
+
+    public abstract Object getNewKey(Entity entity);
+
+    public abstract Object getNextKey(Entity entity, Object key);
+
+    public abstract Object getFirstKey(Entity entity);
+
+    public abstract Object getLastKey(Entity entity);
+
+    public abstract Object getPreviousKey(Entity entity, Object key);
+
+}

@@ -1,0 +1,28 @@
+package net.vpc.upa;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/3/12 1:19 AM
+ */
+public interface QualifiedRecord extends Record {
+
+    public Entity getEntity();
+
+    public Record getRecord();
+
+    public String getRecordName();
+
+    public Key getKey();
+
+    public void setKey(Key key);
+
+    public Object getIdentifier();
+
+    public void setIdentifier(Object value);
+
+    public Object[] getRawId();
+
+    public void setRawId(Object... ids);
+
+
+}

@@ -1,0 +1,71 @@
+package net.vpc.upa.expressions;
+
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.TypesFactory;
+
+/**
+ * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:21:56 To
+ * change this template use Options | File Templates.
+ */
+public class Cast extends Function {
+
+    private static final long serialVersionUID = 1L;
+    private Expression value;
+    private DataType targetType;
+
+    public Cast(Expression value, DataType primitiveType) {
+        this.value = value;
+        this.targetType = primitiveType;
+    }
+
+    public Expression getValue() {
+        return value;
+    }
+
+    public DataType getDataType() {
+        return targetType;
+    }
+
+    @Override
+    public String getName() {
+        return "Cast";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 2;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return value;
+            case 1:
+                return new Cst(targetType);
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+    @Override
+    public Expression copy() {
+        return new Cast(value.copy(), targetType);
+    }
+
+    @Override
+    public String toString() {
+        Class javaClass = targetType.getPlatformType();
+        Integer length = targetType.getScale();
+        int precision = targetType.getPrecision();
+        String tname = TypesFactory.getTypeName(javaClass);
+        if (tname == null) {
+            tname = ("UNKNOWN_TYPE(" + javaClass.getName() + "," + length + "," + precision + ")");
+        }
+        if (javaClass.equals(String.class)) {
+            if (length != null && length > 0) {
+                tname = tname + "(" + length + ")";
+            }
+        }
+        return "cast(" + value + "," + tname + ")";
+    }
+}

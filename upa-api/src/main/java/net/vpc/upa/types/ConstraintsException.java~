@@ -1,0 +1,67 @@
+package net.vpc.upa.types;
+
+
+public class ConstraintsException extends RuntimeException {
+    private String name;
+    private Object[] parameters;
+
+    public ConstraintsException() {
+    }
+
+    public ConstraintsException(Throwable cause) {
+        super(cause);
+    }
+
+    public ConstraintsException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public String toString2() {
+        String content = "";
+        if (name != null) {
+            content = content + "(" + name + ")";
+        }
+        if (getMessage() != null) {
+            content = content + ":" + getMessage();
+        }
+        return content;
+    }
+
+    @Override
+    public String toString() {
+        return getMessage();
+    }
+
+    public ConstraintsException(String msg) {
+        super(msg);
+    }
+
+    public ConstraintsException(String msg, String name, String description, Object value, Object... parameters) {
+        super(msg);
+        this.name = name;
+        Object[] allParameters;
+        if (parameters == null || parameters.length == 0) {
+            allParameters = new Object[]{
+                    name,
+                    description,
+                    value};
+        } else {
+            allParameters = new Object[parameters.length + 3];
+            allParameters[0] = name;
+            allParameters[1] = description;
+            allParameters[2] = value;
+            System.arraycopy(parameters, 0, allParameters, 3, parameters.length);
+        }
+
+        this.parameters = allParameters;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object[] getParameters() {
+        return parameters;
+    }
+
+}

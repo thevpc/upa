@@ -1,0 +1,32 @@
+package net.vpc.upa.filters;
+
+import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ */
+public class EntityAndFilter implements EntityFilter {
+    private List<EntityFilter> v = new ArrayList<EntityFilter>(2);
+
+    public EntityAndFilter() {
+    }
+
+    public EntityAndFilter and(EntityFilter filter) {
+        v.add(filter);
+        return this;
+    }
+
+    public boolean accept(Entity entity) throws UPAException {
+        for (int i = v.size() - 1; i >= 0; i--) {
+            EntityFilter entityFilter = v.get(i);
+            if (!entityFilter.accept(entity)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

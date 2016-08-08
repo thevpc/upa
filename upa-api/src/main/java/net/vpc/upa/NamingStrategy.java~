@@ -1,0 +1,15 @@
+package net.vpc.upa;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: vpc
+ * Date: 8/16/12
+ * Time: 2:41 AM
+ * To change this template use File | Settings | File Templates.
+ */
+public interface NamingStrategy {
+
+    public String getUniformValue(String name);
+    
+    public boolean equals(String o1, String o2);
+}
