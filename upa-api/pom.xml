@@ -10,7 +10,7 @@
     <url>https://github.com/thevpc/upa/wiki</url>
 
     <organization>
-        <name>vpc opensource initative</name>
+        <name>vpc open source initiative</name>
         <url>http://tahabensalah.net</url>
     </organization>
 
@@ -20,7 +20,7 @@
             <name>Taha Ben Salah</name>
             <email>taha.bensalah@gmail.com</email>
             <url>http://tahabensalah.net</url>
-            <organization>vpc opensource initative</organization>
+            <organization>vpc open source initiative</organization>
             <organizationUrl>http://tahabensalah.net</organizationUrl>
             <roles>
                 <role>architect</role>
@@ -155,4 +155,14 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>vpc-public-maven</id>
+            <url>https://raw.github.com/thevpc/vpc-public-maven/master</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
