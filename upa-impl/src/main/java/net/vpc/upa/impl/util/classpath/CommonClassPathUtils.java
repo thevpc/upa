@@ -10,9 +10,7 @@ import net.vpc.upa.PortabilityHint;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +25,7 @@ public class CommonClassPathUtils {
 
     public static URL[] resolveClassPathLibs(String referenceURL) {
 
-        List<URL> urls = new ArrayList<URL>();
+        Set<URL> urls = new HashSet<URL>();
         ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
         ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
         if (threadClassLoader == null) {
@@ -60,6 +58,14 @@ public class CommonClassPathUtils {
                     //now check all other urls
                     for (URL url : java.util.Collections.list(threadClassLoader.getResources("META-INF/MANIFEST.MF"))) {
                         urls.add(getClasspathRoot(url, "META-INF/MANIFEST.MF"));
+                    }
+                    //for some reason some jar do not have META-INF files
+                    for (URL url : java.util.Collections.list(threadClassLoader.getResources("/"))) {
+                        urls.add(getClasspathRoot(url, "/"));
+                    }
+                    //for other bizarre reason some class folders are not listed too
+                    for (URL url : java.util.Collections.list(threadClassLoader.getResources(""))) {
+                        urls.add(getClasspathRoot(url, ""));
                     }
 
                 } catch (Exception e) {
@@ -102,3 +108,5 @@ public class CommonClassPathUtils {
         return root;
     }
 }
+
+
