@@ -34,7 +34,7 @@ public class DBCPv1EmbeddedDatasourceFactory implements EmbeddedDatasourceFactor
         Map<String, String> dbcpProperties = UPAUtils.extractMap(properties, "connection.pool.dbcp", true);
         for (Map.Entry<String, String> ee : properties.entrySet()) {
             String key = ee.getKey();
-            if (!key.contains(".") && key.startsWith("pool")) {
+            if (!key.contains(".") && key.startsWith("pool") &&  (!"pool".equals(key))) {
                 String val = ee.getValue();
                 if (key.equals("poolInitialSize")) {
                     DBCP_TYPE.setProperty(ds, "initialSize", val);

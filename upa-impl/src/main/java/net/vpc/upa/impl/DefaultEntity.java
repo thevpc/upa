@@ -2862,20 +2862,24 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 case ID:
                 case KEY: {
                     updateSingleObject = true;
+                    break;
                 }
                 case OBJECT: {
                     Object i2 = getBuilder().objectToId(updateCondition);
                     updateSingleObject = i2 != null;
+                    break;
                 }
                 case RECORD: {
                     Object i2 = getBuilder().recordToId((Record) updateCondition);
                     updateSingleObject = i2 != null;
+                    break;
                 }
                 case EXPRESSION: {
                     if (updateCondition instanceof IdExpression) {
                         //Object id = ((IdExpression) updateCondition1).getId();
                         updateSingleObject = true;
                     }
+                    break;
                 }
             }
         }

@@ -4,13 +4,13 @@
  */
 package net.vpc.upa.test.web.presentation;
 
-import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
 import net.vpc.upa.UPA;
 import net.vpc.upa.tutorial.business.InvoiceModule;
 import net.vpc.upa.tutorial.model.Customer;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import java.util.List;
 
 /**
  *

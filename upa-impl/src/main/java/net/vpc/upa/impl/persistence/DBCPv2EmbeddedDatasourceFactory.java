@@ -36,7 +36,7 @@ public class DBCPv2EmbeddedDatasourceFactory implements  EmbeddedDatasourceFacto
         for (Map.Entry<String, String> ee : properties.entrySet()) {
             String key = ee.getKey();
             String val = ee.getValue();
-            if (!key.contains(".") && key.startsWith("pool")) {
+            if (!key.contains(".") && key.startsWith("pool") &&  (!"pool".equals(key))) {
                 if (key.equals("poolInitialSize")) {
                     DBCP_TYPE.setProperty(ds, "initialSize", val);
                 } else if (key.equals("poolMaxSize")) {

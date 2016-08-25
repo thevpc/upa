@@ -4,9 +4,16 @@
  */
 package net.vpc.upa.test.web.presentation;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import net.vpc.upa.*;
+import net.vpc.upa.expressions.Select;
+import net.vpc.upa.expressions.Var;
+import net.vpc.upa.tutorial.model.Customer;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.dialog.Dialog;
+import org.primefaces.component.menuitem.MenuItem;
+import org.primefaces.component.submenu.Submenu;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.bean.ManagedBean;
@@ -16,20 +23,9 @@ import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.MethodExpressionActionListener;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Field;
-import net.vpc.upa.FieldModifier;
-import net.vpc.upa.FlagSet;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.UPA;
-import net.vpc.upa.expressions.Select;
-import net.vpc.upa.expressions.Var;
-import net.vpc.upa.tutorial.model.Customer;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.dialog.Dialog;
-import org.primefaces.component.menuitem.MenuItem;
-import org.primefaces.component.submenu.Submenu;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
