@@ -4,10 +4,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledConcat;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledI2V;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledPlus;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -24,14 +21,24 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
         CompiledPlus o = (CompiledPlus) oo;
-        Class t1 = o.getLeft().getTypeTransform().getTargetType().getPlatformType();
-        Class t2 = o.getRight().getTypeTransform().getTargetType().getPlatformType();
+        DefaultCompiledExpression left = o.getLeft();
+        DefaultCompiledExpression right = o.getRight();
+        DefaultCompiledExpression left0 = left;
+        DefaultCompiledExpression right0 = right;
+        while(left0!=null && (left0 instanceof CompiledVar) && ((CompiledVar) left0).getChild()!=null){
+            left0=((CompiledVar) left0).getChild();
+        }
+        while(right0!=null && (right0 instanceof CompiledVar) && ((CompiledVar) right0).getChild()!=null){
+            right0=((CompiledVar) right0).getChild();
+        }
+        Class t1 = left0.getTypeTransform().getTargetType().getPlatformType();
+        Class t2 = right0.getTypeTransform().getTargetType().getPlatformType();
         boolean s0 = o.getTypeTransform().getTargetType().getPlatformType().equals(String.class);
         boolean s1 = t1.equals(String.class);
         boolean s2 = t2.equals(String.class);
         if (s0 || s1 || s2) {
-            DefaultCompiledExpression c1 = o.getLeft().copy();
-            DefaultCompiledExpression c2 = o.getRight().copy();
+            DefaultCompiledExpression c1 = left.copy();
+            DefaultCompiledExpression c2 = right.copy();
             c1.setParentExpression(null);
             c2.setParentExpression(null);
             if (!s1) {
@@ -55,8 +62,8 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
             CompiledConcat cc = new CompiledConcat(c1, c2);
             return sqlManager.getSQL(cc, qlContext, declarations);
         }
-        String leftValue = o.getLeft() != null ? sqlManager.getSQL(o.getLeft(), qlContext, declarations) : "NULL";
-        String rightValue = o.getRight() != null ? sqlManager.getSQL(o.getRight(), qlContext, declarations) : "NULL";
+        String leftValue = left != null ? sqlManager.getSQL(left, qlContext, declarations) : "NULL";
+        String rightValue = right != null ? sqlManager.getSQL(right, qlContext, declarations) : "NULL";
         String s = null;
         s = leftValue + " + " + rightValue;
         return "(" + s + ")";
