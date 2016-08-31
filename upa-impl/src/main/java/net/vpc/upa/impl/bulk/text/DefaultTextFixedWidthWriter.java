@@ -12,13 +12,14 @@ import net.vpc.upa.types.NumberType;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
+
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@PortabilityHint(target = "C#",name = "suppress")
+@PortabilityHint(target = "C#", name = "suppress")
 public class DefaultTextFixedWidthWriter extends AbstractDataWriter {
 
     private DefaultTextFixedWidthFormatter p;
@@ -34,17 +35,17 @@ public class DefaultTextFixedWidthWriter extends AbstractDataWriter {
     @Override
     public void startDocument() {
         String nl = p.getNewLine();
-        if(nl==null){
-            nl= PlatformUtils.getSystemLineSeparator();
+        if (nl == null) {
+            nl = PlatformUtils.getSystemLineSeparator();
         }
-        newLine=nl;
-        if(p.getSkipRows()>0){
+        newLine = nl;
+        if (p.getSkipRows() > 0) {
             write(newLine);
         }
         super.startDocument();
     }
 
-    
+
     @Override
     protected void startRow(DataRow row) {
         if (row.getColumns().length != row.getValues().length) {
@@ -150,6 +151,14 @@ public class DefaultTextFixedWidthWriter extends AbstractDataWriter {
         try {
             String v = s == null ? "" : String.valueOf(s);
             writer.write(v, 0, v.length());
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void flush() {
+        try {
+            writer.flush();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

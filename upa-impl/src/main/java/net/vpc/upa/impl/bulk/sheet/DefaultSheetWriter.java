@@ -15,6 +15,7 @@ package net.vpc.upa.impl.bulk.sheet;
 
 import java.io.*;
 import java.util.Date;
+
 import net.vpc.upa.PortabilityHint;
 
 import net.vpc.upa.bulk.DataColumn;
@@ -33,7 +34,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@PortabilityHint(target = "C#",name = "suppress")
+@PortabilityHint(target = "C#", name = "suppress")
 public class DefaultSheetWriter extends AbstractDataWriter {
 
     private SheetFormatter p;
@@ -56,7 +57,7 @@ public class DefaultSheetWriter extends AbstractDataWriter {
     private DefaultSheetWriter(SheetFormatter p, Object stream) {
         super(new TextCSVColumn(), p.isWriteHeader(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]));
         this.p = p;
-        //prepareHeader(p.isContainsHeader());
+        //prepareHeader(p.isWriteHeader());
         trimValues = p.isTrimValues();
         this.writer = new SXSSFWorkbook(100);
         int r = 0;
@@ -85,8 +86,8 @@ public class DefaultSheetWriter extends AbstractDataWriter {
         this.columnIndex = 0;
     }
 
-    private SheetColumn getColumn(DataColumn[] cols,int i){
-        if(cols==null || i>=cols.length){
+    private SheetColumn getColumn(DataColumn[] cols, int i) {
+        if (cols == null || i >= cols.length) {
             return null;
         }
         return (SheetColumn) cols[i];
@@ -94,8 +95,8 @@ public class DefaultSheetWriter extends AbstractDataWriter {
 
     @Override
     protected void writeCell(long rowIndex, DataRow row, int cellIndex, Object cell0) {
-        SheetColumn cc = getColumn(row.getColumns(),cellIndex);
-        if(cc!=null) {
+        SheetColumn cc = getColumn(row.getColumns(), cellIndex);
+        if (cc != null) {
             if (cc.getSkippedColumns() > 0) {
                 columnIndex += cc.getSkippedColumns();
             }
@@ -130,6 +131,10 @@ public class DefaultSheetWriter extends AbstractDataWriter {
         //do nothing
     }
 
+    public void flush() {
+        //do nothing
+    }
+
     public void close() {
         try {
             if (stream instanceof File) {
@@ -145,9 +150,9 @@ public class DefaultSheetWriter extends AbstractDataWriter {
             } else {
                 writer.write((OutputStream) stream);
             }
-            writer.dispose();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
-        }
+        };
+        writer.dispose();
     }
 }

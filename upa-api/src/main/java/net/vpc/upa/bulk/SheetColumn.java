@@ -54,50 +54,50 @@ public class SheetColumn extends DataColumn implements Cloneable {
         this.skippedColumns = skippedColumns;
     }
 
-    public SheetColumn updateSkippedColumns(int skippedColumns) {
+    public DataColumn updateSkippedColumns(int skippedColumns) {
         setSkippedColumns(skippedColumns);
         return this;
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateTrimValue(boolean trimValue) {
+    public DataColumn updateTrimValue(boolean trimValue) {
         return (SheetColumn) super.updateTrimValue(trimValue);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateRawValueConverter(ValueConverter rawValueConverter) {
+    public DataColumn updateRawValueConverter(ValueConverter rawValueConverter) {
         return (SheetColumn) super.updateRawValueConverter(rawValueConverter);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateValueValidator(ValueValidator valueValidator) {
+    public DataColumn updateValueValidator(ValueValidator valueValidator) {
         return (SheetColumn) super.updateValueValidator(valueValidator);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateValueConverter(ValueConverter valueConverter) {
+    public DataColumn updateValueConverter(ValueConverter valueConverter) {
         return (SheetColumn) super.updateValueConverter(valueConverter);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateTitle(String title) {
+    public DataColumn updateTitle(String title) {
         return (SheetColumn) super.updateTitle(title);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateName(String name) {
+    public DataColumn updateName(String name) {
         return (SheetColumn) super.updateName(name);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
-    public SheetColumn updateIndex(int index) {
+    public DataColumn updateIndex(int index) {
         return (SheetColumn) super.updateIndex(index);
     }
 

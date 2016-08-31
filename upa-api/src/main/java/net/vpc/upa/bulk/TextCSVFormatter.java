@@ -42,7 +42,7 @@ import java.util.List;
  */
 public abstract class TextCSVFormatter extends AbstractDataFormatter {
 
-    private boolean containsHeader;
+    private boolean writeHeader;
     private boolean trimValues = true;
     private String separators = ";";
     private boolean supportsDoubleQuote = true;
@@ -56,12 +56,12 @@ public abstract class TextCSVFormatter extends AbstractDataFormatter {
         return columns;
     }
 
-    public boolean isContainsHeader() {
-        return containsHeader;
+    public boolean isWriteHeader() {
+        return writeHeader;
     }
 
-    public TextCSVFormatter setContainsHeader(boolean containsHeader) {
-        this.containsHeader = containsHeader;
+    public TextCSVFormatter setWriteHeader(boolean writeHeader) {
+        this.writeHeader = writeHeader;
         return this;
     }
 

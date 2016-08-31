@@ -10,8 +10,6 @@ package net.vpc.upa.impl.bulk.text;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashSet;
-import java.util.Set;
 
 import net.vpc.upa.PortabilityHint;
 
@@ -40,10 +38,10 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
     private char preferredEscapeChar='"';
 
     public DefaultTextCSVWriter(TextCSVFormatter p, Writer writer) {
-        super(new TextCSVColumn(), p.isContainsHeader(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]));
+        super(new TextCSVColumn(), p.isWriteHeader(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]));
         this.p = p;
         this.writer = (writer instanceof BufferedWriter) ? ((BufferedWriter) writer) : new BufferedWriter(writer);
-        //prepareHeader(p.isContainsHeader());
+        //prepareHeader(p.isWriteHeader());
         supportsBackSlash = p.isSupportsBackSlash();
         supportsSimpleQuote = p.isSupportsSimpleQuote();
         supportsDoubleQuote = p.isSupportsDoubleQuote();
@@ -231,6 +229,13 @@ public class DefaultTextCSVWriter extends AbstractDataWriter {
         }
     }
 
+    public void flush() {
+        try {
+            writer.flush();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     public void close() {
         try {
             writer.close();

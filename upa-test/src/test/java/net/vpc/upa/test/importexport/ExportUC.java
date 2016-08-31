@@ -74,9 +74,17 @@ public class ExportUC {
 
         public void processSheet(PersistenceUnit pu, ImportExportManager iem) throws IOException {
             SheetFormatter p = iem.createSheetFormatter(new File("/home/vpc/t.xlsx"));
-            p.getColumns().add(new SheetColumn().updateTitle("Number").updateSkippedColumns(3));
-            p.getColumns().add(new SheetColumn().updateTitle("String"));
-            p.getColumns().add(new SheetColumn().updateTitle("Date").updateSkippedColumns(2));
+            SheetColumn col1 = new SheetColumn();
+            col1.updateTitle("Number");
+            col1.updateSkippedColumns(3);
+            p.getColumns().add(col1);
+            SheetColumn col2 = new SheetColumn();
+            col2.updateTitle("String");
+            p.getColumns().add(col2);
+            SheetColumn col3 = new SheetColumn();
+            col3.updateTitle("Date");
+            col3.updateSkippedColumns(2);
+            p.getColumns().add(col3);
             p.setWriteHeader(true);
             p.setSkipRows(3);
             DataWriter g = p.createWriter();

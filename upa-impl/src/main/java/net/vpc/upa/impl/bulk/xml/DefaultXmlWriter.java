@@ -29,7 +29,7 @@ public class DefaultXmlWriter extends AbstractDataWriter {
         super(new TextCSVColumn(), p.isContainsHeader(), p.getColumns().toArray(new DataColumn[p.getColumns().size()]));
         this.p = p;
         this.writer = (writer instanceof BufferedWriter) ? ((BufferedWriter) writer) : new BufferedWriter(writer);
-        //prepareHeader(p.isContainsHeader());
+        //prepareHeader(p.isWriteHeader());
     }
 
     @Override
@@ -44,6 +44,14 @@ public class DefaultXmlWriter extends AbstractDataWriter {
     @Override
     protected void endRow(DataRow row) {
 
+    }
+
+    public void flush() {
+        try {
+            writer.flush();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public void close() {
