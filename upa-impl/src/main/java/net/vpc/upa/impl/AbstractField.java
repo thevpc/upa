@@ -83,6 +83,15 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return getModifiers().contains(FieldModifier.ID);
     }
 
+    @Override
+    public boolean isGeneratedId() throws UPAException {
+        if(!isId()){
+            return false;
+        }
+        Formula persistFormula = getPersistFormula();
+        return (persistFormula!=null);
+    }
+
     public boolean isMain() throws UPAException {
         return getModifiers().contains(FieldModifier.MAIN);
     }

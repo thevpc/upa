@@ -71,6 +71,10 @@ public interface EntityBuilder {
 
     public Object getId(Key unstructuredKey);
 
+    public Object getObject(Object objectOrRecord);
+
+    public Record getRecord(Object objectOrRecord);
+
     public Key getKey(Object key);
 
     /**

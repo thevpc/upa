@@ -135,6 +135,8 @@ public interface Field extends EntityPart {
 //    public void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
     public boolean isId() throws UPAException;
 
+    public boolean isGeneratedId() throws UPAException;
+
     public boolean isMain() throws UPAException;
 
     public boolean isSummary() throws UPAException;

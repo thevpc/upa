@@ -85,6 +85,20 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
+    public Object getObject(Object objectOrRecord) {
+        if(entity.getEntityType().isInstance(objectOrRecord)){
+            return objectOrRecord;
+        }else{
+            return recordToObject(objectToRecord(objectOrRecord));
+        }
+    }
+
+    @Override
+    public Record getRecord(Object objectOrRecord) {
+        return objectToRecord(objectOrRecord);
+    }
+
+    @Override
     public void setProperty(Object entityObject, String property, Object value) throws UPAException {
         if (entityObject instanceof Record) {
             ((Record) entityObject).setObject(property, value);
