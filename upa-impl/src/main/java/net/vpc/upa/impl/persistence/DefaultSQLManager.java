@@ -35,6 +35,7 @@ public class DefaultSQLManager implements SQLManager {
         register0(new InsertSQLProvider());
         register0(new InCollectionSQLProvider());
         register0(new InSelectionSQLProvider());
+        register0(new ExistsSQLProvider());
         register0(new ParamSQLProvider());
         register0(new UpletSQLProvider());
         register0(new ValueSQLProvider());

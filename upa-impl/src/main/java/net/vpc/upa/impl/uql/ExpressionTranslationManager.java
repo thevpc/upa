@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.uql;
 
+import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryField;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryStatement;
 import net.vpc.upa.impl.uql.compiler.CurrentTimeExpressionTranslator;
@@ -53,67 +54,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.expressions.And;
-import net.vpc.upa.expressions.Avg;
-import net.vpc.upa.expressions.Between;
-import net.vpc.upa.expressions.BitAnd;
-import net.vpc.upa.expressions.BitOr;
-import net.vpc.upa.expressions.Cast;
-import net.vpc.upa.expressions.Coalesce;
-import net.vpc.upa.expressions.Complement;
-import net.vpc.upa.expressions.Concat;
-import net.vpc.upa.expressions.Count;
-import net.vpc.upa.expressions.CurrentDate;
-import net.vpc.upa.expressions.CurrentTime;
-import net.vpc.upa.expressions.CurrentTimestamp;
-import net.vpc.upa.expressions.CurrentUser;
-import net.vpc.upa.expressions.D2V;
-import net.vpc.upa.expressions.DateAdd;
-import net.vpc.upa.expressions.DateDiff;
-import net.vpc.upa.expressions.DatePart;
-import net.vpc.upa.expressions.DateTrunc;
-import net.vpc.upa.expressions.Delete;
-import net.vpc.upa.expressions.Different;
-import net.vpc.upa.expressions.Div;
-import net.vpc.upa.expressions.EntityName;
-import net.vpc.upa.expressions.Equals;
-import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.GreaterEqualThan;
-import net.vpc.upa.expressions.GreaterThan;
-import net.vpc.upa.expressions.I2V;
-import net.vpc.upa.expressions.InSelection;
-import net.vpc.upa.expressions.Insert;
-import net.vpc.upa.expressions.InsertSelection;
-import net.vpc.upa.expressions.LShift;
-import net.vpc.upa.expressions.LessEqualThan;
-import net.vpc.upa.expressions.LessThan;
-import net.vpc.upa.expressions.Like;
-import net.vpc.upa.expressions.Literal;
-import net.vpc.upa.expressions.Max;
-import net.vpc.upa.expressions.Min;
-import net.vpc.upa.expressions.Minus;
-import net.vpc.upa.expressions.Mul;
-import net.vpc.upa.expressions.Negative;
-import net.vpc.upa.expressions.Not;
-import net.vpc.upa.expressions.Or;
-import net.vpc.upa.expressions.Param;
-import net.vpc.upa.expressions.Plus;
-import net.vpc.upa.expressions.RShift;
-import net.vpc.upa.expressions.Reminder;
-import net.vpc.upa.expressions.Select;
-import net.vpc.upa.expressions.Sum;
-import net.vpc.upa.expressions.IsHierarchyDescendent;
-import net.vpc.upa.expressions.URShift;
-import net.vpc.upa.expressions.Update;
-import net.vpc.upa.expressions.Uplet;
-import net.vpc.upa.expressions.UserExpression;
-import net.vpc.upa.expressions.Var;
-import net.vpc.upa.expressions.XOr;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledExpandableExpression;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.expressions.IdEnumerationExpression;
-import net.vpc.upa.expressions.InCollection;
-import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 
@@ -191,6 +133,7 @@ public class ExpressionTranslationManager {
         register0(InSelection.class, new InSelectionExpressionTranslator());
         register0(InCollection.class, new InCollectionExpressionTranslator());
         register0(IsHierarchyDescendent.class, new IsHierarchyDescendentExpressionTranslator());
+        register0(Exists.class, new ExistsExpressionTranslator());
     }
 
     public PersistenceUnit getPersistenceUnit() {

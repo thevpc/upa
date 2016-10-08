@@ -217,6 +217,9 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if (key == null) {
             return true;
         }
+        if(e==null){
+            return isAllowedKey(key);
+        }
         return isAllowedKey(e.getAbsoluteName() + "." + key);
     }
 

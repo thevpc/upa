@@ -611,8 +611,8 @@ List<Expression> ExpressionList() :
     r0=Expression()
     {
         r.add(r0);
-    }  
-    ("," 
+    }
+    (","
         ri=Expression()
         {
             r.add(ri);
@@ -629,10 +629,17 @@ Expression Expression() :
     Expression r;
 }
 {
-    r=OrExpression()
-    {
-        return r;
-    }
+        (
+        LOOKAHEAD(<SELECT>)
+        (
+            r=Select()
+        )
+        |
+        r=OrExpression()
+        )
+        {
+            return r;
+        }
 }
 
 Expression OrExpression() :
@@ -684,7 +691,6 @@ Expression AndExpression() :
 Expression CompExpression() :
 {
     Expression r;
-    Expression n=null;
     Operator op;
     List<Expression> parameters=null;
 }
@@ -696,23 +702,15 @@ Expression CompExpression() :
             <IN>
             <LPAREN>
             ( 
-                LOOKAHEAD(<SELECT>)
-                (
-                    n=Select()
-                )
-                |
-                (
                     parameters=ExpressionList()
-                )
             )   
             <RPAREN>
             {
-                if(n!=null){
-                    r=new InSelection(r,(Select)n);
+                if(parameters.size()==1 && parameters.get(0) instanceof Select){
+                    r=new InSelection(r,(Select)parameters.get(0));
                 }else{
                     r=new InCollection(r,parameters);
                 }
-                n=null;
                 parameters=null;
             }
         )
