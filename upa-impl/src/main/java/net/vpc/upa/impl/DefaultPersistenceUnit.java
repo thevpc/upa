@@ -1169,7 +1169,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             persistenceUnitListenerManager.fireOnStart(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
             commitTransaction();
             setLastStartSucceeded(true);
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             setLastStartSucceeded(false);
             rollbackTransaction();
             throw ex;

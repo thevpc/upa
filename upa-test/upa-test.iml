@@ -14,8 +14,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: cglib:cglib:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
-    <orderEntry type="module" module-name="upa-api" />
-    <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
+    <orderEntry type="library" name="Maven: net.vpc.upa:upa-api:1.2.0.26" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-impl:1.2.0.26.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi:3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-codec:commons-codec:1.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml:3.9" level="project" />
