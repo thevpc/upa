@@ -46,6 +46,8 @@ public interface QLEvaluatorRegistry {
 
     public void registerFunctionEvaluator(String name, QLTypeEvaluator t) ;
 
+    public void registerFunctionEvaluator(String name, net.vpc.upa.Function t) ;
+
     public void unregisterFunctionEvaluator(String name) ;
 
     public void unregisterTypeEvaluator(Class type);

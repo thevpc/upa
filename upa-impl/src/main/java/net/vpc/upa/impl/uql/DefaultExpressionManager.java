@@ -161,7 +161,8 @@ public class DefaultExpressionManager implements ExpressionManager {
     public Expression simplifyExpression(Expression expression, final Map<String, Object> vars) {
         Expression e=parseExpression(expression);
         ExpressionTransformerResult e2=e.transform(new SimplifyVarsExpressionTransformer(getPersistenceUnit(),vars));
-        return createEvaluator().evalObject(e2.getExpression(),null);
+        //return createEvaluator().evalObject(e2.getExpression(),null);
+        return e2.getExpression();
     }
 
     @Override

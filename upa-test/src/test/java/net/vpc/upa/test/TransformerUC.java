@@ -22,6 +22,7 @@ public class TransformerUC {
     static {
         LogUtils.prepare();
     }
+
     private static final Logger log = Logger.getLogger(TransformerUC.class.getName());
 
     @Test
@@ -44,32 +45,33 @@ public class TransformerUC {
 
         public void testQuery() {
             final PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-            String query="(that.phone2.id=2 or that.phone2.id=3) and (that.phone2.id=2 or that.phone2.id=3)";
-            final Map<String,Object> vals=new HashMap<String, Object>();
+            String query = "(that.phone2.id=2 or that.phone2.id=3) and (that.phone2.id=2 or that.phone2.id=3)";
+            final Map<String, Object> vals = new HashMap<String, Object>();
             Person person = new Person();
             Phone phone2 = new Phone();
             phone2.setId(4);
             person.setPhone2(phone2);
             vals.put("that", person);
 
-            Expression e=pu.getExpressionManager().simplifyExpression(query, vals);
+            Expression e = pu.getExpressionManager().simplifyExpression(query, vals);
+            e = pu.getExpressionManager().createEvaluator().evalObject(e, null);
             System.out.println(e);
         }
 
- public void testQuery2() {
+        public void testQuery2() {
             final PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-            String query="concat('width:60px;','background:'," +
-             "if   (this.phone2.value like '%UE1') then '{bgcolor1}' " +
-                     " elseif (this.phone2.value like '%UE2') then '{bgcolor2}' " +
-                     " elseif (this.phone2.value like '%UE3') then '{bgcolor3}' " +
-                     " elseif (this.phone2.value like '%UE4') then '{bgcolor4}' " +
-                     " elseif (this.phone2.value like '%UE5') then '{bgcolor5}' " +
-                     " elseif (this.phone2.value like '%UE6') then '{bgcolor6}' " +
-                     " elseif (this.phone2.value like '%UE7') then '{bgcolor7}' " +
-                     " elseif (this.phone2.value like '%UE8') then '{bgcolor8}' " +
-                     "else '?'" +
-                     "end)";
-            final Map<String,Object> vals=new HashMap<String, Object>();
+            String query = "concat('width:60px;','background:'," +
+                    "if   (this.phone2.value like '%UE1') then '{bgcolor1}' " +
+                    " elseif (this.phone2.value like '%UE2') then '{bgcolor2}' " +
+                    " elseif (this.phone2.value like '%UE3') then '{bgcolor3}' " +
+                    " elseif (this.phone2.value like '%UE4') then '{bgcolor4}' " +
+                    " elseif (this.phone2.value like '%UE5') then '{bgcolor5}' " +
+                    " elseif (this.phone2.value like '%UE6') then '{bgcolor6}' " +
+                    " elseif (this.phone2.value like '%UE7') then '{bgcolor7}' " +
+                    " elseif (this.phone2.value like '%UE8') then '{bgcolor8}' " +
+                    "else '?'" +
+                    "end)";
+            final Map<String, Object> vals = new HashMap<String, Object>();
             Person person = new Person();
             Phone phone2 = new Phone();
             phone2.setId(4);
@@ -77,7 +79,9 @@ public class TransformerUC {
             person.setPhone2(phone2);
             vals.put("this", person);
 
-            Expression e=pu.getExpressionManager().simplifyExpression(query, vals);
+            ExpressionManager expressionManager = pu.getExpressionManager();
+            Expression e = expressionManager.simplifyExpression(query, vals);
+            e = expressionManager.createEvaluator().evalObject(e,null);
             System.out.println(e);
         }
 

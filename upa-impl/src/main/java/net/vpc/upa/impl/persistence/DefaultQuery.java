@@ -29,11 +29,11 @@ public class DefaultQuery extends AbstractQuery {
 
     private static final Logger log = Logger.getLogger(DefaultQuery.class.getName());
     private EntityExecutionContext context;
-//    private Entity defaultEntity;
+    //    private Entity defaultEntity;
 //    private CompiledEntityStatement cquery;
     private EntityStatement query;
     private QueryResult result;
-//    private QueryExecutor queryExecutor;
+    //    private QueryExecutor queryExecutor;
     private DefaultPersistenceStore store;
     private boolean lazyListLoadingEnabled = true;
     private Map<String, Object> hints = new HashMap<String, Object>();
@@ -41,8 +41,8 @@ public class DefaultQuery extends AbstractQuery {
     private List<Object> allResults = new ArrayList<Object>();
     private QueryExecutor lastQueryExecutor = null;
     private DefaultQuery sessionAwareInstance;
-    private Map<String, Object> parametersByName ;
-    private Map<Integer, Object> parametersByIndex ;
+    private Map<String, Object> parametersByName;
+    private Map<Integer, Object> parametersByIndex;
 
     //needed by asm emit
     protected DefaultQuery() {
@@ -56,8 +56,8 @@ public class DefaultQuery extends AbstractQuery {
 //    }
 
     public DefaultQuery(EntityStatement query, Entity defaultEntity, EntityExecutionContext context) {
-        this.query=query;
-        if(defaultEntity!=null) {
+        this.query = query;
+        if (defaultEntity != null) {
             if (query instanceof Select) {
                 Select select = (Select) query;
                 if (select.getEntity() == null) {
@@ -96,7 +96,7 @@ public class DefaultQuery extends AbstractQuery {
         return queryExecutor.execute().getResultCount();
     }
 
-    protected CompiledEntityStatement createCompiledEntityStatement(){
+    protected CompiledEntityStatement createCompiledEntityStatement() {
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
         String alias = null;
         String ent = null;
@@ -192,28 +192,28 @@ public class DefaultQuery extends AbstractQuery {
         }
         try {
             QueryExecutor queryExecutor = executeQuery(Fields2.READ);
-            QueryFetchStrategy fetchStrategy=(QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
-            if(fetchStrategy==null){
-                fetchStrategy=QueryFetchStrategy.JOIN;
+            QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
+            if (fetchStrategy == null) {
+                fetchStrategy = QueryFetchStrategy.JOIN;
             }
-            boolean itemAsRecord=builder instanceof RecordQueryResultItemBuilder;
-            boolean relationAsRecord=false;
-            boolean supportCache=false;
-            QueryResultRelationLoader loader=null;
-            switch (fetchStrategy){
-                case JOIN:{
+            boolean itemAsRecord = builder instanceof RecordQueryResultItemBuilder;
+            boolean relationAsRecord = false;
+            boolean supportCache = false;
+            QueryResultRelationLoader loader = null;
+            switch (fetchStrategy) {
+                case JOIN: {
                     break;
                 }
-                case SELECT:{
-                    supportCache=true;
-                    loader=new QueryRelationLoaderSelectObject();
+                case SELECT: {
+                    supportCache = true;
+                    loader = new QueryRelationLoaderSelectObject();
                     break;
                 }
             }
-            QueryResultLazyList<T> r=new DefaultObjectQueryResultLazyList<T>(
+            QueryResultLazyList<T> r = new DefaultObjectQueryResultLazyList<T>(
                     pu,
                     queryExecutor,
-                    fetchStrategy!=QueryFetchStrategy.JOIN,
+                    fetchStrategy != QueryFetchStrategy.JOIN,
                     itemAsRecord,
                     relationAsRecord,
                     supportCache,
@@ -265,8 +265,14 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public <T> Set<T> getValueSet(int index) throws UPAException {
+        List<T> valueList = this.<T>getValueList(index);
+        if (query instanceof Select && (((Select) query).getOrder().size() > 0)) {
+            LinkedHashSet<T> set = new LinkedHashSet<T>();
+            set.addAll(valueList);
+            return set;
+        }
         HashSet<T> set = new HashSet<T>();
-        set.addAll(this.<T>getValueList(index));
+        set.addAll(valueList);
         return set;
     }
 
@@ -334,7 +340,7 @@ public class DefaultQuery extends AbstractQuery {
     @Override
     public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
         HashSet<T> set = new HashSet<T>();
-        set.addAll(getTypeList(type,fields));
+        set.addAll(getTypeList(type, fields));
         return set;
     }
 
@@ -346,7 +352,7 @@ public class DefaultQuery extends AbstractQuery {
             }
             return sessionAwareInstance.getKeyList();
         }
-        if((query instanceof QueryStatement)) {
+        if ((query instanceof QueryStatement)) {
             Entity entity = resolveDefaultEntity();
             if (entity != null) {
                 ConvertedList<Object, Key> r = new ConvertedList<Object, Key>(getIdList(), new IdToKeyConverter<Object>(entity));
@@ -356,7 +362,8 @@ public class DefaultQuery extends AbstractQuery {
         }
         throw new FindException(new I18NString("InvalidQuery"));
     }
-    private Entity resolveDefaultEntity(){
+
+    private Entity resolveDefaultEntity() {
         String[] a = UQLUtils.resolveEntityAndAlias((QueryStatement) query);
         Entity entity = null;
         if (a != null) {
@@ -364,6 +371,7 @@ public class DefaultQuery extends AbstractQuery {
         }
         return entity;
     }
+
     @Override
     public <K2> List<K2> getIdList() throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
@@ -373,9 +381,9 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getIdList();
         }
         try {
-            if((query instanceof QueryStatement)) {
+            if ((query instanceof QueryStatement)) {
                 Entity entity = resolveDefaultEntity();
-                if(entity!=null){
+                if (entity != null) {
                     QueryExecutor queryExecutor = executeQuery(FieldFilters.id());
                     SingleEntityKeyList<K2> r = new SingleEntityKeyList<K2>(queryExecutor, entity);
                     allResults.add(r);
@@ -423,12 +431,12 @@ public class DefaultQuery extends AbstractQuery {
 
     protected QueryExecutor createNativeSQL(FieldFilter fieldFilter) {
 //        applyParameters();
-        lastQueryExecutor =store.createExecutor(query, parametersByName, parametersByIndex, isUpdatable(), fieldFilter, context.setHints(getHints()));
+        lastQueryExecutor = store.createExecutor(query, parametersByName, parametersByIndex, isUpdatable(), fieldFilter, context.setHints(getHints()));
         EntityStatement statement = lastQueryExecutor.getMetaData().getStatement();
         return lastQueryExecutor;
     }
 
-//        CompiledNamedExpression[] ne = new CompiledNamedExpression[query.countFields()];
+    //        CompiledNamedExpression[] ne = new CompiledNamedExpression[query.countFields()];
 //        for (int i = 0; i < ne.length; i++) {
 //            CompiledQueryField field = query.getField(i);
 //            String validName = field.getName() != null ? field.getName() : field.getExpression().toString();
@@ -439,8 +447,8 @@ public class DefaultQuery extends AbstractQuery {
 //        }
     @Override
     public Query setParameter(final String name, Object value) {
-        if(parametersByName ==null){
-            parametersByName =new HashMap<String, Object>();
+        if (parametersByName == null) {
+            parametersByName = new HashMap<String, Object>();
         }
         parametersByName.put(name, value);
         return this;
@@ -448,7 +456,7 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public Query removeParameter(final String name) {
-        if(parametersByName !=null) {
+        if (parametersByName != null) {
             parametersByName.remove(name);
         }
         return this;
@@ -456,7 +464,7 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public Query removeParameter(int index) {
-        if(parametersByIndex !=null) {
+        if (parametersByIndex != null) {
             parametersByIndex.remove(index);
         }
         return this;
@@ -511,16 +519,16 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public Query setParameter(int index, Object value) {
-        if(parametersByIndex==null){
-            parametersByIndex=new HashMap<Integer, Object>();
+        if (parametersByIndex == null) {
+            parametersByIndex = new HashMap<Integer, Object>();
         }
-        parametersByIndex.put(index,value);
+        parametersByIndex.put(index, value);
         return this;
     }
 
     @Override
     public ResultMetaData getMetaData() throws UPAException {
-        if(lastQueryExecutor ==null){
+        if (lastQueryExecutor == null) {
             throw new UPAException("NoQueryExecutedYet");
         }
         return lastQueryExecutor.getMetaData();
@@ -561,7 +569,7 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public Query setHints(Map<String, Object> hints) {
-        if(hints!=null) {
+        if (hints != null) {
             for (Map.Entry<String, Object> e : hints.entrySet()) {
                 setHint(e.getKey(), e.getValue());
             }
@@ -574,12 +582,12 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     public Object getHint(String hintName) {
-        return hints==null?null:hints.get(hintName);
+        return hints == null ? null : hints.get(hintName);
     }
 
-    public Object getHint(String hintName,Object defaultValue) {
+    public Object getHint(String hintName, Object defaultValue) {
         Object c = hints == null ? null : hints.get(hintName);
-        return c==null?defaultValue:c;
+        return c == null ? defaultValue : c;
     }
 
 }

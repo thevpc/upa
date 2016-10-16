@@ -604,7 +604,9 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             alias=getTargetEntity().getName();
         }
         final String alias2=alias;
-        Expression filter2=getPersistenceUnit().getExpressionManager().simplifyExpression(filter.copy(),v);
+        ExpressionManager expressionManager = getPersistenceUnit().getExpressionManager();
+        Expression filter2= expressionManager.simplifyExpression(filter.copy(),v);
+        filter2=expressionManager.createEvaluator().evalObject(filter2,null);
         filter2.visit(new ThatExpressionReplacer(alias2));
         return filter2;
 
