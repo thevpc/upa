@@ -5,12 +5,16 @@ package net.vpc.upa;
  */
 public class NamedId {
     private Object id;
-    private String name;
+    /**
+     * name is changed from String to Object as some Entities does not
+     * define String typed @Main fields.
+     */
+    private Object name;
 
     public NamedId() {
     }
 
-    public NamedId(Object id, String name) {
+    public NamedId(Object id, Object name) {
         this.id = id;
         this.name = name;
     }
@@ -19,7 +23,7 @@ public class NamedId {
         return id;
     }
 
-    public String getName() {
+    public Object getName() {
         return name;
     }
 
@@ -27,7 +31,7 @@ public class NamedId {
         this.id = id;
     }
 
-    public void setName(String name) {
+    public void setName(Object name) {
         this.name = name;
     }
 

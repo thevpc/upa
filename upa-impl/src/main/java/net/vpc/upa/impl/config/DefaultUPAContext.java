@@ -9,6 +9,7 @@ import net.vpc.upa.Properties;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
+import net.vpc.upa.exceptions.InvocationException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.DefaultUPAContextFactory;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
@@ -296,18 +297,15 @@ public class DefaultUPAContext implements UPAContext {
             if (transactionCreated) {
                 pu.commitTransaction();
             }
-        } catch (UPAException e) {
-            anyErr = e;
-            if (transactionCreated) {
-                pu.rollbackTransaction();
-            }
-            throw e;
         } catch (Throwable e) {
             anyErr = e;
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
-            throw new UPAException(e, new I18NString("InvokeError"));
+            if(e instanceof UPAException || e instanceof RuntimeException) {
+                throw e;
+            }
+            throw new InvocationException(e);
         } finally {
             if (loginCreated) {
                 pu.logout();
@@ -363,20 +361,16 @@ public class DefaultUPAContext implements UPAContext {
             if (transactionCreated) {
                 pu.commitTransaction();
             }
-        } catch (UPAException e) {
-            anyErr = e;
-            e.printStackTrace();
-            if (transactionCreated) {
-                pu.rollbackTransaction();
-            }
-            throw e;
         } catch (Throwable e) {
             anyErr = e;
             e.printStackTrace();
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
-            throw new UPAException(e, new I18NString("InvokeError"));
+            if(e instanceof UPAException || e instanceof RuntimeException) {
+                throw e;
+            }
+            throw new InvocationException(e);
         } finally {
             if (loginCreated) {
                 pu.logout();
@@ -653,6 +647,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -665,7 +660,7 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : m.getParameterTypes()) {
                             if (parameterType.equals(UpdateObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -673,7 +668,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -681,7 +676,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -689,7 +684,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -703,6 +698,7 @@ public class DefaultUPAContext implements UPAContext {
                                 };
                                 InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                                 return new UpdateFormulaObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                        m,
                                         methodArguments,
                                         apiArguments,
                                         implicitArguments
@@ -713,6 +709,7 @@ public class DefaultUPAContext implements UPAContext {
                                 };
                                 InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                                 return new UpdateObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                        m,
                                         methodArguments,
                                         apiArguments,
                                         implicitArguments
@@ -724,6 +721,7 @@ public class DefaultUPAContext implements UPAContext {
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                             return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    m,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -734,6 +732,7 @@ public class DefaultUPAContext implements UPAContext {
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                             return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    m,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -746,14 +745,14 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : m.getParameterTypes()) {
                             if (parameterType.equals(RemoveObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
                             }
                             if (parameterType.equals(RemoveEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambigous");
+                                    throw new IllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -765,6 +764,7 @@ public class DefaultUPAContext implements UPAContext {
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                             return new RemoveObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    m,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -775,6 +775,7 @@ public class DefaultUPAContext implements UPAContext {
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                             return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    m,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -789,6 +790,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -800,6 +802,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -811,6 +814,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -822,6 +826,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -833,6 +838,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -844,6 +850,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -863,6 +870,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -874,6 +882,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -885,6 +894,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -896,6 +906,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -915,6 +926,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -926,6 +938,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -937,6 +950,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -948,6 +962,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -967,6 +982,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -978,6 +994,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -989,6 +1006,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1000,6 +1018,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1019,6 +1038,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1030,6 +1050,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1041,6 +1062,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1052,6 +1074,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1071,6 +1094,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1082,6 +1106,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1093,6 +1118,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1104,6 +1130,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1115,6 +1142,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1134,6 +1162,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1145,6 +1174,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1164,6 +1194,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1175,6 +1206,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1197,6 +1229,7 @@ public class DefaultUPAContext implements UPAContext {
                             configuration2.put("returnType", forNativeType);
                         }
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1216,6 +1249,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                m,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments

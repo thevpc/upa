@@ -62,13 +62,13 @@
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-api</artifactId>
-            <version>1.2.0.26</version>
+            <version>1.2.0.28</version>
         </dependency>
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-impl</artifactId>
             <scope>runtime</scope>
-            <version>1.2.0.26.3</version>
+            <version>1.2.0.28.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>

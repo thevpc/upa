@@ -528,7 +528,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                     foreach (System.Type parameterType in Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m)) {
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.UpdateObjectEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = true;
@@ -536,7 +536,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                         }
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaObjectEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = true;
@@ -544,7 +544,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                         }
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.UpdateEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = false;
@@ -552,7 +552,7 @@ namespace Net.Vpc.Upa.Impl.Config
                                         }
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.UpdateFormulaEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = false;
@@ -587,14 +587,14 @@ namespace Net.Vpc.Upa.Impl.Config
                                     foreach (System.Type parameterType in Net.Vpc.Upa.Impl.FwkConvertUtils.GetMethodParameterTypes(m)) {
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.RemoveObjectEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = true;
                                         }
                                         if (parameterType.Equals(typeof(Net.Vpc.Upa.Callbacks.RemoveEvent))) {
                                             if (found) {
-                                                throw new System.ArgumentException ("Ambigous");
+                                                throw new System.ArgumentException ("Ambiguous");
                                             }
                                             found = true;
                                             obj = false;

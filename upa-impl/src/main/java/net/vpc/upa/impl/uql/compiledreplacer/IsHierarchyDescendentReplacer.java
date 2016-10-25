@@ -58,7 +58,7 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                         treeEntity = (Entity) childReferrer;
                     } else {
                         if (!treeEntity.getName().equals(((Entity) childReferrer).getName())) {
-                            throw new IllegalArgumentException("Ambigous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + e);
+                            throw new IllegalArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + e);
                         }
                     }
                 }
@@ -82,7 +82,7 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
                         treeEntity = (Entity) parentReferrer;
                     } else {
                         if (!treeEntity.getName().equals(((Entity) parentReferrer).getName())) {
-                            throw new IllegalArgumentException("Ambigous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + e);
+                            throw new IllegalArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + e);
                         }
                     }
                 }

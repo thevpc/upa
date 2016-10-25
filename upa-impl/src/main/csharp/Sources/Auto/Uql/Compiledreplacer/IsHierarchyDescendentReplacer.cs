@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
                             treeEntity = (Net.Vpc.Upa.Entity) childReferrer;
                         } else {
                             if (!treeEntity.GetName().Equals(((Net.Vpc.Upa.Entity) childReferrer).GetName())) {
-                                throw new System.ArgumentException ("Ambigous or Invalid Type " + treeEntity.GetName() + " in TreeEntity near " + e);
+                                throw new System.ArgumentException ("Ambiguous or Invalid Type " + treeEntity.GetName() + " in TreeEntity near " + e);
                             }
                         }
                     }
@@ -66,7 +66,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
                             treeEntity = (Net.Vpc.Upa.Entity) parentReferrer;
                         } else {
                             if (!treeEntity.GetName().Equals(((Net.Vpc.Upa.Entity) parentReferrer).GetName())) {
-                                throw new System.ArgumentException ("Ambigous or Invalid Type " + treeEntity.GetName() + " in TreeEntity near " + e);
+                                throw new System.ArgumentException ("Ambiguous or Invalid Type " + treeEntity.GetName() + " in TreeEntity near " + e);
                             }
                         }
                     }
