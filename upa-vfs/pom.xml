@@ -55,7 +55,7 @@
         <dependency>
             <groupId>net.vpc.common</groupId>
             <artifactId>vfs</artifactId>
-            <version>1.4</version>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>net.vpc.upa</groupId>
