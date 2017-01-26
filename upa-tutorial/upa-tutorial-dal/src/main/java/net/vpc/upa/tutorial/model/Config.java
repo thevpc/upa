@@ -9,7 +9,9 @@ import net.vpc.upa.FieldModifier;
 import net.vpc.upa.config.*;
 
 /**
- *
+ * This is a Singleton Entity.
+ * Singleton entities provides simple way to 'one row' tables
+ * such as Configuration Tables.
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Singleton

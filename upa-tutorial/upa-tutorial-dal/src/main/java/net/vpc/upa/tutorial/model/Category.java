@@ -8,10 +8,12 @@ package net.vpc.upa.tutorial.model;
 import net.vpc.upa.config.*;
 
 /**
- *
+ * This is a Hierarchical Entity.
+ * a Hierarchical Entity defines one or
+ * more @Hierarchy many ot one fields.
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@Singleton
+@Entity
 public class Category {
 
     @Id @Sequence

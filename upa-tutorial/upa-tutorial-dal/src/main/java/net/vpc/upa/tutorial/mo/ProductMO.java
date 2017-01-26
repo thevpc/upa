@@ -9,7 +9,10 @@ import net.vpc.upa.config.*;
 import net.vpc.upa.tutorial.model.Product;
 
 /**
- *
+ * This is a partial Class.
+ * Partial Classes enable customizing other Entities of MO Classes.
+ * Actually, this Partial Class adds new field 'description'
+ * and modifies 'name' and 'quantity' fields
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Partial(Product.class)

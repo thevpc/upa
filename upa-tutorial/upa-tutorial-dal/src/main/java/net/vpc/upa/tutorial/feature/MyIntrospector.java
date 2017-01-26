@@ -15,11 +15,11 @@ import net.vpc.upa.config.OnCreate;
 import net.vpc.upa.config.OnDrop;
 
 /**
- *
+ * This is a Simple model changed listener
  * @author taha.bensalah@gmail.com
  */
 @Callback
-public class MyIntrospector extends DefinitionListenerAdapter {
+public class MyIntrospector {
 
     @OnCreate
     public void entityAdded(EntityEvent event) {

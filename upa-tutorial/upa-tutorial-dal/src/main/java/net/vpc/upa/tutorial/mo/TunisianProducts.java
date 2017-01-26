@@ -8,7 +8,7 @@ package net.vpc.upa.tutorial.mo;
 import net.vpc.upa.config.*;
 
 /**
- *
+ * This is a View Entity described as Class and a UPQL query
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @View(

@@ -14,6 +14,10 @@ import net.vpc.upa.types.StringType;
 import net.vpc.upa.types.TimestampType;
 
 /**
+ * Simple Trace Callback that will add automatically fields
+ * creationDate,creationUser,modificationDate,modificationUser
+ * and revision
+ * to all declared Entities
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Callback

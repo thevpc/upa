@@ -15,6 +15,12 @@ public class InvoiceDetail {
     private String invoiceId;
 //    private Invoice invoice;
     @Id
+    /**
+     * This is an example of a sequence of a non ordinal type.
+     * This will create a sequence that will reset every time the
+     * invoiceId changes.
+     * The sequence will start with 1 and increment by 1
+     */
     @Sequence(group = "{invoiceId}" ,initialValue=1,allocationSize=1)
     private int position;
     private int productId;

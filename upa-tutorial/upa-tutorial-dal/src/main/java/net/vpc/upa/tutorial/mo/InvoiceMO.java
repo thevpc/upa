@@ -5,6 +5,8 @@ import net.vpc.upa.config.*;
 import net.vpc.upa.tutorial.model.Invoice;
 
 /**
+ * Mapping Object defines DAL constraints for a given Entity
+ * This one is describing Invoice Class
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/15/12 9:43 PM
  */
@@ -21,6 +23,11 @@ public class InvoiceMO {
     //@ManyToOne no explicit need to add this annotation!
     private FieldDesc customer;
 
+    /**
+     * totalTaxFree is calculated as a sum.
+     * Note the usage of the this prefix to
+     * target the 'current instance of Invoice
+     */
     @Formula(value="Coalesce((Select Sum(x.priceTaxFree) "
             + "From InvoiceDetail x "
             + "Where "
