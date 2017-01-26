@@ -806,12 +806,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                 } else if (selectFormula instanceof Sequence) {
                     if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                        throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
+                        throw new IllegalArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
                     }
                     fmc.add(FieldModifier.SELECT_DEFAULT);
                 } else {
                     if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                        throw new IllegalArgumentException("LIVE and COMPILED elector are supported solely for ExpressionFormula");
+                        throw new IllegalArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
                     }
                     if (f.getDataType() instanceof ManyToOneType) {
                         fmc.add(FieldModifier.SELECT_DEFAULT);

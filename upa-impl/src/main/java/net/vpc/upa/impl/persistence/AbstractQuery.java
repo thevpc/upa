@@ -11,6 +11,7 @@ import net.vpc.upa.Query;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:14 PM To change
@@ -177,5 +178,39 @@ public abstract class AbstractQuery implements Query {
     public void setUpdatable(boolean forUpdate) {
         this.updatable = forUpdate;
     }
+
+    public Query setParameters(Map<String, Object> parameters) {
+        if (parameters != null) {
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                setParameter(entry.getKey(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public Query setParameter(String name, Object value,boolean condition) {
+        if(!condition){
+            return this;
+        }
+        return setParameter(name,value);
+    }
+
+    @Override
+    public Query setParameters(Map<String, Object> parameters,boolean condition) {
+        if(!condition){
+            return this;
+        }
+        return setParameters(parameters);
+    }
+
+    @Override
+    public Query setParameter(int index, Object value,boolean condition) {
+        if(!condition){
+            return this;
+        }
+        return setParameter(index,value);
+    }
+
 
 }

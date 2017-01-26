@@ -139,6 +139,12 @@ public interface Query extends Closeable {
 
     Query setParameter(int index, Object value);
 
+    Query setParameter(String name, Object value,boolean condition);
+
+    Query setParameters(Map<String, Object> parameters,boolean condition);
+
+    Query setParameter(int index, Object value,boolean condition);
+
     public Query removeParameter(String name) ;
 
     public Query removeParameter(int index) ;

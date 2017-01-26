@@ -13,9 +13,8 @@ import java.util.*;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/29/12 2:28 AM
  */
-public final class DefaultQueryBuilder implements QueryBuilder {
+public final class DefaultQueryBuilder extends AbstractQuery implements QueryBuilder {
 
-    private boolean updatable;
     private boolean lazyListLoadingEnabled = true;
     private Entity entity;
     private String entityAlias;
@@ -394,12 +393,8 @@ public final class DefaultQueryBuilder implements QueryBuilder {
         return this;
     }
 
-    public boolean isUpdatable() {
-        return updatable;
-    }
-
     public void setUpdatable(boolean forUpdate) {
-        this.updatable = forUpdate;
+        super.setUpdatable(forUpdate);
         if (query != null) {
             query.setUpdatable(forUpdate);
         }

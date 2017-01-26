@@ -63,12 +63,12 @@ public class CompiledVar extends CompiledVarOrMethod {
     public String getChildlessPath() {
         StringBuilder v = new StringBuilder();
         if (getParentExpression() != null) {
-            v.append(".");
             if (getParentExpression() instanceof CompiledVar) {
                 v.append(((CompiledVar) getParentExpression()).getChildlessPath());
             } else {
                 v.append(getParentExpression().toString());
             }
+            v.append(".");
         }
         v.append(getName());
         return v.toString();

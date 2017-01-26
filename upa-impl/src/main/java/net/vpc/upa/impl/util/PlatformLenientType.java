@@ -37,7 +37,7 @@ public class PlatformLenientType implements LenientType{
                 type=Class.forName(typeName);
                 log.log(Level.INFO, "Lenient Type " + typeName + " loaded successfully");
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 type=Void.TYPE;
                 log.log(Level.SEVERE, "Lenient Type " + typeName + " was unable to load : " + e);
             }

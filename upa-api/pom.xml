@@ -5,7 +5,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-api</artifactId>
     <name>net.vpc.upa.upa-api</name>
-    <version>1.2.0.28</version>
+    <version>1.2.0.31</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 
@@ -47,9 +47,6 @@
         <github.global.server>github</github.global.server>
     </properties>
 
-    <dependencies>
-    </dependencies>
-
     <distributionManagement>
         <site>
             <id>github</id>
@@ -62,6 +59,10 @@
             <url>file://${project.build.directory}/vpc-public-maven</url>
         </repository>
     </distributionManagement>
+
+    <dependencies>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

@@ -152,7 +152,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if (s != null) {
             return s.isAllowedRead(field);
         }
-        return isAllowedKey(field.getEntity(), "Load");
+        return isAllowedKey(field, "Read");
     }
 
     @Override
@@ -161,7 +161,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if (s != null) {
             return s.isAllowedRead(field, id, object);
         }
-        return isAllowedKey(field.getEntity(), "Load");
+        return isAllowedKey(field, "Read");
     }
 
     @Override
@@ -170,7 +170,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if (s != null) {
             return s.isAllowedWrite(field);
         }
-        return isAllowedKey(field.getEntity(), "Update");
+        return isAllowedKey(field, "Write");
     }
 
     /**
@@ -187,7 +187,7 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if (s != null) {
             return s.isAllowedWrite(field, id, object);
         }
-        return isAllowedKey(field.getEntity(), "Update");
+        return isAllowedKey(field, "Write");
     }
 
     /**
@@ -220,7 +220,14 @@ public class DefaultSecurityManager implements UPASecurityManager {
         if(e==null){
             return isAllowedKey(key);
         }
-        return isAllowedKey(e.getAbsoluteName() + "." + key);
+        return isAllowedKey(e.getPersistenceUnit().getPersistenceGroup(),e.getAbsoluteName() + "." + key);
+    }
+
+    public boolean isAllowedKey(Field e, String key)  {
+        if (key == null) {
+            return true;
+        }
+        return isAllowedKey(e.getPersistenceUnit().getPersistenceGroup(), e.getEntity().getAbsoluteName()+"."+e.getName() + "." + key);
     }
 
     /**
@@ -231,7 +238,17 @@ public class DefaultSecurityManager implements UPASecurityManager {
      */
     @Override
     public boolean isAllowedKey(String key) throws UPAException {
-        PersistenceGroupSecurityManager s = UPA.getPersistenceGroup().getPersistenceGroupSecurityManager();
+        return isAllowedKey(UPA.getPersistenceGroup(),key);
+    }
+
+    /**
+     *
+     * @param key
+     * @return
+     * @throws UPAException
+     */
+    public boolean isAllowedKey(PersistenceGroup persistenceGroup,String key) throws UPAException {
+        PersistenceGroupSecurityManager s = persistenceGroup.getPersistenceGroupSecurityManager();
         return s == null ? true : s.isAllowedKey(key);
     }
 

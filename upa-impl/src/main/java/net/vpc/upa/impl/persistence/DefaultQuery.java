@@ -470,16 +470,8 @@ public class DefaultQuery extends AbstractQuery {
         return this;
     }
 
-    public Query setParameters(Map<String, Object> parameters) {
-        if (parameters != null) {
-            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-                setParameter(entry.getKey(), entry.getValue());
-            }
-        }
-        return this;
-    }
 
-//
+    //
 //    private Query applyParameters() {
 //        if (parametersByName != null) {
 //            for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {

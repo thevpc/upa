@@ -10,7 +10,8 @@
         <module>upa-api</module>
         <module>upa-impl</module>
         <module>upa-web</module>
-        <module>upa-portable</module>
+        <!-- upa-portable is ignored as it uses a non open-source (yet) dependency -->
+        <!--<module>upa-portable</module>-->
         <module>upa-test</module>
         <module>upa-tutorial</module>
         <module>upa-vfs</module>

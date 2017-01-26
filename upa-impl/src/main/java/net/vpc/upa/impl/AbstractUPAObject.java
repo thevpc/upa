@@ -93,6 +93,11 @@ public abstract class AbstractUPAObject implements UPAObject {
         propertyChangeSupport.firePropertyChange("persistenceUnit", old, persistenceUnit);
     }
 
+    @Override
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceUnit==null?null:persistenceUnit.getPersistenceGroup();
+    }
+
     //--------------------------- PROPERTIES SUPPORT
     public Properties getProperties() {
         return parameters;

@@ -4,6 +4,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityStatement;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledInCollection;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
@@ -31,7 +32,7 @@ public class InCollectionSQLProvider extends AbstractSQLProvider {
         if ( mySize== 0) {
             sb.append("1 <> 1");
         }else {
-            if (mySize == 1) {
+            if (mySize == 1 && !(o.getRight(0) instanceof CompiledEntityStatement)) {
                 sb.append(sqlManager.getSQL(o.getLeft(),qlContext, declarations));
                 DefaultCompiledExpression e = o.getRight(0);
                 if (e == null || (e instanceof CompiledLiteral && ((CompiledLiteral)e).getValue()==null)) {

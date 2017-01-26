@@ -312,20 +312,20 @@ public class ExpressionValidationManager {
                         CompiledVar ff = (CompiledVar) cv.getChild();
                         Field ef = (Field) ff.getReferrer();
                         if (ef.getDataType() instanceof ManyToOneType) {
-                            String binding = "";
-                            CompiledVarOrMethod r = cv;
-                            while (r != null) {
-                                if (binding.length() == 0) {
-                                    binding = r.getName();
-                                } else {
-                                    binding = r.getName() + "." + binding;
-                                }
-                                if (r.getParentExpression() instanceof CompiledVarOrMethod) {
-                                    r = (CompiledVarOrMethod) r.getParentExpression();
-                                } else {
-                                    r = null;
-                                }
-                            }
+                            String binding = f.getBinding() == null? "" : f.getBinding();
+//                            CompiledVarOrMethod r = cv;
+//                            while (r != null) {
+//                                if (binding.length() == 0) {
+//                                    binding = r.getName();
+//                                } else {
+//                                    binding = r.getName() + "." + binding;
+//                                }
+//                                if (r.getParentExpression() instanceof CompiledVarOrMethod) {
+//                                    r = (CompiledVarOrMethod) r.getParentExpression();
+//                                } else {
+//                                    r = null;
+//                                }
+//                            }
                             if (binding.length() == 0) {
                                 binding = null;
                             }

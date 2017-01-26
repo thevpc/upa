@@ -73,7 +73,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private String name;
     private boolean initCalled;
     private String persistenceName;
-    //    private String defaultAdapterString;
     private PersistenceGroup persistenceGroup;
     private boolean structureModification;
     private boolean autoStart;
@@ -81,11 +80,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private boolean starting;
     private boolean closed;
     private boolean autoScan = true;
-    //    private Resources messager;
     private PropertyChangeSupport propertyChangeSupport;
     private PersistenceUnitListenerManager persistenceUnitListenerManager;
     private ObjectRegistrationModel registrationModel;
-    private DBConfigModel dbConfigModel;
     private int status = STATUS_INITIALIZING;
     private boolean askOnCheckCreatedPersistenceUnit = true;
     private I18NStringStrategy i18NStringStrategy;
@@ -1310,16 +1307,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return true;
     }
 
-    public DBConfigModel getDBConfigModel() {
-        if (dbConfigModel == null) {
-            dbConfigModel = new DefaultDBConfigModel();
-        }
-        return dbConfigModel;
-    }
 
-    public void setDBConfigModel(DBConfigModel dbConfigModel) {
-        this.dbConfigModel = dbConfigModel;
-    }
 
     /**
      * use PersistenceUnitListener
