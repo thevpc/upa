@@ -1,14 +1,16 @@
 package net.vpc.upa.impl.config.annotationparser;
 
-import net.vpc.upa.Property;
-import net.vpc.upa.FieldDescriptor;
 import net.vpc.upa.*;
-import net.vpc.upa.config.BoolEnum;
-import net.vpc.upa.config.FieldDesc;
-import net.vpc.upa.FormulaType;
-import net.vpc.upa.config.Id;
+import net.vpc.upa.Formula;
+import net.vpc.upa.Property;
+import net.vpc.upa.Sequence;
+import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
+import net.vpc.upa.impl.config.decorations.DecorationRepository;
+import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.*;
 
 import java.lang.reflect.Field;
@@ -18,14 +20,7 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.config.StringEncoderType;
-import net.vpc.upa.SearchOperator;
-import net.vpc.upa.config.ConfigInfo;
-import net.vpc.upa.config.Decoration;
-import net.vpc.upa.impl.config.decorations.DecorationRepository;
-import net.vpc.upa.config.DecorationValue;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.UPAUtils;
+import java.lang.reflect.Field;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -45,7 +40,7 @@ class FieldInfo implements FieldDescriptor {
     Object unspecifiedObject = null;
     AnyFormulaInfo anyFormula;
     DataType type;
-//    DataType targetType;
+    //    DataType targetType;
     //    Formula formula;
     Formula persistFormula;
     Formula updateFormula;
@@ -61,7 +56,7 @@ class FieldInfo implements FieldDescriptor {
     boolean valid = true;
     boolean buildForeign = false;
     OverriddenValue<DataType> overriddenDataType = new OverriddenValue<DataType>();
-//    OverriddenValue<DataType> overriddenTargetType = new OverriddenValue<DataType>();
+    //    OverriddenValue<DataType> overriddenTargetType = new OverriddenValue<DataType>();
     OverriddenValue<DataTypeTransformConfig[]> overriddenTransform = new OverriddenValue<DataTypeTransformConfig[]>();
     OverriddenValue<SearchOperator> overriddenSearchOperator = new OverriddenValue<SearchOperator>();
     OverriddenValue<Object> overriddenDefaultValue = new OverriddenValue<Object>();
@@ -434,7 +429,7 @@ class FieldInfo implements FieldDescriptor {
             if (searchDeco != null) {
                 overriddenSearchOperator.setBetterValue(searchDeco.getEnum("op", SearchOperator.class)
                         == SearchOperator.DEFAULT ? PlatformUtils.getUndefinedValue(SearchOperator.class)
-                                : searchDeco.getEnum("op", SearchOperator.class), searchDeco.getConfig().getOrder());
+                        : searchDeco.getEnum("op", SearchOperator.class), searchDeco.getConfig().getOrder());
             }
             for (net.vpc.upa.config.Index indexAnn : findIndexAnnotation(someField)) {
                 List<String> rr = new ArrayList<String>();
@@ -511,16 +506,16 @@ class FieldInfo implements FieldDescriptor {
                 AnnotationParserUtils.validStr(fieldDeco.getString("unspecifiedValue"), overriddenUnspecifiedValueStr, processOrder);
             }
             Decoration mainDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Main.class);
-            if(mainDeco!=null){
-                modifiers=modifiers.add(UserFieldModifier.MAIN);
+            if (mainDeco != null) {
+                modifiers = modifiers.add(UserFieldModifier.MAIN);
             }
             Decoration summaryDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Summary.class);
-            if(summaryDeco!=null){
-                modifiers=modifiers.add(UserFieldModifier.SUMMARY);
+            if (summaryDeco != null) {
+                modifiers = modifiers.add(UserFieldModifier.SUMMARY);
             }
             Decoration uniqueDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Unique.class);
-            if(uniqueDeco!=null){
-                modifiers=modifiers.add(UserFieldModifier.UNIQUE);
+            if (uniqueDeco != null) {
+                modifiers = modifiers.add(UserFieldModifier.UNIQUE);
             }
             Decoration annID = repo.getFieldDecoration(someField, Id.class);
             if (annID != null) {
@@ -627,7 +622,7 @@ class FieldInfo implements FieldDescriptor {
             try {
                 overriddenDefaultValue.setBetterValue(AnnotationParserUtils.parseStringValue(overriddenDefaultValueStr.value, overriddenDataType.value, null), overriddenDefaultValue.order);
             } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse default value for " + entityName + "." + name,e);
+                throw new RuntimeException("Unable to parse default value for " + entityName + "." + name, e);
             }
         }
         if (overriddenDefaultValue.specified) {
@@ -638,7 +633,7 @@ class FieldInfo implements FieldDescriptor {
             try {
                 overriddenUnspecifiedValue.setBetterValue(AnnotationParserUtils.parseStringValue(overriddenUnspecifiedValueStr.value, overriddenDataType.value, UnspecifiedValue.DEFAULT), overriddenUnspecifiedValue.order);
             } catch (ParseException e) {
-                throw new RuntimeException("Unable to parse unspecified value for " + entityName + "." + name,e);
+                throw new RuntimeException("Unable to parse unspecified value for " + entityName + "." + name, e);
             }
         }
         if (overriddenDataType.specified) {
@@ -754,7 +749,7 @@ class FieldInfo implements FieldDescriptor {
         return nullableOk;
     }
 
-//    public DataType getTargetType() {
+    //    public DataType getTargetType() {
 //        return targetType;
 //    }
     private List<net.vpc.upa.config.Index> findIndexAnnotation(Field javaField) {
@@ -774,7 +769,7 @@ class FieldInfo implements FieldDescriptor {
         return list;
     }
 
-//    public CipherStrategyType getCipherStrategyType() {
+    //    public CipherStrategyType getCipherStrategyType() {
 //        if (passwordStrategy.specified) {
 //            return passwordStrategy.value.cipherStrategyType();
 //        }
@@ -905,7 +900,13 @@ class FieldInfo implements FieldDescriptor {
                     if (stringStrategyType == StringEncoderType.CUSTOM) {
                         s2.setEncoder(fieldDecoration.getString("custom"));
                     } else {
-                        s2.setEncoder(stringStrategyType);
+                        if (StringUtils.isNullOrEmpty(fieldDecoration.getString("custom"))) {
+                            s2.setEncoder(stringStrategyType);
+                        } else if (stringStrategyType == StringEncoderType.DEFAULT) {
+                            s2.setEncoder(fieldDecoration.getString("custom"));
+                        } else {
+                            throw new IllegalArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
+                        }
                     }
                     transforms.add(s2);
                 } else if (fieldDecoration.getName().equals(net.vpc.upa.config.ToByteArray.class.getName())) {
