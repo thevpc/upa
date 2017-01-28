@@ -40,14 +40,38 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * This annotation defines a StringEncoder class name on the given field
+ * This enables mapping any type to a String
+ * In the following example, the field description is stored as a json String (varchar)
+ * <pre>
+ *     @Entity
+ *     public class MyEntity{
+ *         @ToString(StringEncoderType.JSON)
+ *         String description;
+ *     }
+ * </pre>
+ * The Encoder can either be defined as StringEncoderType (using value() )
+ * or as Class Name (using custom()). If both are defined, StringEncoder class name
+ * is used. If none are defined
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface ToString {
 
+    /**
+     * Pre-defined StringEncoderType. When StringEncoderType.CUSTOM
+     * custom() must be defined
+     * @return StringEncoderType
+     */
     StringEncoderType value() default StringEncoderType.DEFAULT;
 
+    /**
+     * StringEncoder class name.
+     * This value must be filled if  value() == StringEncoderType.CUSTOM
+     * This value could be filled if value() == StringEncoderType.DEFAULT
+     * @return StringEncoder class name
+     */
     String custom() default "";
 
     /**

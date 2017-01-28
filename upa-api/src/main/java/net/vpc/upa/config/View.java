@@ -42,6 +42,38 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *
+ * Views are compiled queries (mapped as RDBMS Views if supported)
+ * but defined as UPQL query expression
+ * Here is an example :
+ * <pre>
+ *     @View(
+ * query = "Select o from Product o where o.country='TN'"
+ * )
+ * public class TunisianProducts {
+ * @Id @Sequence
+ * private int id;
+ * private String name;
+ *
+ * public int getId() {
+ * return id;
+ * }
+ *
+ * public void setId(int id) {
+ * this.id = id;
+ * }
+ *
+ * public String getName() {
+ * return name;
+ * }
+ *
+ * public void setName(String name) {
+ * this.name = name;
+ * }
+ *
+ * }
+ *
+ * </pre>
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/28/12 8:28 PM
  */
@@ -49,8 +81,17 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface View {
 
+    /**
+     * View Query
+     * @return UPQL query
+     */
     String query() default "";
 
+    /**
+     * View Query defined as ViewEntityExtensionDefinition class.
+     * If defined will replace the String query defined in query()
+     * @return
+     */
     Class<ViewEntityExtensionDefinition> spec() default ViewEntityExtensionDefinition.class;
 
     /**

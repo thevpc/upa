@@ -40,12 +40,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * This annotation defines a ByteArrayEncoder class name on the given field
+ * This enables mapping any type to a byte[]
+ * In the following example, the field description is stored as char array
+ * <pre>
+ *     @Entity
+ *     public class MyEntity{
+ *         @ToByteArray
+ *         String description;
+ *     }
+ * </pre>
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface ToByteArray {
 
+    /**
+     * ByteArrayEncoder class name
+     * @return ByteArrayEncoder class name
+     */
     String value() default "";
 
     /**

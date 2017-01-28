@@ -42,12 +42,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Temporal annotation defines how the 'Date' type is handled in store system.
+ * By default, date type is mapped accordingly to the most appropriate.
+ * For instance java.sal.Date  is mapped to DATE but Timestamp is mapped to TIMESTAMP
+ * This annotation makes it possible to get a custom handling
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/21/12 10:28 PM
  */
 @Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Temporal {
+    /**
+     * Defines the Temporal mapping strategy
+     * @return TemporalOption
+     */
     TemporalOption value() default TemporalOption.DEFAULT;
 
     /**

@@ -40,7 +40,7 @@ package net.vpc.upa.types;
  */
 public interface CharArrayEncoder {
 
-    public char[] encode(Object bytes);
+    char[] encode(Object bytes);
 
-    public Object decode(char[] value);
+    Object decode(char[] value);
 }
