@@ -903,7 +903,7 @@ class FieldInfo implements FieldDescriptor {
                     StringEncoderTransformConfig s2 = new StringEncoderTransformConfig();
                     StringEncoderType stringStrategyType = fieldDecoration.getEnum("value", StringEncoderType.class);
                     if (stringStrategyType == StringEncoderType.CUSTOM) {
-                        s2.setEncoder(fieldDecoration.getEnum("custom", StringEncoderType.class));
+                        s2.setEncoder(fieldDecoration.getString("custom"));
                     } else {
                         s2.setEncoder(stringStrategyType);
                     }
