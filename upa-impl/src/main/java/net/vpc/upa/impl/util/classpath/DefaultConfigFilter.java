@@ -27,9 +27,6 @@ public class DefaultConfigFilter implements ClassPathFilter {
     private boolean emptyResult = false;
     private List<DefaultConfigFilterItem> items = new ArrayList<DefaultConfigFilterItem>();
     private Map<URL, List<DefaultConfigFilterItem>> cache = new HashMap<URL, List<DefaultConfigFilterItem>>();
-    
-    @PortabilityHint(target = "C#", name = "ignore")
-    private ClassLoader classLoader;
 
 //    public static void main(String[] args) {
 //        try {
@@ -49,8 +46,6 @@ public class DefaultConfigFilter implements ClassPathFilter {
 //        }
 //    }
     public DefaultConfigFilter(ScanFilter[] filterList) {
-        /**@PortabilityHint(target = "C#", name = "ignore")*/
-        classLoader = Thread.currentThread().getContextClassLoader();
         //always add upa classes
         add(new ScanFilter("", "net.vpc.upa.**", true, Integer.MIN_VALUE));
         for (ScanFilter filter : filterList) {

@@ -1,34 +1,30 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.Closeable;
+import net.vpc.upa.*;
+import net.vpc.upa.Package;
+import net.vpc.upa.config.ScanSource;
+import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Cst;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
-import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.persistence.ResultField;
-import net.vpc.upa.types.*;
-import net.vpc.upa.*;
-import net.vpc.upa.Closeable;
-import net.vpc.upa.Field;
-import net.vpc.upa.Package;
-import net.vpc.upa.exceptions.UPAException;
-
-import java.io.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.vpc.upa.Property;
-import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.impl.config.BaseScanSource;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
+import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
+import net.vpc.upa.impl.util.stringvalueparser.*;
+import net.vpc.upa.persistence.ResultField;
+import net.vpc.upa.types.*;
+
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -41,6 +37,7 @@ public class UPAUtils {
     public static final HashSet<Class> simpleFieldTypes = new HashSet<Class>();
     public static final HashMap<Class, EqualHelper> equalsHelpers = new HashMap<Class, EqualHelper>();
     public static final HashMap<String, Class> namedTypes = new HashMap<String, Class>();
+    public static final HashMap<Class, StringValueParser> typeToParser = new HashMap<Class, StringValueParser>();
     public static final String CONTENT_PROP_PRE_ADD = "before-add";
     public static final String CONTENT_PROP_POST_ADD = "add";
     public static final String CONTENT_PROP_PRE_REMOVE = "before-remove";
@@ -100,32 +97,72 @@ public class UPAUtils {
         simpleFieldTypes.add(net.vpc.upa.types.Timestamp.class);
         simpleFieldTypes.add(net.vpc.upa.types.DatePeriod.class);
 
-        namedTypes.put("bool", Boolean.class);
-        namedTypes.put("boolean", Boolean.class);
-        namedTypes.put("java.lang.Boolean", Boolean.class);
-        namedTypes.put("string", String.class);
-        namedTypes.put("String", String.class);
-        namedTypes.put("java.lang.String", String.class);
-        namedTypes.put("", String.class);
-        namedTypes.put(null, String.class);
+        addTypeParser(new StringValueParserBoolean(), Boolean.class, Boolean.TYPE);
+        addTypeParser(new StringValueParserInt(), Integer.class, Integer.TYPE);
+        addTypeParser(new StringValueParserLong(), Long.class, Long.TYPE);
+        addTypeParser(new StringValueParserFloat(), Float.class, Float.TYPE);
+        addTypeParser(new StringValueParserDouble(), Double.class, Double.TYPE);
+        addTypeParser(new StringValueParserString(), String.class);
+        addTypeParser(new StringValueParserUtilDate(), java.util.Date.class);
+        addTypeParser(new StringValueParserVpcDate(), net.vpc.upa.types.Date.class);
+        addTypeParser(new StringValueParserVpcDateTime(), net.vpc.upa.types.DateTime.class);
+        addTypeParser(new StringValueParserVpcTimestamp(), net.vpc.upa.types.Timestamp.class);
+        addTypeParser(new StringValueParserVpcTime(), net.vpc.upa.types.Time.class);
+        addTypeParser(new StringValueParserVpcMonth(), net.vpc.upa.types.Month.class);
+        addTypeParser(new StringValueParserVpcYear(), net.vpc.upa.types.Year.class);
 
-        namedTypes.put("int", Integer.class);
-        namedTypes.put("Integer", Integer.class);
-        namedTypes.put("java.lang.Integer", Integer.class);
+        addNamedType(Boolean.class, "bool", "boolean");
+        addNamedType(String.class, "", "string");
+        addNamedType(Integer.class, "int", "integer");
+        addNamedType(Long.class, "long");
+        addNamedType(Double.class, "double");
+        addNamedType(Float.class, "float");
+        addNamedType(net.vpc.upa.types.Date.class, "date","dateOnly");
+        addNamedType(net.vpc.upa.types.Time.class, "timeOnly","time");
+        addNamedType(net.vpc.upa.types.Month.class, "monthOnly","month");
+        addNamedType(net.vpc.upa.types.Year.class, "yearOnly","year");
+        addNamedType(net.vpc.upa.types.DateTime.class, "dateTime");
+        addNamedType(net.vpc.upa.types.Timestamp.class, "TimeStamp");
 
-        namedTypes.put("long", Long.class);
-        namedTypes.put("Long", Long.class);
-        namedTypes.put("java.lang.Long", Long.class);
+        //java only
+        {
+            addNamedType(java.util.Date.class, "utilDate");
+            addNamedType(java.sql.Date.class, "sqlDate");
+            addNamedType(java.sql.Time.class, "sqlTime");
+            addNamedType(java.sql.Timestamp.class, "sqlTimestamp");
+            addTypeParser(new StringValueParserSqlDate(), java.sql.Date.class);
+            addTypeParser(new StringValueParserSqlTime(), java.sql.Time.class);
+            addTypeParser(new StringValueParserSqlTimestamp(), java.sql.Timestamp.class);
+        }
 
-        namedTypes.put("double", Double.class);
-        namedTypes.put("Double", Double.class);
-        namedTypes.put("java.lang.Double", Double.class);
-
-        namedTypes.put("date", java.util.Date.class);
-        namedTypes.put("Date", java.util.Date.class);
-        namedTypes.put("java.util.Date", java.util.Date.class);
 
         equalsHelpers.put(byte[].class, ByteArrayEq.INSTANCE);
+    }
+
+    private static void addTypeParser(StringValueParser parser, Class... cls) {
+        for (Class cl : cls) {
+            typeToParser.put(cl, parser);
+        }
+
+    }
+
+    private static void addNamedType(Class cls, String... names) {
+        for (String name : names) {
+            if (name == null) {
+                name = "";
+            }
+            name = name.trim().toLowerCase();
+            namedTypes.put(name, cls);
+        }
+        namedTypes.put(cls.getName().toLowerCase(), cls);
+    }
+
+    private static Class getNamedType(String name) {
+        if (name == null) {
+            name = "";
+        }
+        name = name.trim().toLowerCase();
+        return namedTypes.get(name);
     }
 
     public static boolean isSimpleFieldType(Class clazz) {
@@ -326,33 +363,33 @@ public class UPAUtils {
     }
 
     public static <V> Map<String, V> extractMap(Map<String, V> base, Set<String> keys) {
-        Map<String, V> ret=new HashMap<String, V>();
+        Map<String, V> ret = new HashMap<String, V>();
         for (Map.Entry<String, V> entry : base.entrySet()) {
-            String k=entry.getKey();
-            if(keys.contains(k)){
-                ret.put(k,entry.getValue());
+            String k = entry.getKey();
+            if (keys.contains(k)) {
+                ret.put(k, entry.getValue());
             }
         }
         return ret;
     }
 
-    public static <V> Map<String, V> extractMap(Map<String, V> base, String prefix,boolean trimPrefix) {
-        Map<String, V> ret=new HashMap<String, V>();
+    public static <V> Map<String, V> extractMap(Map<String, V> base, String prefix, boolean trimPrefix) {
+        Map<String, V> ret = new HashMap<String, V>();
         String prefix1 = prefix + ".";
         for (Map.Entry<String, V> entry : base.entrySet()) {
-            String k=entry.getKey();
-            if(k.equals(prefix)){
-                if(trimPrefix){
-                    ret.put("",entry.getValue());
-                }else{
-                    ret.put(k,entry.getValue());
+            String k = entry.getKey();
+            if (k.equals(prefix)) {
+                if (trimPrefix) {
+                    ret.put("", entry.getValue());
+                } else {
+                    ret.put(k, entry.getValue());
                 }
-            }else {
-                if(k.startsWith(prefix1)){
-                    if(trimPrefix){
-                        ret.put(k.substring(prefix1.length()),entry.getValue());
-                    }else{
-                        ret.put(k,entry.getValue());
+            } else {
+                if (k.startsWith(prefix1)) {
+                    if (trimPrefix) {
+                        ret.put(k.substring(prefix1.length()), entry.getValue());
+                    } else {
+                        ret.put(k, entry.getValue());
                     }
                 }
             }
@@ -430,21 +467,6 @@ public class UPAUtils {
         item.setDescription(d);
     }
 
-    public static InputStream loadResourceAsStream(String resourcePath) throws IOException {
-        /**
-         * @PortabilityHint(target="C#",name="replace") return
-         * System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath);
-         */
-        {
-            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-            URL resource = contextClassLoader.getResource(resourcePath);
-            if (resource == null) {
-                resource = UPAUtils.class.getResource(resourcePath);
-            }
-            return resource.openStream();
-        }
-    }
-
     public static Set<String> loadLinesSet(String name) {
         HashSet<String> set = new HashSet<String>();
         if (name != null) {
@@ -452,7 +474,7 @@ public class UPAUtils {
             BufferedReader r = null;
             try {
                 try {
-                    inputStream = UPAUtils.loadResourceAsStream(name);
+                    inputStream = PlatformUtils.loadResourceAsStream(name);
                     r = new BufferedReader(new InputStreamReader(inputStream));
                     String line = null;
                     while ((line = r.readLine()) != null) {
@@ -516,26 +538,25 @@ public class UPAUtils {
             if (p instanceof CompiledVarVal) {
                 return resolveExprTypeInfo(p);
             } else {
-                Object object = (e instanceof CompiledParam)? ((CompiledParam) e).getValue():((CompiledLiteral) e).getValue();
+                Object object = (e instanceof CompiledParam) ? ((CompiledParam) e).getValue() : ((CompiledLiteral) e).getValue();
                 DataType sourceType = typeTransform.getSourceType();
-                DataTypeTransform bestType=typeTransform;
+                DataTypeTransform bestType = typeTransform;
                 if (
                         (p instanceof CompiledBinaryOperatorExpression)
-                        && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())
+                                && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())
                         ) {
                     DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(e);
                     if (byBrother) {
                         return resolveExprTypeInfo(o, false);
                     }
                 }
-                if(object!=null
+                if (object != null
                         //too generic
                         && (
                         typeTransform.equals(IdentityDataTypeTransform.OBJECT)
                                 //or specified type is not accurate
                                 || !sourceType.isInstance(object))
-                        )
-                {
+                        ) {
 
                     bestType = IdentityDataTypeTransform.forNativeType(object.getClass());
                 }
@@ -558,73 +579,33 @@ public class UPAUtils {
     }
 
     public static Object createValue(String value, Class type, String format) {
-        if(value==null){
+        if (value == null) {
             return null;
         }
         if (type == null) {
             throw new IllegalArgumentException("Null Parameter type ");
         }
-        if (type.equals(String.class)) {
-            return value;
+
+        StringValueParser p = typeToParser.get(type);
+        if (p == null) {
+            throw new IllegalArgumentException("Unsupported Parameter type " + type);
         }
-        if (type.equals(Boolean.class)) {
-            return Boolean.parseBoolean(value);
-        }
-        if (type.equals(Integer.class)) {
-            if (value.trim().length() == 0) {
-                return null;
-            }
-            return Integer.parseInt(value);
-        }
-        if (type.equals(Integer.TYPE)) {
-            return Integer.parseInt(value);
-        }
-        if (type.equals(Double.class)) {
-            if (value.trim().length() == 0) {
-                return null;
-            }
-            return Double.parseDouble(value);
-        }
-        if (type.equals(Double.TYPE)) {
-            return Double.parseDouble(value);
-        }
-        if (type.equals(Long.class)) {
-            if (value.trim().length() == 0) {
-                return null;
-            }
-            return Long.parseLong(value);
-        }
-        if (type.equals(Long.TYPE)) {
-            return Long.parseLong(value);
-        }
-        if (type.equals(java.util.Date.class)) {
-            if (value.trim().length() == 0) {
-                return null;
-            }
-            if (format.length() > 0) {
-                try {
-                    return DateUtils.parseDateTime(value,format);
-                } catch (ParseException ex) {
-                    throw new IllegalArgumentException("Unable to parse date " + value);
-                }
-            }
-            return DateUtils.parseUniversalDate(value);
-        }
-        throw new IllegalArgumentException("Unsupported Parameter type " + type);
+        return p.parse(value, format);
     }
 
     public static Object createValue(String value, String ptype, String format) {
-        if(value==null){
+        if (value == null) {
             return null;
         }
-        if (ptype == null) {
-            throw new IllegalArgumentException("Null Parameter type ");
+        if (StringUtils.isNullOrEmpty(ptype)) {
+            ptype = "string";
         }
-        Class type = namedTypes.get(ptype);
+
+        Class type = getNamedType(ptype);
         if (type == null) {
             throw new IllegalArgumentException("Unsupported Parameter type " + ptype);
         }
-        return createValue(value,type,format);
+        return createValue(value, type, format);
     }
 
     public static BaseScanSource toConfigurationStrategy(ScanSource source) {
@@ -683,11 +664,11 @@ public class UPAUtils {
         return t;
     }
 
-    public static String dotConcat(String ... all){
-        StringBuilder sb=new StringBuilder();
+    public static String dotConcat(String... all) {
+        StringBuilder sb = new StringBuilder();
         for (String s : all) {
-            if(!StringUtils.isNullOrEmpty(s)){
-                if(sb.length()>0){
+            if (!StringUtils.isNullOrEmpty(s)) {
+                if (sb.length() > 0) {
                     sb.append(".");
                 }
                 sb.append(s);
@@ -696,19 +677,19 @@ public class UPAUtils {
         return sb.toString();
     }
 
-    public static String getValidBinding(ResultField s){
-        if(StringUtils.isNullOrEmpty(s.getAlias())){
+    public static String getValidBinding(ResultField s) {
+        if (StringUtils.isNullOrEmpty(s.getAlias())) {
             Expression ss = s.getExpression();
-            return ss==null?"":ss.toString();
+            return ss == null ? "" : ss.toString();
         }
         return s.getAlias();
     }
 
     public static Object unwrapLiteral(Object o) {
-        if(o instanceof Literal){
+        if (o instanceof Literal) {
             return ((Literal) o).getValue();
         }
-        if(o instanceof Cst){
+        if (o instanceof Cst) {
             return ((Cst) o).getValue();
         }
         return o;
@@ -724,7 +705,7 @@ public class UPAUtils {
         if (o instanceof Number) {
             return new XNumber((Number) o);
         }
-        throw new RuntimeException("Not a number "+o);
+        throw new RuntimeException("Not a number " + o);
     }
 
     public static XNumber toNumber(Object o) {

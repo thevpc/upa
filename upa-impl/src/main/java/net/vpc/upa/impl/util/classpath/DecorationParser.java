@@ -28,8 +28,6 @@ public class DecorationParser {
     private static final Logger log = Logger.getLogger(DecorationParser.class.getName());
     public Iterable<Class> urls;
     public int nameStrategyModelConfigOrder = Integer.MIN_VALUE;
-    @PortabilityHint(target = "C#", name = "suppress")
-    public ClassLoader contextClassLoader;
     public String persistenceUnitName;
     public String persistenceGroupName;
     private DecorationRepository decorationRepository;
@@ -42,10 +40,6 @@ public class DecorationParser {
         this.persistenceUnitName = persistenceUnitName;
         this.decorationFilter = decorationFilter;
         this.decorationRepository = decorationRepository;
-        /**
-         * @PortabilityHint(target="C#",name="suppress")
-         */
-        this.contextClassLoader = Thread.currentThread().getContextClassLoader();
     }
 
 //    private void configureFolder(File rootFolder, File folder, ClassPathFilter typeFilter) throws MalformedURLException, ClassNotFoundException {

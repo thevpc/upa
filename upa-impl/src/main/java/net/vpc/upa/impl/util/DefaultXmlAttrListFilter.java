@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class DefaultXmlAttrListFilter implements XmlAttrListFilter {
@@ -18,7 +17,7 @@ public class DefaultXmlAttrListFilter implements XmlAttrListFilter {
 
     public DefaultXmlAttrListFilter(String... names) {
         for (String name : names) {
-            this.names.add(checkUniformName(name));
+            this.names.add(XMLUtils.uniformName(name));
         }
     }
 
@@ -29,13 +28,6 @@ public class DefaultXmlAttrListFilter implements XmlAttrListFilter {
             return n;
         }
         return null;
-    }
-
-    private String checkUniformName(String s) {
-        if (!s.equals(XMLUtils.uniformName(s))) {
-            throw new IllegalArgumentException("Expected Uniform Name " + s + " ==> " + XMLUtils.uniformName(s));
-        }
-        return s;
     }
 
 }

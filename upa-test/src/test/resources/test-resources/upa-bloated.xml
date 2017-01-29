@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<upa xmlns="http://github.com/thevpc/upa/upa-1.0.xsd" version="1.0">
+    <persistenceGroup name="main" autoScan="true">
+        <persistenceUnit name="main" start="true" autoScan="true">
+            <connection userName="me" password="never" structure="create" enabled="true" connectionString="">
+                <connectionString>
+                    mysql:default://localhost/upadb;structure=create;userName=upauser;password=upapwd
+                </connectionString>
+                <userName>me</userName>
+                <password>never</password>
+                <structure>create</structure>
+                <enabled>true</enabled>
+                <property name="persistenceName">upa_{object_name}</property>
+            </connection>
+            <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
+                <connectionString>
+                    derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+                </connectionString>
+                <userName>me</userName>
+                <password>never</password>
+                <structure>drop</structure>
+                <enabled>true</enabled>
+                <property name="persistenceName">upa_{object_name}</property>
+            </rootConnection>
+            <connectionString>
+            </connectionString>
+            <rootConnectionString>
+            </rootConnectionString>
+            <scan types="net.vpc.app.**" libs="" propagate="true"/>
+            <property name="persistenceName">upa_{object_name}</property>
+        </persistenceUnit>
+        <scan types="net.vpc.app.**" libs=""/>
+        <property name="persistenceName">upa_{object_name}</property>
+    </persistenceGroup>
+
+    <persistenceUnit name="main" start="true" autoScan="true">
+        <connection userName="me" password="never" structure="create" enabled="true" connectionString="">
+            <connectionString>
+                derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+            </connectionString>
+            <userName>me</userName>
+            <password>never</password>
+            <structure>ignore</structure>
+            <enabled>true</enabled>
+            <property name="persistenceName">upa_{OBJECTNAME}</property>
+        </connection>
+        <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
+            <connectionString>
+                derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+            </connectionString>
+            <userName>me</userName>
+            <password>never</password>
+            <structure>synchronize</structure>
+            <enabled>true</enabled>
+            <property name="persistenceName">upa_{object_name}</property>
+        </rootConnection>
+        <connectionString>
+        </connectionString>
+        <rootConnectionString>
+        </rootConnectionString>
+        <scan types="net.vpc.app.**" libs="" propagate="true"/>
+        <property name="persistenceName">upa_{objectname}</property>
+    </persistenceUnit>
+
+    <connection userName="me" password="never" structure="create" enabled="true" connectionString="">
+        <connectionString>
+            derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+        </connectionString>
+        <userName>me</userName>
+        <password>never</password>
+        <structure>mandatory</structure>
+        <enabled>true</enabled>
+        <property name="persistenceName">upa_{object_name}</property>
+    </connection>
+
+    <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
+        <connectionString>
+            derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+        </connectionString>
+        <userName>me</userName>
+        <password>never</password>
+        <structure>create</structure>
+        <enabled>true</enabled>
+        <property name="persistenceName">upa_{object_name}</property>
+    </rootConnection>
+
+    <connectionString>
+        derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+    </connectionString>
+
+    <rootConnectionString>
+        derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+    </rootConnectionString>
+
+    <include failSafe="true">
+        <url path="http://localhost/example-app/upa.xml" failSafe="true"/>
+        <resource path="/example-app/upa.xml" failSafe="true"/>
+        <file path="/example-app/upa.xml" failSafe="true"/>
+        <default>
+            <!-- this is a fallback if no config is loadable -->
+            <persistenceGroup name="main">
+                <persistenceUnit name="main">
+                    <connection userName="me" password="never" structure="create" enabled="true" connectionString="">
+                        <connectionString>
+                            derby:embedded://localhost/upadb;structure=create;userName=upauser;password=upapwd
+                        </connectionString>
+                        <userName>me</userName>
+                        <password>never</password>
+                        <structure>create</structure>
+                        <enabled>true</enabled>
+                        <property name="intProperty" type="int">18</property>
+                        <property name="persistenceName" type="string">upa_{ObjectName}</property>
+                        <property name="longProperty" type="long">98556</property>
+                        <property name="dateProperty" type="date" format="yyyy-dd">2016-05</property>
+                        <property name="dateProperty" type="month" format="yyyy-dd">2016-05</property>
+                    </connection>
+                    <property name="persistenceName">upa_{OBJECT_NAME}</property>
+                </persistenceUnit>
+            </persistenceGroup>
+        </default>
+    </include>
+    <scan types="net.vpc.app.**" libs="" propagate="true"/>
+
+</upa>

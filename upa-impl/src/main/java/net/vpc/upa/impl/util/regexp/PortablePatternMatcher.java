@@ -10,15 +10,15 @@ import java.util.regex.Matcher;
 public class PortablePatternMatcher {
     /**
      * @PortabilityHint(target = "C#", name = "replace")
-     *       private System.Text.RegularExpressions.MatchCollection matcher;
-     *       private int matchIndex=-1;
-     *       private int lastReplace=0;
-     *       private string value;
-     *
-     *       public PortablePatternMatcher(System.Text.RegularExpressions.MatchCollection matcher,string value) {
-     *         this.matcher = matcher;
-     *         this.value = value;
-     *       }
+     * private System.Text.RegularExpressions.MatchCollection matcher;
+     * private int matchIndex=-1;
+     * private int lastReplace=0;
+     * private string value;
+     * <p>
+     * public PortablePatternMatcher(System.Text.RegularExpressions.MatchCollection matcher,string value) {
+     * this.matcher = matcher;
+     * this.value = value;
+     * }
      */
     private Matcher matcher;
 
@@ -28,7 +28,7 @@ public class PortablePatternMatcher {
         this.matcher = matcher;
     }
 
-    public boolean find(){
+    public boolean find() {
         /**
          *  @PortabilityHint(target = "C#", name = "replace")
          * matchIndex++;
@@ -72,7 +72,21 @@ public class PortablePatternMatcher {
          */
         {
             StringBuffer sb = new StringBuffer();
-            matcher.appendReplacement(sb, replacement);
+            StringBuilder rep = new StringBuilder();
+            for (char c : replacement.toCharArray()) {
+                switch (c) {
+                    case '$':
+                    case '\\': {
+                        rep.append('\\').append(c);
+                        break;
+                    }
+                    default: {
+                        rep.append(c);
+                        break;
+                    }
+                }
+            }
+            matcher.appendReplacement(sb, rep.toString());
             return sb.toString();
         }
     }
@@ -92,7 +106,7 @@ public class PortablePatternMatcher {
         }
     }
 
-    public boolean matches(){
+    public boolean matches() {
         return find();
     }
 

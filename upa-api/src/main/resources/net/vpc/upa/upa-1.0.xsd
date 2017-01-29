@@ -1,0 +1,634 @@
+<xs:schema targetNamespace="http://github.com/thevpc/upa/upa-1.0.xsd"
+           attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns="http://github.com/thevpc/upa/upa-1.0.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="upa" type="upa"/>
+
+
+    <xs:complexType name="upa">
+        <xs:annotation>
+            <xs:documentation>
+                upa is the root element of a upa.xml file. It can also be the type of "default" element in include
+                this element could include any occurrence count of persistenceGroups, scan of include elements.
+                To make is even simpler, this element can include directly
+                persistenceUnit (without the enclosing persistenceGroup)
+                connection or rootConnection (without the enclosing persistenceGroup and persistenceUnit)
+                connectionString or rootConnectionString (without the enclosing persistenceGroup, persistenceUnit and
+                connection
+                or rootConnection)
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="persistenceGroup" type="persistenceGroup" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        persistenceGroup defines a persistence group configuration
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="persistenceUnit" type="persistenceUnit" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        persistenceUnit defines a persistenceUnit configuration into the default persistence group (with
+                        empty name)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="connection" type="connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        connection defines a connection configuration into the default persistence group (with empty
+                        name)
+                        and default
+                        persistenceUnit (with empty name)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="rootConnection" type="connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        root connection defines a root connection configuration into the default persistence group (with
+                        empty name) and default
+                        persistenceUnit (with empty name).
+                        Root connection is the one used for DDL (creating and dropping tables etc...) if none is
+                        defined,
+                        connection
+                        configuration will be used
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="connectionString" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        connectionString defines a connectionString configuration into the default persistence group
+                        (with
+                        empty name) and default
+                        persistenceUnit (with empty name), connection. This actually equivalent to
+                        persistenceGroup/persistenceUnit/connection/connectionString
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="rootConnectionString" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        rootConnectionString defines a connectionString configuration into the default persistence group
+                        (with empty name) and default
+                        persistenceUnit (with empty name), rootConnection. This actually equivalent to
+                        persistenceGroup/persistenceUnit/rootConnection/connectionString
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="scan" type="scan" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Restricts the types and libraries scanned for valid UPA annotations
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+
+            <xs:element name="include" type="include" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Includes an external resources as extension to the following xml config file
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        global properties (shared)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:float" name="version">
+            <xs:annotation>
+                <xs:documentation>
+                    upa config file version, defaults to 1.0
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="persistenceGroup">
+        <xs:annotation>
+            <xs:documentation>
+                Persistence Group Definition
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="persistenceUnit" type="persistenceUnit" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Child Persistence Unit
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="scan" type="scan" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Persistence Group Scan configuration (for Callbacks on Persistence Group perhaps)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Persistence Group Properties
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Persistence Group Name
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="autoScan" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    if true, when no scan filter is specified will scan all class-path
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="persistenceUnit">
+        <xs:annotation>
+            <xs:documentation>
+                Persistence Unit Definition
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            <xs:element name="connection" type="connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection definition
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="rootConnection" type="connection" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Root Connection Definition (for creating/dropping Store Elements)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="connectionString" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection String of the Connection Configuration Element
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="rootConnectionString" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection String of the Root Connection Configuration Element
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="scan" type="scan" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Persistence Unit Scan configuration (for Callbacks on Persistence Unit perhaps)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Persistence Unit Properties
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+
+        <xs:attribute type="xs:string" name="name" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Persistence Unit Name
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:string" name="start" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    if true (default), Persistence Unit will be started automatically
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:string" name="autoScan" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    if true (default), when no scan filter is specified will scan all class-path
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="scan">
+        <xs:annotation>
+            <xs:documentation>
+                Restricts the types and libraries scanned for valid UPA annotations
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="types" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Types to scan. this is has the form of a simplified regular expression where
+                    * wildcard refers to a name part (may include '.' of package name)
+                    ** wildcard refers to a path part (may include '.' of package name)
+                    Examples :
+                    net.* will accept net.toto but not net.toto.titi
+                    net.** will accept net.toto and net.toto.titi but not com.toto
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="libs" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Libraries to scan. this is has the form of a simplified regular expression where
+                    * wildcard refers to a name part (may include '/' of path)
+                    ** wildcard refers to a path part (may include '/' of path)
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="propagate" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, scan elements will be inherited in child xml elements
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:annotation>
+        <xs:documentation>
+            Properties are simple placeholders to use in the xml file or in the engine
+        </xs:documentation>
+    </xs:annotation>
+    <xs:complexType name="property">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Parameter name
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute type="xs:string" name="type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Parameter Type. Some valid types are :
+                            string,int,double,float,boolean,date,timestamp,time,datetime,month,year
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute type="xs:string" name="format" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Parameter Format. If date, this is the date format as defined in SimpleDateFormat
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute type="xs:string" name="value" use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Parameter value formatted as String
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="connection">
+        <xs:annotation>
+            <xs:documentation>
+                Connection defines all configuration info needed for creating store connections
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+
+            <xs:element name="connectionString" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Portable Connection String
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="userName" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection User Name, if not defined will use the one declared in connection string
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection User Password, if not defined will use the one declared in connection string
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="structure" type="structure" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Connection Structure Creation Strategy, if not defined will use the one declared in connection
+                        string.
+                        Several Strategies are available : create, drop, mandatory, synchronize, ignore
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="enabled" type="xs:boolean" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        for very same PersistenceUnit, multiple Connection configurations may be defined, they will be
+                        tested in their definition
+                        order. The first to succeed will be retained. Actually only those with 'enabled=true' will be
+                        tested
+                        so, one can disable
+                        a connection configuration using this flag
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        a connection may define multiple properties, some of them are reserved
+                        (userName,password,structure,
+                        enable and connectionString) others are provider specific.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+
+        <xs:attribute type="xs:string" name="userName" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Connection User Name, if not defined will use the one declared in connection string
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="password" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Connection User Password, if not defined will use the one declared in connection string
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="structure" name="structure" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Connection Structure Creation Strategy, if not defined will use the one declared in connection
+                    string.
+                    Several Strategies are available : create, drop, mandatory, synchronize, ignore
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="enabled" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    for very same PersistenceUnit, multiple Connection configurations may be defined, they will be
+                    tested in
+                    their definition
+                    order. The first to succeed will be retained. Actually only those with 'enabled=true' will be tested
+                    so,
+                    one can disable
+                    a connection configuration using this flag
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="connectionString" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Portable Connection String
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="include">
+        <xs:annotation>
+            <xs:documentation>
+                include tag helps including external files or resources
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="file" type="includeFile" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        File include
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="url" type="includeURL" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        URL include
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="resource" type="includeResource" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Resource (from loaded jars) include
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="default" type="upa" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        xml embedded include if none of the previous could be loaded
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute type="xs:boolean" name="failSafe" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    if none of the include items succeeds and failSafe if set to false (actually it defaults to true)
+                    then an error is raised
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="includeURL">
+        <xs:annotation>
+            <xs:documentation>
+                URL include tag
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:attribute type="xs:anyURI" name="path" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    URL path to include
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="failSafe" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore any error when including. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="skipOthers" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore next includes (in the same include tag) when include succeeds. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="includeFile">
+        <xs:annotation>
+            <xs:documentation>
+                File include tag
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="path" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    File path to include
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="failSafe" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore any error when including. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="skipOthers" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore next includes (in the same include tag) when include succeeds. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="includeResource">
+        <xs:annotation>
+            <xs:documentation>
+                Resource include tag
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="path" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Resource path to include
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="failSafe" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore any error when including. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute type="xs:boolean" name="skipOthers" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    If true, will ignore next includes (in the same include tag) when include succeeds. Defaults to true
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="structure">
+        <xs:annotation>
+            <xs:documentation>
+                structure defines the creation strategy of a Persistence Unit
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="create">
+                <xs:annotation>
+                    <xs:documentation>
+                        'create' strategy create new Store Elements (Tables) if they are not yet created
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+
+            <xs:enumeration value="drop">
+                <xs:annotation>
+                    <xs:documentation>
+                        'drop' strategy drops existing Store Elements (Tables) and then recreates them
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+
+
+            <xs:enumeration value="synchronize">
+                <xs:annotation>
+                    <xs:documentation>
+                        'synchronize' strategy drops unnecessary Store Elements and Creates the one not found
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+
+            <xs:enumeration value="mandatory">
+                <xs:annotation>
+                    <xs:documentation>
+                        Creates no Store Elements but fails with exception if any Store Element is not present or is not
+                        uptodate
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+
+            <xs:enumeration value="ignore">
+                <xs:annotation>
+                    <xs:documentation>
+                        'ignore' does nothings, supposes all Store Elements are created and up-to-date
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

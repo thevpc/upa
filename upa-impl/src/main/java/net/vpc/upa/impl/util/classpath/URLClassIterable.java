@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.util.classpath;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.net.URL;
 import java.util.Iterator;
@@ -25,17 +26,13 @@ public class URLClassIterable implements Iterable<Class> {
 //    public Set<Class> classAnnotations = new HashSet<Class>();
 //    PersistenceNameStrategyConfig nameStrategyModel = null;
     public int nameStrategyModelConfigOrder = Integer.MIN_VALUE;
-    @PortabilityHint(target = "C#", name = "suppress")
     public ClassLoader contextClassLoader;
 
     public URLClassIterable(URL[] urls, ClassPathFilter configFilter, ClassFilter classFilter) {
         this.urls = urls;
         this.configFilter = configFilter;
         this.classFilter = classFilter;
-        /**
-         * @PortabilityHint(target="C#",name="suppress")
-         */
-        this.contextClassLoader = Thread.currentThread().getContextClassLoader();
+        this.contextClassLoader = PlatformUtils.getContextClassLoader();
     }
 
 //    private void configureFolder(File rootFolder, File folder, ClassPathFilter typeFilter) throws MalformedURLException, ClassNotFoundException {
@@ -108,7 +105,7 @@ public class URLClassIterable implements Iterable<Class> {
                 if (configFilter.acceptClassName(src, cls)) {
                     Class<?> aClass = null;
                     try {
-                        aClass = Class.forName(cls, false, contextClassLoader);
+                        aClass = PlatformUtils.forName(cls, false, contextClassLoader);
                     } catch (Throwable e) {
                         log.log(Level.FINE, "Unable to load class {0} for UPA configuration. Ignored", cls);
                     }

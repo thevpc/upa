@@ -5,17 +5,18 @@ import net.vpc.upa.config.Decoration;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.ObjectFilter;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
-import net.vpc.upa.impl.util.regexp.PortablePattern;
-import net.vpc.upa.impl.util.regexp.PortablePatternMatcher;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -296,6 +297,16 @@ public class PlatformUtils {
         return (Number.class).isAssignableFrom(clazz);
     }
 
+    public static ClassLoader getContextClassLoader(){
+        return Thread.currentThread().getContextClassLoader();
+    }
+    public static boolean isSystemClassLoader(){
+        return Thread.currentThread().getContextClassLoader()==ClassLoader.getSystemClassLoader();
+    }
+    public static Class forName(String name,boolean initialize,ClassLoader classLoader) throws ClassNotFoundException {
+        return Class.forName(name, initialize, classLoader);
+    }
+
     public static Class forName(String name) throws ClassNotFoundException {
         /**
          * @PortabilityHint(target = "C#", name = "replace")
@@ -528,7 +539,7 @@ public class PlatformUtils {
     }
 
     public static List<Field> findFields(Class clz, String name) {
-        List<Field> all=new ArrayList<Field>();
+        List<Field> all = new ArrayList<Field>();
         Class r = clz;
         while (r != null) {
             Field f = null;
@@ -772,13 +783,13 @@ public class PlatformUtils {
          * return value == default(T);
          */
         {
-            if(value==null){
+            if (value == null) {
                 return true;
             }
             Object v = getEnumValues(type)[0];
-            if(value==v){
-                String n = ((Enum)v).name();
-                if("DEFAULT".equals(n) || "UNKNOWN".equals(n)){
+            if (value == v) {
+                String n = ((Enum) v).name();
+                if ("DEFAULT".equals(n) || "UNKNOWN".equals(n)) {
                     return true;
                 }
                 //type.getDeclaredField(n).getAnnotation(type)
@@ -823,30 +834,28 @@ public class PlatformUtils {
         }
     }
 
-    public static <X> X[] addToArray(X[] arr,X x){
-        X[] arr2 =null;
+    public static <X> X[] addToArray(X[] arr, X x) {
+        X[] arr2 = null;
         /**
          * @PortabilityHint(target = "C#", name = "replace")
          * arr2 = new X[arr.Length + 1];
          */
-        arr2=(X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
+        arr2 = (X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
 
-        System.arraycopy(arr,0,arr2,0,arr.length);
-        arr2[arr.length]=x;
+        System.arraycopy(arr, 0, arr2, 0, arr.length);
+        arr2[arr.length] = x;
         return arr2;
     }
 
-    public static RuntimeException createRuntimeException(Throwable t){
-        if(t.getCause()!=null){
+    public static RuntimeException createRuntimeException(Throwable t) {
+        if (t.getCause() != null) {
             return createRuntimeException(t.getCause());
         }
-        if(t instanceof RuntimeException){
+        if (t instanceof RuntimeException) {
             return (RuntimeException) t;
         }
         return new RuntimeException(t);
     }
-
-
 
 
     public static PlatformBeanProperty findPlatformBeanProperty(String field, Class platformType) {
@@ -944,14 +953,33 @@ public class PlatformUtils {
         return null;
     }
 
-    public static <T> List<T> trimToSize(List<T> list){
-        if(list instanceof ArrayList){
-            ((ArrayList<T>)list).trimToSize();
+    public static <T> List<T> trimToSize(List<T> list) {
+        if (list instanceof ArrayList) {
+            ((ArrayList<T>) list).trimToSize();
             return list;
         }
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return new ArrayList<T>(1);
         }
         return new ArrayList<T>(list);
+    }
+
+    public static InputStream loadResourceAsStream(String resourcePath) throws IOException {
+        /**
+         * @PortabilityHint(target="C#",name="replace") return
+         * System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcePath);
+         */
+        {
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            URL resource = contextClassLoader.getResource(resourcePath);
+            if (resource == null) {
+                resource = UPAUtils.class.getResource(resourcePath);
+            }
+            return resource.openStream();
+        }
+    }
+
+    public static List<URL> listURLs(String resource) throws IOException {
+        return Collections.list(Thread.currentThread().getContextClassLoader().getResources(resource));
     }
 }

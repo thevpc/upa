@@ -6,19 +6,21 @@
 package net.vpc.upa.impl.util.classpath;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
-@PortabilityHint(target = "C#",name = "ignore")
+@PortabilityHint(target = "C#", name = "ignore")
 public class CommonClassPathUtils {
 
     private static final Logger log = Logger.getLogger(CommonClassPathUtils.class.getName());
@@ -26,27 +28,26 @@ public class CommonClassPathUtils {
     public static URL[] resolveClassPathLibs(String referenceURL) {
 
         Set<URL> urls = new HashSet<URL>();
-        ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
-        ClassLoader threadClassLoader = Thread.currentThread().getContextClassLoader();
-        if (threadClassLoader == null) {
-            //do nothing
-            log.log(Level.SEVERE, "Unable to load UPA Context. Class loader is null");
-        } else {
-            if (sysClassLoader == threadClassLoader) {
-                log.log(Level.FINE, "SystemClassLoader detected. Assuming Standalone Application");
-                //simple standalone application
-                String javaHome = System.getProperty("java.home");
-                for (String s1 : System.getProperty("java.class.path").split(System.getProperty("path.separator"))) {
-                    if (s1.startsWith(javaHome + "/")) {
-                        //ignore
-                    } else {
-                        try {
-                            urls.add(new File(s1).toURI().toURL());
-                        } catch (MalformedURLException e) {
-                            log.log(Level.SEVERE, "Unable to load UPA Context", e);
-                        }
+        if (PlatformUtils.isSystemClassLoader()) {
+            log.log(Level.FINE, "SystemClassLoader detected. Assuming Standalone Application");
+            //simple standalone application
+            String javaHome = System.getProperty("java.home");
+            for (String s1 : System.getProperty("java.class.path").split(System.getProperty("path.separator"))) {
+                if (s1.startsWith(javaHome + "/")) {
+                    //ignore
+                } else {
+                    try {
+                        urls.add(new File(s1).toURI().toURL());
+                    } catch (MalformedURLException e) {
+                        log.log(Level.SEVERE, "Unable to load UPA Context", e);
                     }
                 }
+            }
+        } else {
+            ClassLoader threadClassLoader = PlatformUtils.getContextClassLoader();
+            if (threadClassLoader == null) {
+                //do nothing
+                log.log(Level.SEVERE, "Unable to load UPA Context. Class loader is null");
             } else {
                 try {
                     //Only Class Path Roots that define META-INF/upa.xml will be parsed
@@ -73,6 +74,7 @@ public class CommonClassPathUtils {
                 }
             }
         }
+
         return urls.toArray(new URL[urls.size()]);
     }
 
