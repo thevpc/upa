@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.persistence.result;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EntityBuilder;
-import net.vpc.upa.Record;
 import net.vpc.upa.Relationship;
 
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
  */
 class TypeInfo {
 
-    boolean record;
+    boolean document;
     String parentBinding;
     String bindingName;
     String binding;
@@ -26,7 +26,7 @@ class TypeInfo {
     Object entityObject;
     Object entityResult;
     Object entityUpdatable;
-    Record entityRecord;
+    Document entityDocument;
     Entity entity;
     Class entityType;
     EntityBuilder entityFactory;

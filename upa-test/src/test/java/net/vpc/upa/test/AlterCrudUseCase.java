@@ -22,7 +22,7 @@
 //    static Logger log= LoggerFactory.getLogger(AlterCrudUseCase.class);
 //
 //    @Test
-//    public void crudMixedRecordsAndEntities() {
+//    public void crudMixedDocumentsAndEntities() {
 //        log.fine("********************************************");
 //        log.fine("test crud using Mixed Records And Entities");
 //        log.fine("");
@@ -45,26 +45,26 @@
 //        sm.beginTransaction(TransactionType.REQUIRED);
 //        sm.insert(client);
 //
-//        Record clientByKeyRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        Document clientByKeyRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //
 //        log.info("Found " + clientByKeyRecord);
 //        clientByKeyRecord.setString("firstName", "Alia");
 //
-//        Client clientByKey = entityManager.getConverter().recordToObject(clientByKeyRecord);
+//        Client clientByKey = entityManager.getConverter().documentToObject(clientByKeyRecord);
 //
 //        assertEquals(clientByKey.getFirstName(),"Alia");
 //
 //        sm.update(clientByKey);
 //
-//        Record clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        Document clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(clientUpdatedRecord);
-//        Client clientUpdated = entityManager.getConverter().recordToObject(clientUpdatedRecord);
+//        Client clientUpdated = entityManager.getConverter().documentToObject(clientUpdatedRecord);
 //        assertEquals(clientUpdated,clientByKey);
 //
 //        sm.delete(key);
 //
-//        clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //
 //        Assert.assertNull(clientUpdatedRecord);
 //        sm.commitTransaction();
@@ -73,7 +73,7 @@
 //    }
 //
 //    @Test
-//    public void crudRecords() {
+//    public void crudDocuments() {
 //        log.fine("********************************************");
 //        log.fine("test crud using only Records");
 //        log.fine("");
@@ -84,29 +84,29 @@
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
 //        Entity entityManager = sm.getEntity("Client");
-//        Record record=entityManager.createRecord();
+//        Document record=entityManager.createDocument();
 //        int key = entityManager.nextId();
 //        log.info("Next Id is " + key);
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");
 //
 //        sm.insertRecord("Client", record);
-//        Record found0=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        Document found0=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //        log.info("Found " + found0);
 //        record.setString("firstName", "Alia");
 //
 //        sm.updateRecord("Client",record);
 //
-//        Record found=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        Document found=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(found);
-//        Client foundEntity = entityManager.getConverter().recordToObject(found);
-//        Client recordEntity = entityManager.getConverter().recordToObject(record);
+//        Client foundEntity = entityManager.getConverter().documentToObject(found);
+//        Client recordEntity = entityManager.getConverter().documentToObject(record);
 //        Assert.assertEquals(foundEntity, recordEntity);
 //
 //        sm.delete(key);
 //
-//        found=sm.createQueryBuilder("Client").setId(key).objectToRecord();
+//        found=sm.createQueryBuilder("Client").setId(key).objectToDocument();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();

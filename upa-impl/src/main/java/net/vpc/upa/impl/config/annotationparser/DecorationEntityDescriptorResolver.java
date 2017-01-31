@@ -59,7 +59,7 @@ public class DecorationEntityDescriptorResolver {
                 if (!isEntityClass) {
                     //ue.entityType() is never null
                     entityInfo.entityType.setBetterValue(ue.getType("entityType"), configOrder);
-                    if (entityInfo.entityType.specified && !Record.class.equals(entityInfo.entityType.value)) {
+                    if (entityInfo.entityType.specified && !Document.class.equals(entityInfo.entityType.value)) {
                         parseEntityType(entityInfo, entityInfo.entityType.value, ue.getBoolean("useEntityTypeFields"), ue.getBoolean("useEntityTypeModifiers"), ue.getBoolean("useEntityTypeExtensions"), factory);
                     }
                     parseEntityType(entityInfo, descriptorType, true, true, true, factory);
@@ -246,7 +246,7 @@ public class DecorationEntityDescriptorResolver {
 //        }
         if (parseFields) {
             List<FieldInfo> fieldInfos = new ArrayList<FieldInfo>();
-            if (!Record.class.isAssignableFrom(type)) {
+            if (!Document.class.isAssignableFrom(type)) {
                 Class c = type;
                 while (c != null) {
                     List<FieldInfo> cfields = new ArrayList<FieldInfo>();

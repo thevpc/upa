@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
@@ -27,7 +27,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
 
     private static final Logger log = Logger.getLogger(PasswordTypeFieldPersister.class.getName());
 
-    public void prepareFieldForPersist(Field field, Object value, Record userRecord, Record persistentRecord, EntityExecutionContext executionContext, Set<Field> insertNonNullable, Set<Field> insertWithDefaultValue) throws UPAException {
+    public void prepareFieldForPersist(Field field, Object value, Document userDocument, Document persistentDocument, EntityExecutionContext executionContext, Set<Field> insertNonNullable, Set<Field> insertWithDefaultValue) throws UPAException {
         Object userValue = null;
         boolean userValueFound = false;
         if (!(value instanceof Expression)) {
@@ -53,12 +53,12 @@ public class PasswordTypeFieldPersister implements FieldPersister {
             if (UPAUtils.equals(userValue, v)) {
                 return;//ignore insert
             }
-            userRecord.setObject(field.getName(), v);
+            userDocument.setObject(field.getName(), v);
         } else {
             log.log(Level.SEVERE, "Inserting non user value to password, hashing will be ignored");
         }
         Expression valueExpression = (value instanceof Expression) ? (Expression) value : new Param(field.getName(), value);
-        persistentRecord.setObject(field.getName(), valueExpression);
+        persistentDocument.setObject(field.getName(), valueExpression);
     }
 
     public static Object convertCypherValue(Object value, DataType type) {
@@ -118,7 +118,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
         return value;
     }
 
-    public void prepareFieldForUpdate(Field field, Object value, Record userRecord, Record persistentRecord, EntityExecutionContext executionContext) throws UPAException {
+    public void prepareFieldForUpdate(Field field, Object value, Document userDocument, Document persistentDocument, EntityExecutionContext executionContext) throws UPAException {
         Object userValue = null;
         boolean userValueFound = false;
         if (!(value instanceof Expression)) {
@@ -143,11 +143,11 @@ public class PasswordTypeFieldPersister implements FieldPersister {
             if (UPAUtils.equals(userValue, v)) {
                 return;//ignore insert
             }
-            userRecord.setObject(field.getName(), v);
+            userDocument.setObject(field.getName(), v);
         } else {
             log.log(Level.SEVERE, "Inserting non user value to password, hashing will be ignored");
         }
         Expression valueExpression = (value instanceof Expression) ? (Expression) value : new Param(field.getName(), value);
-        persistentRecord.setObject(field.getName(), valueExpression);
+        persistentDocument.setObject(field.getName(), valueExpression);
     }
 }

@@ -5,7 +5,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
@@ -15,14 +15,14 @@ import net.vpc.upa.persistence.FieldPersister;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class NavigatorIdentityPersister implements FieldPersister {
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException{
-        //K key = entity.getBuilder().recordToId(record);
+    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException{
+        //K key = entity.getBuilder().documentToId(document);
         Entity entity = context.getEntity();
         Object key = entity.nextId();
-        entity.getBuilder().setRecordId(record, key);
+        entity.getBuilder().setDocumentId(document, key);
     }
 
-    public void afterPersist(Record record, EntityExecutionContext context) {
+    public void afterPersist(Document document, EntityExecutionContext context) {
         
     }
 

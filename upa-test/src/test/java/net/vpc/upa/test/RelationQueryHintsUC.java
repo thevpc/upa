@@ -23,7 +23,7 @@ public class RelationQueryHintsUC {
     private static final Logger log = Logger.getLogger(RelationQueryHintsUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -45,14 +45,14 @@ public class RelationQueryHintsUC {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Person a ") //where a.phone2.id >3
                     .setHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
-//            List<Record> r = q.getRecordList();
-//            for (Record record : r) {
-//                System.out.println(r);
+//            List<Document> r = q.getDocumentList();
+//            for (Document doc : r) {
+//                System.out.println(doc);
 //            }
             List<Person> r = q.getResultList();
             r.size();
-            for (Person record : r) {
-                System.out.println(r);
+            for (Person doc : r) {
+                System.out.println(doc);
             }
         }
 

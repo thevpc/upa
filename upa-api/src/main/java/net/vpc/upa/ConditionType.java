@@ -6,9 +6,9 @@ package net.vpc.upa;
 public enum ConditionType {
 
     PROTOTYPE,
-    RECORD_PROTOTYPE,
+    DOCUMENT_PROTOTYPE,
     OBJECT,
-    RECORD,
+    DOCUMENT,
     ID,
     KEY,
     KEY_LIST,

@@ -36,7 +36,6 @@ import net.vpc.upa.expressions.Order;
 import net.vpc.upa.filters.FieldFilter;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -64,7 +63,7 @@ public interface QueryBuilder extends Query, Serializable {
 
     public QueryBuilder byPrototype(Object prototype);
 
-    public QueryBuilder byRecordPrototype(Record prototype);
+    public QueryBuilder byDocumentPrototype(Document prototype);
 
     public Expression getExpression();
 
@@ -78,7 +77,7 @@ public interface QueryBuilder extends Query, Serializable {
 
     public Object getPrototype();
 
-    public Record getRecordPrototype();
+    public Document getDocumentPrototype();
 
     public String getEntityAlias();
 

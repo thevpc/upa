@@ -24,7 +24,6 @@ import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipDataInterceptor;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.eval.functions.FunctionCallback;
-import net.vpc.upa.impl.persistence.DefaultDBConfigModel;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
 import net.vpc.upa.impl.uql.DefaultExpressionManager;
@@ -1034,8 +1033,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
     }
 
-//    public int updateRecords(String entityName, Record record, Expression condition) throws UPAException {
-//        return getEntity(entityName).updateRecords(record, condition);
+//    public int updateDocuments(String entityName, Document document, Expression condition) throws UPAException {
+//        return getEntity(entityName).updateDocuments(document, condition);
 //    }
 
 //    public void updateFormulas(String entityName, FieldFilter filter, Expression expr) throws UPAException {
@@ -1046,8 +1045,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //        getEntity(entityName).updateFormulasById(filter, key);
 //    }
 
-//    public int updateRecords(Class entityType, Record record, Expression condition) throws UPAException {
-//        return getEntity(entityType).updateRecords(record, condition);
+//    public int updateDocuments(Class entityType, Document document, Expression condition) throws UPAException {
+//        return getEntity(entityType).updateDocuments(document, condition);
 //    }
 
 //    public void updateFormulas(Class entityType, FieldFilter filter, Expression expr) throws UPAException {
@@ -1567,35 +1566,35 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public void lockEntities(Entity entity, Expression expression, String id) throws UPAException {
         if (entity.getEntityCount(new And(expression, new Different(new Var("lockId"), null))) > 0) {
-            throw new AlreadyLockedPersistenceUnitException("Some Records already locked");
+            throw new AlreadyLockedPersistenceUnitException("Some Documents already locked");
         }
         List<Object> keys = entity.createQueryBuilder().byExpression(expression).getIdList();
         for (Object key : keys) {
-            Record r = entity.getBuilder().createRecord();
+            Document r = entity.getBuilder().createDocument();
             r.setObject("lockId", id);
             long i = entity.createUpdateQuery().setValues(r)
                     .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), null)))
             .execute();
             if (i != 1) {
-                throw new AlreadyLockedPersistenceUnitException("Already Locked Record");
+                throw new AlreadyLockedPersistenceUnitException("Already Locked Document");
             }
         }
     }
 
     public void unlockEntities(Entity entity, Expression expression, String lockId) throws UPAException {
         if (entity.getEntityCount(new And(expression, new Or(new Equals(new Var("lockId"), null), new Different(new Var("lockId"), lockId)))) > 0) {
-            throw new AlreadyLockedPersistenceUnitException("Some Records are not locked or are locked by another user");
+            throw new AlreadyLockedPersistenceUnitException("Some Documents are not locked or are locked by another user");
         }
         List<Object> keys = entity.createQueryBuilder().byExpression(expression).getIdList();
         for (Object key : keys) {
-            Record r = entity.getBuilder().createRecord();
+            Document r = entity.getBuilder().createDocument();
             r.setObject("lockId", null);
             r.setObject("lockTime", null);
             long i = entity.createUpdateQuery().setValues(r)
                             .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), lockId)))
             .execute();
             if (i != 1) {
-                throw new AlreadyLockedPersistenceUnitException("Record no Locked or is locked by another person");
+                throw new AlreadyLockedPersistenceUnitException("Document no Locked or is locked by another person");
             }
         }
     }
@@ -1603,14 +1602,14 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     public List<LockInfo> getLockingInfo(Entity entity, Expression expression) throws UPAException {
         ArrayList<LockInfo> vector = new ArrayList<LockInfo>();
         FieldFilter filter = FieldFilters.id().or(FieldFilters.byName("lockId", "lockTime"));
-        List<Record> list = entity.createQueryBuilder().byExpression(
-                new And(new Different(new Var("lockId"), null), expression)).setFieldFilter(filter).getRecordList();
-        for (Record record : list) {
-            String id = record.getString("lockId");
-            Date date = record.getDate("lockTime");
-            record.remove("lockId");
-            record.remove("lockTime");
-            vector.add(new LockInfo(record, date, id));
+        List<Document> list = entity.createQueryBuilder().byExpression(
+                new And(new Different(new Var("lockId"), null), expression)).setFieldFilter(filter).getDocumentList();
+        for (Document document : list) {
+            String id = document.getString("lockId");
+            Date date = document.getDate("lockTime");
+            document.remove("lockId");
+            document.remove("lockTime");
+            vector.add(new LockInfo(document, date, id));
         }
         return vector;
     }
@@ -1666,7 +1665,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private void ensureLockDef(String entityName) throws UPAException {
         Entity lockInfoEntity = getLockInfoEntity();
         if (lockInfoEntity.getEntityCount(lockInfoEntity.getBuilder().idToExpression(lockInfoEntity.createId(entityName), null)) == 0) {
-            Record r = lockInfoEntity.getBuilder().createRecord();
+            Document r = lockInfoEntity.getBuilder().createDocument();
             r.setString("lockedEntity", entityName);
             lockInfoEntity.persist(r);
         }
@@ -1674,7 +1673,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     private void _lockEntity(String entityName, String lockId) throws UPAException {
         Entity lockInfoEntity = getLockInfoEntity();
-        Record r = lockInfoEntity.getBuilder().createRecord();
+        Document r = lockInfoEntity.getBuilder().createDocument();
         r.setObject("lockId", lockId);
         r.setObject("lockTime", new Date());
         long ret = 0;
@@ -1693,11 +1692,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (ret == 1) {
             // oll is Ok
         } else {
-            Record locked = null;
+            Document locked = null;
             try {
                 locked = lockInfoEntity.createQueryBuilder()
                         .byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                        .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
+                        .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getDocument();
             } catch (UPAException e) {
                 throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NString());
             }
@@ -1722,9 +1721,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     private LockInfo _getLockInfo(String entityName) throws UPAException {
-        Record rec = getEntity(entityName).createQueryBuilder().byExpression(
+        Document rec = getEntity(entityName).createQueryBuilder().byExpression(
                 new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
+                .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getDocument();
         if (rec == null) {
             return null;
         }
@@ -1733,7 +1732,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     private void _unlock(String entityName, String id) throws UPAException {
         Entity entity = getLockInfoEntity();
-        Record r = entity.getBuilder().createRecord();
+        Document r = entity.getBuilder().createDocument();
         r.setObject("lockId", null);
         r.setObject("lockTime", null);
         And locked = new And(
@@ -1743,10 +1742,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (ret == 1) {
             // oll is Ok
         } else {
-            Record rlocked = entity.createQueryBuilder().byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
-                    .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getRecord();
+            Document rlocked = entity.createQueryBuilder().byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
+                    .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getDocument();
             if (rlocked == null) {
-                rlocked = entity.getBuilder().createRecord();
+                rlocked = entity.getBuilder().createDocument();
             }
             throw new AlreadyLockedPersistenceUnitException("entity.neverLocked", getEntity(entityName).getI18NString(), rlocked.getString("lockId"), rlocked.getDate("lockTime"));
         }
@@ -1849,14 +1848,14 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if(entityType instanceof String){
             return getEntity((String) entityType);
         }
-        if(entityType instanceof QualifiedRecord){
-            return ((QualifiedRecord) entityType).getEntity();
+        if(entityType instanceof QualifiedDocument){
+            return ((QualifiedDocument) entityType).getEntity();
         }
         if(entityType instanceof Class){
             return getEntity((Class) entityType);
         }
-        if(entityType instanceof Record){
-            throw new UPAException("UnableToResolveEntityFromRecord");
+        if(entityType instanceof Document){
+            throw new UPAException("UnableToResolveEntityFromDocument");
         }
         return getEntity(entityType.getClass());
     }
@@ -1883,58 +1882,58 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public void persist(String entity, Object objectOrRecord,Map<String,Object> hints) throws UPAException {
+    public void persist(String entity, Object objectOrDocument,Map<String,Object> hints) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.persist(entity,objectOrRecord,hints);
+            sessionAwarePU.persist(entity,objectOrDocument,hints);
             return;
         }
         Entity entityManager = getEntity(entity);
-        entityManager.persist(objectOrRecord,hints);
+        entityManager.persist(objectOrDocument,hints);
     }
 
     @Override
-    public void persist(String entity, Object objectOrRecord) throws UPAException {
+    public void persist(String entity, Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.persist(objectOrRecord);
+            sessionAwarePU.persist(objectOrDocument);
             return;
         }
         Entity entityManager = getEntity(entity);
-        entityManager.persist(objectOrRecord);
+        entityManager.persist(objectOrDocument);
     }
 
     @Override
-    public void persist(Object objectOrRecord) throws UPAException {
+    public void persist(Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.persist(objectOrRecord);
+            sessionAwarePU.persist(objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(objectOrRecord);
-        entityManager.persist(objectOrRecord);
+        Entity entityManager = getEntity(objectOrDocument);
+        entityManager.persist(objectOrDocument);
     }
 
     /**
      *
-     * @param objectOrRecord
+     * @param objectOrDocument
      * @throws UPAException
      */
     @Override
-    public void merge(Object objectOrRecord) throws UPAException {
+    public void merge(Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.merge(objectOrRecord);
+            sessionAwarePU.merge(objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(objectOrRecord);
-        entityManager.merge(objectOrRecord);
+        Entity entityManager = getEntity(objectOrDocument);
+        entityManager.merge(objectOrDocument);
     }
 
     @Override
-    public void merge(String entityName,Object objectOrRecord) throws UPAException {
+    public void merge(String entityName,Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.merge(entityName,objectOrRecord);
+            sessionAwarePU.merge(entityName,objectOrDocument);
             return;
         }
         Entity entityManager = getEntity(entityName);
-        entityManager.merge(objectOrRecord);
+        entityManager.merge(objectOrDocument);
     }
 
     @Override
@@ -1956,129 +1955,129 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     //    @Override
-//    public void merge(String entityName, Object objectOrRecord) throws UPAException {
+//    public void merge(String entityName, Object objectOrDocument) throws UPAException {
 //        if (!checkSession()) {
-//            sessionAwarePU.merge(objectOrRecord);
+//            sessionAwarePU.merge(objectOrDocument);
 //            return;
 //        }
 //        Entity entityManager = getEntity(entityName);
-//        entityManager.merge(objectOrRecord);
+//        entityManager.merge(objectOrDocument);
 //    }
 
     @Override
-    public RemoveTrace remove(Object objectOrRecord) throws UPAException {
+    public RemoveTrace remove(Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            return sessionAwarePU.remove(objectOrRecord);
+            return sessionAwarePU.remove(objectOrDocument);
         }
-        Entity entityManager = getEntity(objectOrRecord);
-        return entityManager.remove(objectOrRecord);
+        Entity entityManager = getEntity(objectOrDocument);
+        return entityManager.remove(objectOrDocument);
     }
 
     @Override
-    public boolean save(Object objectOrRecord) throws UPAException {
+    public boolean save(Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            return sessionAwarePU.save(objectOrRecord);
+            return sessionAwarePU.save(objectOrDocument);
         }
-        Entity entityManager = getEntity(objectOrRecord);
-        return entityManager.save(objectOrRecord);
+        Entity entityManager = getEntity(objectOrDocument);
+        return entityManager.save(objectOrDocument);
     }
 
     @Override
-    public boolean save(String entityName, Object objectOrRecord) throws UPAException {
+    public boolean save(String entityName, Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            return sessionAwarePU.save(entityName, objectOrRecord);
+            return sessionAwarePU.save(entityName, objectOrDocument);
         }
-        return getEntity(entityName).save(objectOrRecord);
+        return getEntity(entityName).save(objectOrDocument);
     }
 
     @Override
-    public void update(Object objectOrRecord) throws UPAException {
+    public void update(Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.update(objectOrRecord);
+            sessionAwarePU.update(objectOrDocument);
             return;
         }
-        getEntity(objectOrRecord).update(objectOrRecord);
+        getEntity(objectOrDocument).update(objectOrDocument);
     }
 
     @Override
-    public void update(String entityName, Object objectOrRecord) throws UPAException {
-        getEntity(entityName).update(objectOrRecord);
+    public void update(String entityName, Object objectOrDocument) throws UPAException {
+        getEntity(entityName).update(objectOrDocument);
     }
 //    @Override
-//    public void update(String entityName, Object objectOrRecord,Map<String,Object> hints) throws UPAException {
+//    public void update(String entityName, Object objectOrDocument,Map<String,Object> hints) throws UPAException {
 //        if (!checkSession()) {
-//            sessionAwarePU.update(entityName, objectOrRecord);
+//            sessionAwarePU.update(entityName, objectOrDocument);
 //            return;
 //        }
-//        getEntity(entityName).update(objectOrRecord);
+//        getEntity(entityName).update(objectOrDocument);
 //    }
 
 //    @Override
-//    public void updatePartial(String entityName, Object objectOrRecord, String... fields) throws UPAException {
-//        updatePartial(entityName, objectOrRecord,defaultHints, fields);
+//    public void updatePartial(String entityName, Object objectOrDocument, String... fields) throws UPAException {
+//        updatePartial(entityName, objectOrDocument,defaultHints, fields);
 //    }
 
 //    @Override
-//    public void updatePartial(String entityName, Object objectOrRecord,Map<String,Object> hints, String... fields) throws UPAException {
+//    public void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints, String... fields) throws UPAException {
 //        //
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(entityName,objectOrRecord,hints,fields);
+//            sessionAwarePU.updatePartial(entityName,objectOrDocument,hints,fields);
 //            return;
 //        }
-//        getEntity(entityName).updatePartial(objectOrRecord,hints,fields);
+//        getEntity(entityName).updatePartial(objectOrDocument,hints,fields);
 //    }
 //
 //    @Override
-//    public void updatePartial(String entityName, Object objectOrRecord, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
-//        updatePartial(entityName, objectOrRecord, fields,ignoreUnspecified,defaultHints);
+//    public void updatePartial(String entityName, Object objectOrDocument, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
+//        updatePartial(entityName, objectOrDocument, fields,ignoreUnspecified,defaultHints);
 //    }
 //
 //    @Override
-//    public void updatePartial(String entityName, Object objectOrRecord, Set<String> fields,boolean ignoreUnspecified,Map<String,Object> hints) throws UPAException {
+//    public void updatePartial(String entityName, Object objectOrDocument, Set<String> fields,boolean ignoreUnspecified,Map<String,Object> hints) throws UPAException {
 //        //
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(entityName, objectOrRecord, fields, ignoreUnspecified,hints);
+//            sessionAwarePU.updatePartial(entityName, objectOrDocument, fields, ignoreUnspecified,hints);
 //            return;
 //        }
-//        getEntity(entityName).updatePartial(objectOrRecord, fields, ignoreUnspecified,hints);
+//        getEntity(entityName).updatePartial(objectOrDocument, fields, ignoreUnspecified,hints);
 //    }
 
 //    @Override
-//    public void updatePartial(Object objectOrRecord, String... fields) throws UPAException {
+//    public void updatePartial(Object objectOrDocument, String... fields) throws UPAException {
 //        //
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(objectOrRecord);
+//            sessionAwarePU.updatePartial(objectOrDocument);
 //            return;
 //        }
-//        getEntity(objectOrRecord).updatePartial(objectOrRecord, fields);
+//        getEntity(objectOrDocument).updatePartial(objectOrDocument, fields);
 //    }
 //
 //    @Override
-//    public void updatePartial(Object objectOrRecord, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
+//    public void updatePartial(Object objectOrDocument, Set<String> fields,boolean ignoreUnspecified) throws UPAException {
 //        //
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(objectOrRecord,fields,ignoreUnspecified);
+//            sessionAwarePU.updatePartial(objectOrDocument,fields,ignoreUnspecified);
 //            return;
 //        }
-//        getEntity(objectOrRecord).updatePartial(objectOrRecord,fields,ignoreUnspecified);
+//        getEntity(objectOrDocument).updatePartial(objectOrDocument,fields,ignoreUnspecified);
 //    }
 
 //    @Override
-//    public void updatePartial(Object objectOrRecord) throws UPAException {
+//    public void updatePartial(Object objectOrDocument) throws UPAException {
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(objectOrRecord);
+//            sessionAwarePU.updatePartial(objectOrDocument);
 //            return;
 //        }
-//        getEntity(objectOrRecord).updatePartial(objectOrRecord);
+//        getEntity(objectOrDocument).updatePartial(objectOrDocument);
 //    }
 //
 //    @Override
-//    public void updatePartial(String entityName, Object objectOrRecord) throws UPAException {
+//    public void updatePartial(String entityName, Object objectOrDocument) throws UPAException {
 //        if (!checkSession()) {
-//            sessionAwarePU.updatePartial(entityName, objectOrRecord);
+//            sessionAwarePU.updatePartial(entityName, objectOrDocument);
 //            return;
 //        }
-//        getEntity(entityName).updatePartial(objectOrRecord);
+//        getEntity(entityName).updatePartial(objectOrDocument);
 //    }
 
     @Override
@@ -2184,16 +2183,16 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
                 .getIdList();
     }
 
-    public List<Record> findAllRecords(Class entityType) throws UPAException {
+    public List<Document> findAllDocuments(Class entityType) throws UPAException {
         return createQueryBuilder(entityType)
                 .orderBy(getEntity(entityType).getListOrder())
-                .getRecordList();
+                .getDocumentList();
     }
 
-    public List<Record> findAllRecords(String entityName) throws UPAException {
+    public List<Document> findAllDocuments(String entityName) throws UPAException {
         return createQueryBuilder(entityName)
                 .orderBy(getEntity(entityName).getListOrder())
-                .getRecordList();
+                .getDocumentList();
     }
 
     @Override
@@ -2212,13 +2211,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public Record findRecordById(Class entityType, Object id) throws UPAException {
-        return createQueryBuilder(entityType).byId(id).getRecord();
+    public Document findDocumentById(Class entityType, Object id) throws UPAException {
+        return createQueryBuilder(entityType).byId(id).getDocument();
     }
 
     @Override
-    public Record findRecordById(String entityName, Object id) throws UPAException {
-        return createQueryBuilder(entityName).byId(id).getRecord();
+    public Document findDocumentById(String entityName, Object id) throws UPAException {
+        return createQueryBuilder(entityName).byId(id).getDocument();
     }
 
     //////////////////////////////////////

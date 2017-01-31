@@ -486,8 +486,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public Object getValue(Object instance) {
-        if (instance instanceof Record) {
-            return ((Record) instance).getObject(getName());
+        if (instance instanceof Document) {
+            return ((Document) instance).getObject(getName());
         }
         return getEntity().getBuilder().getProperty(instance, getName());
     }

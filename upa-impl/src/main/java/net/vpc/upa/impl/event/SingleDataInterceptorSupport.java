@@ -4,11 +4,7 @@ package net.vpc.upa.impl.event;
 import net.vpc.upa.callbacks.SingleEntityListener;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.IdExpression;
-import net.vpc.upa.persistence.EntityExecutionContext;
 
-import java.util.Arrays;
-import java.util.List;
 import net.vpc.upa.callbacks.EntityEvent;
 import net.vpc.upa.callbacks.EntityListenerAdapter;
 import net.vpc.upa.callbacks.PersistEvent;
@@ -34,13 +30,13 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
     @Override
     public void onPrePersist(PersistEvent event) throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
-        keyInterceptor.beforePersist(context, event.getPersistedId(), event.getPersistedRecord());
+        keyInterceptor.beforePersist(context, event.getPersistedId(), event.getPersistedDocument());
     }
 
     @Override
     public void onPersist(PersistEvent event) throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
-        keyInterceptor.afterPersist(context, event.getPersistedId(), event.getPersistedRecord());
+        keyInterceptor.afterPersist(context, event.getPersistedId(), event.getPersistedDocument());
     }
 
     @Override
@@ -48,7 +44,7 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
             throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
         for (Object aK : resolveIdList(event, event.getFilterExpression())) {
-            keyInterceptor.beforeUpdate(context, aK, event.getUpdatesRecord());
+            keyInterceptor.beforeUpdate(context, aK, event.getUpdatesDocument());
         }
     }
 
@@ -57,7 +53,7 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
             throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
         for (Object aK : resolveIdList(event, event.getFilterExpression())) {
-            keyInterceptor.afterUpdate(context, aK, event.getUpdatesRecord());
+            keyInterceptor.afterUpdate(context, aK, event.getUpdatesDocument());
         }
     }
 

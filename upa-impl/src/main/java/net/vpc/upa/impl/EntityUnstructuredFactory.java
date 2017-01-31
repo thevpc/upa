@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
-import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -14,30 +14,30 @@ public class EntityUnstructuredFactory extends AbstractEntityFactory {
         this.entity=entity;
     }
 
-    public Record createRecord() {
-        return new DefaultRecord();
+    public Document createDocument() {
+        return new DefaultDocument();
     }
 
     public <R> R createObject() {
         //double cast is needed in c#
-        return (R) (Object)new DefaultRecord();
+        return (R) (Object)new DefaultDocument();
     }
 
-    public Record objectToRecord(Object object, boolean ignoreUnspecified) {
-        return (Record) object;
+    public Document objectToDocument(Object object, boolean ignoreUnspecified) {
+        return (Document) object;
     }
 
     @Override
-    public <R> R recordToObject(Record record) {
-        return (R) record;
+    public <R> R documentToObject(Document document) {
+        return (R) document;
     }
 
     public void setProperty(Object object, String property, Object value) throws UPAException {
-        ((Record) object).setObject(property, value);
+        ((Document) object).setObject(property, value);
     }
 
     public Object getProperty(Object object, String property) throws UPAException {
-        return ((Record) object).getObject(property);
+        return ((Document) object).getObject(property);
     }
 
     @Override

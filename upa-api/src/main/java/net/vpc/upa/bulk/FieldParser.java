@@ -34,12 +34,12 @@
  */
 package net.vpc.upa.bulk;
 
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface FieldParser {
 
-    Object parseFieldValue(String fieldName, Object fieldValue, Record recod, ImportDataManager importer);
+    Object parseFieldValue(String fieldName, Object fieldValue, Document recod, ImportDataManager importer);
 }

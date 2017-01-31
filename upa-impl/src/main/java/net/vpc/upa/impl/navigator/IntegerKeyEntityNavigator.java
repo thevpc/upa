@@ -3,7 +3,7 @@ package net.vpc.upa.impl.navigator;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 
@@ -20,7 +20,7 @@ public class IntegerKeyEntityNavigator extends DefaultEntityNavigator {
                 new Coalesce(new Max(new Var(field.getName())),new Literal(0)),
                 new Literal(1))
                 ,"nextValue");
-        Record next = field.getPersistenceUnit().createQuery(s).getRecord();
+        Document next = field.getPersistenceUnit().createQuery(s).getDocument();
         if(next!=null){
             return next.getInt("nextValue");
         }else{

@@ -36,7 +36,7 @@ package net.vpc.upa.callbacks;
 
 public interface EntityListener extends EntityInterceptor{
 
-//    public void onBeforeInsert(Entity entity, Object insertedId, Record insertedRecord);
+//    public void onBeforeInsert(Entity entity, Object insertedId, Document insertedDocument);
     public void onPrePersist(PersistEvent event);
 
     public void onPersist(PersistEvent event);
@@ -56,7 +56,7 @@ public interface EntityListener extends EntityInterceptor{
     public void onPreInitialize(EntityEvent event);
 
     /**
-     * called when Entity is initialized aka default entities / records where
+     * called when Entity is initialized aka default entities / Documents where
      * inserted
      *
      * @param event

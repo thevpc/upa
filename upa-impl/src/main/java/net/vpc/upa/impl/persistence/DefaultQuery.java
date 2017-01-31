@@ -127,16 +127,16 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     @Override
-    public List<MultiRecord> getMultiRecordList() throws UPAException {
+    public List<MultiDocument> getMultiDocumentList() throws UPAException {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
                 sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
             }
-            return sessionAwareInstance.getMultiRecordList();
+            return sessionAwareInstance.getMultiDocumentList();
         }
         try {
             QueryExecutor queryExecutor = executeQuery(Fields2.READ);
-            MultiRecordList r = new MultiRecordList(queryExecutor, isUpdatable());
+            MultiDocumentList r = new MultiDocumentList(queryExecutor, isUpdatable());
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
                 //force loading
@@ -196,8 +196,8 @@ public class DefaultQuery extends AbstractQuery {
             if (fetchStrategy == null) {
                 fetchStrategy = QueryFetchStrategy.JOIN;
             }
-            boolean itemAsRecord = builder instanceof RecordQueryResultItemBuilder;
-            boolean relationAsRecord = false;
+            boolean itemAsDocument = builder instanceof DocumentQueryResultItemBuilder;
+            boolean relationAsDocument = false;
             boolean supportCache = false;
             QueryResultRelationLoader loader = null;
             switch (fetchStrategy) {
@@ -214,8 +214,8 @@ public class DefaultQuery extends AbstractQuery {
                     pu,
                     queryExecutor,
                     fetchStrategy != QueryFetchStrategy.JOIN,
-                    itemAsRecord,
-                    relationAsRecord,
+                    itemAsDocument,
+                    relationAsDocument,
                     supportCache,
                     isUpdatable(),
                     loader,
@@ -234,8 +234,8 @@ public class DefaultQuery extends AbstractQuery {
 
 
     @Override
-    public List<Record> getRecordList() throws UPAException {
-        return getResultList(new RecordQueryResultItemBuilder());
+    public List<Document> getDocumentList() throws UPAException {
+        return getResultList(new DocumentQueryResultItemBuilder());
     }
 
     @Override

@@ -1,12 +1,12 @@
 package net.vpc.upa.impl.navigator;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.types.ConstraintsException;
 import net.vpc.upa.types.StringType;
 import net.vpc.upa.types.StringTypeCharValidator;
 import net.vpc.upa.types.TypeValueValidator;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.InCollection;
 import net.vpc.upa.expressions.Literal;
@@ -51,10 +51,10 @@ public class StringKeyEntityNavigator extends DefaultEntityNavigator {
                 requestedIds.add(id);
             }
 
-            List<Record> recordList = entity.createQuery((new Select()).from(entity.getName()).field(new Var(idName)).where(idsSet)).getRecordList();
+            List<Document> documentList = entity.createQuery((new Select()).from(entity.getName()).field(new Var(idName)).where(idsSet)).getDocumentList();
             TreeSet<String> foundIds = new TreeSet<String>();
-            for (Record record : recordList) {
-                foundIds.add(record.getString());
+            for (Document document : documentList) {
+                foundIds.add(document.getString());
             }
             requestedIds.removeAll(foundIds);
             if (requestedIds.isEmpty()) {

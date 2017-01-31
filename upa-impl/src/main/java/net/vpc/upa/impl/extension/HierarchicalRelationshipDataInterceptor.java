@@ -47,23 +47,23 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 
     @Override
     public void onPersist(PersistEvent event) throws UPAException {
-        Object parent_id = relation.extractId(event.getPersistedRecord());
+        Object parent_id = relation.extractId(event.getPersistedDocument());
         String path = support.getHierarchyPathSeparator() + support.toStringId(event.getPersistedId());
         String pathFieldName = support.getHierarchyPathField();
         Entity entity = relation.getSourceRole().getEntity();
         if (parent_id != null) {
-            Record r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(FieldFilters.byName(pathFieldName)).getRecord();
+            Document r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(FieldFilters.byName(pathFieldName)).getDocument();
             if (r != null) {
                 path = r.getString(pathFieldName) + path;
             }
         }
-        event.getPersistedRecord().setString(pathFieldName, path);
+        event.getPersistedDocument().setString(pathFieldName, path);
         EntityExecutionContext executionContext = event.getContext();
 
         EntityExecutionContext updateContext = executionContext.getPersistenceUnit().getFactory().createObject(EntityExecutionContext.class);
         updateContext.initPersistenceUnit(executionContext.getPersistenceUnit(), executionContext.getPersistenceStore(), ContextOperation.UPDATE);
 
-        Record u2 = entity.getBuilder().createRecord();
+        Document u2 = entity.getBuilder().createDocument();
         u2.setString(pathFieldName, path);
         entity.updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), entity.getName()), updateContext);
 
@@ -100,7 +100,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         EntityExecutionContext executionContext = event.getContext();
 
         List<Field> updateTreeFields = getUpdateTreeFields();
-        Record updates = event.getUpdatesRecord();
+        Document updates = event.getUpdatesDocument();
         if (!updates.isSet(updateTreeFields.get(0).getName())) {
             return;
         }
@@ -139,7 +139,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 //            return;
 //        }
         List<Field> updateTreeFields = getUpdateTreeFields();
-        if (!event.getUpdatesRecord().isSet(updateTreeFields.get(0).getName())) {
+        if (!event.getUpdatesDocument().isSet(updateTreeFields.get(0).getName())) {
             return;
         }
         List<Object> r = (List<Object>) executionContext.getObject("recurse");

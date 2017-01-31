@@ -1,8 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.Entity;
-import net.vpc.upa.MultiRecord;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
+import net.vpc.upa.MultiDocument;
 import net.vpc.upa.exceptions.NoResultException;
 import net.vpc.upa.exceptions.NonUniqueResultException;
 import net.vpc.upa.exceptions.UPAException;
@@ -66,39 +65,39 @@ public abstract class AbstractQuery implements Query {
 
     @Override
     public Object getSingleValue(Object defaultValue) throws UPAException {
-        Record mergedRecord = getRecord();
-        if (mergedRecord == null) {
+        Document mergedDocument = getDocument();
+        if (mergedDocument == null) {
             return defaultValue;
         }
-        return mergedRecord.getSingleResult();
+        return mergedDocument.getSingleResult();
     }
 
     @Override
-    public MultiRecord getMultiRecord() throws UPAException {
-        List<MultiRecord> multiRecordList = null;
+    public MultiDocument getMultiDocument() throws UPAException {
+        List<MultiDocument> multiDocumentList = null;
         try {
-            multiRecordList = getMultiRecordList();
-            if (!multiRecordList.isEmpty()) {
-                return multiRecordList.get(0);
+            multiDocumentList = getMultiDocumentList();
+            if (!multiDocumentList.isEmpty()) {
+                return multiDocumentList.get(0);
             }
             return null;
         } finally {
-            UPAUtils.close(multiRecordList);
+            UPAUtils.close(multiDocumentList);
         }
     }
 
     @Override
-    public Record getRecord() throws UPAException {
-        List<Record> multiRecordList = null;
+    public Document getDocument() throws UPAException {
+        List<Document> multiDocumentList = null;
         try {
-            multiRecordList = getRecordList();
-            boolean empty = multiRecordList.isEmpty();
+            multiDocumentList = getDocumentList();
+            boolean empty = multiDocumentList.isEmpty();
             if (!empty) {
-                return multiRecordList.get(0);
+                return multiDocumentList.get(0);
             }
             return null;
         } finally {
-            UPAUtils.close(multiRecordList);
+            UPAUtils.close(multiDocumentList);
         }
     }
 

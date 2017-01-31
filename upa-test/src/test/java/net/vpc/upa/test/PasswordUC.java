@@ -22,7 +22,7 @@ public class PasswordUC {
     private static final Logger log = Logger.getLogger(PasswordUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -66,9 +66,9 @@ public class PasswordUC {
             val3.setName("hello3");
             pu.persist(val3);
 
-//            Record r=pu.getEntity(Data.class).getEntityFactory().createRecord();
+//            Document r=pu.getEntity(Data.class).getEntityFactory().createDocument();
 //            r.setObject("password", new Literal("hella"));
-//            pu.insertRecord(Data.class,r);
+//            pu.insertDocument(Data.class,r);
             entityList = findAll.getResultList();
             Assert.assertTrue(entityList.size() == 4);
             for (Data c : entityList) {

@@ -35,6 +35,7 @@
 package net.vpc.upa;
 
 /**
+ * Entity modifier are standard functionality available/prohibited for an Entity
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/27/12 10:36 PM
  */

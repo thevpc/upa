@@ -22,7 +22,7 @@ public class RelationUC {
     private static final Logger log = Logger.getLogger(RelationUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -43,8 +43,8 @@ public class RelationUC {
         public void testQuery() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Person a where a.phone2.id >3");
-            List<Record> r = q.getRecordList();
-            for (Record record : r) {
+            List<Document> r = q.getDocumentList();
+            for (Document document : r) {
                 System.out.println(r);
             }
         }

@@ -252,7 +252,7 @@ public class FormulaUpdateProcessor {
             // System.out.println("ITERATIVE_VALIDATION = " +
             // validationPass.pass+" : "+validationPass.fields+" :
             // "+keysToUpdate[r]);
-            Record u = entity.getBuilder().createRecord();
+            Document u = entity.getBuilder().createDocument();
             for (Field field : fields) {
                 CustomFormula cf = (CustomFormula) (onPersist ? field.getPersistFormula() : field.getUpdateFormula());
                 Object v = cf.getValue(field, aKeysToUpdate, context);
@@ -306,7 +306,7 @@ public class FormulaUpdateProcessor {
     protected int validateDefault(Collection<Field> fields, Expression expression) throws UPAException {
         // System.out.println("DEFAULT_VALIDATION = " +
         // validationPass.pass+" : "+ validationPass.fields);
-        Record u = entity.getBuilder().createRecord();
+        Document u = entity.getBuilder().createDocument();
         for (Field field : fields) {
             Expression fieldExpression = getFieldExpression(field, onPersist);
             Expression validExpression = fieldExpression;
@@ -333,7 +333,7 @@ public class FormulaUpdateProcessor {
 //            sb0.setWhere(expression);
 //
 ////            Log.bug("Values to update are : ");
-//            for (Record ur : entity.createQuery(sb0).getRecordList()) {
+//            for (Document ur : entity.createQuery(sb0).getDocumentList()) {
 //                for (Map.Entry<String, Object> entry : ur.toMap().entrySet()) {
 //                    //Log.bug(entry.getKey() + " : " + entry.getValue());
 //                }
@@ -351,7 +351,7 @@ public class FormulaUpdateProcessor {
 //        // validationPass.pass+" : "+ validationPass.fields);
 ////        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
 ////        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
-//        Record u = eb.createRecord();
+//        Document u = eb.createDocument();
 //        LinkedHashMap<String, Expression> selectBasedFields = new LinkedHashMap<String, Expression>();
 //
 //        if (isUpdateComplexValuesIncludingUpdatedTableSupported) {
@@ -432,7 +432,7 @@ public class FormulaUpdateProcessor {
 //                sb0.setWhere(expression);
 //
 ////            Log.bug("Values to update are : ");
-//                for (Record ur : entity.createQuery(sb0).getRecordList()) {
+//                for (Document ur : entity.createQuery(sb0).getDocumentList()) {
 //                    for (Map.Entry<String, Object> entry : ur.toMap().entrySet()) {
 //                        //Log.bug(entry.getKey() + " : " + entry.getValue());
 //                    }
@@ -450,11 +450,11 @@ public class FormulaUpdateProcessor {
 //                s.field(f.getValue(), f.getKey());
 //            }
 //            s.where(expression);
-//            for (Record record : entity.getPersistenceUnit().createQuery(s).getRecordList()) {
+//            for (Document document : entity.getPersistenceUnit().createQuery(s).getDocumentList()) {
 //                for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {
-//                    u.setObject(f.getKey(),record.getObject(f.getKey()));
+//                    u.setObject(f.getKey(),document.getObject(f.getKey()));
 //                }
-//                Expression exprId=eb.objectToIdExpression(record, "this");
+//                Expression exprId=eb.objectToIdExpression(document, "this");
 //                count2+= entity.updateCore(u, exprId, context);
 //            }
 //        }

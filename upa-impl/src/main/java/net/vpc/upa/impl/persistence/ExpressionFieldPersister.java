@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -20,12 +20,12 @@ public class ExpressionFieldPersister implements FieldPersister {
     }
 
     @Override
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException {
-        record.setObject(field,expression);
+    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException {
+        document.setObject(field,expression);
     }
 
     @Override
-    public void afterPersist(Record record, EntityExecutionContext context) throws UPAException {
+    public void afterPersist(Document document, EntityExecutionContext context) throws UPAException {
     }
 
     @Override

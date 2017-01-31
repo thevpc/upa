@@ -15,7 +15,7 @@ public interface UpdateQuery {
     UpdateQuery setNone() ;
 
     UpdateQuery setValues(Object object) ;
-    UpdateQuery setValues(Record record) ;
+    UpdateQuery setValues(Document document) ;
     Object getValues();
 
     UpdateQuery byId(Object expr);
@@ -28,9 +28,9 @@ public interface UpdateQuery {
 
     UpdateQuery byPrototype(Object expr);
 
-    UpdateQuery byRecord(Record expr);
+    UpdateQuery byDocument(Document expr);
 
-    UpdateQuery byPrototype(Record expr);
+    UpdateQuery byPrototype(Document expr);
 
     UpdateQuery byKeyList(List<Key> expr);
 

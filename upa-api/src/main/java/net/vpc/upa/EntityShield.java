@@ -72,45 +72,45 @@ public interface EntityShield {
 
     public boolean isGeneratedId() throws UPAException;
 
-    public Expression getFullNonDeletableRecordsExpression() throws UPAException;
+    public Expression getFullNonDeletableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonRenamableRecordsExpression() throws UPAException;
+    public Expression getFullNonRenamableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonCloneableRecordsExpression() throws UPAException;
+    public Expression getFullNonCloneableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonUpdatableRecordsExpression() throws UPAException;
+    public Expression getFullNonUpdatableDocumentsExpression() throws UPAException;
 
-    public Expression getNonDeletableRecordsExpression() throws UPAException;
+    public Expression getNonDeletableDocumentsExpression() throws UPAException;
 
-    public void setNonDeletableRecordsExpression(Expression expression) throws UPAException;
+    public void setNonDeletableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonUpdatableRecordsExpression() throws UPAException;
+    public Expression getNonUpdatableDocumentsExpression() throws UPAException;
 
-    public void setNonUpdatableRecordsExpression(Expression expression) throws UPAException;
+    public void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonRenamableRecordsExpression() throws UPAException;
+    public Expression getNonRenamableDocumentsExpression() throws UPAException;
 
-    public void setNonRenamableRecordsExpression(Expression expression) throws UPAException;
+    public void setNonRenamableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonCloneableRecordsExpression() throws UPAException;
+    public Expression getNonCloneableDocumentsExpression() throws UPAException;
 
-    public void setNonCloneableRecordsExpression(Expression expression) throws UPAException;
+    public void setNonCloneableDocumentsExpression(Expression expression) throws UPAException;
 
     public void checkInitialize() throws UPAException;
 
     public void checkClear() throws UPAException;
 
-    public void checkPersist(Record record) throws UPAException;
+    public void checkPersist(Document document) throws UPAException;
 
-    public void checkUpdate(Record updates, Expression condition) throws UPAException;
+    public void checkUpdate(Document updates, Expression condition) throws UPAException;
 
     /**
      * @param oldId
      * @param newId
      * @throws net.vpc.upa.exceptions.UPAException
-     * CloneRecordNotAllowedException, CloneRecordNotAllowedException,
-     * CloneRecordNotAllowedException, CloneRecordOldKeyNotFoundException,
-     * CloneRecordNewKeyInUseException
+     * CloneDocumentNotAllowedException, CloneDocumentNotAllowedException,
+     * CloneDocumentNotAllowedException, CloneDocumentOldKeyNotFoundException,
+     * CloneDocumentNewKeyInUseException
      */
     public void checkClone(Object oldId, Object newId) throws UPAException;
 
@@ -123,8 +123,8 @@ public interface EntityShield {
      * @param oldId old id
      * @param newId new id
      * @throws net.vpc.upa.exceptions.UPAException :
-     * RenameRecordNotAllowedException, UnrenamableRecordException,
-     * RenameRecordOldKeyNotFoundException, RenameRecordNewKeyInUseException
+     * RenameDocumentNotAllowedException, UnrenamableDocumentException,
+     * RenameDocumentOldKeyNotFoundException, RenameDocumentNewKeyInUseException
      */
     public void checkRename(Object oldId, Object newId) throws UPAException;
 
@@ -134,16 +134,16 @@ public interface EntityShield {
 
     public void checkRemove(Expression condition, boolean recurse) throws UPAException;
 
-    // public boolean isDeletableRecord(Key instanceID) {
+    // public boolean isDeletableDocument(Key instanceID) {
     // return true;
     // }
     //
-    // public boolean isUpdatableRecord(Key instanceID) {
+    // public boolean isUpdatableDocument(Key instanceID) {
     // return true;
     // }
-    public boolean isDeletableRecord(Object k, boolean recurse) throws UPAException;
+    public boolean isDeletableDocument(Object k, boolean recurse) throws UPAException;
 
-    public boolean isUpdatableRecord(Object k) throws UPAException;
+    public boolean isUpdatableDocument(Object k) throws UPAException;
 
     public boolean isPersistEnabled() throws UPAException;
 

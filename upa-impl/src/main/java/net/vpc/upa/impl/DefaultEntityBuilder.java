@@ -43,18 +43,18 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record createRecord() {
-        return entityFactory.createRecord();
+    public Document createDocument() {
+        return entityFactory.createDocument();
     }
 
     @Override
     public <R> R copyObject(R r) {
-        return recordToObject(copyRecord(objectToRecord(r)));
+        return documentToObject(copyDocument(objectToDocument(r)));
     }
     
     @Override
-    public Record copyRecord(Record rec) {
-        Record r = createRecord();
+    public Document copyDocument(Document rec) {
+        Document r = createDocument();
         r.setAll(rec);
         return r;
     }
@@ -65,43 +65,43 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record objectToRecord(Object entity, boolean ignoreUnspecified) {
-        return entityFactory.objectToRecord(entity, ignoreUnspecified);
+    public Document objectToDocument(Object entity, boolean ignoreUnspecified) {
+        return entityFactory.objectToDocument(entity, ignoreUnspecified);
     }
 
     @Override
-    public Record objectToRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
-        return entityFactory.objectToRecord(entity, fields, ignoreUnspecified, ensureIncludeIds);
+    public Document objectToDocument(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
+        return entityFactory.objectToDocument(entity, fields, ignoreUnspecified, ensureIncludeIds);
     }
 
     @Override
-    public Record objectToRecord(Object entity) {
-        return entityFactory.objectToRecord(entity);
+    public Document objectToDocument(Object entity) {
+        return entityFactory.objectToDocument(entity);
     }
 
     @Override
-    public <R> R recordToObject(Record record) throws UPAException {
-        return entityFactory.recordToObject(record);
+    public <R> R documentToObject(Document document) throws UPAException {
+        return entityFactory.documentToObject(document);
     }
 
     @Override
-    public Object getObject(Object objectOrRecord) {
-        if(entity.getEntityType().isInstance(objectOrRecord)){
-            return objectOrRecord;
+    public Object getObject(Object objectOrDocument) {
+        if(entity.getEntityType().isInstance(objectOrDocument)){
+            return objectOrDocument;
         }else{
-            return recordToObject(objectToRecord(objectOrRecord));
+            return documentToObject(objectToDocument(objectOrDocument));
         }
     }
 
     @Override
-    public Record getRecord(Object objectOrRecord) {
-        return objectToRecord(objectOrRecord);
+    public Document getDocument(Object objectOrDocument) {
+        return objectToDocument(objectOrDocument);
     }
 
     @Override
     public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        if (entityObject instanceof Record) {
-            ((Record) entityObject).setObject(property, value);
+        if (entityObject instanceof Document) {
+            ((Document) entityObject).setObject(property, value);
             return;
         }
         entityFactory.setProperty(entityObject, property, value);
@@ -109,8 +109,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Object getProperty(Object entityObject, String property) throws UPAException {
-        if (entityObject instanceof Record) {
-            return ((Record) entityObject).getObject(property);
+        if (entityObject instanceof Document) {
+            return ((Document) entityObject).getObject(property);
         }
         return entityFactory.getProperty(entityObject, property);
     }
@@ -141,8 +141,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Object keyToId(Key recordKey) throws UPAException {
-        return entityFactory.keyToId(recordKey);
+    public Object keyToId(Key documentKey) throws UPAException {
+        return entityFactory.keyToId(documentKey);
     }
 
 
@@ -159,7 +159,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record idToRecord(Object objectId) throws UPAException {
+    public Document idToDocument(Object objectId) throws UPAException {
         return entityFactory.idToObject(objectId);
     }
 
@@ -174,13 +174,13 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Object recordToId(Record record) throws UPAException {
-        return entityFactory.recordToId(record);
+    public Object documentToId(Document document) throws UPAException {
+        return entityFactory.documentToId(document);
     }
 
     @Override
-    public Key recordToKey(Record record) throws UPAException {
-        return entityFactory.recordToKey(record);
+    public Key documentToKey(Document document) throws UPAException {
+        return entityFactory.documentToKey(document);
     }
 
     @Override
@@ -189,13 +189,13 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Record keyToRecord(Key key) throws UPAException {
-        return entityFactory.keyToRecord(key);
+    public Document keyToDocument(Key key) throws UPAException {
+        return entityFactory.keyToDocument(key);
     }
 
     @Override
-    public void setRecordId(Record record, Object id) throws UPAException {
-        entityFactory.setRecordId(record, id);
+    public void setDocumentId(Document document, Object id) throws UPAException {
+        entityFactory.setDocmentId(document, id);
     }
 
     @Override
@@ -204,8 +204,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Expression recordToExpression(Record record, String alias) throws UPAException {
-        return entityFactory.recordToExpression(record, alias);
+    public Expression documentToExpression(Document document, String alias) throws UPAException {
+        return entityFactory.documentToExpression(document, alias);
     }
 
     @Override
@@ -214,8 +214,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Expression objectToIdExpression(Object objectOrRecord, String alias) throws UPAException {
-        return entityFactory.objectToIdExpression(objectOrRecord, alias);
+    public Expression objectToIdExpression(Object objectOrDocument, String alias) throws UPAException {
+        return entityFactory.objectToIdExpression(objectOrDocument, alias);
     }
 
     @Override
@@ -224,8 +224,8 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public Expression keyToExpression(Key recordKey, String alias) throws UPAException {
-        return entityFactory.keyToExpression(recordKey, alias);
+    public Expression keyToExpression(Key documentKey, String alias) throws UPAException {
+        return entityFactory.keyToExpression(documentKey, alias);
     }
 
     @Override
@@ -239,20 +239,20 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public QualifiedRecord createQualifiedRecord() throws UPAException {
-        return new DefaultQualifiedRecord(entity);
+    public QualifiedDocument createQualifiedDocument() throws UPAException {
+        return new DefaultQualifiedDocument(entity);
     }
 
     @Override
-    public QualifiedRecord createQualifiedRecord(Record record) throws UPAException {
-        return new DefaultQualifiedRecord(entity, record);
+    public QualifiedDocument createQualifiedDocument(Document document) throws UPAException {
+        return new DefaultQualifiedDocument(entity, document);
     }
 
     @Override
-    public Record createInitializedRecord() {
+    public Document createInitializedDocument() {
         Object o = createObject();
-        Record r = createRecord();
-        r.setAll(objectToRecord(o, false));
+        Document r = createDocument();
+        r.setAll(objectToDocument(o, false));
         for (Field field : entity.getFields()) {
             if (field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))) {
                 r.remove(field.getName());//even if defined in
@@ -269,7 +269,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     @Override
     public <R> R createInitializedObject() {
         Object o = createObject();
-        Record r = objectToRecord(o, false);
+        Document r = objectToDocument(o, false);
         for (Field field : entity.getFields()) {
             Object df = field.getDefaultValue();
             if (field.isId() && (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA) || field.getModifiers().contains(FieldModifier.PERSIST_SEQUENCE))) {
@@ -278,7 +278,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
                 r.setObject(field.getName(), df);
             }
         }
-        return recordToObject(r);
+        return documentToObject(r);
     }
 
 }

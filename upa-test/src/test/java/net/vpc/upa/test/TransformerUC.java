@@ -26,7 +26,7 @@ public class TransformerUC {
     private static final Logger log = Logger.getLogger(TransformerUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);

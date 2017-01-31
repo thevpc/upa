@@ -36,19 +36,19 @@ public final class RemoveOptions {
     }
 
     public static RemoveOptions forPrototype(Object expr) {
-        if (expr instanceof Record) {
-            return new RemoveOptions(ConditionType.RECORD_PROTOTYPE, expr);
+        if (expr instanceof Document) {
+            return new RemoveOptions(ConditionType.DOCUMENT_PROTOTYPE, expr);
         } else {
             return new RemoveOptions(ConditionType.PROTOTYPE, expr);
         }
     }
 
-    public static RemoveOptions forRecord(Record expr) {
-        return new RemoveOptions(ConditionType.RECORD, expr);
+    public static RemoveOptions forDocument(Document expr) {
+        return new RemoveOptions(ConditionType.DOCUMENT, expr);
     }
 
-    public static RemoveOptions forPrototye(Record expr) {
-        return new RemoveOptions(ConditionType.RECORD_PROTOTYPE, expr);
+    public static RemoveOptions forPrototype(Document expr) {
+        return new RemoveOptions(ConditionType.DOCUMENT_PROTOTYPE, expr);
     }
 
     public static RemoveOptions forKeyList(List<Key> expr) {

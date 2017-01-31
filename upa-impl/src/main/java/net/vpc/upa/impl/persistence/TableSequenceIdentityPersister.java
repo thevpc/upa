@@ -9,7 +9,6 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.EntitySequenceManager;
 import net.vpc.upa.impl.SequenceManager;
 import net.vpc.upa.impl.PrivateSequence;
-import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
@@ -69,23 +68,23 @@ public abstract class TableSequenceIdentityPersister implements FieldPersister {
         return field;
     }
 
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException {
-        record.remove(field.getName());
-        record.setObject(field.getName(), getNewValue(field, record, context));
+    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException {
+        document.remove(field.getName());
+        document.setObject(field.getName(), getNewValue(field, document, context));
     }
 
-    public void afterPersist(Record record, EntityExecutionContext context) {
+    public void afterPersist(Document document, EntityExecutionContext context) {
     }
 
-    protected Object getNewValue(Field field, Record record, EntityExecutionContext executionContext) throws UPAException {
+    protected Object getNewValue(Field field, Document document, EntityExecutionContext executionContext) throws UPAException {
         Entity entity = field.getEntity();
         Entity seq = entity.getPersistenceUnit().getEntity(PrivateSequence.ENTITY_NAME);
 
         SequenceManager sm = new EntitySequenceManager(seq);
-        final String groupString = eval(this.group, "{#}", record);
+        final String groupString = eval(this.group, "{#}", document);
 //        String fieldName = field.getName();
 //        while (true) {
-        final Object nextValue = getNewValue(sm, groupString, record);
+        final Object nextValue = getNewValue(sm, groupString, document);
 //            long count = entity.getEntityCount(new Equals(new Var(fieldName), nextValue));
 //            if (count == 0) {
         return nextValue;
@@ -93,10 +92,10 @@ public abstract class TableSequenceIdentityPersister implements FieldPersister {
 //        }
     }
 
-    protected abstract Object getNewValue(SequenceManager sm, String group, Record record) throws UPAException;
+    protected abstract Object getNewValue(SequenceManager sm, String group, Document document) throws UPAException;
 
-    protected String eval(String pattern, final Object replacement, final Record record) {
-        return StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, record));
+    protected String eval(String pattern, final Object replacement, final Document document) {
+        return StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, document));
     }
 
     @Override

@@ -19,11 +19,11 @@ public class SimpleCrudUC {
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SimpleCrudUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         System.setProperty("derby.locks.deadlockTrace","true");
         System.setProperty("derby.locks.monitor", "true");
         log.fine("********************************************");
-        log.fine("test crud using Mixed Records And Entities");
+        log.fine("test crud using Mixed Documents And Entities");
         log.fine("");
         log.fine("insert,update, find, delete");
         log.fine("********************************************");
@@ -40,11 +40,11 @@ public class SimpleCrudUC {
 
         sm.persist(c);
 
-        Record found0=sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document found0=sm.createQueryBuilder(Client.class).byId(key).getDocument();
         log.info("Found " + found0);
         found0.setString("firstName","Alia");
 
-        Client c2 = entityManager.getBuilder().recordToObject(found0);
+        Client c2 = entityManager.getBuilder().documentToObject(found0);
 
         assertEquals(c2.getFirstName(),"Alia");
 
@@ -57,18 +57,18 @@ public class SimpleCrudUC {
 
         sm.remove(key);
 
-        Record foundRecord=sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document foundDocument =sm.createQueryBuilder(Client.class).byId(key).getDocument();
 
-        Assert.assertNull(foundRecord);
+        Assert.assertNull(foundDocument);
         sm.commitTransaction();
         s.close();
 
     }
 
     //@Test
-    public void crudRecords() {
+    public void crudDocuments() {
         log.fine("********************************************");
-        log.fine("test crud using only Records");
+        log.fine("test crud using only Documents");
         log.fine("");
         log.fine("insert,update, find, delete");
         log.fine("********************************************");
@@ -81,7 +81,7 @@ public class SimpleCrudUC {
         Session s=sm.openSession();
         sm.beginTransaction(TransactionType.REQUIRED);
         Entity entityManager = sm.getEntity("Client");
-        Record c=entityManager.createRecord();
+        Document c=entityManager.createDocument();
         int key = entityManager.nextId();
         log.info("Next Id is " + key);
         c.setInt("id", key);
@@ -89,20 +89,20 @@ public class SimpleCrudUC {
 
         sm.persist(c);
 
-        Record found0=sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document found0=sm.createQueryBuilder(Client.class).byId(key).getDocument();
         log.info("Found " + found0);
         c.setString("firstName", "Alia");
 
         sm.update(c);
 
-        Record found=sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document found=sm.createQueryBuilder(Client.class).byId(key).getDocument();
 
         Assert.assertNotNull(found);
         Assert.assertEquals(found, c);
 
         sm.remove(key);
 
-        found=sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        found=sm.createQueryBuilder(Client.class).byId(key).getDocument();
 
         Assert.assertNull(found);
         sm.commitTransaction();

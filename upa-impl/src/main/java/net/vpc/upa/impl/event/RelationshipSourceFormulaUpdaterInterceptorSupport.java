@@ -41,14 +41,11 @@ public class RelationshipSourceFormulaUpdaterInterceptorSupport extends FormulaU
      *
      *
      *
-     * @param context
-     * @param key
-     * @param record
      * @return
      * @throws net.vpc.upa.exceptions.UPAException
      */
     @Override
-    public boolean acceptPersistRecordHelper(PersistEvent event) throws UPAException {
+    public boolean acceptPersistDocumentHelper(PersistEvent event) throws UPAException {
         return false;
     }
 
@@ -59,7 +56,7 @@ public class RelationshipSourceFormulaUpdaterInterceptorSupport extends FormulaU
             return true;
         }
         Entity entityManager = event.getEntity();
-        for (String updatedField : event.getUpdatesRecord().keySet()) {
+        for (String updatedField : event.getUpdatesDocument().keySet()) {
             if (conditionFields.accept(entityManager.getField(updatedField))) {
                 return true;
             }

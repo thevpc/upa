@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Insert;
@@ -52,10 +52,10 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
 //                    ;
 //        }
 //    };
-    public void insert(Entity entity, Record originalRecord, Record record, EntityExecutionContext context) throws UPAException {
+    public void insert(Entity entity, Document originalDocument, Document document, EntityExecutionContext context) throws UPAException {
         PersistenceUnit pu = context.getPersistenceUnit();
         Insert insert = new Insert().into(entity.getName());
-        for (Map.Entry<String, Object> entry : record.entrySet()) {
+        for (Map.Entry<String, Object> entry : document.entrySet()) {
             Object value = entry.getValue();
             String key = entry.getKey();
             Field field = entity.findField(key);
@@ -65,8 +65,8 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 if (e.isUpdatable()) {
                     Entity masterEntity = pu.getEntity(e.getTargetEntityName());
                     Key k = null;
-                    if (value instanceof Record) {
-                        k = masterEntity.getBuilder().recordToKey((Record) value);
+                    if (value instanceof Document) {
+                        k = masterEntity.getBuilder().documentToKey((Document) value);
                     } else {
                         k = masterEntity.getBuilder().objectToKey(value);
                     }

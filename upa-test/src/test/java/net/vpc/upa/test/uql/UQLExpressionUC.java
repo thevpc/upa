@@ -25,7 +25,7 @@ public class UQLExpressionUC {
     private static final Logger log = Logger.getLogger(EnumUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         QLExpressionParser p = UPA.getBootstrap().getFactory().createObject(QLExpressionParser.class);
 //        String q="Select u from ApblTeam u where u.session.status != :status and  ( " +
 //                "exists ((Select m from ApblTeamMember m where m.teamId=u.id and m.student.userId=:userId)) " +

@@ -18,7 +18,7 @@ public class PathUC {
     private static final Logger log = Logger.getLogger(PathUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         log.fine("********************************************");
         log.fine("test Path Entities");
         log.fine("");

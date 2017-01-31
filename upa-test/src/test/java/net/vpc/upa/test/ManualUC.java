@@ -25,7 +25,7 @@ public class ManualUC {
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(ManualUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         log.fine("********************************************");
         log.fine("test ManualCreatePersistenceGroupUseCase");
         log.fine("");
@@ -52,24 +52,24 @@ public class ManualUC {
         sm.beginTransaction(TransactionType.REQUIRED);
         sm.persist(c);
 
-        Record found0 = sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document found0 = sm.createQueryBuilder(Client.class).byId(key).getDocument();
         log.info("Found " + found0);
         found0.setString("firstName", "Alia");
 
-        Client c2 = entityManager.getBuilder().recordToObject(found0);
+        Client c2 = entityManager.getBuilder().documentToObject(found0);
 
         assertEquals(c2.getFirstName(), "Alia");
 
         sm.update(c2);
 
-        Record found = sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        Document found = sm.createQueryBuilder(Client.class).byId(key).getDocument();
 
         Assert.assertNotNull(found);
-        assertEquals(entityManager.getBuilder().recordToObject(found), c2);
+        assertEquals(entityManager.getBuilder().documentToObject(found), c2);
 
         sm.remove(key);
 
-        found = sm.createQueryBuilder(Client.class).byId(key).getRecord();
+        found = sm.createQueryBuilder(Client.class).byId(key).getDocument();
 
         Assert.assertNull(found);
         sm.commitTransaction();
@@ -78,9 +78,9 @@ public class ManualUC {
     }
 
 //    @Test
-    public void crudRecords() {
+    public void crudDocuments() {
         log.fine("********************************************");
-        log.fine("test crud using only Records");
+        log.fine("test crud using only Documents");
         log.fine("");
         log.fine("insert,update, find, delete");
         log.fine("********************************************");
@@ -94,28 +94,28 @@ public class ManualUC {
         Session s = sm.openSession();
         sm.beginTransaction(TransactionType.REQUIRED);
         Entity entityManager = sm.getEntity("Client");
-        Record record = entityManager.createRecord();
+        Document document = entityManager.createDocument();
         int id = entityManager.nextId();
         log.info("Next Id is " + id);
-        record.setInt("id", id);
-        record.setString("firstName", "Hammadi");
+        document.setInt("id", id);
+        document.setString("firstName", "Hammadi");
 
-        sm.persist("Client", record);
+        sm.persist("Client", document);
 
-        Record found0 = sm.createQueryBuilder("Client").byId(id).getRecord();
+        Document found0 = sm.createQueryBuilder("Client").byId(id).getDocument();
         log.info("Found " + found0);
-        record.setString("firstName", "Alia");
+        document.setString("firstName", "Alia");
 
-        sm.update("Client", record);
+        sm.update("Client", document);
 
-        Record found = sm.createQueryBuilder("Client").byId(id).getRecord();
+        Document found = sm.createQueryBuilder("Client").byId(id).getDocument();
         found.retainAll(new HashSet<String>(Arrays.asList("id", "firstName")));
         Assert.assertNotNull(found);
-        Assert.assertEquals(found.getString("firstName"), record.getString("firstName"));
+        Assert.assertEquals(found.getString("firstName"), document.getString("firstName"));
 
         sm.remove("Client", RemoveOptions.forId(id));
 
-        found = sm.createQueryBuilder("Client").byId(id).getRecord();
+        found = sm.createQueryBuilder("Client").byId(id).getDocument();
 
         Assert.assertNull(found);
         sm.commitTransaction();

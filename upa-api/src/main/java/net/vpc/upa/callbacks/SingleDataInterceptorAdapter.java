@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.callbacks;
 
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -43,19 +43,19 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public class SingleDataInterceptorAdapter implements SingleEntityListener {
     @Override
-    public void beforePersist(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void beforePersist(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 
     @Override
-    public void afterPersist(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void afterPersist(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 
     @Override
-    public void beforeUpdate(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void beforeUpdate(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 
     @Override
-    public void afterUpdate(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void afterUpdate(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 
     @Override
@@ -67,10 +67,10 @@ public class SingleDataInterceptorAdapter implements SingleEntityListener {
     }
 
     @Override
-    public void beforeUpdateFormulas(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void beforeUpdateFormulas(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 
     @Override
-    public void afterUpdateFormulas(EntityTriggerContext context, Object id, Record record) throws UPAException {
+    public void afterUpdateFormulas(EntityTriggerContext context, Object id, Document document) throws UPAException {
     }
 }

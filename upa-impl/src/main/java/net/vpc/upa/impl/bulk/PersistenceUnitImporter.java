@@ -100,8 +100,8 @@ public class PersistenceUnitImporter {
 
     private static Object resolveId(String entityName, Object t, PersistenceUnit pu) {
         Entity entity = pu.getEntity(entityName);
-        if (t instanceof Record) {
-            return entity.getBuilder().recordToId((Record) t);
+        if (t instanceof Document) {
+            return entity.getBuilder().documentToId((Document) t);
         }
         return entity.getBuilder().objectToId(t);
 
@@ -116,7 +116,7 @@ public class PersistenceUnitImporter {
             u.values = new Object[u.properties.length];
             for (int i = 0; i < u.properties.length; i++) {
                 String property = u.properties[i];
-                u.values[i] = entity.getBuilder().objectToRecord(t, true).getObject(property);
+                u.values[i] = entity.getBuilder().objectToDocument(t, true).getObject(property);
             }
             uniques.add(u);
         }
@@ -169,8 +169,8 @@ public class PersistenceUnitImporter {
     private Object loadTargetObject(String type, Object id, PersistenceUnit target) {
         Entity entity = target.getEntity(type);
 //        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
-        Object reloaded0 = entity.createQueryBuilder().byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 0).getRecord();
-//        Object reloaded1 = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).objectToRecord();
+        Object reloaded0 = entity.createQueryBuilder().byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 0).getDocument();
+//        Object reloaded1 = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).objectToDocument();
         return reloaded0;
     }
 
@@ -213,7 +213,7 @@ public class PersistenceUnitImporter {
         Entity entity = ii.target.getEntity(entityName);
         EntityBuilder eb = entity.getBuilder();
         Object instance0 = loadSourceObject(entityName, id, ii.source);
-        Object instance = (instance0 instanceof Record) ? eb.copyRecord((Record) instance0) : eb.copyObject(instance0);
+        Object instance = (instance0 instanceof Document) ? eb.copyDocument((Document) instance0) : eb.copyObject(instance0);
 //        System.out.println(">>>>\t\t" + prefix + " import" + (importRelations ? " " : "*") + " " + entityName + " : " + id + " = " + instance);
         SyncStat istat = new SyncStat();
         Boolean persist = null;
@@ -256,8 +256,8 @@ public class PersistenceUnitImporter {
                         Obj or = mm.getValue();
                         Object oldId2 = resolveId(or.name, or.value, ii.target);
                         Object n = importObjectById(or.name, oldId2, importRelations, true, false, prefix + "\t", ii);
-                        if (n instanceof Record) {
-                            n = ii.target.getEntity(or.name).getBuilder().recordToObject((Record) n);
+                        if (n instanceof Document) {
+                            n = ii.target.getEntity(or.name).getBuilder().documentToObject((Document) n);
                         }
                         eb.setProperty(instance, mm.getKey(), n);
                     }
@@ -295,8 +295,8 @@ public class PersistenceUnitImporter {
                         throw new UPAException("Unexpected");
                     }
                     Object n = oldId2==null?null:importObjectById(or.name, oldId2, false, true, false, prefix + "\t", ii);
-                    if (n instanceof Record) {
-                        n = ii.target.getEntity(or.name).getBuilder().recordToObject((Record) n);
+                    if (n instanceof Document) {
+                        n = ii.target.getEntity(or.name).getBuilder().documentToObject((Document) n);
                     }
                     eb.setProperty(instance, mm.getKey(), n);
                 }

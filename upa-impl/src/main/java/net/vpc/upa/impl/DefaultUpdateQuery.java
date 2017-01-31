@@ -2,7 +2,7 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.ConditionType;
 import net.vpc.upa.Key;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.UpdateQuery;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
@@ -33,8 +33,8 @@ public class DefaultUpdateQuery implements UpdateQuery{
         return setUpdates(null);
     }
 
-    public UpdateQuery setValues(Record record) {
-        return setUpdates(record);
+    public UpdateQuery setValues(Document document) {
+        return setUpdates(document);
     }
 
     @Override
@@ -59,21 +59,21 @@ public class DefaultUpdateQuery implements UpdateQuery{
 
     @Override
     public UpdateQuery byPrototype(Object expr) {
-        if (expr instanceof Record) {
-            return setCondition(ConditionType.RECORD_PROTOTYPE, expr);
+        if (expr instanceof Document) {
+            return setCondition(ConditionType.DOCUMENT_PROTOTYPE, expr);
         } else {
             return setCondition(ConditionType.PROTOTYPE, expr);
         }
     }
 
     @Override
-    public UpdateQuery byRecord(Record expr) {
-        return setCondition(ConditionType.RECORD, expr);
+    public UpdateQuery byDocument(Document expr) {
+        return setCondition(ConditionType.DOCUMENT, expr);
     }
 
     @Override
-    public UpdateQuery byPrototype(Record expr) {
-        return setCondition(ConditionType.RECORD_PROTOTYPE, expr);
+    public UpdateQuery byPrototype(Document expr) {
+        return setCondition(ConditionType.DOCUMENT_PROTOTYPE, expr);
     }
 
     @Override

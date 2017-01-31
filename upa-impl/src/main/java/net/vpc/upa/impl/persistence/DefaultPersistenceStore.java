@@ -1629,14 +1629,14 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //
 //                EntityBuilder eb = entity.getBuilder();
 //
-//                for (Record record : entity.getPersistenceUnit().createQuery(q).getRecordList()) {
+//                for (Document document : entity.getPersistenceUnit().createQuery(q).getDocumentList()) {
 //                    Update u2 = new Update();
 //                    u2.entity(entityName);
 //                    for (VarVal f : complexVals) {
 //                        String fname = f.getVar().getName();
-//                        u2.set(fname, record.getObject(fname));
+//                        u2.set(fname, document.getObject(fname));
 //                    }
-//                    Expression exprId = eb.objectToIdExpression(record, oldAlias);
+//                    Expression exprId = eb.objectToIdExpression(document, oldAlias);
 //                    u2.where(exprId);
 //                    c2 += defaultExecuteNonQuery(u2, executionContext);
 //                }

@@ -21,7 +21,7 @@ public class FormulaUC {
     private static final Logger log = Logger.getLogger(FormulaUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -58,8 +58,8 @@ public class FormulaUC {
                 pu.persist(p);
                 r = q.getResultList();
             }
-            for (Person2 record : r) {
-                System.out.println(">> " + record);
+            for (Person2 document : r) {
+                System.out.println(">> " + document);
             }
         }
 
@@ -85,8 +85,8 @@ public class FormulaUC {
                 pu.persist(person);
                 r = q.getResultList();
             }
-            for (Person2 record : r) {
-                System.out.println(">> " + record);
+            for (Person2 doc : r) {
+                System.out.println(">> " + doc);
             }
         }
 

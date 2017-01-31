@@ -37,12 +37,8 @@ package net.vpc.upa;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import net.vpc.upa.expressions.ExpressionTag;
-import net.vpc.upa.expressions.ExpressionVisitor;
-import net.vpc.upa.expressions.Var;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.types.DataType;
 
@@ -102,13 +98,13 @@ public interface Relationship extends UPAObject {
 
     public boolean isAskForConfirm();
 
-    public Key extractKey(Record sourceRecord);
+    public Key extractKey(Document sourceDocument);
 
-    public Object extractId(Record sourceRecord);
+    public Object extractId(Document sourceDocument);
 
-    public Object extractIdByEntityField(Record sourceRecord);
+    public Object extractIdByEntityField(Document sourceDocument);
 
-    public Object extractIdByForeignFields(Record sourceRecord) ;
+    public Object extractIdByForeignFields(Document sourceDocument) ;
 
     public HierarchyExtension getHierarchyExtension();
 

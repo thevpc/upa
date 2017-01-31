@@ -1,9 +1,9 @@
 package net.vpc.upa.impl.bulk;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.Record;
 import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataRowConverter;
 import net.vpc.upa.filters.FieldFilter;
@@ -42,10 +42,10 @@ class EntityDataRowConverter implements DataRowConverter {
 
     @Override
     public Object[] objectToRow(Object o) {
-        Record record = entity.getBuilder().objectToRecord(o, false);
+        Document document = entity.getBuilder().objectToDocument(o, false);
         Object[] vals = new Object[columns.length];
         for (int i = 0; i < vals.length; i++) {
-            vals[i] = record.getObject(fields.get(i).getName());
+            vals[i] = document.getObject(fields.get(i).getName());
         }
         return vals;
     }

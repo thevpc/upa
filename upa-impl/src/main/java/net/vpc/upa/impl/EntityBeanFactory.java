@@ -30,8 +30,8 @@ public class EntityBeanFactory extends AbstractEntityFactory {
     }
 
     @Override
-    public Record createRecord() {
-        return objectFactory.createObject(Record.class);
+    public Document createDocument() {
+        return objectFactory.createObject(Document.class);
     }
 
     @Override
@@ -44,42 +44,42 @@ public class EntityBeanFactory extends AbstractEntityFactory {
     }
 
     @Override
-    public Record objectToRecord(Object object, boolean ignoreUnspecified) {
-        if(object instanceof Record){
-            return (Record) object;
+    public Document objectToDocument(Object object, boolean ignoreUnspecified) {
+        if(object instanceof Document){
+            return (Document) object;
         }
-        return new BeanAdapterRecord(entity.getPlatformBeanType().getPlatformType().cast(object),entity.getName(), nfo, ignoreUnspecified);
+        return new BeanAdapterDocument(entity.getPlatformBeanType().getPlatformType().cast(object),entity.getName(), nfo, ignoreUnspecified);
     }
 
 
     @Override
-    public <R> R recordToObject(Record record) {
-        if (record instanceof BeanAdapterRecord) {
-            BeanAdapterRecord g = (BeanAdapterRecord) record;
+    public <R> R documentToObject(Document document) {
+        if (document instanceof BeanAdapterDocument) {
+            BeanAdapterDocument g = (BeanAdapterDocument) document;
             return (R) g.userObject();
         }
         Object obj = createObject();
-        Record ur = objectToRecord(obj, true);
-        for (String k : record.keySet()) {
-            Object o= record.getObject(k);
-            if(o instanceof Record){
+        Document ur = objectToDocument(obj, true);
+        for (String k : document.keySet()) {
+            Object o= document.getObject(k);
+            if(o instanceof Document){
                 Field f = entity.findField(k);
                 DataType dt = f.getDataType();
                 if(dt instanceof ManyToOneType){
                     Entity oe = ((ManyToOneType)dt).getRelationship().getTargetEntity();
-                    o = oe.getBuilder().recordToObject((Record)o);
+                    o = oe.getBuilder().documentToObject((Document)o);
                 }
             }
             ur.setObject(k, o);
         }
-//        ur.setAll(unstructuredRecord);
+//        ur.setAll(unstructuredDocument);
         return (R) obj;
     }
 
     @Override
     public void setProperty(Object object, String property, Object value) throws UPAException {
-        if(object instanceof Record){
-            ((Record) object).setObject(property,value);
+        if(object instanceof Document){
+            ((Document) object).setObject(property,value);
         }else {
             nfo.setProperty(object, property, value);
         }
@@ -87,8 +87,8 @@ public class EntityBeanFactory extends AbstractEntityFactory {
 
     @Override
     public Object getProperty(Object object, String property) throws UPAException {
-        if(object instanceof Record){
-            return ((Record) object).getObject(property);
+        if(object instanceof Document){
+            return ((Document) object).getObject(property);
         }
         return nfo.getProperty(object, property);
     }

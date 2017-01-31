@@ -24,7 +24,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     private Object id;
     private Key key;
     private Object prototype;
-    private Record recordPrototype;
+    private Document documentPrototype;
     private Map<String, Object> hints = new HashMap<String, Object>();
     private Query query;
     private LinkedHashMap<String, Object> paramsByName = new LinkedHashMap<String, Object>();
@@ -96,8 +96,8 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     }
 
     @Override
-    public QueryBuilder byRecordPrototype(Record prototype) {
-        this.recordPrototype = prototype;
+    public QueryBuilder byDocumentPrototype(Document prototype) {
+        this.documentPrototype = prototype;
         return this;
     }
 
@@ -131,9 +131,8 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         return prototype;
     }
 
-    @Override
-    public Record getRecordPrototype() {
-        return recordPrototype;
+    public Document getDocumentPrototype() {
+        return documentPrototype;
     }
 
     public String getEntityAlias() {
@@ -170,8 +169,8 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
             Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, entityName);
             criteria = criteria == null ? e : new And(criteria, e);
         }
-        if (getRecordPrototype() != null) {
-            Expression e = (entity.getBuilder().recordToExpression(getRecordPrototype(), entityName));
+        if (getDocumentPrototype() != null) {
+            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), entityName));
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getExpression() != null) {
@@ -243,13 +242,13 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     }
 
     @Override
-    public MultiRecord getMultiRecord() throws UPAException {
-        return build().getMultiRecord();
+    public MultiDocument getMultiDocument() throws UPAException {
+        return build().getMultiDocument();
     }
 
     @Override
-    public Record getRecord() throws UPAException {
-        return build().getRecord();
+    public Document getDocument() throws UPAException {
+        return build().getDocument();
     }
 
     @Override
@@ -286,13 +285,13 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     }
 
     @Override
-    public List<MultiRecord> getMultiRecordList() throws UPAException {
-        return build().getMultiRecordList();
+    public List<MultiDocument> getMultiDocumentList() throws UPAException {
+        return build().getMultiDocumentList();
     }
 
     @Override
-    public List<Record> getRecordList() throws UPAException {
-        return build().getRecordList();
+    public List<Document> getDocumentList() throws UPAException {
+        return build().getDocumentList();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class EnumUC {
     static Logger log = Logger.getLogger(EnumUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);

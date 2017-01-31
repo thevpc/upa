@@ -9,13 +9,13 @@ import net.vpc.upa.impl.util.CacheMap;
  * Created by vpc on 6/26/16.
  */
 public class QueryRelationLoaderSelectObject implements QueryResultRelationLoader {
-    public Object loadObject(Entity e, Object id,boolean record,LoaderContext context){
+    public Object loadObject(Entity e, Object id,boolean document,LoaderContext context){
         NamedId cacheId = new NamedId(id, e.getName());
         CacheMap<NamedId, Object> referencesCache = context.getReferencesCache();
         Object existingValue = referencesCache.get(cacheId);
         if(existingValue==null && !referencesCache.containsKey(cacheId)){
             Query query = e.createQueryBuilder().byId(id).setHints(context.getHints());
-            existingValue= record?query.getRecord():query.<Object>getFirstResultOrNull();
+            existingValue= document?query.getDocument():query.<Object>getFirstResultOrNull();
             referencesCache.put(cacheId,existingValue);
         }
         return existingValue;

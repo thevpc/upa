@@ -69,12 +69,12 @@
 //    }
 //
 //    @Override
-//    public List<MultiRecord> getMultiRecordList() throws UPAException {
+//    public List<MultiDocument> getMultiDocumentList() throws UPAException {
 //        throw new IllegalArgumentException("No supported");
 //    }
 //
 //    @Override
-//    public List<Record> getRecordList() throws UPAException {
+//    public List<Document> getDocumentList() throws UPAException {
 //        throw new IllegalArgumentException("No supported");
 //    }
 //}

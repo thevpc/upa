@@ -1,9 +1,9 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
-import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.util.CastConverter;
@@ -23,21 +23,21 @@ import java.util.Set;
 public abstract class AbstractEntityFactory implements EntityFactory {
 
     @Override
-    public Record objectToRecord(Object object, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
-        Record r = createRecord();
-        Record allFieldsRecord = objectToRecord(object,ignoreUnspecified);
+    public Document objectToDocument(Object object, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds) {
+        Document r = createDocument();
+        Document allFieldsDocument = objectToDocument(object,ignoreUnspecified);
         if(fields==null || fields.isEmpty()){
             r.setAll(r);
             return r;
         }else {
             for (String k : fields) {
-                r.setObject(k, allFieldsRecord.getObject(k));
+                r.setObject(k, allFieldsDocument.getObject(k));
             }
             if(ensureIncludeIds) {
                 for (Field o : getEntity().getPrimaryFields()) {
                     String idname = o.getName();
                     if (!r.isSet(idname)) {
-                        r.setObject(idname, allFieldsRecord.getObject(idname));
+                        r.setObject(idname, allFieldsDocument.getObject(idname));
                     }
                 }
             }
@@ -53,7 +53,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         }
         Entity entity = getEntity();
         R r = createObject();
-        Record ur = objectToRecord(r, true);
+        Document ur = objectToDocument(r, true);
         List<Field> primaryFields = entity.getPrimaryFields();
         if (id == null) {
             for (Field aF : primaryFields) {
@@ -69,12 +69,12 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     }
 
     @Override
-    public Record idToRecord(Object id) throws UPAException {
+    public Document idToDocument(Object id) throws UPAException {
         if (id == null) {
             return null;
         }
         Entity entity = getEntity();
-        Record ur = createRecord();
+        Document ur = createDocument();
         List<Field> primaryFields = entity.getPrimaryFields();
 //        if (k == null) {
 //            for (Field aF : primaryFields) {
@@ -94,8 +94,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         if (object == null) {
             return null;
         }
-        if (object instanceof Record) {
-            return recordToId((Record) object);
+        if (object instanceof Document) {
+            return documentToId((Document) object);
         }
         Entity entity = getEntity();
         List<Field> f = entity.getPrimaryFields();
@@ -113,8 +113,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     }
 
     @Override
-    public Object recordToId(Record record) throws UPAException {
-        if (record == null) {
+    public Object documentToId(Document document) throws UPAException {
+        if (document == null) {
             return null;
         }
         Entity entity = getEntity();
@@ -123,8 +123,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
             final String name = field.getName();
-            if (record.isSet(name)) {
-                rawKey[i] = record.getObject(name);
+            if (document.isSet(name)) {
+                rawKey[i] = document.getObject(name);
             } else {
                 return null;
             }
@@ -137,8 +137,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         if (object == null) {
             return null;
         }
-        if (object instanceof Record) {
-            return recordToKey((Record) object);
+        if (object instanceof Document) {
+            return documentToKey((Document) object);
         }
         Entity entity = getEntity();
         List<Field> f = entity.getPrimaryFields();
@@ -156,8 +156,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     }
 
     @Override
-    public Key recordToKey(Record record) throws UPAException {
-        if (record == null) {
+    public Key documentToKey(Document document) throws UPAException {
+        if (document == null) {
             return null;
         }
         Entity entity = getEntity();
@@ -166,8 +166,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
             final String name = field.getName();
-            if (record.isSet(name)) {
-                rawKey[i] = record.getObject(name);
+            if (document.isSet(name)) {
+                rawKey[i] = document.getObject(name);
             } else {
                 return entity.getBuilder().createKey((Object[]) null);
             }
@@ -180,15 +180,15 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         if (key == null) {
             return null;
         }
-        return objectToRecord(keyToRecord(key));
+        return objectToDocument(keyToDocument(key));
     }
 
     @Override
-    public Record keyToRecord(Key key) throws UPAException {
+    public Document keyToDocument(Key key) throws UPAException {
         if (key == null) {
             return null;
         }
-        Record ur = createRecord();
+        Document ur = createDocument();
         List<Field> primaryFields = getEntity().getPrimaryFields();
         if (key == null) {
             for (Field aF : primaryFields) {
@@ -212,15 +212,15 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     }
 
     @Override
-    public Object keyToId(Key uk) throws UPAException {
-        if (uk == null) {
+    public Object keyToId(Key documentKey) throws UPAException {
+        if (documentKey == null) {
             return null;
         }
-        return getEntity().getBuilder().getId(uk);
+        return getEntity().getBuilder().getId(documentKey);
     }
 
-    public Record objectToRecord(Object object) throws UPAException {
-        return objectToRecord(object, false);
+    public Document objectToDocument(Object object) throws UPAException {
+        return objectToDocument(object, false);
     }
 
     public Object getMainProperty(Object object) throws UPAException {
@@ -238,15 +238,15 @@ public abstract class AbstractEntityFactory implements EntityFactory {
 //    }
 //
 //    public Object entityToProperty(Object entityValue, String propertyName, boolean ignoreUnspecified) throws UPAException {
-//        Record rec = objectToRecord(entityValue, ignoreUnspecified);
+//        Document rec = objectToDocument(entityValue, ignoreUnspecified);
 //        return rec == null ? null : rec.getObject(propertyName);
 //    }
 
-    public void setRecordId(Record record, Object id) throws UPAException {
+    public void setDocmentId(Document document, Object id) throws UPAException {
         List<Field> f = getEntity().getPrimaryFields();
         if (id == null) {
             for (Field aF : f) {
-                record.remove(aF.getName());
+                document.remove(aF.getName());
             }
             return;
         }
@@ -256,25 +256,25 @@ public abstract class AbstractEntityFactory implements EntityFactory {
                 throw new RuntimeException("key " + id + " could not denote for entity " + getEntity().getName() + " ; got " + uk.length + " elements instread of " + f.size());
             }
             for (int i = 0; i < f.size(); i++) {
-                record.setObject(f.get(i).getName(), uk[i]);
+                document.setObject(f.get(i).getName(), uk[i]);
             }
         }
     }
 
     public void setObjectId(Object object, Object id) throws UPAException {
-        setRecordId(objectToRecord(object, true), id);
+        setDocmentId(objectToDocument(object, true), id);
     }
 
     public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException {
-        return recordToExpression(objectToRecord(object, ignoreUnspecified), alias);
+        return documentToExpression(objectToDocument(object, ignoreUnspecified), alias);
     }
 
-    public Expression recordToExpression(Record record, String alias) throws UPAException {
-        if (record == null) {
+    public Expression documentToExpression(Document document, String alias) throws UPAException {
+        if (document == null) {
             return null;
         }
         Expression a = null;
-        for (Map.Entry<String, Object> entry : record.entrySet()) {
+        for (Map.Entry<String, Object> entry : document.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
             Field field = getEntity().getField(key);
@@ -352,23 +352,23 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     }
 
     @Override
-    public Expression objectToIdExpression(Object entityOrRecord, String alias) throws UPAException {
-        if(entityOrRecord==null){
+    public Expression objectToIdExpression(Object entityOrDocument, String alias) throws UPAException {
+        if(entityOrDocument==null){
             return null;
         }
-        Record r = null;
-        if(entityOrRecord instanceof Record){
-            r=(Record)entityOrRecord;
+        Document r = null;
+        if(entityOrDocument instanceof Document){
+            r=(Document)entityOrDocument;
         }
-        r = objectToRecord(entityOrRecord);
-        Key k = recordToKey(r);
+        r = objectToDocument(entityOrDocument);
+        Key k = documentToKey(r);
         return keyToExpression(k, alias);
     }
 
 
 
-    public Expression keyToExpression(Key key, String entityAlias) {
-        Object id = keyToId(key);
+    public Expression keyToExpression(Key documentKey, String entityAlias) {
+        Object id = keyToId(documentKey);
         return idToExpression(id, entityAlias);
     }
 

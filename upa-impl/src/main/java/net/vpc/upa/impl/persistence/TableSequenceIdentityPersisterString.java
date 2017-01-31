@@ -4,8 +4,8 @@
  */
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
 import net.vpc.upa.Sequence;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.SequenceManager;
@@ -20,8 +20,8 @@ public class TableSequenceIdentityPersisterString extends TableSequenceIdentityP
         super(field, generatedId);
     }
 
-    protected Object getNewValue(SequenceManager sm, String group, Record record) throws UPAException{
-        return  eval(getFormat(), sm.nextValue(getName(), group,getInitialValue(),getAllocationSize()),record);
+    protected Object getNewValue(SequenceManager sm, String group, Document document) throws UPAException{
+        return  eval(getFormat(), sm.nextValue(getName(), group,getInitialValue(),getAllocationSize()), document);
     }
 
     @Override

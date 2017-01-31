@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EntityBuilder;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Select;
@@ -103,14 +103,14 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
 
             EntityBuilder eb = entity.getBuilder();
 
-            for (Record record : entity.getPersistenceUnit().createQuery(q).getRecordList()) {
+            for (Document document : entity.getPersistenceUnit().createQuery(q).getDocumentList()) {
                 Update u2 = new Update();
                 u2.entity(entityName);
                 for (VarVal f : complexVals) {
                     String fname = f.getVar().getName();
-                    u2.set(fname, record.getObject(fname));
+                    u2.set(fname, document.getObject(fname));
                 }
-                Expression exprId = eb.objectToIdExpression(record, oldAlias);
+                Expression exprId = eb.objectToIdExpression(document, oldAlias);
                 u2.where(exprId);
                 c2 += defaultPersistenceStore.createDefaultExecutor(u2, parametersByName, parametersByIndex, updatable, defaultFieldFilter, context)
                         .execute()

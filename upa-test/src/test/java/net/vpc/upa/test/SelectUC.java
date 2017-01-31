@@ -63,22 +63,22 @@ public class SelectUC {
             Query q = pu.createQuery("Select a from Client a where a.firstName like :v or a.firstName like :v  or a.firstName like :v")
                     .setParameter("v", "%mm%")
                     ;
-            List<Record> r = q.getRecordList();
-            Assert.assertEquals(r, Arrays.asList(pu.getEntity(Client.class).getBuilder().objectToRecord(getRefClient())));
+            List<Document> r = q.getDocumentList();
+            Assert.assertEquals(r, Arrays.asList(pu.getEntity(Client.class).getBuilder().objectToDocument(getRefClient())));
         }
         public void testQuery2() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
 //            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
             Query q = pu.createQuery("Select a. `right` from Client a");
-            List<Record> r = q.getRecordList();
-            Record er = pu.getEntity(Client.class).getBuilder().createRecord();
+            List<Document> r = q.getDocumentList();
+            Document er = pu.getEntity(Client.class).getBuilder().createDocument();
             er.setString("right","left");
             Assert.assertEquals(r, Arrays.asList(er));
         }
     }
 
     //@Test
-//    public void crudMixedRecordsAndEntities() {
+//    public void crudMixedDocumentsAndEntities() {
 //        log.fine("********************************************");
 //        log.fine("test select Entities");
 //        log.fine("");

@@ -34,8 +34,8 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.EventPhase;
-import net.vpc.upa.Record;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -45,26 +45,26 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 public class PersistEvent extends EntityEvent {
 
     private Object persistedId;
-    private Record persistedRecord;
+    private Document persistedDocument;
     private Object persistedObject;
 
-    public PersistEvent(Object persistedId, Record persistedRecord, EntityExecutionContext entityExecutionContext,EventPhase phase) {
+    public PersistEvent(Object persistedId, Document persistedDocument, EntityExecutionContext entityExecutionContext, EventPhase phase) {
         super(entityExecutionContext,phase);
         this.persistedId = persistedId;
-        this.persistedRecord = persistedRecord;
+        this.persistedDocument = persistedDocument;
     }
 
     public Object getPersistedId() {
         return persistedId;
     }
 
-    public Record getPersistedRecord() {
-        return persistedRecord;
+    public Document getPersistedDocument() {
+        return persistedDocument;
     }
 
     public Object getPersistedObject() {
-        if (persistedObject == null && persistedRecord != null) {
-            persistedObject = getContext().getEntity().getBuilder().recordToObject(persistedRecord);
+        if (persistedObject == null && persistedDocument != null) {
+            persistedObject = getContext().getEntity().getBuilder().documentToObject(persistedDocument);
         }
         return persistedObject;
     }

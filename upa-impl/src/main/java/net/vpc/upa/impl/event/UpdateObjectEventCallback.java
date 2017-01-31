@@ -8,9 +8,9 @@ package net.vpc.upa.impl.event;
 import java.lang.reflect.Method;
 import java.util.Map;
 import net.vpc.upa.CallbackType;
+import net.vpc.upa.Document;
 import net.vpc.upa.EventPhase;
 import net.vpc.upa.ObjectType;
-import net.vpc.upa.Record;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
 
@@ -34,9 +34,9 @@ public class UpdateObjectEventCallback extends SingleEntityObjectEventCallback {
     public Object invoke(Object... arguments) {
         UpdateEvent ev = (UpdateEvent) arguments[0];
         for (Object id : resolveIdList(ev, ev.getFilterExpression())) {
-            Record updatesRecord = ev.getUpdatesRecord().copy();
-            ev.getEntity().getBuilder().setObjectId(updatesRecord,id);
-            UpdateObjectEvent oe = new UpdateObjectEvent(id, updatesRecord, ev.getFilterExpression(), ev.getContext(),getPhase());
+            Document updatesDocument = ev.getUpdatesDocument().copy();
+            ev.getEntity().getBuilder().setObjectId(updatesDocument,id);
+            UpdateObjectEvent oe = new UpdateObjectEvent(id, updatesDocument, ev.getFilterExpression(), ev.getContext(),getPhase());
             invokeSingle(oe);
         }
         return null;

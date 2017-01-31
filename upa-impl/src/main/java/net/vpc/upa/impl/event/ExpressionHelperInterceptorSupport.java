@@ -56,7 +56,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
      * @return
      * @throws UPAException
      */
-    public boolean acceptPersistRecordHelper(PersistEvent event) throws UPAException {
+    public boolean acceptPersistDocumentHelper(PersistEvent event) throws UPAException {
         return true;
     }
 
@@ -166,7 +166,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
     @Override
     public final void onPersist(PersistEvent event)
             throws UPAException {
-        if (acceptPersistRecordHelper(event)) {
+        if (acceptPersistDocumentHelper(event)) {
             afterPersistHelper(event, translateExpression(event.getEntity().getBuilder().idToExpression(event.getPersistedId(), null)));
         }
     }

@@ -34,7 +34,6 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 
 import java.util.List;
@@ -46,9 +45,9 @@ import java.util.Set;
  */
 public interface EntityBuilder {
 
-    public Record createRecord();
+    public Document createDocument();
 
-    public Record createInitializedRecord();
+    public Document createInitializedDocument();
 
     public <R> R createInitializedObject();
 
@@ -56,10 +55,10 @@ public interface EntityBuilder {
 
     public <R> R copyObject(R r);
 
-    public Record copyRecord(Record rec);
+    public Document copyDocument(Document rec);
 
 
-    public Record objectToRecord(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
+    public Document objectToDocument(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
 
     public void setProperty(Object entityObject, String property, Object value) ;
 
@@ -71,15 +70,15 @@ public interface EntityBuilder {
 
     public Object getId(Key unstructuredKey);
 
-    public Object getObject(Object objectOrRecord);
+    public Object getObject(Object objectOrDocument);
 
-    public Record getRecord(Object objectOrRecord);
+    public Document getDocument(Object objectOrDocument);
 
     public Key getKey(Object key);
 
     /**
-     * transforms entity id to a Record key representation of the given entity
-     * id. Updates to the record are NOT recorded to the provided value and vice
+     * transforms entity id to a Document key representation of the given entity
+     * id. Updates to the Document are NOT reflected in the provided value and vice
      * versa
      *
      * @param entityId entity id
@@ -88,78 +87,78 @@ public interface EntityBuilder {
     Key idToKey(Object entityId) ;
 
     /**
-     * transforms record key to a entity id representation of the given record
-     * key. Updates to the record are NOT recorded to the provided value and
+     * transforms Document key to a entity id representation of the given Document
+     * key. Updates to the Document are NOT reflected in the provided value and
      * vice versa
      *
-     * @param recordKey record key
+     * @param documentKey Document key
      * @return key representation
      */
-    Object keyToId(Key recordKey) ;
+    Object keyToId(Key documentKey) ;
 
     /**
-     * transforms entity value to a Record value representation of the given
-     * entity value. Updates to the record are recorded to the provided value
+     * transforms entity value to a Document value representation of the given
+     * entity value. Updates to the Document are reflected in the provided value
      * and vice versa
      *
      * @param objectValue entity value
-     * @return entityToRecord(r, false)
+     * @return entityToDocument(r, false)
      * @
      */
-    Record objectToRecord(Object objectValue) ;
+    Document objectToDocument(Object objectValue) ;
 
     /**
-     * Record value representation of the given entity. updates to the record
-     * are recorded to the provided value
+     * Document value representation of the given entity. updates to the Document
+     * are reflected in the provided value
      *
      * @param objectValue entity value
      * @param ignoreUnspecified when true primitive number type zeros and
-     * boolean type false values are reported as null (not included in record)
-     * @return objectToRecord(r, false)
+     * boolean type false values are reported as null (not included in Document)
+     * @return objectToDocument(r, false)
      */
-    Record objectToRecord(Object objectValue, boolean ignoreUnspecified) ;
+    Document objectToDocument(Object objectValue, boolean ignoreUnspecified) ;
 
     Object getMainValue(Object objectValue) ;
 
-    <R> R recordToObject(Record record) ;
+    <R> R documentToObject(Document document) ;
 
     <R> R idToObject(Object objectId) ;
 
-    Record idToRecord(Object objectId) ;
+    Document idToDocument(Object objectId) ;
 
     Object objectToId(Object objectValue) ;
 
     Key objectToKey(Object objectValue) ;
 
-    Object recordToId(Record record) ;
+    Object documentToId(Document document) ;
 
-    Key recordToKey(Record record) ;
+    Key documentToKey(Document document) ;
 
     Object keyToObject(Key key) ;
 
-    Record keyToRecord(Key key) ;
+    Document keyToDocument(Key key) ;
 
-    public void setRecordId(Record record, Object id) ;
+    public void setDocumentId(Document document, Object id) ;
 
     public void setObjectId(Object object, Object id) ;
 
-    public Expression recordToExpression(Record record, String alias) ;
+    public Expression documentToExpression(Document document, String alias) ;
 
     public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) ;
 
     //    public Expression idToExpression(Object key) ;
-    public Expression objectToIdExpression(Object objectOrRecord, String alias) ;
+    public Expression objectToIdExpression(Object objectOrDocument, String alias) ;
 
     public Expression idToExpression(Object id, String alias) ;
 
-    public Expression keyToExpression(Key recordKey, String alias) ;
+    public Expression keyToExpression(Key documentKey, String alias) ;
 
     public <K> Expression idListToExpression(List<K> idList, String alias) ;
 
     public Expression keyListToExpression(List<Key> keyList, String alias) ;
 
-    public QualifiedRecord createQualifiedRecord() ;
+    public QualifiedDocument createQualifiedDocument() ;
 
-    public QualifiedRecord createQualifiedRecord(Record record) ;
+    public QualifiedDocument createQualifiedDocument(Document document) ;
 
 }

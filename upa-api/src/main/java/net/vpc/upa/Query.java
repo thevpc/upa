@@ -63,9 +63,9 @@ public interface Query extends Closeable {
 
     public Object getSingleValue(Object defaultValue) throws UPAException;
 
-    public MultiRecord getMultiRecord() throws UPAException;
+    public MultiDocument getMultiDocument() throws UPAException;
 
-    public Record getRecord() throws UPAException;
+    public Document getDocument() throws UPAException;
 
     @Deprecated
     <R> List<R> getEntityList() throws UPAException;
@@ -111,13 +111,13 @@ public interface Query extends Closeable {
 
     Set<Key> getKeySet() throws UPAException;
 
-    public List<MultiRecord> getMultiRecordList() throws UPAException;
+    public List<MultiDocument> getMultiDocumentList() throws UPAException;
 
     public <T> List<T> getResultList() ;
 
     public <T> Set<T> getResultSet() ;
 
-    public List<Record> getRecordList() throws UPAException;
+    public List<Document> getDocumentList() throws UPAException;
 
     public <T> List<T> getValueList(int index) throws UPAException;
 

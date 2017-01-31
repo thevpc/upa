@@ -76,7 +76,7 @@ public class DefaultQueryResult implements QueryResult {
     public boolean hasNext() {
         try {
             if (closed || resultSet.isClosed()) {
-                log.log(Level.WARNING, "ResultSet closed, unable to retrieve next record");
+                log.log(Level.WARNING, "ResultSet closed, unable to retrieve next document");
             }
             updates.clear();
             return resultSet.next();

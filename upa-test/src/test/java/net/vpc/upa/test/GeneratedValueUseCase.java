@@ -76,14 +76,14 @@
 //        int key = client.getId();
 //
 //        Client foundById = entity.createQueryBuilder().setId(key).getEntity();
-//        Record foundByIdRecord = entity.createQueryBuilder().setId(key).objectToRecord();
+//        Document foundByIdDocument = entity.createQueryBuilder().setId(key).objectToDocument();
 //        log.info("Found Entity" + foundById);
-//        log.info("Found Record" + foundByIdRecord);
-//        log.info("fullName = " + foundByIdRecord.getString("fullName"));
+//        log.info("Found Document" + foundByIdDocument);
+//        log.info("fullName = " + foundByIdDocument.getString("fullName"));
 //        client.setFirstName("Alia");
 //
 //        entity.update(client);
-//        log.info("fullName = " + foundByIdRecord.getString("fullName"));
+//        log.info("fullName = " + foundByIdDocument.getString("fullName"));
 //
 //        Client foundByIdAfterUpdate = entity.createQueryBuilder().setId(key).getEntity();
 //

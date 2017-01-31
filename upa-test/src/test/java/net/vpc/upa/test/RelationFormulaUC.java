@@ -25,7 +25,7 @@ public class RelationFormulaUC {
     private static final Logger log = Logger.getLogger(RelationFormulaUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -52,14 +52,14 @@ public class RelationFormulaUC {
 //                System.out.println(r);
 //            }
 //            Query q = pu.createQuery("Select a.phoneWithPrefix1 from Person a ");
-//            List<Record> t = q.getRecordList();
-//            for (Record r : t) {
+//            List<Document> t = q.getDocumentList();
+//            for (Document r : t) {
 //                System.out.println(r);
 //            }
             Query q = pu.createQuery("Select a.id,a.name,a.phoneWithPrefix1,a.phoneWithPrefix1 toto,58 titi from Person a ");
-            List<Record> t = q.getRecordList();
+            List<Document> t = q.getDocumentList();
             Assert.assertEquals(t.size(), 1);
-            for (Record r : t) {
+            for (Document r : t) {
                 System.out.println(r);
                 Assert.assertEquals(r.size(), 5);
                 Assert.assertEquals("Hammadi", r.getObject("name"));
@@ -73,8 +73,8 @@ public class RelationFormulaUC {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Person a ") //where a.phone2.id >3
                     .setHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
-            for (Record r : q.getRecordList()) {
-                System.out.println("record : " + r);
+            for (Document r : q.getDocumentList()) {
+                System.out.println("Document : " + r);
             }
             for (Person r : q.<Person>getResultList()) {
                 System.out.println("person : " + r);

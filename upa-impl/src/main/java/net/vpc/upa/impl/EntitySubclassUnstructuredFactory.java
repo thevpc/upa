@@ -1,8 +1,8 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
 import net.vpc.upa.ObjectFactory;
-import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -12,45 +12,45 @@ import net.vpc.upa.exceptions.UPAException;
 public class EntitySubclassUnstructuredFactory extends AbstractEntityFactory {
 
     private Entity entity;
-    private Class recordType;
+    private Class documentType;
     private ObjectFactory objectFactory;
 
-    public EntitySubclassUnstructuredFactory(Class recordType,ObjectFactory objectFactory,Entity entity) {
-        this.recordType = recordType;
+    public EntitySubclassUnstructuredFactory(Class documentType, ObjectFactory objectFactory, Entity entity) {
+        this.documentType = documentType;
         this.objectFactory = objectFactory;
         this.entity = entity;
     }
 
-    public Record createRecord() {
-        return (Record) objectFactory.createObject(recordType);
+    public Document createDocument() {
+        return (Document) objectFactory.createObject(documentType);
     }
 
     public <R> R createObject() {
-        return (R) createRecord();
+        return (R) createDocument();
     }
 
-    public Record objectToRecord(Object object, boolean ignoreUnspecified) {
-        return (Record) object;
+    public Document objectToDocument(Object object, boolean ignoreUnspecified) {
+        return (Document) object;
     }
 
 
     @Override
-    public <R> R recordToObject(Record record) {
-        if (recordType.isInstance(record)) {
-            return (R) record;
+    public <R> R documentToObject(Document document) {
+        if (documentType.isInstance(document)) {
+            return (R) document;
         } else {
-            Object ur = createRecord();
-            ((Record) ur).setAll(record);
+            Object ur = createDocument();
+            ((Document) ur).setAll(document);
             return (R) ur;
         }
     }
 
     public void setProperty(Object object, String property, Object value) throws UPAException {
-        ((Record) object).setObject(property, value);
+        ((Document) object).setObject(property, value);
     }
 
     public Object getProperty(Object object, String property) throws UPAException {
-        return ((Record) object).getObject(property);
+        return ((Document) object).getObject(property);
     }
 
     @Override

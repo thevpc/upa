@@ -43,7 +43,6 @@ import net.vpc.upa.expressions.EntityStatement;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QLParameterProcessor;
 import net.vpc.upa.filters.EntityFilter;
-import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataTypeTransformFactory;
 import net.vpc.upa.types.I18NString;
@@ -52,7 +51,6 @@ import java.beans.PropertyChangeListener;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Persistence Unit is this template use File | Settings | File Templates.
@@ -398,14 +396,14 @@ public interface PersistenceUnit extends Closeable {
     //////////////////////////////////////////////////////////////////////
     public ConnectionProfile getConnectionProfile() ;
 
-    public void persist(String entityName, Object objectOrRecord) ;
-    public void persist(String entity, Object objectOrRecord,Map<String,Object> hints) ;
+    public void persist(String entityName, Object objectOrDocument) ;
+    public void persist(String entity, Object objectOrDocument,Map<String,Object> hints) ;
 
-    public void persist(Object objectOrRecord) ;
+    public void persist(Object objectOrDocument) ;
 
-    public RemoveTrace remove(String entityName, Object objectOrRecord) ;
+    public RemoveTrace remove(String entityName, Object objectOrDocument) ;
 
-    public RemoveTrace remove(Object objectOrRecord) ;
+    public RemoveTrace remove(Object objectOrDocument) ;
 
     public UpdateQuery createUpdateQuery(String entityName) ;
 
@@ -413,50 +411,50 @@ public interface PersistenceUnit extends Closeable {
 
     public UpdateQuery createUpdateQuery(Object object) ;
 
-    public void merge(String entityName,Object objectOrRecord);
+    public void merge(String entityName,Object objectOrDocument);
 
-    public void merge(Object objectOrRecord) ;
+    public void merge(Object objectOrDocument) ;
 
-    public void update(Object objectOrRecord) ;
+    public void update(Object objectOrDocument) ;
 
-    public boolean save(Object objectOrRecord) ;
+    public boolean save(Object objectOrDocument) ;
 
 
-//    public void merge(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
-//    public void merge(String entityName, Object objectOrRecord) ;
+//    public void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+//    public void merge(String entityName, Object objectOrDocument) ;
 //
-    public boolean save(String entityName, Object objectOrRecord) ;
-//    public boolean save(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
-//
-//
-    public void update(String entityName, Object objectOrRecord) ;
-//    public void update(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
+    public boolean save(String entityName, Object objectOrDocument) ;
+//    public boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
 //
-//    public void updatePartial(String entityName, Object objectOrRecord,String... fields)  ;
+    public void update(String entityName, Object objectOrDocument) ;
+//    public void update(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrRecord,Map<String,Object> hints,String... fields)  ;
+//    public void updatePartial(String entityName, Object objectOrDocument,String... fields)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
+//    public void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(Object objectOrRecord,String... fields)  ;
+//    public void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
 //
-//    public void updatePartial(Object objectOrRecord,Set<String> fields,boolean ignoreUnspecified)  ;
+//    public void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
 //
-//    public void updatePartial(Object objectOrRecord) ;
+//    public void updatePartial(Object objectOrDocument,String... fields)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrRecord) ;
-//    public void updatePartial(String entityName, Object objectOrRecord,Map<String,Object> hints) ;
+//    public void updatePartial(Object objectOrDocument,Set<String> fields,boolean ignoreUnspecified)  ;
+//
+//    public void updatePartial(Object objectOrDocument) ;
+//
+//    public void updatePartial(String entityName, Object objectOrDocument) ;
+//    public void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 
     void updateFormulas() ;
 
     public void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException ;
 
     //////////
-//    public int updateRecords(String entityName, Record record, Expression condition) ;
-//    public int updateRecords(String entityName, Record record, Expression condition,Map<String,Object> hints) ;
+//    public int updateDocuments(String entityName, Document document, Expression condition) ;
+//    public int updateDocuments(String entityName, Document document, Expression condition,Map<String,Object> hints) ;
 
 //    public void updateFormulas(String entityName, FieldFilter filter, Expression expr) ;
 //    public void updateFormulas(String entityName, FieldFilter filter, Expression expr,Map<String,Object> hints) ;
@@ -464,7 +462,7 @@ public interface PersistenceUnit extends Closeable {
 //    public void updateFormulasById(String entityName, FieldFilter filter, Object id) ;
 //    public void updateFormulasById(String entityName, FieldFilter filter, Object id,Map<String,Object> hints) ;
 
-//    public int updateRecords(Class entityType, Record record, Expression condition) ;
+//    public int updateDocuments(Class entityType, Document document, Expression condition) ;
 
 //    public void updateFormulas(Class entityType, FieldFilter filter, Expression expr) ;
 
@@ -497,13 +495,13 @@ public interface PersistenceUnit extends Closeable {
 
     public boolean existsById(String entityName, Object id) ;
 
-    public List<Record> findAllRecords(Class entityType) ;
+    public List<Document> findAllDocuments(Class entityType) ;
 
-    public List<Record> findAllRecords(String entityName) ;
+    public List<Document> findAllDocuments(String entityName) ;
 
-    public Record findRecordById(Class entityType, Object id) ;
+    public Document findDocumentById(Class entityType, Object id) ;
 
-    public Record findRecordById(String entityName, Object id) ;
+    public Document findDocumentById(String entityName, Object id) ;
 
     public QueryBuilder createQueryBuilder(Class entityType) ;
 

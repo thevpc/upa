@@ -48,7 +48,7 @@ public class RelationshipTargetFormulaUpdaterInterceptorSupport extends FormulaU
         }
         FieldFilter actualFilter= FieldFilters.as(conditionFields).or(relationFilter);
         Entity entityManager = event.getEntity();
-        for (String updatedField : event.getUpdatesRecord().keySet()) {
+        for (String updatedField : event.getUpdatesDocument().keySet()) {
             if (actualFilter.accept(entityManager.getField(updatedField))) {
                 return true;
             }
@@ -62,7 +62,7 @@ public class RelationshipTargetFormulaUpdaterInterceptorSupport extends FormulaU
             relationFilter= FieldFilters.regular().and(FieldFilters.byList(relation.getSourceRole().getFields()));
         }
         Entity entityManager = event.getEntity();
-        for (String updatedField : event.getUpdatesRecord().keySet()) {
+        for (String updatedField : event.getUpdatesDocument().keySet()) {
             if (relationFilter.accept(entityManager.getField(updatedField))) {
                 return true;
             }

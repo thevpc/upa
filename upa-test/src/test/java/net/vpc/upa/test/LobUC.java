@@ -21,7 +21,7 @@ public class LobUC {
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(LobUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);

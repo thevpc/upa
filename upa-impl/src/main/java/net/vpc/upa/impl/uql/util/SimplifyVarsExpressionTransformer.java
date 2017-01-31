@@ -3,7 +3,7 @@ package net.vpc.upa.impl.uql.util;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.expressions.*;
 
 import java.util.Map;
@@ -45,8 +45,8 @@ public class SimplifyVarsExpressionTransformer implements ExpressionTransformer 
                 Object v = ((Literal) x).getValue();
                 if(v ==null) {
                     return Literal.NULL;
-                }else if(v instanceof Record) {
-                    Record r = (Record) v;
+                }else if(v instanceof Document) {
+                    Document r = (Document) v;
                     return new Literal(r.<Object>getObject(expression.getName()), null);
                 }else if(v instanceof Map){
                     Map r=(Map) v;
@@ -54,7 +54,7 @@ public class SimplifyVarsExpressionTransformer implements ExpressionTransformer 
                 }else {
                     Entity entity = pu.getEntity(v.getClass());
                     Field field = entity.getField(expression.getName());
-                    Record r =entity.getBuilder().objectToRecord(v);
+                    Document r =entity.getBuilder().objectToDocument(v);
                     return new Literal(r.<Object>getObject(field.getName()), null);
                 }
             }

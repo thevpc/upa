@@ -1,9 +1,9 @@
 package net.vpc.upa.impl.navigator;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EntityNavigator;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 
@@ -70,7 +70,7 @@ public class DefaultEntityNavigator implements EntityNavigator {
                     throw new RuntimeException("WouldNeverBeThrownException");
                 }
             }
-            Record next = entity.getPersistenceUnit().createQuery(s).getRecord();
+            Document next = entity.getPersistenceUnit().createQuery(s).getDocument();
             if (next != null) {
                 Object o = next.getObject("next");
                 if (o != null) {
@@ -109,7 +109,7 @@ public class DefaultEntityNavigator implements EntityNavigator {
             for (Field aPk : pk) {
                 sb.orderBy(new Var(aPk.getName()), operator == '>');
             }
-            Record r = entity.getPersistenceUnit().createQuery(sb).getRecord();
+            Document r = entity.getPersistenceUnit().createQuery(sb).getDocument();
             if (r != null) {
                 Object[] k = new Object[pk.size()];
                 for (int i = 0; i < k.length; i++) {

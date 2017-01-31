@@ -185,11 +185,11 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             throws UPAException {
         List<Field> lfs = getTreeRelationship().getSourceRole().getFields();
         Object[] parent_id = new Object[lfs.size()];
-        Record values = getEntity()
+        Document values = getEntity()
                 .createQueryBuilder()
                 .byExpression(getEntity().getBuilder().idToExpression(id, null))
                 .setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(lfs)))
-                .getRecord();
+                .getDocument();
         if (values == null) {
             parent_id = null;
         } else {
@@ -206,19 +206,19 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
         String path = toStringId(id);
         if (parent_id != null) {
-            Record r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getRecord();
+            Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
             if (r != null) {
                 path = r.getString(getHierarchyPathField()) + getHierarchyPathSeparator() + path;
             }
         }
-        Record r2 = getEntity().getBuilder().createRecord();
+        Document r2 = getEntity().getBuilder().createDocument();
         r2.setString(getHierarchyPathField(), path);
         getEntity().updateCore(r2, getEntity().getBuilder().idToExpression(id, getEntity().getName()), executionContext);
     }
 
     protected void validateChildren(Object key, EntityExecutionContext executionContext)
             throws UPAException {
-        Record r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(key, null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getRecord();
+        Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(key, null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
 
         List<Field> lfs = getTreeRelationship().getSourceRole().getFields();
         Concat concat = new Concat();
@@ -245,7 +245,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             concat.add(svar);
         }
 
-        Record s = getEntity().getBuilder().createRecord();
+        Document s = getEntity().getBuilder().createDocument();
         s.setObject(getHierarchyPathField(), concat);
 
         Expression p = null;

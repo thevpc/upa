@@ -67,13 +67,13 @@ public class EntityShieldAdapter implements EntityShield {
     }
 
     @Override
-    public boolean isDeletableRecord(Object k, boolean recurse) throws UPAException {
-        return base.isDeletableRecord(k, recurse);
+    public boolean isDeletableDocument(Object k, boolean recurse) throws UPAException {
+        return base.isDeletableDocument(k, recurse);
     }
 
     @Override
-    public boolean isUpdatableRecord(Object k) throws UPAException {
-        return base.isUpdatableRecord(k);
+    public boolean isUpdatableDocument(Object k) throws UPAException {
+        return base.isUpdatableDocument(k);
     }
 
     @Override
@@ -127,59 +127,59 @@ public class EntityShieldAdapter implements EntityShield {
         return base.isGeneratedId();
     }
 
-    public Expression getFullNonDeletableRecordsExpression() throws UPAException {
-        return base.getFullNonDeletableRecordsExpression();
+    public Expression getFullNonDeletableDocumentsExpression() throws UPAException {
+        return base.getFullNonDeletableDocumentsExpression();
     }
 
-    public Expression getFullNonRenamableRecordsExpression() throws UPAException {
-        return base.getFullNonRenamableRecordsExpression();
+    public Expression getFullNonRenamableDocumentsExpression() throws UPAException {
+        return base.getFullNonRenamableDocumentsExpression();
     }
 
-    public Expression getFullNonCloneableRecordsExpression() throws UPAException {
-        return base.getFullNonCloneableRecordsExpression();
+    public Expression getFullNonCloneableDocumentsExpression() throws UPAException {
+        return base.getFullNonCloneableDocumentsExpression();
     }
 
-    public Expression getFullNonUpdatableRecordsExpression() throws UPAException {
-        return base.getFullNonUpdatableRecordsExpression();
+    public Expression getFullNonUpdatableDocumentsExpression() throws UPAException {
+        return base.getFullNonUpdatableDocumentsExpression();
     }
 
-    public Expression getNonDeletableRecordsExpression() throws UPAException {
-        return base.getNonDeletableRecordsExpression();
+    public Expression getNonDeletableDocumentsExpression() throws UPAException {
+        return base.getNonDeletableDocumentsExpression();
     }
 
-    public void setNonDeletableRecordsExpression(Expression expression) throws UPAException {
-        base.setNonDeletableRecordsExpression(expression);
+    public void setNonDeletableDocumentsExpression(Expression expression) throws UPAException {
+        base.setNonDeletableDocumentsExpression(expression);
     }
 
-    public Expression getNonUpdatableRecordsExpression() throws UPAException {
-        return base.getNonUpdatableRecordsExpression();
+    public Expression getNonUpdatableDocumentsExpression() throws UPAException {
+        return base.getNonUpdatableDocumentsExpression();
     }
 
-    public void setNonUpdatableRecordsExpression(Expression expression) throws UPAException {
-        base.setNonUpdatableRecordsExpression(expression);
+    public void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException {
+        base.setNonUpdatableDocumentsExpression(expression);
     }
 
-    public Expression getNonRenamableRecordsExpression() throws UPAException {
-        return base.getNonRenamableRecordsExpression();
+    public Expression getNonRenamableDocumentsExpression() throws UPAException {
+        return base.getNonRenamableDocumentsExpression();
     }
 
-    public void setNonRenamableRecordsExpression(Expression expression) throws UPAException {
-        base.setNonRenamableRecordsExpression(expression);
+    public void setNonRenamableDocumentsExpression(Expression expression) throws UPAException {
+        base.setNonRenamableDocumentsExpression(expression);
     }
 
-    public Expression getNonCloneableRecordsExpression() throws UPAException {
-        return base.getNonCloneableRecordsExpression();
+    public Expression getNonCloneableDocumentsExpression() throws UPAException {
+        return base.getNonCloneableDocumentsExpression();
     }
 
-    public void setNonCloneableRecordsExpression(Expression expression) throws UPAException {
-        base.setNonCloneableRecordsExpression(expression);
+    public void setNonCloneableDocumentsExpression(Expression expression) throws UPAException {
+        base.setNonCloneableDocumentsExpression(expression);
     }
 
-    public void checkPersist(Record record) throws UPAException {
-        base.checkPersist(record);
+    public void checkPersist(Document document) throws UPAException {
+        base.checkPersist(document);
     }
 
-    public void checkUpdate(Record updates, Expression condition) throws UPAException {
+    public void checkUpdate(Document updates, Expression condition) throws UPAException {
         base.checkUpdate(updates, condition);
     }
 

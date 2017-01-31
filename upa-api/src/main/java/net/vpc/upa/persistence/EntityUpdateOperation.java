@@ -36,7 +36,7 @@ package net.vpc.upa.persistence;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Query;
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Update;
@@ -47,7 +47,7 @@ import net.vpc.upa.expressions.Update;
  */
 public interface EntityUpdateOperation {
 
-    public int update(Entity entity, EntityExecutionContext context, Record updates, Expression condition) throws UPAException;
+    public int update(Entity entity, EntityExecutionContext context, Document updates, Expression condition) throws UPAException;
 
     public Query createQuery(Entity e, Update query, EntityExecutionContext context) throws UPAException;
 }

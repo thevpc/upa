@@ -167,7 +167,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     public List<String> getFieldNames(FieldFilter fieldFilter) ;
 
     //    public int indexOfField(String key) ;
-    public Object cloneRecord(Object oldId, Object newId) ;
+    public Object cloneDocument(Object oldId, Object newId) ;
 
     public Object rename(Object oldId, Object newId) ;
 
@@ -193,13 +193,13 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public <K> K nextId() ;
 
-    public void persist(Object objectOrRecord) ;
+    public void persist(Object objectOrDocument) ;
 
-    public boolean save(Object objectOrRecord) ;
+    public boolean save(Object objectOrDocument) ;
 
-    public void persist(Object objectOrRecord,Map<String,Object> hints) ;
+    public void persist(Object objectOrDocument,Map<String,Object> hints) ;
 
-    public boolean save(Object objectOrRecord,Map<String,Object> hints) ;
+    public boolean save(Object objectOrDocument,Map<String,Object> hints) ;
 
     public void clear();
 
@@ -217,36 +217,36 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public UpdateQuery createUpdateQuery() ;
 
-    public void update(Object objectOrRecord) ;
+    public void update(Object objectOrDocument) ;
 
-    public void merge(Object objectOrRecord) ;
+    public void merge(Object objectOrDocument) ;
 
-//    public void update(Object objectOrRecord,Map<String,Object> hints) ;
+//    public void update(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void merge(Object objectOrRecord,Map<String,Object> hints) ;
+//    public void merge(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(Object objectOrRecord,String... fields)  ;
+//    public void updatePartial(Object objectOrDocument,String... fields)  ;
 //
 //    public void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(Object objectOrRecord) ;
+//    public void updatePartial(Object objectOrDocument) ;
 //
-//    public void updatePartial(Object objectOrRecord, Object id) ;
+//    public void updatePartial(Object objectOrDocument, Object id) ;
 //
-//    public void updatePartial(Object objectOrRecord,Map<String,Object> hints,String... fields)  ;
+//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
 //
 //    public void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
 //
-//    public void updatePartial(Object objectOrRecord,Map<String,Object> hints) ;
+//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(Object objectOrRecord, Object id,Map<String,Object> hints) ;
+//    public void updatePartial(Object objectOrDocument, Object id,Map<String,Object> hints) ;
 //
-//    public void updateRecord(Record record, Key key) ;
-//    public void updateRecord(Record record, Key key,Map<String,Object> hints) ;
+//    public void updateDocument(Document document, Key key) ;
+//    public void updateDocument(Document document, Key key,Map<String,Object> hints) ;
 //
-//    public int updateRecords(Record record, Expression condition,Map<String,Object> hints) ;
+//    public int updateDocuments(Document document, Expression condition,Map<String,Object> hints) ;
 //
-//    public int updateRecords(Record record, Expression condition) ;
+//    public int updateDocuments(Document document, Expression condition) ;
 
 //    public void updateFormulas(FieldFilter filter, Expression expr) ;
 //    public void updateFormulas(FieldFilter filter, Expression expr,Map<String,Object> hints) ;
@@ -346,7 +346,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public void setShield(EntityShield shield) ;
 
-    public Expression childToParentExpression(Record child) ;
+    public Expression childToParentExpression(Document child) ;
 
     public Expression childToParentExpression(Expression childExpression) ;
 
@@ -356,7 +356,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     public Object createId(Object... keyValues) ;
 
-    public Record createRecord() ;
+    public Document createDocument() ;
 
     public <R> R createObject() ;
 
@@ -385,9 +385,9 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     //    CORE
     //
     //////////////////////////////////////////////////////////
-    public int updateCore(Record updates, Expression condition, EntityExecutionContext executionContext) ;
+    public int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext) ;
 
-    public void persistCore(Record values, EntityExecutionContext executionContext) ;
+    public void persistCore(Document values, EntityExecutionContext executionContext) ;
 
     public int removeCore(Expression condition, boolean recurse, RemoveTrace deleteInfo, EntityExecutionContext executionContext) ;
 
@@ -439,7 +439,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     
     public <T> List<T> findAllIds() ;
 
-    public List<Record> findAllRecords() ;
+    public List<Document> findAllDocuments() ;
 
     public PlatformBeanType getPlatformBeanType();
 }

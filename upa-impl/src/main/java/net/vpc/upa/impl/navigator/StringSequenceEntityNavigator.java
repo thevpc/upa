@@ -84,7 +84,7 @@ public class StringSequenceEntityNavigator extends DefaultEntityNavigator {
 //        int i = sm.getCurrentValue(name, sequenceName);
 //        while (true) {
 //            final String nextIdString = getValue(i);
-//            List<Record> list = table.createQueryBuilder().setExpression(new Equals(new Var(idName), nextIdString)).setFieldFilter(new FieldNameFilter(idName)).getRecordList();
+//            List<Document> list = table.createQueryBuilder().setExpression(new Equals(new Var(idName), nextIdString)).setFieldFilter(new FieldNameFilter(idName)).getDocumentList();
 //            if (list.isEmpty()) {
 //                return nextIdString;
 //            }

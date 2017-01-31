@@ -316,10 +316,10 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         }
         if (tuningMaxInline > 0) {
             try {
-                List<Record> list = getSourceRole().getEntity().createQuery(new Select().uplet(lvar, "lvar").where(sourceCondition)).getRecordList();
+                List<Document> list = getSourceRole().getEntity().createQuery(new Select().uplet(lvar, "lvar").where(sourceCondition)).getDocumentList();
                 int j = 0;
                 IdCollectionExpression inCollection = new IdCollectionExpression(rvar);
-                for (Record r : list) {
+                for (Document r : list) {
                     j++;
                     if (j > tuningMaxInline) {
                         return new InSelection(lvar, new Select().from(getSourceRole().getEntity().getName()).uplet(lvar).where(sourceCondition));
@@ -364,10 +364,10 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 rvar[i] = new Var((targetAlias == null) ? null : new Var(targetAlias), targetFields[i].getName());
             }
             try {
-                List<Record> list = getTargetRole().getEntity().createQuery(new Select().uplet(rvar, "rval").where(targetCondition)).getRecordList();
+                List<Document> list = getTargetRole().getEntity().createQuery(new Select().uplet(rvar, "rval").where(targetCondition)).getDocumentList();
                 int j = 0;
                 IdCollectionExpression inCollection = new IdCollectionExpression(lvar);
-                for (Record r : list) {
+                for (Document r : list) {
                     j++;
                     if (j > tuningMaxInline) {
                         return new InSelection(lvar, new Select().from(getTargetRole().getEntity().getName()).uplet(rvar).where(targetCondition));
@@ -509,25 +509,25 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 //
 //    }
 //
-//    public Record[] loadAllSourceRecords(Key targetKey,Expression whereClause, Field[] fields, Order criteria){
+//    public Document[] loadAllSourceDocuments(Key targetKey,Expression whereClause, Field[] fields, Order criteria){
 //
 //    }
 //
-//    public Record[] loadAllSourceRecords(Expression whereClause, FieldFilter fieldFilter, Order criteria){
+//    public Document[] loadAllSourceDocuments(Expression whereClause, FieldFilter fieldFilter, Order criteria){
 //
 //    }
 //
-//    public Record[] loadAllSourceRecords(Expression whereClause, String[] fields, Order criteria){
+//    public Document[] loadAllSourceDocuments(Expression whereClause, String[] fields, Order criteria){
 //
 //    }
     public void close() throws UPAException {
         //
     }
 
-    public Key extractKey(Record sourceRecord) {
+    public Key extractKey(Document sourceDocument) {
         switch (getSourceRole().getRelationshipUpdateType()) {
             case COMPOSED: {
-                Object targetEntityVal = sourceRecord.getObject(getSourceRole().getEntityField().getName());
+                Object targetEntityVal = sourceDocument.getObject(getSourceRole().getEntityField().getName());
                 if (targetEntityVal == null) {
                     return null;
                 }
@@ -538,7 +538,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 List<Field> relFields = getSourceRole().getFields();
                 ArrayList<Object> keys = new ArrayList<Object>(relFields.size());
                 for (Field field : relFields) {
-                    Object keyPart = sourceRecord.getObject(field.getName());
+                    Object keyPart = sourceDocument.getObject(field.getName());
                     if (keyPart == null) {
                         return null;
                     }
@@ -551,8 +551,8 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return null;
     }
 
-    public Object extractIdByEntityField(Record sourceRecord) {
-        Object targetEntityVal = sourceRecord.getObject(getSourceRole().getEntityField().getName());
+    public Object extractIdByEntityField(Document sourceDocument) {
+        Object targetEntityVal = sourceDocument.getObject(getSourceRole().getEntityField().getName());
         if (targetEntityVal == null) {
             return null;
         }
@@ -560,11 +560,11 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return targetConverter.objectToId(targetEntityVal);
     }
 
-    public Object extractIdByForeignFields(Record sourceRecord) {
+    public Object extractIdByForeignFields(Document sourceDocument) {
         List<Field> relFields = getSourceRole().getFields();
         ArrayList<Object> keys = new ArrayList<Object>(relFields.size());
         for (Field field : relFields) {
-            Object keyPart = sourceRecord.getObject(field.getName());
+            Object keyPart = sourceDocument.getObject(field.getName());
             if (keyPart == null) {
                 return null;
             }
@@ -573,14 +573,14 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return getTargetRole().getEntity().createId(keys.toArray());
     }
 
-    public Object extractId(Record sourceRecord) {
+    public Object extractId(Document sourceDocument) {
         switch (getSourceRole().getRelationshipUpdateType()) {
             case COMPOSED: {
-                Object o = extractIdByEntityField(sourceRecord);
+                Object o = extractIdByEntityField(sourceDocument);
                 return o;
             }
             case FLAT: {
-                return extractIdByForeignFields(sourceRecord);
+                return extractIdByForeignFields(sourceDocument);
             }
         }
         return null;

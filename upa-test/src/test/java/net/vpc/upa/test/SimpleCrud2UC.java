@@ -34,7 +34,7 @@ public class SimpleCrud2UC {
     }
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         Business bo = getBusiness();
         bo.crud();
     }

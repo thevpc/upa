@@ -22,7 +22,7 @@ public class TreeUC {
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(TreeUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Category.class);
         pu.addEntity(Item.class);

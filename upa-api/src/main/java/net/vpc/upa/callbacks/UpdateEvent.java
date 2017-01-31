@@ -34,8 +34,8 @@
  */
 package net.vpc.upa.callbacks;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.EventPhase;
-import net.vpc.upa.Record;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -45,23 +45,23 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  */
 public class UpdateEvent extends EntityEvent {
 
-    private Record updatesRecord;
+    private Document updatesDocument;
     private Object updatesObject;
     private Expression filterExpression;
 
-    public UpdateEvent(Record updatesRecord, Expression filterExpression, EntityExecutionContext entityExecutionContext, EventPhase phase) {
+    public UpdateEvent(Document updatesDocument, Expression filterExpression, EntityExecutionContext entityExecutionContext, EventPhase phase) {
         super(entityExecutionContext, phase);
-        this.updatesRecord = updatesRecord;
+        this.updatesDocument = updatesDocument;
         this.filterExpression = filterExpression;
     }
 
-    public Record getUpdatesRecord() {
-        return updatesRecord;
+    public Document getUpdatesDocument() {
+        return updatesDocument;
     }
 
     public Object getUpdatesObject() {
-        if (updatesObject == null && updatesRecord != null) {
-            updatesObject = getContext().getEntity().getBuilder().recordToObject(updatesRecord);
+        if (updatesObject == null && updatesDocument != null) {
+            updatesObject = getContext().getEntity().getBuilder().documentToObject(updatesDocument);
         }
         return updatesObject;
     }

@@ -22,7 +22,7 @@ public class ReservedWordsUC {
     private static final Logger log = Logger.getLogger(ReservedWordsUC.class.getName());
 
     @Test
-    public void crudMixedRecordsAndEntities() {
+    public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
         log.fine("********************************************");
         log.fine(" " + puId);
@@ -42,8 +42,8 @@ public class ReservedWordsUC {
         public void testQuery() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             Query q = pu.createQuery("Select a from Allocate a");
-            List<Record> r = q.getRecordList();
-            for (Record record : r) {
+            List<Document> r = q.getDocumentList();
+            for (Document document : r) {
                 System.out.println(r);
             }
         }

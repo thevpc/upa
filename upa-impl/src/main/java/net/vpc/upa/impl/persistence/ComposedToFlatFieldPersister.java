@@ -30,22 +30,22 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
         relationshipTargetConverter = master.getBuilder();
     }
 
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException {
-        Object o = record.getObject(field.getName());
+    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException {
+        Object o = document.getObject(field.getName());
         Key key = relationshipTargetConverter.objectToKey(o);
         if (key == null) {
             for (Field ff : flatFields) {
-                record.setObject(ff.getName(), ff.getUnspecifiedValueDecoded());
+                document.setObject(ff.getName(), ff.getUnspecifiedValueDecoded());
             }
         } else {
             int i = 0;
             for (Field ff : flatFields) {
-                record.setObject(ff.getName(), key.getObjectAt(i));
+                document.setObject(ff.getName(), key.getObjectAt(i));
                 i++;
             }
         }
     }
 
-    public void afterPersist(Record record, EntityExecutionContext context) throws UPAException {
+    public void afterPersist(Document document, EntityExecutionContext context) throws UPAException {
     }
 }

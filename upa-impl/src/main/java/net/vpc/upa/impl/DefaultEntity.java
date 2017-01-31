@@ -54,7 +54,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    PropertyChangeListener afterAddListener;
     //    private String name;
     private String shortName;
-    private RecordListenerSupport recordListenerSupport;
+    private DocumentListenerSupport documentListenerSupport;
     private Class idType;
     private Class entityType;
     private DefaultEntityBuilder entityBuilder;
@@ -66,7 +66,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     //    private HashList mappedCompoundFields;
     private Field mainRendererField;
     private boolean closed;
-    //    private String cache_loadRecordName_query;
+    //    private String cache_loadDocumentName_query;
 //    private Section currentSection;
 //    private CompoundField currentCompoundField;
     //private Hashtable cached_fields;
@@ -203,7 +203,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         extensionManager = factory.createObject(DefaultEntityExtensionManager.class);
         tuningMaxInline = getPersistenceUnit().getProperties().getInt(Relationship.class.getName() + ".maxInline", 10);
         entityOperationManager = factory.createObject(EntityOperationManager.class);
-        recordListenerSupport = new RecordListenerSupport(this, ((DefaultPersistenceUnit) persistenceUnit).getPersistenceUnitListenerManager());
+        documentListenerSupport = new DocumentListenerSupport(this, ((DefaultPersistenceUnit) persistenceUnit).getPersistenceUnitListenerManager());
         addTrigger(null, cache.cache_isEmpty_Listener);
     }
 
@@ -677,7 +677,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (fieldsByFilter != null) {
             fieldsByFilter.clear();
         }
-//        cache_loadRecordName_query = null;
+//        cache_loadDocumentName_query = null;
     }
 
     //    private void revalidateStructure_addPart(EntityPart part) throws UPAException {
@@ -1232,11 +1232,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     //    public void addEntityListener(EntityListener listener) {
-//        recordListenerSupport.addEntityListener(listener);
+//        documentListenerSupport.addEntityListener(listener);
 //    }
 //
 //    public void removeEntityListener(EntityListener listener) {
-//        recordListenerSupport.removeEntityListener(listener);
+//        documentListenerSupport.removeEntityListener(listener);
 //    }
     public void addDependencyOnEntity(String entityName) {
         dependsOnTables.add(entityName);
@@ -1257,14 +1257,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        appSecurityManager.addDefaultSecurityPattern(
 //                "*.update");
 //        appSecurityManager.addDefaultSecurityPattern(
-//                "*.printRecord");
+//                "*.printDocument");
 //        appSecurityManager.addDefaultSecurityPattern(
-//                "*.loadRecord");
+//                "*.loadDocument");
 //        appSecurityManager.addDefaultSecurityPattern(
 //                "*.rename");
 //
 //        appSecurityManager.addDefaultSecurityPattern(
-//                "*.cloneRecord");
+//                "*.cloneDocument");
 //        appSecurityManager.addDefaultSecurityPattern(
 //                "*.remove");
 //        appSecurityManager.addDefaultSecurityPattern(
@@ -1284,32 +1284,32 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        appSecurityManager.addDefaultSecurityPattern(
 //                "*.fields.*.updateField");
 //    }
-    //    public String getSecurityActionIdForInsertRecord() {
+    //    public String getSecurityActionIdForInsertDocument() {
 //        return getName() + ".insert";
 //    }
 //
-//    public String getSecurityActionIdForUpdateRecord() {
+//    public String getSecurityActionIdForUpdateDocument() {
 //        return getName() + ".update";
 //    }
 //
-//    public String getSecurityActionIdForValidateRecord() {
+//    public String getSecurityActionIdForValidateDocument() {
 //        return getName() + ".updateFormulasById";
 //    }
 //
-//    public String getSecurityActionIdForPrintRecord() {
-//        return getName() + ".printRecord";
+//    public String getSecurityActionIdForPrintDocument() {
+//        return getName() + ".printDocument";
 //    }
 //
-//    public String getSecurityActionIdForLoadRecord() {
-//        return getName() + ".loadRecord";
+//    public String getSecurityActionIdForLoadDocument() {
+//        return getName() + ".loadDocument";
 //    }
 //
-//    public String getSecurityActionIdForRenameRecord() {
+//    public String getSecurityActionIdForRenameDocument() {
 //        return getName() + ".rename";
 //    }
 //
-//    public String getSecurityActionIdForCloneRecord() {
-//        return getName() + ".cloneRecord";
+//    public String getSecurityActionIdForCloneDocument() {
+//        return getName() + ".cloneDocument";
 //    }
 //
 //    public String getSecurityActionIdForFields() {
@@ -1328,7 +1328,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return getName() + ".fields." + f.getName() + ".updateField";
 //    }
 //
-//    public String getSecurityActionIdForDeleteRecord() {
+//    public String getSecurityActionIdForDeleteDocument() {
 //        return getName() + ".remove";
 //    }
 //
@@ -1538,7 +1538,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (mf == null) {
             return null;
         }
-        Object v = getBuilder().objectToRecord(o, false).getObject(mf.getName());
+        Object v = getBuilder().objectToDocument(o, false).getObject(mf.getName());
         if (v == null) {
             return null;
         }
@@ -1882,15 +1882,15 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     //
     // return this;
     // }
-//    public void printRecord(K key, PrintRecordPreferences preferences)
+//    public void printDocument(K key, PrintDocumentPreferences preferences)
 //            throws UPAException, PrintException {
 //
-//        //new HtmlRecordReporter(getPersistenceUnit().getApplication()).showReport(this, key);
+//        //new HtmlDocumentReporter(getPersistenceUnit().getApplication()).showReport(this, key);
 //        // throw new UnsupportedOperationException(
-//        // getResources().getGeneric("RecordEditor.*.printRecord.unsupported",getName())
+//        // getResources().getGeneric("DocumentEditor.*.printDocument.unsupported",getName())
 //        // );
 //    }
-    public Object cloneRecord(Object oldId, Object newId) throws UPAException {
+    public Object cloneDocument(Object oldId, Object newId) throws UPAException {
         if (isCheckSecurity()) {
             getShield().checkClone(oldId, newId);
         }
@@ -1918,15 +1918,15 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        boolean transactionSucceeded = false;
 //        try {
         Object o = createQueryBuilder().byId(oldId).setFieldFilter(Fields2.COPY_ON_RENAME).getSingleResult();
-        Record ur = getBuilder().objectToRecord(o, false);
-        getBuilder().setRecordId(ur, newId);
+        Document ur = getBuilder().objectToDocument(o, false);
+        getBuilder().setDocumentId(ur, newId);
         // insert(o, false);
         Object[] newIdValues = getBuilder().idToKey(newId).getValue();
         Object[] oldIdValues = getBuilder().idToKey(oldId).getValue();
         persistCore(ur, context);
         for (Relationship r : getPersistenceUnit().getRelationshipsByTarget(this)) {
             if (!r.getSourceRole().getEntity().equals(r.getTargetRole().getEntity()) && !r.isTransient()) {
-                Record updates = r.getSourceRole().getEntity().getBuilder().createRecord();
+                Document updates = r.getSourceRole().getEntity().getBuilder().createDocument();
                 Expression condition = null;
                 List<Field> lfields = r.getSourceRole().getFields();
                 for (int j = 0; j < lfields.size(); j++) {
@@ -1938,10 +1938,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
 
                 try {
-                    // r.getDetailsTable().updateAllRecords(updates,
+                    // r.getDetailsTable().updateAllDocuments(updates,
                     // condition, check);
                     r.getSourceRole().getEntity().updateCore(updates, condition, context);
-                } catch (UpdateRecordKeyNotFoundException e) {
+                } catch (UpdateDocumentKeyNotFoundException e) {
                     // if no updates no matter
                 }
             }
@@ -1997,8 +1997,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public long getEntityCount() throws UPAException {
-        Record record = createQuery(new Select().field(new Count(Literal.IONE))).getRecord();
-        return record.getLong();
+        Document document = createQuery(new Select().field(new Count(Literal.IONE))).getDocument();
+        return document.getLong();
 //        return find(new Select().field(new Count(Literal.IONE))).getNumber().longValue();
     }
 
@@ -2066,7 +2066,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    public Expression childToParentExpression(Record child) throws UPAException {
+    public Expression childToParentExpression(Document child) throws UPAException {
         Relationship r = getCompositionRelation();
         final Field sf = r.getSourceRole().getEntityField();
         List<Field> df = r.getSourceRole().getFields();
@@ -2112,7 +2112,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        boolean transactionSucceeded = false;
         if (!simulate) {
 //            tranasction = getPersistenceUnit().getPersistenceStore().getConnection().tryBeginTransaction();
-            recordListenerSupport.fireBeforeRemove(expression, removeExecContext);
+            documentListenerSupport.fireBeforeRemove(expression, removeExecContext);
         }
         try {
             String trace = "remove(" + getName() + "," + expression
@@ -2130,7 +2130,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     Field masterField = r.getTargetRole().getField(0);
                     if (r.getRelationshipType() == RelationshipType.SHADOW_ASSOCIATION) {
                         if (!simulate) {
-                            Record updates = getBuilder().createRecord();
+                            Document updates = getBuilder().createDocument();
                             List<Field> fls = r.getSourceRole().getFields();
                             for (Field fl : fls) {
                                 updates.setObject(fl.getName(), fl.getDefaultValue());
@@ -2152,12 +2152,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                                         (new Select()).from(
                                                 r.getTargetRole().getEntity().getName()).uplet(rvars).where(expression));
                             }
-                            long updatedRecords = r.getSourceRole().getEntity()
+                            long updatedDocuments = r.getSourceRole().getEntity()
                                     .createUpdateQuery()
                                     .setValues(updates)
                                     .byExpression(rightCondition)
                                     .execute();// no check !!
-                            if (updatedRecords > 0) {
+                            if (updatedDocuments > 0) {
                                 List<Object> loadedKeys = r.getSourceRole().getEntity().createQueryBuilder().byExpression(rightCondition).orderBy(getUpdateFormulasOrder()).getIdList();
                                 if (r.getSourceRole().getField(0).getUpdateFormula() != null && loadedKeys.size() > 0) {
                                     cache.write(r.getName());
@@ -2235,7 +2235,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
             cache.close();
             if (!simulate) {
-                recordListenerSupport.fireAfterRemove(expression, removeExecContext);
+                documentListenerSupport.fireAfterRemove(expression, removeExecContext);
             }
             cache = null;
 //            transactionSucceeded = true;
@@ -2255,47 +2255,47 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return 0;
     }
 
-    public boolean save(Object objectOrRecord) throws UPAException {
-        return save(objectOrRecord, defaultHints);
+    public boolean save(Object objectOrDocument) throws UPAException {
+        return save(objectOrDocument, defaultHints);
     }
 
-    public boolean save(Object objectOrRecord, Map<String, Object> hints)
+    public boolean save(Object objectOrDocument, Map<String, Object> hints)
             throws UPAException {
         EntityBuilder builder = getBuilder();
-        Record rec = builder.objectToRecord(objectOrRecord);
-        Object entityToId = builder.recordToId(rec);
+        Document rec = builder.objectToDocument(objectOrDocument);
+        Object entityToId = builder.documentToId(rec);
         if (entityToId == null || getEntityCount(builder.idToExpression(entityToId, null)) == 0) {
-            persist(objectOrRecord, hints);
+            persist(objectOrDocument, hints);
             return true;
         } else {
-            createUpdateQuery().setValues(objectOrRecord).setHints(hints).execute();
+            createUpdateQuery().setValues(objectOrDocument).setHints(hints).execute();
             return false;
         }
     }
 
-    public void persist(Object objectOrRecord) throws UPAException {
-        persist(objectOrRecord, defaultHints);
+    public void persist(Object objectOrDocument) throws UPAException {
+        persist(objectOrDocument, defaultHints);
     }
 
-    public void persist(Object objectOrRecord, Map<String, Object> hints) throws UPAException {
-        Record record = getBuilder().objectToRecord(objectOrRecord, true);
+    public void persist(Object objectOrDocument, Map<String, Object> hints) throws UPAException {
+        Document document = getBuilder().objectToDocument(objectOrDocument, true);
         if (isCheckSecurity()) {
-            getShield().checkPersist(record);
+            getShield().checkPersist(document);
         }
         EntityExecutionContext context = createContext(ContextOperation.PERSIST, hints);
-        Object prePersistId = getBuilder().recordToId(record);
-        recordListenerSupport.fireBeforePersist(prePersistId, record, context);
+        Object prePersistId = getBuilder().documentToId(document);
+        documentListenerSupport.fireBeforePersist(prePersistId, document, context);
 
-        persistCore(record, context);
-        Object postPersistId = getBuilder().recordToId(record);
+        persistCore(document, context);
+        Object postPersistId = getBuilder().documentToId(document);
         if (getShield().isUpdateFormulaOnPersistSupported()) {
             Expression expr = getBuilder().idToExpression(postPersistId, null);
 //            expr.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
             updateFormulasCore(Fields2.PERSIST_FORMULA, expr, context);
-            final Record formulaValues = createQueryBuilder().byExpression(expr).setFieldFilter(Fields2.PERSIST_FORMULA).getRecord();
-            record.setAll(formulaValues);
+            final Document formulaValues = createQueryBuilder().byExpression(expr).setFieldFilter(Fields2.PERSIST_FORMULA).getDocument();
+            document.setAll(formulaValues);
         }
-        recordListenerSupport.fireAfterPersist(postPersistId, record, context);
+        documentListenerSupport.fireAfterPersist(postPersistId, document, context);
 //                transactionSucceeded = true;
 //            } finally {
 //                getPersistenceUnit().getPersistenceStore().getConnection().tryFinalizeTransaction(transactionSucceeded,
@@ -2314,9 +2314,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             getShield().checkInitialize();
         }
         EntityExecutionContext context = createContext(ContextOperation.INITIALIZE, hints);
-        recordListenerSupport.fireBeforeInitialize(context);
+        documentListenerSupport.fireBeforeInitialize(context);
         initializeCore(context);
-        recordListenerSupport.fireAfterInitialize(context);
+        documentListenerSupport.fireAfterInitialize(context);
     }
 
     @Override
@@ -2330,9 +2330,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             getShield().checkClear();
         }
         EntityExecutionContext context = createContext(ContextOperation.CLEAR, hints);
-        recordListenerSupport.fireBeforeClear(context);
+        documentListenerSupport.fireBeforeClear(context);
         clearCore(context);
-        recordListenerSupport.fireAfterClear(context);
+        documentListenerSupport.fireAfterClear(context);
     }
 
     //    @Override
@@ -2341,13 +2341,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //            getShield().checkReset();
 //        }
 //        EntityExecutionContext context = createContext(ContextOperation.RESET);
-//        recordListenerSupport.fireBeforeReset(context);
+//        documentListenerSupport.fireBeforeReset(context);
 //        resetCore(context);
-//        recordListenerSupport.fireAfterReset(context);
+//        documentListenerSupport.fireAfterReset(context);
 //    }
     public Expression getUnicityExpressionForPersist(Object entity) throws UPAException {
         Object key = getBuilder().objectToId(entity);
-        Record urecord = getBuilder().objectToRecord(entity, false);
+        Document uDocument = getBuilder().objectToDocument(entity, false);
         List<Index> uniqueIndexes = getIndexes(true);
         if (uniqueIndexes.isEmpty()) {
             return getBuilder().idToExpression(key, null);
@@ -2357,11 +2357,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             Field[] f = index.getFields();
             Expression e1 = null;
             if (f.length == 1) {
-                e1 = new Equals(new Var(f[0].getName()), ExpressionFactory.toLiteral(urecord.getObject(f[0].getName())));
+                e1 = new Equals(new Var(f[0].getName()), ExpressionFactory.toLiteral(uDocument.getObject(f[0].getName())));
             } else {
                 Expression a = null;
                 for (Field aF : f) {
-                    Expression e = (new Equals(new Var(aF.getName()), ExpressionFactory.toLiteral(urecord.getObject(aF.getName()))));
+                    Expression e = (new Equals(new Var(aF.getName()), ExpressionFactory.toLiteral(uDocument.getObject(aF.getName()))));
                     a = a == null ? e : new And(a, e);
                 }
                 e1 = a;
@@ -2371,7 +2371,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return or;
     }
 
-    //    protected void preInsertRecord(K key1, Record record1,
+    //    protected void preInsertDocument(K key1, Document document1,
 //                                   ExecutionContext executioncontext) throws UPAException {
 //    }
     public boolean containsCompoundFields() {
@@ -2383,9 +2383,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return false;
     }
 
-    //    public R getPrimitiveRecord(R values) {
+    //    public R getPrimitiveDocument(R values) {
 //        if (containsCompoundFields()) {
-//            R newRecord = createEntity();
+//            R newDocument = createEntity();
 //            for (Map.Entry entry : values.entrySet()) {
 //                String fieldName = (String) entry.getKey();
 //                Object fieldValue = entry.getValue();
@@ -2395,73 +2395,73 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //                    PrimitiveField[] cfs = cf.getPrimitiveFields();
 //                    Object[] cfs_values = cf.getPrimitiveValues(fieldValue);
 //                    for (int j = 0; j < cfs.length; j++) {
-//                        newRecord.put(cfs[j].getName(),
+//                        newDocument.put(cfs[j].getName(),
 //                                cfs_values == null ? null : cfs_values[j]);
 //                    }
 //                } else {
-//                    newRecord.put(fieldName, ef.getDataType().convert(fieldValue));
+//                    newDocument.put(fieldName, ef.getDataType().convert(fieldValue));
 //                }
 //            }
-//            return newRecord;
+//            return newDocument;
 //        } else {
-//            R newRecord = createEntity();
+//            R newDocument = createEntity();
 //            Set<Map.Entry> entrySet = values.entrySet();
 //            for (Map.Entry entry : entrySet) {
 //                String fieldName = (String) entry.getKey();
 //                Object fieldValue = entry.getValue();
-//                newRecord.put(fieldName, getPrimitiveField(fieldName).getDataType().convert(fieldValue));
+//                newDocument.put(fieldName, getPrimitiveField(fieldName).getDataType().convert(fieldValue));
 //            }
-//            return newRecord;
+//            return newDocument;
 //        }
 //    }
 //
-//    public R getNonPrimitiveRecord(R values) {
+//    public R getNonPrimitiveDocument(R values) {
 //        if (containsCompoundFields()) {
-//            R newRecord = createEntity();
+//            R newDocument = createEntity();
 //            for (Iterator i = values.entrySet().iterator(); i.hasNext(); ) {
 //                Map.Entry entry = (Map.Entry) i.next();
 //                String fieldName = (String) entry.getKey();
 //                Object fieldValue = entry.getValue();
 //                Field ef = getField(fieldName);
 //                if (ef instanceof CompoundField) {
-//                    newRecord.put(fieldName, fieldValue);
+//                    newDocument.put(fieldName, fieldValue);
 //                } else {
 //                    EntityPart entityPart = ef.getParent();
 //                    if (entityPart == null || entityPart instanceof Section) {
-//                        newRecord.put(fieldName, fieldValue);
+//                        newDocument.put(fieldName, fieldValue);
 //                    } else {
 //                        CompoundField cf = (CompoundField) entityPart;
-//                        if (!newRecord.containsKey(cf.getName())) {
+//                        if (!newDocument.containsKey(cf.getName())) {
 //                            PrimitiveField[] cfs = cf.getPrimitiveFields();
 //                            if (fieldValue == null) {
-//                                newRecord.put(cf.getName(), null);
+//                                newDocument.put(cf.getName(), null);
 //                            } else {
 //                                Object[] cfs_values = new Object[cfs.length];
 //                                for (int j = 0; j < cfs.length; j++) {
 //                                    cfs_values[j] = values.get(cfs[j].getName());
 //                                }
-//                                newRecord.put(cf.getName(), cf.getCompoundObject(cfs_values));
+//                                newDocument.put(cf.getName(), cf.getCompoundObject(cfs_values));
 //                            }
 //                        }
 //                    }
 //                }
 //            }
-//            return newRecord;
+//            return newDocument;
 //        } else {
 //            return values;
 //        }
 //    }
-    public void persistCore(Record record, EntityExecutionContext executionContext) throws UPAException {
+    public void persistCore(Document document, EntityExecutionContext executionContext) throws UPAException {
 
         for (FieldPersistenceInfo gen : fieldListPersistenceInfo.persistSequenceGeneratorFields) {
-            gen.persistFieldPersister.beforePersist(record, executionContext);
+            gen.persistFieldPersister.beforePersist(document, executionContext);
         }
 
         LinkedHashSet<Field> persistNonNullable = new LinkedHashSet<Field>(getFields(FIELD_FILTER_PERSIST_NON_NULLABLE));
         LinkedHashSet<Field> persistWithDefaultValue = new LinkedHashSet<Field>(getFields(FIELD_FILTER_PERSIST_WITH_DEFAULT_VALUE));
         LinkedHashSet<Field> emptySet = new LinkedHashSet<Field>();
-        DefaultRecord persistentRecord = new DefaultRecord();
-        for (Map.Entry<String, Object> entry : record.entrySet()) {
+        DefaultDocument persistentDocument = new DefaultDocument();
+        for (Map.Entry<String, Object> entry : document.entrySet()) {
             Object value = entry.getValue();
             String key = entry.getKey();
 
@@ -2473,7 +2473,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 persistWithDefaultValue.remove(field);
                 boolean accepted = Fields2.PERSIST.accept(field);
                 if (accepted) {
-                    ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, record, persistentRecord, executionContext, persistNonNullable, persistWithDefaultValue);
+                    ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, document, persistentDocument, executionContext, persistNonNullable, persistWithDefaultValue);
                 }
             }
         }
@@ -2486,76 +2486,76 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     value = field.getDataType().getDefaultNonNullValue();
                 }
             }
-            record.setObject(field.getName(), value);
-            ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, record, persistentRecord, executionContext, persistNonNullable, emptySet);
+            document.setObject(field.getName(), value);
+            ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, document, persistentDocument, executionContext, persistNonNullable, emptySet);
         }
 
-        getEntityOperationManager().getPersistOperation().insert(this, record, persistentRecord, executionContext);
+        getEntityOperationManager().getPersistOperation().insert(this, document, persistentDocument, executionContext);
         for (FieldPersistenceInfo gen : fieldListPersistenceInfo.persistSequenceGeneratorFields) {
-            gen.persistFieldPersister.afterPersist(record, executionContext);
+            gen.persistFieldPersister.afterPersist(document, executionContext);
         }
     }
 
-    //    protected void postInsertRecord(K key, Record record,
+    //    protected void postInsertDocument(K key, Document document,
 //                                    ExecutionContext executioncontext) throws UPAException {
 //    }
-//    public void updateRecord(Record updates, Key key) throws UPAException {
-//        updateRecord(updates, key, defaultHints);
+//    public void updateDocument(Document updates, Key key) throws UPAException {
+//        updateDocument(updates, key, defaultHints);
 //    }
 //
-//    public void updateRecord(Record updates, Key key,Map<String,Object> hints) throws UPAException {
-//        updateRecords(updates, getBuilder().idToExpression(getBuilder().keyToId(key), null), hints);
+//    public void updateDocument(Document updates, Key key,Map<String,Object> hints) throws UPAException {
+//        updateDocuments(updates, getBuilder().idToExpression(getBuilder().keyToId(key), null), hints);
 //    }
 
 
-    public void update(Object objectOrRecord) throws UPAException {
-        createUpdateQuery().setValues(objectOrRecord).execute();
+    public void update(Object objectOrDocument) throws UPAException {
+        createUpdateQuery().setValues(objectOrDocument).execute();
     }
 
-//    public void update(Object objectOrRecord,Map<String,Object> hints) throws UPAException {
-//       update(UpdateOptions.forObject(null).setHints(hints).setUpdatesValue(objectOrRecord));
+//    public void update(Object objectOrDocument,Map<String,Object> hints) throws UPAException {
+//       update(UpdateOptions.forObject(null).setHints(hints).setUpdatesValue(objectOrDocument));
 //    }
 
-    public void merge(Object objectOrRecord) throws UPAException {
-        createUpdateQuery().setValues(objectOrRecord).execute();
+    public void merge(Object objectOrDocument) throws UPAException {
+        createUpdateQuery().setValues(objectOrDocument).execute();
     }
 
-//    public void merge(Object objectOrRecord,Map<String,Object> hints) throws UPAException {
-//        update(objectOrRecord, hints);
+//    public void merge(Object objectOrDocument,Map<String,Object> hints) throws UPAException {
+//        update(objectOrDocument, hints);
 //    }
 //
-//    public void updatePartial(Object objectOrRecord,String... fields) throws UPAException {
-//        updatePartial(objectOrRecord, defaultHints, fields);
+//    public void updatePartial(Object objectOrDocument,String... fields) throws UPAException {
+//        updatePartial(objectOrDocument, defaultHints, fields);
 //    }
 //
-//    public void updatePartial(Object objectOrRecord,Map<String,Object> hints,String... fields) throws UPAException {
-//        updatePartial(objectOrRecord, new HashSet(Arrays.asList(fields)), false);
+//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints,String... fields) throws UPAException {
+//        updatePartial(objectOrDocument, new HashSet(Arrays.asList(fields)), false);
 //    }
 //
-//    public void updatePartial(Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified) throws UPAException {
-//        updatePartial(objectOrRecord, fields, ignoreUnspecified, defaultHints);
+//    public void updatePartial(Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified) throws UPAException {
+//        updatePartial(objectOrDocument, fields, ignoreUnspecified, defaultHints);
 //    }
 //
-//    public void updatePartial(Object objectOrRecord,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints) throws UPAException {
-//        update(getBuilder().objectToRecord(objectOrRecord, fields, ignoreUnspecified, true), hints);
+//    public void updatePartial(Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints) throws UPAException {
+//        update(getBuilder().objectToDocument(objectOrDocument, fields, ignoreUnspecified, true), hints);
 //    }
 //
-//    public void updatePartial(Object objectOrRecord) throws UPAException {
-//        updatePartial(objectOrRecord, defaultHints);
+//    public void updatePartial(Object objectOrDocument) throws UPAException {
+//        updatePartial(objectOrDocument, defaultHints);
 //    }
-//    public void updatePartial(Object objectOrRecord,Map<String,Object> hints) throws UPAException {
-//        update(getBuilder().objectToRecord(objectOrRecord, true));
+//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints) throws UPAException {
+//        update(getBuilder().objectToDocument(objectOrDocument, true));
 //    }
 //
-//    public void updatePartial(Object objectOrRecord, Object id) throws UPAException {
-//        updatePartial(objectOrRecord, id,defaultHints);
+//    public void updatePartial(Object objectOrDocument, Object id) throws UPAException {
+//        updatePartial(objectOrDocument, id,defaultHints);
 //    }
 
-//    public void updatePartial(Object objectOrRecord, Object id,Map<String,Object> hints) throws UPAException {
+//    public void updatePartial(Object objectOrDocument, Object id,Map<String,Object> hints) throws UPAException {
 ////        Object transaction = getPersistenceUnit().getPersistenceStore().getConnection().tryBeginTransaction();
 ////        boolean transactionSucceeded = false;
 ////        try {
-//        updateRecords(getBuilder().objectToRecord(objectOrRecord, true), getBuilder().idToExpression(id, null));
+//        updateDocuments(getBuilder().objectToDocument(objectOrDocument, true), getBuilder().idToExpression(id, null));
 ////            // if (isValidateOnUpdateSupported())
 ////            // updateFormulas(VALIDATABLE_ON_UPDATE_STORED_FORMULA,
 ////            // key);
@@ -2599,17 +2599,17 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 expr = builder.idToExpression(builder.objectToId(condition), null);
                 break;
             }
-            case RECORD: {
-                Record r = (Record) condition;
-                expr = builder.idToExpression(builder.recordToId(r), null);
+            case DOCUMENT : {
+                Document r = (Document) condition;
+                expr = builder.idToExpression(builder.documentToId(r), null);
                 break;
             }
             case PROTOTYPE: {
                 expr = builder.objectToExpression(condition, true, null);
                 break;
             }
-            case RECORD_PROTOTYPE: {
-                expr = builder.recordToExpression((Record) condition, null);
+            case DOCUMENT_PROTOTYPE: {
+                expr = builder.documentToExpression((Document) condition, null);
                 break;
             }
             case ID_LIST: {
@@ -2657,17 +2657,17 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return key != null && getEntityCount(getBuilder().idToExpression(key, getName())) > 0;
     }
 
-    public int updateRecords(Record updates, Expression condition) throws UPAException {
-        return updateRecords(updates, condition, defaultHints);
+    public int updateDocuments(Document updates, Expression condition) throws UPAException {
+        return updateDocuments(updates, condition, defaultHints);
     }
 
-    public int updateRecords(Record updates, Expression condition, Map<String, Object> hints) throws UPAException {
+    public int updateDocuments(Document updates, Expression condition, Map<String, Object> hints) throws UPAException {
         List<Field> fields = (getShield().isUpdateFormulaOnUpdateSupported()) ? getFields(Fields2.UPDATE_FORMULA)
                 : null;
-        return updateRecords(updates, fields, condition, hints);
+        return updateDocuments(updates, fields, condition, hints);
     }
 
-    public int updateCore(Record updates, Expression condition, EntityExecutionContext executionContext) throws UPAException {
+    public int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext) throws UPAException {
         return getEntityOperationManager().getUpdateOperation().update(this,
                 createContext(ContextOperation.UPDATE, executionContext.getHints())
                 , updates, condition);
@@ -2869,8 +2869,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     updateSingleObject = i2 != null;
                     break;
                 }
-                case RECORD: {
-                    Object i2 = getBuilder().recordToId((Record) updateCondition);
+                case DOCUMENT: {
+                    Object i2 = getBuilder().documentToId((Document) updateCondition);
                     updateSingleObject = i2 != null;
                     break;
                 }
@@ -2899,11 +2899,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         } else {
             EntityExecutionContext executionContext = createContext(ContextOperation.UPDATE, hints);
 
-            Record updates = null;
+            Document updates = null;
             if (updateQuery.getUpdatedFields() != null && updateQuery.getUpdatedFields().size() > 0) {
-                updates = getBuilder().objectToRecord(updatesValue, updateQuery.getUpdatedFields(), updateQuery.isIgnoreUnspecified(), true);
+                updates = getBuilder().objectToDocument(updatesValue, updateQuery.getUpdatedFields(), updateQuery.isIgnoreUnspecified(), true);
             } else {
-                updates = getBuilder().objectToRecord(updatesValue, updateQuery.isIgnoreUnspecified());
+                updates = getBuilder().objectToDocument(updatesValue, updateQuery.isIgnoreUnspecified());
             }
 
             if (formulaFields == null) {
@@ -2925,7 +2925,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
 //            if (extraConditions.size() == primaryFields.size()) {
 //                //all primary are defined
-//                Expression expression = getBuilder().idToExpression(getBuilder().recordToId(updates), getName());
+//                Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), getName());
 //                if (whereExpression == null || !whereExpression.isValid()) {
 //                    whereExpression = expression;
 //                } else if (!expression.equals(whereExpression)) {
@@ -2942,7 +2942,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        try {
             int r = -1;
             if (formulaFields != null) {
-                Record fieldNamesToUpdateMap = getBuilder().createRecord();
+                Document fieldNamesToUpdateMap = getBuilder().createDocument();
                 Set<String> cancelUpdates = new HashSet<String>();
                 //copy all but primary fields
                 for (Map.Entry<String, Object> ee : updates.entrySet()) {
@@ -2962,16 +2962,16 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     fieldNamesToUpdateMap.setObject(field.getName(), expression);
                 }
                 if (!fieldNamesToUpdateMap.isEmpty()) {
-                    recordListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
+                    documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
                     r = updateCore(fieldNamesToUpdateMap, whereExpression, executionContext);
                     if (r > 0) {
                         FormulaUpdateProcessor p = new FormulaUpdateProcessor(false, storedFieldsToValidate, whereExpression, executionContext, this, getEntityOperationManager());
                         p.updateFormulasCore();
                     }
-                    recordListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
+                    documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
                 }
             } else {
-                Record fieldNamesToUpdateMap = getBuilder().createRecord();
+                Document fieldNamesToUpdateMap = getBuilder().createDocument();
                 for (Map.Entry<String, Object> ee : updates.entrySet()) {
                     String fieldName = ee.getKey();
                     if (!primaryFieldNames.contains(fieldName)) {
@@ -2981,9 +2981,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                 }
                 if (!fieldNamesToUpdateMap.isEmpty()) {
-                    recordListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
+                    documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
                     r = updateCore(fieldNamesToUpdateMap, whereExpression, executionContext);
-                    recordListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
+                    documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
                 }
             }
 
@@ -2994,7 +2994,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 //need reload formua fields
                 List<Field> fields = getFields(Fields2.UPDATE_FORMULA);
                 if (fields != null && fields.size() > 0) {
-                    final Record generatedFormulas = createQueryBuilder().setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(fields))).getRecord();
+                    final Document generatedFormulas = createQueryBuilder().setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(fields))).getDocument();
                     if (generatedFormulas != null) {
                         updates.setAll(generatedFormulas);
                     }
@@ -3006,8 +3006,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
 
-    protected int updateRecords(Record updates,
-                                List<Field> storedFieldsToValidate, Expression updateCondition, Map<String, Object> hints)
+    protected int updateDocuments(Document updates,
+                                  List<Field> storedFieldsToValidate, Expression updateCondition, Map<String, Object> hints)
             throws UPAException {
 
         //if updates contain primary fields add them to condition
@@ -3024,7 +3024,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         if (extraConditions.size() == primaryFields.size()) {
             //all primary are defined
-            Expression expression = getBuilder().idToExpression(getBuilder().recordToId(updates), getName());
+            Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), getName());
             if (updateCondition == null || !updateCondition.isValid()) {
                 updateCondition = expression;
             } else if (!expression.equals(updateCondition)) {
@@ -3042,7 +3042,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         EntityExecutionContext executionContext = createContext(ContextOperation.UPDATE, hints);
         int r = -1;
         if (storedFieldsToValidate != null) {
-            Record fieldNamesToUpdateMap = getBuilder().createRecord();
+            Document fieldNamesToUpdateMap = getBuilder().createDocument();
             Set<String> cancelUpdates = new HashSet<String>();
             //copy all but primary fields
             for (Map.Entry<String, Object> ee : updates.entrySet()) {
@@ -3061,16 +3061,16 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 fieldNamesToUpdateMap.setObject(field.getName(), expression);
             }
             if (!fieldNamesToUpdateMap.isEmpty()) {
-                recordListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
+                documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
                 r = updateCore(fieldNamesToUpdateMap, updateCondition, executionContext);
                 if (r > 0) {
                     FormulaUpdateProcessor p = new FormulaUpdateProcessor(false, storedFieldsToValidate, updateCondition, executionContext, this, getEntityOperationManager());
                     p.updateFormulasCore();
                 }
-                recordListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
+                documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
             }
         } else {
-            Record fieldNamesToUpdateMap = getBuilder().createRecord();
+            Document fieldNamesToUpdateMap = getBuilder().createDocument();
             for (Map.Entry<String, Object> ee : updates.entrySet()) {
                 String fieldName = ee.getKey();
                 if (!primaryFieldNames.contains(fieldName)) {
@@ -3080,9 +3080,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
             }
             if (!fieldNamesToUpdateMap.isEmpty()) {
-                recordListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
+                documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
                 r = updateCore(fieldNamesToUpdateMap, updateCondition, executionContext);
-                recordListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
+                documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, updateCondition, executionContext);
             }
         }
 
@@ -3173,11 +3173,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 }
                 if (!doValidation) {
                     Expression exp2 = new And(expr, newFieldsValuesExpression);
-                    long recordsCount = getEntityCount(exp2.isValid() ? exp2 : null);
-                    doValidation = recordsCount > 0;
+                    long documentsCount = getEntityCount(exp2.isValid() ? exp2 : null);
+                    doValidation = documentsCount > 0;
                 } else {
-                    long recordsCount = getEntityCount(expr);
-                    doValidation = recordsCount > 0;
+                    long documentsCount = getEntityCount(expr);
+                    doValidation = documentsCount > 0;
                 }
             } else {// if KeyExpression dont call getEntityCount(expr)
                 //Boolean b = expr == null ? Boolean.valueOf((!isEmpty())) : (Boolean) expr.getClientProperty(EXPRESSION_SURELY_EXISTS);
@@ -3191,7 +3191,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
             long count = 0;
             if (doValidation) {
-                Record fieldNamesToUpdateMap = getBuilder().createRecord();
+                Document fieldNamesToUpdateMap = getBuilder().createDocument();
                 for (Field aFieldsToUpdate : fieldsToUpdate) {
                     Formula formula = persistContext ? aFieldsToUpdate.getPersistFormula() : aFieldsToUpdate.getUpdateFormula();
                     Expression ee = null;
@@ -3201,16 +3201,16 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     fieldNamesToUpdateMap.setObject(aFieldsToUpdate.getName(), ee);
                 }
                 // System.out.println(">>");
-                recordListenerSupport.fireBeforeFormulasUpdate(fieldNamesToUpdateMap, expr, context);
+                documentListenerSupport.fireBeforeFormulasUpdate(fieldNamesToUpdateMap, expr, context);
                 if (!persistContext) {
-                    recordListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, expr, context);
+                    documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, expr, context);
                 }
                 FormulaUpdateProcessor p = new FormulaUpdateProcessor(persistContext, fieldsToUpdate, expr, context, this, getEntityOperationManager());
                 count = p.updateFormulasCore();
                 if (!persistContext) {
-                    recordListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, expr, context);
+                    documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, expr, context);
                 }
-                recordListenerSupport.fireAfterFormulasUpdate(fieldNamesToUpdateMap, expr, context);
+                documentListenerSupport.fireAfterFormulasUpdate(fieldNamesToUpdateMap, expr, context);
             }
             return count;
             // System.out.println("}");
@@ -3335,8 +3335,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //                getPersistenceUnit().getI18NStringStrategy().getEntityString(this) + ".Rows"
 //                        + rowId);
 //    }
-//    public void setRecordProperties(Object rec, Record ur2) throws UPAException {
-//        Record r = getBuilder().entityToPartialRecord(rec);
+//    public void setDocumentProperties(Object rec, Document ur2) throws UPAException {
+//        Document r = getBuilder().entityToPartialDocument(rec);
 //        r.setAll(ur2);
 //    }
     ////////////////////////////////////////////////
@@ -3346,7 +3346,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public void setEntityType(Class entityType) {
         this.entityType = entityType;
-        if (Record.class.isAssignableFrom(entityType)) {
+        if (Document.class.isAssignableFrom(entityType)) {
             entityBuilder.setEntityFactory(new EntitySubclassUnstructuredFactory(entityType, getPersistenceUnit().getFactory(), this));
         } else {
             entityBuilder.setEntityFactory(new EntityBeanFactory(this, getPersistenceUnit().getFactory()));
@@ -3478,8 +3478,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
-    public Record createRecord() {
-        return getBuilder().createRecord();
+    public Document createDocument() {
+        return getBuilder().createDocument();
     }
 
     @Override
@@ -3674,8 +3674,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
 
-    public List<Record> findAllRecords(Object id) throws UPAException {
-        return getPersistenceUnit().findAllRecords(getName());
+    public List<Document> findAllDocuments(Object id) throws UPAException {
+        return getPersistenceUnit().findAllDocuments(getName());
     }
 
     public <T> T findByMainField(Object mainFieldValue) throws UPAException {
@@ -3686,8 +3686,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return getPersistenceUnit().findByField(getName(), fieldName, mainFieldValue);
     }
 
-    public List<Record> findAllRecords() throws UPAException {
-        return getPersistenceUnit().findAllRecords(getName());
+    public List<Document> findAllDocuments() throws UPAException {
+        return getPersistenceUnit().findAllDocuments(getName());
     }
 
     public EntitySecurityManager getEntitySecurityManager() {
@@ -3701,10 +3701,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     @Override
     public PlatformBeanType getPlatformBeanType() {
         if (platformBeanType == null) {
-            if (Record.class.equals(getEntityType())) {
-                platformBeanType = new RecordPlatformBeanType(this);
-            } else if (Record.class.isAssignableFrom(getEntityType())) {
-                platformBeanType = new CustomRecordPlatformBeanType(this, getEntityType());
+            if (Document.class.equals(getEntityType())) {
+                platformBeanType = new DocumentPlatformBeanType(this);
+            } else if (Document.class.isAssignableFrom(getEntityType())) {
+                platformBeanType = new CustomDocumentPlatformBeanType(this, getEntityType());
             } else {
                 platformBeanType = new EntityPlatformBeanType(this);
             }

@@ -62,7 +62,7 @@ public class RootObjectFactory implements ObjectFactory {
         register(PersistenceUnit.class, DefaultPersistenceUnit.class);
         register(I18NStringStrategy.class, DefaultI18NStringStrategy.class);
         register(Key.class, DefaultKey.class);
-        register(Record.class, DefaultRecord.class);
+        register(Document.class, DefaultDocument.class);
         register(PersistenceStoreFactory.class, DefaultPersistenceStoreFactory.class);
         register(SessionContextProvider.class, DefaultSessionContextProvider.class);
 //        register(PropertiesConnectionProfileManager.class,DefaultPropertiesConnectionProfileManager.class);

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.Field;
-import net.vpc.upa.Record;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.impl.util.Converter;
@@ -12,12 +12,12 @@ import net.vpc.upa.impl.util.Converter;
 public class SequencePatternEvaluator implements Converter<String, String> {
     private Field field;
     private Object replacement;
-    private Record record;
+    private Document document;
 
-    public SequencePatternEvaluator(Field field, Object replacement, Record record) {
+    public SequencePatternEvaluator(Field field, Object replacement, Document document) {
         this.field = field;
         this.replacement = replacement;
-        this.record = record;
+        this.document = document;
     }
 
     @Override
@@ -25,8 +25,8 @@ public class SequencePatternEvaluator implements Converter<String, String> {
         if (v.equals("#")) {
             return String.valueOf(replacement);
         }
-        if (record != null && record.isSet(v)) {
-            return String.valueOf(record.getObject(v));
+        if (document != null && document.isSet(v)) {
+            return String.valueOf(document.getObject(v));
         }
         Select s = new Select();
         s.field(new UserExpression(v), "customValue");

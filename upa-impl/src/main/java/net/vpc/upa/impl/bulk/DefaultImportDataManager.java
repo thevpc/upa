@@ -45,7 +45,7 @@ public class DefaultImportDataManager implements ImportDataManager {
     }
 
     protected Object syncObject(Entity entity, Map<String, Object> row, ImportDataConfig config, ImportDataConfigHelper defaultFinder) {
-        Record rec = entity.getBuilder().createRecord();
+        Document rec = entity.getBuilder().createDocument();
 //        ImportEntityFinder entityFinder = config.getEntityFinder();
         for (Map.Entry<String, Object> entry : row.entrySet()) {
             Field f = entity.findField(entry.getKey());
@@ -68,10 +68,10 @@ public class DefaultImportDataManager implements ImportDataManager {
                 }
             }
         }
-        Record oldValue = null;
+        Document oldValue = null;
         if (config.getMode() != ImportDataMode.ADD) {
             Object o = defaultFinder.getImportEntityFinder(entity).findEntity(entity, row);
-            oldValue = entity.getBuilder().objectToRecord(o, false);
+            oldValue = entity.getBuilder().objectToDocument(o, false);
         }
         Object entityValue = null;
         switch (config.getMode()) {
@@ -79,10 +79,10 @@ public class DefaultImportDataManager implements ImportDataManager {
                 if (oldValue != null) {
                     oldValue.setAll(rec);
                     entity.update(oldValue);
-                    entityValue = entity.getBuilder().recordToObject(oldValue);
+                    entityValue = entity.getBuilder().documentToObject(oldValue);
                 } else {
                     entity.persist(rec);
-                    entityValue = entity.getBuilder().recordToObject(rec);
+                    entityValue = entity.getBuilder().documentToObject(rec);
                 }
                 break;
             }
@@ -90,14 +90,14 @@ public class DefaultImportDataManager implements ImportDataManager {
                 if (oldValue != null) {
                     oldValue.setAll(rec);
                     entity.update(oldValue);
-                    entityValue = entity.getBuilder().recordToObject(oldValue);
+                    entityValue = entity.getBuilder().documentToObject(oldValue);
                 }
                 break;
             }
             case ADD: {
                 if (oldValue == null) {
                     entity.persist(rec);
-                    entityValue = entity.getBuilder().recordToObject(rec);
+                    entityValue = entity.getBuilder().documentToObject(rec);
                 }
                 break;
             }

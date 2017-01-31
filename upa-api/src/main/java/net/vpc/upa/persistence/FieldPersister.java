@@ -38,7 +38,7 @@
  */
 package net.vpc.upa.persistence;
 
-import net.vpc.upa.Record;
+import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -46,7 +46,7 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface FieldPersister {
 
-    public void beforePersist(Record record, EntityExecutionContext context) throws UPAException;
+    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException;
 
-    public void afterPersist(Record record, EntityExecutionContext context) throws UPAException;
+    public void afterPersist(Document document, EntityExecutionContext context) throws UPAException;
 }

@@ -28,8 +28,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     protected CacheMap<NamedId, Object> referencesCache;
     protected Map<String, Object> hints;
     protected ObjectFactory ofactory;
-    protected boolean defaultsToRecord;
-    protected boolean relationAsRecord;
+    protected boolean defaultsToDocument;
+    protected boolean relationAsDocument;
     private QueryResultItemBuilder resultBuilder;
     private QueryResultRelationLoader loader;
     private LoaderContext loaderContext;
@@ -39,8 +39,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                                             PersistenceUnit pu,
                                             QueryExecutor queryExecutor,
                                             boolean loadManyToOneRelations,
-                                            boolean defaultsToRecord,
-                                            boolean relationAsRecord,
+                                            boolean defaultsToDocument,
+                                            boolean relationAsDocument,
                                             boolean supportCache,
                                             boolean updatable,
                                             QueryResultRelationLoader loader,
@@ -49,8 +49,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         super(queryExecutor);
         this.resultBuilder = resultBuilder;
         this.loader = loader;
-        this.defaultsToRecord = defaultsToRecord;
-        this.relationAsRecord = relationAsRecord;
+        this.defaultsToDocument = defaultsToDocument;
+        this.relationAsDocument = relationAsDocument;
         this.loadManyToOneRelations = loadManyToOneRelations;
         metaData = queryExecutor.getMetaData();
         hints = queryExecutor.getHints();
@@ -85,11 +85,11 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if (t == null) {
                 if (nativeField.getField() != null) {
                     t = new TypeInfo(gn, nativeField.getField().getEntity());
-                    t.record = gn.contains(".") ? relationAsRecord : defaultsToRecord;
+                    t.document = gn.contains(".") ? relationAsDocument : defaultsToDocument;
                     bindingToTypeInfos0.put(gn, t);
                 } else {
                     t = new TypeInfo(gn, null);
-                    t.record = false;//n.contains(".") ? relationAsRecord : defaultsToRecord;
+                    t.document = false;//n.contains(".") ? relationAsDocument : defaultsToDocument;
                     bindingToTypeInfos0.put(gn, t);
                 }
 //                if(!bindingToTypeInfos0.containsKey(nativeField.getExprString())) {
@@ -243,7 +243,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         }
         for (TypeInfo typeInfo : typeInfos) {
             typeInfo.entityObject=null;
-            typeInfo.entityRecord=null;
+            typeInfo.entityDocument =null;
             typeInfo.entityResult=null;
         }
         for (TypeInfo typeInfo : typeInfos) {
@@ -255,17 +255,17 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     updateRow(values,f, f.nativeField.getExprString(), fieldValue);
                 }
             }else if (typeInfo.leadPrimaryField == null) {
-                if(typeInfo.record){
+                if(typeInfo.document){
                     Object entityObject=null;
-                    Record entityRecord = typeInfo.entityFactory == null ? ofactory.createObject(Record.class) : typeInfo.entityFactory.createRecord();
+                    Document entityDocument = typeInfo.entityFactory == null ? ofactory.createObject(Document.class) : typeInfo.entityFactory.createDocument();
                     typeInfo.entityObject = entityObject;
-                    typeInfo.entityRecord = entityRecord;
-                    typeInfo.entityResult = entityRecord;
+                    typeInfo.entityDocument = entityDocument;
+                    typeInfo.entityResult = entityDocument;
                 }else{
                     Object entityObject = typeInfo.entityFactory.createObject();
-                    Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
+                    Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
                     typeInfo.entityObject = entityObject;
-                    typeInfo.entityRecord = entityRecord;
+                    typeInfo.entityDocument = entityDocument;
                     typeInfo.entityResult = entityObject;
                 }
                 groupValues.put(typeInfo.binding, typeInfo.entityResult);
@@ -273,21 +273,21 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 for (FieldInfo f : typeInfo.allFields) {
                     Object fieldValue = result.read(f.dbIndex);
                     groupValues.put(f.nativeField.getFullBinding(), fieldValue);
-                    typeInfo.entityRecord.setObject(f.name, fieldValue);
+                    typeInfo.entityDocument.setObject(f.name, fieldValue);
                     updateRow(values, f, f.nativeField.getExprString(), fieldValue);
                 }
             } else {
                 Object leadPK = result.read(typeInfo.leadPrimaryField.dbIndex);
                 if (leadPK != null) {
                     //create new instances
-                    if(typeInfo.record) {
-                        typeInfo.entityRecord = typeInfo.entityFactory == null ? ofactory.createObject(Record.class) : typeInfo.entityFactory.createRecord();
-                        typeInfo.entityResult = typeInfo.entityRecord;
+                    if(typeInfo.document) {
+                        typeInfo.entityDocument = typeInfo.entityFactory == null ? ofactory.createObject(Document.class) : typeInfo.entityFactory.createDocument();
+                        typeInfo.entityResult = typeInfo.entityDocument;
                     }else{
                         Object entityObject = typeInfo.entityFactory.createObject();
-                        Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
+                        Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
                         typeInfo.entityObject = entityObject;
-                        typeInfo.entityRecord = entityRecord;
+                        typeInfo.entityDocument = entityDocument;
                         typeInfo.entityResult = entityObject;
                     }
                     groupValues.put(typeInfo.binding,typeInfo.entityResult);
@@ -296,21 +296,21 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         Object fieldValue = result.read(f.dbIndex);
                         groupValues.put(f.nativeField.getFullBinding(), fieldValue);
                         updateRow(values, f, f.nativeField.getExprString(), fieldValue);
-                        typeInfo.entityRecord.setObject(f.name, fieldValue);
+                        typeInfo.entityDocument.setObject(f.name, fieldValue);
                     }
                     if(loadManyToOneRelations){
                         for (Relationship relationship : typeInfo.manyToOneRelations) {
-                            Object extractedId = relationship.extractIdByForeignFields(typeInfo.entityRecord);
+                            Object extractedId = relationship.extractIdByForeignFields(typeInfo.entityDocument);
                             if(extractedId!=null) {
-                                Object value = loader.loadObject(relationship.getTargetEntity(),extractedId, relationAsRecord,loaderContext);
-                                typeInfo.entityRecord.setObject(relationship.getSourceRole().getEntityField().getName(), value);
+                                Object value = loader.loadObject(relationship.getTargetEntity(),extractedId, relationAsDocument,loaderContext);
+                                typeInfo.entityDocument.setObject(relationship.getSourceRole().getEntityField().getName(), value);
                                 groupValues.put(typeInfo.binding+"."+relationship.getSourceRole().getEntityField().getName(),value);
                             }
                         }
                     }
                 } else {
                     typeInfo.entityObject = null;
-                    typeInfo.entityRecord = null;
+                    typeInfo.entityDocument = null;
                 }
             }
         }
@@ -320,16 +320,16 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 if (pp == null) {
                     //no parent loaded actually!!
                     //throw new IllegalArgumentException("Invalid binding " + typeInfo.binding);
-                }else if (pp.entityRecord != null) {
-                    pp.entityRecord.setObject(typeInfo.bindingName, typeInfo.entityResult);
+                }else if (pp.entityDocument != null) {
+                    pp.entityDocument.setObject(typeInfo.bindingName, typeInfo.entityResult);
                 }
             }
         }
         if (updatable) {
             for (TypeInfo typeInfo : typeInfos) {
-                if(typeInfo.record) {
+                if(typeInfo.document) {
                     QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(typeInfo, result);
-                    typeInfo.entityRecord.addPropertyChangeListener(li);
+                    typeInfo.entityDocument.addPropertyChangeListener(li);
                 }else{
                     typeInfo.entityUpdatable = PlatformUtils.createObjectInterceptor(
                             typeInfo.entityType,
@@ -360,26 +360,26 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                    }
 //                });
 //            }else if (typeInfo.leadPrimaryField == null) {
-//                if(typeInfo.record){
+//                if(typeInfo.document){
 //                    if(typeInfo.entityFactory == null) {
 //                       commands.add(new Command() {
 //                           @Override
 //                           public void process(CommandEnv env) {
 //                               Object entityObject = null;
-//                               Record entityRecord = ofactory.createObject(Record.class);
+//                               Document entityDocument = ofactory.createObject(Document.class);
 //                               typeInfo.entityObject = entityObject;
-//                               typeInfo.entityRecord = entityRecord;
-//                               typeInfo.entityResult = entityRecord;                           }
+//                               typeInfo.entityDocument = entityDocument;
+//                               typeInfo.entityResult = entityDocument;                           }
 //                       });
 //                    }else{
 //                        commands.add(new Command() {
 //                            @Override
 //                            public void process(CommandEnv env) {
 //                                Object entityObject = null;
-//                                Record entityRecord = typeInfo.entityFactory.createRecord();
+//                                Document entityDocument = typeInfo.entityFactory.createDocument();
 //                                typeInfo.entityObject = entityObject;
-//                                typeInfo.entityRecord = entityRecord;
-//                                typeInfo.entityResult = entityRecord;
+//                                typeInfo.entityDocument = entityDocument;
+//                                typeInfo.entityResult = entityDocument;
 //                            }
 //                        });
 //                    }
@@ -388,9 +388,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                        @Override
 //                        public void process(CommandEnv env) {
 //                            Object entityObject = typeInfo.entityFactory.createObject();
-//                            Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
+//                            Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
 //                            typeInfo.entityObject = entityObject;
-//                            typeInfo.entityRecord = entityRecord;
+//                            typeInfo.entityDocument = entityDocument;
 //                            typeInfo.entityResult = entityObject;
 //                        }
 //                    });
@@ -402,7 +402,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                        for (FieldInfo f : typeInfo.allFields) {
 //                            Object fieldValue = env.result.read(f.index);
 //                            env.groupValues.put(f.nativeField.getFullBinding(), fieldValue);
-//                            typeInfo.entityRecord.setObject(f.name, fieldValue);
+//                            typeInfo.entityDocument.setObject(f.name, fieldValue);
 //                        }
 //                    }
 //                });
@@ -420,15 +420,15 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                    @Override
 //                    public void process(CommandEnv env) {
 //                        typeInfo.entityObject = null;
-//                        typeInfo.entityRecord = null;
+//                        typeInfo.entityDocument = null;
 //                    }
 //                });
-//                if(typeInfo.record) {
+//                if(typeInfo.document) {
 //                    leadPK1.whenTrue(new Command() {
 //                        @Override
 //                        public void process(CommandEnv env) {
-//                            typeInfo.entityRecord = typeInfo.entityFactory == null ? ofactory.createObject(Record.class) : typeInfo.entityFactory.createRecord();
-//                            typeInfo.entityResult = typeInfo.entityRecord;
+//                            typeInfo.entityDocument = typeInfo.entityFactory == null ? ofactory.createObject(Document.class) : typeInfo.entityFactory.createDocument();
+//                            typeInfo.entityResult = typeInfo.entityDocument;
 //                        }
 //                    });
 //                }else{
@@ -436,9 +436,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                        @Override
 //                        public void process(CommandEnv env) {
 //                            Object entityObject = typeInfo.entityFactory.createObject();
-//                            Record entityRecord = typeInfo.entityConverter.objectToRecord(entityObject, true);
+//                            Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
 //                            typeInfo.entityObject = entityObject;
-//                            typeInfo.entityRecord = entityRecord;
+//                            typeInfo.entityDocument = entityDocument;
 //                            typeInfo.entityResult = entityObject;
 //                        }
 //                    });
@@ -450,7 +450,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                        for (FieldInfo f : typeInfo.allFields) {
 //                            Object fieldValue = env.result.read(f.index);
 //                            env.groupValues.put(f.nativeField.getFullBinding(),fieldValue);
-//                            typeInfo.entityRecord.setObject(f.name, fieldValue);
+//                            typeInfo.entityDocument.setObject(f.name, fieldValue);
 //                        }
 //                    }
 //                });
@@ -459,10 +459,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                        @Override
 //                        public void process(CommandEnv env) {
 //                            for (Relationship relationship : typeInfo.manyToOneRelations) {
-//                                Object extractedId = relationship.extractIdByForeignFields(typeInfo.entityRecord);
+//                                Object extractedId = relationship.extractIdByForeignFields(typeInfo.entityDocument);
 //                                if(extractedId!=null) {
-//                                    Object value = loader.loadObject(relationship.getTargetEntity(),extractedId, relationAsRecord,loaderContext);
-//                                    typeInfo.entityRecord.setObject(relationship.getSourceRole().getEntityField().getName(), value);
+//                                    Object value = loader.loadObject(relationship.getTargetEntity(),extractedId, relationAsDocument,loaderContext);
+//                                    typeInfo.entityDocument.setObject(relationship.getSourceRole().getEntityField().getName(), value);
 //                                    env.groupValues.put(typeInfo.binding+"."+relationship.getSourceRole().getEntityField().getName(),value);
 //                                }
 //                            }
@@ -482,8 +482,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //                    commands.add(new Command() {
 //                        @Override
 //                        public void process(CommandEnv env) {
-//                            if (pp.entityRecord != null) {
-//                                pp.entityRecord.setObject(typeInfo.bindingName, typeInfo.entityResult);
+//                            if (pp.entityDocument != null) {
+//                                pp.entityDocument.setObject(typeInfo.bindingName, typeInfo.entityResult);
 //                            }
 //                        }
 //                    });
@@ -492,12 +492,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //        }
 //        if (updatable) {
 //            for (final TypeInfo typeInfo : typeInfos) {
-//                if(typeInfo.record) {
+//                if(typeInfo.document) {
 //                    commands.add(new Command() {
 //                        @Override
 //                        public void process(CommandEnv env) {
 //                            QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(typeInfo, env.result);
-//                            typeInfo.entityRecord.addPropertyChangeListener(li);
+//                            typeInfo.entityDocument.addPropertyChangeListener(li);
 //                        }
 //                    });
 //                }else{

@@ -8,12 +8,12 @@
  */
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.Key;
-import net.vpc.upa.Record;
 import net.vpc.upa.config.*;
 
-@Entity(name = LockInfoDesc.LOCK_INFO_ENTITY_NAME, shortName = "LKNF", idType = Key.class, entityType = Record.class)
+@Entity(name = LockInfoDesc.LOCK_INFO_ENTITY_NAME, shortName = "LKNF", idType = Key.class, entityType = Document.class)
 @Ignore
 public class LockInfoDesc {
     public static final String LOCK_INFO_ENTITY_NAME = "UPALockInfo";

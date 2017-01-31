@@ -13,7 +13,7 @@ import net.vpc.upa.types.ManyToOneType;
  */
 public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
 
-    public int update(Entity entity, EntityExecutionContext context, Record updates, Expression condition) throws UPAException {
+    public int update(Entity entity, EntityExecutionContext context, Document updates, Expression condition) throws UPAException {
         Update u = new Update().entity(entity.getName());
         for (String fieldName : updates.keySet()) {
             Field f = entity.findField(fieldName);
@@ -58,8 +58,8 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
                         }else {
 
                             Key k = null;
-                            if (value instanceof Record) {
-                                k = mbuilder.recordToKey((Record) value);
+                            if (value instanceof Document) {
+                                k = mbuilder.documentToKey((Document) value);
                             } else {
                                 k = mbuilder.objectToKey(value);
                             }
