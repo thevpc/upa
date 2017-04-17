@@ -20,14 +20,15 @@ import net.vpc.upa.impl.config.annotationparser.RelationshipDescriptorProcessor;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
+import net.vpc.upa.impl.eval.functions.FunctionCallback;
+import net.vpc.upa.impl.eval.functions.PasswordQLFunction;
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipDataInterceptor;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
-import net.vpc.upa.impl.eval.functions.FunctionCallback;
+import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
 import net.vpc.upa.impl.uql.DefaultExpressionManager;
-import net.vpc.upa.impl.eval.functions.PasswordQLFunction;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
@@ -39,7 +40,6 @@ import java.util.*;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
 
 //import net.vpc.upa.impl.util.ListUtils;
 public class DefaultPersistenceUnit implements PersistenceUnit {
@@ -87,7 +87,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private I18NStringStrategy i18NStringStrategy;
     private PersistenceStoreFactory persistenceStoreFactory;
     private List<QLParameterProcessor> parameterProcessors = new ArrayList<QLParameterProcessor>();
-//    private Map<String, Trigger> allTriggers = new HashMap<String, Trigger>();
+    //    private Map<String, Trigger> allTriggers = new HashMap<String, Trigger>();
     public List<OnHoldCommitAction> commitModelActions = new ArrayList<OnHoldCommitAction>();
     public List<OnHoldCommitAction> commitStorageActions = new ArrayList<OnHoldCommitAction>();
     private TransactionManagerFactory transactionManagerFactory;
@@ -104,7 +104,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private DefaultPersistenceUnit sessionAwarePU;
     private DecorationRepository decorationRepository;
     private int triggerAnonymousNameIndex = 1;
-    private Map<String,Object> defaultHints;
+    private Map<String, Object> defaultHints;
 
     public DefaultPersistenceUnit() {
 //        this.allEntities = new LinkedHashMap<String, Entity>();
@@ -408,10 +408,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         }
         for (Entity entity : getEntities()) {
             for (Field field : entity.getFields()) {
-                if(field.getDataType() instanceof SerializableOrManyToOneType){
+                if (field.getDataType() instanceof SerializableOrManyToOneType) {
                     Class entityType = ((SerializableOrManyToOneType) field.getDataType()).getEntityType();
 //                    if(findEntity(entityType)!=null){
-                        throw new UnexpectedException("Bug");
+                    throw new UnexpectedException("Bug");
 //                    }
                 }
             }
@@ -515,7 +515,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return getEntity(entityName).getTriggers();
     }
 
-//    public Map<String, Trigger> getAllTriggers() {
+    //    public Map<String, Trigger> getAllTriggers() {
 //        return allTriggers;
 //    }
     //    protected void checkEntityNames(String name, String shortName) {
@@ -610,10 +610,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             for (EntityExtensionDefinition s : entitySpecs) {
                 boolean ok = false;
                 for (Class ext : new Class[]{
-                    ViewEntityExtensionDefinition.class,
-                    SingletonExtensionDefinition.class,
-                    FilterEntityExtensionDefinition.class,
-                    UnionEntityExtensionDefinition.class
+                        ViewEntityExtensionDefinition.class,
+                        SingletonExtensionDefinition.class,
+                        FilterEntityExtensionDefinition.class,
+                        UnionEntityExtensionDefinition.class
                 }) {
                     if (ext.isInstance(s)) {
                         ok = true;
@@ -888,7 +888,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public void reset(Map<String,Object> hints) throws UPAException {
+    public void reset(Map<String, Object> hints) throws UPAException {
         persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
         List<Entity> ops = getEntities(new DefaultEntityFilter().setAcceptClear(true));
@@ -896,23 +896,23 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         for (Entity entity : ops) {
             entity.initialize(hints);
         }
-        updateFormulas(null,hints);
+        updateFormulas(null, hints);
 
         persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
 
-     public void clear() throws UPAException {
-         clear(null,defaultHints);
+    public void clear() throws UPAException {
+        clear(null, defaultHints);
     }
-     
+
     @Override
-    public void clear(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException {
-        if(entityFilter==null){
-            entityFilter=new DefaultEntityFilter().setAcceptClear(true);
+    public void clear(EntityFilter entityFilter, Map<String, Object> hints) throws UPAException {
+        if (entityFilter == null) {
+            entityFilter = new DefaultEntityFilter().setAcceptClear(true);
         }
         List<Entity> ops = getEntities(entityFilter);
         getPersistenceStore().setNativeConstraintsEnabled(this, false);
-        EntityExecutionContext context = createContext(ContextOperation.CLEAR,hints);
+        EntityExecutionContext context = createContext(ContextOperation.CLEAR, hints);
 
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
@@ -1004,13 +1004,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void updateFormulas() throws UPAException {
-        updateFormulas(new DefaultEntityFilter().setAcceptValidatable(true),defaultHints);
+        updateFormulas(new DefaultEntityFilter().setAcceptValidatable(true), defaultHints);
     }
 
     @Override
-    public void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException {
-        if(entityFilter==null){
-            entityFilter=new DefaultEntityFilter().setAcceptValidatable(true);
+    public void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) throws UPAException {
+        if (entityFilter == null) {
+            entityFilter = new DefaultEntityFilter().setAcceptValidatable(true);
         }
         persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
 //        Log.method();
@@ -1027,7 +1027,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //            }
 //        } else {
         for (Entity tab : getEntities(entityFilter)) {
-            tab.createUpdateQuery().validateAll().setHints(hints).execute() ;
+            tab.createUpdateQuery().validateAll().setHints(hints).execute();
         }
 //        }
         persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
@@ -1157,13 +1157,15 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             setTransactionManager(getTransactionManagerFactory().createTransactionManager(getConnectionProfile(), getPersistenceGroup().getFactory(), getProperties()));
         }
 
-        beginTransaction(TransactionType.REQUIRED);
+        boolean transactionCreated = beginTransaction(TransactionType.REQUIRED);
         try {
             persistenceUnitListenerManager.fireOnStart(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
             commitStructureModification();
 
             persistenceUnitListenerManager.fireOnStart(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
-            commitTransaction();
+            if (transactionCreated) {
+                commitTransaction();
+            }
             setLastStartSucceeded(true);
         } catch (Exception ex) {
             setLastStartSucceeded(false);
@@ -1305,7 +1307,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         }
         return true;
     }
-
 
 
     /**
@@ -1546,21 +1547,21 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     protected void addLockingSupport(Entity entity) throws UPAException {
         entity.addField(
                 new DefaultFieldDescriptor()
-                .setName("lockId")
-                .setFieldPath("Lock")
-                .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
-                .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
-                .setDataType(new StringType("lockId", 0, 64, true))
-                .setAccessLevel(AccessLevel.PRIVATE));
+                        .setName("lockId")
+                        .setFieldPath("Lock")
+                        .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
+                        .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
+                        .setDataType(new StringType("lockId", 0, 64, true))
+                        .setAccessLevel(AccessLevel.PRIVATE));
 
         entity.addField(
                 new DefaultFieldDescriptor()
-                .setName("lockTime")
-                .setFieldPath("Lock")
-                .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
-                .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
-                .setDataType(new DateType("lockTime", Timestamp.class, true))
-                .setAccessLevel(AccessLevel.PRIVATE)
+                        .setName("lockTime")
+                        .setFieldPath("Lock")
+                        .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
+                        .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
+                        .setDataType(new DateType("lockTime", Timestamp.class, true))
+                        .setAccessLevel(AccessLevel.PRIVATE)
         );
     }
 
@@ -1574,7 +1575,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             r.setObject("lockId", id);
             long i = entity.createUpdateQuery().setValues(r)
                     .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), null)))
-            .execute();
+                    .execute();
             if (i != 1) {
                 throw new AlreadyLockedPersistenceUnitException("Already Locked Document");
             }
@@ -1591,8 +1592,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             r.setObject("lockId", null);
             r.setObject("lockTime", null);
             long i = entity.createUpdateQuery().setValues(r)
-                            .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), lockId)))
-            .execute();
+                    .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), lockId)))
+                    .execute();
             if (i != 1) {
                 throw new AlreadyLockedPersistenceUnitException("Document no Locked or is locked by another person");
             }
@@ -1845,16 +1846,16 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     public Entity getEntity(Object entityType) throws UPAException {
-        if(entityType instanceof String){
+        if (entityType instanceof String) {
             return getEntity((String) entityType);
         }
-        if(entityType instanceof QualifiedDocument){
+        if (entityType instanceof QualifiedDocument) {
             return ((QualifiedDocument) entityType).getEntity();
         }
-        if(entityType instanceof Class){
+        if (entityType instanceof Class) {
             return getEntity((Class) entityType);
         }
-        if(entityType instanceof Document){
+        if (entityType instanceof Document) {
             throw new UPAException("UnableToResolveEntityFromDocument");
         }
         return getEntity(entityType.getClass());
@@ -1882,13 +1883,13 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public void persist(String entity, Object objectOrDocument,Map<String,Object> hints) throws UPAException {
+    public void persist(String entity, Object objectOrDocument, Map<String, Object> hints) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.persist(entity,objectOrDocument,hints);
+            sessionAwarePU.persist(entity, objectOrDocument, hints);
             return;
         }
         Entity entityManager = getEntity(entity);
-        entityManager.persist(objectOrDocument,hints);
+        entityManager.persist(objectOrDocument, hints);
     }
 
     @Override
@@ -1912,7 +1913,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     /**
-     *
      * @param objectOrDocument
      * @throws UPAException
      */
@@ -1927,9 +1927,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public void merge(String entityName,Object objectOrDocument) throws UPAException {
+    public void merge(String entityName, Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
-            sessionAwarePU.merge(entityName,objectOrDocument);
+            sessionAwarePU.merge(entityName, objectOrDocument);
             return;
         }
         Entity entityManager = getEntity(entityName);
@@ -2123,7 +2123,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (entityName != null) {
             return getEntity(entityName).createQuery(query);
         }
-        return getPersistenceStore().createQuery(query, createContext(ContextOperation.FIND,defaultHints));
+        return getPersistenceStore().createQuery(query, createContext(ContextOperation.FIND, defaultHints));
     }
 
     @Override
@@ -2227,11 +2227,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     public boolean beginTransaction(TransactionType transactionType) throws UPAException {
         checkStart();
         Session currentSession = getCurrentSession();
-        currentSession.pushContext();
         if (transactionType == null) {
             transactionType = TransactionType.SUPPORTS;
         }
-        currentSession.setParam(this, SessionParams.TRANSACTION_TYPE, transactionType);
         Transaction currentTransaction = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
         switch (transactionType) {
             case MANDATORY: {
@@ -2247,6 +2245,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
                 if (currentTransaction == null) {
                     Transaction transaction = transactionManager.createTransaction(getConnection(), this, persistenceStore);
                     transaction.begin();
+                    currentSession.pushContext();
+                    currentSession.setParam(this, SessionParams.TRANSACTION_TYPE, transactionType);
                     currentSession.setParam(this, SessionParams.TRANSACTION, transaction);
                     return true;
                 }
@@ -2264,65 +2264,85 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public void commitTransaction() throws UPAException {
         Session currentSession = getCurrentSession();
-        TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
         Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
-        Transaction t = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
-        switch (tt) {
-            case SUPPORTS: {
-                //do nothing
-                break;
-            }
-            case REQUIRED:
-            case MANDATORY: {
-                if (it == null) {
-                    if (t == null) {
-                        throw new UPAException(new I18NString("TransactionContextMissing"));
-                    } else {
-                        //
-                        t.commit();
-                    }
-                } else {
-                    it.commit();
-                }
-                break;
-            }
-        }
         if (it != null) {
-            it.close();
+            it.commit();
+            currentSession.popContext();
+        } else {
+            throw new UPAException(new I18NString("TransactionContextMissing"));
         }
-        currentSession.popContext();
+
+//        TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
+//        if(PlatformUtils.isUndefinedValue(TransactionType.class,tt)){
+//            tt=TransactionType.REQUIRED;
+//        }
+//        Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+//        Transaction t = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+//        switch (tt) {
+//            case SUPPORTS: {
+//                //do nothing
+//                break;
+//            }
+//            case REQUIRED:
+//            case MANDATORY: {
+//                if (it == null) {
+//                    if (t == null) {
+//                        throw new UPAException(new I18NString("TransactionContextMissing"));
+//                    } else {
+//                        //
+//                        throw new UPAException(new I18NString("TransactionContextMissing"));
+//                        //t.commit();
+//                    }
+//                } else {
+//                    it.commit();
+//                }
+//                break;
+//            }
+//        }
+//        if (it != null) {
+//            it.close();
+//        }
+//        currentSession.popContext();
     }
 
     @Override
     public void rollbackTransaction() throws UPAException {
         Session currentSession = getCurrentSession();
-        TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
         Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
-        Transaction t = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
-        switch (tt) {
-            case SUPPORTS: {
-                //do nothing
-                break;
-            }
-            case REQUIRED:
-            case MANDATORY: {
-                if (it == null) {
-                    if (t == null) {
-                        throw new UPAException(new I18NString("TransactionContextMissing"));
-                    } else {
-                        //
-                        t.rollback();
-                    }
-                } else {
-                    it.rollback();
-                }
-                break;
-            }
-        }
         if (it != null) {
-            it.close();
+            it.rollback();
+            currentSession.popContext();
+        } else {
+            throw new UPAException(new I18NString("TransactionContextMissing"));
         }
-        currentSession.popContext();
+
+//        TransactionType tt = currentSession.getParam(this, TransactionType.class, SessionParams.TRANSACTION_TYPE, PlatformUtils.getUndefinedValue(TransactionType.class));
+//        Transaction it = currentSession.getImmediateParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+//        Transaction t = currentSession.getParam(this, Transaction.class, SessionParams.TRANSACTION, null);
+//        switch (tt) {
+//            case SUPPORTS: {
+//                //do nothing
+//                break;
+//            }
+//            case REQUIRED:
+//            case MANDATORY: {
+//                if (it == null) {
+//                    if (t == null) {
+//                        throw new UPAException(new I18NString("TransactionContextMissing"));
+//                    } else {
+//                        //
+//                        t.rollback();
+//                    }
+//                } else {
+//                    it.rollback();
+//                }
+//                break;
+//            }
+//        }
+//        if (it != null) {
+//            it.close();
+//        }
+//        currentSession.popContext();
     }
 
     private void checkStart() throws UPAException {
@@ -2358,7 +2378,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         commitModelChanges();
         getPersistenceStore().revalidateModel();
         boolean someCommit = false;
-        EntityExecutionContext context = createContext(ContextOperation.CREATE_PERSISTENCE_NAME,defaultHints);
+        EntityExecutionContext context = createContext(ContextOperation.CREATE_PERSISTENCE_NAME, defaultHints);
         persistenceUnitListenerManager.fireOnStorageChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
 
         List<OnHoldCommitAction> model = commitStorageActions;
@@ -2392,7 +2412,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void close() throws UPAException {
-        EntityExecutionContext context = createContext(ContextOperation.CLOSE,defaultHints);
+        EntityExecutionContext context = createContext(ContextOperation.CLOSE, defaultHints);
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         getDefaulPackage().close();
@@ -2573,9 +2593,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             return null;
         }
         UserPrincipal p = currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
-        if(p==null){
+        if (p == null) {
             //inherit global context
-            p=getSecurityManager().getUserPrincipal();
+            p = getSecurityManager().getUserPrincipal();
         }
         return p;
     }
@@ -2606,17 +2626,17 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (user != null) {
             currentSession.popContext();
         } else {
-            user = currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
-            if (user != null) {
-                while (true) {
-                    currentSession.popContext();
-                    user = currentSession.getImmediateParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
-                    if (user != null) {
-                        break;
-                    }
-                }
-                return;
-            }
+//            user = currentSession.getParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+//            if (user != null) {
+//                while (true) {
+//                    currentSession.popContext();
+//                    user = currentSession.getImmediateParam(this, UserPrincipal.class, SessionParams.USER_PRINCIPAL, null);
+//                    if (user != null) {
+//                        break;
+//                    }
+//                }
+//                return;
+//            }
             throw new UnsupportedOperationException("Invalid Logout");
         }
     }
@@ -2643,12 +2663,12 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         DefaultCallback b = (DefaultCallback) callback;
         Map<String, Object> c = b.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
-            String functionName = c==null?null:(String) c.get("functionName");
-            if(StringUtils.isNullOrEmpty(functionName)){
+            String functionName = c == null ? null : (String) c.get("functionName");
+            if (StringUtils.isNullOrEmpty(functionName)) {
                 throw new UPAException("MissingCallbackFunctionName");
             }
             DataType returnType = (DataType) c.get("returnType");
-            if(returnType==null){
+            if (returnType == null) {
                 throw new UPAException("MissingCallbackReturnType");
             }
             getExpressionManager().addFunction(functionName, returnType, new FunctionCallback(b));
@@ -2662,8 +2682,8 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         DefaultCallback b = (DefaultCallback) callback;
         Map<String, Object> c = b.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
-            String functionName = c==null?null:(String) c.get("functionName");
-            if(StringUtils.isNullOrEmpty(functionName)){
+            String functionName = c == null ? null : (String) c.get("functionName");
+            if (StringUtils.isNullOrEmpty(functionName)) {
                 throw new UPAException("MissingCallbackFunctionName");
             }
             getExpressionManager().removeFunction(functionName);
@@ -2672,7 +2692,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system,boolean preparedOnly, EventPhase phase) {
+    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
 
         if (callbackType == CallbackType.ON_EVAL) {
             ArrayList<Callback> all = new ArrayList<Callback>();
@@ -2683,7 +2703,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             }
             return all.toArray(new Callback[all.size()]);
         }
-        return persistenceUnitListenerManager.getCurrentCallbacks(callbackType, objectType, name, system, preparedOnly,phase);
+        return persistenceUnitListenerManager.getCurrentCallbacks(callbackType, objectType, name, system, preparedOnly, phase);
     }
 
     @Override
@@ -2700,7 +2720,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void setIdentityConstraintsEnabled(Entity entity, boolean enable) {
-        EntityExecutionContext context = createContext(ContextOperation.COMMIT_STORAGE,defaultHints);
+        EntityExecutionContext context = createContext(ContextOperation.COMMIT_STORAGE, defaultHints);
         getPersistenceStore().setIdentityConstraintsEnabled(entity, enable, context);
     }
 
@@ -2718,7 +2738,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return connection;
     }
 
-    public EntityExecutionContext createContext(ContextOperation operation,Map<String,Object> hints) throws UPAException {
+    public EntityExecutionContext createContext(ContextOperation operation, Map<String, Object> hints) throws UPAException {
 //        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
         EntityExecutionContext context = null;
 //        if (currentSession != null) {
@@ -2738,10 +2758,10 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     protected InvokeContext prepareInvokeContext(InvokeContext c) {
-        if(c==null){
-            c=new InvokeContext();
-        }else{
-            c=c.copy();
+        if (c == null) {
+            c = new InvokeContext();
+        } else {
+            c = c.copy();
         }
         c.setPersistenceGroup(getPersistenceGroup());
         c.setPersistenceUnit(this);
@@ -2796,7 +2816,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public <T> T copyObject(T r) {
-        if(r==null){
+        if (r == null) {
             return null;
         }
         return getEntity(r).getBuilder().copyObject(r);
@@ -2804,7 +2824,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public <T> T copyObject(String entityName, T r) {
-        if(r==null){
+        if (r == null) {
             return null;
         }
         return getEntity(r).getBuilder().copyObject(r);
@@ -2812,7 +2832,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public <T> T copyObject(Class entityType, T r) {
-        if(r==null){
+        if (r == null) {
             return null;
         }
         return getEntity(r).getBuilder().copyObject(r);

@@ -135,7 +135,7 @@ public interface PersistenceUnit extends Closeable {
 
     NamingStrategy getNamingStrategy() ;
 
-    public PersistenceStore getPersistenceStore();
+    PersistenceStore getPersistenceStore();
 
     /**
      * descriptor may be
@@ -153,10 +153,10 @@ public interface PersistenceUnit extends Closeable {
      */
     Entity addEntity(Object descriptor) ;
 
-    //    public Index addIndex(String indexName, String entityName, boolean unique, List<String> fieldNames) ;
-    public List<Index> getIndexes() ;
+    //    Index addIndex(String indexName, String entityName, boolean unique, List<String> fieldNames) ;
+    List<Index> getIndexes() ;
 
-    public List<Index> getIndexes(String entityName) ;
+    List<Index> getIndexes(String entityName) ;
 
     boolean containsEntity(String entityName) ;
 
@@ -174,23 +174,23 @@ public interface PersistenceUnit extends Closeable {
     Entity getEntity(String entityName) ;
 
     //    <K, R> Entity<K, R> getEntity(String entityName, boolean check);
-    public boolean containsEntity(Class entityType) ;
+    boolean containsEntity(Class entityType) ;
 
-    public Entity findEntity(Class entityType) ;
+    Entity findEntity(Class entityType) ;
 
-    public List<Entity> findEntities(Class entityType) ;
+    List<Entity> findEntities(Class entityType) ;
 
-    public Entity findEntity(String entityName) ;
+    Entity findEntity(String entityName) ;
 
-    public Entity getEntity(Class entityType) ;
+    Entity getEntity(Class entityType) ;
 
     //    int getExplicitEntitiesCount() ;
-    public void addRelationship(RelationshipDescriptor relationDescriptor) ;
+    void addRelationship(RelationshipDescriptor relationDescriptor) ;
 
-    //    public Relationship addRelation(String name, RelationType type, String detailEntityName, String masterEntityName, String detailFieldName, String masterfieldName, RelationUpdateType detailUpdateType, RelationUpdateType masterUpdateType, String[] detailFieldNames, boolean nullable, Expression filter) ;
+    //    Relationship addRelation(String name, RelationType type, String detailEntityName, String masterEntityName, String detailFieldName, String masterfieldName, RelationUpdateType detailUpdateType, RelationUpdateType masterUpdateType, String[] detailFieldNames, boolean nullable, Expression filter) ;
     void reset() ;
 
-    public void reset(Map<String,Object> hints);
+    void reset(Map<String,Object> hints);
 
     List<Entity> getEntities() ;
 
@@ -209,7 +209,7 @@ public interface PersistenceUnit extends Closeable {
     List<Relationship> getRelationshipsBySource(Entity entity) ;
 
     //    List<Field> findField(String name) ;
-    //    public Script getDisableIdentityConstraintsScript() {
+    //    Script getDisableIdentityConstraintsScript() {
     //        Script script = new Script();
     //        for (Iterator iterator = entities.values().iterator(); iterator.hasNext();) {
     //            Entity entity = (Entity) iterator.next();
@@ -223,7 +223,7 @@ public interface PersistenceUnit extends Closeable {
 
     void start() ;
 
-    public boolean isSystemSession(Session s);
+    boolean isSystemSession(Session s);
 
     String getPersistenceName() ;
 
@@ -240,7 +240,7 @@ public interface PersistenceUnit extends Closeable {
 
 //    void setDBConfigModel(DBConfigModel dbConfigModel) ;
 
-    public void clear(EntityFilter entityFilter,Map<String,Object> hints)  ;
+    void clear(EntityFilter entityFilter,Map<String,Object> hints)  ;
     
     void clear() ;
 
@@ -272,31 +272,31 @@ public interface PersistenceUnit extends Closeable {
 
     void setAskOnCheckCreatedPersistenceUnit(boolean askOnCheckCreatedPersistenceUnit) ;
 
-    public Class getEntityExtensionSupportType(Class entityExtensionType) ;
+    Class getEntityExtensionSupportType(Class entityExtensionType) ;
 
-    public UPASecurityManager getSecurityManager() ;
+    UPASecurityManager getSecurityManager() ;
 
     /**
      * @param definitionListener
      * @param trackSystem when true system entities are also tracked
      */
-    public void addDefinitionListener(DefinitionListener definitionListener, boolean trackSystem);
+    void addDefinitionListener(DefinitionListener definitionListener, boolean trackSystem);
 
     /**
      * @param entityName
      * @param definitionListener
      * @param trackSystem when true system entities are also tracked
      */
-    public void addDefinitionListener(String entityName, DefinitionListener definitionListener, boolean trackSystem);
+    void addDefinitionListener(String entityName, DefinitionListener definitionListener, boolean trackSystem);
 
-    public void addDefinitionListener(Class entityType, DefinitionListener definitionListener, boolean trackSystem);
+    void addDefinitionListener(Class entityType, DefinitionListener definitionListener, boolean trackSystem);
 
     /**
      * system entities are not tracked
      *
      * @param definitionListener
      */
-    public void addDefinitionListener(DefinitionListener definitionListener);
+    void addDefinitionListener(DefinitionListener definitionListener);
 
     /**
      * system entities are not tracked
@@ -304,13 +304,13 @@ public interface PersistenceUnit extends Closeable {
      * @param entityName
      * @param definitionListener
      */
-    public void addDefinitionListener(String entityName, DefinitionListener definitionListener);
+    void addDefinitionListener(String entityName, DefinitionListener definitionListener);
 
-    public void removeDefinitionListener(DefinitionListener definitionListener);
+    void removeDefinitionListener(DefinitionListener definitionListener);
 
-    public void removeDefinitionListener(String entityName, DefinitionListener definitionListener);
+    void removeDefinitionListener(String entityName, DefinitionListener definitionListener);
 
-    public void removeDefinitionListener(Class entityType, DefinitionListener definitionListener);
+    void removeDefinitionListener(Class entityType, DefinitionListener definitionListener);
 
     //    Application getApplication();
 //
@@ -325,12 +325,12 @@ public interface PersistenceUnit extends Closeable {
     //    void saveConfig(Configuration configuration);
 //
 //    void loadConfig(Configuration configuration);
-    //    public void storeConfigModel(DBConfigModel configModel) {
+    //    void storeConfigModel(DBConfigModel configModel) {
     //        application.getConfigurationManager().getStartupConfiguration().setStringArray("used_adapters", configModel.getAdaptersStringArray(), '\n');
     //        application.getAppInfos().setString(REG_PERSISTENCE_MANAGER, configModel.getAdapterString());
     //    }
     //
-    //    public DBConfigModel loadConfigModel(DBConfigModel configModel) {
+    //    DBConfigModel loadConfigModel(DBConfigModel configModel) {
     //        configModel.setAdapterString(application.getAppInfos().getString(REG_PERSISTENCE_MANAGER, null));
     //        configModel.setAdaptersStringArray(application.getConfigurationManager().getStartupConfiguration().getStringArray("used_adapters", new String[]{configModel.getAdapterString()}));
     //        return configModel;
@@ -344,23 +344,23 @@ public interface PersistenceUnit extends Closeable {
 
     I18NStringStrategy getI18NStringStrategy() ;
 
-    public LockInfo getPersistenceUnitLockingInfo() ;
+    LockInfo getPersistenceUnitLockingInfo() ;
 
-    public void lockPersistenceUnit(String id) ;
+    void lockPersistenceUnit(String id) ;
 
-    public void unlockPersistenceUnit(String id) ;
+    void unlockPersistenceUnit(String id) ;
 
-    public LockInfo getLockingInfo(Entity entity) ;
+    LockInfo getLockingInfo(Entity entity) ;
 
-    public void lockEntityManager(Entity entity, String id) ;
+    void lockEntityManager(Entity entity, String id) ;
 
-    public void unlockEntityManager(Entity entity, String id) ;
+    void unlockEntityManager(Entity entity, String id) ;
 
-    public List<LockInfo> getLockingInfo(Entity entity, Expression expression) ;
+    List<LockInfo> getLockingInfo(Entity entity, Expression expression) ;
 
-    public void lockEntities(Entity entity, Expression expression, String id) ;
+    void lockEntities(Entity entity, Expression expression, String id) ;
 
-    public void unlockEntities(Entity entity, Expression expression, String id) ;
+    void unlockEntities(Entity entity, Expression expression, String id) ;
 
     ////////////////////////////////////////
     // LISTENERS
@@ -394,122 +394,122 @@ public interface PersistenceUnit extends Closeable {
     void setTriggersEnabled(boolean triggersEnabled) ;
 
     //////////////////////////////////////////////////////////////////////
-    public ConnectionProfile getConnectionProfile() ;
+    ConnectionProfile getConnectionProfile() ;
 
-    public void persist(String entityName, Object objectOrDocument) ;
-    public void persist(String entity, Object objectOrDocument,Map<String,Object> hints) ;
+    void persist(String entityName, Object objectOrDocument) ;
+    void persist(String entity, Object objectOrDocument,Map<String,Object> hints) ;
 
-    public void persist(Object objectOrDocument) ;
+    void persist(Object objectOrDocument) ;
 
-    public RemoveTrace remove(String entityName, Object objectOrDocument) ;
+    RemoveTrace remove(String entityName, Object objectOrDocument) ;
 
-    public RemoveTrace remove(Object objectOrDocument) ;
+    RemoveTrace remove(Object objectOrDocument) ;
 
-    public UpdateQuery createUpdateQuery(String entityName) ;
+    UpdateQuery createUpdateQuery(String entityName) ;
 
-    public UpdateQuery createUpdateQuery(Class type) ;
+    UpdateQuery createUpdateQuery(Class type) ;
 
-    public UpdateQuery createUpdateQuery(Object object) ;
+    UpdateQuery createUpdateQuery(Object object) ;
 
-    public void merge(String entityName,Object objectOrDocument);
+    void merge(String entityName,Object objectOrDocument);
 
-    public void merge(Object objectOrDocument) ;
+    void merge(Object objectOrDocument) ;
 
-    public void update(Object objectOrDocument) ;
+    void update(Object objectOrDocument) ;
 
-    public boolean save(Object objectOrDocument) ;
+    boolean save(Object objectOrDocument) ;
 
 
-//    public void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
-//    public void merge(String entityName, Object objectOrDocument) ;
+//    void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+//    void merge(String entityName, Object objectOrDocument) ;
 //
-    public boolean save(String entityName, Object objectOrDocument) ;
-//    public boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
-//
-//
-    public void update(String entityName, Object objectOrDocument) ;
-//    public void update(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+    boolean save(String entityName, Object objectOrDocument) ;
+//    boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
 //
-//    public void updatePartial(String entityName, Object objectOrDocument,String... fields)  ;
+    void update(String entityName, Object objectOrDocument) ;
+//    void update(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
+//    void updatePartial(String entityName, Object objectOrDocument,String... fields)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
+//    void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(Object objectOrDocument,String... fields)  ;
+//    void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
 //
-//    public void updatePartial(Object objectOrDocument,Set<String> fields,boolean ignoreUnspecified)  ;
+//    void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
 //
-//    public void updatePartial(Object objectOrDocument) ;
+//    void updatePartial(Object objectOrDocument,String... fields)  ;
 //
-//    public void updatePartial(String entityName, Object objectOrDocument) ;
-//    public void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+//    void updatePartial(Object objectOrDocument,Set<String> fields,boolean ignoreUnspecified)  ;
+//
+//    void updatePartial(Object objectOrDocument) ;
+//
+//    void updatePartial(String entityName, Object objectOrDocument) ;
+//    void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 
     void updateFormulas() ;
 
-    public void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException ;
+    void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException ;
 
     //////////
-//    public int updateDocuments(String entityName, Document document, Expression condition) ;
-//    public int updateDocuments(String entityName, Document document, Expression condition,Map<String,Object> hints) ;
+//    int updateDocuments(String entityName, Document document, Expression condition) ;
+//    int updateDocuments(String entityName, Document document, Expression condition,Map<String,Object> hints) ;
 
-//    public void updateFormulas(String entityName, FieldFilter filter, Expression expr) ;
-//    public void updateFormulas(String entityName, FieldFilter filter, Expression expr,Map<String,Object> hints) ;
+//    void updateFormulas(String entityName, FieldFilter filter, Expression expr) ;
+//    void updateFormulas(String entityName, FieldFilter filter, Expression expr,Map<String,Object> hints) ;
 
-//    public void updateFormulasById(String entityName, FieldFilter filter, Object id) ;
-//    public void updateFormulasById(String entityName, FieldFilter filter, Object id,Map<String,Object> hints) ;
+//    void updateFormulasById(String entityName, FieldFilter filter, Object id) ;
+//    void updateFormulasById(String entityName, FieldFilter filter, Object id,Map<String,Object> hints) ;
 
-//    public int updateDocuments(Class entityType, Document document, Expression condition) ;
+//    int updateDocuments(Class entityType, Document document, Expression condition) ;
 
-//    public void updateFormulas(Class entityType, FieldFilter filter, Expression expr) ;
+//    void updateFormulas(Class entityType, FieldFilter filter, Expression expr) ;
 
-//    public void updateFormulasById(Class entityType, FieldFilter filter, Object id) ;
+//    void updateFormulasById(Class entityType, FieldFilter filter, Object id) ;
 
     //////// REMOVE
-    public RemoveTrace remove(Class entityType, Object object) ;
+    RemoveTrace remove(Class entityType, Object object) ;
 
-    public RemoveTrace remove(Class entityType, RemoveOptions options) ;
+    RemoveTrace remove(Class entityType, RemoveOptions options) ;
 
-    public RemoveTrace remove(String entityName, RemoveOptions options) ;
+    RemoveTrace remove(String entityName, RemoveOptions options) ;
 
-    public <T> List<T> findAll(Class entityType) ;
+    <T> List<T> findAll(Class entityType) ;
 
-    public <T> List<T> findAll(String entityName) ;
+    <T> List<T> findAll(String entityName) ;
 
-    public <T> List<T> findAllIds(String entityName) ;
+    <T> List<T> findAllIds(String entityName) ;
 
-    public <T> T findByMainField(Class entityType, Object mainFieldValue) ;
+    <T> T findByMainField(Class entityType, Object mainFieldValue) ;
 
-    public <T> T findByMainField(String entityName, Object mainFieldValue) ;
+    <T> T findByMainField(String entityName, Object mainFieldValue) ;
 
-    public <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) ;
+    <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) ;
 
-    public <T> T findByField(String entityName, String fieldName, Object mainFieldValue) ;
+    <T> T findByField(String entityName, String fieldName, Object mainFieldValue) ;
 
-    public <T> T findById(Class entityType, Object id) ;
+    <T> T findById(Class entityType, Object id) ;
 
-    public <T> T findById(String entityName, Object id) ;
+    <T> T findById(String entityName, Object id) ;
 
-    public boolean existsById(String entityName, Object id) ;
+    boolean existsById(String entityName, Object id) ;
 
-    public List<Document> findAllDocuments(Class entityType) ;
+    List<Document> findAllDocuments(Class entityType) ;
 
-    public List<Document> findAllDocuments(String entityName) ;
+    List<Document> findAllDocuments(String entityName) ;
 
-    public Document findDocumentById(Class entityType, Object id) ;
+    Document findDocumentById(Class entityType, Object id) ;
 
-    public Document findDocumentById(String entityName, Object id) ;
+    Document findDocumentById(String entityName, Object id) ;
 
-    public QueryBuilder createQueryBuilder(Class entityType) ;
+    QueryBuilder createQueryBuilder(Class entityType) ;
 
-    public QueryBuilder createQueryBuilder(String entityName) ;
+    QueryBuilder createQueryBuilder(String entityName) ;
 
-    public Query createQuery(EntityStatement query) ;
+    Query createQuery(EntityStatement query) ;
 
-    public Query createQuery(String query) ;
+    Query createQuery(String query) ;
 
     /**
      *
@@ -517,72 +517,72 @@ public interface PersistenceUnit extends Closeable {
      * @return true if a transaction has been created
      * @
      */
-    public boolean beginTransaction(TransactionType transactionType) ;
+    boolean beginTransaction(TransactionType transactionType) ;
 
-    public void commitTransaction() ;
+    void commitTransaction() ;
 
-    public void rollbackTransaction() ;
+    void rollbackTransaction() ;
 
-    public boolean isStarted() ;
+    boolean isStarted() ;
 
-    public boolean isValidStructureModificationContext() ;
+    boolean isValidStructureModificationContext() ;
 
-    public boolean isStructureModification() ;
+    boolean isStructureModification() ;
 
-    public void beginStructureModification() ;
+    void beginStructureModification() ;
 
-    public void commitStructureModification() ;
+    void commitStructureModification() ;
 
-    public boolean isClosed() ;
+    boolean isClosed() ;
 
-    //    public Expression parse(String query) ;
+    //    Expression parse(String query) ;
 //
-//    public net.vpc.upa.expressions.CompiledExpression compile(Expression expression, ExpressionCompilerConfig compilerConfig) ;
+//    net.vpc.upa.expressions.CompiledExpression compile(Expression expression, ExpressionCompilerConfig compilerConfig) ;
 //
-//    public net.vpc.upa.expressions.CompiledExpression compile(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig compilerConfig) ;
+//    net.vpc.upa.expressions.CompiledExpression compile(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig compilerConfig) ;
 //
-//    public QLFunction addQLFunction(String name, DataType type, QLFunctionHandler function);
+//    QLFunction addQLFunction(String name, DataType type, QLFunctionHandler function);
 //
-//    public void removeQLFunction(String name);
+//    void removeQLFunction(String name);
 //
-//    public boolean containsQLFunction(String name);
+//    boolean containsQLFunction(String name);
 //
-//    public Set<String> getQLFunctionNames();
+//    Set<String> getQLFunctionNames();
 //
-//    public QLFunction getQLFunction(String name);
-    public ExpressionManager getExpressionManager();
+//    QLFunction getQLFunction(String name);
+    ExpressionManager getExpressionManager();
 
-    public ImportExportManager getImportExportManager();
+    ImportExportManager getImportExportManager();
 
-    public void init(String name, PersistenceGroup persistenceGroup);
+    void init(String name, PersistenceGroup persistenceGroup);
 
-    public DataTypeTransformFactory getTypeTransformFactory();
+    DataTypeTransformFactory getTypeTransformFactory();
 
-    public void setTypeTransformFactory(DataTypeTransformFactory typeTransformFactory);
+    void setTypeTransformFactory(DataTypeTransformFactory typeTransformFactory);
 
-    public ConnectionConfig[] getConnectionConfigs();
+    ConnectionConfig[] getConnectionConfigs();
 
-    public ConnectionConfig[] getRootConnectionConfigs();
+    ConnectionConfig[] getRootConnectionConfigs();
 
-    public void addConnectionConfig(ConnectionConfig connectionConfig);
+    void addConnectionConfig(ConnectionConfig connectionConfig);
 
-    public void removeConnectionConfig(int index);
+    void removeConnectionConfig(int index);
 
-    public void addRootConnectionConfig(ConnectionConfig connectionConfig);
+    void addRootConnectionConfig(ConnectionConfig connectionConfig);
 
-    public void removeRootConnectionConfig(int index);
+    void removeRootConnectionConfig(int index);
 
-    public void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel);
+    void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel);
 
-    public PersistenceNameConfig getPersistenceNameConfig();
+    PersistenceNameConfig getPersistenceNameConfig();
 
-    public void addContextAnnotationStrategyFilter(ScanFilter filter);
+    void addContextAnnotationStrategyFilter(ScanFilter filter);
 
-    public void removeContextAnnotationStrategyFilter(ScanFilter filter);
+    void removeContextAnnotationStrategyFilter(ScanFilter filter);
 
-    public ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getContextAnnotationStrategyFilters();
 
-    public UserPrincipal getUserPrincipal();
+    UserPrincipal getUserPrincipal();
 
     /**
      * push new user context if login and credentials are valid
@@ -590,62 +590,62 @@ public interface PersistenceUnit extends Closeable {
      * @param login
      * @param credentials
      */
-    public void login(String login, String credentials);
+    void login(String login, String credentials);
 
-    public void loginPrivileged(String login);
+    void loginPrivileged(String login);
 
     /**
      * logout from previous login. should be valid only if login succeeded
      */
-    public void logout();
+    void logout();
 
-    public boolean currentSessionExists();
+    boolean currentSessionExists();
 
-    public Session getCurrentSession() ;
+    Session getCurrentSession() ;
 
-    public Key createKey(Object... keyValues) ;
+    Key createKey(Object... keyValues) ;
 
-    public Callback addCallback(CallbackConfig callbackConfig);
+    Callback addCallback(CallbackConfig callbackConfig);
 
-    public void addCallback(Callback callback);
+    void addCallback(Callback callback);
 
-    public void removeCallback(Callback callback);
+    void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system,boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system,boolean preparedOnly, EventPhase phase);
 
-    public UConnection getConnection() ;
+    UConnection getConnection() ;
 
-    public void setIdentityConstraintsEnabled(Entity entity, boolean enable);
+    void setIdentityConstraintsEnabled(Entity entity, boolean enable);
 
 
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invoke(Action<T> action) ;
+    <T> T invoke(Action<T> action) ;
 
-    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invokePrivileged(Action<T> action) ;
+    <T> T invokePrivileged(Action<T> action) ;
 
-    public void invoke(VoidAction action, InvokeContext invokeContext) ;
+    void invoke(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invoke(VoidAction action) ;
+    void invoke(VoidAction action) ;
 
-    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invokePrivileged(VoidAction action) ;
+    void invokePrivileged(VoidAction action) ;
     
-    public Comparator<Entity> getDependencyComparator() ;
+    Comparator<Entity> getDependencyComparator() ;
 
-    public <T> T copyObject(T r);
-    public <T> T copyObject(String entityName,T r);
-    public <T> T copyObject(Class entityType,T r);
+    <T> T copyObject(T r);
+    <T> T copyObject(String entityName,T r);
+    <T> T copyObject(Class entityType,T r);
 
-    public boolean isEmpty(String entityName) ;
+    boolean isEmpty(String entityName) ;
 
-    public boolean isEmpty(Class entityType) ;
+    boolean isEmpty(Class entityType) ;
 
-    public long getEntityCount(String entityName) ;
+    long getEntityCount(String entityName) ;
 
-    public long getEntityCount(Class entityType) ;
+    long getEntityCount(Class entityType) ;
 
 }

@@ -5,6 +5,7 @@ import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -22,7 +23,13 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException{
         CompiledBinaryOperatorExpression o=(CompiledBinaryOperatorExpression) oo;
         String leftValue=o.getLeft() != null ? sqlManager.getSQL(o.getLeft(), qlContext, declarations) : "NULL";
+        if(o.getLeft() instanceof CompiledSelect){
+            leftValue="("+leftValue+")";
+        }
         String rightValue=o.getRight() != null ? sqlManager.getSQL(o.getRight(), qlContext, declarations) : "NULL";
+        if(o.getRight() instanceof CompiledSelect){
+            rightValue="("+rightValue+")";
+        }
         String s =null;
         switch (o.getOperator()){
             case AND:{

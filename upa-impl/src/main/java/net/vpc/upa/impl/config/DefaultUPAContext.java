@@ -27,7 +27,6 @@ import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.UPAContextConfig;
-import net.vpc.upa.types.I18NString;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
@@ -61,10 +60,12 @@ public class DefaultUPAContext implements UPAContext {
                 instance.getClass(),
                 new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
     }
+
     @Override
     public <T> T makeSessionAware(final T instance) throws UPAException {
         return makeSessionAware(instance, (MethodFilter) null);
     }
+
     public DefaultUPAContext() {
         listeners = new UPAContextListenerManager(this);
     }
@@ -287,8 +288,9 @@ public class DefaultUPAContext implements UPAContext {
         }
         boolean transactionCreated = false;
         if (invokeContext.getTransactionType() != null) {
-            pu.beginTransaction(invokeContext.getTransactionType());
-            transactionCreated = true;
+            if (pu.beginTransaction(invokeContext.getTransactionType())) {
+                transactionCreated = true;
+            }
         }
         T ret = null;
         Throwable anyErr = null;
@@ -302,7 +304,7 @@ public class DefaultUPAContext implements UPAContext {
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
-            if(e instanceof UPAException || e instanceof RuntimeException) {
+            if (e instanceof UPAException || e instanceof RuntimeException) {
                 throw e;
             }
             throw new InvocationException(e);
@@ -351,8 +353,9 @@ public class DefaultUPAContext implements UPAContext {
         loginCreated = true;
         boolean transactionCreated = false;
         if (invokeContext.getTransactionType() != null) {
-            pu.beginTransaction(invokeContext.getTransactionType());
-            transactionCreated = true;
+            if (pu.beginTransaction(invokeContext.getTransactionType())) {
+                transactionCreated = true;
+            }
         }
         T ret = null;
         Throwable anyErr = null;
@@ -367,7 +370,7 @@ public class DefaultUPAContext implements UPAContext {
             if (transactionCreated) {
                 pu.rollbackTransaction();
             }
-            if(e instanceof UPAException || e instanceof RuntimeException) {
+            if (e instanceof UPAException || e instanceof RuntimeException) {
                 throw e;
             }
             throw new InvocationException(e);
@@ -1218,7 +1221,7 @@ public class DefaultUPAContext implements UPAContext {
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
                         Map<String, Object> configuration2 = new HashMap<String, Object>();
-                        if(configuration!=null) {
+                        if (configuration != null) {
                             configuration2.putAll(configuration);
                         }
                         if (!configuration2.containsKey("functionName")) {
@@ -1262,7 +1265,7 @@ public class DefaultUPAContext implements UPAContext {
             }
 
         }
-        throw new UPAException("UnsupportedCallback",objectType,callbackType);
+        throw new UPAException("UnsupportedCallback", objectType, callbackType);
     }
 
     @Override

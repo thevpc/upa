@@ -11,19 +11,19 @@
  * considerably of the leading ORM (JPA, Hibernate/NHibernate, MyBatis and
  * Entity Framework to name a few) failures to satisfy very common even known to
  * be trivial requirement in enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -43,44 +43,48 @@ import java.io.Serializable;
  */
 public interface QueryBuilder extends Query, Serializable {
 
-    public Entity getEntityType();
+    Entity getEntityType();
 
-    public QueryBuilder byField(String field, Object value);
+    QueryBuilder byField(String field, Object value);
 
-    public QueryBuilder byExpression(String expression);
+    QueryBuilder byExpression(String expression);
 
-    public QueryBuilder byExpression(Expression expression);
+    QueryBuilder byExpression(Expression expression);
 
-    public QueryBuilder byExpression(Expression expression,boolean applyAndOp);
+    QueryBuilder byExpression(Expression expression, boolean applyAndOp);
 
-    public QueryBuilder orderBy(Order order);
+    QueryBuilder orderBy(Order order);
 
-    public QueryBuilder setFieldFilter(FieldFilter fieldFilter);
+    QueryBuilder setFieldFilter(FieldFilter fieldFilter);
 
-    public QueryBuilder byId(Object id);
+    QueryBuilder byId(Object id);
 
-    public QueryBuilder byKey(Key key);
+    QueryBuilder byKey(Key key);
 
-    public QueryBuilder byPrototype(Object prototype);
+    QueryBuilder byPrototype(Object prototype);
 
-    public QueryBuilder byDocumentPrototype(Document prototype);
+    QueryBuilder byDocumentPrototype(Document prototype);
 
-    public Expression getExpression();
+    Expression getExpression();
 
-    public Order getOrder();
+    Order getOrder();
 
-    public FieldFilter getFieldFilter();
+    FieldFilter getFieldFilter();
 
-    public Object getId();
+    Object getId();
 
-    public Key getKey();
+    Key getKey();
 
-    public Object getPrototype();
+    Object getPrototype();
 
-    public Document getDocumentPrototype();
+    Document getDocumentPrototype();
 
-    public String getEntityAlias();
+    String getEntityAlias();
 
-    public QueryBuilder setEntityAlias(String entityAlias);
-    
+    QueryBuilder setEntityAlias(String entityAlias);
+
+    int getTop();
+
+    void setTop(int top);
+
 }

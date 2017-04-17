@@ -7,9 +7,9 @@ public interface Callback {
 
     Object invoke(Object... arguments);
 
-    public CallbackType getCallbackType();
+    CallbackType getCallbackType();
 
-    public EventPhase getPhase();
+    EventPhase getPhase();
 
-    public ObjectType getObjectType();
+    ObjectType getObjectType();
 }

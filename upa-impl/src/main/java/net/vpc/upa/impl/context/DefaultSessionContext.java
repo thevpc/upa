@@ -37,4 +37,10 @@ public class DefaultSessionContext implements SessionContext {
         return defaultValue;
     }
 
+    @Override
+    public String toString() {
+        return "SessionContext{" +
+                map +
+                '}';
+    }
 }

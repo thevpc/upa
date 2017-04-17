@@ -20,6 +20,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     private String entityAlias;
     private Expression expression;
     private Order order;
+    private int top;
     private FieldFilter fieldFilter;
     private Object id;
     private Key key;
@@ -179,6 +180,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         }
         s.setWhere(criteria);
         s.orderBy(getOrder());
+        s.top(getTop());
         query = entity.createQuery(s);
         for (Map.Entry<String, Object> e : paramsByName.entrySet()) {
             query.setParameter(e.getKey(), e.getValue());
@@ -194,6 +196,14 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         }
 //        }
         return query;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
     }
 
     @Override

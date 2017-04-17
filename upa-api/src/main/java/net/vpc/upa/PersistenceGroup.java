@@ -46,82 +46,82 @@ public interface PersistenceGroup extends Closeable {
 
     void scan(ScanSource strategy, ScanListener listener, boolean configure) throws UPAException;
 
-    public String getName() throws UPAException;
+    String getName() throws UPAException;
 
     /**
      * if true, when no scan filter is specified will scan all class-path
      *
      * @return true if auto scan is enabled
      */
-    public boolean isAutoScan();
+    boolean isAutoScan();
 
-    public void setAutoScan(boolean autoScan);
+    void setAutoScan(boolean autoScan);
 
-    public UPAContext getContext();
+    UPAContext getContext();
 
-    public PersistenceUnit getPersistenceUnit() throws UPAException;
+    PersistenceUnit getPersistenceUnit() throws UPAException;
 
-    public void setPersistenceUnit(String name) throws UPAException;
+    void setPersistenceUnit(String name) throws UPAException;
 
-    public List<PersistenceUnit> getPersistenceUnits() throws UPAException;
+    List<PersistenceUnit> getPersistenceUnits() throws UPAException;
 
-    public PersistenceUnit getPersistenceUnit(String name) throws UPAException;
+    PersistenceUnit getPersistenceUnit(String name) throws UPAException;
 
-    public ObjectFactory getFactory() throws UPAException;
+    ObjectFactory getFactory() throws UPAException;
 
-    public boolean containsPersistenceUnit(String name) throws UPAException;
+    boolean containsPersistenceUnit(String name) throws UPAException;
 
-    public PersistenceUnit addPersistenceUnit(String name) throws UPAException;
+    PersistenceUnit addPersistenceUnit(String name) throws UPAException;
 
-    public void dropPersistenceUnit(String name) throws UPAException;
+    void dropPersistenceUnit(String name) throws UPAException;
 
-    public boolean currentSessionExists();
+    boolean currentSessionExists();
 
-    public Session getCurrentSession() throws UPAException;
-    public Session findCurrentSession() throws UPAException;
+    Session getCurrentSession() throws UPAException;
+    Session findCurrentSession() throws UPAException;
 
-    public void setCurrentSession(Session session) throws UPAException;
+    void setCurrentSession(Session session) throws UPAException;
 
-    public Session openSession() ;
+    Session openSession() ;
 
-    public boolean isClosed() ;
+    boolean isClosed() ;
 
 
-    public void addPersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
+    void addPersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
 
-    public void removePersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
+    void removePersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
 
-    public void addContextAnnotationStrategyFilter(ScanFilter filter);
+    void addContextAnnotationStrategyFilter(ScanFilter filter);
 
-    public void removeContextAnnotationStrategyFilter(ScanFilter filter);
+    void removeContextAnnotationStrategyFilter(ScanFilter filter);
 
-    public ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getContextAnnotationStrategyFilters();
 
-    public UPASecurityManager getSecurityManager();
+    UPASecurityManager getSecurityManager();
 
-    public PersistenceGroupSecurityManager getPersistenceGroupSecurityManager();
+    PersistenceGroupSecurityManager getPersistenceGroupSecurityManager();
 
-    public void setPersistenceGroupSecurityManager(PersistenceGroupSecurityManager securityManager);
+    void setPersistenceGroupSecurityManager(PersistenceGroupSecurityManager securityManager);
 
-    public void addCallback(Callback callback);
+    void addCallback(Callback callback);
 
-    public void removeCallback(Callback callback);
+    void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly,EventPhase phase);
+    Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly,EventPhase phase);
 
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invoke(Action<T> action) ;
+    <T> T invoke(Action<T> action) ;
 
-    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
 
-    public <T> T invokePrivileged(Action<T> action) ;
+    <T> T invokePrivileged(Action<T> action) ;
 
-    public void invoke(VoidAction action, InvokeContext invokeContext) ;
+    void invoke(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invoke(VoidAction action) ;
+    void invoke(VoidAction action) ;
 
-    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
 
-    public void invokePrivileged(VoidAction action) ;
+    void invokePrivileged(VoidAction action) ;
 }
