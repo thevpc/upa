@@ -254,7 +254,11 @@ public class DefaultEntityShield implements EntityShield {
         if (p != null) {
             Expression ss = entity.childToParentExpression(condition);
 //            p.getShield().checkRemove(ss, recurse);
-            p.getShield().checkUpdate(p.getBuilder().createDocument(),ss);
+            try {
+                p.getShield().checkUpdate(p.getBuilder().createDocument(), ss);
+            }catch (UpdateDocumentKeyNotFoundException ex){
+                //ignore this error, because no parent to update...
+            }
         }
         checkVeto(VetoableOperation.checkDelete, condition, recurse);
     }
