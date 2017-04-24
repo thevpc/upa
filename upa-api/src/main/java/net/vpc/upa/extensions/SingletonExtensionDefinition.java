@@ -39,5 +39,5 @@ package net.vpc.upa.extensions;
  * @creationdate 8/28/12 8:28 PM
  */
 public interface SingletonExtensionDefinition extends EntityExtensionDefinition {
-    public boolean isAutoCreate();
+    boolean isAutoCreate();
 }

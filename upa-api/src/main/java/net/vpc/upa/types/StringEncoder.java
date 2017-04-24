@@ -39,6 +39,6 @@ package net.vpc.upa.types;
  * @author taha.bensalah@gmail.com
  */
 public interface StringEncoder {
-    public String encode(byte[] bytes);
-    public byte[] decode(String value);
+    String encode(byte[] bytes);
+    byte[] decode(String value);
 }

@@ -43,7 +43,7 @@ package net.vpc.upa;
  */
 public interface NamingStrategy {
 
-    public String getUniformValue(String name);
+    String getUniformValue(String name);
     
-    public boolean equals(String o1, String o2);
+    boolean equals(String o1, String o2);
 }

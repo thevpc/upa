@@ -41,5 +41,5 @@ import net.vpc.upa.Entity;
  */
 public interface ImportDataManager {
 
-    public void importEntity(Entity entity, DataReader dataIterator, ImportDataConfig config);
+    void importEntity(Entity entity, DataReader dataIterator, ImportDataConfig config);
 }

@@ -45,135 +45,135 @@ import java.util.Set;
 public interface Properties extends Serializable {
 
     ////////////////////////////////////////
-    public boolean containsKey(String key);
+    boolean containsKey(String key);
 
-    public <T> T getObject(String key);
+    <T> T getObject(String key);
 
-    public <T> T getObject(String key, T defaultValue);
+    <T> T getObject(String key, T defaultValue);
 
-    public void setObject(String key, Object value);
+    void setObject(String key, Object value);
 
-    public <T> T getSingleObject();
-//    public <T> T get(String key, T defaultValue);
-
-    ////////////////////////////////////////
-    public int getInt(String key);
-
-    public int getInt(String key, int value);
-
-    public void setInt(String key, int value);
-
-    public int getSingleInt();
+    <T> T getSingleObject();
+//    <T> T get(String key, T defaultValue);
 
     ////////////////////////////////////////
-    public long getLong(String key);
+    int getInt(String key);
 
-    public long getLong(String key, long value);
+    int getInt(String key, int value);
 
-    public void setLong(String key, long value);
+    void setInt(String key, int value);
 
-    public long getSingleLong();
-
-    ////////////////////////////////////////
-    public double getDouble(String key);
-
-    public double getDouble(String key, double value);
-
-    public void setDouble(String key, double value);
-
-    public double getSingleDouble();
+    int getSingleInt();
 
     ////////////////////////////////////////
-    public float getFloat(String key);
+    long getLong(String key);
 
-    public float getFloat(String key, float value);
+    long getLong(String key, long value);
 
-    public void setFloat(String key, float value);
+    void setLong(String key, long value);
 
-    public float getSingleFloat();
-
-    ////////////////////////////////////////
-    public Date getDate(String key);
-
-    public Date getDate(String key, Date value);
-
-    public void setDate(String key, Date value);
-
-    public Date getSingleDate();
+    long getSingleLong();
 
     ////////////////////////////////////////
-    public String getString(String key);
+    double getDouble(String key);
 
-    public String getString(String key, String value);
+    double getDouble(String key, double value);
 
-    public void setString(String key, String value);
+    void setDouble(String key, double value);
 
-    public String getSingleString();
+    double getSingleDouble();
 
     ////////////////////////////////////////
-    public boolean getBoolean(String key);
+    float getFloat(String key);
 
-    public boolean getBoolean(String key, boolean value);
+    float getFloat(String key, float value);
 
-    public void setBoolean(String key, boolean value);
+    void setFloat(String key, float value);
 
-    public boolean getSingleBoolean();
+    float getSingleFloat();
+
+    ////////////////////////////////////////
+    Date getDate(String key);
+
+    Date getDate(String key, Date value);
+
+    void setDate(String key, Date value);
+
+    Date getSingleDate();
+
+    ////////////////////////////////////////
+    String getString(String key);
+
+    String getString(String key, String value);
+
+    void setString(String key, String value);
+
+    String getSingleString();
+
+    ////////////////////////////////////////
+    boolean getBoolean(String key);
+
+    boolean getBoolean(String key, boolean value);
+
+    void setBoolean(String key, boolean value);
+
+    boolean getSingleBoolean();
 
     //    ////////////////////////////////////////
     @PortabilityHint(target = "C#", name = "suppress")
-    public void setNumber(String key, Number value);
+    void setNumber(String key, Number value);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public Number getNumber(String key, Number value);
+    Number getNumber(String key, Number value);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public Number getNumber(String key);
+    Number getNumber(String key);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public Number getSingleNumber();
+    Number getSingleNumber();
 
     ////////////////////////////////////////
     @PortabilityHint(target = "C#", name = "suppress")
-    public void setBigDecimal(String key, BigDecimal value);
+    void setBigDecimal(String key, BigDecimal value);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public BigDecimal getBigDecimal(String key, BigDecimal value);
+    BigDecimal getBigDecimal(String key, BigDecimal value);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public BigDecimal getBigDecimal(String key);
+    BigDecimal getBigDecimal(String key);
 
     @PortabilityHint(target = "C#", name = "suppress")
-    public BigDecimal getSingleBigDecimal();
+    BigDecimal getSingleBigDecimal();
 
     ////////////////////////////////////////
-    public void setBigInteger(String key, BigInteger value);
+    void setBigInteger(String key, BigInteger value);
 
-    public BigInteger getBigInteger(String key, BigInteger value);
+    BigInteger getBigInteger(String key, BigInteger value);
 
-    public BigInteger getBigInteger(String key);
+    BigInteger getBigInteger(String key);
 
-    public BigInteger getSingleBigInteger();
+    BigInteger getSingleBigInteger();
 
     ////////////////////////////////////////
-    public Set<String> keySet();
+    Set<String> keySet();
 
-    public int size();
+    int size();
 
-    public Map<String, Object> toMap();
+    Map<String, Object> toMap();
 
-    public void setAll(Map<String, Object> other, String... keys);
+    void setAll(Map<String, Object> other, String... keys);
 
-    public void setAll(Properties other, String... keys);
+    void setAll(Properties other, String... keys);
 
-    public boolean isSet(String key);
+    boolean isSet(String key);
 
-    public void remove(String key);
+    void remove(String key);
 
-    public void addPropertyChangeListener(String key, PropertyChangeListener listener);
+    void addPropertyChangeListener(String key, PropertyChangeListener listener);
 
-    public void removePropertyChangeListener(String key, PropertyChangeListener listener);
+    void removePropertyChangeListener(String key, PropertyChangeListener listener);
 
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
-    public void removePropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(PropertyChangeListener listener);
 }

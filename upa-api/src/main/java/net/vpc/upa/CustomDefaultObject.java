@@ -44,5 +44,5 @@ public interface CustomDefaultObject {
      * hold value
      * @return value
      */
-    public Object getObject();
+    Object getObject();
 }

@@ -39,7 +39,7 @@ package net.vpc.upa;
  * @creationdate 9/12/12 12:02 AM
  */
 public interface SessionContextProvider {
-    public Session getSession(PersistenceGroup persistenceGroup);
+    Session getSession(PersistenceGroup persistenceGroup);
 
-    public void setSession(PersistenceGroup persistenceGroup, Session session);
+    void setSession(PersistenceGroup persistenceGroup, Session session);
 }

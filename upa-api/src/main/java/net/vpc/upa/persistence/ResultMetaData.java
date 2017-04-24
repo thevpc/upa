@@ -50,8 +50,8 @@ import java.util.List;
  */
 public interface ResultMetaData {
 
-    public EntityStatement getStatement() ;
+    EntityStatement getStatement() ;
 
-    public List<ResultField> getResultFields() ;
+    List<ResultField> getResultFields() ;
 
 }

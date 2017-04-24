@@ -40,44 +40,44 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface EntitySecurityManager {
 
-    public boolean isAllowedPersist(Entity entity) ;
+    boolean isAllowedPersist(Entity entity) ;
 
-    public boolean isAllowedPersist(Entity entity, Object instance) ;
+    boolean isAllowedPersist(Entity entity, Object instance) ;
 
-    public boolean isAllowedUpdate(Entity entity) ;
+    boolean isAllowedUpdate(Entity entity) ;
 
-    public boolean isAllowedUpdate(Entity entity, Object id,Object value) ;
+    boolean isAllowedUpdate(Entity entity, Object id,Object value) ;
 
-    public boolean isAllowedRemove(Entity entity) ;
+    boolean isAllowedRemove(Entity entity) ;
 
-    public boolean isAllowedRemove(Entity entity, Object id, Object value) ;
+    boolean isAllowedRemove(Entity entity, Object id, Object value) ;
 
-    public boolean isAllowedClone(Entity entity) ;
+    boolean isAllowedClone(Entity entity) ;
 
-    public boolean isAllowedClone(Entity entity, Object instance, Object newId) ;
+    boolean isAllowedClone(Entity entity, Object instance, Object newId) ;
 
-    public boolean isAllowedRename(Entity entity) ;
+    boolean isAllowedRename(Entity entity) ;
 
-    public boolean isAllowedRename(Entity entity, Object instance, Object newId) ;
+    boolean isAllowedRename(Entity entity, Object instance, Object newId) ;
 
-    public boolean isAllowedLoad(Entity entity) ;
+    boolean isAllowedLoad(Entity entity) ;
 
-    public boolean isAllowedLoad(Entity entity, Object id, Object value) ;
+    boolean isAllowedLoad(Entity entity, Object id, Object value) ;
 
-    public boolean isAllowedNavigate(Entity entity) ;
+    boolean isAllowedNavigate(Entity entity) ;
 
-    public boolean isAllowedNavigate(Entity entity, String navigationMode) ;
+    boolean isAllowedNavigate(Entity entity, String navigationMode) ;
 
-    public boolean isAllowedNavigate(Entity entity, Object id, Object value) ;
+    boolean isAllowedNavigate(Entity entity, Object id, Object value) ;
 
-    public boolean isAllowedRead(Field field) ;
+    boolean isAllowedRead(Field field) ;
 
-    public boolean isAllowedRead(Field field, Object id, Object object) ;
+    boolean isAllowedRead(Field field, Object id, Object object) ;
 
-    public boolean isAllowedWrite(Field field) ;
+    boolean isAllowedWrite(Field field) ;
 
-    public boolean isAllowedWrite(Field field, Object id, Object value) ;
+    boolean isAllowedWrite(Field field, Object id, Object value) ;
 
-    public Expression getEntityFilter(Entity entity) ;
+    Expression getEntityFilter(Entity entity) ;
 
 }

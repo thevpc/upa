@@ -39,12 +39,12 @@ package net.vpc.upa.callbacks;
  * @creationdate 11/27/12 9:17 PM
  */
 public interface IndexDefinitionListener extends DefinitionListener {
-    public void onCreateIndex(IndexEvent event);
+    void onCreateIndex(IndexEvent event);
 
-    public void onPreCreateIndex(IndexEvent event);
+    void onPreCreateIndex(IndexEvent event);
 
-    public void onDropIndex(IndexEvent event);
+    void onDropIndex(IndexEvent event);
 
-    public void onPreDropIndex(IndexEvent event);
+    void onPreDropIndex(IndexEvent event);
 
 }

@@ -49,274 +49,283 @@ import java.util.*;
 
 public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
-    public void setEntitySecurityManager(EntitySecurityManager securityManager) ;
+    void setEntitySecurityManager(EntitySecurityManager securityManager);
 
-    public EntitySecurityManager getEntitySecurityManager() ;
+    EntitySecurityManager getEntitySecurityManager();
 
-    public FlagSet<EntityModifier> getUserModifiers() ;
+    FlagSet<EntityModifier> getUserModifiers();
 
-    public void setUserModifiers(FlagSet<EntityModifier> modifiers) ;
+    void setUserModifiers(FlagSet<EntityModifier> modifiers);
 
-    public FlagSet<EntityModifier> getUserExcludeModifiers() ;
+    FlagSet<EntityModifier> getUserExcludeModifiers();
 
-    public void setUserExcludeModifiers(FlagSet<EntityModifier> modifiers) ;
+    void setUserExcludeModifiers(FlagSet<EntityModifier> modifiers);
 
-    public FlagSet<EntityModifier> getModifiers() ;
+    FlagSet<EntityModifier> getModifiers();
 
-    public boolean exists() ;
+    boolean exists();
 
-    public Entity getParentEntity() ;
+    Entity getParentEntity();
 
-    public EntityDescriptor getEntityDescriptor() ;
+    EntityDescriptor getEntityDescriptor();
 
-    public Relationship getCompositionRelation() ;
+    Relationship getCompositionRelation();
 
-    public List<Relationship> getRelationships() ;
+    List<Relationship> getRelationships();
 
-    public String getParentSecurityAction() ;
+    List<Relationship> getRelationshipsBySource();
 
-    public void setParentSecurityAction(String parentSecurityAction) ;
+    List<Relationship> getRelationshipsByTarget();
 
-    public Index addIndex(String name, boolean unique, String... fields) ;
+    /**
+     * @return true if this entity is its own parent
+     */
+    boolean isHierarchical();
 
-    public List<Index> getIndexes(Boolean unique) ;
+    String getParentSecurityAction();
 
-    public void removePart(int index) ;
+    void setParentSecurityAction(String parentSecurityAction);
 
-    public void movePart(int index, int newIndex) ;
+    Index addIndex(String name, boolean unique, String... fields);
 
-    public void movePart(String partName, int newIndex) ;
+    List<Index> getIndexes(Boolean unique);
 
-    public List<EntityPart> getParts() ;
+    void removePart(int index);
 
-    public int indexOfField(String field) ;
+    void movePart(int index, int newIndex);
 
-    public int indexOfPart(EntityPart part) ;
+    void movePart(String partName, int newIndex);
 
-    public int indexOfPart(String partName) ;
+    List<EntityPart> getParts();
 
-    public int indexOfPart(String partName, boolean countSections,
-            boolean countCompoundFields, boolean countFieldsInCompoundFields,
-            boolean countFieldsInSections) ;
+    int indexOfField(String field);
 
-    public List<Section> getSections() ;
+    int indexOfPart(EntityPart part);
 
-    public Section getSection(String sectionPath) ;
+    int indexOfPart(String partName);
 
-    public Section findSection(String path) ;
+    int indexOfPart(String partName, boolean countSections,
+                           boolean countCompoundFields, boolean countFieldsInCompoundFields,
+                           boolean countFieldsInSections);
 
-    public Section getSection(String path, MissingStrategy missingStrategy) ;
+    List<Section> getSections();
 
-    public Section addSection(String name, String parentPath) ;
+    Section getSection(String sectionPath);
 
-    public Section addSection(String name, String parentPath, int index) ;
+    Section findSection(String path);
 
-    public Section addSection(String name, int index) ;
+    Section getSection(String path, MissingStrategy missingStrategy);
 
-    public Section addSection(String name) ;
+    Section addSection(String name, String parentPath);
 
-    public Class getEntityType() ;
+    Section addSection(String name, String parentPath, int index);
 
-    public Class getIdType() ;
+    Section addSection(String name, int index);
 
-    public boolean needsView() ;
+    Section addSection(String name);
 
-    public DataType getDataType() ;
+    Class getEntityType();
 
-    public void setDataType(DataType newDataType) ;
+    Class getIdType();
 
-    public boolean isDependentOnEntity(String entityName);
+    boolean needsView();
 
-    public Set<String> getDependencyEntities() ;
+    DataType getDataType();
 
-    //    public void addSecuritySupport() ;
-//    public String getPersistenceName();
+    void setDataType(DataType newDataType);
+
+    boolean isDependentOnEntity(String entityName);
+
+    Set<String> getDependencyEntities();
+
+    //    void addSecuritySupport() ;
+//    String getPersistenceName();
 //
-//    public void setPersistenceName(String persistenceName);
-//    public Field addField(Field field, String sectionPath) ;
-//    public Field addField(Field field, String sectionPath, int index) ;
-    public Field addField(FieldDescriptor fieldDescriptor) ;
+//    void setPersistenceName(String persistenceName);
+//    Field addField(Field field, String sectionPath) ;
+//    Field addField(Field field, String sectionPath, int index) ;
+    Field addField(FieldDescriptor fieldDescriptor);
 
-    public Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type) ;
+    Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type);
 
-    public Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, FlagSet<UserFieldModifier> excludeModifiers, Object defaultValue, DataType type, int index) ;
+    Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, FlagSet<UserFieldModifier> excludeModifiers, Object defaultValue, DataType type, int index);
 
-    public Field getMainField() ;
+    Field getMainField();
 
-    public String getMainFieldValue(Object o) ;
+    String getMainFieldValue(Object o);
 
-    public EntityNavigator getNavigator() ;
+    EntityNavigator getNavigator();
 
-    public void setNavigator(EntityNavigator newNavigator);
+    void setNavigator(EntityNavigator newNavigator);
 
     // ------------------------------------------------------------------------------
-    public int getFieldsCount() ;
+    int getFieldsCount();
 
-    public boolean containsField(String key) ;
+    boolean containsField(String key);
 
-    public List<DynamicField> getDynamicFields() ;
+    List<DynamicField> getDynamicFields();
 
-    public Field getField(int position) ;
+    Field getField(int position);
 
-    public Field getField(String fieldName) ;
+    Field getField(String fieldName);
 
-    public Field findField(String fieldName) ;
+    Field findField(String fieldName);
 
-    public List<Field> getPrimaryFields() ;
+    List<Field> getPrimaryFields();
 
-    public List<String> getFieldNames(FieldFilter fieldFilter) ;
+    List<String> getFieldNames(FieldFilter fieldFilter);
 
-    //    public int indexOfField(String key) ;
-    public Object cloneDocument(Object oldId, Object newId) ;
+    //    int indexOfField(String key) ;
+    Object cloneDocument(Object oldId, Object newId);
 
-    public Object rename(Object oldId, Object newId) ;
+    Object rename(Object oldId, Object newId);
 
-    public Object rename(Object oldId, Object newId,Map<String,Object> hints);
+    Object rename(Object oldId, Object newId, Map<String, Object> hints);
 
-    public Object getNextId(Object id) ;
+    Object getNextId(Object id);
 
-    public Object getFirstId() ;
+    Object getFirstId();
 
-    public Object getLastId() ;
+    Object getLastId();
 
-    public Object getPreviousId(Object id) ;
+    Object getPreviousId(Object id);
 
-    public boolean hasNext(Object id) ;
+    boolean hasNext(Object id);
 
-    public boolean hasPrevious(Object id) ;
+    boolean hasPrevious(Object id);
 
-    public boolean isEmpty() ;
+    boolean isEmpty();
 
-    public long getEntityCount() ;
+    long getEntityCount();
 
-    public long getEntityCount(Expression booleanExpression) ;
+    long getEntityCount(Expression booleanExpression);
 
-    public <K> K nextId() ;
+    <K> K nextId();
 
-    public void persist(Object objectOrDocument) ;
+    void persist(Object objectOrDocument);
 
-    public boolean save(Object objectOrDocument) ;
+    boolean save(Object objectOrDocument);
 
-    public void persist(Object objectOrDocument,Map<String,Object> hints) ;
+    void persist(Object objectOrDocument, Map<String, Object> hints);
 
-    public boolean save(Object objectOrDocument,Map<String,Object> hints) ;
+    boolean save(Object objectOrDocument, Map<String, Object> hints);
 
-    public void clear();
+    void clear();
 
-    public void clear(Map<String,Object> hints);
+    void clear(Map<String, Object> hints);
 
-    public Expression getUnicityExpressionForPersist(Object entity) ;
+    Expression getUnicityExpressionForPersist(Object entity);
 
-    public RemoveTrace remove(Object entity) ;
+    RemoveTrace remove(Object entity);
 
-    public RemoveTrace remove(RemoveOptions options) ;
+    RemoveTrace remove(RemoveOptions options);
 
-    public Field[] toFieldArray(String[] s) ;
+    Field[] toFieldArray(String[] s);
 
-    public boolean contains(Object id) ;
+    boolean contains(Object id);
 
-    public UpdateQuery createUpdateQuery() ;
+    UpdateQuery createUpdateQuery();
 
-    public void update(Object objectOrDocument) ;
+    void update(Object objectOrDocument);
 
-    public void merge(Object objectOrDocument) ;
+    void merge(Object objectOrDocument);
 
-//    public void update(Object objectOrDocument,Map<String,Object> hints) ;
+//    void update(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void merge(Object objectOrDocument,Map<String,Object> hints) ;
+//    void merge(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(Object objectOrDocument,String... fields)  ;
+//    void updatePartial(Object objectOrDocument,String... fields)  ;
 //
-//    public void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified)  ;
+//    void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified)  ;
 //
-//    public void updatePartial(Object objectOrDocument) ;
+//    void updatePartial(Object objectOrDocument) ;
 //
-//    public void updatePartial(Object objectOrDocument, Object id) ;
+//    void updatePartial(Object objectOrDocument, Object id) ;
 //
-//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
+//    void updatePartial(Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
 //
-//    public void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
+//    void updatePartial(Object entity, Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
 //
-//    public void updatePartial(Object objectOrDocument,Map<String,Object> hints) ;
+//    void updatePartial(Object objectOrDocument,Map<String,Object> hints) ;
 //
-//    public void updatePartial(Object objectOrDocument, Object id,Map<String,Object> hints) ;
+//    void updatePartial(Object objectOrDocument, Object id,Map<String,Object> hints) ;
 //
-//    public void updateDocument(Document document, Key key) ;
-//    public void updateDocument(Document document, Key key,Map<String,Object> hints) ;
+//    void updateDocument(Document document, Key key) ;
+//    void updateDocument(Document document, Key key,Map<String,Object> hints) ;
 //
-//    public int updateDocuments(Document document, Expression condition,Map<String,Object> hints) ;
+//    int updateDocuments(Document document, Expression condition,Map<String,Object> hints) ;
 //
-//    public int updateDocuments(Document document, Expression condition) ;
+//    int updateDocuments(Document document, Expression condition) ;
 
-//    public void updateFormulas(FieldFilter filter, Expression expr) ;
-//    public void updateFormulas(FieldFilter filter, Expression expr,Map<String,Object> hints) ;
+//    void updateFormulas(FieldFilter filter, Expression expr) ;
+//    void updateFormulas(FieldFilter filter, Expression expr,Map<String,Object> hints) ;
 //
-//    public void updateFormulasById(FieldFilter filter, Object key) ;
-//    public void updateFormulasById(FieldFilter filter, Object key,Map<String,Object> hints) ;
+//    void updateFormulasById(FieldFilter filter, Object key) ;
+//    void updateFormulasById(FieldFilter filter, Object key,Map<String,Object> hints) ;
 
-    public void updateFormulas() ;
-//    public void updateFormulas(Map<String,Object> hints) ;
+    void updateFormulas();
+//    void updateFormulas(Map<String,Object> hints) ;
 
-//    public void updateFormulasById(Object id) ;
+//    void updateFormulasById(Object id) ;
 //
-//    public void updateFormulasById(Object id,Map<String,Object> hints) ;
+//    void updateFormulasById(Object id,Map<String,Object> hints) ;
 //
-//    public void updateFormulas(Expression condition) ;
-//    public void updateFormulas(Expression condition,Map<String,Object> hints) ;
+//    void updateFormulas(Expression condition) ;
+//    void updateFormulas(Expression condition,Map<String,Object> hints) ;
 
-    public Order getUpdateFormulasOrder();
+    Order getUpdateFormulasOrder();
 
-    public String getIdName(Object id) ;
+    String getIdName(Object id);
 
-    public List<Field> getValidFields(String... fieldNames) ;
+    List<Field> getValidFields(String... fieldNames);
 
-    public List<Field> getFields() ;
+    List<Field> getFields();
 
-    public List<Field> getFields(String... fieldNames) ;
+    List<Field> getFields(String... fieldNames);
 
-    public List<Field> getFields(FieldFilter filter) ;
+    List<Field> getFields(FieldFilter filter);
 
-    public Order getArchivingOrder();
+    Order getArchivingOrder();
 
-    public Field getLeadingPrimaryField() ;
+    Field getLeadingPrimaryField();
 
-    public List<String> getOrderedFields(String[] fields) ;
+    List<String> getOrderedFields(String[] fields);
 
-    public Expression toIdListExpression(Expression e) ;
+    Expression toIdListExpression(Expression e);
 
-    public String getShortName() ;
+    String getShortName();
 
-    public void setShortName(String shortName) ;
+    void setShortName(String shortName);
 
-    public String getShortNameOrName() ;
+    String getShortNameOrName();
 
-    public Order getListOrder() ;
+    Order getListOrder();
 
-    public void setListOrder(Order listOrder) ;
+    void setListOrder(Order listOrder);
 
-    public void setArchivingOrder(Order archivingOrder) ;
+    void setArchivingOrder(Order archivingOrder);
 
-    public List<PrimitiveField> getPrimitiveFields(FieldFilter fieldFilter) ;
+    List<PrimitiveField> getPrimitiveFields(FieldFilter fieldFilter);
 
-    public PrimitiveField getPrimitiveField(String fieldName) ;
+    PrimitiveField getPrimitiveField(String fieldName);
 
-    public PrimitiveField findPrimitiveField(String fieldName) ;
+    PrimitiveField findPrimitiveField(String fieldName);
 
-    public <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(List<T> parts) ;
+    <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(List<T> parts);
 
-    public List<Field> getFields(List<EntityPart> parts) ;
+    List<Field> getFields(List<EntityPart> parts);
 
-    public List<PrimitiveField> getPrimitiveFields(String... fieldNames) ;
+    List<PrimitiveField> getPrimitiveFields(String... fieldNames);
 
-    public EntityBuilder getBuilder() ;
+    EntityBuilder getBuilder();
 
-    public QueryBuilder createQueryBuilder() ;
+    QueryBuilder createQueryBuilder();
 
-    public Query createQuery(EntityStatement query) ;
+    Query createQuery(EntityStatement query);
 
-    public Query createQuery(String query) ;
+    Query createQuery(String query);
 
-    public List<Trigger> getTriggers() ;
+    List<Trigger> getTriggers();
 
     /**
      * Triggers with VM support (having listener!=null)
@@ -324,41 +333,41 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
      * @return
      * @
      */
-    public List<Trigger> getSoftTriggers() ;
+    List<Trigger> getSoftTriggers();
 
-    public void addExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject) ;
+    void addExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
 
-    public void removeExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
+    void removeExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
 
-    public List<EntityExtensionDefinition> getExtensionDefinitions();
+    List<EntityExtensionDefinition> getExtensionDefinitions();
 
-    public <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type);
+    <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type);
 
-    public List<EntityExtension> getExtensions();
+    List<EntityExtension> getExtensions();
 
-    public <S extends EntityExtension> List<S> getExtensions(Class<S> type);
+    <S extends EntityExtension> List<S> getExtensions(Class<S> type);
 
-    public <S extends EntityExtension> S getExtension(Class<S> type) ;
+    <S extends EntityExtension> S getExtension(Class<S> type);
 
-    public EntityOperationManager getEntityOperationManager();
+    EntityOperationManager getEntityOperationManager();
 
-    public EntityShield getShield();
+    EntityShield getShield();
 
-    public void setShield(EntityShield shield) ;
+    void setShield(EntityShield shield);
 
-    public Expression childToParentExpression(Document child) ;
+    Expression childToParentExpression(Document child);
 
-    public Expression childToParentExpression(Expression childExpression) ;
+    Expression childToParentExpression(Expression childExpression);
 
-    public Expression parentToChildExpression(Expression parentExpression) ;
+    Expression parentToChildExpression(Expression parentExpression);
 
-    public Key createKey(Object... keyValues) ;
+    Key createKey(Object... keyValues);
 
-    public Object createId(Object... keyValues) ;
+    Object createId(Object... keyValues);
 
-    public Document createDocument() ;
+    Document createDocument();
 
-    public <R> R createObject() ;
+    <R> R createObject();
 
     /**
      * adds anonymous trigger
@@ -367,79 +376,80 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
      * @return
      * @
      */
-    public Trigger addTrigger(EntityInterceptor trigger) ;
+    Trigger addTrigger(EntityInterceptor trigger);
 
-    public Trigger addTrigger(String name, EntityInterceptor trigger) ;
+    Trigger addTrigger(String name, EntityInterceptor trigger);
 
-    public void removeTrigger(String triggerName) ;
+    void removeTrigger(String triggerName);
 
-    //    public void addEntityListener(EntityListener listener) ;
+    //    void addEntityListener(EntityListener listener) ;
 //
-//    public void removeEntityListener(EntityListener listener) ;
-    void addDefinitionListener(DefinitionListener definitionListener) ;
+//    void removeEntityListener(EntityListener listener) ;
+    void addDefinitionListener(DefinitionListener definitionListener);
 
-    void removeDefinitionListener(DefinitionListener definitionListener) ;
+    void removeDefinitionListener(DefinitionListener definitionListener);
 
     //////////////////////////////////////////////////////////
     //
     //    CORE
     //
     //////////////////////////////////////////////////////////
-    public int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext) ;
+    int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext);
 
-    public void persistCore(Document values, EntityExecutionContext executionContext) ;
+    void persistCore(Document values, EntityExecutionContext executionContext);
 
-    public int removeCore(Expression condition, boolean recurse, RemoveTrace deleteInfo, EntityExecutionContext executionContext) ;
+    int removeCore(Expression condition, boolean recurse, RemoveTrace deleteInfo, EntityExecutionContext executionContext);
 
-    public int clearCore(EntityExecutionContext executionContext) ;
+    int clearCore(EntityExecutionContext executionContext);
 
-    public int initializeCore(EntityExecutionContext executionContext) ;
+    int initializeCore(EntityExecutionContext executionContext);
 
-//    public long updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) ;
+//    long updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) ;
 
-    public Object compile(Expression expression) ;
+    Object compile(Expression expression);
 
-    public void addFilter(String name, String expression) ;
+    void addFilter(String name, String expression);
 
-    public void addFilter(String name, Expression expression) ;
+    void addFilter(String name, Expression expression);
 
-    public Expression getFilter(String name) ;
+    Expression getFilter(String name);
 
-    public void removeFilter(String name) ;
+    void removeFilter(String name);
 
-    public Set<String> getFilterNames() ;
+    Set<String> getFilterNames();
 
-    public boolean isSystem() ;
+    boolean isSystem();
 
     // Framework Friend Methods
-    public void setModifiers(FlagSet<EntityModifier> modifiers) ;
+    void setModifiers(FlagSet<EntityModifier> modifiers);
 
-    public void initialize() ;
-    public void initialize(Map<String,Object> hints);
+    void initialize();
 
-    public void commitModelChanges() ;
+    void initialize(Map<String, Object> hints);
 
-    public void commitStructureModification(PersistenceStore persistenceUnitManager) ;
+    void commitModelChanges();
 
-    public void addDependencyOnEntity(String entityName);
+    void commitStructureModification(PersistenceStore persistenceUnitManager);
+
+    void addDependencyOnEntity(String entityName);
 
     //    /**
 //     * called by PersistenceUnit
 //     */
 //    void setCompositionRelationship(Relationship compositionRelation) ;
-    public <T> T findById(Object id) ;
+    <T> T findById(Object id);
 
-    public boolean existsById(Object id) ;
+    boolean existsById(Object id);
 
-    public <T> T findByMainField(Object mainFieldValue) ;
+    <T> T findByMainField(Object mainFieldValue);
 
-    public <T> T findByField(String fieldName, Object mainFieldValue) ;
+    <T> T findByField(String fieldName, Object mainFieldValue);
 
-    public <T> List<T> findAll() ;
-    
-    public <T> List<T> findAllIds() ;
+    <T> List<T> findAll();
 
-    public List<Document> findAllDocuments() ;
+    <T> List<T> findAllIds();
 
-    public PlatformBeanType getPlatformBeanType();
+    List<Document> findAllDocuments();
+
+    PlatformBeanType getPlatformBeanType();
 }

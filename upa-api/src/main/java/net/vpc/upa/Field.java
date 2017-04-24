@@ -46,13 +46,13 @@ import java.util.List;
  */
 public interface Field extends EntityPart {
 
-    public void setPropertyAccessType(PropertyAccessType value);
+    void setPropertyAccessType(PropertyAccessType value);
 
-    public PropertyAccessType getPropertyAccessType();
+    PropertyAccessType getPropertyAccessType();
 
-    public void setUnspecifiedValue(Object o);
+    void setUnspecifiedValue(Object o);
 
-    public Object getUnspecifiedValue();
+    Object getUnspecifiedValue();
 
     /**
      * should return a valid value of UnspecifiedValue. Actually, if
@@ -61,121 +61,114 @@ public interface Field extends EntityPart {
      *
      * @return
      */
-    public Object getUnspecifiedValueDecoded();
+    Object getUnspecifiedValueDecoded();
 
-    public boolean isUnspecifiedValue(Object value);
+    boolean isUnspecifiedValue(Object value);
 
-    public void setDefaultObject(Object o);
+    void setDefaultObject(Object o);
 
-    public Object getDefaultValue();
+    Object getDefaultValue();
 
-    public Object getDefaultObject();
+    Object getDefaultObject();
 
-    public List<Relationship> getManyToOneRelationships();
+    List<Relationship> getManyToOneRelationships();
 
-    public void setFormula(String formula);
+    void setFormula(String formula);
 
-    public void setFormula(Formula formula);
+    void setFormula(Formula formula);
 
-    public void setPersistFormula(String formula);
+    void setPersistFormula(String formula);
 
-    public void setPersistFormula(Formula formula);
+    void setPersistFormula(Formula formula);
 
-    public Formula getPersistFormula();
+    Formula getPersistFormula();
 
-    public int getPersistFormulaOrder();
+    int getPersistFormulaOrder();
 
-    public void setFormulaOrder(int order);
+    void setFormulaOrder(int order);
 
-    public void setPersistFormulaOrder(int order);
+    void setPersistFormulaOrder(int order);
 
-    public Formula getUpdateFormula();
+    Formula getUpdateFormula();
 
-    public int getUpdateFormulaOrder();
+    int getUpdateFormulaOrder();
 
-    public void setUpdateFormula(String formula);
+    void setUpdateFormula(String formula);
 
-    public void setUpdateFormula(Formula formula);
+    void setUpdateFormula(Formula formula);
 
-    public void setUpdateFormulaOrder(int order);
+    void setUpdateFormulaOrder(int order);
 
-    public Formula getSelectFormula();
+    Formula getSelectFormula();
 
-    public void setSelectFormula(String formula);
+    void setSelectFormula(String formula);
 
-    public void setSelectFormula(Formula formula);
+    void setSelectFormula(Formula formula);
 
-    //    public boolean isRequired() throws UPAException;
-    public DataType getDataType();
+    //    boolean isRequired() throws UPAException;
+    DataType getDataType();
 
-    public AccessLevel getPersistAccessLevel();
+    AccessLevel getPersistAccessLevel();
 
-    public AccessLevel getUpdateAccessLevel();
+    AccessLevel getUpdateAccessLevel();
 
-    public AccessLevel getReadAccessLevel();
+    AccessLevel getReadAccessLevel();
 
-    public void setPersistAccessLevel(AccessLevel accessLevel);
+    void setPersistAccessLevel(AccessLevel accessLevel);
 
-    public void setUpdateAccessLevel(AccessLevel accessLevel);
+    void setUpdateAccessLevel(AccessLevel accessLevel);
 
-    public void setReadAccessLevel(AccessLevel accessLevel);
+    void setReadAccessLevel(AccessLevel accessLevel);
 
-    public void setAccessLevel(AccessLevel accessLevel);
+    void setAccessLevel(AccessLevel accessLevel);
 
-    public FlagSet<UserFieldModifier> getUserModifiers();
+    FlagSet<UserFieldModifier> getUserModifiers();
 
-    public void setUserModifiers(FlagSet<UserFieldModifier> modifiers);
+    void setUserModifiers(FlagSet<UserFieldModifier> modifiers);
 
-    public FlagSet<UserFieldModifier> getUserExcludeModifiers();
+    FlagSet<UserFieldModifier> getUserExcludeModifiers();
 
-    public void setUserExcludeModifiers(FlagSet<UserFieldModifier> modifiers);
+    void setUserExcludeModifiers(FlagSet<UserFieldModifier> modifiers);
 
-    public FlagSet<FieldModifier> getModifiers();
+    FlagSet<FieldModifier> getModifiers();
 
-//    public void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
-    public boolean isId() throws UPAException;
+//    void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
+    boolean isId() throws UPAException;
 
-    public boolean isGeneratedId() throws UPAException;
+    boolean isGeneratedId() throws UPAException;
 
-    public boolean isMain() throws UPAException;
+    boolean isMain() throws UPAException;
 
-    public boolean isSummary() throws UPAException;
+    boolean isSummary() throws UPAException;
 
-    public boolean is(FieldFilter ff) throws UPAException;
+    boolean is(FieldFilter ff) throws UPAException;
 
-    //    public boolean is(long modifier);
+    //    boolean is(long modifier);
     void setDataType(DataType datatype);
 
-    /**
-     * check is this is target or source!!!
-     *
-     * @param r
-     */
+    SearchOperator getSearchOperator();
 
+    void setSearchOperator(SearchOperator operator);
 
-    public SearchOperator getSearchOperator();
+    void setTypeTransform(DataTypeTransform transform);
 
-    public void setSearchOperator(SearchOperator operator);
-
-    public void setTypeTransform(DataTypeTransform transform);
-
-    public DataTypeTransform getTypeTransform();
+    DataTypeTransform getTypeTransform();
 
     /**
      * value of the field for the given instance
      * @param instance object instance
      * @return value of the field
      */
-    public Object getValue(Object instance);
+    Object getValue(Object instance);
     
     /**
      * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
      * @param instance instance to get value on
      * @return displayable value
      */
-    public Object getMainValue(Object instance);
+    Object getMainValue(Object instance);
 
-    public void setValue(Object instance, Object value);
+    void setValue(Object instance, Object value);
 
-    public void check(Object value);
+    void check(Object value);
 }

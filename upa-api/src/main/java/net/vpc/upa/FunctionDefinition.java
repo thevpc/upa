@@ -42,9 +42,9 @@ import net.vpc.upa.types.DataType;
  */
 public interface FunctionDefinition {
 
-    public String getName();
+    String getName();
 
-    public DataType getDataType();
+    DataType getDataType();
 
-    public Function getFunction();
+    Function getFunction();
 }

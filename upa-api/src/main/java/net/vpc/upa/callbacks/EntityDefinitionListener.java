@@ -40,19 +40,19 @@ package net.vpc.upa.callbacks;
  */
 public interface EntityDefinitionListener extends DefinitionListener {
 
-    public void onPreCreateEntity(EntityEvent event);
+    void onPreCreateEntity(EntityEvent event);
 
-    public void onCreateEntity(EntityEvent event);
+    void onCreateEntity(EntityEvent event);
 
-    public void onPreInitEntity(EntityEvent event);
+    void onPreInitEntity(EntityEvent event);
 
-    public void onInitEntity(EntityEvent event);
+    void onInitEntity(EntityEvent event);
 
-    public void onPreDropEntity(EntityEvent event);
+    void onPreDropEntity(EntityEvent event);
 
-    public void onDropEntity(EntityEvent event);
+    void onDropEntity(EntityEvent event);
 
-    public void onPreMoveEntity(EntityEvent event);
+    void onPreMoveEntity(EntityEvent event);
 
-    public void onMoveEntity(EntityEvent event);
+    void onMoveEntity(EntityEvent event);
 }

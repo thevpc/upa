@@ -72,10 +72,10 @@ public interface FieldDescriptor {
 
     AccessLevel getReadAccessLevel();
 
-    public Map<String, Object> getFieldParams();
+    Map<String, Object> getFieldParams();
 
-    public PropertyAccessType getPropertyAccessType();
+    PropertyAccessType getPropertyAccessType();
 
-    public int getPosition();
+    int getPosition();
 
 }

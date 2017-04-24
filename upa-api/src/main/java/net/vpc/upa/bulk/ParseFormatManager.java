@@ -42,24 +42,24 @@ import net.vpc.upa.ObjectFactory;
  */
 public interface ParseFormatManager {
 
-    public ObjectFactory getFactory();
+    ObjectFactory getFactory();
 
-    public void setFactory(ObjectFactory factory);
+    void setFactory(ObjectFactory factory);
 
-    public TextFixedWidthParser createTextFixedWidthParser(Object source) throws IOException;
+    TextFixedWidthParser createTextFixedWidthParser(Object source) throws IOException;
 
-    public TextCSVParser createTextCSVParser(Object source) throws IOException;
+    TextCSVParser createTextCSVParser(Object source) throws IOException;
 
-    public SheetParser createSheetParser(Object source) throws IOException;
+    SheetParser createSheetParser(Object source) throws IOException;
 
-    public XmlParser createXmlParser(Object source) throws IOException;
+    XmlParser createXmlParser(Object source) throws IOException;
 
-    public TextFixedWidthFormatter createTextFixedWidthFormatter(Object target) throws IOException;
+    TextFixedWidthFormatter createTextFixedWidthFormatter(Object target) throws IOException;
 
-    public TextCSVFormatter createTextCSVFormatter(Object target) throws IOException;
+    TextCSVFormatter createTextCSVFormatter(Object target) throws IOException;
 
-    public SheetFormatter createSheetFormatter(Object target) throws IOException;
+    SheetFormatter createSheetFormatter(Object target) throws IOException;
 
-    public XmlFormatter createXmlFormatter(Object target) throws IOException;
+    XmlFormatter createXmlFormatter(Object target) throws IOException;
 
 }

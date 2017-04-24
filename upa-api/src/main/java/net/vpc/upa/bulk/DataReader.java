@@ -39,11 +39,11 @@ package net.vpc.upa.bulk;
  */
 public interface DataReader {
 
-    public boolean hasNext();
+    boolean hasNext();
 
-    public DataRow readRow();
+    DataRow readRow();
 
-    public Object readObject();
+    Object readObject();
 
     DataColumn[] getColumns();
 }

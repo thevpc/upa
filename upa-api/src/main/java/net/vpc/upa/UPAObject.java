@@ -44,58 +44,58 @@ import java.beans.PropertyChangeListener;
  */
 public interface UPAObject {
 
-    public String getName();
+    String getName();
 
-    public String getAbsoluteName();
+    String getAbsoluteName();
 
-    public void setName(String name);
+    void setName(String name);
 
-    public String getPersistenceName();
+    String getPersistenceName();
 
-    public void setPersistenceName(String persistenceName);
+    void setPersistenceName(String persistenceName);
 
-    public PersistenceUnit getPersistenceUnit();
+    PersistenceUnit getPersistenceUnit();
 
-    public PersistenceGroup getPersistenceGroup();
+    PersistenceGroup getPersistenceGroup();
 
-    public I18NString getTitle();
+    I18NString getTitle();
 
-    public void setTitle(I18NString title);
+    void setTitle(I18NString title);
 
-    public I18NString getDescription();
+    I18NString getDescription();
 
-    public void setDescription(I18NString description);
+    void setDescription(I18NString description);
 
-    public I18NString getI18NString();
+    I18NString getI18NString();
 
-    public void setI18NString(I18NString i18NString);
+    void setI18NString(I18NString i18NString);
 
     //--------------------------- PROPERTIES SUPPORT
-    public Properties getProperties();
+    Properties getProperties();
 
-    //    public void prepare() throws UPAException;
-//    public void setStatus(PersistenceState status);
-    public PersistenceState getPersistenceState();
+    //    void prepare() throws UPAException;
+//    void setStatus(PersistenceState status);
+    PersistenceState getPersistenceState();
 
-    public void addObjectListener(UPAObjectListener listener);
+    void addObjectListener(UPAObjectListener listener);
 
-    public void removeObjectListener(UPAObjectListener listener);
+    void removeObjectListener(UPAObjectListener listener);
 
-    public UPAObjectListener[] getObjectListeners();
+    UPAObjectListener[] getObjectListeners();
 
-    public void addPropertyChangeListener(String property, PropertyChangeListener listener);
+    void addPropertyChangeListener(String property, PropertyChangeListener listener);
 
-    public void removePropertyChangeListener(String property, PropertyChangeListener listener);
+    void removePropertyChangeListener(String property, PropertyChangeListener listener);
 
-    public void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
 
-    public void removePropertyChangeListener(PropertyChangeListener listener);
-
-    @Override
-    public boolean equals(Object other);
+    void removePropertyChangeListener(PropertyChangeListener listener);
 
     @Override
-    public int hashCode();
+    boolean equals(Object other);
 
-    public void close() throws UPAException;
+    @Override
+    int hashCode();
+
+    void close() throws UPAException;
 }

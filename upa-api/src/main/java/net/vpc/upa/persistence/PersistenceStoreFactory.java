@@ -41,5 +41,5 @@ import net.vpc.upa.Properties;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface PersistenceStoreFactory {
-    public PersistenceStore createPersistenceStore(ConnectionProfile connectionProfile, ObjectFactory factory, Properties parameters);
+    PersistenceStore createPersistenceStore(ConnectionProfile connectionProfile, ObjectFactory factory, Properties parameters);
 }

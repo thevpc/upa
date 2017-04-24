@@ -34,9 +34,6 @@
  */
 package net.vpc.upa;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database:
-//            Table, Key
-
 public interface EntityNavigator {
 
     Object getNewKey();

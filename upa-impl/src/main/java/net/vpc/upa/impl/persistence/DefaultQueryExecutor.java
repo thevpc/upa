@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.jdbc:
-//            NativeStatement, NativeExecutionContext
 public class DefaultQueryExecutor implements QueryExecutor {
 
     static Logger log = Logger.getLogger(DefaultQueryExecutor.class.getName());

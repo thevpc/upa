@@ -36,24 +36,24 @@ package net.vpc.upa.callbacks;
 
 public interface EntityListener extends EntityInterceptor{
 
-//    public void onBeforeInsert(Entity entity, Object insertedId, Document insertedDocument);
-    public void onPrePersist(PersistEvent event);
+//    void onBeforeInsert(Entity entity, Object insertedId, Document insertedDocument);
+    void onPrePersist(PersistEvent event);
 
-    public void onPersist(PersistEvent event);
+    void onPersist(PersistEvent event);
 
-    public void onPreUpdate(UpdateEvent event);
+    void onPreUpdate(UpdateEvent event);
 
-    public void onUpdate(UpdateEvent event);
+    void onUpdate(UpdateEvent event);
 
-    public void onPreRemove(RemoveEvent event);
+    void onPreRemove(RemoveEvent event);
 
-    public void onRemove(RemoveEvent event);
+    void onRemove(RemoveEvent event);
 
-    public void onPreUpdateFormula(UpdateFormulaEvent event);
+    void onPreUpdateFormula(UpdateFormulaEvent event);
 
-    public void onUpdateFormula(UpdateFormulaEvent event);
+    void onUpdateFormula(UpdateFormulaEvent event);
 
-    public void onPreInitialize(EntityEvent event);
+    void onPreInitialize(EntityEvent event);
 
     /**
      * called when Entity is initialized aka default entities / Documents where
@@ -61,13 +61,13 @@ public interface EntityListener extends EntityInterceptor{
      *
      * @param event
      */
-    public void onInitialize(EntityEvent event);
+    void onInitialize(EntityEvent event);
 
-    public void onPreClear(EntityEvent event);
+    void onPreClear(EntityEvent event);
 
-    public void onClear(EntityEvent event);
+    void onClear(EntityEvent event);
 
-    public void onPreReset(EntityEvent event);
+    void onPreReset(EntityEvent event);
 
-    public void onReset(EntityEvent event);
+    void onReset(EntityEvent event);
 }

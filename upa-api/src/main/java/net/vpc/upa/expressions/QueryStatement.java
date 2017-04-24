@@ -42,9 +42,9 @@ import java.util.List;
  */
 public interface QueryStatement extends EntityStatement,NameOrQuery {
 
-    public int countFields();
+    int countFields();
 
-    public QueryField getField(int i);
+    QueryField getField(int i);
 
-    public List<QueryField> getFields();
+    List<QueryField> getFields();
 }

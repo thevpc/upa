@@ -44,11 +44,11 @@ public interface CloseListener {
      * called before source is being closed
      * @param source object to be closed
      */
-    public void beforeClose(Object source);
+    void beforeClose(Object source);
 
     /**
      * called after the source has been closed
      * @param source object closed
      */
-    public void afterClose(Object source);
+    void afterClose(Object source);
 }

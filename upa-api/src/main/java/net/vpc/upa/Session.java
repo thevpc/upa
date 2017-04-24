@@ -42,23 +42,23 @@ import net.vpc.upa.callbacks.SessionListener;
  */
 public interface Session extends Closeable {
 
-    public void init(PersistenceGroup manager);
+    void init(PersistenceGroup manager);
 
-    public SessionContext getCurrentContext();
+    SessionContext getCurrentContext();
 
-    public void pushContext();
+    void pushContext();
 
-    public void popContext();
+    void popContext();
 
-    public void setParam(PersistenceUnit persistenceUnit, String name, Object value);
+    void setParam(PersistenceUnit persistenceUnit, String name, Object value);
 
-    public <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+    <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
 
-    public <T> T getImmediateParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+    <T> T getImmediateParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
 
-    //    public <T> T getParamImmediate(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
-    public void addSessionListener(SessionListener sessionListener);
+    //    <T> T getParamImmediate(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+    void addSessionListener(SessionListener sessionListener);
 
-    public void removeSessionListener(SessionListener sessionListener);
+    void removeSessionListener(SessionListener sessionListener);
 
 }

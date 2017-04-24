@@ -47,20 +47,20 @@ import net.vpc.upa.expressions.NonQueryStatement;
  */
 public interface PersistenceStore {
 
-    //    public static final String CURRENT_ENTITY_ALIAS = "this";
-//    public static String DB_CON_LOG = "DB_CONNECT";
-//    public static String DB_QUERY_LOG = "DB_QUERY";
-//    public static String DB_UPDATE_LOG = "DB_UPDATE";
-//    public static String DB_EXEC_LOG = "DB_EXEC";
-//    public static String DB_ERROR_LOG = "DB_ERROR";
-//    //    public static final String DB_NATIVE_LOG = "DB_NATIVE";
-//    public static String DB_PRE_NATIVE_UPDATE_LOG = "DB_PRE_NATIVE_UPDATE_LOG";
-//    public static String DB_PRE_NATIVE_QUERY_LOG = "DB_PRE_NATIVE_QUERY_LOG";
-//    public static String DB_NATIVE_QUERY_LOG = "DB_NATIVE_QUERY";
-//    public static String DB_NATIVE_UPDATE_LOG = "DB_NATIVE_UPDATE";
+    //    static final String CURRENT_ENTITY_ALIAS = "this";
+//    static String DB_CON_LOG = "DB_CONNECT";
+//    static String DB_QUERY_LOG = "DB_QUERY";
+//    static String DB_UPDATE_LOG = "DB_UPDATE";
+//    static String DB_EXEC_LOG = "DB_EXEC";
+//    static String DB_ERROR_LOG = "DB_ERROR";
+//    //    static final String DB_NATIVE_LOG = "DB_NATIVE";
+//    static String DB_PRE_NATIVE_UPDATE_LOG = "DB_PRE_NATIVE_UPDATE_LOG";
+//    static String DB_PRE_NATIVE_QUERY_LOG = "DB_PRE_NATIVE_QUERY_LOG";
+//    static String DB_NATIVE_QUERY_LOG = "DB_NATIVE_QUERY";
+//    static String DB_NATIVE_UPDATE_LOG = "DB_NATIVE_UPDATE";
     boolean isAccessible(ConnectionProfile connectionProfile);
 
-    public String getValidIdentifier(String s);
+    String getValidIdentifier(String s);
 
     void checkAccessible(ConnectionProfile connectionProfile);
 
@@ -100,49 +100,49 @@ public interface PersistenceStore {
 
     Query createQuery(EntityStatement query, EntityExecutionContext qlContext) throws UPAException;
 
-    public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException;
+    void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException;
 
-//    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
+//    int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
 
-    public boolean isReservedKeyword(String name);
+    boolean isReservedKeyword(String name);
 
     void setNativeConstraintsEnabled(PersistenceUnit persistenceUnit, boolean enable) throws UPAException;
 
-    public boolean isComplexSelectSupported();
+    boolean isComplexSelectSupported();
 
-    public boolean isFromClauseInUpdateStatementSupported();
+    boolean isFromClauseInUpdateStatementSupported();
 
-    public boolean isFromClauseInDeleteStatementSupported();
+    boolean isFromClauseInDeleteStatementSupported();
 
-    public boolean isReferencingSupported();
+    boolean isReferencingSupported();
 
-    public boolean isViewSupported();
+    boolean isViewSupported();
 
-    public boolean isTopSupported();
+    boolean isTopSupported();
 
-    public PersistenceNameStrategy getPersistenceNameStrategy();
+    PersistenceNameStrategy getPersistenceNameStrategy();
 
-    public void setPersistenceNameStrategy(PersistenceNameStrategy persistenceNameStrategy);
+    void setPersistenceNameStrategy(PersistenceNameStrategy persistenceNameStrategy);
 
-    public String getPersistenceName(UPAObject persistentObject) throws UPAException;
+    String getPersistenceName(UPAObject persistentObject) throws UPAException;
 
-    public String getPersistenceName(UPAObject persistentObject, PersistenceNameType spec) throws UPAException;
+    String getPersistenceName(UPAObject persistentObject, PersistenceNameType spec) throws UPAException;
 
-    public String getPersistenceName(String name, PersistenceNameType spec) throws UPAException;
+    String getPersistenceName(String name, PersistenceNameType spec) throws UPAException;
 
-    public PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) throws UPAException;
+    PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) throws UPAException;
 
-    public boolean isView(Entity entity);
+    boolean isView(Entity entity);
 
-    public void alterPersistenceUnitAddObject(UPAObject object) throws UPAException;
+    void alterPersistenceUnitAddObject(UPAObject object) throws UPAException;
 
-    public void alterPersistenceUnitRemoveObject(UPAObject object) throws UPAException;
+    void alterPersistenceUnitRemoveObject(UPAObject object) throws UPAException;
 
-    public void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) throws UPAException;
+    void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) throws UPAException;
 
-    public boolean commitStorage() throws UPAException;
+    boolean commitStorage() throws UPAException;
 
-    public void revalidateModel() throws UPAException;
+    void revalidateModel() throws UPAException;
 
     /**
      * create connection
@@ -150,7 +150,7 @@ public interface PersistenceStore {
      * @return
      * @throws UPAException
      */
-    public UConnection createConnection() throws UPAException;
+    UConnection createConnection() throws UPAException;
 
-    public void setIdentityConstraintsEnabled(Entity entity, boolean enable,EntityExecutionContext context);
+    void setIdentityConstraintsEnabled(Entity entity, boolean enable,EntityExecutionContext context);
 }

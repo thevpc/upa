@@ -40,23 +40,23 @@ package net.vpc.upa;
  */
 public interface QualifiedDocument extends Document {
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public Document getDocument();
+    Document getDocument();
 
-    public String getDocumentName();
+    String getDocumentName();
 
-    public Key getKey();
+    Key getKey();
 
-    public void setKey(Key key);
+    void setKey(Key key);
 
-    public Object getId();
+    Object getId();
 
-    public void setIdentifier(Object value);
+    void setIdentifier(Object value);
 
-    public Object[] getRawId();
+    Object[] getRawId();
 
-    public void setRawId(Object... ids);
+    void setRawId(Object... ids);
 
 
 }

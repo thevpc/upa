@@ -35,9 +35,6 @@
 package net.vpc.upa.expressions;
 
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression, SQLContext
-
 public abstract class DefaultEntityStatement extends DefaultExpression
         implements EntityStatement, Cloneable {
 

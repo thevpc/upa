@@ -41,14 +41,14 @@ import net.vpc.upa.Closeable;
  */
 public interface QueryResult extends Closeable {
 
-    public int getFieldsCount();
+    int getFieldsCount();
 
-    public <T> T read(int index);
+    <T> T read(int index);
 
-    public <T> void write(int index, T value);
+    <T> void write(int index, T value);
 
-    public boolean hasNext();
+    boolean hasNext();
 
 
-    public void updateCurrent();
+    void updateCurrent();
 }

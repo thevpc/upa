@@ -54,93 +54,93 @@ public interface UPAContext {
      * @param factory
      * @throws UPAException
      */
-    public void start(ObjectFactory factory) throws UPAException;
+    void start(ObjectFactory factory) throws UPAException;
 
-    public UPAContextFactory getFactory();
+    UPAContextFactory getFactory();
 
-    public UPAContextConfig getBootstrapContextConfig();
+    UPAContextConfig getBootstrapContextConfig();
 
-    public void scan(ScanSource configurationStrategy, ScanListener listener, boolean configure);
+    void scan(ScanSource configurationStrategy, ScanListener listener, boolean configure);
 
-    public PersistenceUnit getPersistenceUnit() throws UPAException;
+    PersistenceUnit getPersistenceUnit() throws UPAException;
 
-    public List<PersistenceGroup> getPersistenceGroups() throws UPAException;
+    List<PersistenceGroup> getPersistenceGroups() throws UPAException;
 
-    public PersistenceGroup getPersistenceGroup() throws UPAException;
+    PersistenceGroup getPersistenceGroup() throws UPAException;
 
-    public void setPersistenceGroup(String name) throws UPAException;
+    void setPersistenceGroup(String name) throws UPAException;
 
-    public PersistenceGroup getPersistenceGroup(String name) throws UPAException;
+    PersistenceGroup getPersistenceGroup(String name) throws UPAException;
 
-    public boolean containsPersistenceGroup(String name) throws UPAException;
+    boolean containsPersistenceGroup(String name) throws UPAException;
 
-    public PersistenceGroup addPersistenceGroup(String name) throws UPAException;
+    PersistenceGroup addPersistenceGroup(String name) throws UPAException;
 
-    public void removePersistenceGroup(String name) throws UPAException;
+    void removePersistenceGroup(String name) throws UPAException;
 
-    public void addPersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
+    void addPersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
 
-    public PersistenceGroupDefinitionListener[] getPersistenceGroupDefinitionListeners();
+    PersistenceGroupDefinitionListener[] getPersistenceGroupDefinitionListeners();
 
-    public void removePersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
+    void removePersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
 
-    public <T> T makeSessionAware(T instance) throws UPAException;
+    <T> T makeSessionAware(T instance) throws UPAException;
 
-    public <T> T makeSessionAware(T instance, Class<Annotation> sessionAwareMethodAnnotation) throws UPAException;
+    <T> T makeSessionAware(T instance, Class<Annotation> sessionAwareMethodAnnotation) throws UPAException;
 
-    public <T> T makeSessionAware(T instance, MethodFilter methodFilter) throws UPAException;
+    <T> T makeSessionAware(T instance, MethodFilter methodFilter) throws UPAException;
 
-    public <T> T makeSessionAware(Class<T> type, MethodFilter methodFilter) throws UPAException;
+    <T> T makeSessionAware(Class<T> type, MethodFilter methodFilter) throws UPAException;
 
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
 
-    public <T> T invoke(Action<T> action) throws UPAException;
+    <T> T invoke(Action<T> action) throws UPAException;
 
-    public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
 
-    public <T> T invokePrivileged(Action<T> action) throws UPAException;
+    <T> T invokePrivileged(Action<T> action) throws UPAException;
 
-    public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
 
-    public void invoke(VoidAction action) throws UPAException;
+    void invoke(VoidAction action) throws UPAException;
 
-    public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
 
-    public void invokePrivileged(VoidAction action) throws UPAException;
+    void invokePrivileged(VoidAction action) throws UPAException;
 
     /**
      * closes context and removed all persistence groups
      *
      * @throws UPAException
      */
-    public void close() throws UPAException;
+    void close() throws UPAException;
 
-    public void addCloseListener(CloseListener listener);
+    void addCloseListener(CloseListener listener);
 
-    public void removeCloseListener(CloseListener listener);
+    void removeCloseListener(CloseListener listener);
 
-    public CloseListener[] getCloseListeners();
+    CloseListener[] getCloseListeners();
 
 
-    public void addScanFilter(ScanFilter filter);
+    void addScanFilter(ScanFilter filter);
 
-    public void removeScanFilter(ScanFilter filter);
+    void removeScanFilter(ScanFilter filter);
 
-    public ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getContextAnnotationStrategyFilters();
 
-    public Map<String, Object> getProperties();
+    Map<String, Object> getProperties();
 
-    public void setProperties(Map<String, Object> properties);
+    void setProperties(Map<String, Object> properties);
 
-    public Callback createCallback(CallbackConfig callbackConfig);
+    Callback createCallback(CallbackConfig callbackConfig);
 
-    public Callback addCallback(CallbackConfig callbackConfig);
+    Callback addCallback(CallbackConfig callbackConfig);
 
-    public void addCallback(Callback callback);
+    void addCallback(Callback callback);
 
-    public void removeCallback(Callback callback);
+    void removeCallback(Callback callback);
 
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
 
-    public Properties getThreadProperties();
+    Properties getThreadProperties();
 }

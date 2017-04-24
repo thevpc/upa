@@ -6,7 +6,7 @@ package net.vpc.upa;
  */
 public interface CompoundDataType {
 
-    public FieldDescriptor[] getComposingFields(FieldDescriptor fieldDescriptor);
+    FieldDescriptor[] getComposingFields(FieldDescriptor fieldDescriptor);
 
     /**
      * flatten an object value to resolve every primitive field value
@@ -14,7 +14,7 @@ public interface CompoundDataType {
      * @param object to flatten
      * @return array of primitive value (in the same order of the fields definition)
      */
-    public Object[] getPrimitiveValues(Object object);
+    Object[] getPrimitiveValues(Object object);
 
     /**
      * composed single value equivalent to the given array
@@ -22,5 +22,5 @@ public interface CompoundDataType {
      * @param values flattened values to compose
      * @return composed single value equivalent to the given array
      */
-    public Object getCompoundValue(Object[] values);
+    Object getCompoundValue(Object[] values);
 }

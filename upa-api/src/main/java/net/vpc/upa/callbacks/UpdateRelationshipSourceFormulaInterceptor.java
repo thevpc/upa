@@ -40,11 +40,11 @@ import net.vpc.upa.filters.FieldFilter;
 
 public interface UpdateRelationshipSourceFormulaInterceptor extends EntityInterceptor {
 
-    public String getRelationshipName() throws UPAException;
+    String getRelationshipName() throws UPAException;
 
-    public FieldFilter getFormulaFields() throws UPAException;
+    FieldFilter getFormulaFields() throws UPAException;
 
-    public FieldFilter getConditionFields() throws UPAException;
+    FieldFilter getConditionFields() throws UPAException;
 
-    public Expression translateExpression(Expression e) throws UPAException;
+    Expression translateExpression(Expression e) throws UPAException;
 }

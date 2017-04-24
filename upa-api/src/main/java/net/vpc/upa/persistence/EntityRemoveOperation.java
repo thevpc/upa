@@ -47,7 +47,7 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface EntityRemoveOperation {
 
-    public int delete(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException;
+    int delete(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException;
 
-    public Query createQuery(Entity e, Delete query, EntityExecutionContext context) throws UPAException;
+    Query createQuery(Entity e, Delete query, EntityExecutionContext context) throws UPAException;
 }

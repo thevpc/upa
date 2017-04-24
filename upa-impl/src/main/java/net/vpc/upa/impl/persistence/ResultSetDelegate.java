@@ -8,9 +8,6 @@
 //import java.sql.SQLException;
 //import java.sql.Statement;
 //
-//// Referenced classes of package net.vpc.lib.pheromone.ariana.database.jdbc:
-////            ResultSetHandler, NativeExecutionContext, QueryExecutor, StatementDelegate,
-////            DatabaseAdapter
 //
 //public class ResultSetDelegate extends ResultSetHandler {
 //

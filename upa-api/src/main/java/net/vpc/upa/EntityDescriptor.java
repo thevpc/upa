@@ -67,11 +67,11 @@ public interface EntityDescriptor extends Serializable {
 
     Object getSource();
 
-    public List<FieldDescriptor> getFieldDescriptors();
+    List<FieldDescriptor> getFieldDescriptors();
 
-    public List<IndexDescriptor> getIndexDescriptors();
+    List<IndexDescriptor> getIndexDescriptors();
 
-    public List<RelationshipDescriptor> getRelationshipDescriptors();
+    List<RelationshipDescriptor> getRelationshipDescriptors();
 
-    public Map<String, Object> getProperties();
+    Map<String, Object> getProperties();
 }

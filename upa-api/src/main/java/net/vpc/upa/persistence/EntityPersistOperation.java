@@ -46,7 +46,7 @@ import net.vpc.upa.expressions.Insert;
  */
 public interface EntityPersistOperation {
 
-    public void insert(Entity entity, Document originalDocument, Document persistentDocument, EntityExecutionContext context) throws UPAException;
+    void insert(Entity entity, Document originalDocument, Document persistentDocument, EntityExecutionContext context) throws UPAException;
 
-    public Query createQuery(Entity e, Insert query, EntityExecutionContext context) throws UPAException;
+    Query createQuery(Entity e, Insert query, EntityExecutionContext context) throws UPAException;
 }

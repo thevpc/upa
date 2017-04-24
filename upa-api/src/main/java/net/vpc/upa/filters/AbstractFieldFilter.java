@@ -43,9 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database:
-//            Field
-
 public abstract class AbstractFieldFilter implements RichFieldFilter {
     public abstract boolean acceptDynamic() throws UPAException;
 

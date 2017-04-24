@@ -42,15 +42,15 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface QLEvaluatorRegistry {
 
-    public void registerTypeEvaluator(Class type, QLTypeEvaluator t);
+    void registerTypeEvaluator(Class type, QLTypeEvaluator t);
 
-    public void registerFunctionEvaluator(String name, QLTypeEvaluator t) ;
+    void registerFunctionEvaluator(String name, QLTypeEvaluator t) ;
 
-    public void registerFunctionEvaluator(String name, net.vpc.upa.Function t) ;
+    void registerFunctionEvaluator(String name, net.vpc.upa.Function t) ;
 
-    public void unregisterFunctionEvaluator(String name) ;
+    void unregisterFunctionEvaluator(String name) ;
 
-    public void unregisterTypeEvaluator(Class type);
+    void unregisterTypeEvaluator(Class type);
 
-    public QLTypeEvaluator getTypeEvaluator(Class type);
+    QLTypeEvaluator getTypeEvaluator(Class type);
 }

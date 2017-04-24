@@ -45,27 +45,27 @@ import java.util.Set;
  */
 public interface Query extends Closeable {
 
-    public Date getDate() throws UPAException;
+    Date getDate() throws UPAException;
 
-    public Boolean getBoolean() throws UPAException;
+    Boolean getBoolean() throws UPAException;
 
-    public Integer getInteger() throws UPAException;
+    Integer getInteger() throws UPAException;
 
-    public Long getLong() throws UPAException;
+    Long getLong() throws UPAException;
 
-    public Double getDouble() throws UPAException;
+    Double getDouble() throws UPAException;
 
-    public String getString() throws UPAException;
+    String getString() throws UPAException;
 
-    public Number getNumber() throws UPAException;
+    Number getNumber() throws UPAException;
 
-    public Object getSingleValue() throws UPAException;
+    Object getSingleValue() throws UPAException;
 
-    public Object getSingleValue(Object defaultValue) throws UPAException;
+    Object getSingleValue(Object defaultValue) throws UPAException;
 
-    public MultiDocument getMultiDocument() throws UPAException;
+    MultiDocument getMultiDocument() throws UPAException;
 
-    public Document getDocument() throws UPAException;
+    Document getDocument() throws UPAException;
 
     @Deprecated
     <R> List<R> getEntityList() throws UPAException;
@@ -87,7 +87,7 @@ public interface Query extends Closeable {
      * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
      * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
      */
-    public <R> R getSingleResultOrNull() throws UPAException;
+    <R> R getSingleResultOrNull() throws UPAException;
 
     /**
      * Executes a Select query and returns a single result if found.
@@ -96,7 +96,7 @@ public interface Query extends Closeable {
      * @param <R> Result Type
      * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
      */
-    public <R> R getFirstResultOrNull() throws UPAException;
+    <R> R getFirstResultOrNull() throws UPAException;
 
     @Deprecated
     <R> R getEntity() throws UPAException;
@@ -111,27 +111,27 @@ public interface Query extends Closeable {
 
     Set<Key> getKeySet() throws UPAException;
 
-    public List<MultiDocument> getMultiDocumentList() throws UPAException;
+    List<MultiDocument> getMultiDocumentList() throws UPAException;
 
-    public <T> List<T> getResultList() ;
+    <T> List<T> getResultList() ;
 
-    public <T> Set<T> getResultSet() ;
+    <T> Set<T> getResultSet() ;
 
-    public List<Document> getDocumentList() throws UPAException;
+    List<Document> getDocumentList() throws UPAException;
 
-    public <T> List<T> getValueList(int index) throws UPAException;
+    <T> List<T> getValueList(int index) throws UPAException;
 
-    public <T> Set<T> getValueSet(int index) throws UPAException;
+    <T> Set<T> getValueSet(int index) throws UPAException;
 
-    public <T> Set<T> getValueSet(String name) throws UPAException ;
+    <T> Set<T> getValueSet(String name) throws UPAException ;
 
-    public <T> List<T> getValueList(String name) throws UPAException;
+    <T> List<T> getValueList(String name) throws UPAException;
 
-    public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
+    <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
 
-    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException ;
+    <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException ;
 
-    public ResultMetaData getMetaData() throws UPAException;
+    ResultMetaData getMetaData() throws UPAException;
 
     Query setParameter(String name, Object value);
 
@@ -145,31 +145,31 @@ public interface Query extends Closeable {
 
     Query setParameter(int index, Object value,boolean condition);
 
-    public Query removeParameter(String name) ;
+    Query removeParameter(String name) ;
 
-    public Query removeParameter(int index) ;
+    Query removeParameter(int index) ;
 
-    public void setUpdatable(boolean forUpdate);
+    void setUpdatable(boolean forUpdate);
 
-    public boolean isLazyListLoadingEnabled();
+    boolean isLazyListLoadingEnabled();
 
-    public Query setLazyListLoadingEnabled(boolean lazyLoadingEnabled);
+    Query setLazyListLoadingEnabled(boolean lazyLoadingEnabled);
 
-    public Query setHint(String key, Object value);
+    Query setHint(String key, Object value);
 
-    public Query setHints(Map<String, Object> hints);
+    Query setHints(Map<String, Object> hints);
 
-    public Map<String, Object> getHints();
+    Map<String, Object> getHints();
 
-    public Object getHint(String hintName) ;
+    Object getHint(String hintName) ;
 
-    public Object getHint(String hintName,Object defaultValue) ;
+    Object getHint(String hintName,Object defaultValue) ;
 
 
-    public boolean isUpdatable();
+    boolean isUpdatable();
 
-    public void updateCurrent();
+    void updateCurrent();
 
-    public int executeNonQuery();
+    int executeNonQuery();
 
 }

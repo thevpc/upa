@@ -45,10 +45,10 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface QLExpressionParser {
 
-    public Expression parse(String text) throws UPAException;
+    Expression parse(String text) throws UPAException;
 
-    public Expression parse(Reader text) throws UPAException;
+    Expression parse(Reader text) throws UPAException;
 
-    public Expression parse(InputStream inputStream) throws UPAException;
+    Expression parse(InputStream inputStream) throws UPAException;
 
 }

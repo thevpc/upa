@@ -13,43 +13,43 @@ import java.util.Map;
  */
 public interface Decoration extends DecorationValue {
 
-    public String getLocation();
+    String getLocation();
 
-    public DecorationSourceType getDecorationSourceType();
+    DecorationSourceType getDecorationSourceType();
 
-    public DecorationTarget getTarget();
+    DecorationTarget getTarget();
 
-    public String getLocationType();
+    String getLocationType();
 
-    public String getName();
+    String getName();
 
-    public boolean isName(String name);
+    boolean isName(String name);
 
-    public boolean isName(Class type);
+    boolean isName(Class type);
 
-    public int getPosition();
+    int getPosition();
 
-    public String getString(String name);
+    String getString(String name);
 
-    public boolean getBoolean(String name);
+    boolean getBoolean(String name);
 
-    public int getInt(String name);
+    int getInt(String name);
 
-    public <T> T getEnum(String name, Class<T> type);
+    <T> T getEnum(String name, Class<T> type);
 
-    public DecorationValue get(String name);
+    DecorationValue get(String name);
 
-    public Class getType(String name);
+    Class getType(String name);
 
-    public Decoration getDecoration(String name);
+    Decoration getDecoration(String name);
 
-    public <T> T[] getPrimitiveArray(String name, Class<T> type);
+    <T> T[] getPrimitiveArray(String name, Class<T> type);
 
-    public DecorationValue[] getArray(String name);
+    DecorationValue[] getArray(String name);
 
-    public Map<String, DecorationValue> getAttributes();
+    Map<String, DecorationValue> getAttributes();
 
-    public Decoration castName(String type);
+    Decoration castName(String type);
 
-    public Decoration castName(Class type);
+    Decoration castName(Class type);
 }

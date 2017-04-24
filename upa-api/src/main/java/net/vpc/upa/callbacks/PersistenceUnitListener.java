@@ -36,32 +36,32 @@ package net.vpc.upa.callbacks;
 
 public interface PersistenceUnitListener {
 
-    public void onPreModelChanged(PersistenceUnitEvent event);
+    void onPreModelChanged(PersistenceUnitEvent event);
 
-    public void onModelChanged(PersistenceUnitEvent event);
+    void onModelChanged(PersistenceUnitEvent event);
 
-    public void onPreStorageChanged(PersistenceUnitEvent event);
+    void onPreStorageChanged(PersistenceUnitEvent event);
 
-    public void onStorageChanged(PersistenceUnitEvent event);
+    void onStorageChanged(PersistenceUnitEvent event);
 
-    public void onPreStart(PersistenceUnitEvent event);
+    void onPreStart(PersistenceUnitEvent event);
 
-    public void onStart(PersistenceUnitEvent event);
+    void onStart(PersistenceUnitEvent event);
 
-    public void onPreClear(PersistenceUnitEvent event);
+    void onPreClear(PersistenceUnitEvent event);
 
-    public void onClear(PersistenceUnitEvent event);
+    void onClear(PersistenceUnitEvent event);
 
-    public void onPreReset(PersistenceUnitEvent event);
+    void onPreReset(PersistenceUnitEvent event);
 
-    public void onReset(PersistenceUnitEvent event);
+    void onReset(PersistenceUnitEvent event);
 
-    public void onPreClose(PersistenceUnitEvent event);
+    void onPreClose(PersistenceUnitEvent event);
 
-    public void onClose(PersistenceUnitEvent event);
+    void onClose(PersistenceUnitEvent event);
     
-    public void onPreUpdateFormulas(PersistenceUnitEvent event);
+    void onPreUpdateFormulas(PersistenceUnitEvent event);
 
-    public void onUpdateFormulas(PersistenceUnitEvent event);
+    void onUpdateFormulas(PersistenceUnitEvent event);
 
 }

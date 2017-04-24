@@ -37,8 +37,6 @@ package net.vpc.upa.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            StatementExpression, Select, SQLContext
 public class InsertSelection extends DefaultEntityStatement
         implements NonQueryStatement, Cloneable {
 

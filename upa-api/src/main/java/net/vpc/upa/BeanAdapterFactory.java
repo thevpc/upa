@@ -40,7 +40,7 @@ package net.vpc.upa;
  */
 public interface BeanAdapterFactory {
 
-    public BeanAdapter createBeanAdapter(Object instance);
+    BeanAdapter createBeanAdapter(Object instance);
 
-    public BeanAdapter createBeanAdapter(Class type);
+    BeanAdapter createBeanAdapter(Class type);
 }

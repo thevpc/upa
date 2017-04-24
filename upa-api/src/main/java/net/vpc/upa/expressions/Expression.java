@@ -38,28 +38,28 @@ import java.util.List;
 
 public interface Expression extends Cloneable, java.io.Serializable {
 
-    public boolean isValid();
+    boolean isValid();
 
-    public Expression copy();
+    Expression copy();
 
-    public List<TaggedExpression> getChildren();
+    List<TaggedExpression> getChildren();
 
-    public void setChild(Expression e, ExpressionTag tag);
+    void setChild(Expression e, ExpressionTag tag);
 
-    public Expression findOne(ExpressionFilter filter);
+    Expression findOne(ExpressionFilter filter);
 
     /**
      * pre-order DFS traversal of expression
      * @param filter
      */
-    public void visit(ExpressionVisitor filter);
+    void visit(ExpressionVisitor filter);
 
     /**
      * post-order DFS traversal and transformation of expression
      * @param transformer transformer
      * @return result
      */
-    public ExpressionTransformerResult transform(ExpressionTransformer transformer);
+    ExpressionTransformerResult transform(ExpressionTransformer transformer);
 
-    public List<Expression> findAll(ExpressionFilter filter);
+    List<Expression> findAll(ExpressionFilter filter);
 }

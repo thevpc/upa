@@ -40,5 +40,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface QLParameterProcessor {
-    public void processSQLParameters(List<QLParameter> parameter, Map<String, Expression> output, String message);
+    void processSQLParameters(List<QLParameter> parameter, Map<String, Expression> output, String message);
 }

@@ -51,14 +51,14 @@ public interface Key extends Serializable {
      *
      * @param value new values
      */
-    public void setValue(Object[] value);
+    void setValue(Object[] value);
 
     /**
      * an array of key values. The returned array cannot be null and cannot contain null values
      *
      * @return an array of key values
      */
-    public Object[] getValue();
+    Object[] getValue();
 
     /**
      * Key as single value
@@ -66,7 +66,7 @@ public interface Key extends Serializable {
      * @return single instance as Object
      * @throws RuntimeException if multi-dimensional key
      */
-    public Object getObject();
+    Object getObject();
 
     /**
      * Key as single String value
@@ -74,7 +74,7 @@ public interface Key extends Serializable {
      * @return single instance as String
      * @throws RuntimeException if multi-dimensional key
      */
-    public String getString();
+    String getString();
 
     /**
      * Key as single int value
@@ -82,7 +82,7 @@ public interface Key extends Serializable {
      * @return single instance as int
      * @throws RuntimeException if multi-dimensional key
      */
-    public int getInt();
+    int getInt();
 
     /**
      * Key as single long value
@@ -90,7 +90,7 @@ public interface Key extends Serializable {
      * @return single instance as long
      * @throws RuntimeException if multi-dimensional key
      */
-    public long getLong();
+    long getLong();
 
     /**
      * Key as single date value
@@ -98,7 +98,7 @@ public interface Key extends Serializable {
      * @return single instance as date
      * @throws RuntimeException if multi-dimensional key
      */
-    public Date getDate();
+    Date getDate();
 
     /**
      * Key portion at <code>index</code> position as string value
@@ -107,7 +107,7 @@ public interface Key extends Serializable {
      * @return Key portion at <code>index</code> position as string value
      * @throws RuntimeException if invalid <code>index</code>
      */
-    public String getStringAt(int index);
+    String getStringAt(int index);
 
     /**
      * Key portion at <code>index</code> position as Object value
@@ -116,7 +116,7 @@ public interface Key extends Serializable {
      * @return Key portion at <code>index</code> position as Object value
      * @throws RuntimeException if invalid <code>index</code>
      */
-    public Object getObjectAt(int index);
+    Object getObjectAt(int index);
 
     /**
      * Key portion at <code>index</code> position as int value
@@ -125,7 +125,7 @@ public interface Key extends Serializable {
      * @return Key portion at <code>index</code> position as int value
      * @throws RuntimeException if invalid <code>index</code>
      */
-    public int getIntAt(int index);
+    int getIntAt(int index);
 
     /**
      * Key portion at <code>index</code> position as long value
@@ -134,7 +134,7 @@ public interface Key extends Serializable {
      * @return Key portion at <code>index</code> position as long value
      * @throws RuntimeException if invalid <code>index</code>
      */
-    public long getLongAt(int index);
+    long getLongAt(int index);
 
     /**
      * Key portion at <code>index</code> position as date value
@@ -143,5 +143,5 @@ public interface Key extends Serializable {
      * @return Key portion at <code>index</code> position as date value
      * @throws RuntimeException if invalid <code>index</code>
      */
-    public Date getDateAt(int index);
+    Date getDateAt(int index);
 }

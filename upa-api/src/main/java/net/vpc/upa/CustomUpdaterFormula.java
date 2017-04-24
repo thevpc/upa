@@ -53,5 +53,5 @@ public interface CustomUpdaterFormula extends Formula {
      * @param expression entities (rows) filter
      * @param executionContext executionContext
      */
-    public abstract void updateFormula(Set<Field> fields, Expression expression, EntityExecutionContext executionContext);
+    abstract void updateFormula(Set<Field> fields, Expression expression, EntityExecutionContext executionContext);
 }

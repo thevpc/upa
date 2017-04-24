@@ -34,8 +34,6 @@
  */
 package net.vpc.upa.types;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.util:
-//            DataType, ConstraintsException
 public class ShortType extends NumberType implements Cloneable {
 
     public static final ShortType DEFAULT = new ShortType("DEFAULT", null, null, true, false);

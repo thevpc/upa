@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.impl.uql.DecObjectType;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            StatementExpression, And, Expression, Litteral,
-//            Equals, Var, SQLContext
 public class CompiledDelete extends DefaultCompiledEntityStatement
         implements Cloneable, CompiledUpdateStatement {
 

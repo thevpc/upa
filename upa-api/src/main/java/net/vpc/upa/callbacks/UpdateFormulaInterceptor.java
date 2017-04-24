@@ -40,7 +40,7 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 
 public interface UpdateFormulaInterceptor extends EntityInterceptor {
-    public FieldFilter getFormulaFields() throws UPAException;
+    FieldFilter getFormulaFields() throws UPAException;
 
-    public Expression translateExpression(Expression e) throws UPAException;
+    Expression translateExpression(Expression e) throws UPAException;
 }

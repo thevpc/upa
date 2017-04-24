@@ -40,35 +40,35 @@ package net.vpc.upa.persistence;
  */
 public interface EntityOperationManager {
 
-//    public void init(Entity entity, PersistenceStore persistenceStore);
+//    void init(Entity entity, PersistenceStore persistenceStore);
 
-    public EntityRemoveOperation getRemoveOperation();
+    EntityRemoveOperation getRemoveOperation();
 
-    public void setRemoveOperation(EntityRemoveOperation operation);
+    void setRemoveOperation(EntityRemoveOperation operation);
 
-    public EntityUpdateOperation getUpdateOperation();
+    EntityUpdateOperation getUpdateOperation();
 
-    public void setUpdateOperation(EntityUpdateOperation operation);
+    void setUpdateOperation(EntityUpdateOperation operation);
 
-    public EntityPersistOperation getPersistOperation();
+    EntityPersistOperation getPersistOperation();
 
-    public void setPersistOperation(EntityPersistOperation operation);
+    void setPersistOperation(EntityPersistOperation operation);
 
-    public EntityFindOperation getFindOperation();
+    EntityFindOperation getFindOperation();
 
-    public void setFindOperation(EntityFindOperation operation);
+    void setFindOperation(EntityFindOperation operation);
 
-    public EntityResetOperation getResetOperation();
+    EntityResetOperation getResetOperation();
 
-    public void setResetOperation(EntityResetOperation operation);
+    void setResetOperation(EntityResetOperation operation);
 
-    public EntityClearOperation getClearOperation();
+    EntityClearOperation getClearOperation();
 
-    public void setClearOperation(EntityClearOperation operation);
+    void setClearOperation(EntityClearOperation operation);
 
-    public EntityInitializeOperation getInitializeOperation();
+    EntityInitializeOperation getInitializeOperation();
 
-    public void setInitOperation(EntityInitializeOperation operation);
+    void setInitOperation(EntityInitializeOperation operation);
 
-    public PersistenceStore getPersistenceStore();
+    PersistenceStore getPersistenceStore();
 }

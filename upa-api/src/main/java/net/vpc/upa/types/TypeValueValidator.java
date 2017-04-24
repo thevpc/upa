@@ -37,5 +37,5 @@ package net.vpc.upa.types;
 import java.io.Serializable;
 
 public interface TypeValueValidator extends Serializable {
-    public void validateValue(Object value, String name, String description, DataType type) throws ConstraintsException;
+    void validateValue(Object value, String name, String description, DataType type) throws ConstraintsException;
 }

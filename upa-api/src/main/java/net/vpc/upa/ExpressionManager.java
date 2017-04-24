@@ -49,13 +49,13 @@ import java.util.Set;
  */
 public interface ExpressionManager {
 
-    public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) ;
+    ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) ;
 
-    public FunctionExpression createFunctionExpression(String name,Expression[] args);
+    FunctionExpression createFunctionExpression(String name,Expression[] args);
 
-    public QLEvaluator createEvaluator() ;
+    QLEvaluator createEvaluator() ;
 
-    public Expression parseExpression(String expression);
+    Expression parseExpression(String expression);
 
     /**
      * simplifies expression by evaluating all map vars in the expression.
@@ -66,30 +66,30 @@ public interface ExpressionManager {
      * @param vars map of available vars
      * @return simplified expression
      */
-    public Expression simplifyExpression(Expression expression, Map<String, Object> vars);
+    Expression simplifyExpression(Expression expression, Map<String, Object> vars);
 
-    public Expression simplifyExpression(String expression, Map<String, Object> vars);
+    Expression simplifyExpression(String expression, Map<String, Object> vars);
 
     /**
      * parse all UserExpressions withing this expression
      * @param expression any expression
      * @return expression where all UserExpressions are parsed
      */
-    public Expression parseExpression(Expression expression);
+    Expression parseExpression(Expression expression);
 
-    public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
+    CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config);
 
-    public CompiledExpression compileExpression(CompiledExpression expression, ExpressionCompilerConfig config);
+    CompiledExpression compileExpression(CompiledExpression expression, ExpressionCompilerConfig config);
 
-    public FunctionDefinition addFunction(String name, DataType type, Function function);
+    FunctionDefinition addFunction(String name, DataType type, Function function);
 
-    public void removeFunction(String name);
+    void removeFunction(String name);
 
-    public List<FunctionDefinition> getFunctions();
+    List<FunctionDefinition> getFunctions();
 
-    public Set<String> getFunctionNames();
+    Set<String> getFunctionNames();
 
-    public boolean containsFunction(String name);
+    boolean containsFunction(String name);
 
-    public FunctionDefinition getFunction(String name);
+    FunctionDefinition getFunction(String name);
 }

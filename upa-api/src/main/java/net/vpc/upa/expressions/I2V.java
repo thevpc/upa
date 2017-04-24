@@ -34,8 +34,6 @@
  */
 package net.vpc.upa.expressions;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 public class I2V extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;

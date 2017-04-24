@@ -34,8 +34,6 @@
  */
 package net.vpc.upa.expressions;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            BinaryExpression, Expression
 public final class Like extends BinaryOperatorExpression
         implements Cloneable {
 

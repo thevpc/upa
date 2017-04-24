@@ -10,5 +10,5 @@ package net.vpc.upa.expressions;
  * @author taha.bensalah@gmail.com
  */
 public interface ExpressionFilter {
-    public boolean accept(Expression expression);
+    boolean accept(Expression expression);
 }

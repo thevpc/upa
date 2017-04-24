@@ -35,31 +35,31 @@ import java.util.List;
 
 public interface Package extends PersistenceUnitPart {
 
-    public String getPath();
+    String getPath();
 
-    public void addPart(PersistenceUnitPart child);
+    void addPart(PersistenceUnitPart child);
 
-    public void addPart(PersistenceUnitPart child, int index);
+    void addPart(PersistenceUnitPart child, int index);
 
-    public void removePartAt(int index);
+    void removePartAt(int index);
 
-    public void movePart(String itemName, int newIndex);
+    void movePart(String itemName, int newIndex);
 
-    public void movePart(int index, int newIndex);
+    void movePart(int index, int newIndex);
 
-    public int getPartsCount();
+    int getPartsCount();
 
-    public List<PersistenceUnitPart> getParts();
+    List<PersistenceUnitPart> getParts();
 
-    public List<Entity> getEntities();
+    List<Entity> getEntities();
 
-    public List<Entity> getEntities(boolean includeSubPackages);
+    List<Entity> getEntities(boolean includeSubPackages);
 
-    public List<Package> getPackages();
+    List<Package> getPackages();
 
-    public Package getPart(String name);
+    Package getPart(String name);
 
-    public int indexOfPart(PersistenceUnitPart child);
+    int indexOfPart(PersistenceUnitPart child);
 
-    public int indexOfPart(String childName);
+    int indexOfPart(String childName);
 }

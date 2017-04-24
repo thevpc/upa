@@ -41,5 +41,5 @@ import net.vpc.upa.expressions.QueryStatement;
  * @creationdate 8/28/12 8:28 PM
  */
 public interface ViewEntityExtension extends EntityExtension {
-    public QueryStatement getQuery();
+    QueryStatement getQuery();
 }

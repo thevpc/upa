@@ -71,9 +71,9 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface PersistenceNameStrategy {
 
-    public void init(PersistenceStore persistenceStore, PersistenceNameConfig model);
+    void init(PersistenceStore persistenceStore, PersistenceNameConfig model);
 
-    public void close();
+    void close();
 
     /**
      * @param source may be as String or an UPAObject
@@ -82,5 +82,5 @@ public interface PersistenceNameStrategy {
      * @return a valid SQL Identifier
      * @throws UPAException
      */
-    public String getPersistenceName(Object source, PersistenceNameType spec) throws UPAException;
+    String getPersistenceName(Object source, PersistenceNameType spec) throws UPAException;
 }

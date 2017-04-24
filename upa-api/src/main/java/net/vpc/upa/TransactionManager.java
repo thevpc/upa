@@ -44,5 +44,5 @@ import net.vpc.upa.persistence.UConnection;
  */
 public interface TransactionManager {
 
-    public Transaction createTransaction(UConnection connection, PersistenceUnit persistenceUnit, PersistenceStore persistenceStore) throws UPAException;
+    Transaction createTransaction(UConnection connection, PersistenceUnit persistenceUnit, PersistenceStore persistenceStore) throws UPAException;
 }

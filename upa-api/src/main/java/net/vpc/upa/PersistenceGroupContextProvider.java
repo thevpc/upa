@@ -39,7 +39,7 @@ package net.vpc.upa;
  * @creationdate 9/11/12 11:57 PM
  */
 public interface PersistenceGroupContextProvider {
-    public PersistenceGroup getPersistenceGroup();
+    PersistenceGroup getPersistenceGroup();
 
-    public void setPersistenceGroup(PersistenceGroup current);
+    void setPersistenceGroup(PersistenceGroup current);
 }

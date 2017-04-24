@@ -66,9 +66,9 @@ public interface PersistenceUnit extends Closeable {
      *
      * @return true if auto scan is enabled
      */
-    public boolean isAutoScan();
+    boolean isAutoScan();
 
-    public void setAutoScan(boolean autoScan);
+    void setAutoScan(boolean autoScan);
 
     Session openSession() ;
 
@@ -102,11 +102,11 @@ public interface PersistenceUnit extends Closeable {
      * @param missingStrategy
      * @return
      */
-    public Package getPackage(String path, MissingStrategy missingStrategy);
+    Package getPackage(String path, MissingStrategy missingStrategy);
 
-    public Package getPackage(String path);
+    Package getPackage(String path);
 
-    public Package getDefaulPackage();
+    Package getDefaulPackage();
 
     //    DatabaseResources getResources();
     boolean isReadOnly() ;

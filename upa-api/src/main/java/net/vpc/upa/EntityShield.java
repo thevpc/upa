@@ -45,64 +45,64 @@ import java.util.List;
  */
 public interface EntityShield {
 
-    public void init(Entity entity) throws UPAException;
+    void init(Entity entity) throws UPAException;
 
-    public boolean isUpdateFormulaSupported() throws UPAException;
+    boolean isUpdateFormulaSupported() throws UPAException;
 
-    public boolean isUpdateFormulaOnPersistSupported() throws UPAException;
+    boolean isUpdateFormulaOnPersistSupported() throws UPAException;
 
-    public boolean isUpdateFormulaOnUpdateSupported() throws UPAException;
+    boolean isUpdateFormulaOnUpdateSupported() throws UPAException;
 
-    public boolean isLockingSupported() throws UPAException;
+    boolean isLockingSupported() throws UPAException;
 
-    public boolean isPersistSupported() throws UPAException;
+    boolean isPersistSupported() throws UPAException;
 
-    public boolean isUpdateSupported() throws UPAException;
+    boolean isUpdateSupported() throws UPAException;
 
-    public boolean isDeleteSupported() throws UPAException;
+    boolean isDeleteSupported() throws UPAException;
 
-    public boolean isCloneSupported() throws UPAException;
+    boolean isCloneSupported() throws UPAException;
 
-    public boolean isRenameSupported() throws UPAException;
+    boolean isRenameSupported() throws UPAException;
 
-    //    public boolean isPrintSupported();
-    public boolean isKeyEditionSupported() throws UPAException;
+    //    boolean isPrintSupported();
+    boolean isKeyEditionSupported() throws UPAException;
 
-    public boolean isNavigateSupported() throws UPAException;
+    boolean isNavigateSupported() throws UPAException;
 
-    public boolean isGeneratedId() throws UPAException;
+    boolean isGeneratedId() throws UPAException;
 
-    public Expression getFullNonDeletableDocumentsExpression() throws UPAException;
+    Expression getFullNonDeletableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonRenamableDocumentsExpression() throws UPAException;
+    Expression getFullNonRenamableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonCloneableDocumentsExpression() throws UPAException;
+    Expression getFullNonCloneableDocumentsExpression() throws UPAException;
 
-    public Expression getFullNonUpdatableDocumentsExpression() throws UPAException;
+    Expression getFullNonUpdatableDocumentsExpression() throws UPAException;
 
-    public Expression getNonDeletableDocumentsExpression() throws UPAException;
+    Expression getNonDeletableDocumentsExpression() throws UPAException;
 
-    public void setNonDeletableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonDeletableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonUpdatableDocumentsExpression() throws UPAException;
+    Expression getNonUpdatableDocumentsExpression() throws UPAException;
 
-    public void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonRenamableDocumentsExpression() throws UPAException;
+    Expression getNonRenamableDocumentsExpression() throws UPAException;
 
-    public void setNonRenamableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonRenamableDocumentsExpression(Expression expression) throws UPAException;
 
-    public Expression getNonCloneableDocumentsExpression() throws UPAException;
+    Expression getNonCloneableDocumentsExpression() throws UPAException;
 
-    public void setNonCloneableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonCloneableDocumentsExpression(Expression expression) throws UPAException;
 
-    public void checkInitialize() throws UPAException;
+    void checkInitialize() throws UPAException;
 
-    public void checkClear() throws UPAException;
+    void checkClear() throws UPAException;
 
-    public void checkPersist(Document document) throws UPAException;
+    void checkPersist(Document document) throws UPAException;
 
-    public void checkUpdate(Document updates, Expression condition) throws UPAException;
+    void checkUpdate(Document updates, Expression condition) throws UPAException;
 
     /**
      * @param oldId
@@ -112,7 +112,7 @@ public interface EntityShield {
      * CloneDocumentNotAllowedException, CloneDocumentOldKeyNotFoundException,
      * CloneDocumentNewKeyInUseException
      */
-    public void checkClone(Object oldId, Object newId) throws UPAException;
+    void checkClone(Object oldId, Object newId) throws UPAException;
 
     /**
      * Check for the faisabilty of the rename operation. When oldId is null, the
@@ -126,68 +126,68 @@ public interface EntityShield {
      * RenameDocumentNotAllowedException, UnrenamableDocumentException,
      * RenameDocumentOldKeyNotFoundException, RenameDocumentNewKeyInUseException
      */
-    public void checkRename(Object oldId, Object newId) throws UPAException;
+    void checkRename(Object oldId, Object newId) throws UPAException;
 
-    public void checkLoad() throws UPAException;
+    void checkLoad() throws UPAException;
 
-    public void checkNavigate() throws UPAException;
+    void checkNavigate() throws UPAException;
 
-    public void checkRemove(Expression condition, boolean recurse) throws UPAException;
+    void checkRemove(Expression condition, boolean recurse) throws UPAException;
 
-    // public boolean isDeletableDocument(Key instanceID) {
+    // boolean isDeletableDocument(Key instanceID) {
     // return true;
     // }
     //
-    // public boolean isUpdatableDocument(Key instanceID) {
+    // boolean isUpdatableDocument(Key instanceID) {
     // return true;
     // }
-    public boolean isDeletableDocument(Object k, boolean recurse) throws UPAException;
+    boolean isDeletableDocument(Object k, boolean recurse) throws UPAException;
 
-    public boolean isUpdatableDocument(Object k) throws UPAException;
+    boolean isUpdatableDocument(Object k) throws UPAException;
 
-    public boolean isPersistEnabled() throws UPAException;
+    boolean isPersistEnabled() throws UPAException;
 
-    public boolean isUpdateEnabled() throws UPAException;
+    boolean isUpdateEnabled() throws UPAException;
 
-    public boolean isDeleteEnabled() throws UPAException;
+    boolean isDeleteEnabled() throws UPAException;
 
-    public boolean isRenameEnabled() throws UPAException;
+    boolean isRenameEnabled() throws UPAException;
 
-    public boolean isCloneEnabled() throws UPAException;
+    boolean isCloneEnabled() throws UPAException;
 
-    public boolean isClearSupported() throws UPAException;
+    boolean isClearSupported() throws UPAException;
 
-    public boolean isSystem() throws UPAException;
+    boolean isSystem() throws UPAException;
 
-    public boolean isPrivate() throws UPAException;
+    boolean isPrivate() throws UPAException;
 
-    public boolean isTransient() throws UPAException;
+    boolean isTransient() throws UPAException;
 
-//    public boolean isFieldEditable(Field field, K instanceID) throws UPAException;
+//    boolean isFieldEditable(Field field, K instanceID) throws UPAException;
 //
-//    public boolean isFieldVisible(Field field, K instanceID) throws UPAException;
-//    public boolean isAllowed(EntitySecurityAction a) throws UPAException;
-//    public boolean isAllowed(Field field, FieldSecurityAction a) throws UPAException;
-    //    public void setRenameSupported(boolean renameSupported);
+//    boolean isFieldVisible(Field field, K instanceID) throws UPAException;
+//    boolean isAllowed(EntitySecurityAction a) throws UPAException;
+//    boolean isAllowed(Field field, FieldSecurityAction a) throws UPAException;
+    //    void setRenameSupported(boolean renameSupported);
 //
-//    public void setCloneSupported(boolean cloneSupported);
+//    void setCloneSupported(boolean cloneSupported);
 //
-//    public void setDeleteSupported(boolean deleteSupported);
+//    void setDeleteSupported(boolean deleteSupported);
 //
-//    public void setUpdateSupported(boolean updateSupported);
+//    void setUpdateSupported(boolean updateSupported);
 //
-//    public void setInsertSupported(boolean insertSupported);
+//    void setInsertSupported(boolean insertSupported);
 //
-////    public void setPrintSupported(boolean printSupported);
+////    void setPrintSupported(boolean printSupported);
 //
-//    public void setClearSupported(boolean clearSupported);
+//    void setClearSupported(boolean clearSupported);
 //
-//    public void setValidateOnInsertSupported(boolean enable) ;
+//    void setValidateOnInsertSupported(boolean enable) ;
 //
-//    public void setValidateOnUpdateSupported(boolean enable) ;
-    public void addVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
+//    void setValidateOnUpdateSupported(boolean enable) ;
+    void addVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
 
-    public void removeVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
+    void removeVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
 
-    public List<EntityShieldVeto> getVetoList(VetoableOperation operation) throws UPAException;
+    List<EntityShieldVeto> getVetoList(VetoableOperation operation) throws UPAException;
 }

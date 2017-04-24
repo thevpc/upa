@@ -38,18 +38,18 @@ import net.vpc.upa.types.I18NString;
  */
 public interface I18NStringStrategy {
 
-    public I18NString getPackageString(Package module);
+    I18NString getPackageString(Package module);
 
-    public I18NString getSectionString(Entity entity, String section);
+    I18NString getSectionString(Entity entity, String section);
 
-    public I18NString getRelationshipRoleString(RelationshipRole role);
+    I18NString getRelationshipRoleString(RelationshipRole role);
 
-    public I18NString getRelationshipString(Relationship relation);
+    I18NString getRelationshipString(Relationship relation);
 
-    public I18NString getEntityString(Entity entity);
+    I18NString getEntityString(Entity entity);
 
-    public I18NString getFieldListString(Entity entity);
+    I18NString getFieldListString(Entity entity);
 
-    public I18NString getFieldString(Field field);
+    I18NString getFieldString(Field field);
 
 }

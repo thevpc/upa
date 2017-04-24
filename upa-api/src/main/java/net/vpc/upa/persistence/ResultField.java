@@ -47,13 +47,13 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public interface ResultField {
 
-    public Expression getExpression() ;
+    Expression getExpression() ;
 
-    public String getAlias() ;
+    String getAlias() ;
 
-    public DataType getDataType() ;
+    DataType getDataType() ;
 
-    public Field getField() ;
+    Field getField() ;
 
-    public Entity getEntity() ;
+    Entity getEntity() ;
 }

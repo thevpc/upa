@@ -40,12 +40,12 @@ package net.vpc.upa.callbacks;
  */
 public interface PersistenceUnitDefinitionListener extends DefinitionListener {
 
-    public void onPreCreatePersistenceUnit(PersistenceUnitEvent event);
+    void onPreCreatePersistenceUnit(PersistenceUnitEvent event);
 
-    public void onCreatePersistenceUnit(PersistenceUnitEvent event);
+    void onCreatePersistenceUnit(PersistenceUnitEvent event);
 
-    public void onPreDropPersistenceUnit(PersistenceUnitEvent event);
+    void onPreDropPersistenceUnit(PersistenceUnitEvent event);
 
-    public void onDropPersistenceUnit(PersistenceUnitEvent event);
+    void onDropPersistenceUnit(PersistenceUnitEvent event);
 
 }

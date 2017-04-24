@@ -3,8 +3,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 public class CompiledD2V extends CompiledFunction {
 
     private static final long serialVersionUID = 1L;

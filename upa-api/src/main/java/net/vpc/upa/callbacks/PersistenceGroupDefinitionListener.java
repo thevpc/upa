@@ -40,12 +40,12 @@ package net.vpc.upa.callbacks;
  */
 public interface PersistenceGroupDefinitionListener extends DefinitionListener {
 
-    public void onPreCreatePersistenceGroup(PersistenceGroupEvent event);
+    void onPreCreatePersistenceGroup(PersistenceGroupEvent event);
 
-    public void onCreatePersistenceGroup(PersistenceGroupEvent event);
+    void onCreatePersistenceGroup(PersistenceGroupEvent event);
 
-    public void onPreDropPersistenceGroup(PersistenceGroupEvent event);
+    void onPreDropPersistenceGroup(PersistenceGroupEvent event);
 
-    public void onDropPersistenceGroup(PersistenceGroupEvent event);
+    void onDropPersistenceGroup(PersistenceGroupEvent event);
 
 }

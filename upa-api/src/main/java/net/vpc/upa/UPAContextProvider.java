@@ -39,7 +39,7 @@ package net.vpc.upa;
  */
 public interface UPAContextProvider {
 
-    public UPAContext getContext();
+    UPAContext getContext();
 
-    public void setContext(UPAContext newInstance);
+    void setContext(UPAContext newInstance);
 }

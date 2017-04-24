@@ -44,9 +44,9 @@ import net.vpc.upa.extensions.EntityExtensionDefinition;
  */
 public interface EntityExtension {
 
-    public EntityExtensionDefinition getDefinition();
+    EntityExtensionDefinition getDefinition();
 
-    public void install(Entity entity, EntityOperationManager entityOperationManager, EntityExtensionDefinition definition) throws UPAException;
+    void install(Entity entity, EntityOperationManager entityOperationManager, EntityExtensionDefinition definition) throws UPAException;
 
-    public void commitModelChanges() throws UPAException;
+    void commitModelChanges() throws UPAException;
 }

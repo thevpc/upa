@@ -41,11 +41,11 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public interface Parameter {
 
-    public String getName();
+    String getName();
 
-    public DataTypeTransform getTypeTransform();
+    DataTypeTransform getTypeTransform();
 
-    public Object getValue();
+    Object getValue();
 
-    public void setValue(Object value);
+    void setValue(Object value);
 }

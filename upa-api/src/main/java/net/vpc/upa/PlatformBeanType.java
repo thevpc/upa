@@ -48,19 +48,19 @@ import java.util.Set;
  */
 public interface PlatformBeanType {
 
-    public Class getPlatformType();
+    Class getPlatformType();
 
-    public Set<String> getPropertyNames();
+    Set<String> getPropertyNames();
 
-    public Set<String> getPropertyNames(Object o, Boolean includeDefaults) ;
+    Set<String> getPropertyNames(Object o, Boolean includeDefaults) ;
 
-    public Object newInstance();
+    Object newInstance();
 
-    public boolean containsProperty(String property);
+    boolean containsProperty(String property);
 
-    public Object getProperty(Object instance,String field);
+    Object getProperty(Object instance,String field);
 
-    public boolean setProperty(Object instance,String property, Object value);
+    boolean setProperty(Object instance,String property, Object value);
 
     /**
      * sets value for the property, if the property exists
@@ -68,15 +68,15 @@ public interface PlatformBeanType {
      * @param property property to inject into
      * @param value new value
      */
-    public void inject(Object instance, String property, Object value);
+    void inject(Object instance, String property, Object value);
 
-    public Method getMethod(Class type, String name, Class ret, Class... args);
+    Method getMethod(Class type, String name, Class ret, Class... args);
 
-    public java.lang.reflect.Field findField(String name, ObjectFilter<Field> filter) ;
+    java.lang.reflect.Field findField(String name, ObjectFilter<Field> filter) ;
 
-    public boolean resetToDefaultValue(Object instance, String field) ;
+    boolean resetToDefaultValue(Object instance, String field) ;
 
-    public boolean isDefaultValue(Object instance, String field) ;
+    boolean isDefaultValue(Object instance, String field) ;
 
-    public Map<String, Object> toMap(Object o, Boolean includeDefaults) ;
+    Map<String, Object> toMap(Object o, Boolean includeDefaults) ;
 }

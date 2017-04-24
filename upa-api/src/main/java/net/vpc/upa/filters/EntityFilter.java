@@ -41,5 +41,5 @@ import net.vpc.upa.exceptions.UPAException;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface EntityFilter {
-    public boolean accept(Entity entity) throws UPAException;
+    boolean accept(Entity entity) throws UPAException;
 }

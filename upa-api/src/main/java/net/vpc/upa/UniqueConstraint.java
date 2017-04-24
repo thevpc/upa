@@ -38,15 +38,15 @@ import java.util.List;
 
 public interface UniqueConstraint extends UPAObject {
 
-    public void commitModelChanges();
+    void commitModelChanges();
 
-    public List<Field> getFields();
+    List<Field> getFields();
 
-    public List<String> getFieldNames();
+    List<String> getFieldNames();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public String getEntityName();
+    String getEntityName();
 
-    public boolean isUnique();
+    boolean isUnique();
 }

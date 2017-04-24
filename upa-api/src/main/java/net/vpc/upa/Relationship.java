@@ -45,70 +45,70 @@ import net.vpc.upa.types.DataType;
 //Comparable,
 public interface Relationship extends UPAObject {
 
-    public void commitModelChanged() throws UPAException;
+    void commitModelChanged() throws UPAException;
 
-    public void setRelationshipType(RelationshipType dataType) throws UPAException;
+    void setRelationshipType(RelationshipType dataType) throws UPAException;
 
-    public void setDataType(DataType dataType) throws UPAException;
+    void setDataType(DataType dataType) throws UPAException;
 
-    public void setNullable(boolean nullable) throws UPAException;
+    void setNullable(boolean nullable) throws UPAException;
 
-    //    public void setSourceEntity(Entity sourceEntity);
+    //    void setSourceEntity(Entity sourceEntity);
 //
-//    public void setMasterEntity(Entity masterEntity);
+//    void setMasterEntity(Entity masterEntity);
 //
-//    public void setSourceFields(Field[] sourceFields);
-    public RelationshipType getRelationshipType() throws UPAException;
+//    void setSourceFields(Field[] sourceFields);
+    RelationshipType getRelationshipType() throws UPAException;
 
-    public int size() throws UPAException;
+    int size() throws UPAException;
 
-    public DataType getDataType() throws UPAException;
+    DataType getDataType() throws UPAException;
 
-    //    public Entity getSourceEntity();
+    //    Entity getSourceEntity();
 //
-//    public Entity getTargetRole().getEntity();
+//    Entity getTargetRole().getEntity();
 //
-    public Map<String, String> getSourceToTargetFieldNamesMap(boolean absolute) throws UPAException;
+    Map<String, String> getSourceToTargetFieldNamesMap(boolean absolute) throws UPAException;
 
-    public Map<String, String> getTargetToSourceFieldNamesMap(boolean absolute) throws UPAException;
+    Map<String, String> getTargetToSourceFieldNamesMap(boolean absolute) throws UPAException;
 
-    public Map<String, String> getSourceToTargetFieldsMap() throws UPAException;
+    Map<String, String> getSourceToTargetFieldsMap() throws UPAException;
 
-    public Map<String, String> getTargetToSourceFieldsMap() throws UPAException;
+    Map<String, String> getTargetToSourceFieldsMap() throws UPAException;
 
-    public Expression getTargetCondition(Expression sourceCondition, String sourceAlias, String targetAlias) throws UPAException;
+    Expression getTargetCondition(Expression sourceCondition, String sourceAlias, String targetAlias) throws UPAException;
 
-    public Expression getSourceCondition(Expression targetCondition, String sourceAlias, String targetAlias) throws UPAException;
+    Expression getSourceCondition(Expression targetCondition, String sourceAlias, String targetAlias) throws UPAException;
 
-    public Expression getFilter() throws UPAException;
+    Expression getFilter() throws UPAException;
 
-    public void setFilter(Expression filter) throws UPAException;
+    void setFilter(Expression filter) throws UPAException;
 
-    public boolean isTransient() throws UPAException;
+    boolean isTransient() throws UPAException;
 
-    public Entity getTargetEntity() throws UPAException;
+    Entity getTargetEntity() throws UPAException;
 
-    public Entity getSourceEntity() throws UPAException;
+    Entity getSourceEntity() throws UPAException;
 
-    public RelationshipRole getTargetRole() throws UPAException;
+    RelationshipRole getTargetRole() throws UPAException;
 
-    public RelationshipRole getSourceRole() throws UPAException;
+    RelationshipRole getSourceRole() throws UPAException;
 
-    public boolean isFollowLinks();
+    boolean isFollowLinks();
 
-    public boolean isAskForConfirm();
+    boolean isAskForConfirm();
 
-    public Key extractKey(Document sourceDocument);
+    Key extractKey(Document sourceDocument);
 
-    public Object extractId(Document sourceDocument);
+    Object extractId(Document sourceDocument);
 
-    public Object extractIdByEntityField(Document sourceDocument);
+    Object extractIdByEntityField(Document sourceDocument);
 
-    public Object extractIdByForeignFields(Document sourceDocument) ;
+    Object extractIdByForeignFields(Document sourceDocument) ;
 
-    public HierarchyExtension getHierarchyExtension();
+    HierarchyExtension getHierarchyExtension();
 
-    public void setHierarchyExtension(HierarchyExtension extension);
+    void setHierarchyExtension(HierarchyExtension extension);
 
-    public Expression createTargetListExpression(Object currentInstance, String alias);
+    Expression createTargetListExpression(Object currentInstance, String alias);
 }

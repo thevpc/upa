@@ -40,9 +40,9 @@ package net.vpc.upa;
  */
 public interface DeletionTraceElement {
 
-    public String getEntityName();
+    String getEntityName();
 
-    public RelationshipType getRelationshipType();
+    RelationshipType getRelationshipType();
 
-    public long getCount();
+    long getCount();
 }

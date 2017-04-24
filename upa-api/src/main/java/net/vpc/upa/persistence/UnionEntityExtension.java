@@ -47,15 +47,15 @@ import java.util.List;
  */
 public interface UnionEntityExtension extends EntityExtension {
 
-    public List<Entity> getEntities() throws UPAException;
+    List<Entity> getEntities() throws UPAException;
 
-    public String getUpdatedField(String viewFieldName, Entity entity) throws UPAException;
+    String getUpdatedField(String viewFieldName, Entity entity) throws UPAException;
 
-    public String getDiscriminator() throws UPAException;
+    String getDiscriminator() throws UPAException;
 
-    public int indexOf(Entity entity) throws UPAException;
+    int indexOf(Entity entity) throws UPAException;
 
-    public QualifiedIdentifier getViewElementKey(QualifiedIdentifier viewKey) throws UPAException;
+    QualifiedIdentifier getViewElementKey(QualifiedIdentifier viewKey) throws UPAException;
 
-    public QueryStatement getQuery() throws UPAException;
+    QueryStatement getQuery() throws UPAException;
 }

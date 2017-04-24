@@ -39,5 +39,5 @@ package net.vpc.upa;
  * @creationdate 9/16/12 4:50 PM
  */
 public interface TransactionListener {
-    public void closing(Transaction transaction);
+    void closing(Transaction transaction);
 }

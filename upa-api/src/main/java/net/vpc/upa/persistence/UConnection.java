@@ -49,25 +49,25 @@ import java.util.Map;
  */
 public interface UConnection {
 
-    public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException;
+    QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException;
 
-    public int executeNonQuery(String currentQuery, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException;
+    int executeNonQuery(String currentQuery, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException;
 
-    public int executeScript(QueryScript script, boolean exitOnError) throws UPAException;
+    int executeScript(QueryScript script, boolean exitOnError) throws UPAException;
 
-    public void close() throws UPAException;
+    void close() throws UPAException;
 
-    public void addCloseListener(CloseListener closeListener);
+    void addCloseListener(CloseListener closeListener);
 
-    public void removeCloseListener(CloseListener closeListener);
+    void removeCloseListener(CloseListener closeListener);
 
-    public Connection getMetadataAccessibleConnection() throws UPAException;
+    Connection getMetadataAccessibleConnection() throws UPAException;
 
-    public Connection getPlatformConnection() throws UPAException;
+    Connection getPlatformConnection() throws UPAException;
 
-    public Object getProperty(String name) throws UPAException;
+    Object getProperty(String name) throws UPAException;
 
-    public Map<String, Object> getProperties() throws UPAException;
+    Map<String, Object> getProperties() throws UPAException;
 
-    public void setProperty(String name, Object value) throws UPAException;
+    void setProperty(String name, Object value) throws UPAException;
 }

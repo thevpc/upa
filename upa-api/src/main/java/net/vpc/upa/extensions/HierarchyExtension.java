@@ -47,41 +47,41 @@ import java.util.List;
  */
 public interface HierarchyExtension extends RelationshipExtensionDefinition{
 
-    public void setHierarchyPathSeparator(String hierarchySeparator);
+    void setHierarchyPathSeparator(String hierarchySeparator);
     
-    public String getHierarchyPathSeparator();
+    String getHierarchyPathSeparator();
 
-    public String getHierarchyPathField();
+    String getHierarchyPathField();
 
-    public void setHierarchyPathField(String hierarchyPathField);
+    void setHierarchyPathField(String hierarchyPathField);
 
     boolean isParent(Object parentId, Object childId) throws UPAException;
 
     boolean isEqualOrIsParent(Object parentId, Object childId) throws UPAException;
 
-    public Relationship getTreeRelationship() throws UPAException;
+    Relationship getTreeRelationship() throws UPAException;
 
-    public Expression createFindRootsExpression(String alias) throws UPAException;
+    Expression createFindRootsExpression(String alias) throws UPAException;
 
-    public Expression createFindDeepChildrenExpression(String expression, Object id, boolean includeId) throws UPAException;
+    Expression createFindDeepChildrenExpression(String expression, Object id, boolean includeId) throws UPAException;
 
-    public Expression createFindImmediateChildrenExpression(String alias, Object id) throws UPAException;
+    Expression createFindImmediateChildrenExpression(String alias, Object id) throws UPAException;
 
-    public Expression createFindEntityByMainPathExpression(String mainFieldPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByMainPathExpression(String mainFieldPath, String entityAlias) throws UPAException;
 
-    public Expression createFindEntityByIdPathExpression(Object[] idPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByIdPathExpression(Object[] idPath, String entityAlias) throws UPAException;
 
-    public Expression createFindEntityByKeyPathExpression(Key[] keyPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByKeyPathExpression(Key[] keyPath, String entityAlias) throws UPAException;
 
-    public Object findEntityByMainPath(String mainFieldPath) throws UPAException;
+    Object findEntityByMainPath(String mainFieldPath) throws UPAException;
 
-    public Object findEntityByIdPath(Object[] idPath) throws UPAException;
+    Object findEntityByIdPath(Object[] idPath) throws UPAException;
 
-    public Object findEntityByKeyPath(Key[] keyPath) throws UPAException;
+    Object findEntityByKeyPath(Key[] keyPath) throws UPAException;
 
-    public <T> List<T> findRootsEntityList() throws UPAException;
+    <T> List<T> findRootsEntityList() throws UPAException;
 
-    public <T> List<T> findDeepChildrenEntityList(Object id, boolean includeId) throws UPAException;
+    <T> List<T> findDeepChildrenEntityList(Object id, boolean includeId) throws UPAException;
 
-    public <T> List<T> findImmediateChildrenEntityList(Object id) throws UPAException;
+    <T> List<T> findImmediateChildrenEntityList(Object id) throws UPAException;
 }

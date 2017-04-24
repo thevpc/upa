@@ -39,9 +39,9 @@ package net.vpc.upa;
  */
 public interface SessionContext {
 
-    public void setParam(PersistenceUnit persistenceUnit, String name, Object value);
+    void setParam(PersistenceUnit persistenceUnit, String name, Object value);
 
-    public boolean containsParam(PersistenceUnit persistenceUnit, String name);
+    boolean containsParam(PersistenceUnit persistenceUnit, String name);
 
-    public <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
+    <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue);
 }

@@ -43,5 +43,5 @@ import net.vpc.upa.TransactionManager;
  * @creationdate 9/16/12 5:54 PM
  */
 public interface TransactionManagerFactory {
-    public TransactionManager createTransactionManager(ConnectionProfile connectionProfile, ObjectFactory factory, Properties parameters);
+    TransactionManager createTransactionManager(ConnectionProfile connectionProfile, ObjectFactory factory, Properties parameters);
 }

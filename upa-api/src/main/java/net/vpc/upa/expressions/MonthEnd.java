@@ -39,9 +39,6 @@ import java.util.Arrays;
 import java.util.List;
 
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
-
 /**
  * the date at the end of the next "count" month of the given "date"
  * <pre>

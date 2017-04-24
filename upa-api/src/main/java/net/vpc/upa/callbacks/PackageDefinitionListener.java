@@ -39,15 +39,15 @@ package net.vpc.upa.callbacks;
  * @creationdate 9/18/12 9:10 PM
  */
 public interface PackageDefinitionListener extends DefinitionListener {
-    public void onPreCreatePackage(PackageEvent event);
+    void onPreCreatePackage(PackageEvent event);
 
-    public void onCreatePackage(PackageEvent event);
+    void onCreatePackage(PackageEvent event);
 
-    public void onPreDropPackage(PackageEvent event);
+    void onPreDropPackage(PackageEvent event);
 
-    public void onDropPackage(PackageEvent event);
+    void onDropPackage(PackageEvent event);
 
-    public void onPreMovePackage(PackageEvent event);
+    void onPreMovePackage(PackageEvent event);
 
-    public void onMovePackage(PackageEvent event);
+    void onMovePackage(PackageEvent event);
 }

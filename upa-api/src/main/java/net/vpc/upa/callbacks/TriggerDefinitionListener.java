@@ -39,12 +39,12 @@ package net.vpc.upa.callbacks;
  * @creationdate 11/27/12 9:17 PM
  */
 public interface TriggerDefinitionListener extends DefinitionListener {
-    public void onPreCreateTrigger(TriggerEvent event);
+    void onPreCreateTrigger(TriggerEvent event);
 
-    public void onCreateTrigger(TriggerEvent event);
+    void onCreateTrigger(TriggerEvent event);
 
-    public void onPreDropTrigger(TriggerEvent event);
+    void onPreDropTrigger(TriggerEvent event);
 
-    public void onDropTrigger(TriggerEvent event);
+    void onDropTrigger(TriggerEvent event);
 
 }

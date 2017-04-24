@@ -36,8 +36,6 @@ package net.vpc.upa.types;
 
 import java.math.BigInteger;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.util:
-//            DataType, ConstraintsException
 public class BigIntType extends NumberType implements Cloneable {
 
     public static final BigIntType DEFAULT = new BigIntType(null, null, true);

@@ -37,5 +37,5 @@ package net.vpc.upa.types;
 import java.io.Serializable;
 
 public interface TypeValueRewriter extends Serializable {
-    public Object rewriteValue(Object value, String name, String description, DataType type) throws ConstraintsException;
+    Object rewriteValue(Object value, String name, String description, DataType type) throws ConstraintsException;
 }

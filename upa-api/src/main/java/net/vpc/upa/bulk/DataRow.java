@@ -39,7 +39,7 @@ package net.vpc.upa.bulk;
  */
 public interface DataRow {
 
-    public DataColumn[] getColumns();
+    DataColumn[] getColumns();
 
-    public Object[] getValues();
+    Object[] getValues();
 }

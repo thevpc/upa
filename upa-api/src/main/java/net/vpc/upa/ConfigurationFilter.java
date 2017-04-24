@@ -39,5 +39,5 @@ package net.vpc.upa;
  * @creationdate 9/24/12 1:38 AM
  */
 public interface ConfigurationFilter {
-    public void acceptType(Class c, Object source);
+    void acceptType(Class c, Object source);
 }

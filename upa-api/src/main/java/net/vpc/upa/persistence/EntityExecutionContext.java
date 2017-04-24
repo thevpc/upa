@@ -48,52 +48,52 @@ import java.util.Map;
 
 public interface EntityExecutionContext extends Properties {
 
-    public void initPersistenceUnit(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore, ContextOperation contextOperation);
+    void initPersistenceUnit(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore, ContextOperation contextOperation);
 
-    public ContextOperation getOperation();
+    ContextOperation getOperation();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public Map<String, Object> getValues();
+    Map<String, Object> getValues();
 
-    public Map<String, Object> getHints();
+    Map<String, Object> getHints();
 
-    public Object getHint(String hintName);
+    Object getHint(String hintName);
 
-    public Object getHint(String hintName, Object defaultValue);
+    Object getHint(String hintName, Object defaultValue);
 
-    public EntityExecutionContext resetHints();
+    EntityExecutionContext resetHints();
 
     /**
      * add or remove (if value is null) hint
      * @param name
      * @param value
      */
-    public EntityExecutionContext setHint(String name, Object value);
+    EntityExecutionContext setHint(String name, Object value);
 
     /**
      * merges hints
      * @param hints
      */
-    public EntityExecutionContext setHints(Map<String, Object> hints);
+    EntityExecutionContext setHints(Map<String, Object> hints);
 
-    public PersistenceUnit getPersistenceUnit();
+    PersistenceUnit getPersistenceUnit();
 
-    public UConnection getConnection();
+    UConnection getConnection();
 
-    public Session getSession();
+    Session getSession();
 
-    public PersistenceStore getPersistenceStore();
+    PersistenceStore getPersistenceStore();
 
-    public EntityOperationManager getEntityOperationManager();
+    EntityOperationManager getEntityOperationManager();
 
     void initEntity(Entity currentEntity, EntityOperationManager entityOperationManager);
 
-    public void addGeneratedValue(String name, DataType type);
+    void addGeneratedValue(String name, DataType type);
 
-    public void removeGeneratedValue(Parameter parameter);
+    void removeGeneratedValue(Parameter parameter);
 
-    public List<Parameter> getGeneratedValues();
+    List<Parameter> getGeneratedValues();
 
-    public Parameter getGeneratedValue(String name);
+    Parameter getGeneratedValue(String name);
 }

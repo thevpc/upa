@@ -4,8 +4,6 @@ import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionHelper;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 public class CompiledVar extends CompiledVarOrMethod {
 
     public static final char DOT = '.';

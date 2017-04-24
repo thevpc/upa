@@ -49,59 +49,59 @@ public interface CompoundField extends Field {
      *
      * @return all fields
      */
-    public List<PrimitiveField> getFields();
+    List<PrimitiveField> getFields();
 
     /**
      * field by position
      * @param index position
      * @return Field at the given position
      */
-    public PrimitiveField getFieldAt(int index);
+    PrimitiveField getFieldAt(int index);
 
     /**
      * field by name
      * @param name name of the field
      * @return Field with the given name
      */
-    public PrimitiveField getField(String name);
+    PrimitiveField getField(String name);
 
     /**
      * return index of the given field or -1 if not found
      * @param child field to look for
      * @return index of the given field or -1 if not found
      */
-    public int indexOfField(PrimitiveField child);
+    int indexOfField(PrimitiveField child);
 
     /**
      * return index of the given field or -1 if not found
      * @param fieldName field to look for
      * @return index of the given field or -1 if not found
      */
-    public int indexOfField(String fieldName);
+    int indexOfField(String fieldName);
 
     /**
      * leading (very first) field
      * @return leading (very first) field
      */
-    public PrimitiveField getLeadingField();
+    PrimitiveField getLeadingField();
 
     /**
      * number of primitive fields in the compound field
      * @return number of primitive fields in the compound field
      */
-    public int getFieldsCount();
+    int getFieldsCount();
 
     /**
      * flatten an object value to resolve every primitive field value
      * @param object to flatten
      * @return array of primitive value (in the same order of the fields definition)
      */
-    public abstract Object[] getPrimitiveValues(Object object);
+    Object[] getPrimitiveValues(Object object);
 
     /**
      * composed single value equivalent to the given array
      * @param values flattened values to compose
      * @return composed single value equivalent to the given array
      */
-    public abstract Object getCompoundValue(Object[] values);
+    Object getCompoundValue(Object[] values);
 }

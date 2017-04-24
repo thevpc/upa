@@ -44,10 +44,10 @@ import net.vpc.upa.config.ScanSource;
  */
 public interface UPAContextFactory extends ObjectFactory {
 
-    public ScanSource createURLScanSource(URL[] urls, ScanFilter[] filters, boolean noIgnore);
+    ScanSource createURLScanSource(URL[] urls, ScanFilter[] filters, boolean noIgnore);
 
-    public ScanSource createContextScanSource(boolean noIgnore);
+    ScanSource createContextScanSource(boolean noIgnore);
 
-    public ScanSource createClassScanSource(Class[] classes, boolean noIgnore);
+    ScanSource createClassScanSource(Class[] classes, boolean noIgnore);
 
 }

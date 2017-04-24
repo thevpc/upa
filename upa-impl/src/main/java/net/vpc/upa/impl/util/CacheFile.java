@@ -7,8 +7,8 @@ import java.io.*;
 @PortabilityHint(target = "C#",name = "partial")
 public class CacheFile implements net.vpc.upa.Closeable{
     private int status;
-    private static Object START_FILE = "net.vpc.lib.pheromone.ariana.io.CacheFile.START";
-    private static Object END_FILE = "net.vpc.lib.pheromone.ariana.io.CacheFile.END";
+    private static Object START_FILE = "net.vpc.upa.io.CacheFile.START";
+    private static Object END_FILE = "net.vpc.upa.io.CacheFile.END";
     private Object lastExtractedObject;
     private boolean objectRead;
     private boolean empty;

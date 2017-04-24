@@ -42,9 +42,9 @@ import net.vpc.upa.Session;
  */
 public interface SessionListener {
 
-    public void closeSession(Session session);
+    void closeSession(Session session);
 
-    public void pushContext(Session session);
+    void pushContext(Session session);
 
-    public void popContext(Session session);
+    void popContext(Session session);
 }

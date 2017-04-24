@@ -35,9 +35,9 @@
 package net.vpc.upa;
 
 public interface PersistenceUnitPart extends UPAObject {
-//    public static final PersistenceUnitItem[] EMPTY_ARRAY = new PersistenceUnitItem[0];
+//    static final PersistenceUnitItem[] EMPTY_ARRAY = new PersistenceUnitItem[0];
 
-    public Package getParent();
+    Package getParent();
 
-//    public void setParentModule(Package parent);
+//    void setParentModule(Package parent);
 }

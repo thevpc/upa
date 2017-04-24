@@ -39,15 +39,15 @@ package net.vpc.upa.callbacks;
  * @creationdate 9/18/12 9:10 PM
  */
 public interface SectionDefinitionListener extends DefinitionListener {
-    public void onPreCreateSection(SectionEvent event);
+    void onPreCreateSection(SectionEvent event);
 
-    public void onCreateSection(SectionEvent event);
+    void onCreateSection(SectionEvent event);
 
-    public void onPreDropSection(SectionEvent event);
+    void onPreDropSection(SectionEvent event);
 
-    public void onDropSection(SectionEvent event);
+    void onDropSection(SectionEvent event);
 
-    public void onMoveSection(SectionEvent event);
+    void onMoveSection(SectionEvent event);
 
-    public void onPreMoveSection(SectionEvent event);
+    void onPreMoveSection(SectionEvent event);
 }

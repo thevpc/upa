@@ -40,9 +40,9 @@ package net.vpc.upa;
  */
 public interface ScanListener {
 
-    public void contextItemScanned(ScanEvent event);
+    void contextItemScanned(ScanEvent event);
 
-    public void persistenceGroupItemScanned(ScanEvent event);
+    void persistenceGroupItemScanned(ScanEvent event);
 
-    public void persistenceUnitItemScanned(ScanEvent event);
+    void persistenceUnitItemScanned(ScanEvent event);
 }

@@ -42,9 +42,9 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * @creationdate 9/9/12 11:54 PM
  */
 public interface EntityTriggerContext {
-    public Entity getEntity();
+    Entity getEntity();
 
-    public Trigger getTrigger();
+    Trigger getTrigger();
 
-    public EntityExecutionContext getEntityExecutionContext();
+    EntityExecutionContext getEntityExecutionContext();
 }

@@ -44,5 +44,5 @@ import net.vpc.upa.expressions.QueryStatement;
  * @creationdate 8/30/12 1:05 AM
  */
 public interface EntityFindOperation {
-    public Query createQuery(Entity e, QueryStatement query, EntityExecutionContext context) throws UPAException;
+    Query createQuery(Entity e, QueryStatement query, EntityExecutionContext context) throws UPAException;
 }

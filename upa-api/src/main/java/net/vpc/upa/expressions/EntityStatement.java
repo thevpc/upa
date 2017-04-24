@@ -34,11 +34,9 @@
  */
 package net.vpc.upa.expressions;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression, SQLContext
 public interface EntityStatement extends Expression {
 
-    public String getEntityName();
+    String getEntityName();
 
-    public String getEntityAlias();
+    String getEntityAlias();
 }

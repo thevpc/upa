@@ -49,9 +49,9 @@ public interface DataParser extends Closeable {
      */
     void configure(Object source) throws IOException;
 
-    public void setDataDeserializer(DataDeserializer dataDeserializer);
+    void setDataDeserializer(DataDeserializer dataDeserializer);
 
-    public DataDeserializer getDataDeserializer();
+    DataDeserializer getDataDeserializer();
 
     DataReader parse() throws IOException;
 

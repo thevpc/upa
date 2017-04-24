@@ -39,18 +39,18 @@ package net.vpc.upa;
 
 public interface EntityPart extends UPAObject {
 
-//    public static final EntityPart[] EMPTY_ARRAY = new EntityPart[0];
+//    static final EntityPart[] EMPTY_ARRAY = new EntityPart[0];
 
-//    public String getName();
+//    String getName();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public EntityPart getParent();
+    EntityPart getParent();
 
     // -------------------------- PATH SUPPORT
-    public String getPath();
+    String getPath();
 
-    public void commitModelChanges() ;
+    void commitModelChanges() ;
 
-//    public void close() throws UPAException;
+//    void close() throws UPAException;
 }

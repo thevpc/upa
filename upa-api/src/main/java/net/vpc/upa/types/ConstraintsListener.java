@@ -34,10 +34,7 @@
  */
 package net.vpc.upa.types;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.util:
-//            ConstraintsEvent
-
 public interface ConstraintsListener {
 
-    public abstract void unrespectedConstraints(ConstraintsEvent constraintsevent);
+    void unrespectedConstraints(ConstraintsEvent constraintsevent);
 }

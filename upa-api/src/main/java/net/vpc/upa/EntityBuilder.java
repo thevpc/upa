@@ -45,36 +45,36 @@ import java.util.Set;
  */
 public interface EntityBuilder {
 
-    public Document createDocument();
+    Document createDocument();
 
-    public Document createInitializedDocument();
+    Document createInitializedDocument();
 
-    public <R> R createInitializedObject();
+    <R> R createInitializedObject();
 
-    public <R> R createObject();
+    <R> R createObject();
 
-    public <R> R copyObject(R r);
+    <R> R copyObject(R r);
 
-    public Document copyDocument(Document rec);
+    Document copyDocument(Document rec);
 
 
-    public Document objectToDocument(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
+    Document objectToDocument(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
 
-    public void setProperty(Object entityObject, String property, Object value) ;
+    void setProperty(Object entityObject, String property, Object value) ;
 
-    public Object getProperty(Object entityObject, String property) ;
+    Object getProperty(Object entityObject, String property) ;
 
-    public Key createKey(Object... keyValues);
+    Key createKey(Object... keyValues);
 
-    public Object createId(Object... idValues);
+    Object createId(Object... idValues);
 
-    public Object getId(Key unstructuredKey);
+    Object getId(Key unstructuredKey);
 
-    public Object getObject(Object objectOrDocument);
+    Object getObject(Object objectOrDocument);
 
-    public Document getDocument(Object objectOrDocument);
+    Document getDocument(Object objectOrDocument);
 
-    public Key getKey(Object key);
+    Key getKey(Object key);
 
     /**
      * transforms entity id to a Document key representation of the given entity
@@ -138,27 +138,27 @@ public interface EntityBuilder {
 
     Document keyToDocument(Key key) ;
 
-    public void setDocumentId(Document document, Object id) ;
+    void setDocumentId(Document document, Object id) ;
 
-    public void setObjectId(Object object, Object id) ;
+    void setObjectId(Object object, Object id) ;
 
-    public Expression documentToExpression(Document document, String alias) ;
+    Expression documentToExpression(Document document, String alias) ;
 
-    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) ;
+    Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) ;
 
-    //    public Expression idToExpression(Object key) ;
-    public Expression objectToIdExpression(Object objectOrDocument, String alias) ;
+    //    Expression idToExpression(Object key) ;
+    Expression objectToIdExpression(Object objectOrDocument, String alias) ;
 
-    public Expression idToExpression(Object id, String alias) ;
+    Expression idToExpression(Object id, String alias) ;
 
-    public Expression keyToExpression(Key documentKey, String alias) ;
+    Expression keyToExpression(Key documentKey, String alias) ;
 
-    public <K> Expression idListToExpression(List<K> idList, String alias) ;
+    <K> Expression idListToExpression(List<K> idList, String alias) ;
 
-    public Expression keyListToExpression(List<Key> keyList, String alias) ;
+    Expression keyListToExpression(List<Key> keyList, String alias) ;
 
-    public QualifiedDocument createQualifiedDocument() ;
+    QualifiedDocument createQualifiedDocument() ;
 
-    public QualifiedDocument createQualifiedDocument(Document document) ;
+    QualifiedDocument createQualifiedDocument(Document document) ;
 
 }

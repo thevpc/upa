@@ -34,11 +34,9 @@
  */
 package net.vpc.upa.expressions;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
 import java.util.ArrayList;
 import java.util.List;
 
-//            Expression, Litteral
 public class Between extends OperatorExpression
         implements Cloneable {
 

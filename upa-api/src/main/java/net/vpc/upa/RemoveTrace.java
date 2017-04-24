@@ -37,21 +37,21 @@ package net.vpc.upa;
 
 public interface RemoveTrace {
 
-    public void addTrace(String trace);
+    void addTrace(String trace);
 
-    public void add(RelationshipType type, Entity entity, long count);
+    void add(RelationshipType type, Entity entity, long count);
 
-//    public void add(RemoveTrace other);
+//    void add(RemoveTrace other);
 
-    public DeletionTraceElement[] getTrace(RelationshipType type);
+    DeletionTraceElement[] getTrace(RelationshipType type);
 
-    public DeletionTraceElement[] getTrace();
+    DeletionTraceElement[] getTrace();
 
-    public String toString();
+    String toString();
 
-    public long getRemoveCount();
+    long getRemoveCount();
 
-    public long getRemoveCount(RelationshipType type);
+    long getRemoveCount(RelationshipType type);
 
 
 }

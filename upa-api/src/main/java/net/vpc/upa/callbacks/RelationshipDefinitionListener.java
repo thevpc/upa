@@ -39,12 +39,12 @@ package net.vpc.upa.callbacks;
  * @creationdate 11/27/12 9:11 PM
  */
 public interface RelationshipDefinitionListener {
-    public void onPreCreateRelationship(RelationshipEvent event);
+    void onPreCreateRelationship(RelationshipEvent event);
 
-    public void onCreateRelationship(RelationshipEvent event);
+    void onCreateRelationship(RelationshipEvent event);
 
-    public void onPreDropRelationship(RelationshipEvent event);
+    void onPreDropRelationship(RelationshipEvent event);
 
-    public void onDropRelationship(RelationshipEvent event);
+    void onDropRelationship(RelationshipEvent event);
 
 }

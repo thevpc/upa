@@ -3590,13 +3590,22 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public List<Relationship> getRelationships() {
         LinkedHashSet<Relationship> relations = new LinkedHashSet<Relationship>();
-        for (Relationship r : getPersistenceUnit().getRelationshipsBySource(this)) {
-            relations.add(r);
-        }
-        for (Relationship r : getPersistenceUnit().getRelationshipsByTarget(this)) {
-            relations.add(r);
-        }
+        relations.addAll(getPersistenceUnit().getRelationshipsBySource(this));
+        relations.addAll(getPersistenceUnit().getRelationshipsByTarget(this));
         return new ArrayList<Relationship>(relations);
+    }
+
+    public List<Relationship> getRelationshipsBySource() {
+        return (getPersistenceUnit().getRelationshipsBySource(this));
+    }
+
+    public List<Relationship> getRelationshipsByTarget() {
+        return (getPersistenceUnit().getRelationshipsByTarget(this));
+    }
+
+    public boolean isHierarchical() {
+        Entity p = getParentEntity();
+        return (p!=null && p.getName().equals(getName()));
     }
 
     @Override

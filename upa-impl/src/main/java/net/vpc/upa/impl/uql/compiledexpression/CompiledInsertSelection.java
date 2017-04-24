@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.impl.uql.DecObjectType;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            StatementExpression, Select, SQLContext
 public class CompiledInsertSelection extends DefaultCompiledEntityStatement
         implements CompiledUpdateStatement, Cloneable {
 

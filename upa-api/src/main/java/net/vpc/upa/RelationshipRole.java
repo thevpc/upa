@@ -41,31 +41,31 @@ import java.util.List;
  */
 public interface RelationshipRole extends UPAObject {
 
-    public Relationship getRelationship();
+    Relationship getRelationship();
 
-    public RelationshipUpdateType getRelationshipUpdateType();
+    RelationshipUpdateType getRelationshipUpdateType();
 
-    public RelationshipRoleType getRelationshipRoleType();
+    RelationshipRoleType getRelationshipRoleType();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public void setEntity(Entity entity);
+    void setEntity(Entity entity);
 
-    public int indexOf(String fieldName);
+    int indexOf(String fieldName);
 
-    public Field getField(int i);
+    Field getField(int i);
 
-    public Field getEntityField();
+    Field getEntityField();
 
-    public List<Field> getFields();
+    List<Field> getFields();
 
-    public void setFields(Field[] fields);
+    void setFields(Field[] fields);
 
-    public void setEntityField(Field field);
+    void setEntityField(Field field);
 
-    public void setRelationship(Relationship relation);
+    void setRelationship(Relationship relation);
 
-    public void setRelationshipRoleType(RelationshipRoleType relationRoteType);
+    void setRelationshipRoleType(RelationshipRoleType relationRoteType);
 
-    public void setRelationshipUpdateType(RelationshipUpdateType relationUpdateType);
+    void setRelationshipUpdateType(RelationshipUpdateType relationUpdateType);
 }

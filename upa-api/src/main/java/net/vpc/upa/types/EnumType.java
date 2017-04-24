@@ -34,8 +34,6 @@
  */
 package net.vpc.upa.types;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.util:
-//            DataType, ConstraintsException
 import net.vpc.upa.PortabilityHint;
 
 import java.util.Arrays;

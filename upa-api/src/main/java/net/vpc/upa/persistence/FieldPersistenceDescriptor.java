@@ -45,10 +45,10 @@ import net.vpc.upa.Field;
  */
 public interface FieldPersistenceDescriptor {
 
-    public Field getField();
+    Field getField();
 
     /**
      * @return FieldPersistenceModifier value
      */
-    public long getModifiers();
+    long getModifiers();
 }

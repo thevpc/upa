@@ -3,8 +3,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 /**
  * the date at the start of the next "count" month of the given "date"
  * <pre>

@@ -39,9 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            StatementExpression, And, Expression, Litteral,
-//            Equals, Var, SQLContext
 public final class Update extends DefaultEntityStatement implements NonQueryStatement {
 
     private static final DefaultTag ENTITY = new DefaultTag("ENTITY");

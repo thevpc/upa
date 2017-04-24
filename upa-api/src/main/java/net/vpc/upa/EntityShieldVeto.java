@@ -42,5 +42,5 @@ import net.vpc.upa.exceptions.VetoException;
  * @creationdate 9/7/12 8:51 PM
  */
 public interface EntityShieldVeto {
-    public void checkVeto(VetoableOperation operation, Entity entity, Object... params) throws UPAException, VetoException;
+    void checkVeto(VetoableOperation operation, Entity entity, Object... params) throws UPAException, VetoException;
 }

@@ -9,9 +9,6 @@ import net.vpc.upa.expressions.*;
 
 import java.util.List;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database:
-//            EntityNavigator, Key, Table, Field,
-//            PersistenceUnitFilter, FieldType
 public class DefaultEntityNavigator implements EntityNavigator {
     protected Entity entity;
 

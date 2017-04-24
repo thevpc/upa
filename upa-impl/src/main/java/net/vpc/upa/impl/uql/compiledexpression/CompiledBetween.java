@@ -4,8 +4,6 @@ import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 import net.vpc.upa.types.DataTypeTransform;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression, Litteral
 public class CompiledBetween extends DefaultCompiledExpressionImpl
         implements Cloneable {
 

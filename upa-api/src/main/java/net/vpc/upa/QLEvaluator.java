@@ -42,9 +42,9 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface QLEvaluator {
 
-    public Expression evalString(String expression, Object context);
+    Expression evalString(String expression, Object context);
 
-    public Expression evalObject(Expression expression, Object context);
+    Expression evalObject(Expression expression, Object context);
 
-    public QLEvaluatorRegistry getRegistry();
+    QLEvaluatorRegistry getRegistry();
 }

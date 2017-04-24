@@ -1,7 +1,5 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression, Litteral
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 import net.vpc.upa.types.DataTypeTransform;

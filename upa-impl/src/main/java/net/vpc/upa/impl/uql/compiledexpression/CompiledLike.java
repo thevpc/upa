@@ -3,8 +3,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            BinaryExpression, Expression
 public final class CompiledLike extends CompiledBinaryOperatorExpression
         implements Cloneable {
 

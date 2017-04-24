@@ -41,33 +41,33 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface RelationshipDescriptor {
 
-    public int getHierarchyConfigOrder();
+    int getHierarchyConfigOrder();
 
-    public String getHierarchyPathSeparator();
+    String getHierarchyPathSeparator();
 
-    public boolean isHierarchy();
+    boolean isHierarchy();
 
-    public boolean isNullable();
+    boolean isNullable();
 
-    public String getHierarchyPathField();
+    String getHierarchyPathField();
 
-    public String getSourceEntity();
+    String getSourceEntity();
 
-    public Class getSourceEntityType();
+    Class getSourceEntityType();
 
-    public String getTargetEntity();
+    String getTargetEntity();
 
-    public Class getTargetEntityType();
+    Class getTargetEntityType();
 
-    public Expression getFilter();
+    Expression getFilter();
 
-    public String getBaseField();
+    String getBaseField();
 
-    public String[] getMappedTo();
+    String[] getMappedTo();
 
-    public String[] getSourceFields();
+    String[] getSourceFields();
 
-    public String getName();
+    String getName();
 
-    public RelationshipType getRelationshipType();
+    RelationshipType getRelationshipType();
 }

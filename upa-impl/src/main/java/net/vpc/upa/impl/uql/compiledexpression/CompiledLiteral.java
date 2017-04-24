@@ -7,8 +7,6 @@ import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 public final class CompiledLiteral extends DefaultCompiledExpressionImpl
         implements Cloneable {
     public static final CompiledLiteral IONE = new CompiledLiteral(1);

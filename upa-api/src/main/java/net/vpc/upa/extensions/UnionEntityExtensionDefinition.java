@@ -41,6 +41,6 @@ import net.vpc.upa.Entity;
  * @creationdate 8/29/12 12:27 AM
  */
 public interface UnionEntityExtensionDefinition extends EntityExtensionDefinition {
-    public UnionQueryInfo getQueryInfo(Entity entity);
+    UnionQueryInfo getQueryInfo(Entity entity);
 
 }

@@ -49,5 +49,5 @@ public interface CustomFormula extends Formula{
      * @param executionContext executionContext
      * @return formula evaluated value
      */
-    public Object getValue(Field field, Object id, EntityExecutionContext executionContext);
+    Object getValue(Field field, Object id, EntityExecutionContext executionContext);
 }

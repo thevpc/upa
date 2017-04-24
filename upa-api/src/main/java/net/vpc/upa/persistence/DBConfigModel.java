@@ -44,11 +44,11 @@ package net.vpc.upa.persistence;
  */
 @Deprecated
 public interface DBConfigModel {
-    public String[] getConnectionStringArray();
+    String[] getConnectionStringArray();
 
-    public void setConnectionStringArray(String[] adapters);
+    void setConnectionStringArray(String[] adapters);
 
-    public String getConnectionString();
+    String getConnectionString();
 
-    public void setConnectionString(String adapter);
+    void setConnectionString(String adapter);
 }

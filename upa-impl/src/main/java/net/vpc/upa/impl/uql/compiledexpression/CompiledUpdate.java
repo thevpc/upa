@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import net.vpc.upa.impl.uql.DecObjectType;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            StatementExpression, And, Expression, Litteral,
-//            Equals, Var, SQLContext
 public final class CompiledUpdate extends DefaultCompiledEntityStatement implements CompiledUpdateStatement {
 
     private static final long serialVersionUID = 1L;

@@ -38,13 +38,13 @@ import java.util.List;
 
 public interface Index extends UPAObject {
 
-    public void commitModelChanges();
+    void commitModelChanges();
 
-    public Field[] getFields();
+    Field[] getFields();
 
-    public String[] getFieldNames();
+    String[] getFieldNames();
 
-    public Entity getEntity();
+    Entity getEntity();
 
-    public boolean isUnique();
+    boolean isUnique();
 }

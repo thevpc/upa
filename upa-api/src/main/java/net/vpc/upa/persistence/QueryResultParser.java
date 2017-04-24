@@ -44,5 +44,5 @@ import net.vpc.upa.exceptions.UPAException;
  * To change this template use File | Settings | File Templates.
  */
 public interface QueryResultParser<T> {
-    public T parse(QueryResult result) throws UPAException;
+    T parse(QueryResult result) throws UPAException;
 }

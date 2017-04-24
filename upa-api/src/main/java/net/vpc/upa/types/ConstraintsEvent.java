@@ -37,8 +37,6 @@ package net.vpc.upa.types;
 import java.util.ArrayList;
 import java.util.List;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.util:
-//            ConstraintsException, Utils
 public class ConstraintsEvent {
 
     private List<ConstraintsException> errors = new ArrayList<ConstraintsException>(1);

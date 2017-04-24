@@ -40,6 +40,6 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface DataTypeTransformFactory {
 
-    public DataTypeTransform createTypeTransform(PersistenceUnit pu, DataType source, DataTypeTransformConfig[] transformConfig) throws UPAException;
+    DataTypeTransform createTypeTransform(PersistenceUnit pu, DataType source, DataTypeTransformConfig[] transformConfig) throws UPAException;
 
 }

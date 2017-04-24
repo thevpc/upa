@@ -40,11 +40,11 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 
 public interface UpdateRelationshipTargetFormulaInterceptor extends EntityInterceptor {
-    public String getRelationshipName();
+    String getRelationshipName();
 
-    public FieldFilter getFormulaFields();
+    FieldFilter getFormulaFields();
 
-    public FieldFilter getConditionFields();
+    FieldFilter getConditionFields();
 
-    public Expression translateExpression(Expression e) throws UPAException;
+    Expression translateExpression(Expression e) throws UPAException;
 }

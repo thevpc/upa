@@ -42,8 +42,6 @@ import net.vpc.upa.types.TypesFactory;
 import java.util.Date;
 import java.util.List;
 
-// Referenced classes of package net.vpc.lib.pheromone.ariana.database.sql:
-//            Expression
 public final class Literal extends DefaultExpression
         implements Cloneable {
 

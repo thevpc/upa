@@ -39,9 +39,9 @@ package net.vpc.upa;
  */
 public interface IndexDescriptor {
 
-    public String getName();
+    String getName();
 
-    public String[] getFieldNames();
+    String[] getFieldNames();
 
-    public boolean isUnique();
+    boolean isUnique();
 }

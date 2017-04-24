@@ -46,7 +46,7 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface FieldPersister {
 
-    public void beforePersist(Document document, EntityExecutionContext context) throws UPAException;
+    void beforePersist(Document document, EntityExecutionContext context) throws UPAException;
 
-    public void afterPersist(Document document, EntityExecutionContext context) throws UPAException;
+    void afterPersist(Document document, EntityExecutionContext context) throws UPAException;
 }

@@ -40,7 +40,7 @@ package net.vpc.upa;
  */
 public interface UserPrincipal {
 
-    public String getName();
+    String getName();
 
-    public Object getObject();
+    Object getObject();
 }
