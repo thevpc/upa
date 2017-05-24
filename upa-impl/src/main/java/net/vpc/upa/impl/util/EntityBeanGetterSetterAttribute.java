@@ -2,6 +2,8 @@ package net.vpc.upa.impl.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
+
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.types.I18NString;
 
@@ -10,7 +12,7 @@ import net.vpc.upa.types.I18NString;
  * @creationdate 1/5/13 11:28 PM
  */
 class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
-
+    private static final Logger log=Logger.getLogger(EntityBeanGetterSetterAttribute.class.getName());
     private Method getter;
     private Method setter;
     private String fieldName;
@@ -31,6 +33,13 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
             getter.setAccessible(true);
         }
         setter = entityBeanAdapter.getMethod(type, PlatformUtils.setterName(fieldName), Void.TYPE, fieldType);
+        if(setter==null){
+            //check if this is a builder setter (that returns non void value)
+            setter = entityBeanAdapter.getMethod(type, PlatformUtils.setterName(fieldName), null, fieldType);
+            if(setter!=null){
+                log.severe(fieldName+" has a non standard setter "+setter);
+            }
+        }
         if (setter != null) {
             setter.setAccessible(true);
         }
@@ -64,7 +73,7 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
     @Override
     public void setValue(Object o, Object value) {
         if (setter == null) {
-            throw new RuntimeException("Field " + fieldName + " is readonly : no setter found");
+            throw new RuntimeException("Field " + fieldName + " is readonly : no setter found in "+entityBeanAdapter.getEntity().getName());
         }
         try {
             setter.invoke(o, value);
