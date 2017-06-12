@@ -8,6 +8,8 @@ package net.vpc.upa.impl.uql.util;
 import net.vpc.upa.ExpressionManager;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.expressions.*;
+import net.vpc.upa.impl.uql.CompiledExpressionThisReplacer;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 
 import java.util.Arrays;
 

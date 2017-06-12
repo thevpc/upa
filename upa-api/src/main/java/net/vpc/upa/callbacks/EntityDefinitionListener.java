@@ -44,9 +44,9 @@ public interface EntityDefinitionListener extends DefinitionListener {
 
     void onCreateEntity(EntityEvent event);
 
-    void onPreInitEntity(EntityEvent event);
+    void onPrePrepareEntity(EntityEvent event);
 
-    void onInitEntity(EntityEvent event);
+    void onPrepareEntity(EntityEvent event);
 
     void onPreDropEntity(EntityEvent event);
 

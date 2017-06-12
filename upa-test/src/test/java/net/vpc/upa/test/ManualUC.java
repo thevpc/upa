@@ -5,6 +5,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.test.model.Client;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.TransactionType;
+import net.vpc.upa.types.TypesFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class ManualUC {
 
         sm.beginStructureModification();
         Entity entityManager = sm.getEntity("Client");
-        entityManager.addField("extra", null, null, null, null,IntType.DEFAULT,-1);
+        entityManager.addField(new DefaultFieldBuilder().setName("extra").setDataType(TypesFactory.INT));
         sm.commitStructureModification();
 
         Client c = entityManager.createObject();

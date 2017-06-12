@@ -34,7 +34,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private AccessLevel readAccessLevel = AccessLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int position;
+    private int position=-1;
 
     public String getName() {
         return name;
@@ -45,11 +45,11 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         return this;
     }
 
-    public String getFieldPath() {
+    public String getPath() {
         return fieldPath;
     }
 
-    public DefaultFieldDescriptor setFieldPath(String fieldPath) {
+    public DefaultFieldDescriptor setPath(String fieldPath) {
         this.fieldPath = fieldPath;
         return this;
     }
@@ -136,21 +136,21 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     }
 
     @Override
-    public FlagSet<UserFieldModifier> getUserFieldModifiers() {
+    public FlagSet<UserFieldModifier> getModifiers() {
         return userModifiers;
     }
 
-    public DefaultFieldDescriptor setUserFieldModifiers(FlagSet<UserFieldModifier> userModifiers) {
+    public DefaultFieldDescriptor setModifiers(FlagSet<UserFieldModifier> userModifiers) {
         this.userModifiers = userModifiers;
         return this;
     }
 
     @Override
-    public FlagSet<UserFieldModifier> getUserExcludeModifiers() {
+    public FlagSet<UserFieldModifier> getExcludeModifiers() {
         return userExcludeModifiers;
     }
 
-    public DefaultFieldDescriptor setUserExcludeModifiers(FlagSet<UserFieldModifier> userExcludeModifiers) {
+    public DefaultFieldDescriptor setExcludeModifiers(FlagSet<UserFieldModifier> userExcludeModifiers) {
         this.userExcludeModifiers = userExcludeModifiers;
         return this;
     }
@@ -207,7 +207,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         return this;
     }
 
-    public int getPosition() {
+    public int getIndex() {
         return position;
     }
 
@@ -221,7 +221,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
             other = new DefaultFieldDescriptor();
         }
         setName(other.getName());
-        setFieldPath(other.getFieldPath());
+        setPath(other.getPath());
         setDefaultObject(other.getDefaultObject());
         setUnspecifiedObject(other.getUnspecifiedObject());
         setDataType(other.getDataType());
@@ -231,14 +231,14 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         setSelectFormula(other.getSelectFormula());
         setPersistFormulaOrder(other.getPersistFormulaOrder());
         setUpdateFormulaOrder(other.getUpdateFormulaOrder());
-        setUserFieldModifiers(other.getUserFieldModifiers());
-        setUserExcludeModifiers(other.getUserExcludeModifiers());
+        setModifiers(other.getModifiers());
+        setExcludeModifiers(other.getExcludeModifiers());
         setPersistAccessLevel(other.getPersistAccessLevel());
         setUpdateAccessLevel(other.getUpdateAccessLevel());
         setReadAccessLevel(other.getReadAccessLevel());
         setFieldParams(other.getFieldParams());
         setPropertyAccessType(other.getPropertyAccessType());
-        setPosition(other.getPosition());
+        setPosition(other.getIndex());
         return this;
     }
 
@@ -249,8 +249,8 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         if (other.getName() != null) {
             setName(other.getName());
         }
-        if (other.getFieldPath() != null) {
-            setFieldPath(other.getFieldPath());
+        if (other.getPath() != null) {
+            setPath(other.getPath());
         }
         if (other.getDefaultObject() != null) {
             setDefaultObject(other.getDefaultObject());
@@ -279,11 +279,11 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         if (other.getUpdateFormulaOrder() != 0) {
             setUpdateFormulaOrder(other.getUpdateFormulaOrder());
         }
-        if (other.getUserFieldModifiers() != null) {
-            setUserFieldModifiers(other.getUserFieldModifiers());
+        if (other.getModifiers() != null) {
+            setModifiers(other.getModifiers());
         }
-        if (other.getUserExcludeModifiers() != null) {
-            setUserExcludeModifiers(other.getUserExcludeModifiers());
+        if (other.getExcludeModifiers() != null) {
+            setExcludeModifiers(other.getExcludeModifiers());
         }
         if (other.getPersistAccessLevel() != null) {
             setPersistAccessLevel(other.getPersistAccessLevel());
@@ -300,8 +300,8 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         if (other.getPropertyAccessType() != null) {
             setPropertyAccessType(other.getPropertyAccessType());
         }
-        if (other.getPosition() != 0) {
-            setPosition(other.getPosition());
+        if (other.getIndex() != 0) {
+            setPosition(other.getIndex());
         }
         return this;
     }

@@ -13,15 +13,23 @@ import net.vpc.upa.UPAObjectListener;
  */
 public class ListUtils {
 
-    public static <T extends UPAObject> void add(List<T> items, T child, int index, UPAObject newParent, UPAObject obj, ItemInterceptor<T> interceptor) {
+    public static <T extends UPAObject> void add(List<T> items, T child, int index, UPAObject newParent, UPAObject obj, ItemInterceptor<T> interceptor,boolean lenient) {
         if (index < 0) {
             index = items.size() + index + 1;
         }
         if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException(index);
+            if(lenient){
+               index=0;
+            }else {
+                throw new ArrayIndexOutOfBoundsException(index);
+            }
         }
         if (index > items.size()) {
-            throw new ArrayIndexOutOfBoundsException(index);
+            if(lenient){
+                index=items.size();
+            }else {
+                throw new ArrayIndexOutOfBoundsException(index);
+            }
         }
         if (interceptor != null) {
             interceptor.before(child, index);

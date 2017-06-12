@@ -995,12 +995,14 @@ public class DefaultPersistenceStore implements PersistenceStore {
                     throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
                 }
                 Field f = null;
+                Field fbase = null;
                 if (expression1 instanceof CompiledVar) {
                     CompiledVar v = (CompiledVar) expression1;
                     CompiledVarOrMethod leaf = v.getDeepChild();
                     Object referrer = leaf.getReferrer();
                     if (referrer instanceof Field) {
                         f = (Field) referrer;
+                        fbase = (Field) leaf.getBaseReferrer();
                         c = UPAUtils.getTypeTransformOrIdentity(f);
                     }
                 }
@@ -1017,7 +1019,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 DataTypeTransform baseTransform = c;
                 c = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                ne[i] = new NativeField(validName, binding, exprString, field.getIndex(), field.isExpanded(), f, c);
+                ne[i] = new NativeField(validName, binding, exprString, field.getIndex(), field.isExpanded(), f, fbase,c);
             }
         } else {
             ne = new NativeField[0];
@@ -1189,7 +1191,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         Select s = new Select();
         for (PrimitiveField key : keys) {
             FlagSet<FieldModifier> modifiers = key.getModifiers();
-            if (modifiers.contains(FieldModifier.SELECT_STORED)) {
+            if (modifiers.contains(FieldModifier.SELECT_COMPILED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (modifiers.contains(FieldModifier.SELECT_DEFAULT)) {

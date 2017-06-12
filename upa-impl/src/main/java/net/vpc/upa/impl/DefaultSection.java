@@ -3,17 +3,16 @@ package net.vpc.upa.impl;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.NoSuchSectionException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.util.ListUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import net.vpc.upa.exceptions.NoSuchEntityItemException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.DataType;
 
 public class DefaultSection extends AbstractUPAObject implements Section {
 
@@ -59,7 +58,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     @Override
     public void addPart(EntityPart child, int index) throws UPAException {
-        ListUtils.add(parts, child, index, this, this, new DefaultSectionPrivateAddItemInterceptor(this));
+        ListUtils.add(parts, child, index, this, this, new DefaultSectionPrivateAddItemInterceptor(this),true);
     }
 
     public EntityPart removePart(String name) throws UPAException {
@@ -259,16 +258,62 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     }
 
     @Override
-    public Field addField(String name, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type) throws UPAException {
-        return getEntity().addField(name, getPath(), modifiers, defaultValue, type);
+    public Field addField(FieldBuilder fieldBuilder) throws UPAException {
+        return addField(fieldBuilder.build());
     }
 
     @Override
-    public Field addField(String name, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type, int index) throws UPAException {
-        return getEntity().addField(name, getPath(), modifiers, null, defaultValue, type, index);
+    public Field addField(FieldDescriptor fieldDescriptor) throws UPAException {
+        DefaultFieldDescriptor f=new DefaultFieldDescriptor();
+        f.setFieldDescriptor(fieldDescriptor);
+        String p = f.getPath();
+        f.setPath(p==null?getPath():getPath()+"/"+p);
+        return getEntity().addField(f);
     }
 
     public List<Field> getFields() {
+        List<Field> fields = new ArrayList<Field>();
+        for (EntityPart part : getParts()) {
+            if (part instanceof Field) {
+                fields.add((Field) part);
+            }else if(part instanceof Section){
+                fields.addAll(((Section) part).getFields());
+            }
+        }
+        return fields;
+    }
+
+    @Override
+    public List<Field> getFields(FieldFilter fieldFilter) throws UPAException {
+        List<Field> fields = new ArrayList<Field>();
+        for (EntityPart part : getParts()) {
+            if (part instanceof Field) {
+                Field part1 = (Field) part;
+                if(fieldFilter==null || fieldFilter.accept(part1)) {
+                    fields.add(part1);
+                }
+            }else if(part instanceof Section){
+                fields.addAll(((Section) part).getFields(fieldFilter));
+            }
+        }
+        return fields;
+    }
+
+    @Override
+    public List<Field> getImmediateFields(FieldFilter fieldFilter) {
+        List<Field> fields = new ArrayList<Field>();
+        for (EntityPart part : getParts()) {
+            if (part instanceof Field) {
+                Field part1 = (Field) part;
+                if(fieldFilter==null || fieldFilter.accept(part1)) {
+                    fields.add(part1);
+                }
+            }
+        }
+        return fields;
+    }
+
+    public List<Field> getImmediateFields() {
         List<Field> fields = new ArrayList<Field>();
         for (EntityPart part : getParts()) {
             if (part instanceof Field) {

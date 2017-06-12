@@ -11,19 +11,19 @@
  * considerably of the leading ORM (JPA, Hibernate/NHibernate, MyBatis and
  * Entity Framework to name a few) failures to satisfy very common even known to
  * be trivial requirement in enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -31,9 +31,10 @@
  */
 package net.vpc.upa;
 
-import java.util.Map;
-import net.vpc.upa.types.DataTypeTransformConfig;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransformConfig;
+
+import java.util.Map;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -42,7 +43,7 @@ public interface FieldDescriptor {
 
     String getName();
 
-    String getFieldPath();
+    String getPath();
 
     Object getDefaultObject();
 
@@ -62,9 +63,9 @@ public interface FieldDescriptor {
 
     int getUpdateFormulaOrder();
 
-    FlagSet<UserFieldModifier> getUserFieldModifiers();
+    FlagSet<UserFieldModifier> getModifiers();
 
-    FlagSet<UserFieldModifier> getUserExcludeModifiers();
+    FlagSet<UserFieldModifier> getExcludeModifiers();
 
     AccessLevel getPersistAccessLevel();
 
@@ -76,6 +77,6 @@ public interface FieldDescriptor {
 
     PropertyAccessType getPropertyAccessType();
 
-    int getPosition();
+    int getIndex();
 
 }

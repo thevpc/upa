@@ -294,7 +294,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         adapter.inject("fieldNames", fieldList.toArray(new String[fieldList.size()]));
 
         //List<T> items, T child, int index, UPAObject newParent, UPAObject propertyChangeSupport, ItemInterceptor<T> interceptor
-        ListUtils.add(indexes, index, -1, this, this, null);
+        ListUtils.add(indexes, index, -1, this, this, null,true);
         invalidateStructureCache();
         return index;
     }
@@ -357,7 +357,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     private void addPart(EntityPart item, int index) throws UPAException {
-        ListUtils.add(items, item, index, this, this, new DefaultEntityPrivateAddItemInterceptor(this));
+        ListUtils.add(items, item, index, this, this, new DefaultEntityPrivateAddItemInterceptor(this),true);
         itemsByName.put(item.getName(), item);
         invalidateStructureCache();
     }
@@ -731,26 +731,26 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (epm != null) {
             PersistenceStore store = epm.getPersistenceStore();
             if (store != null) {
-                if (!store.isViewSupported() && (_effectiveModifiers.contains(FieldModifier.SELECT_STORED))) {
-                    _effectiveModifiers = _effectiveModifiers.remove(FieldModifier.SELECT_STORED);
+                if (!store.isViewSupported() && (_effectiveModifiers.contains(FieldModifier.SELECT_COMPILED))) {
+                    _effectiveModifiers = _effectiveModifiers.remove(FieldModifier.SELECT_COMPILED);
                     _effectiveModifiers = _effectiveModifiers.add(FieldModifier.SELECT_DEFAULT);
                     log.log(Level.WARNING, "View is not supported, View Field forced to be persisted {0}", field);
                     //effectiveModifiers = effectiveModifiers.add(UserFieldModifier.STORED_FORMULA);
                 }
-                if (!store.isComplexSelectSupported() && (_effectiveModifiers.contains(FieldModifier.SELECT_LIVE) || _effectiveModifiers.contains(FieldModifier.SELECT_STORED))) {
+                if (!store.isComplexSelectSupported() && (_effectiveModifiers.contains(FieldModifier.SELECT_LIVE) || _effectiveModifiers.contains(FieldModifier.SELECT_COMPILED))) {
                     //check if complex formula
                     boolean complexFormula = false;
                     Formula selectFormula = field.getSelectFormula();
                     if (selectFormula instanceof ExpressionFormula) {
                         ExpressionFormula ef = (ExpressionFormula) selectFormula;
-                        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(ef.getExpression());
+                        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(ef.getExpression(),null);
                         complexFormula = compiledExpression.findFirstExpression(CompiledExpressionHelper.SELECT_FILTER) != null;
                     } else {
                         complexFormula = true;
                     }
                     if (complexFormula) {
                         _effectiveModifiers = _effectiveModifiers.remove(FieldModifier.SELECT_LIVE);
-                        _effectiveModifiers = _effectiveModifiers.remove(FieldModifier.SELECT_STORED);
+                        _effectiveModifiers = _effectiveModifiers.remove(FieldModifier.SELECT_COMPILED);
                         _effectiveModifiers = _effectiveModifiers.add(FieldModifier.PERSIST_FORMULA);
                         _effectiveModifiers = _effectiveModifiers.add(FieldModifier.UPDATE_FORMULA);
                         if (field.getUpdateFormula() == null) {
@@ -799,8 +799,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 } else if (selectFormula instanceof ExpressionFormula) {
                     if (fmc.contains(UserFieldModifier.LIVE)) {
                         fmc.add(FieldModifier.SELECT_LIVE);
+                        fmc.add(FieldModifier.TRANSIENT);
                     } else if (fmc.contains(UserFieldModifier.COMPILED)) {
-                        fmc.add(FieldModifier.SELECT_STORED);
+                        fmc.add(FieldModifier.SELECT_COMPILED);
+                        fmc.add(FieldModifier.TRANSIENT);
                     } else {
                         fmc.add(FieldModifier.SELECT_DEFAULT);
                     }
@@ -823,7 +825,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
             if (!fmc.rejects(UserFieldModifier.PERSIST)
                     && !fmc.getEffective().contains(FieldModifier.SELECT_LIVE)
-                    && !fmc.getEffective().contains(FieldModifier.SELECT_STORED)) {
+                    && !fmc.getEffective().contains(FieldModifier.SELECT_COMPILED)) {
 
                 if (persistFormula == null) {
                     fmc.add(FieldModifier.PERSIST);
@@ -840,7 +842,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (!fmc.rejects(UserFieldModifier.UPDATE)
                     && !fmc.getEffective().contains(FieldModifier.ID)
                     && !fmc.getEffective().contains(FieldModifier.SELECT_LIVE)
-                    && !fmc.getEffective().contains(FieldModifier.SELECT_STORED)) {
+                    && !fmc.getEffective().contains(FieldModifier.SELECT_COMPILED)) {
                 if (updateFormula == null) {
                     fmc.add(FieldModifier.UPDATE);
                     fmc.add(FieldModifier.UPDATE_DEFAULT);
@@ -1382,11 +1384,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return added;
 //    }
 //
-    public Field bindField(Field field, String sectionPath) throws UPAException {
-        return bindField(field, sectionPath, -1);
-    }
 
-    public Field bindField(Field field, String sectionPath, int index) throws UPAException {
+    public Field bindField(Field field, String sectionPath) throws UPAException {
 
         if (StringUtils.isNullOrEmpty(field.getName())) {
             throw new IllegalArgumentException("Field name is Null or Empty");
@@ -1429,10 +1428,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         if (sectionPath == null || sectionPath.length() == 0) {
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            addPart(field, index);
+            addPart(field, field.getPreferredIndex());
         } else {
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            getSection(sectionPath, MissingStrategy.CREATE).addPart(field, index);
+            getSection(sectionPath, MissingStrategy.CREATE).addPart(field, field.getPreferredIndex());
         }
         invalidateStructureCache();
         return field;
@@ -1459,7 +1458,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 //throw new UPAException(new I18NString("NoNullableFormulaException", field.getName(), getName()));
             }
             if (fieldsMap.containsKey(getPersistenceUnit().getNamingStrategy().getUniformValue(field.getName()))) {
-                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", field.getName());
+                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", field.getName(),this);
             }
         } else if (part instanceof Section) {
             if (part.getName() == null || part.getName().length() == 0) {
@@ -1553,8 +1552,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return navigator;
     }
 
-    public void setNavigator(EntityNavigator newNavigator) {
-        this.navigator = newNavigator;
+    public void setNavigator(EntityNavigator navigator) {
+        this.navigator = navigator;
     }
 
     protected EntityNavigator createNavigator() throws UPAException {
@@ -1605,8 +1604,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         f.setName(fieldDescriptor.getName());
         f.setDefaultObject(fieldDescriptor.getDefaultObject());
         f.setDataType(fieldDescriptor.getDataType());
-        f.setUserModifiers(fieldDescriptor.getUserFieldModifiers());
-        f.setUserExcludeModifiers(fieldDescriptor.getUserExcludeModifiers());
+        f.setUserModifiers(fieldDescriptor.getModifiers());
+        f.setUserExcludeModifiers(fieldDescriptor.getExcludeModifiers());
 
         PropertyAccessType propertyAccessType = fieldDescriptor.getPropertyAccessType();
         if (PlatformUtils.isUndefinedValue(PropertyAccessType.class, propertyAccessType)) {
@@ -1641,14 +1640,19 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 cf.addField((PrimitiveField) field);
             }
         }
+        f.setPreferredIndex(fieldDescriptor.getIndex());
         return f;
     }
 
     public Field addField(FieldDescriptor fieldDescriptor) throws UPAException {
         Field f = createField(fieldDescriptor);
-        bindField(f, fieldDescriptor.getFieldPath(),
-                fieldDescriptor.getPosition() == 0 ? -1 : fieldDescriptor.getPosition());
+        bindField(f, fieldDescriptor.getPath());
         return f;
+    }
+
+    @Override
+    public Field addField(FieldBuilder fieldBuilder) {
+        return addField(fieldBuilder.build());
     }
 
     // public Field[] getRendererOrPrimaryFields() {
@@ -1661,29 +1665,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     // --------------------------------------------------------------------------------------------
     // SIMPLE addField
     // -----------------
-    public Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type) throws UPAException {
-        return addField(
-                new DefaultFieldDescriptor()
-                        .setName(name)
-                        .setFieldPath(sectionPath)
-                        .setUserFieldModifiers(modifiers)
-                        .setDefaultObject(defaultValue)
-                        .setDataType(type)
-        );
-    }
-
-    public Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, FlagSet<UserFieldModifier> excludeModifiers, Object defaultValue, DataType type, int index) throws UPAException {
-        return addField(
-                new DefaultFieldDescriptor()
-                        .setName(name)
-                        .setFieldPath(sectionPath)
-                        .setUserFieldModifiers(modifiers)
-                        .setUserExcludeModifiers(excludeModifiers)
-                        .setDefaultObject(defaultValue)
-                        .setDataType(type)
-                        .setPosition(index)
-        );
-    }
 
     // ------------------------------------------------------------------------------
     public int getItemsCount() {
@@ -1709,8 +1690,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    public boolean containsField(String key) throws UPAException {
-        return fieldsMap.containsKey(getPersistenceUnit().getNamingStrategy().getUniformValue(key));
+    public boolean containsField(String fieldName) throws UPAException {
+        return fieldsMap.containsKey(getPersistenceUnit().getNamingStrategy().getUniformValue(fieldName));
     }
 
     public List<DynamicField> getDynamicFields() throws UPAException {
@@ -1815,6 +1796,35 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    public ExtendedField[] getExtendedFields(FieldFilter fieldFilter) {
 //        return getExtendedField(fieldFilter,false);
 //    }
+
+
+    @Override
+    public List<Field> getImmediateFields() {
+        return null;
+    }
+
+    @Override
+    public List<Field> getImmediateFields(FieldFilter filter) {
+        List<Field> e = new ArrayList<Field>(getParts().size());
+        for (EntityPart p : getParts()) {
+            if(p instanceof Field) {
+                Field field=(Field) p;
+                if (filter==null || filter.accept(field)) {
+                    e.add(field);
+                }
+            }
+        }
+        if(filter==null || filter.acceptDynamic()) {
+            List<DynamicField> dynamicFields = getDynamicFields();
+            for (DynamicField df : dynamicFields) {
+                if (filter==null || filter.accept(df)) {
+                    e.add(df);
+                }
+            }
+        }
+        return e;
+    }
+
     public List<Field> getFields(FieldFilter fieldFilter) throws UPAException {
         revalidateStructure();
         if (fieldFilter == null) {
@@ -1847,7 +1857,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
             c = e;
         }
-        return c;
+        return Collections.unmodifiableList(c);
     }
 
     public List<PrimitiveField> getPrimitiveFields(FieldFilter fieldFilter) throws UPAException {
@@ -3566,11 +3576,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return e;
     }
 
-    public Object compile(Expression expression) throws UPAException {
+    public Object compile(Expression expression,String alias) throws UPAException {
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        config.setThisAlias("upathis");
+        if(StringUtils.isNullOrEmpty(alias)){
+            alias="upathis";
+        }
+        config.setThisAlias(alias);
         config.setExpandEntityFilter(false);
-        CompiledSelect compiledSelect = (CompiledSelect) getPersistenceUnit().getExpressionManager().compileExpression(new Select().from(getName(), "upathis").field(expression), config);
+        CompiledSelect compiledSelect = (CompiledSelect) getPersistenceUnit().getExpressionManager().compileExpression(new Select().from(getName(), alias).field(expression), config);
         return compiledSelect.getField(0).getExpression();
     }
 
@@ -3579,7 +3592,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (f instanceof ExpressionFormula) {
             ExpressionFormula expressionFormula = (ExpressionFormula) f;
             try {
-                DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(expressionFormula.getExpression());
+                DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(expressionFormula.getExpression(),null);
                 compiledExpression.visit(new FieldCollectorCompiledExpressionVisitor(usedFields));
             }catch(RuntimeException ex){
                 throw new InvalidFormulaException(String.valueOf(expressionFormula.getExpression()),ex);

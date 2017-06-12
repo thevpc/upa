@@ -176,7 +176,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Parser.Syntax
                 CheckArgCount(name, args, 1);
                 return new Net.Vpc.Upa.Expressions.Exists((Net.Vpc.Upa.Expressions.QueryStatement) args[0]);
             }
-            if (uniformName.Equals("ishierarchydescendent")) {
+            if (uniformName.Equals("ishierarchydescendant")) {
                 if ((args).Count == 3) {
                     return new Net.Vpc.Upa.Expressions.IsHierarchyDescendent(args[0], args[1], args[2]);
                 } else if ((args).Count == 2) {

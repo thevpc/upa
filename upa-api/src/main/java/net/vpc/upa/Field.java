@@ -141,7 +141,7 @@ public interface Field extends EntityPart {
 
     boolean isSummary() throws UPAException;
 
-    boolean is(FieldFilter ff) throws UPAException;
+    boolean is(FieldFilter filter) throws UPAException;
 
     //    boolean is(long modifier);
     void setDataType(DataType datatype);
@@ -171,4 +171,7 @@ public interface Field extends EntityPart {
     void setValue(Object instance, Object value);
 
     void check(Object value);
+
+    int getPreferredIndex();
+    void setPreferredIndex(int preferredIndex);
 }

@@ -580,7 +580,7 @@ public class DefaultUPAContext implements UPAContext {
     @Override
     public Callback createCallback(CallbackConfig callbackConfig) {
         Object instance = callbackConfig.getInstance();
-        Method m = callbackConfig.getMethod();
+        Method method = callbackConfig.getMethod();
         CallbackType callbackType = callbackConfig.getCallbackType();
         Map<String, Object> configuration = callbackConfig.getConfiguration();
 //        if (configuration == null) {
@@ -589,7 +589,7 @@ public class DefaultUPAContext implements UPAContext {
         ObjectType objectType = PlatformUtils.getUndefinedValue(ObjectType.class);
         EventPhase phase = callbackConfig.getPhase();
         if (PlatformUtils.isUndefinedValue(ObjectType.class, objectType)) {
-            for (Class<?> parameterType : m.getParameterTypes()) {
+            for (Class<?> parameterType : method.getParameterTypes()) {
                 if (parameterType.equals(ContextEvent.class)) {
                     objectType = ObjectType.CONTEXT;
                     break;
@@ -642,15 +642,15 @@ public class DefaultUPAContext implements UPAContext {
         }
         switch (objectType) {
             case ENTITY: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_PERSIST: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", PersistEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -660,7 +660,7 @@ public class DefaultUPAContext implements UPAContext {
                         boolean obj = false;
                         boolean formula = false;
                         boolean found = false;
-                        for (Class<?> parameterType : m.getParameterTypes()) {
+                        for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(UpdateObjectEvent.class)) {
                                 if (found) {
                                     throw new IllegalArgumentException("Ambiguous");
@@ -700,8 +700,8 @@ public class DefaultUPAContext implements UPAContext {
                                         new PosInvokeArgument("event", UpdateFormulaObjectEvent.class, 0, false)
                                 };
                                 InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                                return new UpdateFormulaObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                        m,
+                                return new UpdateFormulaObjectEventCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                        method,
                                         methodArguments,
                                         apiArguments,
                                         implicitArguments
@@ -711,8 +711,8 @@ public class DefaultUPAContext implements UPAContext {
                                         new PosInvokeArgument("event", UpdateObjectEvent.class, 0, false)
                                 };
                                 InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                                return new UpdateObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                        m,
+                                return new UpdateObjectEventCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                        method,
                                         methodArguments,
                                         apiArguments,
                                         implicitArguments
@@ -723,8 +723,8 @@ public class DefaultUPAContext implements UPAContext {
                                     new PosInvokeArgument("event", UpdateFormulaEvent.class, 0, false)
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                            return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                    m,
+                            return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    method,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -734,8 +734,8 @@ public class DefaultUPAContext implements UPAContext {
                                     new PosInvokeArgument("event", UpdateEvent.class, 0, false)
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                            return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                    m,
+                            return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    method,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -745,7 +745,7 @@ public class DefaultUPAContext implements UPAContext {
                     case ON_REMOVE: {
                         boolean obj = false;
                         boolean found = false;
-                        for (Class<?> parameterType : m.getParameterTypes()) {
+                        for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(RemoveObjectEvent.class)) {
                                 if (found) {
                                     throw new IllegalArgumentException("Ambiguous");
@@ -766,8 +766,8 @@ public class DefaultUPAContext implements UPAContext {
                                     new PosInvokeArgument("event", RemoveObjectEvent.class, 0, false)
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                            return new RemoveObjectEventCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                    m,
+                            return new RemoveObjectEventCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    method,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -777,8 +777,8 @@ public class DefaultUPAContext implements UPAContext {
                                     new PosInvokeArgument("event", RemoveEvent.class, 0, false)
                             };
                             InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                            return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                    m,
+                            return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                    method,
                                     methodArguments,
                                     apiArguments,
                                     implicitArguments
@@ -787,13 +787,15 @@ public class DefaultUPAContext implements UPAContext {
                     }
                     case ON_RESET:
                     case ON_CLEAR:
-                    case ON_INITIALIZE: {
+                    case ON_INIT:
+                    case ON_PREPARE:
+                        {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -804,8 +806,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -816,8 +818,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -828,8 +830,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -840,8 +842,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -852,8 +854,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", UpdateFormulaEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -865,15 +867,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case FIELD: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", FieldEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -884,8 +886,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", FieldEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -896,8 +898,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", FieldEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -908,8 +910,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", FieldEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -921,15 +923,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case SECTION: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", SectionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -940,8 +942,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", SectionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -952,8 +954,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", SectionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -964,8 +966,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", SectionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -977,15 +979,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case PACKAGE: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", PackageEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -996,8 +998,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PackageEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1008,8 +1010,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PackageEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1020,8 +1022,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PackageEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1033,15 +1035,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case PERSISTENCE_GROUP: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1052,8 +1054,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1064,8 +1066,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1076,8 +1078,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceGroupEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1089,15 +1091,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case PERSISTENCE_UNIT: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1108,8 +1110,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1120,8 +1122,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1132,8 +1134,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1144,8 +1146,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", PersistenceUnitEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1157,15 +1159,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case TRIGGER: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", TriggerEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1176,8 +1178,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", TriggerEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1189,15 +1191,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case FUNCTION: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CREATE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", FunctionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1208,8 +1210,8 @@ public class DefaultUPAContext implements UPAContext {
                                 new PosInvokeArgument("event", FunctionEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1225,14 +1227,14 @@ public class DefaultUPAContext implements UPAContext {
                             configuration2.putAll(configuration);
                         }
                         if (!configuration2.containsKey("functionName")) {
-                            configuration2.put("functionName", m.getName());
+                            configuration2.put("functionName", method.getName());
                         }
                         if (!configuration2.containsKey("returnType")) {
-                            DataType forNativeType = TypesFactory.forPlatformType(m.getReturnType());
+                            DataType forNativeType = TypesFactory.forPlatformType(method.getReturnType());
                             configuration2.put("returnType", forNativeType);
                         }
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments
@@ -1244,15 +1246,15 @@ public class DefaultUPAContext implements UPAContext {
                 }
             }
             case CONTEXT: {
-                InvokeArgument[] methodArguments = createArguments(m);
+                InvokeArgument[] methodArguments = createArguments(method);
                 switch (callbackType) {
                     case ON_CLOSE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", ContextEvent.class, 0, false)
                         };
                         InvokeArgument[] implicitArguments = new InvokeArgument[]{};
-                        return new DefaultCallback(instance, m, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
-                                m,
+                        return new DefaultCallback(instance, method, callbackType, phase, objectType, DefaultMethodArgumentsConverter.create(
+                                method,
                                 methodArguments,
                                 apiArguments,
                                 implicitArguments

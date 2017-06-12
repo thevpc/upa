@@ -86,7 +86,7 @@ public class FormulaUpdateProcessor {
         } else if (!entityOperationManager.getPersistenceStore().isComplexSelectSupported()) {
             Expression fe = getFieldExpression(f, onPersist);
 
-            DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe);
+            DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe,null);
             boolean found = ce.findFirstExpression(CompiledExpressionHelper.QUERY_STATEMENT_FILTER)!=null;
             if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];

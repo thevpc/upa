@@ -17,7 +17,6 @@ import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.config.*;
 import net.vpc.upa.impl.config.annotationparser.RelationshipDescriptorProcessor;
-import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.eval.functions.FunctionCallback;
@@ -834,7 +833,14 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //        }
         if (relationDescriptor.isHierarchy()) {
             HierarchyExtension s = r.getHierarchyExtension();
-            detailEntity.addField(s.getHierarchyPathField(), "system", FlagSets.of(UserFieldModifier.SYSTEM), null, null, new StringType("PathFieldName", 0, 2048, true), -1);
+
+            detailEntity.addField(new DefaultFieldBuilder()
+                    .setName(s.getHierarchyPathField())
+                    .addModifier(UserFieldModifier.SYSTEM)
+                    .setDataType(new StringType("PathFieldName", 0, 2048, true))
+                    .setIndex(-1)
+                    .setPath("system")
+            );
             detailEntity.addTrigger(detailEntity.getName() + "_" + s.getHierarchyPathField() + "_TRIGGER", new HierarchicalRelationshipDataInterceptor(r));
         }
         persistenceUnitListenerManager.itemAdded(r, -1, null, EventPhase.AFTER);
@@ -1548,18 +1554,18 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         entity.addField(
                 new DefaultFieldDescriptor()
                         .setName("lockId")
-                        .setFieldPath("Lock")
-                        .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
-                        .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
+                        .setPath("Lock")
+                        .setModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
+                        .setExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
                         .setDataType(new StringType("lockId", 0, 64, true))
                         .setAccessLevel(AccessLevel.PRIVATE));
 
         entity.addField(
                 new DefaultFieldDescriptor()
                         .setName("lockTime")
-                        .setFieldPath("Lock")
-                        .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
-                        .setUserExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
+                        .setPath("Lock")
+                        .setModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
+                        .setExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
                         .setDataType(new DateType("lockTime", Timestamp.class, true))
                         .setAccessLevel(AccessLevel.PRIVATE)
         );
@@ -2660,8 +2666,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void addCallback(Callback callback) {
-        DefaultCallback b = (DefaultCallback) callback;
-        Map<String, Object> c = b.getConfiguration();
+        Map<String, Object> c = callback.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
             String functionName = c == null ? null : (String) c.get("functionName");
             if (StringUtils.isNullOrEmpty(functionName)) {
@@ -2671,7 +2676,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             if (returnType == null) {
                 throw new UPAException("MissingCallbackReturnType");
             }
-            getExpressionManager().addFunction(functionName, returnType, new FunctionCallback(b));
+            getExpressionManager().addFunction(functionName, returnType, new FunctionCallback(callback));
         } else {
             persistenceUnitListenerManager.addCallback(callback);
         }
@@ -2679,8 +2684,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void removeCallback(Callback callback) {
-        DefaultCallback b = (DefaultCallback) callback;
-        Map<String, Object> c = b.getConfiguration();
+        Map<String, Object> c = callback.getConfiguration();
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
             String functionName = c == null ? null : (String) c.get("functionName");
             if (StringUtils.isNullOrEmpty(functionName)) {

@@ -120,7 +120,7 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
             d.setDefaultObject(def == null ? null : def[i]);
             d.setUnspecifiedObject(uns == null ? null : uns[i]);
             d.setPersistAccessLevel(fieldDescriptor.getPersistAccessLevel());
-            d.setUserFieldModifiers(FlagSets.of(UserFieldModifier.SYSTEM));
+            d.setModifiers(FlagSets.of(UserFieldModifier.SYSTEM));
             d.setUpdateAccessLevel(fieldDescriptor.getPersistAccessLevel());
             fieldDescriptors[i]= d;
         }

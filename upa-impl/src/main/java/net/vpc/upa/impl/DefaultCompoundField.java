@@ -35,7 +35,7 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     }
 
     public void addField(PrimitiveField child, int index) throws UPAException {
-        ListUtils.add(fields, child, index, this, this, new AddPrimitiveFieldItemInterceptor(this));
+        ListUtils.add(fields, child, index, this, this, new AddPrimitiveFieldItemInterceptor(this),true);
         fieldsMap.put(child.getName(), child);
     }
 

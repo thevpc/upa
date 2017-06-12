@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Target(value=ElementType.METHOD)
 @Retention(value=RetentionPolicy.RUNTIME)
-public @interface OnInitialize {
+public @interface OnPrePrepare {
     String name() default "";
 
     boolean trackSystemObjects() default false;

@@ -211,8 +211,11 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                         DataType dt = (DataType) masterPK.get(i).getDataType().copy();
                         boolean nullable = baseFieldType.isNullable();
                         dt.setNullable(nullable);
-                        idField = sourceEntity.addField(extraName, "system", FlagSets.of(UserFieldModifier.SYSTEM), FlagSets.of(UserFieldModifier.UPDATE), null, dt, -1);
-                        idField.setAccessLevel(AccessLevel.PRIVATE);
+                        sourceEntity.addField(
+                                new DefaultFieldBuilder().setName(extraName).setPath("system").addModifier(UserFieldModifier.SYSTEM)
+                                        .addExcludeModifier(UserFieldModifier.UPDATE)
+                                        .setDataType(dt).setAccessLevel(AccessLevel.PRIVATE)
+                        );
                     } else {
                         idField.setUserExcludeModifiers(idField.getUserExcludeModifiers().add(UserFieldModifier.UPDATE));
                     }
@@ -429,12 +432,12 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
     }
 
     @Override
-    public void onInitEntity(EntityEvent event) {
+    public void onPrepareEntity(EntityEvent event) {
 
     }
 
     @Override
-    public void onPreInitEntity(EntityEvent event) {
+    public void onPrePrepareEntity(EntityEvent event) {
 
     }
 

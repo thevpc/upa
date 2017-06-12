@@ -91,7 +91,7 @@ namespace Net.Vpc.Upa.Impl.Uql.Compiledreplacer
             }
             Net.Vpc.Upa.Relationship t = Net.Vpc.Upa.Impl.Extension.HierarchicalRelationshipSupport.GetTreeRelationName(treeEntity);
             if (t == null) {
-                throw new System.ArgumentException ("Tree Relationship not found");
+                throw new System.ArgumentException ("Hierarchy Relationship not found");
             }
             Net.Vpc.Upa.Extensions.HierarchyExtension s = t.GetHierarchyExtension();
             if (s == null) {

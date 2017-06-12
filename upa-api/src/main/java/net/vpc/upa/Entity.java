@@ -45,13 +45,15 @@ import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.PersistenceStore;
 import net.vpc.upa.types.DataType;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
-    void setEntitySecurityManager(EntitySecurityManager securityManager);
-
     EntitySecurityManager getEntitySecurityManager();
+
+    void setEntitySecurityManager(EntitySecurityManager securityManager);
 
     FlagSet<EntityModifier> getUserModifiers();
 
@@ -62,6 +64,9 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     void setUserExcludeModifiers(FlagSet<EntityModifier> modifiers);
 
     FlagSet<EntityModifier> getModifiers();
+
+    // Framework Friend Methods
+    void setModifiers(FlagSet<EntityModifier> modifiers);
 
     boolean exists();
 
@@ -105,8 +110,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     int indexOfPart(String partName);
 
     int indexOfPart(String partName, boolean countSections,
-                           boolean countCompoundFields, boolean countFieldsInCompoundFields,
-                           boolean countFieldsInSections);
+                    boolean countCompoundFields, boolean countFieldsInCompoundFields,
+                    boolean countFieldsInSections);
 
     List<Section> getSections();
 
@@ -146,9 +151,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //    Field addField(Field field, String sectionPath, int index) ;
     Field addField(FieldDescriptor fieldDescriptor);
 
-    Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, Object defaultValue, DataType type);
-
-    Field addField(String name, String sectionPath, FlagSet<UserFieldModifier> modifiers, FlagSet<UserFieldModifier> excludeModifiers, Object defaultValue, DataType type, int index);
+    Field addField(FieldBuilder fieldBuilder);
 
     Field getMainField();
 
@@ -156,12 +159,12 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     EntityNavigator getNavigator();
 
-    void setNavigator(EntityNavigator newNavigator);
+    void setNavigator(EntityNavigator navigator);
 
     // ------------------------------------------------------------------------------
     int getFieldsCount();
 
-    boolean containsField(String key);
+    boolean containsField(String fieldName);
 
     List<DynamicField> getDynamicFields();
 
@@ -228,8 +231,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     void update(Object objectOrDocument);
 
-    void merge(Object objectOrDocument);
-
 //    void update(Object objectOrDocument,Map<String,Object> hints) ;
 //
 //    void merge(Object objectOrDocument,Map<String,Object> hints) ;
@@ -263,7 +264,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //    void updateFormulasById(FieldFilter filter, Object key) ;
 //    void updateFormulasById(FieldFilter filter, Object key,Map<String,Object> hints) ;
 
-    void updateFormulas();
+    void merge(Object objectOrDocument);
 //    void updateFormulas(Map<String,Object> hints) ;
 
 //    void updateFormulasById(Object id) ;
@@ -272,6 +273,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //
 //    void updateFormulas(Expression condition) ;
 //    void updateFormulas(Expression condition,Map<String,Object> hints) ;
+
+    void updateFormulas();
 
     Order getUpdateFormulasOrder();
 
@@ -285,7 +288,13 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     List<Field> getFields(FieldFilter filter);
 
+    List<Field> getImmediateFields();
+
+    List<Field> getImmediateFields(FieldFilter filter);
+
     Order getArchivingOrder();
+
+    void setArchivingOrder(Order archivingOrder);
 
     Field getLeadingPrimaryField();
 
@@ -302,8 +311,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     Order getListOrder();
 
     void setListOrder(Order listOrder);
-
-    void setArchivingOrder(Order archivingOrder);
 
     List<PrimitiveField> getPrimitiveFields(FieldFilter fieldFilter);
 
@@ -402,11 +409,11 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     int clearCore(EntityExecutionContext executionContext);
 
-    int initializeCore(EntityExecutionContext executionContext);
-
 //    long updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) ;
 
-    Object compile(Expression expression);
+    int initializeCore(EntityExecutionContext executionContext);
+
+    Object compile(Expression expression,String alias);
 
     void addFilter(String name, String expression);
 
@@ -419,9 +426,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     Set<String> getFilterNames();
 
     boolean isSystem();
-
-    // Framework Friend Methods
-    void setModifiers(FlagSet<EntityModifier> modifiers);
 
     void initialize();
 

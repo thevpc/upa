@@ -37,6 +37,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     private FieldPersister fieldPersister;
     private PropertyAccessType accessType;
     private List<Relationship> relationships;
+    private int preferredIndex=-1;
 
     protected AbstractField() {
     }
@@ -75,8 +76,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 //        }
 //    }
 //
-    public boolean is(FieldFilter ff) throws UPAException {
-        return ff.accept(this);
+    public boolean is(FieldFilter filter) throws UPAException {
+        return filter.accept(this);
     }
 
     public boolean isId() throws UPAException {
@@ -399,6 +400,15 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     public void setSearchOperator(SearchOperator searchOperator) {
         this.searchOperator = searchOperator;
+    }
+
+    @Override
+    public int getPreferredIndex() {
+        return preferredIndex;
+    }
+
+    public void setPreferredIndex(int preferredIndex) {
+        this.preferredIndex = preferredIndex;
     }
 
     //    public void setPasswordStrategy(CipherStrategyType cipherStrategyType, String cipherStrategy, String cipherValue) {

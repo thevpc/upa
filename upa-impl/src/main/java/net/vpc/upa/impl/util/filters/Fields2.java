@@ -9,7 +9,7 @@ import net.vpc.upa.filters.FieldFilters;
  * Created by vpc on 7/3/16.
  */
 public class Fields2 {
-    public static final FieldFilter VIEW = FieldFilters.byModifiersAnyOf(FieldModifier.SELECT_STORED);
+    public static final FieldFilter VIEW = FieldFilters.byModifiersAnyOf(FieldModifier.SELECT_COMPILED);
     public static final FieldFilter PERSIST_FORMULA = FieldFilters
             .byModifiersAnyOf(FieldModifier.PERSIST_FORMULA)
             .and(FieldFilters.byModifiersNotAllOf(FieldModifier.PERSIST_SEQUENCE));
@@ -22,13 +22,13 @@ public class Fields2 {
 
     public static final FieldFilter READ = FieldFilters.regular().and(
             FieldFilters.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-                    FieldModifier.SELECT_STORED,
+                    FieldModifier.SELECT_COMPILED,
                     FieldModifier.SELECT_LIVE))
                     .andNot(FieldFilters.byAllAccessLevel(AccessLevel.PRIVATE));
 
 //    private static final FieldFilter READABLE_NON_ENTITY = Fields.regular().and(
 //            Fields.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
-//                    FieldModifier.SELECT_STORED,
+//                    FieldModifier.SELECT_COMPILED,
 //                    FieldModifier.SELECT_LIVE)).andNot(Fields.byEntityType());
 
 }

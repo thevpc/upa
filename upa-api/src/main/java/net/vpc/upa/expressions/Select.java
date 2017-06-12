@@ -361,12 +361,12 @@ public class Select extends DefaultEntityStatement
     }
 
     public Select orderAscendentBy(Expression field) {
-        order.ascendent(field);
+        order.ascendant(field);
         return this;
     }
 
     public Select orderByDesc(Expression field) {
-        order.descendent(field);
+        order.descendant(field);
         return this;
     }
 
@@ -380,13 +380,13 @@ public class Select extends DefaultEntityStatement
         return this;
     }
 
-    //    public Select ascendent() {
+    //    public Select ascendant() {
 //        invalidateStructureCache();
 //        orderAsc = true;
 //        return this;
 //    }
 //
-//    public Select descendent() {
+//    public Select descendant() {
 //        invalidateStructureCache();
 //        orderAsc = false;
 //        return this;

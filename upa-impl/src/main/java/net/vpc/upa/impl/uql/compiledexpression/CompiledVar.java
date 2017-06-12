@@ -87,8 +87,9 @@ public class CompiledVar extends CompiledVarOrMethod {
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if (index == 0) {
             setChild((CompiledVarOrMethod) expression);
+        }else {
+            throw new UnsupportedOperationException();
         }
-        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -4,12 +4,13 @@
  */
 package net.vpc.upa.tutorial.feature;
 
+import net.vpc.upa.DefaultFieldBuilder;
 import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.types.IntType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.EvalContext;
 import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.OnCreate;
+import net.vpc.upa.types.TypesFactory;
 
 /**
  * This class adds multi tenant support to the application. All Entities will
@@ -26,8 +27,9 @@ public class MultiTenantFeature {
     @OnCreate
     public void entityAdded(EntityEvent event) {
         Entity entity = event.getEntity();
-        entity.addField("tenantId", "MultiTenant", null, null, null, IntType.DEFAULT, -1)
-                .setPersistFormula("CurrentTenant()");
+
+        entity.addField(new DefaultFieldBuilder().setName("tenantId").setPath("MultiTenant").setDataType(TypesFactory.INT)
+        .setPersistFormula("CurrentTenant()"));
 
         // filter entities by tenantId
         entity.addFilter("MultiTenant", "tenantId=CurrentTenant()");
@@ -40,7 +42,6 @@ public class MultiTenantFeature {
      * (Unstructured Query Language) context. Actually this is needed to call
      * the thread local var from within the tenantId formula
      *
-     * @param event event
      */
     @net.vpc.upa.config.Callback
     public static class CurrentTenant {

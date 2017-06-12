@@ -15,8 +15,7 @@ public class CallbackManager {
     Map<CallbackInvokerKey, List<PreparedCallback>> preparedAfter = new HashMap<CallbackInvokerKey, List<PreparedCallback>>();
 
     public void addCallback(Callback callback) {
-        DefaultCallback dcallback = (DefaultCallback) callback;
-        Map<String, Object> conf = dcallback.getConfiguration();
+        Map<String, Object> conf = callback.getConfiguration();
 //        if (conf == null) {
 //            conf = new HashMap<String, Object>();
 //        }
@@ -60,8 +59,7 @@ public class CallbackManager {
 
     public void removeCallback(Callback callback) {
 
-        DefaultCallback dcallback = (DefaultCallback) callback;
-        Map<String, Object> conf = dcallback.getConfiguration();
+        Map<String, Object> conf = callback.getConfiguration();
 //        if (conf == null) {
 //            conf = new HashMap<String, Object>();
 //        }
@@ -113,10 +111,25 @@ public class CallbackManager {
                 found.addAll(ss);
             }
             if (nameFilter != null) {
-                found.addAll(getCallbacks(callbackType, objectType, null, system,preparedOnly, phase));
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, null, system);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
             }
             if (!system) {
-                found.addAll(getCallbacks(callbackType, objectType, null, true,preparedOnly, phase));
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, nameFilter, true);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
+            }
+            if (nameFilter != null && !system) {
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, null, true);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
             }
         }else{
             Map<CallbackInvokerKey, List<Callback>> list = null;
@@ -127,10 +140,25 @@ public class CallbackManager {
                 found.addAll(ss);
             }
             if (nameFilter != null) {
-                found.addAll(getCallbacks(callbackType, objectType, null, system,preparedOnly, phase));
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, null, system);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
             }
             if (!system) {
-                found.addAll(getCallbacks(callbackType, objectType, null, true,preparedOnly, phase));
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, nameFilter, true);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
+            }
+            if (nameFilter != null && !system) {
+                CallbackInvokerKey k2 = new CallbackInvokerKey(callbackType, objectType, null, true);
+                ss = list.get(k2);
+                if (ss != null) {
+                    found.addAll(ss);
+                }
             }
         }
 

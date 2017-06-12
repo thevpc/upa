@@ -51,8 +51,8 @@ import java.lang.annotation.Target;
  *     <li>@OnPreAlter</li>
  *     <li>@OnDrop</li>
  *     <li>@OnPreDrop</li>
- *     <li>@OnInitialize</li>
- *     <li>@OnPreInitialize</li>
+ *     <li>@OnInit</li>
+ *     <li>@OnPreInit</li>
  *     <li>@OnPersist</li>
  *     <li>@OnPrePersist</li>
  *     <li>@OnRemove</li>

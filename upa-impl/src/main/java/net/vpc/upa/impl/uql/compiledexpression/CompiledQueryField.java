@@ -48,8 +48,9 @@ public class CompiledQueryField extends CompiledNamedExpression {
         return alias;
     }
 
-    public void setAlias(String alias) {
+    public CompiledQueryField setAlias(String alias) {
         this.alias = alias;
+        return this;
     }
 
     @Override

@@ -117,7 +117,7 @@ class RelationshipInfo implements RelationshipDescriptor {
             }
             Class<?> nativeClass = getFieldType();
             if (!nativeClass.equals(entityType)) {
-                throw new IllegalArgumentException("Tree Relationship invalid as " + nativeClass + " <> " + entityType);
+                throw new IllegalArgumentException("Hierarchy Relationship invalid as " + nativeClass + " <> " + entityType);
             }
             if (gid.getString("path").length() > 0) {
                 hierarchyPathField = gid.getString("path");

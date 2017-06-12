@@ -175,11 +175,11 @@ public class DefinitionListenerAdapter //        implements DefinitionListener, 
     public void onDropPersistenceGroup(PersistenceGroupEvent event) {
     }
 
-    public void onPreInitEntity(EntityEvent event) {
+    public void onPrePrepareEntity(EntityEvent event) {
 
     }
 
-    public void onInitEntity(EntityEvent event) {
+    public void onPrepareEntity(EntityEvent event) {
 
     }
 

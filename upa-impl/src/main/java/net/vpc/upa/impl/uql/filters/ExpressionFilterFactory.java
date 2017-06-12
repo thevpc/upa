@@ -5,15 +5,8 @@
  */
 package net.vpc.upa.impl.uql.filters;
 
-import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionFilter;
-import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterLeafVar;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterThisVar;
-import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
-
-import java.util.List;
 
 /**
  *
@@ -25,7 +18,7 @@ public final class ExpressionFilterFactory {
     public static ExpressionFilter SELECT_FILTER = new TypeExpressionFilter(CompiledSelect.class);
     public static ExpressionFilter QUERY_STATEMENT_FILTER = new TypeExpressionFilter(CompiledQueryStatement.class);
     public static ExpressionFilter QL_FUNCTION_FILTER = new TypeExpressionFilter(CompiledQLFunctionExpression.class);
-    public static ExpressionFilter DESCENDENT_FILTER = new TypeExpressionFilter(IsHierarchyDescendentCompiled.class);
+    public static ExpressionFilter DESCENDANT_FILTER = new TypeExpressionFilter(IsHierarchyDescendantCompiled.class);
 //    public static ExpressionFilter THIS_VAR_FILTER = new TypeExpressionFilter();
 
     private ExpressionFilterFactory() {

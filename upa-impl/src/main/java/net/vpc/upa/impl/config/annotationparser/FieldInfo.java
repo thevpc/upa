@@ -661,7 +661,7 @@ class FieldInfo implements FieldDescriptor {
         return entityInfo;
     }
 
-    public String getFieldPath() {
+    public String getPath() {
         return fieldPath;
     }
 
@@ -701,10 +701,10 @@ class FieldInfo implements FieldDescriptor {
         return updateFormulaOrder;
     }
 
-    public int getPosition() {
+    public int getIndex() {
         Integer value = overriddenPosition.value;
         if (value == null) {
-            return 0;
+            return -1;
         }
         return value.intValue();
     }
@@ -713,11 +713,11 @@ class FieldInfo implements FieldDescriptor {
         return selectFormulaOrder;
     }
 
-    public FlagSet<UserFieldModifier> getUserFieldModifiers() {
+    public FlagSet<UserFieldModifier> getModifiers() {
         return modifiers;
     }
 
-    public FlagSet<UserFieldModifier> getUserExcludeModifiers() {
+    public FlagSet<UserFieldModifier> getExcludeModifiers() {
         return excludeModifiers;
     }
 

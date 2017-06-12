@@ -282,7 +282,7 @@ public class UPAUtils {
     public static int[] maxIndexes(Object[][] values, boolean[] ascendent) {
         /**
          * if values = {{8,5,6},{3,6,9},{8,5,7},{8,4,9},{8,5,7}} and
-         * ascendent={true,true,true} max={2,4} which are indexes 2 and 4
+         * ascendant={true,true,true} max={2,4} which are indexes 2 and 4
          */
         ArrayList<Integer> indexes = new ArrayList<Integer>(values.length);
         for (int i = 0; i < values.length; i++) {

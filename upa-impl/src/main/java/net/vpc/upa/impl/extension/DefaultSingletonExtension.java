@@ -23,9 +23,13 @@ public class DefaultSingletonExtension extends AbstractEntityExtension implement
     public void commitModelChanges() throws UPAException {
         Entity entity = getEntity();
         if (entity.getPrimaryFields().isEmpty()) {
-            Field field = entity.addField("SGLcode", null, FlagSets.of(UserFieldModifier.ID), null, 0, new IntType(0, 0, false, false), -1);
-            field.setAccessLevel(AccessLevel.PRIVATE);
-            field.setPersistFormula(new Sequence(SequenceStrategy.AUTO));
+
+            Field field = entity.addField(new DefaultFieldBuilder().setName("SGLcode")
+                    .addModifier(UserFieldModifier.ID)
+                    .setDefaultObject(0)
+                    .setDataType(new IntType(0, 0, false, false))
+                    .setAccessLevel(AccessLevel.PRIVATE)
+                    .setPersistFormula(new Sequence(SequenceStrategy.AUTO)));
         }
         if (!entity.getUserExcludeModifiers().contains(EntityModifier.NAVIGATE)) {
             entity.getModifiers().add(EntityModifier.NAVIGATE);

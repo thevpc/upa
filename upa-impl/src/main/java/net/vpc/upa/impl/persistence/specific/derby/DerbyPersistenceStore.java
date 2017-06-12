@@ -403,7 +403,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
 
         Select s = new Select();
         for (PrimitiveField key : keys) {
-            if (key.getModifiers().contains(FieldModifier.SELECT_STORED)) {
+            if (key.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (!key.getModifiers().contains(FieldModifier.TRANSIENT)) {

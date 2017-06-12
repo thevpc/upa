@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.tutorial.feature;
 
+import net.vpc.upa.DefaultFieldBuilder;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Section;
 import net.vpc.upa.callbacks.EntityEvent;
@@ -27,15 +28,13 @@ public class TrackingFeature {
     public void entityAdded(EntityEvent event) {
         Entity entity = event.getEntity();
         Section tracking = entity.addSection("Tracking");
-        tracking.addField("creationDate", null, null, TimestampType.DEFAULT)
-                .setPersistFormula("currentTimestamp()");
-        tracking.addField("creationUser", null, null, StringType.DEFAULT)
-                .setPersistFormula("currentUser()");
-        tracking.addField("modificationDate", null, null, TimestampType.DEFAULT)
-                .setFormula("currentTimestamp()");
-        tracking.addField("modificationUser", null, null, StringType.DEFAULT)
-                .setFormula("currentUser()");
-        tracking.addField("revision", null, 0L, LongType.DEFAULT)
-                .setUpdateFormula("revision+1");
+
+        tracking.addField(new DefaultFieldBuilder().setName("creationDate").setDataType(TimestampType.DEFAULT).setPersistFormula("currentTimestamp()"));
+        tracking.addField(new DefaultFieldBuilder().setName("creationUser").setDataType(StringType.DEFAULT).setPersistFormula("currentUser()"));
+
+        tracking.addField(new DefaultFieldBuilder().setName("modificationDate").setDataType(TimestampType.DEFAULT).setFormula("currentTimestamp()"));
+        tracking.addField(new DefaultFieldBuilder().setName("modificationUser").setDataType(StringType.DEFAULT).setFormula("currentUser()"));
+
+        tracking.addField(new DefaultFieldBuilder().setName("revision").setDefaultObject(0L).setDataType(LongType.DEFAULT).setUpdateFormula("revision+1"));
     }
 }

@@ -18,11 +18,11 @@ public class CompiledOrder implements Serializable, Cloneable {
     public CompiledOrder() {
     }
 
-    public CompiledOrder ascendent(DefaultCompiledExpression field) {
+    public CompiledOrder ascendant(DefaultCompiledExpression field) {
         return addOrder(field, true);
     }
 
-    public CompiledOrder descendent(DefaultCompiledExpression field) {
+    public CompiledOrder descendant(DefaultCompiledExpression field) {
         return addOrder(field, false);
     }
 

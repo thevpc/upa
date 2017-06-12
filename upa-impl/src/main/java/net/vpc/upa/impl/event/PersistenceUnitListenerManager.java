@@ -106,7 +106,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                         entity.getPersistenceUnit().addRelationship(relationDescriptor);
                     }
                 }
-                fireOnInitEntity(entity, position, EventPhase.BEFORE);
+                fireOnPrepareEntity(entity, position, EventPhase.BEFORE);
 
                 //some fields may be added as ManyToOne without explicit definition of RelationshipDescriptor
                 // must process them accordingly
@@ -192,7 +192,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                         }
                     }
                 }
-                fireOnInitEntity(entity, position, EventPhase.AFTER);
+                fireOnPrepareEntity(entity, position, EventPhase.AFTER);
 
             }
         } else if (object instanceof Field) {
@@ -527,25 +527,49 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         }
     }
 
-    protected void fireOnInitEntity(Entity entity, int position, EventPhase phase) {
+//    protected void fireOnInitEntity(Entity entity, int position, EventPhase phase) {
+//        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
+//        String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
+//        boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
+//        if (phase == EventPhase.BEFORE) {
+//            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
+//                listener.onPrePrepareEntity(evt);
+//            }
+//            for (Callback callback : getPreCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.invoke(evt);
+//            }
+//            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.prepare(evt);
+//            }
+//        } else {
+//            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
+//                listener.onPrepareEntity(evt);
+//            }
+//            for (Callback callback : getPostCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.invoke(evt);
+//            }
+//        }
+//    }
+
+    protected void fireOnPrepareEntity(Entity entity, int position, EventPhase phase) {
         EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
         boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
         if (phase == EventPhase.BEFORE) {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
-                listener.onPreInitEntity(evt);
+                listener.onPrePrepareEntity(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_INITIALIZE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_INITIALIZE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
-                listener.onInitEntity(evt);
+                listener.onPrepareEntity(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_INITIALIZE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }

@@ -4,7 +4,6 @@
  */
 package net.vpc.upa.impl.uql.parser.syntax;
 
-import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 import net.vpc.upa.expressions.*;
@@ -168,11 +167,11 @@ public class FunctionFactory {
             checkArgCount(name, args, 1);
             return new Exists((QueryStatement) args.get(0));
         }
-        if (uniformName.equals("ishierarchydescendent")) {
+        if (uniformName.equals("ishierarchydescendant")) {
             if (args.size() == 3) {
-                return new IsHierarchyDescendent(args.get(0), args.get(1), args.get(2));
+                return new IsHierarchyDescendant(args.get(0), args.get(1), args.get(2));
             } else if (args.size() == 2) {
-                return new IsHierarchyDescendent(args.get(0), args.get(1), null);
+                return new IsHierarchyDescendant(args.get(0), args.get(1), null);
             } else {
                 throw new RuntimeException("function " + name + " expects 2 or 3 argument(s) but found " + args.size());
             }

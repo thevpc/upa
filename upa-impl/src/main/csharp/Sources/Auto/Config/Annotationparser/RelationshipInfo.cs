@@ -130,7 +130,7 @@ namespace Net.Vpc.Upa.Impl.Config.Annotationparser
                 }
                 System.Type nativeClass = GetFieldType();
                 if (!nativeClass.Equals(entityType)) {
-                    throw new System.ArgumentException ("Tree Relationship invalid as " + nativeClass + " <> " + entityType);
+                    throw new System.ArgumentException ("Hierarchy Relationship invalid as " + nativeClass + " <> " + entityType);
                 }
                 if ((gid.GetString("path")).Length > 0) {
                     hierarchyPathField = gid.GetString("path");

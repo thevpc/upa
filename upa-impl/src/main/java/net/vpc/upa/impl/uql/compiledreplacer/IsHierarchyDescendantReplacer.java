@@ -4,7 +4,6 @@
  */
 package net.vpc.upa.impl.uql.compiledreplacer;
 
-import java.util.List;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.PersistenceUnit;
@@ -15,40 +14,29 @@ import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledCast;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledConcat;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledD2V;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledI2V;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLike;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledOr;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.IsHierarchyDescendentCompiled;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.*;
 
+import java.util.List;
+
 /**
- *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer {
+public class IsHierarchyDescendantReplacer implements CompiledExpressionReplacer {
 
     private PersistenceUnit persistenceUnit;
 
-    public IsHierarchyDescendentReplacer(PersistenceUnit persistenceUnit) {
+    public IsHierarchyDescendantReplacer(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
     }
 
     public CompiledExpression update(CompiledExpression e) {
-        IsHierarchyDescendentCompiled o = (IsHierarchyDescendentCompiled) e;
+        IsHierarchyDescendantCompiled o = (IsHierarchyDescendantCompiled) e;
         DefaultCompiledExpression c = o.getChildExpression();
         DefaultCompiledExpression p = o.getAncestorExpression();
         CompiledEntityName n = o.getEntityName();
         Entity treeEntity = null;
-        Field treeField = null;
         if (c instanceof CompiledVar) {
 
             Object childReferrer = ((CompiledVar) c).getFinest().getReferrer();
@@ -102,13 +90,20 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
             }
 //            Object co = ((CompiledParam) c).getEffectiveDataType();
         }
+        Entity expectedEntity = n.getName() == null ? null : persistenceUnit.getEntity(n.getName());
         if (treeEntity == null) {
-            treeEntity = persistenceUnit.getEntity(n.getName());
+            if (expectedEntity != null) {
+                treeEntity = expectedEntity;
+            } else {
+                throw new IllegalArgumentException("Unable to resolve Hierarchy Entity in " + e);
+            }
+        } else if (expectedEntity != null && !expectedEntity.getName().equals(treeEntity.getName())) {
+            throw new IllegalArgumentException("Expected " + expectedEntity.getName() + " but found " + treeEntity.getName() + " in " + e);
         }
 
-        Relationship t = HierarchicalRelationshipSupport.getTreeRelationName(treeEntity);
+        Relationship t = HierarchicalRelationshipSupport.getTreeRelation(treeEntity);
         if (t == null) {
-            throw new IllegalArgumentException("Tree Relationship not found");
+            throw new IllegalArgumentException("Hierarchy Relationship not found");
         }
         HierarchyExtension s = t.getHierarchyExtension();
         if (s == null) {
@@ -122,10 +117,17 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
     public CompiledExpression createConditionForDeepSearch(DefaultCompiledExpression alias, DefaultCompiledExpression id, boolean includeId, Field field, String pathSep) throws UPAException {
         alias = alias.copy();
         if (alias instanceof CompiledVar) {
-            CompiledVar cv = (CompiledVar) alias;
-            if (cv.getReferrer() instanceof Entity) {
+//            CompiledVar cv = (CompiledVar) alias;
+            CompiledVarOrMethod finest = ((CompiledVar) alias).getFinest();
+            if (finest.getReferrer() instanceof Entity) {
+
                 CompiledVar v = new CompiledVar(field.getName());
-                ((CompiledVar) alias).setChild(v);
+                ((CompiledVar) alias).getFinest().setChild(v);
+            } else if (finest.getReferrer() instanceof Field && ((Field) finest.getReferrer()).getDataType() instanceof ManyToOneType &&
+                    ((ManyToOneType) ((Field) finest.getReferrer()).getDataType()).getTargetEntity().getName().equals(field.getEntity().getName())
+                    ) {
+                CompiledVar v = new CompiledVar(field.getName());
+                finest.setChild(v);
             } else {
                 throw new IllegalArgumentException("Expected " + field.getEntity().getName() + " var name");
             }
@@ -135,7 +137,7 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
         id = id.copy();
         List<Field> primaryFields = field.getEntity().getPrimaryFields();
         if (primaryFields.size() > 1) {
-            throw new IllegalArgumentException("Composite ID unsupported for function treeancestor");
+            throw new IllegalArgumentException("Composite ID unsupported for function isHierarchyDescendant");
         }
         DataType pkType = primaryFields.get(0).getDataType();
         DefaultCompiledExpression strId = null;
@@ -158,12 +160,22 @@ public class IsHierarchyDescendentReplacer implements CompiledExpressionReplacer
         }
         if (includeId) {
             return new CompiledOr(
-                    new CompiledLike(
-                            alias.copy(),
-                            new CompiledConcat(new CompiledLiteral("%" + pathSep), strId.copy())),
-                    new CompiledLike(
-                            alias.copy(),
-                            new CompiledConcat(new CompiledLiteral("%" + pathSep), strId.copy(), new CompiledLiteral(pathSep + "%"))));
+                    new CompiledEquals(alias.copy(), strId.copy()),
+                    new CompiledOr(
+                            new CompiledLike(
+                                    alias.copy(),
+                                    new CompiledConcat(new CompiledLiteral("%" + pathSep), strId.copy())),
+                            new CompiledOr(
+                                    new CompiledLike(
+                                            alias.copy(),
+                                            new CompiledConcat(new CompiledLiteral("%" + pathSep), strId.copy(), new CompiledLiteral(pathSep + "%")))
+                                    ,
+                                    new CompiledLike(
+                                            alias.copy(),
+                                            new CompiledConcat(strId.copy(), new CompiledLiteral(pathSep + "%")))
+                            )
+                    )
+            );
         } else {
             return new CompiledLike(
                     alias.copy(),

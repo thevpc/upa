@@ -17,8 +17,9 @@ public class NativeField {
     private String name;
     private DataTypeTransform typeTransform;
     private Field field;
+    private Field bindingField;
 
-    public NativeField(String name, String groupName,String exprString,int index,boolean expanded,Field field,DataTypeTransform typeChain) {
+    public NativeField(String name, String groupName,String exprString,int index,boolean expanded,Field field,Field bindingField,DataTypeTransform typeChain) {
         this.groupName = groupName;
         this.expanded = expanded;
         this.index = index;
@@ -30,11 +31,16 @@ public class NativeField {
             fullBinding=groupName+"."+name;
         }
         this.field = field;
+        this.bindingField = bindingField;
         this.typeTransform = typeChain;
         //REMOVE ME
         if(typeChain==null){
             throw new IllegalArgumentException("Null DataType");
         }
+    }
+
+    public Field getBindingField() {
+        return bindingField;
     }
 
     public int getIndex() {

@@ -183,6 +183,9 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         sb.append('\t');
         DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
         EntityExecutionContext context = pu.createContext(ContextOperation.FIND,executionContext.getHints());
+        if(field.getDataType()==null){
+            throw new UPAException(new I18NString("MissingDataTypeException"),field);
+        }
         sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (isIdentityField(field)) {
             sb.append(" PRIMARY KEY AUTO_INCREMENT  ");
@@ -345,7 +348,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
         Select s = new Select();
         for (PrimitiveField key : keys) {
-            if (key.getModifiers().contains(FieldModifier.SELECT_STORED)) {
+            if (key.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
                 Expression expression = ((ExpressionFormula) key.getSelectFormula()).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (!key.getModifiers().contains(FieldModifier.TRANSIENT)) {

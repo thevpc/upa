@@ -52,18 +52,18 @@ class EntityInfo implements EntityDescriptor {
     public void addModifiers(Collection<EntityModifier> others) {
         for (EntityModifier m : others) {
             if (excludeModifiers.contains(m)) {
-                excludeModifiers.remove(m);
+                excludeModifiers=excludeModifiers.remove(m);
             }
-            modifiers.add(m);
+            modifiers=modifiers.add(m);
         }
     }
 
     public void addExcludeModifiers(Collection<EntityModifier> others) {
         for (EntityModifier m : others) {
             if (modifiers.contains(m)) {
-                modifiers.remove(m);
+                modifiers=modifiers.remove(m);
             }
-            excludeModifiers.add(m);
+            excludeModifiers=excludeModifiers.add(m);
         }
     }
 

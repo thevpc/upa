@@ -47,11 +47,11 @@ public class Order implements Serializable, Cloneable {
     public Order() {
     }
 
-    public Order ascendent(Expression field) {
+    public Order ascendant(Expression field) {
         return addOrder(field, true);
     }
 
-    public Order descendent(Expression field) {
+    public Order descendant(Expression field) {
         return addOrder(field, false);
     }
 

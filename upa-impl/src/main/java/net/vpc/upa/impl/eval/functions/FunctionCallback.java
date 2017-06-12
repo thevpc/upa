@@ -5,6 +5,7 @@
  */
 package net.vpc.upa.impl.eval.functions;
 
+import net.vpc.upa.Callback;
 import net.vpc.upa.EvalContext;
 import net.vpc.upa.Function;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
@@ -14,9 +15,9 @@ import net.vpc.upa.impl.config.callback.DefaultCallback;
  * @author taha.bensalah@gmail.com
  */
 public class FunctionCallback implements net.vpc.upa.Function {
-    private final DefaultCallback callback;
+    private final Callback callback;
 
-    public FunctionCallback(DefaultCallback b) {
+    public FunctionCallback(Callback b) {
         this.callback = b;
     }
 
@@ -25,7 +26,7 @@ public class FunctionCallback implements net.vpc.upa.Function {
         return callback.invoke(evalContext);
     }
 
-    public DefaultCallback getCallback() {
+    public Callback getCallback() {
         return callback;
     }
 

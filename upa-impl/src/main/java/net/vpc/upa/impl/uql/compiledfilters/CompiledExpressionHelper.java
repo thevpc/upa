@@ -9,9 +9,6 @@ import java.util.List;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterLeafVar;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterThisVar;
-import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class CompiledExpressionHelper {
     public static CompiledExpressionFilter SELECT_FILTER = new TypeCompiledExpressionFilter(CompiledSelect.class);
     public static CompiledExpressionFilter QUERY_STATEMENT_FILTER = new TypeCompiledExpressionFilter(CompiledQueryStatement.class);
     public static CompiledExpressionFilter QL_FUNCTION_FILTER = new TypeCompiledExpressionFilter(CompiledQLFunctionExpression.class);
-    public static CompiledExpressionFilter DESCENDENT_FILTER = new TypeCompiledExpressionFilter(IsHierarchyDescendentCompiled.class);
+    public static CompiledExpressionFilter DESCENDANT_FILTER = new TypeCompiledExpressionFilter(IsHierarchyDescendantCompiled.class);
     public static CompiledExpressionFilter THIS_VAR_FILTER = new CompiledExpressionFilterThisVar();
 
     private CompiledExpressionHelper() {

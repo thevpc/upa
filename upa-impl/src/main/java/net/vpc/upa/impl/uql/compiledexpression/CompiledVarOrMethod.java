@@ -16,6 +16,10 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
 
     private CompiledVarOrMethod child;
     private Object referrer;
+    /**
+     * when live field, this field refers to the original (write into) field
+     */
+    private Object baseReferrer;
     private String name;
     private String binding;
 
@@ -40,6 +44,15 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
         if (this.referrer instanceof Field) {
             this.setTypeTransform(UPAUtils.getTypeTransformOrIdentity((Field) referrer));
         }
+    }
+
+    public Object getBaseReferrer() {
+        return baseReferrer;
+    }
+
+    public CompiledVarOrMethod setBaseReferrer(Object baseReferrer) {
+        this.baseReferrer = baseReferrer;
+        return this;
     }
 
     public String getName() {

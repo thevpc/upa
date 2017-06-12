@@ -45,7 +45,7 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
         if (index > parts.size()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        ListUtils.add(parts, part, index, this, this, new DefaultPackagePrivateAddPartInterceptor(this));
+        ListUtils.add(parts, part, index, this, this, new DefaultPackagePrivateAddPartInterceptor(this),true);
     }
 
     public void removePartAt(int index) {

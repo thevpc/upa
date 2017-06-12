@@ -71,7 +71,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
                 getEntity().getBuilder().idToExpression(childId, null))) > 0;
     }
 
-    public static Relationship getTreeRelationName(Entity e) throws UPAException {
+    public static Relationship getTreeRelation(Entity e) throws UPAException {
         Relationship r = null;
         for (Relationship relation : e.getPersistenceUnit().getRelationshipsBySource(e)) {
             if (relation.getTargetRole().getEntity().equals(e)) {

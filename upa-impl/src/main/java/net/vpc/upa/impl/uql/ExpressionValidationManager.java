@@ -5,10 +5,7 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.*;
-import net.vpc.upa.expressions.BinaryOperator;
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
@@ -16,8 +13,9 @@ import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 import net.vpc.upa.impl.uql.compiledfilters.RefEqualCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.compiledreplacer.CompiledQLFunctionExpressionSimplifier;
-import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendentReplacer;
+import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendantReplacer;
 import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -61,6 +59,58 @@ public class ExpressionValidationManager {
             }
         }
 
+        for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
+//            validateCompiledVar(compiledVar, config);
+            validateCompiledVarReferrer(compiledVar, config);
+        }
+        dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
+        dce.replaceExpressions(CompiledExpressionHelper.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
+        dce.replaceExpressions(new CompiledExpressionFilter() {
+            @Override
+            public boolean accept(DefaultCompiledExpression e) {
+                if(e instanceof CompiledVar){
+                    Object r = ((CompiledVar) e).getReferrer();
+                    if(r instanceof Field){
+                        Field referrer = (Field) r;
+                        if(referrer.getModifiers().contains(FieldModifier.SELECT_LIVE)){
+                            Formula selectFormula = referrer.getSelectFormula();
+                            return selectFormula instanceof ExpressionFormula;
+                        }
+                    }
+                }
+                return false;
+            }
+        }, new CompiledExpressionReplacer(){
+            @Override
+            public CompiledExpression update(CompiledExpression e) {
+                CompiledVar v=(CompiledVar) e;
+                CompiledVarOrMethod c = v.getChild();
+                DefaultCompiledExpression pp = v.getParentExpression();
+                Field referrer = (Field) v.getReferrer();
+                Formula selectFormula = referrer.getSelectFormula();
+                if(selectFormula instanceof ExpressionFormula){
+                    CompiledExpression expr2 = persistenceUnit.getExpressionManager().compileExpression(((ExpressionFormula) selectFormula).getExpression(), new ExpressionCompilerConfig().setExpandFields(false).setValidate(false));
+                    //Remove this!
+                    expr2=UQLCompiledUtils.removeThisVar(expr2);
+                    if(c==null){
+                        if(expr2 instanceof CompiledVarOrMethod){
+                            ((CompiledVarOrMethod) expr2).getFinest().setBaseReferrer(referrer);
+                        }
+                        return expr2;
+                    }else{
+                        if(expr2 instanceof CompiledVar) {
+                            CompiledVar vexpr2 = (CompiledVar) expr2;
+                            vexpr2.getFinest().setChild(c);
+                            vexpr2.setBaseReferrer(referrer);
+                            return vexpr2;
+                        }else{
+                            throw new IllegalArgumentException("Invalid expression when expanding LiveFormula for "+referrer+" ("+expr2+")."+c);
+                        }
+                    }
+                }
+                return null;
+            }
+        });
         for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
 //            validateCompiledVar(compiledVar, config);
             validateCompiledVarReferrer(compiledVar, config);
@@ -134,8 +184,8 @@ public class ExpressionValidationManager {
             }
         }
 
-        dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
-        dce.replaceExpressions(CompiledExpressionHelper.DESCENDENT_FILTER, new IsHierarchyDescendentReplacer(persistenceUnit));
+//        dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
+//        dce.replaceExpressions(CompiledExpressionHelper.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
 
         List<CompiledParam> allParams = dce.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
         for (CompiledParam p : allParams) {
@@ -185,7 +235,7 @@ public class ExpressionValidationManager {
 //                Select s=new Select().field("1").from(entityName,name).where(f2);
 
                 DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(f2, conf2);
-                compiledFilter = compiledFilter.replaceExpressions(CompiledExpressionHelper.THIS_VAR_FILTER, new CompiledExpressionThisReplacer(name));
+                compiledFilter = UQLCompiledUtils.replaceThisVar(compiledFilter, name);
                 compiledSelect.addWhere(compiledFilter);
             }
         }
@@ -334,6 +384,10 @@ public class ExpressionValidationManager {
                             } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
                                 expandManyToOneFieldSelectFetch(qs, f.getIndex(), ef, selectedEntry.alias, binding, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
                             }
+                        } else  if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
+                            DefaultCompiledExpression pe = cv.getParentExpression();
+                            CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
+                            expandLiveFormulaField(qs, f.getIndex(),ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
                         } else {
                             qs.addField(f);
                         }
@@ -381,10 +435,13 @@ public class ExpressionValidationManager {
             aliasToEntityContext.put(entityAlias, e.getName());
             cfg.setAliasToEntityContext(aliasToEntityContext);
             DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
-
+            if(rr instanceof CompiledVarOrMethod){
+                ((CompiledVarOrMethod) rr).getFinest().setBaseReferrer(field);
+            }
             qs.addField(rr, field.getName())
                     .setIndex(index)
                     .setExpanded(true)
+                    .setAlias(field.getName())
                     .setBinding(binding);
 
             cfg = new ExpressionCompilerConfig();

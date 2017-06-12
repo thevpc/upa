@@ -21,30 +21,30 @@ import java.util.*;
 public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> {
     protected boolean updatable;
     protected boolean loadManyToOneRelations;
-    TypeInfo[] typeInfos;
     protected ResultMetaData metaData;
-//    protected int entityIndex = 0;
-    LinkedHashMap<String, TypeInfo> bindingToTypeInfos;
     protected CacheMap<NamedId, Object> referencesCache;
     protected Map<String, Object> hints;
     protected ObjectFactory ofactory;
     protected boolean defaultsToDocument;
     protected boolean relationAsDocument;
+    TypeInfo[] typeInfos;
+    //    protected int entityIndex = 0;
+    LinkedHashMap<String, TypeInfo> bindingToTypeInfos;
     private QueryResultItemBuilder resultBuilder;
     private QueryResultRelationLoader loader;
     private LoaderContext loaderContext;
 //    private Command[] parseCommands;
 
     public DefaultObjectQueryResultLazyList(
-                                            PersistenceUnit pu,
-                                            QueryExecutor queryExecutor,
-                                            boolean loadManyToOneRelations,
-                                            boolean defaultsToDocument,
-                                            boolean relationAsDocument,
-                                            boolean supportCache,
-                                            boolean updatable,
-                                            QueryResultRelationLoader loader,
-                                            QueryResultItemBuilder resultBuilder
+            PersistenceUnit pu,
+            QueryExecutor queryExecutor,
+            boolean loadManyToOneRelations,
+            boolean defaultsToDocument,
+            boolean relationAsDocument,
+            boolean supportCache,
+            boolean updatable,
+            QueryResultRelationLoader loader,
+            QueryResultItemBuilder resultBuilder
     ) throws SQLException {
         super(queryExecutor);
         this.resultBuilder = resultBuilder;
@@ -67,7 +67,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }
             referencesCache = sharedCache;
         }
-        loaderContext=new LoaderContext(referencesCache,hints);
+        loaderContext = new LoaderContext(referencesCache, hints);
         LinkedHashMap<String, TypeInfo> bindingToTypeInfos0 = new LinkedHashMap<String, TypeInfo>();
         ofactory = pu.getFactory();
         NativeField[] fields = queryExecutor.getFields();
@@ -83,7 +83,11 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }
             TypeInfo t = bindingToTypeInfos0.get(gn);
             if (t == null) {
-                if (nativeField.getField() != null) {
+                if (nativeField.getBindingField() != null) {
+                    t = new TypeInfo(gn, nativeField.getBindingField().getEntity());
+                    t.document = gn.contains(".") ? relationAsDocument : defaultsToDocument;
+                    bindingToTypeInfos0.put(gn, t);
+                } else if (nativeField.getField() != null) {
                     t = new TypeInfo(gn, nativeField.getField().getEntity());
                     t.document = gn.contains(".") ? relationAsDocument : defaultsToDocument;
                     bindingToTypeInfos0.put(gn, t);
@@ -117,7 +121,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if (t.leadPrimaryField == null && f.nativeField.getField() != null && f.nativeField.getField().isId()) {
                 t.leadPrimaryField = f;
             }
-            if (t.entity!=null && t.leadField == null) {
+            if (t.entity != null && t.leadField == null) {
                 t.leadField = f;
             }
             f.setterMethodName = PlatformUtils.setterName(nativeField.getName());
@@ -127,12 +131,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         typeInfos = bindingToTypeInfos0.values().toArray(new TypeInfo[bindingToTypeInfos0.size()]);
 
         // all indexes to fill with values from the query
-        Set<Integer> allIndexes=new HashSet<Integer>();
+        Set<Integer> allIndexes = new HashSet<Integer>();
         for (int i = 0; i < metaData.getResultFields().size(); i++) {
             allIndexes.add(i);
         }
         // map expression to relative TypeInfo/FieldInfo
-        Map<String,Object> visitedIndexes=new HashMap<String, Object>();
+        Map<String, Object> visitedIndexes = new HashMap<String, Object>();
         for (int i = 0; i < typeInfos.length; i++) {
             TypeInfo typeInfo = typeInfos[i];
 //            if (aliasName.equals(typeInfo.binding)) {
@@ -142,17 +146,17 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             typeInfo.infosArray = typeInfo.allFields.toArray(new FieldInfo[typeInfo.allFields.size()]);
             typeInfo.update = false;
             for (FieldInfo field : typeInfo.infosArray) {
-                if(!field.nativeField.isExpanded() && field.nativeField.getIndex()>=0){
-                    field.update=true;
+                if (!field.nativeField.isExpanded() && field.nativeField.getIndex() >= 0) {
+                    field.update = true;
                     field.indexesToUpdate.add(field.nativeField.getIndex());
 
                     allIndexes.remove(field.nativeField.getIndex());
-                    visitedIndexes.put(field.nativeField.getExprString(),field);
+                    visitedIndexes.put(field.nativeField.getExprString(), field);
                 }
             }
-            if(typeInfo.entity==null) {
-                typeInfo.update=true;
-            }else {
+            if (typeInfo.entity == null) {
+                typeInfo.update = true;
+            } else {
                 List<ResultField> fields1 = metaData.getResultFields();
                 for (int i1 = 0; i1 < fields1.size(); i1++) {
                     ResultField resultField = fields1.get(i1);
@@ -174,11 +178,11 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         for (Integer remaining : allIndexes) {
             String k = metaData.getResultFields().get(remaining).getExpression().toString();
             Object o = visitedIndexes.get(k);
-            if(o instanceof TypeInfo){
+            if (o instanceof TypeInfo) {
                 ((TypeInfo) o).indexesToUpdate.add(remaining);
-            }else if(o instanceof FieldInfo){
+            } else if (o instanceof FieldInfo) {
                 ((FieldInfo) o).indexesToUpdate.add(remaining);
-            }else{
+            } else {
                 throw new UPAException("Unsupported");
             }
         }
@@ -204,7 +208,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 //        System.out.println((a2-a1)+" ;; "+(a3-a2));
 //        return parseCommand(result);
 //    }
-    
+
 //    public T parseCommand(final QueryResult result) throws UPAException {
 //        CommandEnv env = new CommandEnv(
 //                result,new HashMap<String, Object>(),new HashMap<String, Object>()
@@ -217,51 +221,53 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
 //    public T parseSimple(final QueryResult result) throws UPAException {
 
-    private void updateRow(ResultColumn[] columns,FieldInfo fi,String label,Object value){
-        if(fi.update){
+    private void updateRow(ResultColumn[] columns, FieldInfo fi, String label, Object value) {
+        if (fi.update) {
             for (Integer index : fi.indexesToUpdate) {
-                ResultColumn c=columns[index];
+                ResultColumn c = columns[index];
                 c.setLabel(label);
                 c.setValue(value);
             }
         }
     }
-    private void updateRow(ResultColumn[] columns,TypeInfo fi,String label,Object value){
-        if(fi.update){
+
+    private void updateRow(ResultColumn[] columns, TypeInfo fi, String label, Object value) {
+        if (fi.update) {
             for (Integer index : fi.indexesToUpdate) {
-                ResultColumn c=columns[index];
+                ResultColumn c = columns[index];
                 c.setLabel(label);
                 c.setValue(value);
             }
         }
     }
+
     public T parse(final QueryResult result) throws UPAException {
-        Map<String,Object> groupValues=new HashMap<String, Object>();
-        ResultColumn[] values=new ResultColumn[metaData.getResultFields().size()];
+        Map<String, Object> groupValues = new HashMap<String, Object>();
+        ResultColumn[] values = new ResultColumn[metaData.getResultFields().size()];
         for (int i = 0; i < values.length; i++) {
-            values[i]=new ResultColumn();
+            values[i] = new ResultColumn();
         }
         for (TypeInfo typeInfo : typeInfos) {
-            typeInfo.entityObject=null;
-            typeInfo.entityDocument =null;
-            typeInfo.entityResult=null;
+            typeInfo.entityObject = null;
+            typeInfo.entityDocument = null;
+            typeInfo.entityResult = null;
         }
         for (TypeInfo typeInfo : typeInfos) {
-            if (typeInfo.entity==null) {
+            if (typeInfo.entity == null) {
                 for (FieldInfo f : typeInfo.allFields) {
                     Object fieldValue = result.read(f.dbIndex);
                     groupValues.put(f.nativeField.getFullBinding(), fieldValue);
                     groupValues.put(f.nativeField.getExprString(), fieldValue);
-                    updateRow(values,f, f.nativeField.getExprString(), fieldValue);
+                    updateRow(values, f, f.nativeField.getExprString(), fieldValue);
                 }
-            }else if (typeInfo.leadPrimaryField == null) {
-                if(typeInfo.document){
-                    Object entityObject=null;
+            } else if (typeInfo.leadPrimaryField == null) {
+                if (typeInfo.document) {
+                    Object entityObject = null;
                     Document entityDocument = typeInfo.entityFactory == null ? ofactory.createObject(Document.class) : typeInfo.entityFactory.createDocument();
                     typeInfo.entityObject = entityObject;
                     typeInfo.entityDocument = entityDocument;
                     typeInfo.entityResult = entityDocument;
-                }else{
+                } else {
                     Object entityObject = typeInfo.entityFactory.createObject();
                     Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
                     typeInfo.entityObject = entityObject;
@@ -280,17 +286,17 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 Object leadPK = result.read(typeInfo.leadPrimaryField.dbIndex);
                 if (leadPK != null) {
                     //create new instances
-                    if(typeInfo.document) {
+                    if (typeInfo.document) {
                         typeInfo.entityDocument = typeInfo.entityFactory == null ? ofactory.createObject(Document.class) : typeInfo.entityFactory.createDocument();
                         typeInfo.entityResult = typeInfo.entityDocument;
-                    }else{
+                    } else {
                         Object entityObject = typeInfo.entityFactory.createObject();
                         Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
                         typeInfo.entityObject = entityObject;
                         typeInfo.entityDocument = entityDocument;
                         typeInfo.entityResult = entityObject;
                     }
-                    groupValues.put(typeInfo.binding,typeInfo.entityResult);
+                    groupValues.put(typeInfo.binding, typeInfo.entityResult);
                     updateRow(values, typeInfo, typeInfo.binding, typeInfo.entityResult);
                     for (FieldInfo f : typeInfo.allFields) {
                         Object fieldValue = result.read(f.dbIndex);
@@ -298,13 +304,13 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         updateRow(values, f, f.nativeField.getExprString(), fieldValue);
                         typeInfo.entityDocument.setObject(f.name, fieldValue);
                     }
-                    if(loadManyToOneRelations){
+                    if (loadManyToOneRelations) {
                         for (Relationship relationship : typeInfo.manyToOneRelations) {
                             Object extractedId = relationship.extractIdByForeignFields(typeInfo.entityDocument);
-                            if(extractedId!=null) {
-                                Object value = loader.loadObject(relationship.getTargetEntity(),extractedId, relationAsDocument,loaderContext);
+                            if (extractedId != null) {
+                                Object value = loader.loadObject(relationship.getTargetEntity(), extractedId, relationAsDocument, loaderContext);
                                 typeInfo.entityDocument.setObject(relationship.getSourceRole().getEntityField().getName(), value);
-                                groupValues.put(typeInfo.binding+"."+relationship.getSourceRole().getEntityField().getName(),value);
+                                groupValues.put(typeInfo.binding + "." + relationship.getSourceRole().getEntityField().getName(), value);
                             }
                         }
                     }
@@ -320,23 +326,23 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 if (pp == null) {
                     //no parent loaded actually!!
                     //throw new IllegalArgumentException("Invalid binding " + typeInfo.binding);
-                }else if (pp.entityDocument != null) {
+                } else if (pp.entityDocument != null) {
                     pp.entityDocument.setObject(typeInfo.bindingName, typeInfo.entityResult);
                 }
             }
         }
         if (updatable) {
             for (TypeInfo typeInfo : typeInfos) {
-                if(typeInfo.document) {
+                if (typeInfo.document) {
                     QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(typeInfo, result);
                     typeInfo.entityDocument.addPropertyChangeListener(li);
-                }else{
+                } else {
                     typeInfo.entityUpdatable = PlatformUtils.createObjectInterceptor(
                             typeInfo.entityType,
                             new UpdatableObjectInterceptor(typeInfo, typeInfo.entityObject, result));
-                    groupValues.put(typeInfo.binding,typeInfo.entityUpdatable);
+                    groupValues.put(typeInfo.binding, typeInfo.entityUpdatable);
                     int index = typeInfo.allFields.get(0).nativeField.getIndex();
-                    if(values[index].getValue()==typeInfo.entityType) {
+                    if (values[index].getValue() == typeInfo.entityType) {
                         values[index].setValue(typeInfo.entityUpdatable);
                     }
                 }

@@ -1,13 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.*;
-import net.vpc.upa.callbacks.EntityListener;
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.UpdateEvent;
-import net.vpc.upa.callbacks.PersistEvent;
-import net.vpc.upa.callbacks.UpdateFormulaEvent;
-import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.callbacks.Trigger;
+import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.DefaultTrigger;
@@ -407,18 +401,42 @@ public class DocumentListenerSupport {
         if (event == null) {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
-        for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_INITIALIZE,
+        for (Callback callback : persistenceUnitListenerManager.getPreCallbacks(
+                CallbackType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
-            invoker.invoke(event);
+            callback.invoke(event);
         }
-        for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_INITIALIZE,
+        for (PreparedCallback callback : persistenceUnitListenerManager.getPostPreparedCallbacks(
+                CallbackType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
-            invoker.prepare(event);
+            callback.prepare(event);
         }
+
+//        EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
+//        String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
+//        boolean system = entity.getUserModifiers().contains(EntityModifier.SYSTEM);
+//        if (phase == EventPhase.BEFORE) {
+//            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
+//                listener.onPrePrepareEntity(evt);
+//            }
+//            for (Callback callback : getPreCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.invoke(evt);
+//            }
+//            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.prepare(evt);
+//            }
+//        } else {
+//            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
+//                listener.onPrepareEntity(evt);
+//            }
+//            for (Callback callback : getPostCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//                callback.invoke(evt);
+//            }
+//        }
+
+
     }
 
     public void fireAfterInitialize(EntityExecutionContext context) throws UPAException {
@@ -449,7 +467,7 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_INITIALIZE,
+                CallbackType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);

@@ -132,7 +132,7 @@ public class ExpressionTranslationManager {
         register0(QLFunctionExpression.class, new QLFunctionExpressionExpressionTranslator());
         register0(InSelection.class, new InSelectionExpressionTranslator());
         register0(InCollection.class, new InCollectionExpressionTranslator());
-        register0(IsHierarchyDescendent.class, new IsHierarchyDescendentExpressionTranslator());
+        register0(IsHierarchyDescendant.class, new IsHierarchyDescendantExpressionTranslator());
         register0(Exists.class, new ExistsExpressionTranslator());
     }
 

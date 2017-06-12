@@ -11,9 +11,10 @@ import net.vpc.upa.callbacks.PersistenceUnitListener;
 import net.vpc.upa.callbacks.EntityDefinitionListener;
 import net.vpc.upa.callbacks.PackageDefinitionListener;
 import net.vpc.upa.callbacks.PersistenceGroupDefinitionListener;
-import net.vpc.upa.config.ConfigInfo;
+import net.vpc.upa.config.*;
+
 import java.lang.reflect.Method;
-import net.vpc.upa.config.Decoration;
+
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
 import net.vpc.upa.impl.util.*;
@@ -25,7 +26,6 @@ import net.vpc.upa.types.I18NString;
 import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPAContext;
-import net.vpc.upa.config.Callback;
 import net.vpc.upa.exceptions.UPAException;
 
 import java.util.HashMap;
@@ -44,30 +44,7 @@ import net.vpc.upa.ScanEvent;
 import net.vpc.upa.ScanListener;
 import net.vpc.upa.PersistenceGroupSecurityManager;
 import net.vpc.upa.UPASecurityManager;
-import net.vpc.upa.config.Partial;
-import net.vpc.upa.config.ScanFilter;
-import net.vpc.upa.config.ScanSource;
-import net.vpc.upa.config.Ignore;
-import net.vpc.upa.config.OnAlter;
-import net.vpc.upa.config.OnCreate;
-import net.vpc.upa.config.OnDrop;
-import net.vpc.upa.config.OnInitialize;
-import net.vpc.upa.config.OnPersist;
-import net.vpc.upa.config.OnRemove;
-import net.vpc.upa.config.OnReset;
-import net.vpc.upa.config.OnUpdate;
-import net.vpc.upa.config.OnUpdateFormula;
-import net.vpc.upa.config.SecurityContext;
-import net.vpc.upa.config.DecorationValue;
-import net.vpc.upa.config.OnPreAlter;
-import net.vpc.upa.config.OnPreCreate;
-import net.vpc.upa.config.OnPreDrop;
-import net.vpc.upa.config.OnPreInitialize;
-import net.vpc.upa.config.OnPrePersist;
-import net.vpc.upa.config.OnPreRemove;
-import net.vpc.upa.config.OnPreReset;
-import net.vpc.upa.config.OnPreUpdate;
-import net.vpc.upa.config.OnPreUpdateFormula;
+import net.vpc.upa.config.OnInit;
 import net.vpc.upa.impl.config.decorations.SimpleDecoration;
 import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.PersistenceGroupConfig;
@@ -112,16 +89,31 @@ public class URLAnnotationStrategySupport {
                     new DefaultDecorationFilter()
                     .addDecorations(
                             Callback.class,
+
                             OnAlter.class,
+                            OnPreAlter.class,
+                            OnPreCreate.class,
                             OnCreate.class,
+                            OnPreDrop.class,
                             OnDrop.class,
+                            OnPreRemove.class,
                             OnRemove.class,
+                            OnPrePersist.class,
                             OnPersist.class,
+                            OnPreRemove.class,
                             OnRemove.class,
+                            OnPreUpdate.class,
+                            OnPreUpdate.class,
                             OnUpdate.class,
+                            OnPreUpdateFormula.class,
                             OnUpdateFormula.class,
-                            OnInitialize.class,
+                            OnPreInit.class,
+                            OnInit.class,
+                            OnPrePrepare.class,
+                            OnPrepare.class,
+                            OnPreReset.class,
                             OnReset.class,
+
                             SecurityContext.class,
                             net.vpc.upa.config.PersistenceUnit.class,
                             net.vpc.upa.config.PersistenceNameStrategy.class,
@@ -297,15 +289,27 @@ public class URLAnnotationStrategySupport {
                     new DefaultDecorationFilter()
                     .addDecorations(
                             Callback.class,
+                            OnPreAlter.class,
                             OnAlter.class,
+                            OnPreCreate.class,
                             OnCreate.class,
+                            OnPreDrop.class,
                             OnDrop.class,
+                            OnPreRemove.class,
                             OnRemove.class,
+                            OnPrePersist.class,
                             OnPersist.class,
+                            OnPreRemove.class,
                             OnRemove.class,
+                            OnPreUpdate.class,
                             OnUpdate.class,
+                            OnPreUpdateFormula.class,
                             OnUpdateFormula.class,
-                            OnInitialize.class,
+                            OnPreInit.class,
+                            OnInit.class,
+                            OnPrePrepare.class,
+                            OnPrepare.class,
+                            OnPreReset.class,
                             OnReset.class
                     )
                     .addDecorations(SecurityContext.class)
@@ -417,8 +421,10 @@ public class URLAnnotationStrategySupport {
                             OnUpdate.class,
                             OnPreUpdateFormula.class,
                             OnUpdateFormula.class,
-                            OnPreInitialize.class,
-                            OnInitialize.class,
+                            OnPreInit.class,
+                            OnInit.class,
+                            OnPrePrepare.class,
+                            OnPrepare.class,
                             OnPreReset.class,
                             OnReset.class,
                             net.vpc.upa.config.UnionEntity.class,

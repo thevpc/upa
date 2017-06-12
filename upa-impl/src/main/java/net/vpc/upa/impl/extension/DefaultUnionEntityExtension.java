@@ -39,7 +39,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
             Field field = getEntity().addField(
                     new DefaultFieldDescriptor()
                             .setName(discriminator)
-                            .setUserFieldModifiers(FlagSets.of(UserFieldModifier.SUMMARY))
+                            .setModifiers(FlagSets.of(UserFieldModifier.SUMMARY))
                             .setDefaultObject(updatableTables.get(0).getName())
                             .setDataType(TypesFactory.forList(entity.getName() + "." + discriminator, list, TypesFactory.STRING, false))
             );

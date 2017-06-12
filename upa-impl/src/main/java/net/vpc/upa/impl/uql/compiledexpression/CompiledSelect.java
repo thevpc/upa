@@ -315,14 +315,14 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public CompiledSelect orderAscendentBy(DefaultCompiledExpression field) {
         invalidate();
-        order.ascendent(field);
+        order.ascendant(field);
         prepareChildren(field);
         return this;
     }
 
     public CompiledSelect orderByDesc(DefaultCompiledExpression field) {
         invalidate();
-        order.descendent(field);
+        order.descendant(field);
         prepareChildren(field);
         return this;
     }
@@ -341,13 +341,13 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         return this;
     }
 
-    //    public Select ascendent() {
+    //    public Select ascendant() {
 //        invalidateStructureCache();
 //        orderAsc = true;
 //        return this;
 //    }
 //
-//    public Select descendent() {
+//    public Select descendant() {
 //        invalidateStructureCache();
 //        orderAsc = false;
 //        return this;
