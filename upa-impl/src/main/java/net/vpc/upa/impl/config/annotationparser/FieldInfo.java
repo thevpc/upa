@@ -532,6 +532,12 @@ class FieldInfo implements FieldDescriptor {
         }
         if (overriddenNullable.specified && (overriddenNullable.value != BoolEnum.UNDEFINED)) {
             nullableOk = overriddenNullable.value.equals(BoolEnum.TRUE);
+            if (nullableOk && (!PlatformUtils.isNullableType(nativeClass) || modifiers.contains(UserFieldModifier.ID))) {
+                throw new UPAException("NonNullableTypeForcedToNull",entityName+"."+name);
+            }
+            if (nullableOk && (modifiers.contains(UserFieldModifier.ID))) {
+                throw new UPAException("NullableId",entityName+"."+name);
+            }
         }
         if (!PlatformUtils.isNullableType(nativeClass) || modifiers.contains(UserFieldModifier.ID)) {
             nullableOk = false;

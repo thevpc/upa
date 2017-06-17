@@ -923,7 +923,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 try {
                     usedFields = findUsedFields(persistFormula);
                 } catch (Exception e) {
-                    throw new UPAException("InvalidFormulaExpression", f.getAbsoluteName(), "PersistFormula", persistFormula);
+                    throw new UPAException(e,new I18NString("InvalidFormulaExpression"), f.getAbsoluteName(), "PersistFormula", persistFormula);
                 }
                 for (Field field : usedFields) {
                     Set<Field> c = (Set<Field>) field.getProperties().getObject(PERSIST_DEPENDENT_FIELDS);
@@ -1404,9 +1404,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (field.getPersistFormula() != null
                 && !(field.getPersistFormula() instanceof Sequence)
                 && field.getDataType() != null
-                && !field.getDataType().isNullable()) {
-            throw new IllegalArgumentException("Field " + getName() + "."
-                    + field.getName() + " is a FORMULA field. Thus it must be nullable");
+                ) {
+            if(!field.getDataType().isNullable()) {
+                if(field.getDataType().getDefaultUnspecifiedValue()==null) {
+                    throw new IllegalArgumentException("Field " + getName() + "."
+                            + field.getName() + " is a FORMULA field. Thus it must be nullable");
+                }
+            }
         }
         FlagSet<UserFieldModifier> modifiersCopy = copy(field.getUserModifiers());
         FlagSet<UserFieldModifier> excludedModifiersCopy = copy(field.getUserExcludeModifiers());
@@ -2964,10 +2968,20 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                 }
                 List<Field> storedFieldsToValidate = getFields(formulaFields);
+                List<Field> nonImmediateStoredFieldsToValidate = new ArrayList<>();
+                List<Field> immediateStoredFieldsToValidate = new ArrayList<>();
+                for (Field field : storedFieldsToValidate) {
+                    Formula updateFormula = field.getUpdateFormula();
+                    if ((updateFormula instanceof ExpressionFormula) && field.getUpdateFormulaOrder() <= 0) {
+                        immediateStoredFieldsToValidate.add(field);
+                    } else {
+                        nonImmediateStoredFieldsToValidate.add(field);
+                    }
+                }
                 for (String f : cancelUpdates) {
                     fieldNamesToUpdateMap.remove(f);
                 }
-                for (Field field : storedFieldsToValidate) {
+                for (Field field : immediateStoredFieldsToValidate) {
                     Expression expression = getFieldExpression(field, false);
                     fieldNamesToUpdateMap.setObject(field.getName(), expression);
                 }
@@ -2975,7 +2989,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     documentListenerSupport.fireBeforeUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);
                     r = updateCore(fieldNamesToUpdateMap, whereExpression, executionContext);
                     if (r > 0) {
-                        FormulaUpdateProcessor p = new FormulaUpdateProcessor(false, storedFieldsToValidate, whereExpression, executionContext, this, getEntityOperationManager());
+                        FormulaUpdateProcessor p = new FormulaUpdateProcessor(false, nonImmediateStoredFieldsToValidate, whereExpression, executionContext, this, getEntityOperationManager());
                         p.updateFormulasCore();
                     }
                     documentListenerSupport.fireAfterUpdate(fieldNamesToUpdateMap, whereExpression, executionContext);

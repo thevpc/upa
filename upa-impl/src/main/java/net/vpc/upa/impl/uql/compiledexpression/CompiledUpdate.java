@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.uql.DecObjectType;
 
 public final class CompiledUpdate extends DefaultCompiledEntityStatement implements CompiledUpdateStatement {
@@ -24,6 +27,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //        this.extraFrom = extraFrom;
 //        return this;
 //    }
+
     public Map<CompiledVar, DefaultCompiledExpression> getUpdatesMapping() {
         Map<CompiledVar, DefaultCompiledExpression> m = new HashMap<CompiledVar, DefaultCompiledExpression>();
         for (CompiledVarVal f : fields) {
@@ -47,6 +51,12 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 
     public CompiledUpdate entity(String entity) {
         return entity(entity, null);
+    }
+
+    @Override
+    public String getEntityName() {
+        CompiledEntityName entity = getEntity();
+        return entity==null?null:entity.getName();
     }
 
     public CompiledEntityName getEntity() {
@@ -216,5 +226,44 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         ArrayList<CompiledNamedExpression> list = new ArrayList<CompiledNamedExpression>();
         list.add(new CompiledNamedExpression(getEntityAlias(), getEntity()));
         return list;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Update " + entityName);
+        if (entityAlias != null) {
+            sb.append(" ").append(ExpressionHelper.escapeIdentifier(entityAlias));
+        }
+        sb.append(" Set ");
+        boolean isFirst = true;
+        int max = countFields();
+        for (int i = 0; i < max; i++) {
+            CompiledVar field = getField(i);
+            CompiledExpression fieldValue = getFieldValue(i);
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(field);
+            sb.append("=");
+            if(fieldValue instanceof CompiledQLFunctionExpression
+                    || fieldValue instanceof CompiledParam
+                    || fieldValue instanceof CompiledLiteral
+                    || fieldValue instanceof CompiledVar
+                    || fieldValue instanceof CompiledCst
+                    ) {
+                sb.append(fieldValue);
+            }else{
+                sb.append("(");
+                sb.append(fieldValue);
+                sb.append(")");
+            }
+        }
+        if (getCondition() != null && getCondition().isValid()) {
+            sb.append(" Where ").append(getCondition());
+        }
+//            if (extraFrom != null)
+        return sb.toString();
     }
 }

@@ -119,7 +119,7 @@ public final class Update extends DefaultEntityStatement implements NonQueryStat
     }
 
     public String getEntityAlias() {
-        return entityAlias == null ? (entity == null ? null : entity.getName()) : entityAlias;
+        return entityAlias;//entityAlias == null ? (entity == null ? null : entity.getName()) : entityAlias;
     }
 
     public int size() {

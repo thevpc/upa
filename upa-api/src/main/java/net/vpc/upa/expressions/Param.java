@@ -104,9 +104,9 @@ public class Param extends DefaultExpression {
     @Override
     public String toString() {
         if (isUnspecified()) {
-            return ":" + getName();
+            return ":" + (getName()==null?"?":getName());
         }
-        return ":" + getName() + "(=" + getValue() + ")";
+        return ":" + (getName()==null?"?":getName()) + "(=" + getValue() + ")";
     }
 
 }

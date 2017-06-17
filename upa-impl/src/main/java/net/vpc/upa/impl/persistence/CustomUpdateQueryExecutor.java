@@ -75,13 +75,13 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
         int c2 = 0;
         String oldAlias = baseExpression.getEntityAlias();
         if (oldAlias == null) {
-            oldAlias = entity.getName();
+            oldAlias = "this";//entity.getName();
         }
         boolean replaceThis = !"this".equals(oldAlias);
         if (baseExpression.countFields() > 0) {
-            if (replaceThis) {
-                UQLUtils.replaceThisVar(baseExpression, oldAlias, context.getPersistenceUnit());
-            }
+//            if (replaceThis) {
+//                UQLUtils.replaceThisVar(baseExpression, oldAlias, context.getPersistenceUnit());
+//            }
             c1 = defaultPersistenceStore.createDefaultExecutor(baseExpression, parametersByName, parametersByIndex, updatable, defaultFieldFilter, context)
                     .execute().getResultCount();
         }

@@ -31,6 +31,17 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
 //        throw new IllegalArgumentException("Unsupported");
 //    }
 
+
+    @Override
+    public String getEntityName() {
+        return null;
+    }
+
+    @Override
+    public String getEntityAlias() {
+        return null;
+    }
+
     @Override
     public DataTypeTransform getTypeTransform() {
         if(queryStatements.isEmpty()){

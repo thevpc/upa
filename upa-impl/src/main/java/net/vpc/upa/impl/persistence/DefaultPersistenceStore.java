@@ -850,7 +850,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             VarVal varVal = update2.getVarVal(i);
             boolean complexSelect = false;
             Expression fieldExpression = varVal.getVal();
-            if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported))) {
+            if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported,isUpdateComplexValuesIncludingUpdatedTableSupported))) {
                 complexSelect = true;
             }
             if (complexSelect) {
@@ -925,7 +925,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setExpandFields(true);
         config.setValidate(true);
         config.setHints(hints);
-        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?statement.getEntityName():statement.getEntityAlias());
+        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?"this":statement.getEntityAlias());
 
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;

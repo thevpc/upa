@@ -22,6 +22,16 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
         this();
         addQuery(other);
     }
+    @Override
+    public String getEntityName() {
+        CompiledEntityName entity = getEntity();
+        return entity==null?null:entity.getName();
+    }
+
+    @Override
+    public String getEntityAlias() {
+        return tableAlias;
+    }
 
     private CompiledInsertSelection into(String entity, String alias) {
         this.entity = new CompiledEntityName(entity);

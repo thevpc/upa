@@ -11,24 +11,28 @@ import net.vpc.upa.expressions.JoinCriteria;
 import net.vpc.upa.expressions.Select;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 class ComplexUpdateExpressionFilter implements ExpressionFilter {
 
     private final String entityName;
     private final boolean isUpdateComplexValuesStatementSupported;
+    private final boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
 
-    public ComplexUpdateExpressionFilter(String entityName, boolean isUpdateComplexValuesStatementSupported) {
+    public ComplexUpdateExpressionFilter(String entityName, boolean isUpdateComplexValuesStatementSupported, boolean isUpdateComplexValuesIncludingUpdatedTableSupported) {
         this.entityName = entityName;
         this.isUpdateComplexValuesStatementSupported = isUpdateComplexValuesStatementSupported;
+        this.isUpdateComplexValuesIncludingUpdatedTableSupported = isUpdateComplexValuesIncludingUpdatedTableSupported;
     }
 
     @Override
     public boolean accept(Expression expression) {
         if (Select.class.isInstance(expression)) {
             Select ss = (Select) expression;
-            if (isUpdateComplexValuesStatementSupported) {
+            if (!isUpdateComplexValuesStatementSupported) {
+                return true;
+            }
+            if (!isUpdateComplexValuesIncludingUpdatedTableSupported) {
                 if (ss.getEntity() != null) {
                     boolean meFound = false;
                     String ssentityName = ss.getEntityName();
@@ -47,8 +51,6 @@ class ComplexUpdateExpressionFilter implements ExpressionFilter {
                         return true;
                     }
                 }
-            } else {
-                return true;
             }
         }
         return false;

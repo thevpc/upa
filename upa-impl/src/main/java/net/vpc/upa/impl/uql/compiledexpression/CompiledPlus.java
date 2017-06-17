@@ -63,7 +63,8 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
             } else if (Integer.class.equals(t) || Integer.class.equals(r)) {
                 setTypeTransform(IdentityDataTypeTransform.INT);
             } else {
-                throw new IllegalArgumentException("Unsupported types");
+                setTypeTransform(IdentityDataTypeTransform.DOUBLE);
+//                throw new IllegalArgumentException("Unsupported types");
             }
         }
     }

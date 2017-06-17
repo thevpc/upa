@@ -2,6 +2,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.uql.DecObjectType;
 
 public class CompiledDelete extends DefaultCompiledEntityStatement
@@ -20,6 +22,12 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
     public CompiledDelete() {
         entity = null;
         entityAlias = null;
+    }
+
+    @Override
+    public String getEntityName() {
+        CompiledEntityName entity = getEntity();
+        return entity==null?null:entity.getName();
     }
 
     private CompiledDelete from(String entityName, String alias) {
@@ -146,4 +154,17 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
         list.add(new CompiledNamedExpression(getEntityAlias()==null?getEntity().getName():getEntityAlias(), getEntity()));
         return list;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Delete From " + entity);
+        if (entityAlias != null) {
+            sb.append(" ").append(ExpressionHelper.escapeIdentifier(entityAlias));
+        }
+        if (condition != null && condition.isValid()) {
+            sb.append(" Where ").append(getCondition().toString());
+        }
+        return sb.toString();
+    }
+
 }

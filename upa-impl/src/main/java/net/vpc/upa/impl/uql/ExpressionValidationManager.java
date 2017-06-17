@@ -49,7 +49,12 @@ public class ExpressionValidationManager {
         log.log(Level.FINEST, "Validate Compiled Expression {0}\n\t using config {1}", new Object[]{expression, config});
         DefaultCompiledExpression dce = (DefaultCompiledExpression) expression;
         //dce.copy()
-
+        String entityBaseName=null;
+        String entityAlias=null;
+        if(dce instanceof CompiledEntityStatement){
+            entityBaseName=((CompiledEntityStatement) dce).getEntityName();
+            entityAlias=((CompiledEntityStatement) dce).getEntityAlias();
+        }
 
         List<CompiledSelect> allSelects = dce.findExpressionsList(CompiledExpressionHelper.SELECT_FILTER);
         //List<CompiledExpression> recurse = new ArrayList<CompiledExpression>();
@@ -61,7 +66,7 @@ public class ExpressionValidationManager {
 
         for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
 //            validateCompiledVar(compiledVar, config);
-            validateCompiledVarReferrer(compiledVar, config);
+            validateCompiledVarReferrer(compiledVar, entityBaseName,config);
         }
         dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
         dce.replaceExpressions(CompiledExpressionHelper.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
@@ -113,7 +118,7 @@ public class ExpressionValidationManager {
         });
         for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
 //            validateCompiledVar(compiledVar, config);
-            validateCompiledVarReferrer(compiledVar, config);
+            validateCompiledVarReferrer(compiledVar, entityBaseName,config);
         }
         //vars may have changed
         for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
@@ -190,6 +195,13 @@ public class ExpressionValidationManager {
         List<CompiledParam> allParams = dce.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
         for (CompiledParam p : allParams) {
             validateCompiledParam(p, config);
+        }
+        String newName = entityAlias != null ? entityAlias : entityBaseName;
+        if(!"this".equals(config.getThisAlias())){
+            newName=config.getThisAlias();
+        }
+        if(newName!=null) {
+            UQLCompiledUtils.replaceThisVar(dce, newName);
         }
         return dce;
     }
@@ -830,7 +842,7 @@ public class ExpressionValidationManager {
         return s.toString();
     }
 
-    public CompiledVar validateCompiledVarReferrer(CompiledVar v, ExpressionCompilerConfig config) {
+    public CompiledVar validateCompiledVarReferrer(CompiledVar v, String entityBaseName,ExpressionCompilerConfig config) {
         CompiledVar p = (v.getParentExpression() instanceof CompiledVar) ? ((CompiledVar) v.getParentExpression()) : null;
         if (p == null) {
             final String thisAlias = config.getThisAlias();
@@ -849,7 +861,15 @@ public class ExpressionValidationManager {
                         }
                     }
                 }
-                throw new IllegalArgumentException("'this' alias is not declared");
+                if("this".equals(config.getThisAlias())){
+                    if(entityBaseName==null){
+                        throw new IllegalArgumentException("'this' alias is not declared");
+                    }
+                    v.setReferrer(persistenceUnit.getEntity(entityBaseName));
+                    return v;
+                }else {
+                    throw new IllegalArgumentException("'this' alias is not declared");
+                }
             }
             //check if field
             List<ExpressionDeclaration> values = getDeclarations(null, v, config);
@@ -947,7 +967,7 @@ public class ExpressionValidationManager {
         } else {
             String before = p.toString();
             /*p =*/
-            validateCompiledVarReferrer(p, config);
+            validateCompiledVarReferrer(p, entityBaseName,config);
             Object ref = p.getReferrer();
             if (ref instanceof Entity) {
                 Entity ee = (Entity) ref;

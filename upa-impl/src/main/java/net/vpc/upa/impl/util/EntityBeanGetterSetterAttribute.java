@@ -17,6 +17,8 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
     private Method setter;
     private String fieldName;
     private Class fieldType;
+    private boolean nullableType;
+    private Object nullValue;
     private EntityPlatformBeanType entityBeanAdapter;
 
     EntityBeanGetterSetterAttribute(EntityPlatformBeanType entityBeanAdapter, String fieldName, Class fieldType,Class type) {
@@ -24,6 +26,8 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
         this.entityBeanAdapter = entityBeanAdapter;
         this.fieldName = fieldName;
         this.fieldType = fieldType;
+        this.nullableType = PlatformUtils.isNullableType(fieldType);
+        this.nullValue = PlatformUtils.DEFAULT_VALUES_BY_TYPE.get(fieldType);
         getter = entityBeanAdapter.getMethod(type, PlatformUtils.getterName(fieldName, fieldType), fieldType);
         if (getter == null) {
             getter = entityBeanAdapter.getMethod(type, PlatformUtils.getterName(fieldName, fieldType), fieldType);
@@ -74,6 +78,9 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
     public void setValue(Object o, Object value) {
         if (setter == null) {
             throw new RuntimeException("Field " + fieldName + " is readonly : no setter found in "+entityBeanAdapter.getEntity().getName());
+        }
+        if(value==null && !nullableType){
+            value=nullValue;
         }
         try {
             setter.invoke(o, value);

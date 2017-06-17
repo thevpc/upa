@@ -24,6 +24,16 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
         }
 
     }
+    @Override
+    public String getEntityName() {
+        CompiledEntityName entity = getEntity();
+        return entity==null?null:entity.getName();
+    }
+
+    @Override
+    public String getEntityAlias() {
+        return null;
+    }
 
     public CompiledInsert(CompiledInsert other) {
         this();
