@@ -520,4 +520,9 @@ public abstract class AbstractDocument implements Document {
         r.setAll(this);
         return r;
     }
+
+    @Override
+    public <T> T get(String key) {
+        return getObject(key);
+    }
 }

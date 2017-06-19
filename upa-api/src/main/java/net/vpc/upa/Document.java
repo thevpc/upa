@@ -52,6 +52,8 @@ public interface Document extends Serializable {
 //    Document removeKey();
 
     ////////////////////////////////////////
+    <T> T get(String key);
+
     <T> T getObject(String key);
 
     <T> T getObject(String key, T defaultValue);
