@@ -164,7 +164,7 @@ public interface Document extends Serializable {
     int size();
 
     Map<String, Object> toMap();
-    
+
     Set<Map.Entry<String, Object>> entrySet();
 
     void setAll(Map<String, Object> other);

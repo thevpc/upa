@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,19 +14,19 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -34,11 +34,10 @@
  */
 package net.vpc.upa.expressions;
 
-import java.util.Collections;
-
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public final class Literal extends DefaultExpression
     public static final Literal IZERO = new Literal(0);
     public static final Literal DZERO = new Literal(0.0);
     public static final Literal ZERO = DZERO;
-    public static final Literal NULL = new Literal(null,null);
+    public static final Literal NULL = new Literal(null, null);
     public static final Literal TRUE = new Literal(true);
     public static final Literal FALSE = new Literal(false);
     public static final Literal EMPTY_STRING = new Literal("");
@@ -154,7 +153,7 @@ public final class Literal extends DefaultExpression
         return new Literal(value, type);
     }
 
-    public static Literal valueOf(boolean value){
-        return value?TRUE : FALSE;
+    public static Literal valueOf(boolean value) {
+        return value ? TRUE : FALSE;
     }
 }

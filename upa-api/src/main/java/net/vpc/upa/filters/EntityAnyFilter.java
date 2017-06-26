@@ -37,10 +37,6 @@ package net.vpc.upa.filters;
 import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */

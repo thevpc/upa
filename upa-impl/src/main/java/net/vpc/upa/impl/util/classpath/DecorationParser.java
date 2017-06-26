@@ -72,7 +72,7 @@ public class DecorationParser {
             try {
                 annotations = type.getAnnotations();
             } catch (Throwable e) {
-                log.log(Level.FINE, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
+                log.log(Level.FINEST, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
                 //ignore
             }
             if (annotations != null) {
@@ -92,7 +92,7 @@ public class DecorationParser {
             try {
                 declaredMethods = type.getDeclaredMethods();
             } catch (Throwable e) {
-                log.log(Level.FINE, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
+                log.log(Level.FINEST, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
                 //ignore
             }
             if (declaredMethods != null) {
@@ -114,7 +114,7 @@ public class DecorationParser {
             try {
                 declaredFields = type.getDeclaredFields();
             } catch (Throwable e) {
-                log.log(Level.FINE, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
+                log.log(Level.FINEST, "Ignored type {0} : {1}", new Object[]{type.getName(), e.toString()});
                 //ignore
             }
             if (declaredFields != null) {

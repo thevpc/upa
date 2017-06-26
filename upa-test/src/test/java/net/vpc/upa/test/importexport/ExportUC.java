@@ -29,10 +29,6 @@ public class ExportUC {
 
     @Test
     public void run() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.start();
         Business bo = UPA.makeSessionAware(new Business());

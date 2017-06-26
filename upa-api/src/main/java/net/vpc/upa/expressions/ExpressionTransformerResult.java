@@ -24,6 +24,7 @@ public class ExpressionTransformerResult {
     public boolean isChanged() {
         return replaced || updated;
     }
+
     public boolean isReplaced() {
         return replaced;
     }

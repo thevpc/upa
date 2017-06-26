@@ -66,6 +66,7 @@ public interface EntityExecutionContext extends Properties {
 
     /**
      * add or remove (if value is null) hint
+     *
      * @param name
      * @param value
      */
@@ -73,6 +74,7 @@ public interface EntityExecutionContext extends Properties {
 
     /**
      * merges hints
+     *
      * @param hints
      */
     EntityExecutionContext setHints(Map<String, Object> hints);

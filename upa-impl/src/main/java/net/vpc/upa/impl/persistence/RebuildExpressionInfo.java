@@ -14,7 +14,6 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * @author taha.bensalah@gmail.com
  */
 public class RebuildExpressionInfo {
-    DefaultCompiledExpression compiledExpression;
     ExpressionFormula initialFormula;
     ExpressionFormula rebuiltFormula;
     Expression expression;

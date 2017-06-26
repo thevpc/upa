@@ -3,6 +3,7 @@ package net.vpc.upa.impl;
 import java.util.ArrayList;
 
 import net.vpc.upa.impl.uql.util.ThatExpressionReplacer;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -599,7 +600,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             return null;
         }
         HashMap<String,Object> v=new HashMap<String,Object>();
-        v.put("this",currentInstance);
+        v.put(UQLUtils.THIS,currentInstance);
         if(StringUtils.isNullOrEmpty(alias)){
             alias=getTargetEntity().getName();
         }

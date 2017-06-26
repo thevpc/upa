@@ -982,4 +982,11 @@ public class PlatformUtils {
     public static List<URL> listURLs(String resource) throws IOException {
         return Collections.list(Thread.currentThread().getContextClassLoader().getResources(resource));
     }
+
+    public static <T> T lcast(Object o,Class<T> type) {
+        if(type.isInstance(o)){
+            return (T) o;
+        }
+        return null;
+    }
 }

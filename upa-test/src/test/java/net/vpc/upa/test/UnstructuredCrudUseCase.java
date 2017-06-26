@@ -1,54 +1,46 @@
-//package net.vpc.upa.test;
-//
-//import net.vpc.upa.types.IntType;
-//import net.vpc.upa.*;
-//import net.vpc.upa.filters.FieldNameFilter;
-//import net.vpc.upa.test.model.Client;
-//import net.vpc.upa.test.util.LogUtils;
-//import net.vpc.upa.TransactionType;
-//import org.junit.Assert;
-//import org.junit.Test;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//
-//import static org.junit.Assert.assertEquals;
-//
-///**
-// * @author Taha BEN SALAH <taha.bensalah@gmail.com>
-// * @creationdate 9/16/12 10:02 PM
-// */
-//public class UnstructuredCrudUseCase {
-//    static{
-//        LogUtils.prepare();
-//    }
-//    static Logger log= LoggerFactory.getLogger(UnstructuredCrudUseCase.class);
-//
+package net.vpc.upa.test;
+
+import net.vpc.upa.test.util.PUUtils;
+import net.vpc.upa.types.IntType;
+import net.vpc.upa.*;
+import net.vpc.upa.filters.FieldNameFilter;
+import net.vpc.upa.test.model.Client;
+import net.vpc.upa.test.util.LogUtils;
+import net.vpc.upa.TransactionType;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 9/16/12 10:02 PM
+ */
+public class UnstructuredCrudUseCase {
+    static Logger log= Logger.getLogger(UnstructuredCrudUseCase.class.getName());
+
 //    @Test
 //    public void crudMixedDocumentsAndEntities() {
-//        log.fine("********************************************");
-//        log.fine("test crud using Mixed Records And Entities");
-//        log.fine("");
-//        log.fine("insert,update, find, delete");
-//        log.fine("********************************************");
-//        PersistenceUnit sm = UPA.getPersistenceUnit("noconfig");
-//        sm.getParameters().setString(UPA.CONNECTION_STRING, "derby:embedded://testdb/other;structure=create");
+//        PersistenceUnit sm = PUUtils.createTestPersistenceUnit(getClass(),"insert,update, find, delete");
 //        sm.addEntity(Client.class);
 //        Entity e=sm.addEntity(Client.class);
 //        e.setName("Titi");
-//        e.addField("toto", null, null, 2, new IntType(5,10,true));
+//        e.addField(new DefaultFieldBuilder().setName("toto").setDefaultObject(2).setDataType(new IntType(5,10,true,false)));
 //
 //        sm.start();
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
 //        Entity entityManager = sm.getEntity("Client");
-//        Client c=entityManager.createEntity();
+//        Client c=entityManager.getBuilder().createObject();
 //        int key = entityManager.nextId();
 //        log.info("Next Id is " + key);
 //        c.setId(key);
 //        c.setFirstName("Hammadi");
 //
-//        sm.insert(c);
+//        sm.persist(c);
 //
 //        FieldNameFilter fieldFilter = new FieldNameFilter("id", "firstName");
 //        Document found0=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToDocument();
@@ -97,28 +89,28 @@
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");
 //
-//        sm.insertRecord("Client", record);
+//        sm.persist("Client", record);
 //
 //        FieldNameFilter fieldFilter = new FieldNameFilter("id", "firstName");
-//        Document foundRecord=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToDocument();
+//        Document foundRecord=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //        log.info("Found " + foundRecord);
 //        record.setString("firstName", "Alia");
 //
-//        sm.updateRecord("Client", record);
+//        sm.update("Client", record);
 //
-//        Document found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToDocument();
+//        Document found=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //
 //        Assert.assertNotNull(found);
 //        Assert.assertEquals(found, record);
 //
-//        sm.delete(key);
+//        sm.remove("Client",RemoveOptions.forId(key));
 //
-//        found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToDocument();
+//        found=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();
 //        s.close();
 //
 //    }
-//
-//}
+
+}

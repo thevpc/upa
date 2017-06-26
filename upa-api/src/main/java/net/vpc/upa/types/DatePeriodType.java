@@ -45,7 +45,7 @@ import java.util.Date;
  * Time: 10:38:06
  * To change this template use Options | File Templates.
  */
-public class DatePeriodType extends TemporalType implements CompoundDataType{
+public class DatePeriodType extends TemporalType implements CompoundDataType {
     private String countName;
     private String periodTypeName;
     private NumberType countDataType;
@@ -68,7 +68,8 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
         if (periodTypeName == null) {
             periodTypeName = "type";
         }
-        setDefaultNonNullValue(new DatePeriod(((Integer) countDataType.getDefaultNonNullValue()).intValue(), PeriodOption.DAY));
+        Integer defaultNonNullValue = (Integer) countDataType.getDefaultNonNullValue();
+        setDefaultNonNullValue(new DatePeriod(defaultNonNullValue == null ? 0 : defaultNonNullValue.intValue(), PeriodOption.DAY));
     }
 
     public String getCountName() {
@@ -94,25 +95,25 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
 
     @Override
     public FieldDescriptor[] getComposingFields(FieldDescriptor fieldDescriptor) {
-        String[] names=new String[]{
-                         fieldDescriptor.getName()+
-                        Character.toUpperCase(countName.charAt(0))+countName.substring(1)
+        String[] names = new String[]{
+                fieldDescriptor.getName() +
+                        Character.toUpperCase(countName.charAt(0)) + countName.substring(1)
                 ,
-                fieldDescriptor.getName()+
-                        Character.toUpperCase(periodTypeName.charAt(0))+periodTypeName.substring(1)
+                fieldDescriptor.getName() +
+                        Character.toUpperCase(periodTypeName.charAt(0)) + periodTypeName.substring(1)
         };
-        if(fieldDescriptor.getPersistFormula()!=null){
+        if (fieldDescriptor.getPersistFormula() != null) {
             throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Persist Formula");
         }
-        if(fieldDescriptor.getUpdateFormula()!=null){
+        if (fieldDescriptor.getUpdateFormula() != null) {
             throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Update Formula");
         }
-        if(fieldDescriptor.getSelectFormula()!=null){
+        if (fieldDescriptor.getSelectFormula() != null) {
             throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Select Formula");
         }
-        FieldDescriptor[] fieldDescriptors=new FieldDescriptor[names.length];
-        Object[] def=getPrimitiveValues(fieldDescriptor.getDefaultObject());
-        Object[] uns=getPrimitiveValues(fieldDescriptor.getUnspecifiedObject());
+        FieldDescriptor[] fieldDescriptors = new FieldDescriptor[names.length];
+        Object[] def = getPrimitiveValues(fieldDescriptor.getDefaultObject());
+        Object[] uns = getPrimitiveValues(fieldDescriptor.getUnspecifiedObject());
         for (int i = 0; i < fieldDescriptors.length; i++) {
             DefaultFieldDescriptor d = new DefaultFieldDescriptor();
             d.setReadAccessLevel(AccessLevel.PRIVATE);
@@ -122,7 +123,7 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
             d.setPersistAccessLevel(fieldDescriptor.getPersistAccessLevel());
             d.setModifiers(FlagSets.of(UserFieldModifier.SYSTEM));
             d.setUpdateAccessLevel(fieldDescriptor.getPersistAccessLevel());
-            fieldDescriptors[i]= d;
+            fieldDescriptors[i] = d;
         }
         return fieldDescriptors;
     }
@@ -142,4 +143,5 @@ public class DatePeriodType extends TemporalType implements CompoundDataType{
             return new DatePeriod(c, PeriodOption.values()[p]);
         }
         return null;
-    }}
+    }
+}

@@ -47,6 +47,11 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
         return alias;
     }
 
+    public void setEntityAlias(String alias) {
+        this.alias=alias;
+    }
+
+
     public DefaultCompiledExpression getCondition() {
         return condition;
     }

@@ -48,4 +48,8 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
     public DefaultCompiledExpression getVal() {
         return val;
     }
+
+    public void setVal(DefaultCompiledExpression val) {
+        this.val = val;
+    }
 }

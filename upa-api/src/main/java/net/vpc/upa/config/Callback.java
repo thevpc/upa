@@ -45,24 +45,24 @@ import java.lang.annotation.Target;
  * Callback class can define one or more "event" methods which are decorated
  * with the following annotations
  * <ul>
- *     <li>@OnCreate</li>
- *     <li>@OnPreCreate</li>
- *     <li>@OnAlter</li>
- *     <li>@OnPreAlter</li>
- *     <li>@OnDrop</li>
- *     <li>@OnPreDrop</li>
- *     <li>@OnInit</li>
- *     <li>@OnPreInit</li>
- *     <li>@OnPersist</li>
- *     <li>@OnPrePersist</li>
- *     <li>@OnRemove</li>
- *     <li>@OnPreRemove</li>
- *     <li>@OnReset</li>
- *     <li>@OnPreReset</li>
- *     <li>@OnUpdate</li>
- *     <li>@OnPreUpdate</li>
- *     <li>@OnUpdateFormula</li>
- *     <li>@OnPreUpdateFormula</li>
+ * <li>@OnCreate</li>
+ * <li>@OnPreCreate</li>
+ * <li>@OnAlter</li>
+ * <li>@OnPreAlter</li>
+ * <li>@OnDrop</li>
+ * <li>@OnPreDrop</li>
+ * <li>@OnInit</li>
+ * <li>@OnPreInit</li>
+ * <li>@OnPersist</li>
+ * <li>@OnPrePersist</li>
+ * <li>@OnRemove</li>
+ * <li>@OnPreRemove</li>
+ * <li>@OnReset</li>
+ * <li>@OnPreReset</li>
+ * <li>@OnUpdate</li>
+ * <li>@OnPreUpdate</li>
+ * <li>@OnUpdateFormula</li>
+ * <li>@OnPreUpdateFormula</li>
  * </ul>
  * Callback are also called if implementing one of the following interfaces
  * <ul>
@@ -76,6 +76,7 @@ import java.lang.annotation.Target;
  * <li>PersistenceUnitListener</li>
  * <li>EntityInterceptor</li>
  * </ul>
+ *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/4/12 11:00 PM
  */
@@ -85,6 +86,7 @@ public @interface Callback {
 
     /**
      * callback name, not mandatory
+     *
      * @return
      */
     String name() default "";
@@ -93,12 +95,14 @@ public @interface Callback {
      * if applicable, the Callback will be bound to entities
      * (depending of the Callback type) which name matches the filter
      * (shell wildcards are allowed)
+     *
      * @return
      */
     String filter() default "";
 
     /**
      * true all entities,including Systems Entities should be tracked
+     *
      * @return true all entities,including Systems Entities should be tracked
      */
     boolean trackSystemObjects() default false;

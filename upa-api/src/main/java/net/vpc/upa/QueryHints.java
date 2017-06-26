@@ -7,20 +7,19 @@ public final class QueryHints {
     /**
      * when true password transformations are disabled. this is helpful when copying entities (import/export)
      * type : boolean, default is false
-     *
      */
-    public static final String NO_TYPE_TRANSFORM="noTypeTransform";
+    public static final String NO_TYPE_TRANSFORM = "noTypeTransform";
 
     /**
      * type : string enum {select, join}, default is 'join'
      */
-    public static final String FETCH_STRATEGY="fetchStrategy";
+    public static final String FETCH_STRATEGY = "fetchStrategy";
 
     /**
      * sub entities depth
-     *  type int &gt;= 0 : default is 3, meaningful in join fetch strategy
+     * type int &gt;= 0 : default is 3, meaningful in join fetch strategy
      */
-    public static final String NAVIGATION_DEPTH="navigationDepth";
+    public static final String NAVIGATION_DEPTH = "navigationDepth";
 
     private QueryHints() {
     }

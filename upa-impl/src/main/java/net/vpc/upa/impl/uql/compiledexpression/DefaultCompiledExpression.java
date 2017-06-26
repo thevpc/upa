@@ -1,19 +1,15 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.Properties;
-import net.vpc.upa.impl.uql.CompiledExpressionFilter;
-import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
-import net.vpc.upa.impl.uql.CompiledExpressionVisitor;
-
-import java.util.List;
 import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.impl.uql.DecObjectType;
-import net.vpc.upa.impl.uql.ExpressionDeclaration;
+import net.vpc.upa.impl.uql.*;
 import net.vpc.upa.types.DataTypeTransform;
 
-public interface DefaultCompiledExpression extends Cloneable, java.io.Serializable, net.vpc.upa.expressions.CompiledExpression{
+import java.util.List;
 
-//    public static CompiledExpression[] EMPTY_ERRAY = new CompiledExpression[0];
+public interface DefaultCompiledExpression extends Cloneable, java.io.Serializable, net.vpc.upa.expressions.CompiledExpression {
+
+    //    public static CompiledExpression[] EMPTY_ERRAY = new CompiledExpression[0];
     public boolean isValid();
 
     public DefaultCompiledExpression[] getSubExpressions();
@@ -35,9 +31,9 @@ public interface DefaultCompiledExpression extends Cloneable, java.io.Serializab
 
     public abstract DataTypeTransform getTypeTransform();
 
-    public abstract DataTypeTransform getEffectiveDataType();
-
     public abstract void setTypeTransform(DataTypeTransform type);
+
+    public abstract DataTypeTransform getEffectiveDataType();
 
     public DefaultCompiledExpression setClientProperty(String name, Object value);
 
@@ -46,11 +42,14 @@ public interface DefaultCompiledExpression extends Cloneable, java.io.Serializab
     public Object getClientProperty(String name);
 
     public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer);
+    public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilteredReplacer replacer);
 
     public <T extends CompiledExpression> List<T> findExpressionsList(CompiledExpressionFilter filter);
+
     public <T extends CompiledExpression> T findFirstExpression(CompiledExpressionFilter filter);
 
 //    public void setDeclarationList(ExpressionDeclarationList declarationList);
+
     /**
      * @param visitor
      * @return true if should continue visiting false otherwise

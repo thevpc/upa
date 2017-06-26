@@ -23,18 +23,14 @@ public class ReservedWordsUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(null);//getClass()
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());//getClass()
         pu.addEntity(Allocate.class);
         pu.addEntity(User.class);
         pu.start();
 
         Business bo = UPA.makeSessionAware(new Business());
         bo.testQuery();
-//        bo.initializeData();
+        bo.testPrimitiveReferences();
     }
 
     public static class Business {
@@ -44,7 +40,7 @@ public class ReservedWordsUC {
             Query q = pu.createQuery("Select a from Allocate a");
             List<Document> r = q.getDocumentList();
             for (Document document : r) {
-                System.out.println(r);
+                System.out.println(document);
             }
         }
 

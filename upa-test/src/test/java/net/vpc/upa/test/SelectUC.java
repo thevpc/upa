@@ -25,10 +25,6 @@ public class SelectUC {
 
     @Test
     public void testSelect() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Client.class);
         pu.start();

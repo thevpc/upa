@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class CallbackConfig {
@@ -24,14 +23,14 @@ public class CallbackConfig {
     public CallbackConfig() {
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType,EventPhase phase) {
+    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase) {
         this.instance = instance;
         this.method = method;
         this.phase = phase;
         this.callbackType = callbackType;
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase,Map<String, Object> configuration) {
+    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
         this.instance = instance;
         this.method = method;
         this.callbackType = callbackType;

@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,19 +14,19 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -39,7 +39,6 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.EntityStatement;
 
 import java.util.Set;
-import net.vpc.upa.expressions.NonQueryStatement;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 1:24 AM To change
@@ -64,7 +63,7 @@ public interface PersistenceStore {
 
     void checkAccessible(ConnectionProfile connectionProfile);
 
-    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection,PersistenceNameConfig nameConfig) throws UPAException;
+    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection, PersistenceNameConfig nameConfig) throws UPAException;
 
     Set<String> getSupportedDrivers();
 
@@ -152,5 +151,5 @@ public interface PersistenceStore {
      */
     UConnection createConnection() throws UPAException;
 
-    void setIdentityConstraintsEnabled(Entity entity, boolean enable,EntityExecutionContext context);
+    void setIdentityConstraintsEnabled(Entity entity, boolean enable, EntityExecutionContext context);
 }

@@ -2,16 +2,12 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.Properties;
-import net.vpc.upa.impl.uql.CompiledExpressionFilter;
-import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
-import net.vpc.upa.impl.uql.CompiledExpressionVisitor;
+import net.vpc.upa.impl.uql.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.uql.DecObjectType;
-import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.types.DataTypeTransform;
 
 public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledExpression {
@@ -161,7 +157,11 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         }    
         return null;
     }
-    
+
+    @Override
+    public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilteredReplacer replacer) {
+        return replaceExpressions(replacer,replacer);
+    }
 
     public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer) {
         DefaultCompiledExpression t = (DefaultCompiledExpression) ((filter == null || filter.accept(this)) ? replacer.update(this) : null);

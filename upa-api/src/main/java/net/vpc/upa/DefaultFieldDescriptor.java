@@ -5,13 +5,12 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransformConfig;
+
 import java.util.Map;
 
-import net.vpc.upa.types.DataTypeTransformConfig;
-import net.vpc.upa.types.DataType;
-
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class DefaultFieldDescriptor implements FieldDescriptor {
@@ -34,7 +33,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private AccessLevel readAccessLevel = AccessLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int position=-1;
+    private int position = -1;
 
     public String getName() {
         return name;

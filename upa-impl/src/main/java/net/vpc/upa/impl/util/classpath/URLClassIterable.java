@@ -107,7 +107,7 @@ public class URLClassIterable implements Iterable<Class> {
                     try {
                         aClass = PlatformUtils.forName(cls, false, contextClassLoader);
                     } catch (Throwable e) {
-                        log.log(Level.FINE, "Unable to load class {0} for UPA configuration. Ignored", cls);
+                        log.log(Level.FINEST, "Unable to load class {0} for UPA configuration. Ignored", cls);
                     }
                     if (aClass != null) {
                         if (configFilter.acceptClass(src, cls, aClass)) {

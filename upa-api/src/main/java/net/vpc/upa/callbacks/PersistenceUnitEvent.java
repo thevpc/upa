@@ -39,7 +39,6 @@ import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class PersistenceUnitEvent extends UPAEvent {

@@ -48,7 +48,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         if(object instanceof Document){
             return (Document) object;
         }
-        return new BeanAdapterDocument(entity.getPlatformBeanType().getPlatformType().cast(object),entity.getName(), nfo, ignoreUnspecified);
+        return new BeanAdapterDocument(entity.getPlatformBeanType().getPlatformType().cast(object),entity, nfo, ignoreUnspecified);
     }
 
 

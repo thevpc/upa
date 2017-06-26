@@ -23,10 +23,6 @@ public class SimpleCrud2UC {
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SimpleCrud2UC.class.getName());
 
     private Business getBusiness() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Client.class);
         pu.start();

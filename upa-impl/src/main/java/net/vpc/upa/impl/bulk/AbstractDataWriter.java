@@ -85,7 +85,7 @@ public abstract class AbstractDataWriter implements DataWriter {
                 System.arraycopy(values,0,values2,0,values.length);
                 values=values2;
             }else{
-                throw new UPAException("InvalidRowLength");
+                throw new UPAException("InvalidRowLength",parserColumns.length,values.length);
             }
         }
         return new DefaultDataRow(parserColumns,values);

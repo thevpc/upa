@@ -18,9 +18,10 @@ import net.vpc.upa.impl.persistence.shared.marshallers.DefaultSerializablePlatfo
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.filters.Fields2;
 import net.vpc.upa.persistence.*;
@@ -925,7 +926,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setExpandFields(true);
         config.setValidate(true);
         config.setHints(hints);
-        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?"this":statement.getEntityAlias());
+        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())? UQLUtils.THIS:statement.getEntityAlias());
 
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
@@ -1027,7 +1028,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
         String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
 
-        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
+        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionUtils.PARAM_FILTER);
         List<Parameter> values = new ArrayList<Parameter>();
         for (CompiledParam e : cvalues) {
             if (e.isUnspecified()) {
@@ -1617,7 +1618,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //                if (oldAlias == null) {
 //                    oldAlias = entity.getName();
 //                }
-//                boolean replaceThis = !"this".equals(oldAlias);
+//                boolean replaceThis = !UQLUtils.THIS.equals(oldAlias);
 //                for (VarVal f : complexVals) {
 //                    Expression fieldExpression = f.getVal();
 //                    if (replaceThis) {

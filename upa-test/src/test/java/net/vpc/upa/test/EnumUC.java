@@ -7,6 +7,7 @@ import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -22,10 +23,6 @@ public class EnumUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Data.class);
         pu.start();
@@ -37,16 +34,22 @@ public class EnumUC {
 
         public void process() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-
-
+            Assert.assertEquals(EnumUC.class.getName(),pu.getName());
+            List<Data> entityList = pu.createQuery("Select a from Data a").getResultList();
+            for (Data data : entityList) {
+                pu.remove(data);
+            }
+            entityList = pu.createQuery("Select a from Data a").getResultList();
+            Assert.assertEquals(0,entityList.size());
             Data val = new Data();
             val.setStatus(Status.INVALID);
             pu.persist(val);
 
-            List<Data> entityList = pu.createQuery("Select a from Data a").getResultList();
+            entityList = pu.createQuery("Select a from Data a").getResultList();
             for (Data c : entityList) {
                 System.out.println(c);
             }
+            Assert.assertEquals(1,entityList.size());
         }
     }
 

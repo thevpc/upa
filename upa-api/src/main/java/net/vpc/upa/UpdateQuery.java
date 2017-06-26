@@ -12,10 +12,12 @@ import java.util.Set;
  * Created by vpc on 6/12/16.
  */
 public interface UpdateQuery {
-    UpdateQuery setNone() ;
+    UpdateQuery setNone();
 
-    UpdateQuery setValues(Object object) ;
-    UpdateQuery setValues(Document document) ;
+    UpdateQuery setValues(Object object);
+
+    UpdateQuery setValues(Document document);
+
     Object getValues();
 
     UpdateQuery byId(Object expr);
@@ -70,18 +72,27 @@ public interface UpdateQuery {
     Set<String> getUpdatedFields();
 
     UpdateQuery setUpdatedFields(Collection<String> partialUpdateFields);
+
     UpdateQuery update(Collection<String> partialUpdateFields);
+
     UpdateQuery update(String... partialUpdateFields);
+
     UpdateQuery update(String partialUpdateFields);
+
     UpdateQuery removeUpdatedFields(Collection<String> partialUpdateFields);
 
     FieldFilter getFormulaFields();
 
     UpdateQuery validate(String formulaField);
+
     UpdateQuery validate(String... formulaFields);
+
     UpdateQuery validate(Collection<String> formulaFields);
+
     UpdateQuery validate(FieldFilter formulaFields);
+
     UpdateQuery validateAll();
+
     UpdateQuery validateNone();
 
     boolean isIgnoreUnspecified();

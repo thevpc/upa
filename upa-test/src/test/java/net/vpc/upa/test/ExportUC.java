@@ -1,5 +1,6 @@
 package net.vpc.upa.test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -9,12 +10,14 @@ import net.vpc.upa.*;
 import net.vpc.upa.bulk.DataWriter;
 import net.vpc.upa.bulk.ImportExportManager;
 import net.vpc.upa.bulk.TextCSVFormatter;
+import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.test.model.ClientType;
 import net.vpc.upa.test.util.PUUtils;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.types.Month;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -30,9 +33,6 @@ public class ExportUC {
 
     private Business getBusiness() {
         String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Client.class);
         pu.start();
@@ -49,6 +49,7 @@ public class ExportUC {
 
         public void process() throws IOException {
             PersistenceUnit pu = UPA.getPersistenceUnit();
+            Assert.assertEquals(ExportUC.class.getName(),pu.getName());
 
             Entity entityManager = pu.getEntity("Client");
             Client c = entityManager.createObject();
@@ -57,10 +58,20 @@ public class ExportUC {
 
             pu.persist(c);
             ImportExportManager iem = pu.getImportExportManager();
-            TextCSVFormatter f = iem.createTextCSVFormatter(new File("/home/vpc/t.csv"));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            TextCSVFormatter f = iem.createTextCSVFormatter(out);
+            f.setDataRowConverter(iem.createEntityConverter("Client", FieldFilters.byName("firstName","lastName")));
+            f.setWriteHeader(true);
             DataWriter w = f.createWriter();
             w.writeRow(new Object[]{"hello", "world"});
+            w.writeObject(c);
             w.close();
+            String result = new String(out.toByteArray());
+            String expected = "firstName;lastName\n" +
+                    "hello;world\n" +
+                    "Ahmed;Gharbi\n";
+            System.out.println(result);
+            Assert.assertEquals(expected.trim(),result.trim());
         }
     }
 

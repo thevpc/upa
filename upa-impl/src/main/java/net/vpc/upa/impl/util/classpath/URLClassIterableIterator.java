@@ -32,7 +32,7 @@ class URLClassIterableIterator implements Iterator<Class> {
                     classPathResources = new ClassPathRoot(jarURL).iterator();
                 } else {
                     urlIndex++;
-                    URLClassIterable.log.log(Level.FINE, "ignoring  configuration from url : {0}", jarURL);
+                    URLClassIterable.log.log(Level.FINEST, "ignoring configuration from url : {0}", jarURL);
                     continue;
                 }
             }
@@ -60,5 +60,9 @@ class URLClassIterableIterator implements Iterator<Class> {
     public Class next() {
         return nextType;
     }
-    
+
+    @Override
+    public void remove() {
+
+    }
 }

@@ -27,11 +27,7 @@ public class RelationLiveUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass(), "embedded");
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addCallback(new AbstractCallback(CallbackType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
             @Override
             public Object invoke(Object... arguments) {

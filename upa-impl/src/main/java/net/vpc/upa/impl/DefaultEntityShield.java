@@ -231,9 +231,9 @@ public class DefaultEntityShield implements EntityShield {
         checkVeto(VetoableOperation.checkNavigate);
     }
 
-    public void checkRemove(Expression condition, boolean recurse)
+    public void checkRemove(Expression condition, boolean recurse, long toRemoveCount)
             throws UPAException {
-        if (entity.getEntityCount(condition) == 0) {
+        if (toRemoveCount==0) {
             //nothing to remove!!
             return;
         }

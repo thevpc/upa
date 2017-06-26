@@ -6,11 +6,11 @@ import net.vpc.upa.exceptions.UPAException;
 /**
  * @author taha.bensalah@gmail.com on 7/31/16.
  */
-class RichEntityFilterAdapter extends AbstractRichEntityFilter{
+class RichEntityFilterAdapter extends AbstractRichEntityFilter {
     private EntityFilter other;
 
     public RichEntityFilterAdapter(EntityFilter other) {
-        if(other==null){
+        if (other == null) {
             throw new NullPointerException();
         }
         this.other = other;

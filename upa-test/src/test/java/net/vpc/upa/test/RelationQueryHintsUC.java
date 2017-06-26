@@ -3,11 +3,12 @@ package net.vpc.upa.test;
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
-import net.vpc.upa.config.ManyToOne;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,47 +17,47 @@ import java.util.logging.Logger;
  * @creationdate 9/16/12 10:02 PM
  */
 public class RelationQueryHintsUC {
-
-    static {
-        LogUtils.prepare();
-    }
     private static final Logger log = Logger.getLogger(RelationQueryHintsUC.class.getName());
-
-    @Test
-    public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass(),"embedded");
-//        pu.scan(null);
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationQueryHintsUC.class, "embedded");
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);
         pu.start();
+        bo = UPA.makeSessionAware(new Business());
+        bo.clear();
+        bo.populate();
+    }
 
-        Business bo = UPA.makeSessionAware(new Business());
+    @Test
+    public void crudMixedDocumentsAndEntities() {
         bo.testQuery();
-//        bo.initializeData();
+    }
+    @Test
+    public void testQuery2() {
+        bo.testQuery2();
+    }
+    @Test
+    public void testQuery3() {
+        bo.testQuery3();
+    }
+    @Test
+    public void testQuery4() {
+        bo.testQuery4();
     }
 
     public static class Business {
-
-        public void testQuery() {
+        public void clear() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-            Query q = pu.createQuery("Select a from Person a ") //where a.phone2.id >3
-                    .setHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
-//            List<Document> r = q.getDocumentList();
-//            for (Document doc : r) {
-//                System.out.println(doc);
-//            }
-            List<Person> r = q.getResultList();
-            r.size();
-            for (Person doc : r) {
-                System.out.println(doc);
+            for (Object p : pu.findAll(Person.class)) {
+                pu.remove(p);
+            }
+            for (Object p : pu.findAll(Phone.class)) {
+                pu.remove(p);
             }
         }
-
-        public void testPrimitiveReferences() {
+        public void populate() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
 
             Phone[] phones = new Phone[10];
@@ -73,29 +74,65 @@ public class RelationQueryHintsUC {
 
             person.setPhone2(phones[2]);
 
-//            person.setIdPhone1(phones[1].getId());
-//            person.setIdPhone3(phones[3].getId());
-//            person.setPhone4(phones[4]);
-//            person.setPhone3(phones[3]);
-//
-//            person.setIdPhone4(phones[9].getId());
-//            person.setPhone3(phones[9]);
-
             pu.save(person);
 
             person.setPhone2(phones[2]);
-//            person.setIdPhone1(phones[1].getId());
-//            person.setIdPhone3(phones[3].getId());
-//            person.setPhone4(phones[4]);
-//            person.setPhone5(phones[5]);
-//
-//            person.setIdPhone4(phones[9].getId());
-//            person.setPhone3(phones[9]);
-
             pu.save(person);
 
-            //"Select p.id,p.phone3[id,value,lastPhone[id,value]] from Person"
+            Person alia = new Person();
+            alia.setName("Alia");
+            alia.setPhone2(phones[3]);
+            alia.setParent(person);
+            pu.save(alia);
         }
+
+        public void testQuery() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            Query q = pu.createQuery("Select a from Person a ")
+                    .setHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
+            List<Person> r = q.getResultList();
+            r.size();
+            for (Person doc : r) {
+                System.out.println(doc);
+            }
+        }
+
+        public void testQuery2() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            Query q = pu.createQuery("Select a.phone2 from Person a ")
+                    .setHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
+            List r = q.getResultList();
+            r.size();
+            for (Object doc : r) {
+                System.out.println(doc);
+            }
+        }
+
+        public void testQuery3() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            Query q = pu.createQuery("Select a.parent.phone2.value from Person a ");
+            List r = q.getResultList();
+            r.size();
+            for (Object doc : r) {
+                System.out.println(doc);
+            }
+        }
+
+        public void testQuery4() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            Query q = pu.createQuery("Select a,a.parent.phone2.value from Person a ");
+            List r = q.getResultList();
+            r.size();
+            for (Object doc : r) {
+                Assert.assertEquals(Object[].class,doc.getClass());
+                Object[] row = (Object[]) doc;
+                Assert.assertEquals(Person.class,row[0].getClass());
+                Assert.assertTrue(row[1]==null || String.class.isInstance(row[1]));
+
+                System.out.println(Arrays.toString(row));
+            }
+        }
+
     }
 
     @Ignore
@@ -108,47 +145,22 @@ public class RelationQueryHintsUC {
 
         private String name;
 
-//        /**
-//         * create relation idPhone1
-//         */
-//        @ManyToOne(targetEntityType = Phone.class)
-//        private Integer idPhone1;
-
-        /**
-         * create relation phone2 a new field "phone2Id" will be created
-         */
-        @ManyToOne
         private Phone phone2;
+        private Person parent;
 
-//        /**
-//         * create relation phone3 mapped to idPhone3 updates are considered on
-//         * idPhone3 (and not phone3)
-//         */
-//        @ManyToOne(targetEntityType = Phone.class, mappedTo = "phone3")
-//        private Integer idPhone3;
-//
-//        private Phone phone3;
-//
-//        /**
-//         * create relation mapped to idPhone4 updates are considered on phone4
-//         * (and not idPhone4)
-//         */
-//        private Integer idPhone4;
-//
-//        @ManyToOne(mappedTo = "idPhone4")
-//        private Phone phone4;
-//
-//        /**
-//         * create relation without @ManyToOne annotation. a new field "phone5Id"
-//         * will be created
-//         */
-//        private Phone phone5;
+        public Person getParent() {
+            return parent;
+        }
+
+        public void setParent(Person parent) {
+            this.parent = parent;
+        }
 
         public Integer getId() {
             return id;
         }
 
-                public void setId(Integer id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 
@@ -168,58 +180,15 @@ public class RelationQueryHintsUC {
             this.phone2 = phone2;
         }
 
-//        public Phone getPhone5() {
-//            return phone5;
-//        }
-//
-//        public void setPhone5(Phone phone5) {
-//            this.phone5 = phone5;
-//        }
-//
-//        public Integer getIdPhone1() {
-//            return idPhone1;
-//        }
-//
-//        public void setIdPhone1(Integer idPhone1) {
-//            this.idPhone1 = idPhone1;
-//        }
-//
-//        public Integer getIdPhone3() {
-//            return idPhone3;
-//        }
-//
-//        public void setIdPhone3(Integer idPhone3) {
-//            this.idPhone3 = idPhone3;
-//        }
-//
-//        public Phone getPhone3() {
-//            return phone3;
-//        }
-//
-//        public void setPhone3(Phone phone3) {
-//            this.phone3 = phone3;
-//        }
-//
-//        public Integer getIdPhone4() {
-//            return idPhone4;
-//        }
-//
-//        public void setIdPhone4(Integer idPhone4) {
-//            this.idPhone4 = idPhone4;
-//        }
-//
-//        public Phone getPhone4() {
-//            return phone4;
-//        }
-//
-//        public void setPhone4(Phone phone4) {
-//            this.phone4 = phone4;
-//        }
-
-//        @Override
-//        public String toString() {
-//            return "Person{" + "id=" + id + ", name=" + name + ", idPhone1=" + idPhone1 + ", phone2=" + phone2 + ", idPhone3=" + idPhone3 + ", phone3=" + phone3 + ", idPhone4=" + idPhone4 + ", phone4=" + phone4 + '}';
-//        }
+        @Override
+        public String toString() {
+            return "Person{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", phone2=" + phone2 +
+                    ", parent=" + parent +
+                    '}';
+        }
     }
 
     public static class Phone {

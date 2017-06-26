@@ -1,7 +1,11 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Document;
+import net.vpc.upa.Entity;
 import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -17,11 +21,11 @@ public class BeanAdapterDocument extends AbstractDocument {
     private boolean ignoreUnspecified;
     private Object userObject;
     private Map<String, Object> extra;
-    private String entityName;
+    private Entity entityName;
     private PlatformBeanType nfo;
     private PropertyChangeSupport propertyChangeSupport;
 
-    public BeanAdapterDocument(Object userObject, String entityName, PlatformBeanType nfo, boolean ignoreUnspecified) {
+    public BeanAdapterDocument(Object userObject, Entity entityName, PlatformBeanType nfo, boolean ignoreUnspecified) {
         this.userObject = userObject;
         this.entityName = entityName;
         this.nfo = nfo;
@@ -49,6 +53,12 @@ public class BeanAdapterDocument extends AbstractDocument {
     public void setObject(String key, Object value) {
         setUpdated(key);
         Object oldValue = nfo.getProperty(userObject, key);
+        if(value instanceof Document){
+            DataType dataType = entityName.getField(key).getDataType();
+            if(dataType instanceof ManyToOneType){
+                value = ((ManyToOneType) dataType).getTargetEntity().getBuilder().documentToObject((Document) value);
+            }
+        }
         if (value instanceof Expression || !nfo.setProperty(userObject, key, value)) {
             // handle unstructured fields (non defined in the bean class)
             if (extra == null) {

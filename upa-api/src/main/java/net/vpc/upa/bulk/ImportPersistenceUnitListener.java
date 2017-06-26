@@ -6,7 +6,6 @@
 package net.vpc.upa.bulk;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface ImportPersistenceUnitListener {

@@ -413,7 +413,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     int initializeCore(EntityExecutionContext executionContext);
 
-    Object compile(Expression expression,String alias);
+    Object compile(Expression expression, String alias);
 
     void addFilter(String name, String expression);
 

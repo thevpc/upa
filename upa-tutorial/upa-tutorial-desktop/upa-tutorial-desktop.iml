@@ -15,8 +15,8 @@
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
     <orderEntry type="module" module-name="upa-tutorial-business" />
     <orderEntry type="module" module-name="upa-tutorial-dal" />
-    <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
     <orderEntry type="module" module-name="upa-api" />
+    <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi:3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-codec:commons-codec:1.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml:3.9" level="project" />

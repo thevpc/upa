@@ -85,6 +85,7 @@ public class URLAnnotationStrategySupport {
 
     public void scan(UPAContext context, ScanSource source, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
+            UPAContextConfig bootstrapContextConfig = context.getBootstrapContextConfig();
             DecorationParser parser = new DecorationParser(UPAUtils.toConfigurationStrategy(source).toIterable(context),
                     new DefaultDecorationFilter()
                     .addDecorations(
@@ -146,7 +147,7 @@ public class URLAnnotationStrategySupport {
                 }
             }
             List<OrderedIem<PersistenceUnitConfig>> persistenceUnitConfigs = new ArrayList<OrderedIem<PersistenceUnitConfig>>();
-            for (PersistenceGroupConfig persistenceGroupConfig : context.getBootstrapContextConfig().getPersistenceGroups()) {
+            for (PersistenceGroupConfig persistenceGroupConfig : bootstrapContextConfig.getPersistenceGroups()) {
                 for (PersistenceUnitConfig persistenceUnitConfig : persistenceGroupConfig.getPersistenceUnits()) {
                     persistenceUnitConfigs.add(new OrderedIem<PersistenceUnitConfig>(Integer.MAX_VALUE, persistenceUnitConfig));
                 }
@@ -217,7 +218,7 @@ public class URLAnnotationStrategySupport {
             }
             for (PersistenceGroup g : createdPersistenceGroups) {
 //                int count = 0;
-                for (PersistenceGroupConfig pgc : context.getBootstrapContextConfig().getPersistenceGroups()) {
+                for (PersistenceGroupConfig pgc : bootstrapContextConfig.getPersistenceGroups()) {
                     if (StringUtils.matchesSimpleExpression(g.getName(), pgc.getName(), PatternType.DOT_PATH)) {
                         if (pgc.getAutoScan() != null) {
                             g.setAutoScan(pgc.getAutoScan());

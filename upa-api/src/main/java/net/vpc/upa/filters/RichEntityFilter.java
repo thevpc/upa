@@ -5,6 +5,8 @@ package net.vpc.upa.filters;
  */
 public interface RichEntityFilter extends EntityFilter {
     RichEntityFilter and(EntityFilter filter);
+
     RichEntityFilter or(EntityFilter filter);
+
     RichEntityFilter negate();
 }

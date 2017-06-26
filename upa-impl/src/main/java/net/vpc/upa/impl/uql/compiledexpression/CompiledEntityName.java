@@ -25,6 +25,10 @@ public class CompiledEntityName extends DefaultCompiledExpressionImpl implements
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean isValid() {
         return true;

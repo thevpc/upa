@@ -11,19 +11,19 @@
  * considerably of the leading ORM (JPA, Hibernate/NHibernate, MyBatis and
  * Entity Framework to name a few) failures to satisfy very common even known to
  * be trivial requirement in enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -113,9 +113,9 @@ public interface Query extends Closeable {
 
     List<MultiDocument> getMultiDocumentList() throws UPAException;
 
-    <T> List<T> getResultList() ;
+    <T> List<T> getResultList();
 
-    <T> Set<T> getResultSet() ;
+    <T> Set<T> getResultSet();
 
     List<Document> getDocumentList() throws UPAException;
 
@@ -123,13 +123,13 @@ public interface Query extends Closeable {
 
     <T> Set<T> getValueSet(int index) throws UPAException;
 
-    <T> Set<T> getValueSet(String name) throws UPAException ;
+    <T> Set<T> getValueSet(String name) throws UPAException;
 
     <T> List<T> getValueList(String name) throws UPAException;
 
     <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
 
-    <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException ;
+    <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException;
 
     ResultMetaData getMetaData() throws UPAException;
 
@@ -139,15 +139,15 @@ public interface Query extends Closeable {
 
     Query setParameter(int index, Object value);
 
-    Query setParameter(String name, Object value,boolean condition);
+    Query setParameter(String name, Object value, boolean condition);
 
-    Query setParameters(Map<String, Object> parameters,boolean condition);
+    Query setParameters(Map<String, Object> parameters, boolean condition);
 
-    Query setParameter(int index, Object value,boolean condition);
+    Query setParameter(int index, Object value, boolean condition);
 
-    Query removeParameter(String name) ;
+    Query removeParameter(String name);
 
-    Query removeParameter(int index) ;
+    Query removeParameter(int index);
 
     void setUpdatable(boolean forUpdate);
 
@@ -161,9 +161,9 @@ public interface Query extends Closeable {
 
     Map<String, Object> getHints();
 
-    Object getHint(String hintName) ;
+    Object getHint(String hintName);
 
-    Object getHint(String hintName,Object defaultValue) ;
+    Object getHint(String hintName, Object defaultValue);
 
 
     boolean isUpdatable();

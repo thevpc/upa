@@ -227,6 +227,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 ResultColumn c = columns[index];
                 c.setLabel(label);
                 c.setValue(value);
+//                System.out.println("update row "+index+" with "+label+" ; "+value);
             }
         }
     }

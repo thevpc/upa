@@ -48,7 +48,7 @@ public class DefaultUPAContextLoader {
     }
 
     public UPAContextConfig parse() throws UPAException {
-        log.log(Level.FINE, "Loading UPAContext");
+        log.log(Level.FINE, "Parse Application Context");
         ContextElement contextElement = new ContextElement();
         try {
             parseResource("META-INF/upa.xml", contextElement, varContext);
@@ -207,7 +207,7 @@ public class DefaultUPAContextLoader {
     }
 
     public boolean parseURL(URL url, ContextElement contextElement, VarContext varContext) throws UPAException, SAXException, IOException, ParserConfigurationException {
-        log.log(Level.FINE, "Loading Context URL {0}", url);
+        log.log(Level.FINE, "Parse upa.xml URL {0}", url);
         InputStream is = url.openStream();
         boolean someInclusion = false;
         try {

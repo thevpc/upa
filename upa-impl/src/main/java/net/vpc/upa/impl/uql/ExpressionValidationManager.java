@@ -5,17 +5,22 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.*;
-import net.vpc.upa.expressions.*;
+import net.vpc.upa.expressions.BinaryOperator;
+import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
+import net.vpc.upa.impl.uql.compiledfilteredreplacers.LifeFieldCompiledExpressionFilter;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.impl.uql.compiledfilters.RefEqualCompiledExpressionFilter;
+import net.vpc.upa.impl.uql.compiledreplacer.CompiledExpressionReplacerTemp;
 import net.vpc.upa.impl.uql.compiledreplacer.CompiledQLFunctionExpressionSimplifier;
-import net.vpc.upa.impl.uql.compiledreplacer.IsHierarchyDescendantReplacer;
+import net.vpc.upa.impl.uql.compiledfilteredreplacers.IsHierarchyDescendantReplacer;
 import net.vpc.upa.impl.uql.compiledreplacer.ValueCompiledExpressionReplacer;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -49,83 +54,50 @@ public class ExpressionValidationManager {
         log.log(Level.FINEST, "Validate Compiled Expression {0}\n\t using config {1}", new Object[]{expression, config});
         DefaultCompiledExpression dce = (DefaultCompiledExpression) expression;
         //dce.copy()
-        String entityBaseName=null;
-        String entityAlias=null;
-        if(dce instanceof CompiledEntityStatement){
-            entityBaseName=((CompiledEntityStatement) dce).getEntityName();
-            entityAlias=((CompiledEntityStatement) dce).getEntityAlias();
+        String entityBaseName = null;
+        String entityAlias = null;
+        if (dce instanceof CompiledEntityStatement) {
+            entityBaseName = ((CompiledEntityStatement) dce).getEntityName();
+            entityAlias = ((CompiledEntityStatement) dce).getEntityAlias();
         }
+        //add missing aliases, to fix problem occurring when entity table has different names in stoe
 
-        List<CompiledSelect> allSelects = dce.findExpressionsList(CompiledExpressionHelper.SELECT_FILTER);
+        List<CompiledSelect> allSelects = dce.findExpressionsList(CompiledExpressionUtils.SELECT_FILTER);
         //List<CompiledExpression> recurse = new ArrayList<CompiledExpression>();
         for (CompiledSelect compiledSelect : allSelects) {
             if (config.isExpandEntityFilter()) {
                 expandEntityFilters(compiledSelect, config);
             }
         }
+        dce.replaceExpressions(CompiledExpressionUtils.ALIAS_ENFORCER);
 
-        for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
+        for (CompiledVar compiledVar : CompiledExpressionUtils.findChildrenLeafVars(dce)) {
 //            validateCompiledVar(compiledVar, config);
-            validateCompiledVarReferrer(compiledVar, entityBaseName,config);
+            validateCompiledVarReferrer(compiledVar, entityBaseName, config);
         }
-        dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
-        dce.replaceExpressions(CompiledExpressionHelper.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
-        dce.replaceExpressions(new CompiledExpressionFilter() {
-            @Override
-            public boolean accept(DefaultCompiledExpression e) {
-                if(e instanceof CompiledVar){
-                    Object r = ((CompiledVar) e).getReferrer();
-                    if(r instanceof Field){
-                        Field referrer = (Field) r;
-                        if(referrer.getModifiers().contains(FieldModifier.SELECT_LIVE)){
-                            Formula selectFormula = referrer.getSelectFormula();
-                            return selectFormula instanceof ExpressionFormula;
-                        }
-                    }
-                }
-                return false;
+        dce.replaceExpressions(new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
+        dce.replaceExpressions(new IsHierarchyDescendantReplacer(persistenceUnit));
+        dce.replaceExpressions(new LifeFieldCompiledExpressionFilter(persistenceUnit));
+        for (CompiledVar compiledVar : CompiledExpressionUtils.findChildrenLeafVars(dce)) {
+//            validateCompiledVar(compiledVar, config);
+            validateCompiledVarReferrer(compiledVar, entityBaseName, config);
+        }
+        if(config.isExpandFields()) {
+            //vars may have changed
+            for (CompiledVar compiledVar : CompiledExpressionUtils.findChildrenLeafVars(dce)) {
+//            validateCompiledVar(compiledVar, config);
+                validateCompiledVarRelation(compiledVar, config);
             }
-        }, new CompiledExpressionReplacer(){
-            @Override
-            public CompiledExpression update(CompiledExpression e) {
-                CompiledVar v=(CompiledVar) e;
-                CompiledVarOrMethod c = v.getChild();
-                DefaultCompiledExpression pp = v.getParentExpression();
-                Field referrer = (Field) v.getReferrer();
-                Formula selectFormula = referrer.getSelectFormula();
-                if(selectFormula instanceof ExpressionFormula){
-                    CompiledExpression expr2 = persistenceUnit.getExpressionManager().compileExpression(((ExpressionFormula) selectFormula).getExpression(), new ExpressionCompilerConfig().setExpandFields(false).setValidate(false));
-                    //Remove this!
-                    expr2=UQLCompiledUtils.removeThisVar(expr2);
-                    if(c==null){
-                        if(expr2 instanceof CompiledVarOrMethod){
-                            ((CompiledVarOrMethod) expr2).getFinest().setBaseReferrer(referrer);
-                        }
-                        return expr2;
-                    }else{
-                        if(expr2 instanceof CompiledVar) {
-                            CompiledVar vexpr2 = (CompiledVar) expr2;
-                            vexpr2.getFinest().setChild(c);
-                            vexpr2.setBaseReferrer(referrer);
-                            return vexpr2;
-                        }else{
-                            throw new IllegalArgumentException("Invalid expression when expanding LiveFormula for "+referrer+" ("+expr2+")."+c);
-                        }
-                    }
-                }
-                return null;
-            }
-        });
-        for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
-//            validateCompiledVar(compiledVar, config);
-            validateCompiledVarReferrer(compiledVar, entityBaseName,config);
         }
-        //vars may have changed
-        for (CompiledVar compiledVar : CompiledExpressionHelper.findChildrenLeafVars(dce)) {
-//            validateCompiledVar(compiledVar, config);
-            validateCompiledVarRelation(compiledVar, config);
-        }
-
+//        if (config.getThisAlias() == null || UQLUtils.THIS.equals(config.getThisAlias()) && entityAlias == null && CompiledExpressionUtils.findThisVar(expression) != null) {
+//            if (expression instanceof CompiledSelect) {
+//                ((CompiledSelect) expression).setEntityAlias(UQLUtils.THIS);
+//            } else if (expression instanceof CompiledDelete) {
+//                ((CompiledDelete) expression).setEntityAlias(UQLUtils.THIS);
+//            } else if (expression instanceof CompiledUpdate) {
+//                ((CompiledUpdate) expression).setEntityAlias(UQLUtils.THIS);
+//            }
+//        }
         if (expression instanceof CompiledInsert) {
             CompiledInsert ci = (CompiledInsert) expression;
             for (int i = 0; i < ci.countFields(); i++) {
@@ -147,8 +119,7 @@ public class ExpressionValidationManager {
                     }
                 }
             }
-        }
-        if (expression instanceof CompiledUpdate) {
+        } else if (expression instanceof CompiledUpdate) {
             CompiledUpdate ci = (CompiledUpdate) expression;
             for (int i = 0; i < ci.countFields(); i++) {
                 CompiledVar fvar = ci.getField(i);
@@ -176,7 +147,7 @@ public class ExpressionValidationManager {
             }
         }
 
-        allSelects = dce.findExpressionsList(CompiledExpressionHelper.SELECT_FILTER);
+        allSelects = dce.findExpressionsList(CompiledExpressionUtils.SELECT_FILTER);
         //List<CompiledExpression> recurse = new ArrayList<CompiledExpression>();
         for (CompiledSelect compiledSelect : allSelects) {
             if (config.isExpandFields()) {
@@ -189,19 +160,21 @@ public class ExpressionValidationManager {
             }
         }
 
-//        dce.replaceExpressions(CompiledExpressionHelper.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
-//        dce.replaceExpressions(CompiledExpressionHelper.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
+//        dce.replaceExpressions(CompiledExpressionUtils.QL_FUNCTION_FILTER, new CompiledQLFunctionExpressionSimplifier(persistenceUnit));
+//        dce.replaceExpressions(CompiledExpressionUtils.DESCENDANT_FILTER, new IsHierarchyDescendantReplacer(persistenceUnit));
 
-        List<CompiledParam> allParams = dce.findExpressionsList(CompiledExpressionHelper.PARAM_FILTER);
+        List<CompiledParam> allParams = dce.findExpressionsList(CompiledExpressionUtils.PARAM_FILTER);
         for (CompiledParam p : allParams) {
             validateCompiledParam(p, config);
         }
-        String newName = entityAlias != null ? entityAlias : entityBaseName;
-        if(!"this".equals(config.getThisAlias())){
-            newName=config.getThisAlias();
+        String newName = entityAlias;//entityAlias != null ? entityAlias : entityBaseName;
+        if (!UQLUtils.THIS.equals(config.getThisAlias())) {
+            newName = config.getThisAlias();
         }
-        if(newName!=null) {
-            UQLCompiledUtils.replaceThisVar(dce, newName);
+        if (newName != null) {
+            CompiledExpressionUtils.replaceThisVar(dce, newName);
+        }else{
+            CompiledExpressionUtils.removeThisVar(dce);
         }
         return dce;
     }
@@ -247,7 +220,7 @@ public class ExpressionValidationManager {
 //                Select s=new Select().field("1").from(entityName,name).where(f2);
 
                 DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(f2, conf2);
-                compiledFilter = UQLCompiledUtils.replaceThisVar(compiledFilter, name);
+                compiledFilter = CompiledExpressionUtils.replaceThisVar(compiledFilter, name);
                 compiledSelect.addWhere(compiledFilter);
             }
         }
@@ -312,12 +285,76 @@ public class ExpressionValidationManager {
         }
     }
 
+    private void expandField(CompiledSelect qs, CompiledQueryField f,ExpansionVisitTracker visitedEntities,ExpressionCompilerConfig config) {
+        DefaultCompiledExpression fe = f.getExpression();
+        String fieldAlias = f.getAlias();
+        int fieldIndex = f.getIndex();
+        if (fe instanceof CompiledVar) {
+            CompiledVar cv = (CompiledVar) fe;
+            Object referrer = cv.getReferrer();
+            if ("*".equals(cv.getName())) {
+                List<NamedEntity2> usedEntities = getUsedEntities(qs);
+                for (NamedEntity2 entry : usedEntities) {
+                    String alias = entry.alias == null ? entry.entity.getName() : entry.alias;
+                    expandEntityFields(qs, fieldIndex, entry.entity, alias, alias, fieldAlias, visitedEntities, config);
+                }
+            } else if (referrer instanceof Entity) {
+                NamedEntity2 selectedEntry = null;
+                List<NamedEntity2> usedEntities = getUsedEntities(qs);
+                for (NamedEntity2 entry : usedEntities) {
+                    if (cv.getName().equals(entry.alias)) {
+                        selectedEntry = entry;
+                        break;
+                    }
+                }
+                if (selectedEntry == null) {
+                    for (NamedEntity2 entry : usedEntities) {
+                        if (cv.getName().equals(entry.entity.getName())) {
+                            selectedEntry = entry;
+                            break;
+                        }
+                    }
+                }
+                if (selectedEntry == null) {
+                    throw new IllegalArgumentException("Unknown alias " + cv.getName());
+                }
+                final Entity _entity = selectedEntry.entity;
+                if (cv.getChild() == null || cv.getChild().getName().equals("*")) {
+                    String alias = selectedEntry.alias == null ? _entity.getName() : selectedEntry.alias;
+                    expandEntityFields(qs, fieldIndex, _entity, alias, alias, alias, visitedEntities, config);
+                } else {
+                    CompiledVar ff = (CompiledVar) cv.getChild();
+                    Field ef = (Field) ff.getReferrer();
+                    String entityAlias=null;
+                    if (ef.getDataType() instanceof ManyToOneType) {
+                        String binding = f.getBinding() == null ? "" : f.getBinding();
+                        entityAlias = selectedEntry.alias;
+                        expandOnNeedField(qs, fieldIndex, ef, entityAlias, binding, fieldAlias, visitedEntities,config);
+                    } else if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
+                        DefaultCompiledExpression pe = cv.getParentExpression();
+                        CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
+                        entityAlias = pp == null ? null : pp.getName();
+                        expandOnNeedField(qs, fieldIndex, ef, entityAlias, null, fieldAlias, visitedEntities,config);
+                    } else {
+                        qs.addField(f);
+                    }
+                }
+            } else if (referrer instanceof Field) {
+                Field ef = (Field) referrer;
+                DefaultCompiledExpression pe = cv.getParentExpression();
+                CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
+                if (!expandOnNeedField(qs, fieldIndex, ef, pp == null ? null : pp.getName(), null, fieldAlias, visitedEntities,config)) {
+                    qs.addField(f);
+                }
+            } else {
+                qs.addField(f);
+            }
+        } else {
+            qs.addField(f);
+        }
+    }
     private void expandFields(CompiledSelect qs, ExpressionCompilerConfig config) {
         int navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH, -1);
-        QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
-        if (fetchStrategy == null) {
-            fetchStrategy = QueryFetchStrategy.JOIN;
-        }
         ExpansionVisitTracker visitedEntities = new ExpansionVisitTracker(navigationDepth);
 
         if (qs.countFields() == 0) {
@@ -326,191 +363,95 @@ public class ExpressionValidationManager {
         }
         final List<CompiledQueryField> fields = new ArrayList<CompiledQueryField>(qs.getFields());
         qs.removeAllFields();
-        List<NamedEntity2> usedEntities = getUsedEntities(qs);
         for (CompiledQueryField f : fields) {
-            DefaultCompiledExpression fe = f.getExpression();
-            String fieldAlias = f.getAlias();
-//            boolean indexChanged = false;
-            if (fe instanceof CompiledVar) {
-                CompiledVar cv = (CompiledVar) fe;
-                Object referrer = cv.getReferrer();
-                if ("*".equals(cv.getName())) {
-                    for (NamedEntity2 entry : usedEntities) {
-                        String alias = entry.alias == null ? entry.entity.getName() : entry.alias;
-                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
-                            expandEntityFieldsJoinFetch(qs, f.getIndex(),entry.entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                        } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
-                            expandEntityFieldsSelectFetch(qs, f.getIndex(), entry.entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                        }
-                    }
-                } else if (referrer instanceof Entity) {
-                    NamedEntity2 selectedEntry = null;
-                    for (NamedEntity2 entry : usedEntities) {
-                        if (cv.getName().equals(entry.alias)) {
-                            selectedEntry = entry;
-                            break;
-                        }
-                    }
-                    if (selectedEntry == null) {
-                        for (NamedEntity2 entry : usedEntities) {
-                            if (cv.getName().equals(entry.entity.getName())) {
-                                selectedEntry = entry;
-                                break;
-                            }
-                        }
-                    }
-                    if (selectedEntry == null) {
-                        throw new IllegalArgumentException("Unknown alias " + cv.getName());
-                    }
-                    final Entity _entity = selectedEntry.entity;
-                    if (cv.getChild() == null || cv.getChild().getName().equals("*")) {
-                        String alias = selectedEntry.alias == null ? _entity.getName() : selectedEntry.alias;
-                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
-                            expandEntityFieldsJoinFetch(qs, f.getIndex(),_entity, alias, alias, alias, config.getExpandFieldFilter(), visitedEntities);
-                        } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
-                            expandEntityFieldsSelectFetch(qs, f.getIndex(), _entity, alias, alias, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                        }
-                    } else {
-                        CompiledVar ff = (CompiledVar) cv.getChild();
-                        Field ef = (Field) ff.getReferrer();
-                        if (ef.getDataType() instanceof ManyToOneType) {
-                            String binding = f.getBinding() == null? "" : f.getBinding();
-//                            CompiledVarOrMethod r = cv;
-//                            while (r != null) {
-//                                if (binding.length() == 0) {
-//                                    binding = r.getName();
-//                                } else {
-//                                    binding = r.getName() + "." + binding;
-//                                }
-//                                if (r.getParentExpression() instanceof CompiledVarOrMethod) {
-//                                    r = (CompiledVarOrMethod) r.getParentExpression();
-//                                } else {
-//                                    r = null;
-//                                }
-//                            }
-                            if (binding.length() == 0) {
-                                binding = null;
-                            }
-                            if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
-                                expandManyToOneFieldJoinFetch(qs, f.getIndex(),ef, selectedEntry.alias, binding, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                            } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
-                                expandManyToOneFieldSelectFetch(qs, f.getIndex(), ef, selectedEntry.alias, binding, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                            }
-                        } else  if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                            DefaultCompiledExpression pe = cv.getParentExpression();
-                            CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
-                            expandLiveFormulaField(qs, f.getIndex(),ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
-                        } else {
-                            qs.addField(f);
-                        }
-                    }
-                } else if (referrer instanceof Field) {
-                    Field ef = (Field) referrer;
-                    DefaultCompiledExpression pe = cv.getParentExpression();
-                    CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
-                    if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                        expandLiveFormulaField(qs, f.getIndex(),ef, ef.getEntity(), pp == null ? null : pp.getName(), null);
-                    } else if (ef.getDataType() instanceof ManyToOneType) {
-                        if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
-                            expandManyToOneFieldJoinFetch(qs, f.getIndex(), ef, pp == null ? null : pp.getName(), null, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                        }
-                        if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
-                            expandManyToOneFieldSelectFetch(qs, f.getIndex(), ef, pp == null ? null : pp.getName(), null, fieldAlias, config.getExpandFieldFilter(), visitedEntities);
-                        }
-                    } else {
-                        qs.addField(f);
-                    }
-                } else {
-                    qs.addField(f);
+            expandField(qs, f, visitedEntities,config);
+
+        }
+
+    }
+
+    private boolean expandOnNeedField(CompiledSelect qs, int index, Field field, String entityAlias, String binding, String aliasBinding, ExpansionVisitTracker expansionVisitTracker, ExpressionCompilerConfig config) {
+        if (binding !=null && binding.length() == 0) {
+            binding = null;
+        }
+        if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
+            Formula f = field.getSelectFormula();
+            if (f instanceof CustomFormula) {
+                //do nothing, should be processed as custom formula later
+            } else if (f instanceof ExpressionFormula) {
+                ExpressionFormula ef = (ExpressionFormula) f;
+                Expression expr = ef.getExpression();
+
+                ExpressionCompilerConfig cfg = new ExpressionCompilerConfig();
+                cfg.setThisAlias(entityAlias);
+                cfg.setExpandEntityFilter(false);
+                cfg.setExpandFields(false);
+                cfg.setValidate(false);
+                Map<String, String> aliasToEntityContext = new HashMap<String, String>();
+                aliasToEntityContext.put(entityAlias, field.getEntity().getName());
+                cfg.setAliasToEntityContext(aliasToEntityContext);
+                DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
+                if (rr instanceof CompiledVarOrMethod) {
+                    ((CompiledVarOrMethod) rr).getFinest().setBaseReferrer(field);
+                }
+
+                cfg = new ExpressionCompilerConfig();
+                cfg.setThisAlias(entityAlias);
+                cfg.setExpandEntityFilter(false);
+                cfg.setExpandFields(false);
+                cfg.setValidate(true);
+                aliasToEntityContext = new HashMap<String, String>();
+                aliasToEntityContext.put(entityAlias, field.getEntity().getName());
+                cfg.setAliasToEntityContext(aliasToEntityContext);
+                persistenceUnit.getExpressionManager().compileExpression(rr, cfg);
+//                expandField(qs,new CompiledQueryField(field.getName(),rr,index,false,field.getName(),binding,null),expansionVisitTracker,config);
+                expandField(qs,new CompiledQueryField(field.getName(),rr,-1,false,field.getName(),binding,null),expansionVisitTracker,config);
+                for (CompiledVar compiledVar : CompiledExpressionUtils.findChildrenLeafVars(qs)) {
+//            validateCompiledVar(compiledVar, config);
+                    validateCompiledVarRelation(compiledVar, config);
                 }
             } else {
-                qs.addField(f);
+                //ignore
             }
-        }
 
+
+            return true;
+        } else if (field.getDataType() instanceof ManyToOneType) {
+            QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
+            if (fetchStrategy == null) {
+                fetchStrategy = QueryFetchStrategy.JOIN;
+            }
+            if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
+                expandManyToOneFieldJoinFetch(qs, index, field, entityAlias, binding, aliasBinding, config.getExpandFieldFilter(), expansionVisitTracker,config);
+            } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
+                expandManyToOneFieldSelectFetch(qs, index, field, entityAlias, binding, aliasBinding, config.getExpandFieldFilter(), expansionVisitTracker);
+            }
+            return true;
+        }
+        return false;
     }
 
-    private void expandLiveFormulaField(CompiledSelect qs, int index,Field field, Entity e, String entityAlias, String binding) {
-        Formula f = field.getSelectFormula();
-        if (f instanceof CustomFormula) {
-            //do nothing, should be processed as custom formula later
-        } else if (f instanceof ExpressionFormula) {
-            ExpressionFormula ef = (ExpressionFormula) f;
-            Expression expr = ef.getExpression();
-
-            ExpressionCompilerConfig cfg = new ExpressionCompilerConfig();
-            cfg.setThisAlias(entityAlias);
-            cfg.setExpandEntityFilter(false);
-            cfg.setExpandFields(false);
-            cfg.setValidate(false);
-            Map<String, String> aliasToEntityContext = new HashMap<String, String>();
-            aliasToEntityContext.put(entityAlias, e.getName());
-            cfg.setAliasToEntityContext(aliasToEntityContext);
-            DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
-            if(rr instanceof CompiledVarOrMethod){
-                ((CompiledVarOrMethod) rr).getFinest().setBaseReferrer(field);
-            }
-            qs.addField(rr, field.getName())
-                    .setIndex(index)
-                    .setExpanded(true)
-                    .setAlias(field.getName())
-                    .setBinding(binding);
-
-            cfg = new ExpressionCompilerConfig();
-            cfg.setThisAlias(entityAlias);
-            cfg.setExpandEntityFilter(true);
-            cfg.setExpandFields(true);
-            cfg.setValidate(true);
-            aliasToEntityContext = new HashMap<String, String>();
-            aliasToEntityContext.put(entityAlias, e.getName());
-            cfg.setAliasToEntityContext(aliasToEntityContext);
-            persistenceUnit.getExpressionManager().compileExpression(rr, cfg);
-
-        } else {
-            //ignore
-        }
-    }
-
-    private void expandEntityFieldsJoinFetch(CompiledSelect qs, int index,Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
-        for (Field field : e.getFields(FieldFilters.as(fieldFilter).and(Fields2.READ))) {
-            if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
-            } else if (field.getDataType() instanceof ManyToOneType) {
-                ExpansionVisitTracker c = visitedEntities.copy();
-                expandManyToOneFieldJoinFetch(qs, index, field, entityAlias, binding, UPAUtils.dotConcat(aliasBinding, field.getName()), fieldFilter, c);
-            } else {
+    private void expandEntityFields(CompiledSelect qs, int index, Entity e, String entityAlias, String binding, String aliasBinding, ExpansionVisitTracker visitedEntities, ExpressionCompilerConfig config) {
+        for (Field field : e.getFields(FieldFilters.as(config.getExpandFieldFilter()).and(Fields2.READ))) {
+            ExpansionVisitTracker c = visitedEntities.copy();
+            String aliasBinding1 = UPAUtils.dotConcat(aliasBinding, field.getName());
+            if (!expandOnNeedField(qs, index, field, entityAlias, binding,aliasBinding1,c,config)) {
                 CompiledVar vv = new CompiledVar(entityAlias, e);
                 vv.setChild(new CompiledVar(field));
-                //binding = (binding == null ? "" : (binding + ".")) + field.getName();
                 qs.addField(vv, field.getName())
                         .setBinding(binding)
                         .setIndex(index)
                         .setExpanded(true)
-                        .setAliasBinding(UPAUtils.dotConcat(aliasBinding, field.getName()));
+                        .setAliasBinding(aliasBinding1);
             }
         }
+
     }
 
-    private void expandEntityFieldsSelectFetch(CompiledSelect qs,int index, Entity e, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
-        for (Field field : e.getFields(FieldFilters.as(fieldFilter).and(Fields2.READ))) {
-            if (field.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-                expandLiveFormulaField(qs, index,field, e, entityAlias, binding);
-            } else if (field.getDataType() instanceof ManyToOneType) {
-                ExpansionVisitTracker c = visitedEntities.copy();
-                expandManyToOneFieldSelectFetch(qs, index,field, entityAlias, binding, aliasBinding, fieldFilter, c);
-            } else {
-                CompiledVar vv = new CompiledVar(entityAlias, e);
-                vv.setChild(new CompiledVar(field));
-                //binding = (binding == null ? "" : (binding + ".")) + field.getName();
-                qs.addField(vv, field.getName())
-                        .setIndex(index)
-                        .setExpanded(true)
-                        .setBinding(binding);
-            }
+    private void expandManyToOneFieldJoinFetch(CompiledSelect qs, int index, Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities, ExpressionCompilerConfig config) {
+        if (binding!=null && binding.length() == 0) {
+            binding = null;
         }
-    }
-
-    private void expandManyToOneFieldJoinFetch(CompiledSelect qs, int index,Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
         ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
         Relationship rel = manyToOneType.getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -533,12 +474,15 @@ public class ExpressionValidationManager {
         }
         BindingJoinInfo d = addBindingJoin(qs, field, entityAlias,
                 (StringUtils.isNullOrEmpty(binding) ? ExpressionHelper.escapeIdentifier(field.getName()) : (binding + "." + ExpressionHelper.escapeIdentifier(field.getName()))),
-                (StringUtils.isNullOrEmpty(aliasBinding) ?ExpressionHelper.escapeIdentifier(field.getName()) : (aliasBinding + "." + ExpressionHelper.escapeIdentifier(field.getName())))
+                (StringUtils.isNullOrEmpty(aliasBinding) ? ExpressionHelper.escapeIdentifier(field.getName()) : (aliasBinding + "." + ExpressionHelper.escapeIdentifier(field.getName())))
         );
-        expandEntityFieldsJoinFetch(qs, index,masterEntity, d.alias, d.binding, aliasBinding, fieldFilter, dived);
+        expandEntityFields(qs, index, masterEntity, d.alias, d.binding, aliasBinding, dived,config);
     }
 
-    private void expandManyToOneFieldSelectFetch(CompiledSelect qs, int index,Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+    private void expandManyToOneFieldSelectFetch(CompiledSelect qs, int index, Field field, String entityAlias, String binding, String aliasBinding, FieldFilter fieldFilter, ExpansionVisitTracker visitedEntities) {
+        if (binding!=null && binding.length() == 0) {
+            binding = null;
+        }
         ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
         Relationship rel = manyToOneType.getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -563,6 +507,52 @@ public class ExpressionValidationManager {
     }
 
     private BindingJoinInfo addBindingJoin(CompiledSelect qs, Field field, String entityAlias, String binding, String aliasBinding) {
+        BindingJoinInfo ret = new BindingJoinInfo();
+        Relationship rel = ((ManyToOneType) field.getDataType()).getRelationship();
+        Entity masterEntity = rel.getTargetRole().getEntity();
+        Map<String, String> upaBindingAliases = (Map<String, String>) qs.getClientProperty("upaBindingAliases");
+        if (upaBindingAliases == null) {
+            upaBindingAliases = new HashMap<String, String>();
+            qs.setClientProperty("upaBindingAliases", upaBindingAliases);
+        }
+        binding = (binding == null ? "" : binding);
+        String generatedAlias = upaBindingAliases.get(binding.toLowerCase());
+        boolean addJoin = generatedAlias == null;
+        ret.entity = masterEntity;
+        ret.binding = binding;
+        if (!addJoin) {
+            ret.alias = generatedAlias;
+        } else {
+            Integer upaBindingAliasIndex = (Integer) qs.getClientProperty("upaBindingAliasIndex");
+            if (upaBindingAliasIndex == null) {
+                upaBindingAliasIndex = 1;
+            }
+            generatedAlias = "upa" + upaBindingAliasIndex;
+            qs.setClientProperty("upaBindingAliasIndex", upaBindingAliasIndex + 1);
+            DefaultCompiledExpression cond = null;
+            Entity detailEntity = field.getEntity();
+            for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
+
+                CompiledVar detailAlias = new CompiledVar(entityAlias, detailEntity);
+                CompiledVar masterAlias = new CompiledVar(generatedAlias, masterEntity);
+                detailAlias.setChild(new CompiledVar(detailEntity.getField(entry.getValue())));
+                masterAlias.setChild(new CompiledVar(masterEntity.getField(entry.getKey())));
+                CompiledEquals cond0 = new CompiledEquals(detailAlias, masterAlias);
+
+                if (cond == null) {
+                    cond = cond0;
+                } else {
+                    cond = new CompiledAnd(cond, cond0);
+                }
+            }
+            qs.leftJoin(rel.getTargetRole().getEntity().getName(), generatedAlias, cond);
+//            qs.getDeclarationList().push(masterAliasString, masterEntity);
+            ret.alias = generatedAlias;
+            upaBindingAliases.put(binding.toLowerCase(), generatedAlias);
+        }
+        return ret;
+    }
+    private BindingJoinInfo addBindingJoin(CompiledUpdate qs, Field field, String entityAlias, String binding, String aliasBinding) {
         BindingJoinInfo ret = new BindingJoinInfo();
         Relationship rel = ((ManyToOneType) field.getDataType()).getRelationship();
         Entity masterEntity = rel.getTargetRole().getEntity();
@@ -783,26 +773,12 @@ public class ExpressionValidationManager {
         CompiledVar p1 = (v.getParentExpression() instanceof CompiledVar) ? (CompiledVar) v.getParentExpression() : null;
         CompiledVar p2 = p1 == null ? null : ((p1.getParentExpression() instanceof CompiledVar) ? (CompiledVar) p1.getParentExpression() : null);
         if (p1 != null && p2 != null && p1.getReferrer() instanceof Field) {
-//            CompiledVar r = findRootVar(v);
-
-            //get parent binding
-//            CompiledVar rv = (CompiledVar) (r.copy());
-//            CompiledVar rvc = (CompiledVar) rv.getChild();
-//            CompiledVar varName=null;
-//            while (rvc != null) {
-//                if (rvc.getChild() == null) {
-//                    CompiledVar t = (CompiledVar) rvc.getParentExpression();
-//                    //t.setChild(null);
-//                    varName=rvc;
-//                }
-//                rvc = (CompiledVar) rvc.getChild();
-//            }
-            CompiledSelect s = CompiledExpressionHelper.findEnclosingSelect(v);
+            CompiledSelect s = CompiledExpressionUtils.findEnclosingSelect(v);
             if (s != null) {
                 //this 
                 Field f = (Field) p1.getReferrer();
                 if (f.getDataType() instanceof ManyToOneType) {
-                    CompiledQueryField cqf = CompiledExpressionHelper.findRootCompiledQueryField(p1);
+                    CompiledQueryField cqf = CompiledExpressionUtils.findRootCompiledQueryField(p1);
                     BindingJoinInfo alias = addBindingJoin(s, f, ExpressionHelper.escapeIdentifier(p2.getName()), createBindingID(p1), cqf == null ? null : cqf.getAlias());
                     p2.setName(alias.alias);
                     p2.setReferrer(alias.entity);
@@ -817,9 +793,31 @@ public class ExpressionValidationManager {
                     p2.setChild(v);
                     return v;
                 }
-            } else {
-                throw new IllegalArgumentException("No enclosing Select found for " + v);
+                return v;
             }
+            CompiledUpdate u = CompiledExpressionUtils.findRootCompiledUpdate(v);
+            if (u != null) {
+                //this
+                Field f = (Field) p1.getReferrer();
+                if (f.getDataType() instanceof ManyToOneType) {
+                    CompiledQueryField cqf = CompiledExpressionUtils.findRootCompiledQueryField(p1);
+                    BindingJoinInfo alias = addBindingJoin(u, f, ExpressionHelper.escapeIdentifier(p2.getName()), createBindingID(p1), cqf == null ? null : cqf.getAlias());
+                    p2.setName(alias.alias);
+                    p2.setReferrer(alias.entity);
+
+                    //remove p1, disconnect it form parent and child
+                    p2.setChild(null);
+                    p1.setParentExpression(null);
+                    p1.setChild(null);
+                    v.setParentExpression(null);
+
+                    //connect v to p2
+                    p2.setChild(v);
+                    return v;
+                }
+                return v;
+            }
+            throw new IllegalArgumentException("No enclosing Select o update found for " + v);
         }
         return v;
     }
@@ -842,11 +840,11 @@ public class ExpressionValidationManager {
         return s.toString();
     }
 
-    public CompiledVar validateCompiledVarReferrer(CompiledVar v, String entityBaseName,ExpressionCompilerConfig config) {
+    public CompiledVar validateCompiledVarReferrer(CompiledVar v, String entityBaseName, ExpressionCompilerConfig config) {
         CompiledVar p = (v.getParentExpression() instanceof CompiledVar) ? ((CompiledVar) v.getParentExpression()) : null;
         if (p == null) {
             final String thisAlias = config.getThisAlias();
-            if ("this".equals(v.getName())) {
+            if (UQLUtils.THIS.equals(v.getName())) {
                 if (thisAlias != null) {
                     v.setName(thisAlias);
                 } else {
@@ -861,13 +859,13 @@ public class ExpressionValidationManager {
                         }
                     }
                 }
-                if("this".equals(config.getThisAlias())){
-                    if(entityBaseName==null){
+                if (UQLUtils.THIS.equals(config.getThisAlias())) {
+                    if (entityBaseName == null) {
                         throw new IllegalArgumentException("'this' alias is not declared");
                     }
                     v.setReferrer(persistenceUnit.getEntity(entityBaseName));
                     return v;
-                }else {
+                } else {
                     throw new IllegalArgumentException("'this' alias is not declared");
                 }
             }
@@ -963,11 +961,11 @@ public class ExpressionValidationManager {
             }
             //TODO remove me
 //            validateCompiledVar(v, config);
-            throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(null, v.toString(), v.getName(), null);
         } else {
             String before = p.toString();
             /*p =*/
-            validateCompiledVarReferrer(p, entityBaseName,config);
+            validateCompiledVarReferrer(p, entityBaseName, config);
             Object ref = p.getReferrer();
             if (ref instanceof Entity) {
                 Entity ee = (Entity) ref;
@@ -978,7 +976,7 @@ public class ExpressionValidationManager {
                 } else if ("*".equals(v.getName())) {
                     return v;
                 }
-                throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
+                throw new net.vpc.upa.exceptions.NoSuchFieldException(null, v.toString(), v.getName(), null);
             } else if (ref instanceof Field) {
                 DataType dataType = ((Field) ref).getDataType();
                 if (dataType instanceof ManyToOneType) {
@@ -991,12 +989,12 @@ public class ExpressionValidationManager {
                     } else if ("*".equals(v.getName())) {
                         return v;
                     }
-                }else{
-                    log.severe("Type Cast Exception "+((Field) ref).getAbsoluteName()+" is not of type "+ManyToOneType.class.getName()+" but "+dataType);
-                    throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
+                } else {
+                    log.severe("Type Cast Exception " + ((Field) ref).getAbsoluteName() + " is not of type " + ManyToOneType.class.getName() + " but " + dataType);
+                    throw new net.vpc.upa.exceptions.NoSuchFieldException(null, v.toString(), v.getName(), null);
                 }
             }
-            throw new net.vpc.upa.exceptions.NoSuchFieldException(null,v.toString(),v.getName(),null);
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(null, v.toString(), v.getName(), null);
         }
 //        return defaultReferrer;
     }
@@ -1025,4 +1023,5 @@ public class ExpressionValidationManager {
 //            return p;
 //        }
     }
+
 }

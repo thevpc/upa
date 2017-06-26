@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,19 +14,19 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -47,13 +47,13 @@ public final class InSelection extends OperatorExpression
 
     public InSelection(Expression left, Select query) {
         this(new Expression[]{
-            left
+                left
         }, query);
     }
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>(left.length+1);
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(left.length + 1);
         for (int i = 0; i < left.length; i++) {
             Expression expression = left[i];
             list.add(new TaggedExpression(expression, new IndexedTag("LEFT", i)));
@@ -78,7 +78,7 @@ public final class InSelection extends OperatorExpression
         this.query = query;
     }
 
-//    public int size() {
+    //    public int size() {
 //        return 2;
 //    }
     public Expression[] getLeft() {
@@ -104,13 +104,13 @@ public final class InSelection extends OperatorExpression
 
     @Override
     public String toString() {
-        StringBuilder sb=new StringBuilder();
-        if(left.length==1){
+        StringBuilder sb = new StringBuilder();
+        if (left.length == 1) {
             sb.append(left[0]);
-        }else{
+        } else {
             sb.append("(");
             for (int i = 0; i < left.length; i++) {
-                if(i>0){
+                if (i > 0) {
                     sb.append(", ");
                 }
                 sb.append(left[i]);
@@ -120,6 +120,6 @@ public final class InSelection extends OperatorExpression
         sb.append(" in (").append(query).append(")");
         return sb.toString();
     }
-    
+
 
 }

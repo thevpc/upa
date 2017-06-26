@@ -35,7 +35,7 @@ public class IdCollectionExpression extends InCollection implements Cloneable {
 
     @Override
     public Expression copy() {
-        IdCollectionExpression o=new IdCollectionExpression(getLeft().copy());
+        IdCollectionExpression o = new IdCollectionExpression(getLeft().copy());
         for (Expression expression : right) {
             o.add(expression);
         }

@@ -6,7 +6,6 @@
 package net.vpc.upa.expressions;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class IndexedTag implements ExpressionTag {

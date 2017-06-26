@@ -2,15 +2,8 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.expressions.And;
-import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.Select;
-import net.vpc.upa.expressions.UserExpression;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.util.UQLUtils;
-import net.vpc.upa.persistence.ExpressionCompilerConfig;
+import net.vpc.upa.impl.uql.util.ThisFilter;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.persistence.PersistenceStore;
 import net.vpc.upa.types.ManyToOneType;
@@ -41,48 +34,9 @@ public class FieldPersistenceInfo {
     }
 
     public RebuildExpressionInfo rebuildExpression(ExpressionFormula persistFormula) {
-        Expression e = ((ExpressionFormula) persistFormula).getExpression();
+        Expression e = persistFormula.getExpression();
         RebuildExpressionInfo rr = new RebuildExpressionInfo();
-        rr.initialFormula=((ExpressionFormula) persistFormula);
-        Expression e0 = e;
-        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        config.setExpandEntityFilter(false);
-        //this is needed not to fire "this" alias usage exception
-        config.setThisAlias("this");
-        config.bindAliastoEntity("this", field.getEntity().getName());
-        DefaultCompiledExpression ce = null;
-        final ExpressionManager expressionManager = field.getEntity().getPersistenceUnit().getExpressionManager();
-        try {
-            ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
-        } catch (IllegalArgumentException ex) {
-            if (ex.getMessage().startsWith("No enclosing Select found for")) {
-                Select ss = new Select();
-                ss.field(e).from(field.getEntity().getName(), "this2");
-
-                Expression w = null;
-                for (Field primaryField : field.getEntity().getPrimaryFields()) {
-                    Expression pfe = new Equals(new UserExpression("this." + primaryField.getName()), new UserExpression("this2." + primaryField.getName()));
-                    if (w == null) {
-                        w = pfe;
-                    } else {
-                        w = new And(w, pfe);
-                    }
-                }
-                UQLUtils.replaceThisVar(ss, "this2", expressionManager);
-                ss.where(w);
-                e = ss;
-            } else {
-                throw ex;
-            }
-            //throw new IllegalArgumentException("No enclosing Select found for " + v)
-        }
-        if (ce == null) {
-            ce = (DefaultCompiledExpression) expressionManager.compileExpression(e, config);
-            rr.compiledExpression = ce;
-            rr.rebuiltFormula = (new ExpressionFormula(e));
-        }else{
-            rr.compiledExpression=ce;
-        }
+        rr.initialFormula= persistFormula;
         rr.expression=e;
         return rr;
     }
@@ -117,7 +71,7 @@ public class FieldPersistenceInfo {
                 if (re.rebuiltFormula != null) {
                     field.setPersistFormula(re.rebuiltFormula);
                 }
-                boolean complex = re.compiledExpression.findFirstExpression(CompiledExpressionHelper.THIS_VAR_FILTER)!=null;
+                boolean complex = re.expression.findOne(ThisFilter.INSTANCE)!=null;
                 persistFormulaPass = field.getPersistFormulaOrder();
                 if (!complex && persistFormulaPass == 0) {
                     insertExpression = re.expression;
@@ -143,7 +97,7 @@ public class FieldPersistenceInfo {
                 if (re.rebuiltFormula != null) {
                     field.setUpdateFormula(re.rebuiltFormula);
                 }
-//                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionHelper.THIS_VAR_FILTER);
+//                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionUtils.THIS_VAR_FILTER);
                 updateFormulaPass = field.getUpdateFormulaOrder();
                 if (/*complex.isEmpty() && */updateFormulaPass == 0) {
                     updateExpression = re.expression;

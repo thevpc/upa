@@ -5,7 +5,7 @@ import net.vpc.upa.expressions.Expression;
 /**
  * Created by vpc on 7/20/15.
  */
-public class DefaultRelationshipDescriptor implements RelationshipDescriptor{
+public class DefaultRelationshipDescriptor implements RelationshipDescriptor {
     public int hierarchyConfigOrder;
 
     public String hierarchyPathSeparator;

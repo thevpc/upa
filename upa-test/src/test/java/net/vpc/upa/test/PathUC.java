@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import net.vpc.upa.Package;
 import net.vpc.upa.*;
 import net.vpc.upa.test.util.LogUtils;
+import net.vpc.upa.test.util.PUUtils;
 import org.junit.Test;
 
 /**
@@ -19,12 +20,7 @@ public class PathUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        log.fine("********************************************");
-        log.fine("test Path Entities");
-        log.fine("");
-        log.fine("insert,update, find, delete");
-        log.fine("********************************************");
-        PersistenceUnit sm = UPA.getPersistenceUnit();
+        PersistenceUnit sm = PUUtils.createTestPersistenceUnit(getClass());
 
         Session s = sm.openSession();
 

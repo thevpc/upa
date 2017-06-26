@@ -35,11 +35,23 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
         PersistenceUnit pu = context.getPersistenceUnit();
         Entity entity = pu.getEntity(o.getEntity().getName());
 //        String persistenceName = persistenceStore.getPersistenceName(entity);
-        StringBuilder sb = new StringBuilder("Update " + sqlManager.getSQL(new CompiledEntityName(entity.getName()), context, declarations));
+        String tableNamePersisted = sqlManager.getSQL(new CompiledEntityName(entity.getName()), context, declarations);
+        StringBuilder sb = new StringBuilder("Update " + tableNamePersisted);
         String tableAlias = o.getEntityAlias();
+        String tableAliasPersisted = null;
         if (tableAlias != null) {
             sb.append(" ");
-            sb.append(sqlManager.getSQL(new CompiledVar(tableAlias), context, declarations));
+            sb.append(tableAliasPersisted=sqlManager.getSQL(new CompiledVar(tableAlias), context, declarations));
+        }
+        appendJoins(o, sb, context, sqlManager, declarations);
+        boolean someJoins=o.countJoins()>0;
+        String prefixAlias=null;
+        if(someJoins){
+            if(tableAliasPersisted!=null) {
+                prefixAlias = tableAliasPersisted;
+            }else{
+                prefixAlias = tableNamePersisted;
+            }
         }
         sb.append(" Set ");
         boolean isFirst = true;
@@ -70,6 +82,8 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
                 }
                 if (ev != null) {
                     sb.append(sqlManager.getSQL(new CompiledVar(ev.getName()), context, declarations)).append(".");
+                }else if(prefixAlias!=null){
+                    sb.append(prefixAlias).append(".");
                 }
                 sb.append(sqlManager.getSQL(new CompiledVar(primField), context, declarations));
                 sb.append("=").append("(").append(sqlManager.getSQL(fieldValue, context, declarations)).append(")");
@@ -82,7 +96,7 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
         if (persistenceStore.isViewSupported() && entity.needsView() && o.getEntity().isUseView()) {
             String implicitTableAlias = persistenceStore.getPersistenceName("IT_" + entity.getName(), PersistenceNameType.ALIAS);
             sb.append(" ");
-            sb.append(sqlManager.getSQL(new CompiledEntityName(entity.getName()), context, declarations)).append(" ")
+            sb.append(tableNamePersisted).append(" ")
                     .append(implicitTableAlias).append(",")
                     .append(sqlManager.getSQL(new CompiledEntityName(entity.getName(),true), context, declarations))
                     .append(" ").append(sqlManager.getSQL(new CompiledVar(tableAlias), context, declarations));

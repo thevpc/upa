@@ -25,7 +25,7 @@ public class ThisReplacerFilter implements ExpressionFilter {
     public boolean accept(Expression expression) {
         if (expression instanceof Var) {
             Var v = (Var) expression;
-            if (v.getApplier() == null && "this".equals(v.getName())) {
+            if (v.getApplier() == null && UQLUtils.THIS.equals(v.getName())) {
                 v.setName(oldAlias);
             }
         }

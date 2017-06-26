@@ -1,6 +1,5 @@
 package net.vpc.upa.types;
 
-import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
 
 import java.util.List;

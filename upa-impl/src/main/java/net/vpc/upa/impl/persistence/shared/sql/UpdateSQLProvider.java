@@ -8,16 +8,13 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
+import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
 
 import java.util.Arrays;
 import java.util.List;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
 import net.vpc.upa.persistence.PersistenceNameType;
 
 /**
@@ -77,6 +74,7 @@ public class UpdateSQLProvider extends AbstractSQLProvider {
                 sb.append("=").append("(").append(sqlManager.getSQL(fieldValue, context, declarations)).append(")");
             }
         }
+        appendJoins(o, sb, context, sqlManager, declarations);
         if (o.getCondition()!=null && o.getCondition().isValid()) {
             sb.append(" Where ").append(sqlManager.getSQL(o.getCondition(), context, declarations));
         }
@@ -92,4 +90,48 @@ public class UpdateSQLProvider extends AbstractSQLProvider {
 //            if (extraFrom != null)
         return sb.toString();
     }
+
+    protected void appendJoins(CompiledUpdate o, StringBuilder sb, EntityExecutionContext context, SQLManager sqlManager, ExpressionDeclarationList declarations) {
+        for (int i = 0; i < o.countJoins(); i++) {
+            CompiledJoinCriteria e = o.getJoin(i);
+
+//            String _valueString = sqlManager.getSQL(e.getEntity(), context, declarations);
+            String _aliasString = e.getEntityAlias();
+            String _joinKey = "Inner Join";
+            switch (e.getJoinType()) {
+                case INNER_JOIN: // '\0'
+                    _joinKey = "Inner Join";
+                    break;
+
+                case FULL_JOIN: // '\001'
+                    _joinKey = "Full Join";
+                    break;
+
+                case LEFT_JOIN: // '\002'
+                    _joinKey = "Left Join";
+                    break;
+
+                case RIGHT_JOIN: // '\003'
+                    _joinKey = "Right Join";
+                    break;
+
+                case CROSS_JOIN: // '\003'
+                    _joinKey = "Cross Join";
+                    break;
+            }
+            sb.append(" ").append(_joinKey).append(" ").append(sqlManager.getSQL(e.getEntity(), context, declarations));
+            if (_aliasString != null) {
+                PersistenceStore store = context.getPersistenceStore();
+//                String goodAlias = store.getPersistenceName(, PersistenceNameType.ALIAS);
+                sb.append(" ").append(sqlManager.getSQL(new CompiledVar(_aliasString), context, declarations));
+            }
+            if (e.getCondition() != null && e.getCondition().isValid()) {
+                sb.append(" On ").append(
+                        sqlManager.getSQL(e.getCondition(), context, declarations)
+                );
+            }
+        }
+
+    }
+
 }

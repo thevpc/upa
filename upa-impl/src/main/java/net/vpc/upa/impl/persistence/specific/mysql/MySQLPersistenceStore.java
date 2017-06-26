@@ -77,6 +77,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
         getSqlManager().register(new MySQLCastSQLProvider());
         getSqlManager().register(new MySQLUpdateSQLProvider());
+        getSqlManager().register(new MySQLDeleteSQLProvider());
     }
 
     @Override

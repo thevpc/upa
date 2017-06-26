@@ -6,9 +6,8 @@
 package net.vpc.upa.expressions;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface ExpressionTag {
-    
+
 }

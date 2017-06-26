@@ -24,9 +24,6 @@ public class RelationUC {
     @Test
     public void crudMixedDocumentsAndEntities() {
         String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
 //        pu.scan(null);
         pu.addEntity(Person.class);

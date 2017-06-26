@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,19 +14,19 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -82,17 +82,17 @@ public abstract class DefaultExpression implements Expression {
 
     public ExpressionTransformerResult transform(ExpressionTransformer transformer) {
         List<TaggedExpression> c = this.getChildren();
-        boolean updated=false;
+        boolean updated = false;
         ExpressionTransformerResult r;
         if (c != null) {
             for (TaggedExpression te : c) {
                 r = te.getExpression().transform(transformer);
-                if(r!=null) {
+                if (r != null) {
                     if (r.isChanged()) {
                         if (r.isUpdated()) {
                             updated = true;
                         }
-                        if(r.isReplaced()){
+                        if (r.isReplaced()) {
                             setChild(r.getExpression(), te.getTag());
                         }
                     }
@@ -100,19 +100,19 @@ public abstract class DefaultExpression implements Expression {
             }
         }
         r = transformer.transform(this);
-        if(r==null){
+        if (r == null) {
             return new ExpressionTransformerResult(
-                    this,false,updated
+                    this, false, updated
             );
         }
         return new ExpressionTransformerResult(
-                r.getExpression(),r.isReplaced(),
-                r.isUpdated()||updated
+                r.getExpression(), r.isReplaced(),
+                r.isUpdated() || updated
         );
     }
 
     public List<Expression> find(ExpressionFilter filter, boolean firstResult) {
-        ArrayList<Expression> found = new ArrayList<Expression>(firstResult?1:5);
+        ArrayList<Expression> found = new ArrayList<Expression>(firstResult ? 1 : 5);
         if (filter.accept(this)) {
             found.add(this);
             if (firstResult) {

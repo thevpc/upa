@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.vpc.upa.impl.uql.compiledreplacer;
+package net.vpc.upa.impl.uql.compiledfilteredreplacers;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
@@ -13,6 +13,7 @@ import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -23,12 +24,17 @@ import java.util.List;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class IsHierarchyDescendantReplacer implements CompiledExpressionReplacer {
+public class IsHierarchyDescendantReplacer implements CompiledExpressionFilteredReplacer {
 
     private PersistenceUnit persistenceUnit;
 
     public IsHierarchyDescendantReplacer(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
+    }
+
+    @Override
+    public boolean accept(DefaultCompiledExpression e) {
+        return e instanceof IsHierarchyDescendantCompiled;
     }
 
     public CompiledExpression update(CompiledExpression e) {

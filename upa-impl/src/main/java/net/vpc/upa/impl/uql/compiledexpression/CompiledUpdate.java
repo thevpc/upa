@@ -1,15 +1,15 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.Field;
+import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.expressions.JoinType;
+import net.vpc.upa.impl.uql.DecObjectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.expressions.ExpressionHelper;
-import net.vpc.upa.impl.uql.DecObjectType;
 
 public final class CompiledUpdate extends DefaultCompiledEntityStatement implements CompiledUpdateStatement {
 
@@ -18,6 +18,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     private DefaultCompiledExpression condition;
     private CompiledEntityName entityName;
     private String entityAlias;
+    private List<CompiledJoinCriteria> joinsTables=new ArrayList<>();
 
     public CompiledUpdate() {
         fields = new ArrayList<CompiledVarVal>();
@@ -28,17 +29,17 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //        return this;
 //    }
 
+    public CompiledUpdate(CompiledUpdate other) {
+        this();
+        addQuery(other);
+    }
+
     public Map<CompiledVar, DefaultCompiledExpression> getUpdatesMapping() {
         Map<CompiledVar, DefaultCompiledExpression> m = new HashMap<CompiledVar, DefaultCompiledExpression>();
         for (CompiledVarVal f : fields) {
             m.put(f.getVar(), f.getVal());
         }
         return m;
-    }
-
-    public CompiledUpdate(CompiledUpdate other) {
-        this();
-        addQuery(other);
     }
 
     private CompiledUpdate entity(String entity, String alias) {
@@ -56,7 +57,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     @Override
     public String getEntityName() {
         CompiledEntityName entity = getEntity();
-        return entity==null?null:entity.getName();
+        return entity == null ? null : entity.getName();
     }
 
     public CompiledEntityName getEntity() {
@@ -64,7 +65,11 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     }
 
     public String getEntityAlias() {
-        return entityAlias == null ? entityName.getName() : entityAlias;
+        return entityAlias;
+    }
+
+    public void setEntityAlias(String alias) {
+        this.entityAlias = alias;
     }
 
     public int size() {
@@ -111,7 +116,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return this;
     }
 
-//    public Update set(String[] keys, Object[] values) {
+    //    public Update set(String[] keys, Object[] values) {
 //        for (int i = 0; i < keys.length; i++)
 //            set(keys[i], values[i]);
 //
@@ -134,7 +139,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return condition;
     }
 
-//    public Update whereEquals(String key, DataPrimitiveType type,Object value) {
+    //    public Update whereEquals(String key, DataPrimitiveType type,Object value) {
 //        Expression e = ((Expression) (value != null && (value instanceof Expression) ? (Expression) value : ((Expression) (new Litteral(value)))));
 //        return where(new Equals(new Var(key,type), e));
 //    }
@@ -193,6 +198,11 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         if (entityName != null) {
             all.add(entityName);
         }
+        if (joinsTables != null) {
+            for (CompiledJoinCriteria joinCriteria : joinsTables) {
+                all.add(joinCriteria);
+            }
+        }
         for (CompiledVarVal varVal : fields) {
             all.add(varVal);
         }
@@ -202,15 +212,50 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
-        if (index == 0) {
-            entityName = (CompiledEntityName) expression;
-            prepareChildren(expression);
-        } else if(index<=fields.size()){
-            fields.set(index-1, (CompiledVarVal)expression);
-            prepareChildren(expression);
-        }else{
-            condition=expression;
-            prepareChildren(expression);
+        int i = 0;
+        if (entityName != null) {
+            if (i == index) {
+                entityName = (CompiledEntityName) expression;
+                if (expression != null) {
+                    expression.setParentExpression(this);
+                }
+                return;
+            }
+            i++;
+        }
+
+        if (fields != null) {
+            for (CompiledVarVal field : fields) {
+                if (i == index) {
+                    field.setVal(expression);
+                    if (expression != null) {
+                        expression.setParentExpression(this);
+                    }
+                    return;
+                }
+                i++;
+            }
+        }
+        if (joinsTables != null) {
+            for (int ii = 0; ii < joinsTables.size(); ii++) {
+                if (i == index) {
+                    joinsTables.set(ii, (CompiledJoinCriteria) expression);
+                    if (expression != null) {
+                        expression.setParentExpression(this);
+                    }
+                    return;
+                }
+                i++;
+            }
+        }
+        if (condition != null) {
+            if (i == index) {
+                condition = expression;
+                if (expression != null) {
+                    expression.setParentExpression(this);
+                }
+            }
+            i++;
         }
     }
 
@@ -247,14 +292,14 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
             }
             sb.append(field);
             sb.append("=");
-            if(fieldValue instanceof CompiledQLFunctionExpression
+            if (fieldValue instanceof CompiledQLFunctionExpression
                     || fieldValue instanceof CompiledParam
                     || fieldValue instanceof CompiledLiteral
                     || fieldValue instanceof CompiledVar
                     || fieldValue instanceof CompiledCst
                     ) {
                 sb.append(fieldValue);
-            }else{
+            } else {
                 sb.append("(");
                 sb.append(fieldValue);
                 sb.append(")");
@@ -266,4 +311,91 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //            if (extraFrom != null)
         return sb.toString();
     }
+
+    protected void exportDeclaration(CompiledNameOrSelect e, String entityAlias) {
+        if (e instanceof CompiledEntityName) {
+            exportDeclaration(entityAlias, DecObjectType.ENTITY, ((CompiledEntityName) e).getName(), null);
+        } else {
+            exportDeclaration(entityAlias, DecObjectType.SELECT, e, null);
+        }
+    }
+
+    private CompiledUpdate join(JoinType joinType, CompiledNameOrSelect entityName, String alias, DefaultCompiledExpression condition) {
+        join(new CompiledJoinCriteria(joinType, entityName, alias, condition));
+        //getContext().declare(alias, entityName);
+        return this;
+    }
+
+    public CompiledUpdate join(CompiledJoinCriteria someJoin) {
+        joinsTables.add(someJoin);
+        prepareChildren(someJoin);
+        exportDeclaration(someJoin.getEntity(), someJoin.getEntityAlias());
+        return this;
+    }
+
+    public CompiledUpdate join(String entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.INNER_JOIN, new CompiledEntityName(entityName), alias, condition);
+    }
+
+    public CompiledUpdate join(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.INNER_JOIN, entityName, alias, condition);
+    }
+
+    public CompiledUpdate innerJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.INNER_JOIN, new CompiledEntityName(entityName), alias, condition);
+    }
+
+    public CompiledUpdate innerJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.INNER_JOIN, entityName, alias, condition);
+    }
+
+    public CompiledUpdate leftJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.LEFT_JOIN, new CompiledEntityName(entityName), alias, condition);
+    }
+
+    public CompiledUpdate leftJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.LEFT_JOIN, entityName, alias, condition);
+    }
+
+    public CompiledUpdate rightJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.RIGHT_JOIN, new CompiledEntityName(entityName), alias, condition);
+    }
+
+    public CompiledUpdate rightJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.RIGHT_JOIN, entityName, alias, condition);
+    }
+
+    public CompiledUpdate fullJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.FULL_JOIN, new CompiledEntityName(entityName), alias, condition);
+    }
+
+    public CompiledUpdate fullJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+        return join(JoinType.FULL_JOIN, entityName, alias, condition);
+    }
+
+    public CompiledUpdate crossJoin(String entityName) {
+        return join(JoinType.CROSS_JOIN, new CompiledEntityName(entityName), null, null);
+    }
+
+    public CompiledUpdate crossJoin(String entityName, String alias) {
+        return join(JoinType.CROSS_JOIN, new CompiledEntityName(entityName), alias, null);
+    }
+
+    public CompiledUpdate crossJoin(CompiledSelect entityName, String alias) {
+        return join(JoinType.CROSS_JOIN, entityName, alias, null);
+    }
+
+    public int countJoins() {
+        return joinsTables.size();
+    }
+
+    public CompiledJoinCriteria[] getJoins() {
+        List<CompiledJoinCriteria> values = joinsTables;
+        return values.toArray(new CompiledJoinCriteria[values.size()]);
+    }
+
+    public CompiledJoinCriteria getJoin(int i) {
+        return joinsTables.get(i);
+    }
+
 }

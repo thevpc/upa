@@ -12,6 +12,15 @@ public class CompiledQueryField extends CompiledNamedExpression {
     private String binding;
     private String aliasBinding;
 
+    public CompiledQueryField(String name, DefaultCompiledExpression expression, int index, boolean expanded, String alias, String binding, String aliasBinding) {
+        super(name, expression);
+        this.index = index;
+        this.expanded = expanded;
+        this.alias = alias;
+        this.binding = binding;
+        this.aliasBinding = aliasBinding;
+    }
+
     private static String resolveName(String alias, DefaultCompiledExpression expression) {
         if (alias != null) {
             return alias;

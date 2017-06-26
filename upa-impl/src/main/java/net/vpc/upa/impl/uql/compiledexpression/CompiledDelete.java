@@ -49,6 +49,9 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
     public String getEntityAlias() {
         return entityAlias;// == null ? entity.getName() : entityAlias;
     }
+    public void setEntityAlias(String alias) {
+        this.entityAlias=alias;
+    }
 
     public CompiledDelete where(DefaultCompiledExpression condition) {
         this.condition = condition;

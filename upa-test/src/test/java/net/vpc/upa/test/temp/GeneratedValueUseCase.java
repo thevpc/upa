@@ -33,14 +33,14 @@
 //
 //        @Sequence
 //        private int id;
-//        
+//
 //        @Field(max = "255")
 //        private String firstName;
-//        
+//
 //        @Field(type=String.class)
 //        @net.vpc.upa.config.Formula(value="concat(firstName,' ',lastName)")
 //        private FieldDesc fullName;
-//        
+//
 //        //add new field desc
 //        @Field(type = String.class)
 //        private FieldDesc desc = new FieldDesc().setDefaultValue("SomeDefaultValue");
@@ -67,7 +67,7 @@
 //        }
 //        net.vpc.upa.Entity entity = persistenceUnit.getEntity("GeneratedPerson");
 //
-//        
+//
 //        Client client = new Client();
 //        client.setFirstName("Hammadi");
 //        client.setLastName("Hammadi");

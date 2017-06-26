@@ -6,7 +6,6 @@
 package net.vpc.upa.expressions;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface ExpressionVisitor {
@@ -15,7 +14,7 @@ public interface ExpressionVisitor {
      * visit an expression as relative 'tag'
      *
      * @param expression visited expression
-     * @param tag associated tag
+     * @param tag        associated tag
      * @return true to continue visiting or false to stop visit
      */
     boolean visit(Expression expression, ExpressionTag tag);

@@ -40,7 +40,6 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class UpdateEvent extends EntityEvent {

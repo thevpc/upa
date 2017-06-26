@@ -10,5 +10,5 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * To change this template use File | Settings | File Templates.
  */
 public interface CompiledExpressionFilter {
-    public boolean accept(DefaultCompiledExpression e);
+    boolean accept(DefaultCompiledExpression e);
 }

@@ -13,9 +13,9 @@ import java.net.URL;
  */
 public interface ClassPathFilter {
 
-    public boolean acceptLibrary(URL url);
+    boolean acceptLibrary(URL url);
 
-    public boolean acceptClassName(URL url, String className);
+    boolean acceptClassName(URL url, String className);
 
-    public boolean acceptClass(URL url, String className, Class type);
+    boolean acceptClass(URL url, String className, Class type);
 }

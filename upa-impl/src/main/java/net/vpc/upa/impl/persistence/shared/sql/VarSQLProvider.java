@@ -36,7 +36,7 @@ public class VarSQLProvider extends AbstractSQLProvider {
             sb.append(persistenceStore.getValidIdentifier(name));
         } else if (referrer instanceof Entity) {
             Entity entity = (Entity) referrer;
-//            if ("this".equals(o.getName())) {
+//            if (UQLUtils.THIS.equals(o.getName())) {
 //                throw new IllegalArgumentException("Unexpected this alias");
 //                //this must be resolved to the ancestor alias
 //                ExpressionDeclarationList declarationList = o.getDeclarationList();

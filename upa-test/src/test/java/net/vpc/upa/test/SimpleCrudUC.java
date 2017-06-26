@@ -1,157 +1,179 @@
 package net.vpc.upa.test;
 
 import net.vpc.upa.*;
+import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.test.model.Client;
 import net.vpc.upa.test.util.LogUtils;
-import net.vpc.upa.TransactionType;
+import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/16/12 10:02 PM
  */
 public class SimpleCrudUC {
-    static{
-        LogUtils.prepare();
-    }
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SimpleCrudUC.class.getName());
+    private static Business bo;
+
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(SimpleCrudUC.class);
+        pu.addEntity(Client.class);
+        pu.start();
+        bo = UPA.makeSessionAware(new Business());
+
+    }
+    @Test
+    public void process() {
+        bo.process();
+    }
+    @Test
+    public void crudSimple() {
+        bo.crudSimple();
+    }
+    @Test
+    public void testInc() {
+        bo.testInc();
+    }
 
     @Test
-    public void crudMixedDocumentsAndEntities() {
-        System.setProperty("derby.locks.deadlockTrace","true");
-        System.setProperty("derby.locks.monitor", "true");
-        log.fine("********************************************");
-        log.fine("test crud using Mixed Documents And Entities");
-        log.fine("");
-        log.fine("insert,update, find, delete");
-        log.fine("********************************************");
-        PersistenceUnit sm = UPA.getPersistenceUnit();
-
-        Session s=sm.openSession();
-        sm.beginTransaction(TransactionType.REQUIRED);
-        Entity entityManager = sm.getEntity("Client");
-        Client c=entityManager.createObject();
-        int key = entityManager.nextId();
-        log.info("Next Id is " + key);
-        c.setId(key);
-        c.setFirstName("Hammadi");
-
-        sm.persist(c);
-
-        Document found0=sm.createQueryBuilder(Client.class).byId(key).getDocument();
-        log.info("Found " + found0);
-        found0.setString("firstName","Alia");
-
-        Client c2 = entityManager.getBuilder().documentToObject(found0);
-
-        assertEquals(c2.getFirstName(),"Alia");
-
-        sm.update(c2);
-
-        Client found=sm.createQueryBuilder(Client.class).byId(key).getFirstResultOrNull();
-
-        Assert.assertNotNull(found);
-        Assert.assertEquals(found, c2);
-
-        sm.remove(key);
-
-        Document foundDocument =sm.createQueryBuilder(Client.class).byId(key).getDocument();
-
-        Assert.assertNull(foundDocument);
-        sm.commitTransaction();
-        s.close();
-
-    }
-
-    //@Test
     public void crudDocuments() {
-        log.fine("********************************************");
-        log.fine("test crud using only Documents");
-        log.fine("");
-        log.fine("insert,update, find, delete");
-        log.fine("********************************************");
-        PersistenceGroup cat = UPA.getPersistenceGroup();
-        PersistenceUnit sm = cat.addPersistenceUnit("myschema");
-        sm.getProperties().setString(UPA.CONNECTION_STRING, "derby:embedded://testdb;structure=create");
-        sm.addEntity(Client.class);
-        sm.start();
-
-        Session s=sm.openSession();
-        sm.beginTransaction(TransactionType.REQUIRED);
-        Entity entityManager = sm.getEntity("Client");
-        Document c=entityManager.createDocument();
-        int key = entityManager.nextId();
-        log.info("Next Id is " + key);
-        c.setInt("id", key);
-        c.setString("firstName", "Hammadi");
-
-        sm.persist(c);
-
-        Document found0=sm.createQueryBuilder(Client.class).byId(key).getDocument();
-        log.info("Found " + found0);
-        c.setString("firstName", "Alia");
-
-        sm.update(c);
-
-        Document found=sm.createQueryBuilder(Client.class).byId(key).getDocument();
-
-        Assert.assertNotNull(found);
-        Assert.assertEquals(found, c);
-
-        sm.remove(key);
-
-        found=sm.createQueryBuilder(Client.class).byId(key).getDocument();
-
-        Assert.assertNull(found);
-        sm.commitTransaction();
-        s.close();
-
+        bo.crudDocuments();
     }
 
-//    @Test
-    public void crudSimple() {
+    public static class Business {
 
-        log.fine("********************************************");
-        log.fine("test crudSimple");
-        log.fine("");
-        log.fine("insert,update, find, delete");
-        log.fine("********************************************");
-        PersistenceGroup cat = UPA.getPersistenceGroup();
-        PersistenceUnit sm = cat.addPersistenceUnit("myschema");
-        sm.getProperties().setString(UPA.CONNECTION_STRING, "derby:embedded://testdb;structure=create");
-        sm.addEntity(Client.class);
-        sm.start();
+        public void process() {
+            PersistenceUnit sm = UPA.getPersistenceUnit();
 
-        Session s=sm.openSession();
-        sm.beginTransaction(TransactionType.REQUIRED);
-        Client c=new Client();
-        int key = (Integer) sm.getEntity(Client.class).nextId();
-        log.info("Next Id is " + key);
-        c.setId(key);
-        c.setFirstName("Hammadi");
+            Entity entityManager = sm.getEntity("Client");
+            Client c = entityManager.createObject();
+            int key = entityManager.nextId();
+            log.info("Next Id is " + key);
+            c.setId(key);
+            c.setFirstName("Hammadi");
 
-        sm.persist(c);
+            sm.persist(c);
 
-        Client found0= sm.createQueryBuilder(Client.class).byId(key).getFirstResultOrNull();
-        log.info("Found " + found0);
-        c.setFirstName("Alia");
+            Document found0 = sm.createQueryBuilder(Client.class).byId(key).getDocument();
+            log.info("Found " + found0);
+            found0.setString("firstName", "Alia");
 
-        sm.update(c);
+            Client c2 = entityManager.getBuilder().documentToObject(found0);
 
-        Client found= sm.createQueryBuilder(Client.class).byId(key).getFirstResultOrNull();
+            assertEquals(c2.getFirstName(), "Alia");
 
-        Assert.assertNotNull(found);
-        assertEquals(found.getFirstName(),c.getFirstName());
-        assertEquals(found.getId(), c.getId());
+            sm.update(c2);
 
-        sm.remove(key);
+            Client found = sm.createQueryBuilder(Client.class).byId(key).getFirstResultOrNull();
 
-        found= sm.createQueryBuilder(Client.class).byId(key).getFirstResultOrNull();
+            Assert.assertNotNull(found);
+            Assert.assertEquals(found, c2);
 
-        Assert.assertNull(found);
-        sm.commitTransaction();
-        s.close();
+            sm.remove(Client.class,RemoveOptions.forId(key));
+
+            Document foundDocument = sm.createQueryBuilder(Client.class).byId(key).getDocument();
+
+            Assert.assertNull(foundDocument);
+        }
+
+        public void crudDocuments() {
+            PersistenceUnit sm = UPA.getPersistenceUnit();
+            if(!sm.containsEntity(Client.class)) {
+                sm.addEntity(Client.class);
+            }
+            if(!sm.isStarted()) {
+                sm.start();
+            }
+
+            Entity entityManager = sm.getEntity("Client");
+            Document c = entityManager.createDocument();
+            int key = entityManager.nextId();
+            log.info("Next Id is " + key);
+            c.setInt("id", key);
+            c.setString("firstName", "Hammadi");
+
+            sm.persist("Client",c);
+
+            Document found0 = sm.createQueryBuilder(Client.class).byId(key).getDocument();
+            log.info("Found " + found0);
+            c.setString("firstName", "Alia");
+
+            sm.update(Client.class,c);
+
+            Document found = sm.createQueryBuilder(Client.class).byId(key).getDocument();
+
+            Assert.assertNotNull(found);
+            Assert.assertEquals(found, c);
+
+            sm.remove(Client.class,RemoveOptions.forId(key));
+
+            found = sm.createQueryBuilder(Client.class).byId(key).getDocument();
+
+            Assert.assertNull(found);
+
+        }
+
+        public void testInc() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            Entity entity = pu.getEntity(Client.class);
+            Client c = new Client();
+            int id = pu.getEntity(Client.class).nextId();
+            c.setId(id);
+            log.info("Next Id is " + id);
+            c.setId(id);
+            c.setIntegerValue(15);
+            c.setFirstName("Hammadi");
+            pu.persist(c);
+            for (Client cli : entity.<Client>findAll()) {
+                Document document = entity.createDocument();
+                document.setObject("integerValue", new UserExpression("integerValue+1"));
+                entity.createUpdateQuery()
+                        .setValues(document)
+                        .byId(cli.getId())
+                        .execute();
+            }
+        }
+
+        public void crudSimple() {
+
+            PersistenceUnit sm = UPA.getPersistenceUnit();
+            if(!sm.containsEntity(Client.class)) {
+                sm.addEntity(Client.class);
+            }
+            if(!sm.isStarted()) {
+                sm.start();
+            }
+
+            Client c = new Client();
+            int id = (Integer) sm.getEntity(Client.class).nextId();
+            log.info("Next Id is " + id);
+            c.setId(id);
+            c.setFirstName("Hammadi");
+
+            sm.persist(c);
+
+            Client found0 = sm.createQueryBuilder(Client.class).byId(id).getFirstResultOrNull();
+            log.info("Found " + found0);
+            c.setFirstName("Alia");
+
+            sm.update(c);
+
+            Client found = sm.createQueryBuilder(Client.class).byId(id).getFirstResultOrNull();
+
+            Assert.assertNotNull(found);
+            assertEquals(found.getFirstName(), c.getFirstName());
+            assertEquals(found.getId(), c.getId());
+
+            sm.remove(Client.class,RemoveOptions.forId(id));
+
+            found = sm.createQueryBuilder(Client.class).byId(id).getFirstResultOrNull();
+
+            Assert.assertNull(found);
+        }
     }
 }

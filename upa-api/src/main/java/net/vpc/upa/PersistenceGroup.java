@@ -78,13 +78,14 @@ public interface PersistenceGroup extends Closeable {
     boolean currentSessionExists();
 
     Session getCurrentSession() throws UPAException;
+
     Session findCurrentSession() throws UPAException;
 
     void setCurrentSession(Session session) throws UPAException;
 
-    Session openSession() ;
+    Session openSession();
 
-    boolean isClosed() ;
+    boolean isClosed();
 
 
     void addPersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
@@ -107,21 +108,21 @@ public interface PersistenceGroup extends Closeable {
 
     void removeCallback(Callback callback);
 
-    Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly,EventPhase phase);
+    Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
 
-    <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext);
 
-    <T> T invoke(Action<T> action) ;
+    <T> T invoke(Action<T> action);
 
-    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext);
 
-    <T> T invokePrivileged(Action<T> action) ;
+    <T> T invokePrivileged(Action<T> action);
 
-    void invoke(VoidAction action, InvokeContext invokeContext) ;
+    void invoke(VoidAction action, InvokeContext invokeContext);
 
-    void invoke(VoidAction action) ;
+    void invoke(VoidAction action);
 
-    void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext);
 
-    void invokePrivileged(VoidAction action) ;
+    void invokePrivileged(VoidAction action);
 }

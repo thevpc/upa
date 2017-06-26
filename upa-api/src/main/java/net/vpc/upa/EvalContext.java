@@ -6,7 +6,6 @@
 package net.vpc.upa;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class EvalContext {
@@ -31,5 +30,5 @@ public class EvalContext {
     public PersistenceUnit getPersistenceUnit() {
         return persistenceUnit;
     }
-    
+
 }

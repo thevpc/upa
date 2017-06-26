@@ -38,7 +38,6 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.UPAContextConfig;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 

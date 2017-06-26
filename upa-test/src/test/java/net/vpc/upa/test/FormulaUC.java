@@ -22,73 +22,32 @@ public class FormulaUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
-//        pu.scan(null);
         pu.addEntity(Person.class);
-        pu.addEntity(Person2.class);
-        pu.addEntity(Person3.class);
-        pu.addEntity(Phone.class);
-        pu.addEntity(Phone2.class);
-        pu.addEntity(Country.class);
         pu.start();
 
         Business bo = UPA.makeSessionAware(new Business());
-//        bo.testQuery2();
-        bo.testQuery3();
+        bo.testQuery2();
     }
 
     public static class Business {
 
         public void testQuery2() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-            Query q = pu.createQuery("Select a from Person2 a");
-            List<Person2> r = q.getResultList();
-            if (r.size() == 0) {
-                Person2 p = new Person2();
-                p.setName("hello");
-                p.setPhoneNumber("ignore me");
-                Phone ph = new Phone();
-                ph.setNumber("1234");
-                pu.persist(ph);
-                p.setPhone(ph);
-                pu.persist(p);
-                r = q.getResultList();
+            for (Object o : pu.findAll(Person.class)) {
+                pu.remove(o);
             }
-            for (Person2 document : r) {
-                System.out.println(">> " + document);
+            Person pp = new Person();
+            pp.setName("Hammadi");
+            pu.persist(pp);
+
+            Query q = pu.createQuery("Select a from Person a");
+            List<Person> r = q.getResultList();
+            for (Person person : r) {
+                System.out.println(person);
             }
         }
 
-        public void testQuery3() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-            Query q = pu.createQuery("Select a from Person3 a");
-            List<Person2> r = q.getResultList();
-            if (r.size() == 0) {
-                Person3 person = new Person3();
-                person.setName("hello");
-
-                Country country = new Country();
-                country.setName("Tunisia");
-                pu.persist(country);
-
-                Phone2 phone = new Phone2();
-                phone.setNumber("1234");
-                phone.setCountry(country);
-                pu.persist(phone);
-
-                person.setPhone(phone);
-
-                pu.persist(person);
-                r = q.getResultList();
-            }
-            for (Person2 doc : r) {
-                System.out.println(">> " + doc);
-            }
-        }
 
     }
 
@@ -104,6 +63,9 @@ public class FormulaUC {
 
         @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,this.name)")
         private String goodName;
+
+        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,i2v(this.id))")
+        private String goodName2;
 
         public Integer getId() {
             return id;
@@ -129,214 +91,26 @@ public class FormulaUC {
             this.goodName = goodName;
         }
 
-    }
-
-    @Ignore
-    @net.vpc.upa.config.Entity
-    public static class Phone {
-
-        @Id
-        @net.vpc.upa.config.Sequence
-        private Integer id;
-
-        private String number;
-
-        public Integer getId() {
-            return id;
+        public String getGoodName2() {
+            return goodName2;
         }
 
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getNumber() {
-            return number;
-        }
-
-        public void setNumber(String number) {
-            this.number = number;
+        public void setGoodName2(String goodName2) {
+            this.goodName2 = goodName2;
         }
 
         @Override
         public String toString() {
-            return "Phone{" + "id=" + id + ", number=" + number + '}';
+            return "Person{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", goodName='" + goodName + '\'' +
+                    ", goodName2='" + goodName2 + '\'' +
+                    '}';
         }
-
     }
 
-    @Ignore
-    @net.vpc.upa.config.Entity
-    public static class Person2 {
 
-        @Id
-        @net.vpc.upa.config.Sequence
-        private Integer id;
 
-        private String name;
-        private Phone phone;
 
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "(this.phone.number+'!!')")
-        private String phoneNumber;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Phone getPhone() {
-            return phone;
-        }
-
-        public void setPhone(Phone phone) {
-            this.phone = phone;
-        }
-
-        public String getPhoneNumber() {
-            return phoneNumber;
-        }
-
-        public void setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
-        }
-
-        @Override
-        public String toString() {
-            return "Person2{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", phoneNumber=" + phoneNumber + '}';
-        }
-
-    }
-
-    @Ignore
-    @net.vpc.upa.config.Entity
-    public static class Person3 {
-
-        @Id
-        @net.vpc.upa.config.Sequence
-        private Integer id;
-
-        private String name;
-        private Phone2 phone;
-
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "this.phone.country")
-        private Country phoneCountry;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Phone2 getPhone() {
-            return phone;
-        }
-
-        public void setPhone(Phone2 phone) {
-            this.phone = phone;
-        }
-
-        public Country getPhoneCountry() {
-            return phoneCountry;
-        }
-
-        public void setPhoneCountry(Country phoneCountry) {
-            this.phoneCountry = phoneCountry;
-        }
-
-        @Override
-        public String toString() {
-            return "Person3{" + "id=" + id + ", name=" + name + ", phone=" + phone + ", phoneCountry=" + phoneCountry + '}';
-        }
-
-    }
-
-    @Ignore
-    @net.vpc.upa.config.Entity
-    public static class Phone2 {
-
-        @Id
-        @net.vpc.upa.config.Sequence
-        private Integer id;
-
-        private String number;
-        private Country country;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getNumber() {
-            return number;
-        }
-
-        public void setNumber(String number) {
-            this.number = number;
-        }
-
-        public Country getCountry() {
-            return country;
-        }
-
-        public void setCountry(Country country) {
-            this.country = country;
-        }
-
-        @Override
-        public String toString() {
-            return "Phone2{" + "id=" + id + ", number=" + number + ", country=" + country + '}';
-        }
-
-    }
-
-    @Ignore
-    @net.vpc.upa.config.Entity
-    public static class Country {
-
-        @Id
-        @net.vpc.upa.config.Sequence
-        private Integer id;
-
-        private String name;
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-    }
 }

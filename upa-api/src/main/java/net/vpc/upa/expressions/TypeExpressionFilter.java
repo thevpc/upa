@@ -6,10 +6,9 @@
 package net.vpc.upa.expressions;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
-public class TypeExpressionFilter implements ExpressionFilter{
+public class TypeExpressionFilter implements ExpressionFilter {
     private Class type;
 
     public TypeExpressionFilter(Class type) {
@@ -20,5 +19,5 @@ public class TypeExpressionFilter implements ExpressionFilter{
     public boolean accept(Expression expression) {
         return type.isInstance(expression);
     }
-    
+
 }

@@ -9,11 +9,11 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionHelper;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -87,7 +87,7 @@ public class FormulaUpdateProcessor {
             Expression fe = getFieldExpression(f, onPersist);
 
             DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe,null);
-            boolean found = ce.findFirstExpression(CompiledExpressionHelper.QUERY_STATEMENT_FILTER)!=null;
+            boolean found = ce.findFirstExpression(CompiledExpressionUtils.QUERY_STATEMENT_FILTER)!=null;
             if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
                 if (pass == null) {
@@ -442,7 +442,7 @@ public class FormulaUpdateProcessor {
 //        }
 //        int count2=0;
 //        if (selectBasedFields.size() > 0) {
-//            Select s = new Select().from(entity.getName(),"this");
+//            Select s = new Select().from(entity.getName(),UQLUtils.THIS);
 //            for (Field primaryField : entity.getPrimaryFields()) {
 //                s.field(primaryField.getName());
 //            }
@@ -454,7 +454,7 @@ public class FormulaUpdateProcessor {
 //                for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {
 //                    u.setObject(f.getKey(),document.getObject(f.getKey()));
 //                }
-//                Expression exprId=eb.objectToIdExpression(document, "this");
+//                Expression exprId=eb.objectToIdExpression(document, UQLUtils.THIS);
 //                count2+= entity.updateCore(u, exprId, context);
 //            }
 //        }

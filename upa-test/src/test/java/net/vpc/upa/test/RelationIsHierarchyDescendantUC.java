@@ -28,11 +28,7 @@ public class RelationIsHierarchyDescendantUC {
 
     @Test
     public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass(), "embedded");
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
 //        pu.scan(null);
         pu.addEntity(Node.class);
         pu.addEntity(Person.class);

@@ -81,25 +81,28 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 //        return field(expression, alias/*, null*/);
 //    }
     public CompiledQueryField addField(CompiledQueryField compiledQueryField) {
+        return addField(compiledQueryField,-1);
+    }
+
+    public CompiledQueryField addField(CompiledQueryField compiledQueryField,int index) {
         invalidate();
-        fields.add(compiledQueryField);
+        if(index<0) {
+            fields.add(compiledQueryField);
+        }else{
+            fields.add(index,compiledQueryField);
+        }
+        prepareChildren(compiledQueryField.getExpression());
         return compiledQueryField;
     }
 
     public CompiledQueryField addField(DefaultCompiledExpression expression, String alias) {
-        invalidate();
         CompiledQueryField f = new CompiledQueryField(alias, expression);
-        fields.add(f);
-        prepareChildren(f.getExpression());
-        return f;
+        return addField(f,-1);
     }
 
     public CompiledQueryField addField(int index, DefaultCompiledExpression expression, String alias) {
-        invalidate();
         CompiledQueryField field = new CompiledQueryField(alias, expression);
-        fields.add(index, field);
-        prepareChildren(field.getExpression());
-        return field;
+        return addField(field,index);
     }
 
     public CompiledSelect field(DefaultCompiledExpression expression, String alias) {
@@ -114,12 +117,24 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public CompiledSelect removeField(int index) {
         invalidate();
-        fields.remove(index);
+        CompiledQueryField qf=fields.remove(index);
+        if(qf!=null){
+            DefaultCompiledExpression expr = qf.getExpression();
+            if(expr!=null) {
+                expr.setParentExpression(null);
+            }
+        }
         return this;
     }
 
     public CompiledSelect removeAllFields() {
         invalidate();
+        for (CompiledQueryField field : fields) {
+            DefaultCompiledExpression expression = field.getExpression();
+            if(expression!=null){
+                expression.setParentExpression(null);
+            }
+        }
         fields.clear();
         return this;
     }
@@ -216,14 +231,14 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
     }
 
     public String getEntityAlias() {
-//        return entityAlias == null ? (entity instanceof String) ? (String) entity : null : entityAlias;
         return queryEntityAlias;
+    }
+    public void setEntityAlias(String alias) {
+        this.queryEntityAlias=alias;
     }
 
     private CompiledSelect join(JoinType joinType, CompiledNameOrSelect entityName, String alias, DefaultCompiledExpression condition) {
-        invalidate();
         join(new CompiledJoinCriteria(joinType, entityName, alias, condition));
-        //getContext().declare(alias, entityName);
         return this;
     }
 

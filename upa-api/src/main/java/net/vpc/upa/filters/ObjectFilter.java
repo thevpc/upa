@@ -6,7 +6,6 @@
 package net.vpc.upa.filters;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface ObjectFilter<T> {

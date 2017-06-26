@@ -7,7 +7,6 @@ package net.vpc.upa.config;
 
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface DecorationValue extends Comparable<DecorationValue> {

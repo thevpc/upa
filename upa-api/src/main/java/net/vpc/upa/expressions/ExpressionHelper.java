@@ -1,32 +1,32 @@
 /**
- * ==================================================================== 
+ * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
- * Unstructured Persistence API, referred to as UPA, is a genuine effort 
- * to raise programming language frameworks managing relational data in 
- * applications using Java Platform, Standard Edition and Java Platform, 
- * Enterprise Edition and Dot Net Framework equally to the next level of 
- * handling ORM for mutable data structures. UPA is intended to provide 
- * a solid reflection mechanisms to the mapped data structures while 
- * affording to make changes at runtime of those data structures. 
- * Besides, UPA has learned considerably of the leading ORM 
- * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few) 
- * failures to satisfy very common even known to be trivial requirement in 
- * enterprise applications. 
- *
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -37,8 +37,6 @@
  * and open the template in the editor.
  */
 package net.vpc.upa.expressions;
-
-import net.vpc.upa.exceptions.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,29 +49,30 @@ public class ExpressionHelper {
 
     private static final Set<String> RESERVED_WORDS = new HashSet<String>(
             Arrays.asList(
-                    "select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like"))
-   ;
+                    "select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like"));
 
     public static boolean isReservedWord(String s) {
         return s != null && RESERVED_WORDS.contains(s.toLowerCase());
     }
 
     public static boolean isIdentifierStart(char s) {
-        return (s>='a' && s<='z') 
+        return (s >= 'a' && s <= 'z')
                 ||
-               (s>='A' && s<='Z')
+                (s >= 'A' && s <= 'Z')
                 ;
     }
+
     public static boolean isIdentifierPart(char s) {
-        return (s>='a' && s<='z') 
+        return (s >= 'a' && s <= 'z')
                 ||
-               (s>='A' && s<='Z')
+                (s >= 'A' && s <= 'Z')
                 ||
-               (s>='0' && s<='9')
+                (s >= '0' && s <= '9')
                 ||
-               (s=='_')
+                (s == '_')
                 ;
     }
+
     public static boolean isEscapeIdentifier(String s) {
         if (isReservedWord(s)) {
             return true;
@@ -217,7 +216,7 @@ public class ExpressionHelper {
                     try {
                         int value = Integer.parseInt(unicode.toString(), 16);
                         outStr.append((char) value);
-                        unicode.delete(0,unicode.length());
+                        unicode.delete(0, unicode.length());
                         unicodeStr = false;
                         encountredSlash = false;
                     } catch (NumberFormatException nfe) {

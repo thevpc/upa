@@ -60,9 +60,9 @@ public interface EntityBuilder {
 
     Document objectToDocument(Object entity, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
 
-    void setProperty(Object entityObject, String property, Object value) ;
+    void setProperty(Object entityObject, String property, Object value);
 
-    Object getProperty(Object entityObject, String property) ;
+    Object getProperty(Object entityObject, String property);
 
     Key createKey(Object... keyValues);
 
@@ -84,7 +84,7 @@ public interface EntityBuilder {
      * @param entityId entity id
      * @return key representation
      */
-    Key idToKey(Object entityId) ;
+    Key idToKey(Object entityId);
 
     /**
      * transforms Document key to a entity id representation of the given Document
@@ -94,7 +94,7 @@ public interface EntityBuilder {
      * @param documentKey Document key
      * @return key representation
      */
-    Object keyToId(Key documentKey) ;
+    Object keyToId(Key documentKey);
 
     /**
      * transforms entity value to a Document value representation of the given
@@ -105,60 +105,60 @@ public interface EntityBuilder {
      * @return entityToDocument(r, false)
      * @
      */
-    Document objectToDocument(Object objectValue) ;
+    Document objectToDocument(Object objectValue);
 
     /**
      * Document value representation of the given entity. updates to the Document
      * are reflected in the provided value
      *
-     * @param objectValue entity value
+     * @param objectValue       entity value
      * @param ignoreUnspecified when true primitive number type zeros and
-     * boolean type false values are reported as null (not included in Document)
+     *                          boolean type false values are reported as null (not included in Document)
      * @return objectToDocument(r, false)
      */
-    Document objectToDocument(Object objectValue, boolean ignoreUnspecified) ;
+    Document objectToDocument(Object objectValue, boolean ignoreUnspecified);
 
-    Object getMainValue(Object objectValue) ;
+    Object getMainValue(Object objectValue);
 
-    <R> R documentToObject(Document document) ;
+    <R> R documentToObject(Document document);
 
-    <R> R idToObject(Object objectId) ;
+    <R> R idToObject(Object objectId);
 
-    Document idToDocument(Object objectId) ;
+    Document idToDocument(Object objectId);
 
-    Object objectToId(Object objectValue) ;
+    Object objectToId(Object objectValue);
 
-    Key objectToKey(Object objectValue) ;
+    Key objectToKey(Object objectValue);
 
-    Object documentToId(Document document) ;
+    Object documentToId(Document document);
 
-    Key documentToKey(Document document) ;
+    Key documentToKey(Document document);
 
-    Object keyToObject(Key key) ;
+    Object keyToObject(Key key);
 
-    Document keyToDocument(Key key) ;
+    Document keyToDocument(Key key);
 
-    void setDocumentId(Document document, Object id) ;
+    void setDocumentId(Document document, Object id);
 
-    void setObjectId(Object object, Object id) ;
+    void setObjectId(Object object, Object id);
 
-    Expression documentToExpression(Document document, String alias) ;
+    Expression documentToExpression(Document document, String alias);
 
-    Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) ;
+    Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias);
 
     //    Expression idToExpression(Object key) ;
-    Expression objectToIdExpression(Object objectOrDocument, String alias) ;
+    Expression objectToIdExpression(Object objectOrDocument, String alias);
 
-    Expression idToExpression(Object id, String alias) ;
+    Expression idToExpression(Object id, String alias);
 
-    Expression keyToExpression(Key documentKey, String alias) ;
+    Expression keyToExpression(Key documentKey, String alias);
 
-    <K> Expression idListToExpression(List<K> idList, String alias) ;
+    <K> Expression idListToExpression(List<K> idList, String alias);
 
-    Expression keyListToExpression(List<Key> keyList, String alias) ;
+    Expression keyListToExpression(List<Key> keyList, String alias);
 
-    QualifiedDocument createQualifiedDocument() ;
+    QualifiedDocument createQualifiedDocument();
 
-    QualifiedDocument createQualifiedDocument(Document document) ;
+    QualifiedDocument createQualifiedDocument(Document document);
 
 }

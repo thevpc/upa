@@ -8,16 +8,15 @@ package net.vpc.upa;
 import java.util.Comparator;
 
 /**
- *
  * @author taha.bensalah@gmaol.com
  */
 class ObjectFactoryComparator implements Comparator<ObjectFactory> {
-    private static final Comparator<ObjectFactory> instance=new ObjectFactoryComparator();
+    private static final Comparator<ObjectFactory> instance = new ObjectFactoryComparator();
 
     public static Comparator<ObjectFactory> getInstance() {
         return instance;
     }
-    
+
     private ObjectFactoryComparator() {
     }
 
@@ -36,5 +35,5 @@ class ObjectFactoryComparator implements Comparator<ObjectFactory> {
         }
         return Integer.compare(o1.getContextSupportLevel(), o2.getContextSupportLevel());
     }
-    
+
 }

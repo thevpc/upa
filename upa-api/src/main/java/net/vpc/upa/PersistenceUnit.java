@@ -70,14 +70,14 @@ public interface PersistenceUnit extends Closeable {
 
     void setAutoScan(boolean autoScan);
 
-    Session openSession() ;
+    Session openSession();
 
-    ObjectFactory getFactory() ;
+    ObjectFactory getFactory();
 
-    PersistenceGroup getPersistenceGroup() ;
+    PersistenceGroup getPersistenceGroup();
 
     //    void setPersistenceGroup(PersistenceGroup persistenceGroup) ;
-    I18NString getTitle() ;
+    I18NString getTitle();
 
     //    void add(PersistenceUnitItem part);
 //    void remove(int index) ;
@@ -87,13 +87,13 @@ public interface PersistenceUnit extends Closeable {
 //    List<PersistenceUnitItem> getChildren() ;
 //    int indexOf(PersistenceUnitItem child) ;
 //    int indexOf(String childName) ;
-    Package addPackage(String name, String parentPath) ;
+    Package addPackage(String name, String parentPath);
 
-    Package addPackage(String name, String parentPath, int index) ;
+    Package addPackage(String name, String parentPath, int index);
 
-    Package addPackage(String name) ;
+    Package addPackage(String name);
 
-    Package addPackage(String name, int index) ;
+    Package addPackage(String name, int index);
 
     /**
      * add all modules
@@ -109,31 +109,31 @@ public interface PersistenceUnit extends Closeable {
     Package getDefaulPackage();
 
     //    DatabaseResources getResources();
-    boolean isReadOnly() ;
+    boolean isReadOnly();
 
-    void setReadOnly(boolean enable) ;
+    void setReadOnly(boolean enable);
 
     //    void declareInternEntities();
 //    void declareEntities();
 //    String getDefaultAdapterString();
 //
 //    void setDefaultConnectionString(String defaultAdapterString);
-    String getName() ;
+    String getName();
 
     //    void setName(String name) ;
-    boolean isLastStartSucceeded() ;
+    boolean isLastStartSucceeded();
 
-    void setLastStartSucceeded(boolean success) ;
+    void setLastStartSucceeded(boolean success);
 
-    boolean isRecurseDelete() ;
+    boolean isRecurseDelete();
 
-    boolean isLockablePersistenceUnit() ;
+    boolean isLockablePersistenceUnit();
 
-    boolean isCaseSensitive() ;
+    boolean isCaseSensitive();
 
-    void setCaseSensitive(boolean enable) ;
+    void setCaseSensitive(boolean enable);
 
-    NamingStrategy getNamingStrategy() ;
+    NamingStrategy getNamingStrategy();
 
     PersistenceStore getPersistenceStore();
 
@@ -151,62 +151,62 @@ public interface PersistenceUnit extends Closeable {
      * @return
      * @
      */
-    Entity addEntity(Object descriptor) ;
+    Entity addEntity(Object descriptor);
 
     //    Index addIndex(String indexName, String entityName, boolean unique, List<String> fieldNames) ;
-    List<Index> getIndexes() ;
+    List<Index> getIndexes();
 
-    List<Index> getIndexes(String entityName) ;
+    List<Index> getIndexes(String entityName);
 
-    boolean containsEntity(String entityName) ;
+    boolean containsEntity(String entityName);
 
     /**
-     * @param source source to be parsed
-     * @param listener listener to track scanned items or null
+     * @param source    source to be parsed
+     * @param listener  listener to track scanned items or null
      * @param configure if true process configuration (add entities,
-     * functions...)
+     *                  functions...)
      * @
      */
-    void scan(ScanSource source, ScanListener listener, boolean configure) ;
+    void scan(ScanSource source, ScanListener listener, boolean configure);
 
-    boolean containsField(String entityName, String fieldName) ;
+    boolean containsField(String entityName, String fieldName);
 
-    Entity getEntity(String entityName) ;
+    Entity getEntity(String entityName);
 
     //    <K, R> Entity<K, R> getEntity(String entityName, boolean check);
-    boolean containsEntity(Class entityType) ;
+    boolean containsEntity(Class entityType);
 
-    Entity findEntity(Class entityType) ;
+    Entity findEntity(Class entityType);
 
-    List<Entity> findEntities(Class entityType) ;
+    List<Entity> findEntities(Class entityType);
 
-    Entity findEntity(String entityName) ;
+    Entity findEntity(String entityName);
 
-    Entity getEntity(Class entityType) ;
+    Entity getEntity(Class entityType);
 
     //    int getExplicitEntitiesCount() ;
-    void addRelationship(RelationshipDescriptor relationDescriptor) ;
+    void addRelationship(RelationshipDescriptor relationDescriptor);
 
     //    Relationship addRelation(String name, RelationType type, String detailEntityName, String masterEntityName, String detailFieldName, String masterfieldName, RelationUpdateType detailUpdateType, RelationUpdateType masterUpdateType, String[] detailFieldNames, boolean nullable, Expression filter) ;
-    void reset() ;
+    void reset();
 
-    void reset(Map<String,Object> hints);
+    void reset(Map<String, Object> hints);
 
-    List<Entity> getEntities() ;
+    List<Entity> getEntities();
 
-    List<Package> getPackages() ;
+    List<Package> getPackages();
 
-    List<Entity> getEntities(EntityFilter entityFilter) ;
+    List<Entity> getEntities(EntityFilter entityFilter);
 
-    List<Relationship> getRelationships() ;
+    List<Relationship> getRelationships();
 
-    Relationship getRelationship(String name) ;
+    Relationship getRelationship(String name);
 
-    boolean containsRelationship(String relationName) ;
+    boolean containsRelationship(String relationName);
 
-    List<Relationship> getRelationshipsByTarget(Entity entity) ;
+    List<Relationship> getRelationshipsByTarget(Entity entity);
 
-    List<Relationship> getRelationshipsBySource(Entity entity) ;
+    List<Relationship> getRelationshipsBySource(Entity entity);
 
     //    List<Field> findField(String name) ;
     //    Script getDisableIdentityConstraintsScript() {
@@ -219,30 +219,30 @@ public interface PersistenceUnit extends Closeable {
     //        }
     //        return script;
     //    }
-    void installDemoData() ;
+    void installDemoData();
 
-    void start() ;
+    void start();
 
     boolean isSystemSession(Session s);
 
-    String getPersistenceName() ;
+    String getPersistenceName();
 
-    void setPersistenceName(String persistenceName) ;
+    void setPersistenceName(String persistenceName);
 
     //    List<Entity> getAllPersistentEntities() ;
 //
 //    List<Entity> getAllViewEntities() ;
     //    boolean checkCreatedSilently() ;
 //    boolean checkCreatedPersistenceUnit(boolean ask) ;
-    boolean isValidPersistenceUnit() ;
+    boolean isValidPersistenceUnit();
 
 //    DBConfigModel getDBConfigModel() ;
 
 //    void setDBConfigModel(DBConfigModel dbConfigModel) ;
 
-    void clear(EntityFilter entityFilter,Map<String,Object> hints)  ;
-    
-    void clear() ;
+    void clear(EntityFilter entityFilter, Map<String, Object> hints);
+
+    void clear();
 
     @Deprecated
     void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
@@ -261,31 +261,31 @@ public interface PersistenceUnit extends Closeable {
     PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
 
     //    DefaultDatabase.LocalizedDatabase getLocalizedDatabase();
-    int getStatus() ;
+    int getStatus();
 
-    void setStatus(int status) ;
+    void setStatus(int status);
 
     //--------------------------- PROPERTIES SUPPORT
-    Properties getProperties() ;
+    Properties getProperties();
 
-    boolean isAskOnCheckCreatedPersistenceUnit() ;
+    boolean isAskOnCheckCreatedPersistenceUnit();
 
-    void setAskOnCheckCreatedPersistenceUnit(boolean askOnCheckCreatedPersistenceUnit) ;
+    void setAskOnCheckCreatedPersistenceUnit(boolean askOnCheckCreatedPersistenceUnit);
 
-    Class getEntityExtensionSupportType(Class entityExtensionType) ;
+    Class getEntityExtensionSupportType(Class entityExtensionType);
 
-    UPASecurityManager getSecurityManager() ;
+    UPASecurityManager getSecurityManager();
 
     /**
      * @param definitionListener
-     * @param trackSystem when true system entities are also tracked
+     * @param trackSystem        when true system entities are also tracked
      */
     void addDefinitionListener(DefinitionListener definitionListener, boolean trackSystem);
 
     /**
      * @param entityName
      * @param definitionListener
-     * @param trackSystem when true system entities are also tracked
+     * @param trackSystem        when true system entities are also tracked
      */
     void addDefinitionListener(String entityName, DefinitionListener definitionListener, boolean trackSystem);
 
@@ -315,12 +315,12 @@ public interface PersistenceUnit extends Closeable {
     //    Application getApplication();
 //
 //    void setApplication(Application application);
-    void addPersistenceUnitListener(PersistenceUnitListener listener) ;
+    void addPersistenceUnitListener(PersistenceUnitListener listener);
 
-    void removePersistenceUnitListener(PersistenceUnitListener listener) ;
+    void removePersistenceUnitListener(PersistenceUnitListener listener);
 
     //    List<StructureInterceptor> getRelationListeners(String entityName1, String entityName2);
-    List<PersistenceUnitListener> getPersistenceUnitListeners() ;
+    List<PersistenceUnitListener> getPersistenceUnitListeners();
 
     //    void saveConfig(Configuration configuration);
 //
@@ -336,31 +336,31 @@ public interface PersistenceUnit extends Closeable {
     //        return configModel;
     //    }
 //    DBMacroHelper getDbMacroHelper();
-    PersistenceStoreFactory getPersistenceStoreFactory() ;
+    PersistenceStoreFactory getPersistenceStoreFactory();
 
-    void addSQLParameterProcessor(QLParameterProcessor p) ;
+    void addSQLParameterProcessor(QLParameterProcessor p);
 
-    void removeSQLParameterProcessor(QLParameterProcessor p) ;
+    void removeSQLParameterProcessor(QLParameterProcessor p);
 
-    I18NStringStrategy getI18NStringStrategy() ;
+    I18NStringStrategy getI18NStringStrategy();
 
-    LockInfo getPersistenceUnitLockingInfo() ;
+    LockInfo getPersistenceUnitLockingInfo();
 
-    void lockPersistenceUnit(String id) ;
+    void lockPersistenceUnit(String id);
 
-    void unlockPersistenceUnit(String id) ;
+    void unlockPersistenceUnit(String id);
 
-    LockInfo getLockingInfo(Entity entity) ;
+    LockInfo getLockingInfo(Entity entity);
 
-    void lockEntityManager(Entity entity, String id) ;
+    void lockEntityManager(Entity entity, String id);
 
-    void unlockEntityManager(Entity entity, String id) ;
+    void unlockEntityManager(Entity entity, String id);
 
-    List<LockInfo> getLockingInfo(Entity entity, Expression expression) ;
+    List<LockInfo> getLockingInfo(Entity entity, Expression expression);
 
-    void lockEntities(Entity entity, Expression expression, String id) ;
+    void lockEntities(Entity entity, Expression expression, String id);
 
-    void unlockEntities(Entity entity, Expression expression, String id) ;
+    void unlockEntities(Entity entity, Expression expression, String id);
 
     ////////////////////////////////////////
     // LISTENERS
@@ -369,6 +369,7 @@ public interface PersistenceUnit extends Closeable {
     // Triggers
     //
     //////////////////////////////////////////////////////////////////
+
     /**
      * if entityNamePattern is a simple Entity name of an existing name call
      * entity.addTrigger if not postpone creation for all entities verifying
@@ -377,57 +378,63 @@ public interface PersistenceUnit extends Closeable {
      * @param triggerName
      * @param interceptor
      * @param entityNamePattern
-     * @param system if true include system entities
+     * @param system            if true include system entities
      * @
      */
-    void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) ;
+    void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system);
 
-    void dropTrigger(String entityName, String triggerName) ;
+    void dropTrigger(String entityName, String triggerName);
 
-    List<Trigger> getTriggers(String entityName) ;
+    List<Trigger> getTriggers(String entityName);
 
-//    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) ;
+    //    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) ;
 //    void removePersistenceUnitTrigger(String triggerName) ;
 //    List<PersistenceUnitTrigger> getPersistenceUnitTriggers() ;
-    boolean isTriggersEnabled() ;
+    boolean isTriggersEnabled();
 
-    void setTriggersEnabled(boolean triggersEnabled) ;
+    void setTriggersEnabled(boolean triggersEnabled);
 
     //////////////////////////////////////////////////////////////////////
-    ConnectionProfile getConnectionProfile() ;
+    ConnectionProfile getConnectionProfile();
 
-    void persist(String entityName, Object objectOrDocument) ;
-    void persist(String entity, Object objectOrDocument,Map<String,Object> hints) ;
+    void persist(String entityName, Object objectOrDocument);
 
-    void persist(Object objectOrDocument) ;
+    void persist(String entity, Object objectOrDocument, Map<String, Object> hints);
 
-    RemoveTrace remove(String entityName, Object objectOrDocument) ;
+    void persist(Object objectOrDocument);
 
-    RemoveTrace remove(Object objectOrDocument) ;
+    RemoveTrace remove(String entityName, Object objectOrDocument);
 
-    UpdateQuery createUpdateQuery(String entityName) ;
+    RemoveTrace remove(Object objectOrDocument);
 
-    UpdateQuery createUpdateQuery(Class type) ;
+    UpdateQuery createUpdateQuery(String entityName);
 
-    UpdateQuery createUpdateQuery(Object object) ;
+    UpdateQuery createUpdateQuery(Class type);
 
-    void merge(String entityName,Object objectOrDocument);
+    UpdateQuery createUpdateQuery(Object object);
 
-    void merge(Object objectOrDocument) ;
+    void merge(String entityName, Object objectOrDocument);
 
-    void update(Object objectOrDocument) ;
+    void merge(Object objectOrDocument);
 
-    boolean save(Object objectOrDocument) ;
+    void update(Object objectOrDocument);
+
+    boolean save(Object objectOrDocument);
 
 
-//    void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+    //    void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //    void merge(String entityName, Object objectOrDocument) ;
 //
-    boolean save(String entityName, Object objectOrDocument) ;
-//    boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
+    boolean save(Class entityType, Object objectOrDocument);
+
+    boolean save(String entityName, Object objectOrDocument);
+
+    //    boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
 //
-    void update(String entityName, Object objectOrDocument) ;
+    void update(Class entityType, Object objectOrDocument);
+
+    void update(String entityName, Object objectOrDocument);
 //    void update(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 //
 //
@@ -448,9 +455,9 @@ public interface PersistenceUnit extends Closeable {
 //    void updatePartial(String entityName, Object objectOrDocument) ;
 //    void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 
-    void updateFormulas() ;
+    void updateFormulas();
 
-    void updateFormulas(EntityFilter entityFilter,Map<String,Object> hints) throws UPAException ;
+    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) throws UPAException;
 
     //////////
 //    int updateDocuments(String entityName, Document document, Expression condition) ;
@@ -469,71 +476,70 @@ public interface PersistenceUnit extends Closeable {
 //    void updateFormulasById(Class entityType, FieldFilter filter, Object id) ;
 
     //////// REMOVE
-    RemoveTrace remove(Class entityType, Object object) ;
+    RemoveTrace remove(Class entityType, Object object);
 
-    RemoveTrace remove(Class entityType, RemoveOptions options) ;
+    RemoveTrace remove(Class entityType, RemoveOptions options);
 
-    RemoveTrace remove(String entityName, RemoveOptions options) ;
+    RemoveTrace remove(String entityName, RemoveOptions options);
 
-    <T> List<T> findAll(Class entityType) ;
+    <T> List<T> findAll(Class entityType);
 
-    <T> List<T> findAll(String entityName) ;
+    <T> List<T> findAll(String entityName);
 
-    <T> List<T> findAllIds(String entityName) ;
+    <T> List<T> findAllIds(String entityName);
 
-    <T> T findByMainField(Class entityType, Object mainFieldValue) ;
+    <T> T findByMainField(Class entityType, Object mainFieldValue);
 
-    <T> T findByMainField(String entityName, Object mainFieldValue) ;
+    <T> T findByMainField(String entityName, Object mainFieldValue);
 
-    <T> T findByField(Class entityType, String fieldName, Object mainFieldValue) ;
+    <T> T findByField(Class entityType, String fieldName, Object mainFieldValue);
 
-    <T> T findByField(String entityName, String fieldName, Object mainFieldValue) ;
+    <T> T findByField(String entityName, String fieldName, Object mainFieldValue);
 
-    <T> T findById(Class entityType, Object id) ;
+    <T> T findById(Class entityType, Object id);
 
-    <T> T findById(String entityName, Object id) ;
+    <T> T findById(String entityName, Object id);
 
-    boolean existsById(String entityName, Object id) ;
+    boolean existsById(String entityName, Object id);
 
-    List<Document> findAllDocuments(Class entityType) ;
+    List<Document> findAllDocuments(Class entityType);
 
-    List<Document> findAllDocuments(String entityName) ;
+    List<Document> findAllDocuments(String entityName);
 
-    Document findDocumentById(Class entityType, Object id) ;
+    Document findDocumentById(Class entityType, Object id);
 
-    Document findDocumentById(String entityName, Object id) ;
+    Document findDocumentById(String entityName, Object id);
 
-    QueryBuilder createQueryBuilder(Class entityType) ;
+    QueryBuilder createQueryBuilder(Class entityType);
 
-    QueryBuilder createQueryBuilder(String entityName) ;
+    QueryBuilder createQueryBuilder(String entityName);
 
-    Query createQuery(EntityStatement query) ;
+    Query createQuery(EntityStatement query);
 
-    Query createQuery(String query) ;
+    Query createQuery(String query);
 
     /**
-     *
      * @param transactionType
      * @return true if a transaction has been created
      * @
      */
-    boolean beginTransaction(TransactionType transactionType) ;
+    boolean beginTransaction(TransactionType transactionType);
 
-    void commitTransaction() ;
+    void commitTransaction();
 
-    void rollbackTransaction() ;
+    void rollbackTransaction();
 
-    boolean isStarted() ;
+    boolean isStarted();
 
-    boolean isValidStructureModificationContext() ;
+    boolean isValidStructureModificationContext();
 
-    boolean isStructureModification() ;
+    boolean isStructureModification();
 
-    void beginStructureModification() ;
+    void beginStructureModification();
 
-    void commitStructureModification() ;
+    void commitStructureModification();
 
-    boolean isClosed() ;
+    boolean isClosed();
 
     //    Expression parse(String query) ;
 //
@@ -601,9 +607,9 @@ public interface PersistenceUnit extends Closeable {
 
     boolean currentSessionExists();
 
-    Session getCurrentSession() ;
+    Session getCurrentSession();
 
-    Key createKey(Object... keyValues) ;
+    Key createKey(Object... keyValues);
 
     Callback addCallback(CallbackConfig callbackConfig);
 
@@ -611,41 +617,43 @@ public interface PersistenceUnit extends Closeable {
 
     void removeCallback(Callback callback);
 
-    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system,boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
 
-    UConnection getConnection() ;
+    UConnection getConnection();
 
     void setIdentityConstraintsEnabled(Entity entity, boolean enable);
 
 
-    <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext);
 
-    <T> T invoke(Action<T> action) ;
+    <T> T invoke(Action<T> action);
 
-    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext);
 
-    <T> T invokePrivileged(Action<T> action) ;
+    <T> T invokePrivileged(Action<T> action);
 
-    void invoke(VoidAction action, InvokeContext invokeContext) ;
+    void invoke(VoidAction action, InvokeContext invokeContext);
 
-    void invoke(VoidAction action) ;
+    void invoke(VoidAction action);
 
-    void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext);
 
-    void invokePrivileged(VoidAction action) ;
-    
-    Comparator<Entity> getDependencyComparator() ;
+    void invokePrivileged(VoidAction action);
+
+    Comparator<Entity> getDependencyComparator();
 
     <T> T copyObject(T r);
-    <T> T copyObject(String entityName,T r);
-    <T> T copyObject(Class entityType,T r);
 
-    boolean isEmpty(String entityName) ;
+    <T> T copyObject(String entityName, T r);
 
-    boolean isEmpty(Class entityType) ;
+    <T> T copyObject(Class entityType, T r);
 
-    long getEntityCount(String entityName) ;
+    boolean isEmpty(String entityName);
 
-    long getEntityCount(Class entityType) ;
+    boolean isEmpty(Class entityType);
+
+    long getEntityCount(String entityName);
+
+    long getEntityCount(Class entityType);
 
 }

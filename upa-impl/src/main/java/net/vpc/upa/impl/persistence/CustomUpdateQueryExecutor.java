@@ -75,9 +75,9 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
         int c2 = 0;
         String oldAlias = baseExpression.getEntityAlias();
         if (oldAlias == null) {
-            oldAlias = "this";//entity.getName();
+            oldAlias = UQLUtils.THIS;//entity.getName();
         }
-        boolean replaceThis = !"this".equals(oldAlias);
+        boolean replaceThis = !UQLUtils.THIS.equals(oldAlias);
         if (baseExpression.countFields() > 0) {
 //            if (replaceThis) {
 //                UQLUtils.replaceThisVar(baseExpression, oldAlias, context.getPersistenceUnit());

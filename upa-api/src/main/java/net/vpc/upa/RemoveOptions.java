@@ -17,7 +17,7 @@ public final class RemoveOptions {
     private RemoveTrace removeTrace;
     private boolean followLinks = true;
     private Relationship followRelationship;
-    private Map<String,Object> hints;
+    private Map<String, Object> hints;
 
     public static RemoveOptions forId(Object expr) {
         return new RemoveOptions(ConditionType.ID, expr);
@@ -121,8 +121,8 @@ public final class RemoveOptions {
     }
 
     public Map<String, Object> getHints(boolean autoCreate) {
-        if(hints==null && autoCreate){
-            hints=new HashMap<String, Object>();
+        if (hints == null && autoCreate) {
+            hints = new HashMap<String, Object>();
         }
         return hints;
     }
@@ -132,16 +132,16 @@ public final class RemoveOptions {
         return this;
     }
 
-    public RemoveOptions setHint(String name,Object value){
-        if(value==null){
-           if(hints!=null){
-               hints.remove(name);
-           }
-        }else{
-            if(hints==null){
-                hints=new HashMap<String, Object>();
+    public RemoveOptions setHint(String name, Object value) {
+        if (value == null) {
+            if (hints != null) {
+                hints.remove(name);
             }
-            hints.put(name,value);
+        } else {
+            if (hints == null) {
+                hints = new HashMap<String, Object>();
+            }
+            hints.put(name, value);
         }
         return this;
     }

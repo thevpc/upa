@@ -26,10 +26,6 @@ public class OneToOneUC {
 
     @Test
     public void run() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
         pu.addEntity(Client.class);
         pu.addEntity(ClientInfo.class);

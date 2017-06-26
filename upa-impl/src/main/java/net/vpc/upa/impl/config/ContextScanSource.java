@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.config;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import net.vpc.upa.impl.util.classpath.URLClassIterable;
 public class ContextScanSource extends BaseScanSource {
 
     private boolean noIgnore;
+    private URL[] urls;
 
     public ContextScanSource(boolean noIgnore) {
         this.noIgnore = noIgnore;
@@ -69,9 +71,16 @@ public class ContextScanSource extends BaseScanSource {
         } else {
             throw new IllegalArgumentException("Unsupported context " + context);
         }
-        return new URLClassIterable(ClassPathUtils.resolveClassPathLibs(),
+        return new URLClassIterable(getUrls(),
                 new DefaultConfigFilter(_filters.toArray(new ScanFilter[_filters.size()])),
                 null);
+    }
+
+    private URL[] getUrls() {
+        if(urls==null) {
+            urls = ClassPathUtils.resolveClassPathLibs();
+        }
+        return urls;
     }
 
 }

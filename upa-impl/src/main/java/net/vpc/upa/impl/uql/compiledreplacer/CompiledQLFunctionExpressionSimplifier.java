@@ -8,6 +8,7 @@ import net.vpc.upa.EvalContext;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
@@ -18,12 +19,17 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class CompiledQLFunctionExpressionSimplifier implements CompiledExpressionReplacer {
+public class CompiledQLFunctionExpressionSimplifier implements CompiledExpressionFilteredReplacer {
 
     private PersistenceUnit persistenceUnit;
 
     public CompiledQLFunctionExpressionSimplifier(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
+    }
+
+    @Override
+    public boolean accept(DefaultCompiledExpression e) {
+        return e instanceof CompiledQLFunctionExpression;
     }
 
     public CompiledExpression update(CompiledExpression e) {

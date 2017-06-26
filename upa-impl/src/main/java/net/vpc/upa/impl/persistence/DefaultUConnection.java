@@ -137,7 +137,7 @@ public class DefaultUConnection implements UConnection {
                     if (error != null) {
                         log.log(Level.SEVERE, nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
                     } else {
-                        log.log(Level.FINE, "{0}   executeQuery    {1} ;; parameters = {2} ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
+                        log.log(Level.FINE, "{0} executeQuery    {1} :: parameters = {2} ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                     }
                 }
 //                long endTime = System.currentTimeMillis();
@@ -201,10 +201,10 @@ public class DefaultUConnection implements UConnection {
         } finally {
             if (log.isLoggable(Level.FINE)) {
                 if (error != null) {
-                    log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery " + query + " :: parameters = " + queryParameters, error);
+                    log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery " + query + ((queryParameters != null && !queryParameters.isEmpty())?(" ;; parameters=" + queryParameters):""), error);
                 } else {
                     log.log(Level.FINE, "{0} executeNonQuery {1}" + ((queryParameters != null && !queryParameters.isEmpty())
-                            ? "\n\tqueryParameters={2}" : "") + " ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
+                            ? " ;; parameters = {2}" : "") + " ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                 }
             }
 //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);

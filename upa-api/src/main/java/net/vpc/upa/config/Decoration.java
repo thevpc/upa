@@ -8,7 +8,6 @@ package net.vpc.upa.config;
 import java.util.Map;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface Decoration extends DecorationValue {

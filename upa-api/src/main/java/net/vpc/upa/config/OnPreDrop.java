@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 /**
  * Created by vpc on 7/25/15.
  */
-@Target(value=ElementType.METHOD)
-@Retention(value=RetentionPolicy.RUNTIME)
+@Target(value = ElementType.METHOD)
+@Retention(value = RetentionPolicy.RUNTIME)
 public @interface OnPreDrop {
     String name() default "";
 

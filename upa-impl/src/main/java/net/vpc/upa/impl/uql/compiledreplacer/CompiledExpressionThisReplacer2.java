@@ -3,9 +3,10 @@
  *
  * and open the template in the editor.
  */
-package net.vpc.upa.impl.uql;
+package net.vpc.upa.impl.uql.compiledreplacer;
 
 import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.impl.uql.CompiledExpressionReplacer;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
 

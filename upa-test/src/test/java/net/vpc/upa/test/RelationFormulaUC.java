@@ -7,6 +7,7 @@ import net.vpc.upa.config.Formula;
 import net.vpc.upa.config.*;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,23 +24,25 @@ public class RelationFormulaUC {
     }
 
     private static final Logger log = Logger.getLogger(RelationFormulaUC.class.getName());
-
-    @Test
-    public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        log.fine("********************************************");
-        log.fine(" " + puId);
-        log.fine("********************************************");
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass(), "embedded");
-//        pu.scan(null);
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);
         pu.start();
-
-        Business bo = UPA.makeSessionAware(new Business());
-//        bo.initializeData();
+        bo = UPA.makeSessionAware(new Business());
+        bo.clear();
+        bo.populate();
+    }
+    @Test
+    public void testQuery0() {
         bo.testQuery0();
-//        bo.testQuery();
+    }
+
+    @Test
+    public void testQuery() {
+        bo.testQuery();
     }
 
     public static class Business {
@@ -80,8 +83,17 @@ public class RelationFormulaUC {
                 System.out.println("person : " + r);
             }
         }
+        public void clear() {
+            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            for (Object p : pu.findAll(Person.class)) {
+                pu.remove(p);
+            }
+            for (Object p : pu.findAll(Phone.class)) {
+                pu.remove(p);
+            }
+        }
 
-        public void initializeData() {
+        public void populate() {
             PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
             if (pu.isEmpty(Phone.class)) {
                 Phone[] phones = new Phone[10];
@@ -150,59 +162,6 @@ public class RelationFormulaUC {
         public void setPhone2(Phone phone2) {
             this.phone2 = phone2;
         }
-
-//        public Phone getPhone5() {
-//            return phone5;
-//        }
-//
-//        public void setPhone5(Phone phone5) {
-//            this.phone5 = phone5;
-//        }
-//
-//        public Integer getIdPhone1() {
-//            return idPhone1;
-//        }
-//
-//        public void setIdPhone1(Integer idPhone1) {
-//            this.idPhone1 = idPhone1;
-//        }
-//
-//        public Integer getIdPhone3() {
-//            return idPhone3;
-//        }
-//
-//        public void setIdPhone3(Integer idPhone3) {
-//            this.idPhone3 = idPhone3;
-//        }
-//
-//        public Phone getPhone3() {
-//            return phone3;
-//        }
-//
-//        public void setPhone3(Phone phone3) {
-//            this.phone3 = phone3;
-//        }
-//
-//        public Integer getIdPhone4() {
-//            return idPhone4;
-//        }
-//
-//        public void setIdPhone4(Integer idPhone4) {
-//            this.idPhone4 = idPhone4;
-//        }
-//
-//        public Phone getPhone4() {
-//            return phone4;
-//        }
-//
-//        public void setPhone4(Phone phone4) {
-//            this.phone4 = phone4;
-//        }
-
-//        @Override
-//        public String toString() {
-//            return "Person{" + "id=" + id + ", name=" + name + ", idPhone1=" + idPhone1 + ", phone2=" + phone2 + ", idPhone3=" + idPhone3 + ", phone3=" + phone3 + ", idPhone4=" + idPhone4 + ", phone4=" + phone4 + '}';
-//        }
 
         public Phone getPhoneWithPrefix1() {
             return phoneWithPrefix1;

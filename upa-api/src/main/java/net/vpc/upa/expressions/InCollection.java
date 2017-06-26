@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,19 +14,19 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -55,7 +55,7 @@ public class InCollection extends OperatorExpression
         this(new Uplet(left), (List<Expression>) null);
     }
 
-//    public InCollection(String left,DataPrimitiveType type,Collection collection) {
+    //    public InCollection(String left,DataPrimitiveType type,Collection collection) {
 //        this(new Var(left,type),collection);
 //    }
 //    public InCollection(String left,DataPrimitiveType type,Object[] collection) {
@@ -81,7 +81,7 @@ public class InCollection extends OperatorExpression
 
     @Override
     public List<TaggedExpression> getChildren() {
-        List<TaggedExpression> list = new ArrayList<TaggedExpression>(right.size()+1);
+        List<TaggedExpression> list = new ArrayList<TaggedExpression>(right.size() + 1);
         if (left != null) {
             list.add(new TaggedExpression(left, LEFT));
         }
@@ -101,7 +101,7 @@ public class InCollection extends OperatorExpression
         }
     }
 
-//    public int size() {
+    //    public int size() {
 //        return 2;
 //    }
     public Expression getLeft() {
@@ -120,7 +120,7 @@ public class InCollection extends OperatorExpression
         right.add(new Uplet(e));
     }
 
-//    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
+    //    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
 //        StringBuffer sb = new StringBuffer();
 //        int mySize=right.size();
 //        if ( mySize== 0) {

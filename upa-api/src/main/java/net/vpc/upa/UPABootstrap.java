@@ -12,9 +12,9 @@ public class UPABootstrap {
     private boolean contextProviderCreated = false;
     private Properties properties = new BootstrapProperties();
 
-    UPABootstrap(){
+    UPABootstrap() {
         for (Map.Entry<Object, Object> ee : System.getProperties().entrySet()) {
-            properties.setString((String) ee.getKey(),(String) ee.getValue());
+            properties.setString((String) ee.getKey(), (String) ee.getValue());
         }
     }
 
@@ -23,7 +23,7 @@ public class UPABootstrap {
     }
 
     void setContextInitialized() {
-        contextProviderCreated=true;
+        contextProviderCreated = true;
     }
 
     public ObjectFactory getFactory() {
@@ -38,7 +38,7 @@ public class UPABootstrap {
                 if (ee.getCause() instanceof UPAException) {
                     throw (UPAException) ee.getCause();
                 }
-                throw new BootstrapException("LoadBootstrapFactoryException",ee.getCause());
+                throw new BootstrapException("LoadBootstrapFactoryException", ee.getCause());
             }
             if (e instanceof UPAException) {
                 throw (UPAException) e;
@@ -49,7 +49,7 @@ public class UPABootstrap {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             }
-            throw new BootstrapException("LoadBootstrapFactoryException",e);
+            throw new BootstrapException("LoadBootstrapFactoryException", e);
         }
     }
 

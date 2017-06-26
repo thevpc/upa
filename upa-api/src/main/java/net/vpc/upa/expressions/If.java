@@ -1,7 +1,7 @@
 /**
  * ====================================================================
  * UPA (Unstructured Persistence API)
- *    Yet another ORM Framework
+ * Yet another ORM Framework
  * ++++++++++++++++++++++++++++++++++
  * Unstructured Persistence API, referred to as UPA, is a genuine effort
  * to raise programming language frameworks managing relational data in
@@ -14,27 +14,25 @@
  * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
  * failures to satisfy very common even known to be trivial requirement in
  * enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
 package net.vpc.upa.expressions;
-
-import net.vpc.upa.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +79,7 @@ public class If extends FunctionExpression implements Cloneable {
         state = VALID;
     }
 
-//    public If Then(Object value){
+    //    public If Then(Object value){
 //        return Then(Litteral.toExpression(value));
 //    }
     public If Then(Expression value) {
@@ -96,7 +94,7 @@ public class If extends FunctionExpression implements Cloneable {
         }
     }
 
-//    public If Else(Object value){
+    //    public If Else(Object value){
 //        return Else(Litteral.toExpression(value));
 //    }
     public If Else(Expression value) {
@@ -111,7 +109,7 @@ public class If extends FunctionExpression implements Cloneable {
         }
     }
 
-//    public If ElseIf(String condition){
+    //    public If ElseIf(String condition){
 //        return ElseIf(new UserExpression(condition));
 //    }
     public If ElseIf(Expression condition) {

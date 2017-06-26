@@ -1103,7 +1103,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     @Override
     public void start() throws UPAException {
         if (started || starting) {
-            throw new PersistenceUnitException(new I18NString("SchemaAlreadyStartedException"));
+            throw new PersistenceUnitException(new I18NString("PersistenceUnitAlreadyStartedException"),getName());
         }
         starting = true;
         log.log(Level.FINE, "{0}/{1} : Start", new Object[]{getPersistenceGroup().getName(), getName()});
@@ -1989,6 +1989,14 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     @Override
+    public boolean save(Class entityType, Object objectOrDocument) throws UPAException {
+        if (!checkSession()) {
+            return sessionAwarePU.save(entityType, objectOrDocument);
+        }
+        return getEntity(entityType).save(objectOrDocument);
+    }
+
+    @Override
     public boolean save(String entityName, Object objectOrDocument) throws UPAException {
         if (!checkSession()) {
             return sessionAwarePU.save(entityName, objectOrDocument);
@@ -2003,6 +2011,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
             return;
         }
         getEntity(objectOrDocument).update(objectOrDocument);
+    }
+
+    @Override
+    public void update(Class entityType, Object objectOrDocument) throws UPAException {
+        getEntity(entityType).update(objectOrDocument);
     }
 
     @Override
@@ -2559,7 +2572,9 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     @Override
     public void addConnectionConfig(ConnectionConfig connectionConfig) {
-        connectionConfigs.add(connectionConfig);
+        if(connectionConfig!=null && !connectionConfigs.contains(connectionConfig)) {
+            connectionConfigs.add(connectionConfig);
+        }
     }
 
     @Override

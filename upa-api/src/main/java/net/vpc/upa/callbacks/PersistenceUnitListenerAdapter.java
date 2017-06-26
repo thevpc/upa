@@ -101,13 +101,13 @@ public abstract class PersistenceUnitListenerAdapter implements PersistenceUnitL
 
     @Override
     public void onPreUpdateFormulas(PersistenceUnitEvent event) {
-    
+
     }
 
     @Override
     public void onUpdateFormulas(PersistenceUnitEvent event) {
-    
+
     }
 
-    
+
 }

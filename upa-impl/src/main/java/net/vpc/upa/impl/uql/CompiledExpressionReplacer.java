@@ -10,5 +10,5 @@ import net.vpc.upa.expressions.CompiledExpression;
  * To change this template use File | Settings | File Templates.
  */
 public interface CompiledExpressionReplacer {
-    public CompiledExpression update(CompiledExpression e);
+    CompiledExpression update(CompiledExpression e);
 }

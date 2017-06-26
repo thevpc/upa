@@ -36,8 +36,8 @@ package net.vpc.upa;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransform;
 
 import java.util.List;
 
@@ -132,7 +132,7 @@ public interface Field extends EntityPart {
 
     FlagSet<FieldModifier> getModifiers();
 
-//    void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
+    //    void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
     boolean isId() throws UPAException;
 
     boolean isGeneratedId() throws UPAException;
@@ -156,13 +156,15 @@ public interface Field extends EntityPart {
 
     /**
      * value of the field for the given instance
+     *
      * @param instance object instance
      * @return value of the field
      */
     Object getValue(Object instance);
-    
+
     /**
      * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
+     *
      * @param instance instance to get value on
      * @return displayable value
      */
@@ -173,5 +175,6 @@ public interface Field extends EntityPart {
     void check(Object value);
 
     int getPreferredIndex();
+
     void setPreferredIndex(int preferredIndex);
 }

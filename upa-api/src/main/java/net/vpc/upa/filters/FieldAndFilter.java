@@ -11,19 +11,19 @@
  * considerably of the leading ORM (JPA, Hibernate/NHibernate, MyBatis and
  * Entity Framework to name a few) failures to satisfy very common even known to
  * be trivial requirement in enterprise applications.
- *
+ * <p>
  * Copyright (C) 2014-2015 Taha BEN SALAH
- *
+ * <p>
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any later
  * version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 51
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -81,13 +81,13 @@ public class FieldAndFilter extends AbstractFieldFilter {
             if (filter instanceof FieldAndFilter) {
                 List<FieldFilter> children = ((FieldAndFilter) filter).getChildren();
                 ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(
-                        v.length+children.size()
+                        v.length + children.size()
                 );
                 all.addAll(Arrays.asList(v));
                 all.addAll(children);
                 return new FieldAndFilter(all);
             } else {
-                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(v.length+1);
+                ArrayList<FieldFilter> all = new ArrayList<FieldFilter>(v.length + 1);
                 all.addAll(Arrays.asList(v));
                 all.add(filter);
                 return new FieldAndFilter(all);
@@ -153,15 +153,15 @@ public class FieldAndFilter extends AbstractFieldFilter {
             return false;
         }
         final FieldAndFilter other = (FieldAndFilter) obj;
-        
+
         if (this.v == other.v)
             return true;
-        if (this.v == null || other.v==null)
+        if (this.v == null || other.v == null)
             return false;
         int length = this.v.length;
         if (other.v.length != length)
             return false;
-        
+
         for (int i = 0; i < length; i++) {
             Object e1 = this.v[i];
             Object e2 = other.v[i];

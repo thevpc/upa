@@ -5,10 +5,7 @@
  */
 package net.vpc.upa.expressions;
 
-import java.util.List;
-
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public final class TaggedExpression {

@@ -38,7 +38,7 @@ public class ThisRenamerVisitor implements ExpressionVisitor {
                     expression.setChild(rr, cc.getTag());
                 } else if (cce instanceof Var) {
                     Var v = (Var) cce;
-                    if (v.getApplier() == null && v.getName().equals("this")) {
+                    if (v.getApplier() == null && UQLUtils.THIS.equals(v.getName())) {
                         v.setName(thisName);
                     }
                 }

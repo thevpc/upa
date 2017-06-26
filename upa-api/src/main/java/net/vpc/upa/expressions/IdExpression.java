@@ -8,9 +8,10 @@
  */
 package net.vpc.upa.expressions;
 
+import net.vpc.upa.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.vpc.upa.Entity;
 
 public class IdExpression extends DefaultExpression implements Cloneable {
 

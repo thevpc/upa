@@ -14,8 +14,9 @@ import java.util.logging.Logger;
 public class DefaultTransaction extends AbstractTransaction {
     protected Logger log = Logger.getLogger(DefaultTransaction.class.getName());
     private UConnection connection;
-
+    private String transactionId;
     public DefaultTransaction() {
+        transactionId = Integer.toHexString(System.identityHashCode(this)).toUpperCase();
     }
 
     public void init(UConnection connection) {
@@ -25,7 +26,7 @@ public class DefaultTransaction extends AbstractTransaction {
     @Override
     public void commitImpl() throws SQLException {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Commit Transaction {0}", Integer.toHexString(System.identityHashCode(this)).toUpperCase());
+            log.log(Level.FINE, "Commit Transaction {0}", transactionId);
         }
         /**
          *  @PortabilityHint(target = "C#", name = "todo")
@@ -36,14 +37,14 @@ public class DefaultTransaction extends AbstractTransaction {
     @Override
     protected void beginImpl() throws Exception {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Begin  Transaction {0}", Integer.toHexString(System.identityHashCode(this)).toUpperCase());
+            log.log(Level.FINE, "Begin  Transaction {0}", transactionId);
         }
     }
 
     @Override
     public void rollbackImpl() throws Exception {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Rollback Transaction {0}", Integer.toHexString(System.identityHashCode(this)).toUpperCase());
+            log.log(Level.FINE, "Rollback Transaction {0}", transactionId);
         }
         /**
          *  @PortabilityHint(target = "C#", name = "todo")

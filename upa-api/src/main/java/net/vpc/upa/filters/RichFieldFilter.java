@@ -5,8 +5,12 @@ package net.vpc.upa.filters;
  */
 public interface RichFieldFilter extends FieldFilter {
     RichFieldFilter and(FieldFilter filter);
+
     RichFieldFilter andNot(FieldFilter filter);
+
     RichFieldFilter or(FieldFilter filter);
+
     RichFieldFilter orNot(FieldFilter filter);
+
     RichFieldFilter negate();
 }
