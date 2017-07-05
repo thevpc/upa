@@ -1,25 +1,41 @@
 package net.vpc.upa.test;
 
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.UPA;
+import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
-import net.vpc.upa.types.IntType;
-import net.vpc.upa.*;
-import net.vpc.upa.filters.FieldNameFilter;
-import net.vpc.upa.test.model.Client;
-import net.vpc.upa.test.util.LogUtils;
-import net.vpc.upa.TransactionType;
-import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.logging.Logger;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/16/12 10:02 PM
  */
 public class UnstructuredCrudUseCase {
-    static Logger log= Logger.getLogger(UnstructuredCrudUseCase.class.getName());
+    static Logger log = Logger.getLogger(UnstructuredCrudUseCase.class.getName());
+    private static Business bo;
+
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(UnstructuredCrudUseCase.class);
+        pu.addEntity(SharedClient.class);
+        pu.start();
+        bo = UPA.makeSessionAware(new Business());
+    }
+
+    @Test
+    public void process() {
+        bo.process();
+    }
+
+    public static class Business {
+
+        public void process() {
+
+        }
+    }
 
 //    @Test
 //    public void crudMixedDocumentsAndEntities() {
@@ -33,7 +49,7 @@ public class UnstructuredCrudUseCase {
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity("SharedClient");
 //        Client c=entityManager.getBuilder().createObject();
 //        int key = entityManager.nextId();
 //        log.info("Next Id is " + key);
@@ -82,28 +98,28 @@ public class UnstructuredCrudUseCase {
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity("SharedClient");
 //        Document record=entityManager.createDocument();
 //        int key = entityManager.nextId();
 //        log.info("Next Id is " + key);
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");
 //
-//        sm.persist("Client", record);
+//        sm.persist("SharedClient", record);
 //
 //        FieldNameFilter fieldFilter = new FieldNameFilter("id", "firstName");
 //        Document foundRecord=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //        log.info("Found " + foundRecord);
 //        record.setString("firstName", "Alia");
 //
-//        sm.update("Client", record);
+//        sm.update("SharedClient", record);
 //
 //        Document found=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //
 //        Assert.assertNotNull(found);
 //        Assert.assertEquals(found, record);
 //
-//        sm.remove("Client",RemoveOptions.forId(key));
+//        sm.remove("SharedClient",RemoveOptions.forId(key));
 //
 //        found=sm.createQueryBuilder(Client.class).byId(key).setFieldFilter(fieldFilter).getDocument();
 //

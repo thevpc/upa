@@ -5,7 +5,6 @@ import net.vpc.upa.PersistenceUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.util.Converter;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -18,9 +17,9 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
 
     public CompiledStrFormat(String pattern, DefaultCompiledExpression... expressions) {
         this.pattern = new CompiledCst(pattern);
-        prepareChildren(this.pattern);
+        bindChildren(this.pattern);
         this.expressions = expressions;
-        prepareChildren(expressions);
+        bindChildren(expressions);
     }
 
     @Override
@@ -97,11 +96,13 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if(index==0){
+            unbindChildren(this.pattern);
             pattern=(CompiledCst)expression;
-            prepareChildren(pattern);
+            bindChildren(expression);
         }else{
+            unbindChildren(this.expressions[index-1]);
             expressions[index-1]=expression;
-            prepareChildren(expressions[index-1]);
+            bindChildren(expression);
         }
     }
     

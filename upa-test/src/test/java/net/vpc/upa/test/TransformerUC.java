@@ -7,6 +7,7 @@ import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -19,28 +20,32 @@ import java.util.logging.Logger;
  */
 public class TransformerUC {
 
-    static {
-        LogUtils.prepare();
-    }
-
     private static final Logger log = Logger.getLogger(TransformerUC.class.getName());
 
-    @Test
-    public void crudMixedDocumentsAndEntities() {
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
-//        pu.scan(null);
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TransformerUC.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);
         pu.start();
+        bo = UPA.makeSessionAware(new Business());
+    }
 
-        Business bo = UPA.makeSessionAware(new Business());
+    @Test
+    public void testQuery() {
+        bo.testQuery();
+    }
+
+    @Test
+    public void testQuery2() {
         bo.testQuery2();
     }
 
     public static class Business {
 
         public void testQuery() {
-            final PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            final PersistenceUnit pu = UPA.getPersistenceUnit();
             String query = "(that.phone2.id=2 or that.phone2.id=3) and (that.phone2.id=2 or that.phone2.id=3)";
             final Map<String, Object> vals = new HashMap<String, Object>();
             Person person = new Person();
@@ -55,7 +60,7 @@ public class TransformerUC {
         }
 
         public void testQuery2() {
-            final PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            final PersistenceUnit pu = UPA.getPersistenceUnit();
             String query = "concat('width:60px;','background:'," +
                     "if   (this.phone2.value like '%UE1') then '{bgcolor1}' " +
                     " elseif (this.phone2.value like '%UE2') then '{bgcolor2}' " +

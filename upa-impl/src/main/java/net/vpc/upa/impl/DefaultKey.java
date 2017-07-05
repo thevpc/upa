@@ -49,7 +49,7 @@ public class DefaultKey extends AbstractKey {
 //
     @Override
     public Object getValue(Entity entity, String fieldName) throws UPAException {
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         for (int i = 0; i < f.size(); i++) {
             if (f.get(i).getName().equals(fieldName)) {
                 return value[i];

@@ -1,9 +1,8 @@
 package net.vpc.upa.impl.persistence.result;
 
-import net.vpc.upa.Document;
-import net.vpc.upa.Entity;
-import net.vpc.upa.EntityBuilder;
-import net.vpc.upa.Relationship;
+import net.vpc.upa.*;
+import net.vpc.upa.impl.uql.BindingId;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.util.*;
 
@@ -13,58 +12,67 @@ import java.util.*;
 class TypeInfo {
 
     boolean document;
-    String parentBinding;
-    String bindingName;
-    String binding;
-    boolean update;
-    List<Integer> indexesToUpdate=new ArrayList<Integer>();
-    List<FieldInfo> allFields = new ArrayList<FieldInfo>();
+    BindingId binding;
+    boolean read;
+    boolean identifiable;
+//    List<Integer> indexesToRead =new ArrayList<Integer>();
+    List<FieldInfo> nonIdFields = new ArrayList<FieldInfo>();
+    List<FieldInfo> idFields = new ArrayList<FieldInfo>();
     Set<Relationship> manyToOneRelations = new HashSet<Relationship>();
-    FieldInfo[] infosArray;
+    FieldInfo[] fieldsArray;
     FieldInfo leadPrimaryField;
     FieldInfo leadField;
-    Object entityObject;
-    Object entityResult;
-    Object entityUpdatable;
-    Document entityDocument;
+    ResultObject currentResult;
     Entity entity;
-    Class entityType;
-    EntityBuilder entityFactory;
+    Class resultType;
+    EntityBuilder builder;
     EntityBuilder entityConverter;
-    Map<String, FieldInfo> fields = new HashMap<String, FieldInfo>();
+    Map<String, FieldInfo> fieldsMap = new HashMap<String, FieldInfo>();
+    Map<String, FieldInfoSetter> setters = new HashMap<String, FieldInfoSetter>();
+    TypeInfoSupParser parser;
 
-    public TypeInfo(String binding, Entity entity) {
+    public TypeInfo(BindingId binding) {
         this.binding = binding;
-        // TODO : what to do if binding names contains '.'
-        //   example :  `right.thing`.`right`
-        //   i guess should never happen for now as we are mapping
-        //   class and table names
-        int dotPos = binding == null ? -1 : binding.lastIndexOf('.');
-        if (dotPos > 0) {
-            this.parentBinding = binding.substring(0, dotPos);
-            //handle anti-quoted names
-            if(this.parentBinding.startsWith("`")){
-                this.parentBinding=this.parentBinding.substring(1, this.parentBinding.length()-1);
-            }
-            this.bindingName = binding.substring(dotPos + 1);
-            //handle anti-quoted names
-            if(this.bindingName.startsWith("`")){
-                this.bindingName=this.bindingName.substring(1, this.bindingName.length()-1);
-            }
+    }
+
+    public FieldInfoSetter setterFor(String name){
+        FieldInfoSetter setter = setters.get(name);
+        if(setter!=null){
+            return setter;
         }
+
+        if(document){
+            setter= new DocumentFieldInfoSetter(name);
+        }else if(entity!=null){
+            setter= new EntityBuilderFieldInfoSetter(name, builder);
+        }else {
+            setter= new PlatformBeanFieldInfoSetter(PlatformUtils.findPlatformBeanProperty(name,resultType));
+        }
+        setters.put(name,setter);
+        return setter;
+    }
+
+    public TypeInfo(BindingId binding, Entity entity) {
+        this.binding = binding;
         this.entity = entity;
         if (entity != null) {
-            entityFactory = entity.getBuilder();
+            builder = entity.getBuilder();
             entityConverter = entity.getBuilder();
-            entityType = entity.getEntityType();
+            resultType = entity.getEntityType();
         }
+    }
+
+    public TypeInfo(BindingId binding, Class resultType) {
+        this.binding = binding;
+        this.resultType = resultType;
     }
 
     @Override
     public String toString() {
         return "TypeInfo{" +
-                "binding='" + binding + '\'' +
+                "binding="+(binding==null?"''":("'" + binding + '\'')) +
                 ", entity=" + entity +
                 '}';
     }
+
 }

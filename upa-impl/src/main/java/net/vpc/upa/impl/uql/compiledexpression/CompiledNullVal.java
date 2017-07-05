@@ -11,7 +11,7 @@ public final class CompiledNullVal extends CompiledFunction
     public CompiledNullVal(DataTypeTransform type) {
         super("NullVal");
         protectedAddArgument(new CompiledTypeName(type));
-        prepareChildren(this);
+        bindChildren(this);
     }
 
     public CompiledTypeName getNullTypeExpression(){

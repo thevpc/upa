@@ -8,6 +8,7 @@ import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -16,24 +17,26 @@ import org.junit.Test;
  */
 public class PasswordUC {
 
-    static {
-        LogUtils.prepare();
-    }
     private static final Logger log = Logger.getLogger(PasswordUC.class.getName());
 
-    @Test
-    public void crudMixedDocumentsAndEntities() {
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(PasswordUC.class);
         pu.addEntity(Data.class);
         pu.start();
-        Business bo = UPA.makeSessionAware(new Business());
+        bo = UPA.makeSessionAware(new Business());
+    }
+
+    @Test
+    public void process() {
         bo.process();
     }
 
     public static class Business {
 
         public void process() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            PersistenceUnit pu = UPA.getPersistenceUnit();
             List<Data> entityList;
             pu.createQuery("Delete from Data").executeNonQuery();
             final Query findAll = pu.createQuery("Select a from Data a");

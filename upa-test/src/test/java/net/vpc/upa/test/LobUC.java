@@ -7,6 +7,8 @@ import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -15,35 +17,39 @@ import org.junit.Test;
  */
 public class LobUC {
 
-    static {
-        LogUtils.prepare();
-    }
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(LobUC.class.getName());
 
-    @Test
-    public void crudMixedDocumentsAndEntities() {
-        String puId = getClass().getName();
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
+
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(LobUC.class);
         pu.addEntity(DBFile.class);
         pu.start();
-        Business bo = UPA.makeSessionAware(new Business());
+        bo = UPA.makeSessionAware(new Business());
+    }
+
+    @Test
+    public void process() {
         bo.process();
     }
 
     public static class Business {
 
         public void process() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+            PersistenceUnit pu = UPA.getPersistenceUnit();
 
 
             DBFile root = new DBFile();
             root.setName("root");
-            root.setContent("hello".getBytes());
+            byte[] bytes = "hello".getBytes();
+            root.setContent(bytes);
             pu.persist(root);
 
             List<DBFile> entityList = pu.createQuery("Select a from DBFile a").getResultList();
             for (DBFile c : entityList) {
                 System.out.println(c);
+                Assert.assertArrayEquals(c.getContent(),bytes);
             }
         }
     }

@@ -78,19 +78,15 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
     }
 
     public void setEntity(CompiledNameOrSelect expression) {
-        if (this.entity != null) {
-            this.entity.unsetParent();
-        }
+        unbindChildren(this.entity);
         this.entity = expression;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
 
     public final void setCondition(DefaultCompiledExpression expression) {
-        if (this.condition != null) {
-            this.condition.unsetParent();
-        }
+        unbindChildren(condition);
         this.condition = expression;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
 
     @Override

@@ -41,7 +41,7 @@
 //        Session s = sm.openSession();
 //
 //        sm.beginStructureModification();
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity(SharedClient);
 //        entityManager.addField(new DefaultFieldBuilder().setName("extra").setDataType(TypesFactory.INT));
 //        sm.commitStructureModification();
 //
@@ -94,29 +94,29 @@
 //
 //        Session s = sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity("SharedClient");
 //        Document document = entityManager.createDocument();
 //        int id = entityManager.nextId();
 //        log.info("Next Id is " + id);
 //        document.setInt("id", id);
 //        document.setString("firstName", "Hammadi");
 //
-//        sm.persist("Client", document);
+//        sm.persist("SharedClient", document);
 //
-//        Document found0 = sm.createQueryBuilder("Client").byId(id).getDocument();
+//        Document found0 = sm.createQueryBuilder("SharedClient").byId(id).getDocument();
 //        log.info("Found " + found0);
 //        document.setString("firstName", "Alia");
 //
-//        sm.update("Client", document);
+//        sm.update("SharedClient", document);
 //
-//        Document found = sm.createQueryBuilder("Client").byId(id).getDocument();
+//        Document found = sm.createQueryBuilder("SharedClient").byId(id).getDocument();
 //        found.retainAll(new HashSet<String>(Arrays.asList("id", "firstName")));
 //        Assert.assertNotNull(found);
 //        Assert.assertEquals(found.getString("firstName"), document.getString("firstName"));
 //
-//        sm.remove("Client", RemoveOptions.forId(id));
+//        sm.remove("SharedClient", RemoveOptions.forId(id));
 //
-//        found = sm.createQueryBuilder("Client").byId(id).getDocument();
+//        found = sm.createQueryBuilder("SharedClient").byId(id).getDocument();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();

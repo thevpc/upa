@@ -23,7 +23,7 @@ class UpdatableObjectInterceptor implements PlatformMethodProxy<Object> {
     @Override
     public Object intercept(PlatformMethodProxyEvent<Object> event) throws Throwable {
         String name = event.getMethodName();
-        FieldInfo prop = singleEntityQueryResult.fields.get(name);
+        FieldInfo prop = singleEntityQueryResult.fieldsMap.get(name);
         if (prop == null) {
             return event.invokeBase(object, event.getArguments());
         } else {

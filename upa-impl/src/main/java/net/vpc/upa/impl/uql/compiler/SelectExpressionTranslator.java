@@ -82,7 +82,10 @@ public class SelectExpressionTranslator implements ExpressionTranslator {
         for (int i = 0; i < v.countFields(); i++) {
             QueryField field = v.getField(i);
             s.field(manager.translateAny(field.getExpression(), declarations), field.getAlias());
+            s.getField(i).setIndex(i);
         }
+
+
         s.where(manager.translateAny(v.getWhere(), declarations));
         s.having(manager.translateAny(v.getHaving(), declarations));
         for (int i = 0; i < v.countGroupByItems(); i++) {

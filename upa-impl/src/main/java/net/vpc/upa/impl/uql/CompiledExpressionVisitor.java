@@ -14,5 +14,5 @@ public interface CompiledExpressionVisitor {
      * @param e visited expression
      * @return true to continue visiting false otherwise
      */
-    public boolean visit(DefaultCompiledExpression e);
+    boolean visit(DefaultCompiledExpression e);
 }

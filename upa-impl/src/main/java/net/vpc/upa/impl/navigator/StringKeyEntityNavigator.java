@@ -30,7 +30,7 @@ public class StringKeyEntityNavigator extends DefaultEntityNavigator {
     public Object getNewKey()
             throws UPAException {
 
-        List<Field> primaryFields = entity.getPrimaryFields();
+        List<Field> primaryFields = entity.getIdFields();
         if (primaryFields.size() == 1) {
             return entity.createId(getNewValue(primaryFields.get(0)));
         }

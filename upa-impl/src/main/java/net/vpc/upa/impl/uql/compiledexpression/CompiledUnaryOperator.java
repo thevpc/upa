@@ -12,7 +12,7 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
     public CompiledUnaryOperator(String operator, DefaultCompiledExpression expression) {
         this.operator = operator;
         this.expression = expression;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
 
     public int size() {
@@ -32,8 +32,9 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if (index == 0) {
+            unbindChildren(this.expression);
             this.expression = expression;
-            prepareChildren(expression);
+            bindChildren(expression);
         } else {
             throw new IllegalArgumentException("Invalid Index");
         }

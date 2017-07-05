@@ -87,7 +87,7 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
         }
         if (complexVals.size() > 0) {
             Select q = new Select();
-            for (Field primaryField : entity.getPrimaryFields()) {
+            for (Field primaryField : entity.getIdFields()) {
                 q.field(primaryField.getName());
             }
             for (VarVal f : complexVals) {

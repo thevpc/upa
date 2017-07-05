@@ -5,6 +5,8 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.Field;
+import net.vpc.upa.impl.uql.BindingId;
+import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -16,12 +18,9 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
 
     private CompiledVarOrMethod child;
     private Object referrer;
-    /**
-     * when live field, this field refers to the original (write into) field
-     */
-    private Object baseReferrer;
     private String name;
-    private String binding;
+    private BindingId binding;
+    private ExpressionDeclaration implicitDeclaration;
 
     public CompiledVarOrMethod() {
     }
@@ -31,8 +30,19 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
     }
 
     public void setChild(CompiledVarOrMethod child) {
-        this.child = child;
-        prepareChildren(child);
+        if(child!=this.child) {
+            unbindChildren(this.child);
+            this.child = child;
+            bindChildren(child);
+        }
+    }
+
+    public ExpressionDeclaration getImplicitDeclaration() {
+        return implicitDeclaration;
+    }
+
+    public void setImplicitDeclaration(ExpressionDeclaration implicitDeclaration) {
+        this.implicitDeclaration = implicitDeclaration;
     }
 
     public Object getReferrer() {
@@ -46,15 +56,6 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
         }
     }
 
-    public Object getBaseReferrer() {
-        return baseReferrer;
-    }
-
-    public CompiledVarOrMethod setBaseReferrer(Object baseReferrer) {
-        this.baseReferrer = baseReferrer;
-        return this;
-    }
-
     public String getName() {
         return name;
     }
@@ -63,11 +64,11 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
         this.name = name;
     }
 
-    public String getBinding() {
+    public BindingId getBinding() {
         return binding;
     }
 
-    public void setBinding(String binding) {
+    public void setBinding(BindingId binding) {
         this.binding = binding;
     }
 

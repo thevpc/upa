@@ -309,7 +309,7 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 //    }
     @Override
     public String getDisableIdentityConstraintsStatement(Entity table) {
-        List<Field> fields = table.getPrimaryFields();
+        List<Field> fields = table.getIdFields();
         for (Field field : fields) {
             if (field.getPersistFormula() instanceof Sequence) {
                 return ("Set Identity_Insert " + table.getPersistenceName() + " On");
@@ -320,7 +320,7 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 
     @Override
     public String getEnableIdentityConstraintsStatement(Entity table) {
-        List<Field> fields = table.getPrimaryFields();
+        List<Field> fields = table.getIdFields();
         for (Field field : fields) {
             if (field.getPersistFormula() instanceof Sequence) {
                 return ("Set Identity_Insert " + getValidIdentifier(getPersistenceName(table)) + " Off");

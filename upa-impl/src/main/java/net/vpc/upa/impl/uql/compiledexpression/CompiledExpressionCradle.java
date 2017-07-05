@@ -16,7 +16,7 @@ public class CompiledExpressionCradle extends DefaultCompiledExpressionImpl {
     }
     public CompiledExpressionCradle(DefaultCompiledExpression expression) {
         this.expression = expression;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
 
     @Override
@@ -27,8 +27,9 @@ public class CompiledExpressionCradle extends DefaultCompiledExpressionImpl {
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if(index==0){
+            unbindChildren(this.expression);
             this.expression=expression;
-            prepareChildren(expression);
+            bindChildren(expression);
         }else{
             throw new UnsupportedOperationException();
         }

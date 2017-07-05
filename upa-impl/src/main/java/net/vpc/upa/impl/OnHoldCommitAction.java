@@ -2,7 +2,6 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.persistence.PersistenceStore;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -10,9 +9,9 @@ import net.vpc.upa.persistence.PersistenceStore;
  */
 public interface OnHoldCommitAction extends Comparable<OnHoldCommitAction>{
 
-    public void commitModel() throws UPAException;
+    void commitModel() throws UPAException;
 
-    public void commitStorage(EntityExecutionContext context) throws UPAException;
+    void commitStorage(EntityExecutionContext context) throws UPAException;
 
-    public int getOrder();
+    int getOrder();
 }

@@ -1,7 +1,6 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -9,9 +8,9 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  */
 public interface SequenceManager {
 
-    public PrivateSequence getOrCreateSequence(String name, String pattern, int initialValue, int increment) throws UPAException;
+    PrivateSequence getOrCreateSequence(String name, String pattern, int initialValue, int increment) throws UPAException;
 
-    public PrivateSequence getSequence(String name, String pattern) throws UPAException;
+    PrivateSequence getSequence(String name, String pattern) throws UPAException;
 
     void createSequence(String name, String pattern, int initialValue, int increment) throws UPAException;
 

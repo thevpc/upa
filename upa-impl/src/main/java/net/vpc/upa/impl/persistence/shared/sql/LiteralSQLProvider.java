@@ -4,7 +4,6 @@ import java.util.List;
 import net.vpc.upa.Field;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.util.ExprTypeInfo;
@@ -40,7 +39,7 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
             if (field.getDataType() instanceof ManyToOneType) {
                 ManyToOneType et = (ManyToOneType) field.getDataType();
                 objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
-                List<Field> tf = et.getRelationship().getTargetEntity().getPrimaryFields();
+                List<Field> tf = et.getRelationship().getTargetEntity().getIdFields();
                 if(tf.size()!=1){
                     throw new IllegalArgumentException("Unsupported");
                 }

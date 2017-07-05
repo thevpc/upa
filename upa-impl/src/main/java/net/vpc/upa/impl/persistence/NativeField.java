@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Field;
-import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**
@@ -11,25 +11,25 @@ import net.vpc.upa.types.DataTypeTransform;
 public class NativeField {
     private int index;
     private boolean expanded;
-    private String groupName;
-    private String fullBinding;
-    private String exprString;
+    private BindingId groupName;
+//    private String fullBinding;
+//    private String exprString;
     private String name;
     private DataTypeTransform typeTransform;
     private Field field;
     private Field bindingField;
 
-    public NativeField(String name, String groupName,String exprString,int index,boolean expanded,Field field,Field bindingField,DataTypeTransform typeChain) {
+    public NativeField(String name, BindingId groupName, int index, boolean expanded, Field field, Field bindingField, DataTypeTransform typeChain) {
         this.groupName = groupName;
         this.expanded = expanded;
         this.index = index;
-        this.exprString = exprString;
+//        this.exprString = exprString;
         this.name = name;
-        if(StringUtils.isNullOrEmpty(groupName)){
-            fullBinding=name;
-        }else{
-            fullBinding=groupName+"."+name;
-        }
+//        if(StringUtils.isNullOrEmpty(groupName)){
+//            fullBinding=name;
+//        }else{
+//            fullBinding=groupName+"."+name;
+//        }
         this.field = field;
         this.bindingField = bindingField;
         this.typeTransform = typeChain;
@@ -47,11 +47,11 @@ public class NativeField {
         return index;
     }
 
-    public String getFullBinding() {
-        return fullBinding;
-    }
+//    public String getFullBinding() {
+//        return fullBinding;
+//    }
 
-    public String getGroupName() {
+    public BindingId getGroupName() {
         return groupName;
     }
 
@@ -72,9 +72,9 @@ public class NativeField {
         return "NativeField{" + "groupName=" + groupName + ", name=" + name + ", typeChain=" + typeTransform + ", field=" + field + '}';
     }
 
-    public String getExprString() {
-        return exprString;
-    }
+//    public String getExprString() {
+//        return exprString;
+//    }
 
     public boolean isExpanded() {
         return expanded;

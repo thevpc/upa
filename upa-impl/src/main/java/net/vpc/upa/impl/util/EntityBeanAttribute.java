@@ -11,13 +11,13 @@ import net.vpc.upa.exceptions.UPAException;
 //    }
 public interface EntityBeanAttribute {
 
-    public String getName();
+    String getName();
 
-    public Object getValue(Object o);
+    Object getValue(Object o);
 
-    public void setValue(Object o, Object value);
+    void setValue(Object o, Object value);
 
-    public Object getDefaultValue() throws UPAException;
+    Object getDefaultValue() throws UPAException;
 
-    public boolean isDefaultValue(Object o) throws UPAException;
+    boolean isDefaultValue(Object o) throws UPAException;
 }

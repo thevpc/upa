@@ -5,7 +5,6 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledAnd;
@@ -57,7 +56,7 @@ public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
         if (ee.getKeys().isEmpty()) {
             return sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);
         }
-        List<Field> pfs = entity.getPrimaryFields();
+        List<Field> pfs = entity.getIdFields();
         DefaultCompiledExpression o2 = null;
         for (Object key : ee.getKeys()) {
             DefaultCompiledExpression a = null;
@@ -67,8 +66,8 @@ public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
                     //primitive seen as entity?
                     // A's id is A.b where b is an entity
                     //TODO fix all cases!
-                    if (entity.getPrimaryFields().size() == 1) {
-                        ManyToOneType et = (ManyToOneType) entity.getPrimaryFields().get(0).getDataType();
+                    if (entity.getIdFields().size() == 1) {
+                        ManyToOneType et = (ManyToOneType) entity.getIdFields().get(0).getDataType();
                         List<Field> ff = et.getRelationship().getSourceRole().getFields();
                         Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
                         for (int j = 0; j < ff.size(); j++) {

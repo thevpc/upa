@@ -1,14 +1,14 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
-import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.Properties;
+import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.uql.*;
+import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.types.DataTypeTransform;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.types.DataTypeTransform;
 
 public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledExpression {
 
@@ -37,7 +37,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
                 x = x.getParentExpression();
             }
         }
-        if (this.parent != null && parent != null) {
+        if (this.parent != null && parent != null && this.parent!=parent) {
             throw new IllegalArgumentException("Unexpected");
         }
         this.parent = parent;
@@ -53,7 +53,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
     public abstract void setSubExpression(int index, DefaultCompiledExpression expression);
     //    public abstract String toSQL(boolean integrated, PersistenceUnitFilter database);
 
-//    public final String toSQL(PersistenceUnitFilter database) {
+    //    public final String toSQL(PersistenceUnitFilter database) {
 //        return toSQL(false, database);
 //    }
 //    public String toString() {
@@ -63,7 +63,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return description;
     }
 
-//    public String getDescriptionOrSQL(Resources resources) {
+    //    public String getDescriptionOrSQL(Resources resources) {
 //        String d = getDescription();
 //        return d != null ? d : toString();
 //    }
@@ -149,18 +149,185 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
             for (DefaultCompiledExpression subExpression : subExpressions) {
                 if (subExpression != null) {
                     CompiledExpression e = ((DefaultCompiledExpressionImpl) subExpression).findFirstExpression(filter);
-                    if(e!=null){
-                        return (T)e;
+                    if (e != null) {
+                        return (T) e;
                     }
                 }
             }
-        }    
+        }
         return null;
     }
 
     @Override
-    public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilteredReplacer replacer) {
-        return replaceExpressions(replacer,replacer);
+    public ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer) {
+        if (replacer == null) {
+            return ReplaceResult.NO_UPDATES_STOP;
+        }
+        if (replacer.isTopDown()) {
+            ReplaceResult parentUpdate = replacer.update(this);
+            //if stop will not check children!
+            if (parentUpdate.isStop()) {
+                switch (parentUpdate.getType()) {
+                    case NEW_INSTANCE: {
+                        return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
+                    }
+                    case NO_UPDATES: {
+                        return ReplaceResult.NO_UPDATES_CONTINUE;
+                    }
+                    case UPDATE: {
+                        return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
+                    }
+                    case REMOVE: {
+                        return ReplaceResult.REMOVE_AND_STOP;
+                    }
+                }
+                return parentUpdate;
+            }
+            DefaultCompiledExpression newParent = this;
+            switch (parentUpdate.getType()) {
+                case NEW_INSTANCE: {
+                    newParent = parentUpdate.getExpression();
+                    break;
+                }
+                case REMOVE: {
+                    return ReplaceResult.REMOVE_AND_STOP;
+                }
+            }
+
+            List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
+            int i = 0;
+            DefaultCompiledExpression[] subExpressions = newParent.getSubExpressions();
+            if (subExpressions == null) {
+                subExpressions = new DefaultCompiledExpression[0];
+            }
+            for (DefaultCompiledExpression expression : subExpressions) {
+                replacementPositions.add(new ReplacementPosition(this, expression, i));
+                i++;
+            }
+            boolean someChildUpdates = false;
+            List<ReplacementPosition> toRemove = new ArrayList<>();
+            for (ReplacementPosition r : replacementPositions) {
+                DefaultCompiledExpression child = r.getChild();
+                boolean again = true;
+                while (again) {
+                    again=false;
+                    if (child == null) {
+                        //System.out.println("Child is null?");
+                    } else {
+                        ReplaceResult c = child.replaceExpressions(replacer);
+                        switch (c.getType()) {
+                            case NO_UPDATES: {
+                                break;
+                            }
+                            case NEW_INSTANCE:{
+                                someChildUpdates = true;
+                                subExpressions[r.getPos()].setParentExpression(null);
+                                this.setSubExpression(r.getPos(), c.getExpression());
+                                if(!c.isStop()) {
+                                    child = c.getExpression();
+                                    again = true;
+                                }else {
+                                    switch (parentUpdate.getType()) {
+                                        case NEW_INSTANCE: {
+                                            return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
+                                        }
+                                        default: {
+                                            return ReplaceResult.NO_UPDATES_STOP;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case UPDATE: {
+                                someChildUpdates = true;
+                                if (c.isStop()) {
+                                    switch (parentUpdate.getType()) {
+                                        case NEW_INSTANCE: {
+                                            return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
+                                        }
+                                        default: {
+                                            return ReplaceResult.NO_UPDATES_STOP;
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case REMOVE: {
+                                toRemove.add(r);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (toRemove.size() > 0) {
+                for (int j = toRemove.size() - 1; j >= 0; j--) {
+                    this.removeSubExpression(toRemove.get(j).getPos());
+                }
+            }
+            if (someChildUpdates && parentUpdate.getType() == ReplaceResultType.NO_UPDATES) {
+                return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
+            }
+            return parentUpdate;
+        } else {
+            List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
+            int i = 0;
+            DefaultCompiledExpression[] subExpressions = getSubExpressions();
+            if (subExpressions == null) {
+                subExpressions = new DefaultCompiledExpression[0];
+            }
+            for (DefaultCompiledExpression expression : subExpressions) {
+                replacementPositions.add(new ReplacementPosition(this, expression, i));
+                i++;
+            }
+            boolean someChildUpdates = false;
+            for (ReplacementPosition r : replacementPositions) {
+                DefaultCompiledExpression child = r.getChild();
+                if (child == null) {
+                    //System.out.println("Child is null?");
+                } else {
+                    ReplaceResult c = child.replaceExpressions(replacer);
+                    switch (c.getType()) {
+                        case UPDATE: {
+                            someChildUpdates = true;
+                            if (c.isStop()) {
+                                return ReplaceResult.UPDATE_AND_STOP;
+                            }
+                            break;
+                        }
+                        case NEW_INSTANCE: {
+                            someChildUpdates = true;
+                            int pos = r.getPos();
+                            if (subExpressions[pos] != c.getExpression()) {
+                                subExpressions[pos].setParentExpression(null);
+                                this.setSubExpression(pos, (DefaultCompiledExpression) c.getExpression());
+                            }
+                            if (c.isStop()) {
+                                return ReplaceResult.UPDATE_AND_STOP;
+                            }
+                            break;
+                        }
+                        case NO_UPDATES: {
+                            if (c.isStop()) {
+                                return ReplaceResult.NO_UPDATES_STOP;
+                            }
+                        }
+                    }
+                }
+            }
+            ReplaceResult update = replacer.update(this);
+            switch (update.getType()) {
+                case NO_UPDATES: {
+                    if (someChildUpdates) {
+                        return update.isStop() ? ReplaceResult.UPDATE_AND_STOP : ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
+                    }
+                }
+                default: {
+                    return update;
+                }
+            }
+        }
     }
 
     public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer) {
@@ -206,12 +373,12 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return null;
     }
 
-    protected final void prepareChildren(DefaultCompiledExpression... children) {
+    protected final void bindChildren(DefaultCompiledExpression... children) {
         if (children != null) {
             for (DefaultCompiledExpression e : children) {
                 if (e != null) {
                     DefaultCompiledExpression oldParent = e.getParentExpression();
-                    if (oldParent != null) {
+                    if (oldParent != null && oldParent!=this) {
                         throw new IllegalArgumentException("Expression already bound");
                     }
                     e.setParentExpression(this);
@@ -220,7 +387,20 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         }
     }
 
-    protected final void prepareChildren(List<DefaultCompiledExpression> children) {
+    protected final void unbindChildren(DefaultCompiledExpression... children) {
+        if (children != null) {
+            for (DefaultCompiledExpression e : children) {
+                if (e != null) {
+                    DefaultCompiledExpression oldParent = e.getParentExpression();
+                    if (oldParent != null && oldParent==this) {
+                        e.setParentExpression(null);
+                    }
+                }
+            }
+        }
+    }
+
+    protected final void bindChildren(List<DefaultCompiledExpression> children) {
         if (children != null) {
             for (DefaultCompiledExpression e : children) {
                 e.setParentExpression(this);
@@ -300,5 +480,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
 
     public DataTypeTransform getEffectiveDataType() {
         return getTypeTransform();
+    }
+
+    public void removeSubExpression(int pos) {
+        throw new IllegalArgumentException("Not Implemented");
     }
 }

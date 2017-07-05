@@ -75,7 +75,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         setDataType(keyType);
 
         tuningMaxInline = getPersistenceUnit().getProperties().getInt(Relationship.class.getName() + ".maxInline", 10);
-        List<Field> targetFieldsList = targetEntity.getPrimaryFields();
+        List<Field> targetFieldsList = targetEntity.getIdFields();
         Field[] targetFields = targetFieldsList.toArray(new Field[targetFieldsList.size()]);;
 
         // some checks

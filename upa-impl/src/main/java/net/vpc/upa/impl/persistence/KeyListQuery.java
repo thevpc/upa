@@ -29,7 +29,7 @@
 //    public ResultMetaData getMetaData() throws UPAException {
 //        if (md == null) {
 //            DefaultResultMetaData md = new DefaultResultMetaData();
-//            for (Field field : defaultEntity.getPrimaryFields()) {
+//            for (Field field : defaultEntity.getIdFields()) {
 //                md.addField(field.getName(), field.getDataType(), field);
 //            }
 //            this.md = md;

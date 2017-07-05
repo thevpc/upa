@@ -49,7 +49,7 @@ public class ExpressionHelper {
 
     private static final Set<String> RESERVED_WORDS = new HashSet<String>(
             Arrays.asList(
-                    "select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like"));
+                    "select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like","primary","outer"));
 
     public static boolean isReservedWord(String s) {
         return s != null && RESERVED_WORDS.contains(s.toLowerCase());
@@ -95,6 +95,9 @@ public class ExpressionHelper {
     }
 
     public static String escapeIdentifier(String s) {
+        if(s==null){
+            return "null";
+        }
         if (isEscapeIdentifier(s)) {
             return "`" + escapeStringLiteral(s, false, false, true) + "`";
         }

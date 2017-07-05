@@ -21,13 +21,13 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
 //    public CompiledDecode(List<DefaultCompiledExpression> expressions) {
 //        params=new ArrayList<DefaultCompiledExpression>(expressions);
 //        state=VALID;
-//        prepareChildren(params);
+//        bindChildren(params);
 //    }
     public CompiledDecode(DefaultCompiledExpression expression) {
         super("Decode");
         add(expression);
         state = EXPECT_CONDITION;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
 
 //    public If Then(Object value){

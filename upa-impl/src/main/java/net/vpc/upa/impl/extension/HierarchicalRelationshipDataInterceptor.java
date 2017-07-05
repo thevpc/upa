@@ -4,6 +4,8 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -65,7 +67,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 
         Document u2 = entity.getBuilder().createDocument();
         u2.setString(pathFieldName, path);
-        entity.updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), entity.getName()), updateContext);
+        entity.updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), UQLUtils.THIS), updateContext);
 
         //context.getExecutionContext().getPersistenceStore().executeUpdate(new Update().entity(entity.getName()).set(pathFieldName, path).where(new KeyExpression(entity, insertedId, null)), executionContext2);
     }

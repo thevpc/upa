@@ -45,7 +45,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     private CompiledUpdate entity(String entity, String alias) {
         this.entityName = new CompiledEntityName(entity);
         entityAlias = alias;
-        prepareChildren(this.entityName);
+        bindChildren(this.entityName);
         exportDeclaration(entityAlias, DecObjectType.ENTITY, ((CompiledEntityName) this.entityName).getName(), null);
         return this;
     }
@@ -112,7 +112,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     public CompiledUpdate set(Field key, DefaultCompiledExpression value) {
         CompiledVarVal varVal = new CompiledVarVal(new CompiledVar(key), value);
         fields.add(varVal);
-        prepareChildren(varVal);
+        bindChildren(varVal);
         return this;
     }
 
@@ -131,7 +131,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //    }
     public CompiledUpdate where(DefaultCompiledExpression condition) {
         this.condition = condition;
-        prepareChildren(condition);
+        bindChildren(condition);
         return this;
     }
 
@@ -215,10 +215,9 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         int i = 0;
         if (entityName != null) {
             if (i == index) {
+                unbindChildren(this.entityName);
                 entityName = (CompiledEntityName) expression;
-                if (expression != null) {
-                    expression.setParentExpression(this);
-                }
+                bindChildren(entityName);
                 return;
             }
             i++;
@@ -328,7 +327,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 
     public CompiledUpdate join(CompiledJoinCriteria someJoin) {
         joinsTables.add(someJoin);
-        prepareChildren(someJoin);
+        bindChildren(someJoin);
         exportDeclaration(someJoin.getEntity(), someJoin.getEntityAlias());
         return this;
     }

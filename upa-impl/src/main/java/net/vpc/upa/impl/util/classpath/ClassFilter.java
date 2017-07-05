@@ -5,5 +5,5 @@ package net.vpc.upa.impl.util.classpath;
  * @creationdate 12/16/12 1:05 PM
  */
 public interface ClassFilter {
-    public boolean accept(Class cls) ;
+    boolean accept(Class cls) ;
 }

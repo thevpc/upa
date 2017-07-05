@@ -33,7 +33,7 @@
 //        Session s=sm.openSession();
 //
 //        sm.beginStructureModification();
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity("SharedClient");
 //        entityManager.addField("extra", null,null, null, new IntType(null,null,true));
 //        sm.commitStructureModification();
 //
@@ -45,7 +45,7 @@
 //        sm.beginTransaction(TransactionType.REQUIRED);
 //        sm.insert(client);
 //
-//        Document clientByKeyRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        Document clientByKeyRecord=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        log.info("Found " + clientByKeyRecord);
 //        clientByKeyRecord.setString("firstName", "Alia");
@@ -56,7 +56,7 @@
 //
 //        sm.update(clientByKey);
 //
-//        Document clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        Document clientUpdatedRecord=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(clientUpdatedRecord);
 //        Client clientUpdated = entityManager.getConverter().documentToObject(clientUpdatedRecord);
@@ -64,7 +64,7 @@
 //
 //        sm.delete(key);
 //
-//        clientUpdatedRecord=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        clientUpdatedRecord=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNull(clientUpdatedRecord);
 //        sm.commitTransaction();
@@ -83,21 +83,21 @@
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("Client");
+//        Entity entityManager = sm.getEntity("SharedClient");
 //        Document record=entityManager.createDocument();
 //        int key = entityManager.nextId();
 //        log.info("Next Id is " + key);
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");
 //
-//        sm.insertRecord("Client", record);
-//        Document found0=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        sm.insertRecord("SharedClient", record);
+//        Document found0=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //        log.info("Found " + found0);
 //        record.setString("firstName", "Alia");
 //
-//        sm.updateRecord("Client",record);
+//        sm.updateRecord("SharedClient",record);
 //
-//        Document found=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        Document found=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(found);
 //        Client foundEntity = entityManager.getConverter().documentToObject(found);
@@ -106,7 +106,7 @@
 //
 //        sm.delete(key);
 //
-//        found=sm.createQueryBuilder("Client").setId(key).objectToDocument();
+//        found=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNull(found);
 //        sm.commitTransaction();

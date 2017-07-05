@@ -11,6 +11,6 @@ package net.vpc.upa.impl.util;
  */
 public interface XmlAttrListFilter {
 
-    public String acceptAndConvert(String s);
+    String acceptAndConvert(String s);
 
 }

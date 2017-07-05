@@ -5,6 +5,7 @@ import net.vpc.upa.expressions.*;
 
 import java.util.*;
 
+import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.DecObjectType;
@@ -91,7 +92,21 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         }else{
             fields.add(index,compiledQueryField);
         }
-        prepareChildren(compiledQueryField.getExpression());
+        bindChildren(compiledQueryField);
+        return compiledQueryField;
+    }
+
+    public CompiledQueryField setField(CompiledQueryField compiledQueryField,int index) {
+        invalidate();
+        if(compiledQueryField==null){
+            throw new NullPointerException("Null CompiledQueryField");
+        }
+        CompiledQueryField old = fields.get(index);
+        if(old!=compiledQueryField) {
+            old.unsetParent();
+            fields.set(index, compiledQueryField);
+            bindChildren(compiledQueryField);
+        }
         return compiledQueryField;
     }
 
@@ -119,6 +134,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         invalidate();
         CompiledQueryField qf=fields.remove(index);
         if(qf!=null){
+            qf.setParentExpression(null);
             DefaultCompiledExpression expr = qf.getExpression();
             if(expr!=null) {
                 expr.setParentExpression(null);
@@ -129,13 +145,9 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public CompiledSelect removeAllFields() {
         invalidate();
-        for (CompiledQueryField field : fields) {
-            DefaultCompiledExpression expression = field.getExpression();
-            if(expression!=null){
-                expression.setParentExpression(null);
-            }
+        for (int i = fields.size()-1; i >=0 ; i++) {
+            removeField(0);
         }
-        fields.clear();
         return this;
     }
 
@@ -193,7 +205,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         //getContext().declare(alias, queryEntity);
         this.queryEntity = queryEntity;
         queryEntityAlias = entityAlias;
-        prepareChildren(queryEntity);
+        bindChildren(queryEntity);
         exportDeclaration(queryEntity, entityAlias);
         return this;
     }
@@ -244,7 +256,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public CompiledSelect join(CompiledJoinCriteria someJoin) {
         joinsTables.add(someJoin);
-        prepareChildren(someJoin);
+        bindChildren(someJoin);
         exportDeclaration(someJoin.getEntity(), someJoin.getEntityAlias());
         return this;
     }
@@ -322,7 +334,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
             invalidate();
             this.order.addOrder(order);
             for (int i = 0; i < order.size(); i++) {
-                prepareChildren(order.getOrderAt(i));
+                bindChildren(order.getOrderAt(i));
             }
         }
         return this;
@@ -331,28 +343,28 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
     public CompiledSelect orderAscendentBy(DefaultCompiledExpression field) {
         invalidate();
         order.ascendant(field);
-        prepareChildren(field);
+        bindChildren(field);
         return this;
     }
 
     public CompiledSelect orderByDesc(DefaultCompiledExpression field) {
         invalidate();
         order.descendant(field);
-        prepareChildren(field);
+        bindChildren(field);
         return this;
     }
 
     public CompiledSelect orderBy(DefaultCompiledExpression field, boolean isAscending) {
         invalidate();
         order.addOrder(field, isAscending);
-        prepareChildren(field);
+        bindChildren(field);
         return this;
     }
 
     public CompiledSelect orderBy(int position, DefaultCompiledExpression field, boolean isAscending) {
         invalidate();
         order.insertOrder(position, field, isAscending);
-        prepareChildren(field);
+        bindChildren(field);
         return this;
     }
 
@@ -388,6 +400,9 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         return order.isAscendentAt(index);
     }
 
+    public CompiledOrderItem[] getOrderByExpressions() {
+        return order.getItems().toArray(new CompiledOrderItem[order.getItems().size()]);
+    }
     public DefaultCompiledExpression getOrderBy(int index) {
         return order.getOrderAt(index);
     }
@@ -399,12 +414,38 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
     public CompiledSelect groupBy(DefaultCompiledExpression field) {
         invalidate();
         groupByExpressions.add(field);
-        prepareChildren(field);
+        bindChildren(field);
+        return this;
+    }
+
+    public CompiledSelect setGroupBy(DefaultCompiledExpression field,int index) {
+        invalidate();
+        DefaultCompiledExpression old = groupByExpressions.get(index);
+        if(old!=null){
+            old.setParentExpression(null);
+        }
+        groupByExpressions.set(index,field);
+        bindChildren(field);
+        return this;
+    }
+
+    public CompiledSelect setOrderBy(DefaultCompiledExpression field,int index) {
+        invalidate();
+        DefaultCompiledExpression old = order.getOrderAt(index);
+        if(old!=null){
+            old.setParentExpression(null);
+        }
+        order.setOrderAt(index,field);
+        bindChildren(field);
         return this;
     }
 
     public boolean isGrouped() {
         return groupByExpressions.size() > 0;
+    }
+
+    public DefaultCompiledExpression[] getGroupByExpressions() {
+        return groupByExpressions.toArray(new DefaultCompiledExpression[groupByExpressions.size()]);
     }
 
     public DefaultCompiledExpression getGroupBy(int i) {
@@ -417,13 +458,13 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public CompiledSelect where(DefaultCompiledExpression condition) {
         this.where = condition;
-        prepareChildren(condition);
+        bindChildren(condition);
         return this;
     }
 
     public CompiledSelect having(DefaultCompiledExpression having) {
         this.having = having;
-        prepareChildren(having);
+        bindChildren(having);
         return this;
     }
 
@@ -602,7 +643,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
         if (fields != null) {
             for (CompiledQueryField field : fields) {
-                sub.add(field.getExpression());
+                sub.add(field);
             }
         }
         if (queryEntity != null) {
@@ -639,11 +680,15 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         int i = 0;
 
         if (fields != null) {
-            for (CompiledQueryField field : fields) {
+            for (int i1 = 0; i1 < fields.size(); i1++) {
                 if (i == index) {
-                    field.setExpression(expression);
-                    if (expression != null) {
-                        expression.setParentExpression(this);
+                    if(expression instanceof CompiledQueryField){
+                        unbindChildren(this.fields.get(i1));
+                        fields.set(i1,(CompiledQueryField) expression);
+                        bindChildren(expression);
+                    }else {
+                        CompiledQueryField field = fields.get(i1);
+                        field.setExpression(expression);
                     }
                     return;
                 }
@@ -728,7 +773,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Select ");
+        StringBuilder sb = new StringBuilder("Select");
         if (top > 0) {
             sb.append(" TOP ").append(top);
         }
@@ -755,12 +800,15 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
                 } else {
                     started = true;
                 }
-                if (aliasString == null/* || valueString.equals(aliasString)*/) {
-                    sb.append(valueString);
-                } else {
-                    sb.append(valueString);
+                sb.append(valueString);
+                if (aliasString != null/* || valueString.equals(aliasString)*/) {
                     sb.append(" ");
                     sb.append(aliasString);
+                }
+                BindingId binding = fi.getBinding();
+                if (binding != null/* || valueString.equals(aliasString)*/) {
+                    sb.append(" @");
+                    sb.append(binding);
                 }
             }
 
@@ -777,7 +825,7 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
             }
         }
         if (getEntityAlias() != null) {
-            sb.append(" ").append(getEntityAlias());
+            sb.append(" ").append(ExpressionHelper.escapeIdentifier(getEntityAlias()));
         }
         for (int i = 0; i < countJoins(); i++) {
             CompiledJoinCriteria e = getJoin(i);

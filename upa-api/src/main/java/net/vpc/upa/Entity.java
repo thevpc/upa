@@ -174,7 +174,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     Field findField(String fieldName);
 
-    List<Field> getPrimaryFields();
+    List<Field> getIdFields();
 
     List<String> getFieldNames(FieldFilter fieldFilter);
 
@@ -296,7 +296,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     void setArchivingOrder(Order archivingOrder);
 
-    Field getLeadingPrimaryField();
+    Field getLeadingIdField();
 
     List<String> getOrderedFields(String[] fields);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <upa xmlns="http://github.com/thevpc/upa/upa-1.0.xsd" >
-    <scan types="net.vpc.upa.test.**"/>
+    <scan types="net.vpc.upa.test.autoscan.**"/>
     <!--<configure/>-->
     <!--<include url="" file="" resource=""/>-->
     <!--<persistenceGroup>-->

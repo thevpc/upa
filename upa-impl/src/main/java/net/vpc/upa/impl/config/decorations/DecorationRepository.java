@@ -15,13 +15,13 @@ import java.lang.reflect.Method;
  */
 public interface DecorationRepository {
 
-    public void visit(Decoration d);
+    void visit(Decoration d);
 
-    public Decoration[] getTypeDecorations(String type);
+    Decoration[] getTypeDecorations(String type);
 
-    public Decoration[] getMethodDecorations(String type, String method);
+    Decoration[] getMethodDecorations(String type, String method);
 
-    public Decoration[] getFieldDecorations(String type, String field);
+    Decoration[] getFieldDecorations(String type, String field);
 
     Decoration getFieldDecoration(Field field, Class annType);
 
@@ -33,7 +33,7 @@ public interface DecorationRepository {
 
     Decoration[] getFieldDecorations(Field field);
 
-    public Decoration getMethodDecoration(Method method, Class annType);
+    Decoration getMethodDecoration(Method method, Class annType);
 
     Decoration getMethodDecoration(Method method, String annType);
 

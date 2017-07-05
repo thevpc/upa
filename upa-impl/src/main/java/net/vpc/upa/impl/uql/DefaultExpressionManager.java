@@ -14,10 +14,10 @@ import net.vpc.upa.Function;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.uql.parser.syntax.FunctionFactory;
-import net.vpc.upa.impl.uql.parser.syntax.UQLParser;
 import net.vpc.upa.impl.uql.util.SimplifyVarsExpressionTransformer;
 import net.vpc.upa.impl.uql.util.UserExpressionParserVisitor;
 import net.vpc.upa.impl.uql.util.UserExpressionParametersMatcherVisitor;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
@@ -30,7 +30,6 @@ public class DefaultExpressionManager implements ExpressionManager {
     private static Logger log = Logger.getLogger(DefaultExpressionManager.class.getName());
     private PersistenceUnit persistenceUnit;
     private ExpressionTranslationManager translationManager;
-    private ExpressionValidationManager validationManager;
     private ExpressionMetadataBuilder expressionMetadataBuilder;
     private HashMap<String, FunctionDefinition> qlFunctionMap = new HashMap<String, FunctionDefinition>();
     private QLExpressionParser parser;
@@ -38,17 +37,12 @@ public class DefaultExpressionManager implements ExpressionManager {
     public DefaultExpressionManager(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
         translationManager = new ExpressionTranslationManager(this, persistenceUnit);
-        validationManager = new ExpressionValidationManager(persistenceUnit);
         expressionMetadataBuilder = new ExpressionMetadataBuilder(this,persistenceUnit);
         parser = persistenceUnit.getFactory().createObject(QLExpressionParser.class);
     }
 
     public ExpressionTranslationManager getTranslationManager() {
         return translationManager;
-    }
-
-    public ExpressionValidationManager getValidationManager() {
-        return validationManager;
     }
 
     public ResultMetaData createMetaData(Expression baseExpression, FieldFilter fieldFilter) {
@@ -86,7 +80,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         if (config == null) {
             config = new ExpressionCompilerConfig();
         }
-        CompiledExpression qe = translationManager.compileExpression(expression, config);
+        CompiledExpression qe = translationManager.translateExpression(expression, config);
         qe = compileExpression(qe, config);
         return qe;
     }
@@ -95,10 +89,19 @@ public class DefaultExpressionManager implements ExpressionManager {
         if (config == null) {
             config = new ExpressionCompilerConfig();
         }
-        if (config.isValidate() || config.isExpandFields()) {
-            expression=validationManager.validateExpression(expression, config);
+        if (!config.isCompile()) {
+            return expression;
         }
-        return expression;
+        ExpressionCompiler w=new ExpressionCompiler(expression,config, persistenceUnit);
+        CompiledExpression compiledExpression = w.compile();
+        if(!UPAUtils.PRODUCTION_MODE) {
+            System.out.println("==========DefaultExpressionManager==============");
+            System.out.println(expression);
+            System.out.println(compiledExpression);
+            System.out.println("==========DefaultExpressionManager==============");
+            compiledExpression = w.compile();
+        }
+        return compiledExpression;
     }
 
     @Override

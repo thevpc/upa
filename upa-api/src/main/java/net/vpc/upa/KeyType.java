@@ -89,7 +89,7 @@ public class KeyType extends StructType {
     }
 
     private static String[] constructorFieldNames(Entity entity) throws UPAException {
-        List<Field> primaryFields = entity.getPrimaryFields();
+        List<Field> primaryFields = entity.getIdFields();
         String[] fs = new String[primaryFields.size()];
         for (int i = 0; i < fs.length; i++) {
             fs[i] = primaryFields.get(i).getName();
@@ -99,7 +99,7 @@ public class KeyType extends StructType {
 
     private static DataType[] constructorFieldTypes(Entity entity) throws UPAException {
 
-        List<Field> primaryFields = entity.getPrimaryFields();
+        List<Field> primaryFields = entity.getIdFields();
         DataType[] dt = new DataType[primaryFields.size()];
         for (int i = 0; i < dt.length; i++) {
             dt[i] = primaryFields.get(i).getDataType();

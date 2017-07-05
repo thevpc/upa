@@ -10,9 +10,9 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * @creationdate 11/6/12 12:29 AM
  */
 public interface SQLManager {
-    public void register(SQLProvider provider);
+    void register(SQLProvider provider);
 
-    public MarshallManager getMarshallManager();
+    MarshallManager getMarshallManager();
 
-    public String getSQL(DefaultCompiledExpression expression, EntityExecutionContext context, ExpressionDeclarationList declarations) throws UPAException;
+    String getSQL(DefaultCompiledExpression expression, EntityExecutionContext context, ExpressionDeclarationList declarations) throws UPAException;
 }

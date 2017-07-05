@@ -47,7 +47,7 @@ public class DefaultFunctionEvaluator implements QLTypeEvaluator {
         if(!evaluatable){
             return FunctionFactory.createFunction(f.getName(), Arrays.asList(arguments));
         }
-        Object v = this.evaluator.eval(new EvalContext(f.getName(), oarguments, null));
+        Object v = this.evaluator.eval(new EvalContext(f.getName(), oarguments, null,null));
         return new Literal(v,null);
     }
 

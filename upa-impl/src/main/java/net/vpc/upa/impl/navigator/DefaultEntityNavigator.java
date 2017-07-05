@@ -42,7 +42,7 @@ public class DefaultEntityNavigator implements EntityNavigator {
 
     private Object getNavigateKey(Entity entity, Object id, char operator)
             throws UPAException {
-        List<Field> pk = entity.getPrimaryFields();
+        List<Field> pk = entity.getIdFields();
         if (pk.size() == 1) {
             Select s = new Select().from(entity.getName());
             s.from(entity.getName());

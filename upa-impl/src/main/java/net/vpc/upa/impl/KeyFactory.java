@@ -8,13 +8,13 @@ import net.vpc.upa.Key;
  */
 public interface KeyFactory {
 
-    public Key createKey(Object... idValues);
+    Key createKey(Object... idValues);
 
-    public Object createId(Object... idValues);
+    Object createId(Object... idValues);
 
-    public Object getId(Key unstructuredKey);
+    Object getId(Key unstructuredKey);
 
-    public Key getKey(Object id);
+    Key getKey(Object id);
 
 
 }

@@ -12,7 +12,7 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
     public CompiledVarVal(CompiledVar var, DefaultCompiledExpression val) {
         this.var = var;
         this.val = val;
-        prepareChildren(var, val);
+        bindChildren(var, val);
     }
 
     @Override
@@ -24,13 +24,15 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         switch (index) {
             case 0: {
+                unbindChildren(this.val);
                 var = (CompiledVar) expression;
-                prepareChildren(var);
+                bindChildren(expression);
                 return;
             }
             case 1: {
+                unbindChildren(this.val);
                 val = expression;
-                prepareChildren(val);
+                bindChildren(expression);
                 return;
             }
         }

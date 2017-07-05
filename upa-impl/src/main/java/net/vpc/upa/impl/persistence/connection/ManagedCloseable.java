@@ -8,6 +8,6 @@ import net.vpc.upa.CloseListener;
  * @creationdate 11/24/12 8:40 AM
  */
 public interface ManagedCloseable extends Closeable {
-    public void addCloseListener(CloseListener closeListener);
-    public void removeCloseListener(CloseListener closeListener);
+    void addCloseListener(CloseListener closeListener);
+    void removeCloseListener(CloseListener closeListener);
 }

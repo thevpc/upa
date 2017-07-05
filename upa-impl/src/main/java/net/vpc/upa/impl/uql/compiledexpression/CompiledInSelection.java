@@ -2,7 +2,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -28,8 +27,8 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
     public CompiledInSelection(DefaultCompiledExpression[] left, CompiledSelect query) {
         this.left = left;
         this.query = query;
-        prepareChildren(left);
-        prepareChildren(query);
+        bindChildren(left);
+        bindChildren(query);
     }
 
     public int size() {
@@ -71,9 +70,13 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if(index<left.length){
+            unbindChildren(this.left[index]);
             left[index]=expression;
+            bindChildren(expression);
         }else {
+            unbindChildren(this.query);
             query=(CompiledSelect) expression;
+            bindChildren(query);
         }
     }
 
@@ -89,5 +92,22 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
 //        stringBuffer.append(")");
 //        return integrated ? '(' + stringBuffer.toString() + ')' : stringBuffer.toString();
 //    }
-
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        if (left.length == 1) {
+            sb.append(left[0]);
+        } else {
+            sb.append("(");
+            for (int i = 0; i < left.length; i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(left[i]);
+            }
+            sb.append(")");
+        }
+        sb.append(" in (").append(query).append(")");
+        return sb.toString();
+    }
 }

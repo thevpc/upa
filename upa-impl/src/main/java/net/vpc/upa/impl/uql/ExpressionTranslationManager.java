@@ -148,7 +148,7 @@ public class ExpressionTranslationManager {
         expressionProviders.put(t, compiler);
     }
 
-    public DefaultCompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config) {
+    public DefaultCompiledExpression translateExpression(Expression expression, ExpressionCompilerConfig config) {
         if (log.isLoggable(Level.FINE)) {
             //expected api 1.2.1
 //            log.log(Level.FINE,"Compiling Expression " + expression);
@@ -157,25 +157,23 @@ public class ExpressionTranslationManager {
             throw new NullPointerException("Null Expression could not be compiled");
         }
         ExpressionDeclarationList dec = new DefaultExpressionDeclarationList(null);
-        if (config.getAliasToEntityContext() != null) {
-            for (Map.Entry<String, String> entry : config.getAliasToEntityContext().entrySet()) {
+        for (Map.Entry<String, String> entry : config.getAliasToEntityContext().entrySet()) {
 
-                // check entity existence
-                persistenceUnit.getEntity(entry.getValue());
+            // check entity existence
+            persistenceUnit.getEntity(entry.getValue());
 
-                dec.exportDeclaration(entry.getKey(), DecObjectType.ENTITY, entry.getValue(), null);
-            }
+            dec.exportDeclaration(entry.getKey(), DecObjectType.ENTITY, entry.getValue(), null);
         }
         DefaultCompiledExpression s = translateAny(expression, dec);
 
-        if (s instanceof CompiledQueryStatement) {
-            CompiledQueryStatement qs=(CompiledQueryStatement) s;
-            java.util.List<CompiledQueryField> fields = qs.getFields();
-            for (int i = 0; i < fields.size(); i++) {
-                CompiledQueryField field = fields.get(i);
-                field.setIndex(i);
-            }
-        }
+//        if (s instanceof CompiledQueryStatement) {
+//            CompiledQueryStatement qs=(CompiledQueryStatement) s;
+//            java.util.List<CompiledQueryField> fields = qs.getFields();
+//            for (int i = 0; i < fields.size(); i++) {
+//                CompiledQueryField field = fields.get(i);
+//                field.setIndex(i);
+//            }
+//        }
 
         return s;
     }

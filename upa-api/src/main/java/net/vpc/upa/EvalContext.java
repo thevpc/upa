@@ -12,11 +12,17 @@ public class EvalContext {
     private String functionName;
     private Object[] arguments;
     private PersistenceUnit persistenceUnit;
+    private Object compilerContext;
 
-    public EvalContext(String functionName, Object[] arguments, PersistenceUnit persistenceUnit) {
+    public EvalContext(String functionName, Object[] arguments, PersistenceUnit persistenceUnit,Object compilerContext) {
         this.functionName = functionName;
         this.arguments = arguments;
         this.persistenceUnit = persistenceUnit;
+        this.compilerContext = compilerContext;
+    }
+
+    public Object getCompilerContext() {
+        return compilerContext;
     }
 
     public String getFunctionName() {

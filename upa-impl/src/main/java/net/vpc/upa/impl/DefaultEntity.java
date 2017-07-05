@@ -19,11 +19,11 @@ import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.FieldListPersistenceInfo;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.impl.uql.parser.syntax.ParseException;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.*;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.impl.util.filters.PersistNonNullableFieldFilter;
 import net.vpc.upa.impl.util.filters.PersistWithDefaultValueFieldFilter;
 import net.vpc.upa.persistence.*;
@@ -709,7 +709,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public boolean needsView() throws UPAException {
-        return !getFields(Fields2.VIEW).isEmpty();
+        return !getFields(FieldFilters2.VIEW).isEmpty();
     }
 
     public DataType getDataType() throws UPAException {
@@ -745,7 +745,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (selectFormula instanceof ExpressionFormula) {
                         ExpressionFormula ef = (ExpressionFormula) selectFormula;
                         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(ef.getExpression(), null);
-                        complexFormula = compiledExpression.findFirstExpression(CompiledExpressionUtils.SELECT_FILTER) != null;
+                        complexFormula = compiledExpression.findFirstExpression(UQLCompiledUtils.SELECT_FILTER) != null;
                     } else {
                         complexFormula = true;
                     }
@@ -1020,7 +1020,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //            _effectiveModifiers = _effectiveModifiers.add(EntityModifier.RESET);
 //        }
 
-        List<Field> primaries = getPrimaryFields();
+        List<Field> primaries = getIdFields();
         if (primaries.size() == 0) {
             if (_effectiveModifiers.contains(EntityModifier.NAVIGATE)) {
                 if (includedModifiers.contains(EntityModifier.NAVIGATE)) {
@@ -1062,7 +1062,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         boolean _KeyEditionSupported = false;
-        List<Field> primaryFields = getPrimaryFields();
+        List<Field> primaryFields = getIdFields();
         for (Field f : primaryFields) {
             FlagSet<FieldModifier> fm = f.getModifiers();
             if (!fm.contains(FieldModifier.PERSIST_FORMULA)) {
@@ -1092,7 +1092,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         // check for primary fields
-        List<Field> primaries = getPrimaryFields();
+        List<Field> primaries = getIdFields();
         if (primaries.isEmpty()) {
             checker.addWarning("Entity " + getName() + " has no primary fields");
         }
@@ -1562,7 +1562,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     protected EntityNavigator createNavigator() throws UPAException {
-        List<Field> pf = getPrimaryFields();
+        List<Field> pf = getIdFields();
         if (pf.size() == 1) {
             Field field = pf.get(0);
             Class idClass = field.getDataType().getPlatformType();
@@ -1744,7 +1744,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return fieldsMap.get(getPersistenceUnit().getNamingStrategy().getUniformValue(fieldName));
     }
 
-    public List<Field> getPrimaryFields() throws UPAException {
+    public List<Field> getIdFields() throws UPAException {
         return getFields(FieldFilters.id());
     }
 
@@ -1909,7 +1909,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (isCheckSecurity()) {
             getShield().checkClone(oldId, newId);
         }
-        Object o = createQueryBuilder().byId(oldId).setFieldFilter(Fields2.COPY_ON_CLONE).getSingleResult();
+        Object o = createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.COPY_ON_CLONE).getSingleResult();
         getBuilder().setObjectId(o, newId);
         persist(o);
         return o;
@@ -1932,7 +1932,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        Object tranasction = getPersistenceUnit().getPersistenceStore().getConnection().tryBeginTransaction();
 //        boolean transactionSucceeded = false;
 //        try {
-        Object o = createQueryBuilder().byId(oldId).setFieldFilter(Fields2.COPY_ON_RENAME).getSingleResult();
+        Object o = createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.COPY_ON_RENAME).getSingleResult();
         Document ur = getBuilder().objectToDocument(o, false);
         getBuilder().setDocumentId(ur, newId);
         // insert(o, false);
@@ -2186,10 +2186,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                                 + " use first relation " + r;
                         // System.out.println(trace);
                         removeInfo.addTrace(trace);
+                        String newThis= UQLUtils.generateID();
+                        Expression expression2 = expression.copy();
+                        UQLUtils.replaceThisVar(expression2,newThis,getPersistenceUnit());
                         r.getSourceRole().getEntity().remove(
                                 RemoveOptions.forExpression(((new InSelection(new Var(r.getSourceRole().getField(0).getName()),
-                                        (new Select()).from(r.getTargetRole().getEntity().getName())
-                                                .field(new Var(masterField.getName())).where(expression)))))
+                                        (new Select()).from(r.getTargetRole().getEntity().getName(),newThis)
+                                                .field(new Var(masterField.getName())).where(expression2)))))
                                         .setFollowLinks(true)
                                         .setSimulate(simulate)
                                         .setRemoveTrace(removeInfo)
@@ -2307,10 +2310,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (getShield().isUpdateFormulaOnPersistSupported()) {
             Expression expr = getBuilder().idToExpression(postPersistId, null);
 //            expr.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
-            List<Field> fields = getFields(Fields2.PERSIST_FORMULA);
+            List<Field> fields = getFields(FieldFilters2.PERSIST_FORMULA);
             if (fields.size() > 0) {
-                updateFormulasCore(Fields2.PERSIST_FORMULA, expr, context);
-                final Document formulaValues = createQueryBuilder().byExpression(expr).setFieldFilter(Fields2.PERSIST_FORMULA).getDocument();
+                updateFormulasCore(FieldFilters2.PERSIST_FORMULA, expr, context);
+                final Document formulaValues = createQueryBuilder().byExpression(expr).setFieldFilter(FieldFilters2.PERSIST_FORMULA).getDocument();
                 if(fields.size()==1 && fields.get(0).getDataType() instanceof ManyToOneType){
                     //in this case, the document provided is flattened, it will be problematic to
                     //put it into the main entity
@@ -2497,7 +2500,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 //make handled
                 persistNonNullable.remove(field);
                 persistWithDefaultValue.remove(field);
-                boolean accepted = Fields2.PERSIST.accept(field);
+                boolean accepted = FieldFilters2.PERSIST.accept(field);
                 if (accepted) {
                     ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, document, persistentDocument, executionContext, persistNonNullable, persistWithDefaultValue);
                 }
@@ -2690,7 +2693,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public int updateDocuments(Document updates, Expression condition, Map<String, Object> hints) throws UPAException {
-        List<Field> fields = (getShield().isUpdateFormulaOnUpdateSupported()) ? getFields(Fields2.UPDATE_FORMULA)
+        List<Field> fields = (getShield().isUpdateFormulaOnUpdateSupported()) ? getFields(FieldFilters2.UPDATE_FORMULA)
                 : null;
         return updateDocuments(updates, fields, condition, hints);
     }
@@ -2838,7 +2841,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     //    public final void updateFormulas(Field[] fieldsToUpdate,
 //                                                  K key) throws UPAException {
-//        // if (key.getValue().length != getPrimaryFields().length)
+//        // if (key.getValue().length != getIdFields().length)
 //        // throw new UPAException(key + " does not denote a valid key for " +
 //        // getName());
 //        updateFormulas(fieldsToUpdate, toExpression(key, null));
@@ -2935,7 +2938,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
 
             if (formulaFields == null) {
-                formulaFields = (getShield().isUpdateFormulaOnUpdateSupported()) ? Fields2.UPDATE_FORMULA
+                formulaFields = (getShield().isUpdateFormulaOnUpdateSupported()) ? FieldFilters2.UPDATE_FORMULA
                         : null;
             }
 
@@ -2943,7 +2946,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             //because primary fields are not updatable
             //one may use rename instead
 //            List<Field> extraConditions = new ArrayList<Field>();
-            List<Field> primaryFields = getPrimaryFields();
+            List<Field> primaryFields = getIdFields();
             Set<String> primaryFieldNames = new HashSet<String>();
             for (Field field : primaryFields) {
 //                if (updates.isSet(field.getName())) {
@@ -3030,7 +3033,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
             if (updateSingleObject && getShield().isUpdateFormulaOnUpdateSupported()) {
                 //need reload formua fields
-                List<Field> fields = getFields(Fields2.UPDATE_FORMULA);
+                List<Field> fields = getFields(FieldFilters2.UPDATE_FORMULA);
                 if (fields != null && fields.size() > 0) {
                     final Document generatedFormulas = createQueryBuilder().setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(fields))).getDocument();
                     if (generatedFormulas != null) {
@@ -3052,7 +3055,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         //because primary fields are not updatable
         //one may use rename instead
         List<Field> extraConditions = new ArrayList<Field>();
-        List<Field> primaryFields = getPrimaryFields();
+        List<Field> primaryFields = getIdFields();
         Set<String> primaryFieldNames = new HashSet<String>();
         for (Field field : primaryFields) {
             if (updates.isSet(field.getName())) {
@@ -3178,7 +3181,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        Log.method_enter(methodExecId, getName(), fieldsToUpdate, exprSQL);
         expr = toIdListExpression(expr);
         if (fieldsToUpdate == null || fieldsToUpdate.isEmpty()) {
-            fieldsToUpdate = getFields(Fields2.UPDATE_FORMULA);
+            fieldsToUpdate = getFields(FieldFilters2.UPDATE_FORMULA);
         }
         if (fieldsToUpdate.size() > 0) {
             // System.out.println(getName()+".updateFormulas("+Arrays.asList(fieldsToUpdate)+","+expr+"){");
@@ -3284,8 +3287,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     //    public void setPersistenceName(String persistenceName) {
 //        this.persistenceName = persistenceName;
 //    }
-    public Field getLeadingPrimaryField() throws UPAException {
-        return getPrimaryFields().get(0);
+    public Field getLeadingIdField() throws UPAException {
+        return getIdFields().get(0);
     }
 
     public List<String> getOrderedFields(String[] fields) {
@@ -3342,7 +3345,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        if (mappedValues == null) {
 //            return createId();
 //        } else {
-//            List<Field> fs = getPrimaryFields();
+//            List<Field> fs = getIdFields();
 //            Object[] value = new Object[fs.size()];
 //            for (int i = 0; i < fs.size(); i++) {
 //                Object o = mappedValues.get(fs.get(i).getName());
@@ -3358,7 +3361,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    public Map<String, Object> keyToMap(Key key) {
 //        Map<String, Object> map = new HashMap<String, Object>();
 ////        if (!isNull()) {
-//        List<Field> fs = getPrimaryFields();
+//        List<Field> fs = getIdFields();
 //        for (int i = 0; i < fs.size(); i++) {
 //            if (key.getValue()[i] != null) {
 //                map.put(fs.get(i).getAbsoluteName(), key.getValue()[i]);
@@ -3610,7 +3613,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             alias = "upathis";
         }
         config.setThisAlias(alias);
-        config.setExpandEntityFilter(false);
+//        config.setExpandEntityFilter(false);
         CompiledSelect compiledSelect = (CompiledSelect) getPersistenceUnit().getExpressionManager().compileExpression(new Select().from(getName(), alias).field(expression), config);
         return compiledSelect.getField(0).getExpression();
     }

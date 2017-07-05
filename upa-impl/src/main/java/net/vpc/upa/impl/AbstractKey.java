@@ -56,7 +56,7 @@ public abstract class AbstractKey
      * @throws UPAException if <code>fieldName</code> is not a valid identifier portion of the given Entity
      */
     public Object getValue(Entity entity, String fieldName) throws UPAException {
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Object[] value = getValue();
         for (int i = 0; i < f.size(); i++) {
             if (f.get(i).getName().equals(fieldName)) {

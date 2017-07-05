@@ -100,10 +100,6 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public void setProperty(Object entityObject, String property, Object value) throws UPAException {
-        if (entityObject instanceof Document) {
-            ((Document) entityObject).setObject(property, value);
-            return;
-        }
         entityFactory.setProperty(entityObject, property, value);
     }
 

@@ -13,7 +13,7 @@ import net.vpc.upa.PortabilityHint;
 @PortabilityHint(target = "C#", name = "ignore")
 public interface StackBlockingSAXProcessor<E> {
 
-    public void endElement(GenericXmlNode n, StackBlockingSAXHandler<E> hanlder);
+    void endElement(GenericXmlNode n, StackBlockingSAXHandler<E> hanlder);
 
-    public void startElement(GenericXmlNode n, StackBlockingSAXHandler<E> hanlder);
+    void startElement(GenericXmlNode n, StackBlockingSAXHandler<E> hanlder);
 }

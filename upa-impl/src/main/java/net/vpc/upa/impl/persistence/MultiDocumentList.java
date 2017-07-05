@@ -42,7 +42,7 @@ public class MultiDocumentList extends QueryResultLazyList<MultiDocument> {
             Field field = namedExpression.getField();
             entities[i] = field == null ? null : field.getEntity();
             if (namedExpression.getGroupName() != null) {
-                documentName[i] = namedExpression.getGroupName();
+                documentName[i] = namedExpression.getGroupName().toString();
             } else if (entities[i] != null) {
                 documentName[i] = entities[i].getName();
             }

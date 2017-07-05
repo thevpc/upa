@@ -6,12 +6,12 @@ package net.vpc.upa.impl.uql.compiler;
 
 import java.util.List;
 import net.vpc.upa.expressions.UserExpression;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 
 /**
  *
@@ -25,7 +25,7 @@ public class UserExpressionExpressionTranslator implements ExpressionTranslator 
             return null;
         }
         DefaultCompiledExpression compiledExpression = manager.translateAny(manager.getExpressionManager().parseExpression(v), declarations);
-        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionUtils.PARAM_FILTER);
+        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
         for (CompiledParam e : cvalues) {
             if (v.containsParameter(e.getName())) {
                 e.setValue(v.getParameter(e.getName()));

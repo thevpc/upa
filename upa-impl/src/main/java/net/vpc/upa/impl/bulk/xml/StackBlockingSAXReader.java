@@ -25,7 +25,7 @@ public interface StackBlockingSAXReader<E> {
      * @return the head of this queue
      * @throws InterruptedException if interrupted while waiting
      */
-    E take() throws InterruptedException, EOFException, IOException;
+    E take() throws InterruptedException, IOException;
 
     /**
      * Retrieves and removes the head of this queue, waiting up to the specified
@@ -39,7 +39,7 @@ public interface StackBlockingSAXReader<E> {
      * time elapses before an element is available
      * @throws InterruptedException if interrupted while waiting
      */
-    E poll(long timeout, TimeUnit unit) throws InterruptedException, EOFException, IOException;
+    E poll(long timeout, TimeUnit unit) throws InterruptedException, IOException;
 
     /**
      * Retrieves and removes the head of this queue. This method differs from
@@ -59,5 +59,5 @@ public interface StackBlockingSAXReader<E> {
      */
     E poll() throws IOException;
 
-    public List<E> takeList() throws InterruptedException, EOFException, IOException;
+    List<E> takeList() throws InterruptedException, IOException;
 }

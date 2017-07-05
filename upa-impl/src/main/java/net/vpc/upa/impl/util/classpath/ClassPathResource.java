@@ -13,6 +13,6 @@ import java.io.InputStream;
  * @author taha.bensalah@gmail.com
  */
 public interface ClassPathResource {
-    public String getPath();
+    String getPath();
     InputStream open() throws IOException;
 }

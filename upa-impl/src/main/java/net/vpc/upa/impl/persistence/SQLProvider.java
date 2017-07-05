@@ -12,7 +12,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * To change this template use File | Settings | File Templates.
  */
 public interface SQLProvider {
-    public abstract String getSQL(Object o, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations)throws UPAException;
+    String getSQL(Object o, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations)throws UPAException;
 
-    public Class getExpressionType();
+    Class getExpressionType();
 }

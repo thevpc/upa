@@ -29,6 +29,6 @@ public class IntegerKeyEntityNavigator extends DefaultEntityNavigator {
     }
 
     public Object getNewKey() throws UPAException {
-        return entity.createId(getNewValue(entity.getPrimaryFields().get(0)));
+        return entity.createId(getNewValue(entity.getIdFields().get(0)));
     }
 }

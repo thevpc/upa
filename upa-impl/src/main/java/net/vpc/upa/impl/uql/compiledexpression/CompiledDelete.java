@@ -34,7 +34,7 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
         this.entity = new CompiledEntityName(entityName);
         entityAlias = alias;
         exportDeclaration(alias, DecObjectType.ENTITY, entityName, null);
-        prepareChildren(entity);
+        bindChildren(entity);
         return this;
     }
 
@@ -55,7 +55,7 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
 
     public CompiledDelete where(DefaultCompiledExpression condition) {
         this.condition = condition;
-        prepareChildren(condition);
+        bindChildren(condition);
         return this;
     }
 
@@ -140,13 +140,17 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
         int i = 0;
         if (entity != null) {
             if (i == index) {
+                unbindChildren(this.entity);
                 entity = (CompiledEntityName) expression;
+                bindChildren(entity);
             }
             i++;
         }
         if (condition != null) {
             if (i == index) {
+                unbindChildren(this.condition);
                 condition = expression;
+                bindChildren(condition);
             }
             i++;
         }

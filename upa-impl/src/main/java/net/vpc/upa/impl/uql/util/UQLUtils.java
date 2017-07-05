@@ -153,4 +153,12 @@ public class UQLUtils {
         }
         throw new RuntimeException("Unsupported");
     }
+
+    public static String generateID(){
+        long l = System.currentTimeMillis();
+        if(l<0){
+            l=-l;//could it ever happen
+        }
+        return ("u"+((int)(Math.random()*10000))+""+ l);
+    }
 }

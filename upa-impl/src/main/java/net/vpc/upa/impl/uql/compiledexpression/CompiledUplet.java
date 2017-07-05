@@ -2,7 +2,6 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.TypesFactory;
 
 
 /**
@@ -19,7 +18,7 @@ public class CompiledUplet extends DefaultCompiledExpressionImpl {
     public CompiledUplet(DefaultCompiledExpression[] expressions) {
         super();
         this.expressions=expressions;
-        prepareChildren(expressions);
+        bindChildren(expressions);
     }
 
 //    public String toSQL(boolean flag, PersistenceUnitFilter database) {
@@ -69,8 +68,9 @@ public class CompiledUplet extends DefaultCompiledExpressionImpl {
 
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
+        unbindChildren(this.expressions[index]);
         expressions[index]=expression;
-        prepareChildren(expression);
+        bindChildren(expression);
     }
     
 }

@@ -24,8 +24,8 @@ public class KeyUnstructuredFactory implements KeyFactory {
 
     @Override
     public Object createId(Object... idValues) {
-        if(entity.getPrimaryFields().size()!=idValues.length){
-            throw new IllegalArgumentException("Invalid Key Size. Expected "+entity.getPrimaryFields().size()+" but found "+idValues.length);
+        if(entity.getIdFields().size()!=idValues.length){
+            throw new IllegalArgumentException("Invalid Key Size. Expected "+entity.getIdFields().size()+" but found "+idValues.length);
         }
         return new DefaultKey(idValues);
     }

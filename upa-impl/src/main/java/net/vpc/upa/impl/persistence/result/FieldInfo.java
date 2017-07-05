@@ -3,6 +3,7 @@ package net.vpc.upa.impl.persistence.result;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.impl.persistence.NativeField;
+import net.vpc.upa.impl.uql.BindingId;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,13 +17,12 @@ class FieldInfo {
 
     public TypeInfo typeInfo;
     public int dbIndex;
-    public boolean update;
-    public Set<Integer> indexesToUpdate=new HashSet<Integer>();
+    public BindingId binding;
+    public boolean read;
     public String name;
     public NativeField nativeField;
-    public String setterMethodName;
     public Field field;
-    public Entity referencedEntity;
+//    public FieldInfoSetter setter;
 
     @Override
     public String toString() {

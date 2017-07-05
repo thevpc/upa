@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface CompiledQLParameterProcessor {
-    public void processSQLParameters(List<QLParameter> parameter, Map<String, DefaultCompiledExpression> output, String message) ;
+    void processSQLParameters(List<QLParameter> parameter, Map<String, DefaultCompiledExpression> output, String message) ;
 }

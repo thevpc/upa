@@ -54,7 +54,7 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
             try {
                 Entity _entity = getEntity();
                 Key ukey = _entity.getBuilder().idToKey(key);
-                List<Field> f = _entity.getPrimaryFields();
+                List<Field> f = _entity.getIdFields();
                 StringBuilder descsb = new StringBuilder();
                 Object[] values = ukey.getValue();
                 for (int i = 0; i < f.size(); i++) {
@@ -86,7 +86,7 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
 //        if (query == null) {
 //            StringBuilder exprsb = new StringBuilder();
 //            Object[] values = key.getValue();
-//            Field[] f = getEntity().getPrimaryFields();
+//            Field[] f = getEntity().getIdFields();
 //            for (int i = 0; i < f.length; i++) {
 //                if (i > 0) {
 //                    exprsb.append(" AND ");

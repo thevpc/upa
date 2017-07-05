@@ -36,7 +36,7 @@
 //
 //        public void process() {
 //            List<Category> entityList;
-//            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+//            PersistenceUnit pu = UPA.getPersistenceUnit();
 //            pu.reset();
 //            entityList = pu.createQuery("Select a from Category a").getResultList();
 //

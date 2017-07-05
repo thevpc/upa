@@ -13,19 +13,19 @@ package net.vpc.upa.impl.util;
 //    }
 public interface PlatformBeanProperty {
 
-    public String getName();
+    String getName();
 
-    public Class getPlatformType();
+    Class getPlatformType();
 
-    public Object getValue(Object o);
+    Object getValue(Object o);
 
-    public Object getDefaultValue();
+    Object getDefaultValue();
 
-    public void setValue(Object o, Object value);
+    void setValue(Object o, Object value);
 
-    public boolean isDefaultValue(Object o);
+    boolean isDefaultValue(Object o);
 
-    public boolean isWriteSupported();
+    boolean isWriteSupported();
 
-    public boolean isReadSupported();
+    boolean isReadSupported();
 }

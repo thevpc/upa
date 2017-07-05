@@ -11,5 +11,5 @@ package net.vpc.upa.impl.util;
 @Deprecated
 interface Formatter {
 
-    public abstract String format(Object obj);
+    String format(Object obj);
 }

@@ -7,5 +7,5 @@ package net.vpc.upa.impl.uql.compiledexpression;
  * Time: 10:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract interface CompiledNameOrSelect extends DefaultCompiledExpression {
+public interface CompiledNameOrSelect extends DefaultCompiledExpression {
 }

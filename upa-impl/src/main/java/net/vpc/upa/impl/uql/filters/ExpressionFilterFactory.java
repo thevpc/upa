@@ -52,7 +52,7 @@ public final class ExpressionFilterFactory {
 //        return null;
 //    }
 //
-//    public static CompiledSelect findEnclosingSelect(CompiledVar v) {
+//    public static CompiledSelect findEnclosingStatement(CompiledVar v) {
 //        DefaultCompiledExpression e = (DefaultCompiledExpression) v;
 //        CompiledVar rv = findRootVar(v);
 //        while (e != null) {

@@ -6,9 +6,9 @@ import java.lang.reflect.Method;
  * Created by vpc on 8/6/15.
  */
 public interface PlatformMethodProxyEvent<T> {
-    public T getObject();
-    public Object[] getArguments();
-    public Method getMethod();
-    public String getMethodName();
-    public Object invokeBase(T obj,Object[] args) throws Throwable;
+    T getObject();
+    Object[] getArguments();
+    Method getMethod();
+    String getMethodName();
+    Object invokeBase(T obj, Object[] args) throws Throwable;
 }

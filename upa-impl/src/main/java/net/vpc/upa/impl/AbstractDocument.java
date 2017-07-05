@@ -511,7 +511,23 @@ public abstract class AbstractDocument implements Document {
      */
     @Override
     public String toString() {
-        return toMap().toString();
+        Iterator<Map.Entry<String,Object>> i = entrySet().iterator();
+        if (! i.hasNext())
+            return "{}";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append('{');
+        for (;;) {
+            Map.Entry<String,Object> e = i.next();
+            String key = e.getKey();
+            Object value = e.getValue();
+            sb.append(key);
+            sb.append('=');
+            sb.append(value == this ? "(this Document)" : value);
+            if (! i.hasNext())
+                return sb.append('}').toString();
+            sb.append(',').append(' ');
+        }
     }
 
     @Override

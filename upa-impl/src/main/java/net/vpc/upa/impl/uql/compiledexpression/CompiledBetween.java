@@ -28,7 +28,7 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
         this.left = expression;
         this.min = min;
         this.max = max;
-        prepareChildren(left, min, max);
+        bindChildren(left, min, max);
     }
 
     public DefaultCompiledExpression getLeft() {
@@ -57,18 +57,21 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         switch (index) {
             case 0: {
+                unbindChildren(this.left);
                 left = expression;
-                prepareChildren(expression);
+                bindChildren(expression);
                 break;
             }
             case 1: {
+                unbindChildren(this.min);
                 min = expression;
-                prepareChildren(expression);
+                bindChildren(expression);
                 break;
             }
             case 2: {
+                unbindChildren(this.max);
                 max = expression;
-                prepareChildren(expression);
+                bindChildren(expression);
                 break;
             }
             default: {

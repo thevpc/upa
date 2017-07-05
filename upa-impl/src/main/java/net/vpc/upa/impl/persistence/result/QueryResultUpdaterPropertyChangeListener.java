@@ -20,7 +20,7 @@ class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        int index = typeInfo.fields.get(evt.getPropertyName()).dbIndex;
+        int index = typeInfo.fieldsMap.get(evt.getPropertyName()).dbIndex;
         result.write(index, evt.getNewValue());
     }
 }

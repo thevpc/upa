@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -185,7 +185,7 @@ public class DefaultEntityShield implements EntityShield {
     }
 
     public boolean isGeneratedId() {
-        for (Field field : entity.getPrimaryFields()) {
+        for (Field field : entity.getIdFields()) {
             if (field.getModifiers().contains(FieldModifier.PERSIST_FORMULA)) {
                 if (field.getPersistFormula() instanceof Sequence) {
                     return true;
@@ -286,7 +286,7 @@ public class DefaultEntityShield implements EntityShield {
                     throw new CloneDocumentNotAllowedException(entity);
                 }
             }
-            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(Fields2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
                 throw new CloneDocumentOldKeyNotFoundException(entity);
             }
@@ -327,7 +327,7 @@ public class DefaultEntityShield implements EntityShield {
                 }
             }
 
-            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(Fields2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
+            Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
                 throw new RenameDocumentOldKeyNotFoundException(entity);
             }

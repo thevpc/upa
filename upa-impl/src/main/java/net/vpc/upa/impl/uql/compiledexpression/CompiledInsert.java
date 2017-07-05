@@ -42,7 +42,7 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
 
     private CompiledInsert into(String entity, String alias) {
         this.entity = new CompiledEntityName(entity);
-        prepareChildren(this.entity);
+        bindChildren(this.entity);
         exportDeclaration(alias, DecObjectType.ENTITY, entity, alias);
         return this;
     }
@@ -66,7 +66,7 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
         if (other.entity != null) {
             entity = (CompiledEntityName) other.entity.copy();
             exportDeclaration(null, DecObjectType.ENTITY, entity.getName(), null);
-            prepareChildren(entity);
+            bindChildren(entity);
         }
         for (int i = 0; i < other.fields.size(); i++) {
             set(other.getField(i).getName(), other.getFieldValue(i).copy());
@@ -94,7 +94,7 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
         CompiledVar fName = new CompiledVar(key);
         CompiledVarVal varVal = new CompiledVarVal(fName, value);
         fields.add(varVal);
-        prepareChildren(varVal);
+        bindChildren(varVal);
         return this;
     }
 
@@ -179,11 +179,13 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if (index == 0) {
+            unbindChildren(this.entity);
             entity = (CompiledEntityName) expression;
-            prepareChildren(expression);
+            bindChildren(expression);
         } else {
+            unbindChildren(this.fields.get(index-1));
             fields.set(index-1, (CompiledVarVal)expression);
-            prepareChildren(expression);
+            bindChildren(expression);
         }
     }
 

@@ -20,14 +20,14 @@ public class CompiledKeyEnumerationExpression extends DefaultCompiledExpressionI
     public CompiledKeyEnumerationExpression(List<Object> keys, CompiledVar alias) {
         this.keys = keys;
         this.alias = alias;
-        prepareChildren(alias);
+        bindChildren(alias);
     }
 
 //    public String toSQL(boolean flag, PersistenceUnitFilter database) {
 //        if(keys.length==0){
 //            return "1=2";
 //        }
-//        Field[] pfs = database.getEntity(tableName).getPrimaryFields();
+//        Field[] pfs = database.getEntity(tableName).getIdFields();
 //        Or o = new Or();
 //        for (int i = 0; i < keys.length; i++) {
 //            And a = new And();
@@ -68,11 +68,27 @@ public class CompiledKeyEnumerationExpression extends DefaultCompiledExpressionI
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if(index ==0){
+            unbindChildren(this.alias);
             alias=(CompiledVar)expression;
-            prepareChildren(expression);
+            bindChildren(expression);
         }else{
             throw new IllegalArgumentException("Invalid index");
         }
     }
-    
+
+    @Override
+    public String toString() {
+        StringBuilder sb=new StringBuilder();
+        sb.append(alias);
+        sb.append(" in ");
+        sb.append("(");
+        for (int i = 0; i < keys.size(); i++) {
+            if(i==0){
+                sb.append(",");
+            }
+            sb.append(keys.get(i));
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

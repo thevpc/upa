@@ -62,7 +62,7 @@ public class KeyExpressionCompiler implements ExpressionTranslator {
         Key key = entity.getBuilder().idToKey(o.getId());
         Object[] values = key==null?null:key.getValue();
         Entity entity1 = o.getEntity();
-        List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getPrimaryFields());
+        List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getIdFields());
         for (int i = 0; i < f.size(); i++) {
             CompiledVar ppp = o.getAlias() == null ? null : new CompiledVar(o.getAlias());
             if(ppp==null){

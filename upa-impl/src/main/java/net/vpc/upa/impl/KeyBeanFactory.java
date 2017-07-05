@@ -35,7 +35,7 @@ public class KeyBeanFactory implements KeyFactory {
             if (idEntity != null) {
                 isEntityKey = true;
                 List<String> fn = new ArrayList<String>();
-//                for (Field primaryField : entity.getPrimaryFields()) {
+//                for (Field primaryField : entity.getIdFields()) {
 //                    fn.add(primaryField.getName());
 //                }
                 this.fieldNames = fn.toArray(new String[fn.size()]);

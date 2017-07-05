@@ -3,47 +3,38 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.uql.BindingId;
 
 public class CompiledVar extends CompiledVarOrMethod {
 
     public static final char DOT = '.';
     private static final long serialVersionUID = 1L;
-    private Object oldReferrer;
 
     public CompiledVar(Field field) {
-        this(field.getName(), field);
+        this(field.getName(), field,null);
     }
 
-    //priceTaxFree
     public CompiledVar(String name) {
-        this(name, null);
+        this(name, null,null);
     }
 
-    public Object getOldReferrer() {
-        return oldReferrer;
-    }
-
-    public void setOldReferrer(Object oldReferrer) {
-        this.oldReferrer = oldReferrer;
-    }
-
-    public CompiledVar(String name, Object referrer) {
+    public CompiledVar(String name, Object referrer,BindingId binding) {
         setName(name);
         setReferrer(referrer);
+        setBinding(binding);
     }
 
     @Override
     public DefaultCompiledExpression copy() {
-        CompiledVar o = new CompiledVar(getName(), getReferrer());
+        CompiledVar o = new CompiledVar(getName(), getReferrer(),getBinding());
         CompiledVarOrMethod c = getChild();
         if (c != null) {
             c = (CompiledVarOrMethod) c.copy();
         }
         o.setChild(c);
-        o.setBinding(getBinding());
         o.setDescription(getDescription());
-        o.setOldReferrer(getOldReferrer());
         o.getClientParameters().setAll(getClientParameters());
+        o.setImplicitDeclaration(getImplicitDeclaration());
         return o;
     }
 
@@ -58,19 +49,19 @@ public class CompiledVar extends CompiledVarOrMethod {
         return null;
     }
     
-    public String getChildlessPath() {
-        StringBuilder v = new StringBuilder();
-        if (getParentExpression() != null) {
-            if (getParentExpression() instanceof CompiledVar) {
-                v.append(((CompiledVar) getParentExpression()).getChildlessPath());
-            } else {
-                v.append(getParentExpression().toString());
-            }
-            v.append(".");
-        }
-        v.append(getName());
-        return v.toString();
-    }
+//    public String getChildlessPath() {
+//        StringBuilder v = new StringBuilder();
+//        if (getParentExpression() != null) {
+//            if (getParentExpression() instanceof CompiledVar) {
+//                v.append(((CompiledVar) getParentExpression()).getChildlessPath());
+//            } else {
+//                v.append(getParentExpression().toString());
+//            }
+//            v.append(".");
+//        }
+//        v.append(getName());
+//        return v.toString();
+//    }
 
     @Override
     public String toString() {

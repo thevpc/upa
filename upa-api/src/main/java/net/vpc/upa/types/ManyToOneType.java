@@ -81,6 +81,10 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
         return getRelationship().getTargetRole().getEntity();
     }
 
+    public Entity getSourceEntity() {
+        return getRelationship().getSourceRole().getEntity();
+    }
+
     public boolean isUpdatable() {
         return updatable;
     }

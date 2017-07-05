@@ -8,7 +8,7 @@ import net.vpc.upa.types.DataType;
  */
 public interface TypeMarshallerFactory {
 
-    public abstract void setMarshallManager(MarshallManager marshallManager);
+    void setMarshallManager(MarshallManager marshallManager);
 
-    public abstract TypeMarshaller createTypeMarshaller(DataType type);
+    TypeMarshaller createTypeMarshaller(DataType type);
 }

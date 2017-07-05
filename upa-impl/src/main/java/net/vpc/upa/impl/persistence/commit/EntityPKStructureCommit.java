@@ -36,7 +36,7 @@ public class EntityPKStructureCommit extends StructureCommit {
     public void persist(EntityExecutionContext executionContext, PersistenceState status) throws SQLException, UPAException {
         Entity entity = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
-        if (entity.getPrimaryFields().size() > 0) {
+        if (entity.getIdFields().size() > 0) {
             log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
             UConnection b = executionContext.getConnection();
             for (PrimitiveField primaryField : entity.getPrimitiveFields(FieldFilters.id())) {

@@ -7,7 +7,7 @@ import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionQueryInfo;
 import net.vpc.upa.impl.DefaultEntity;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.UnionEntityExtension;
 import net.vpc.upa.types.TypesFactory;
@@ -86,7 +86,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
         for (int i = 0; i < tabNames.length; i++) {
             tabNames[i] = updatableTables.get(i).getName();
         }
-        viewFields = getEntity().getFieldNames(Fields2.READ);
+        viewFields = getEntity().getFieldNames(FieldFilters2.READ);
         viewFields.remove(discriminator);
         fieldsMapping = new String[queryInfo.getEntities().size()][viewFields.size()];
         for (int i = 0; i < tabNames.length; i++) {
@@ -134,7 +134,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
 
     public QualifiedIdentifier getViewElementKey(QualifiedIdentifier viewKey) throws UPAException {
         Entity viewElementTable = getPersistenceUnit().getEntity(viewKey.getKey().getStringAt(0));
-        List<Field> fields = viewElementTable.getPrimaryFields();
+        List<Field> fields = viewElementTable.getIdFields();
         Object[] elemKeyVals = new Object[fields.size()];
         Object[] viewKeyVals = viewKey.getKey().getValue();
         System.arraycopy(viewKeyVals, 1, elemKeyVals, 0, elemKeyVals.length);
@@ -142,7 +142,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
     }
 
     public QualifiedIdentifier getViewKey(Entity wiewElementTable, QualifiedIdentifier viewElementKey) throws UPAException {
-        List<Field> fields = getEntity().getPrimaryFields();
+        List<Field> fields = getEntity().getIdFields();
         Object[] viewKeyVals = new Object[fields.size()];
         Object[] elemKeyVals = viewElementKey.getKey().getValue();
         System.arraycopy(elemKeyVals, 0, viewKeyVals, 0, elemKeyVals.length);
@@ -151,8 +151,8 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
     }
 
     public String viewFieldToViewElementField(Entity viewElementTable, String viewField) throws UPAException {
-        List<Field> pf = getEntity().getPrimaryFields();
-        List<Field> primaryFields = viewElementTable.getPrimaryFields();
+        List<Field> pf = getEntity().getIdFields();
+        List<Field> primaryFields = viewElementTable.getIdFields();
         for (int i = 1; i < pf.size(); i++) {
             if (viewField.equals(pf.get(i).getName())) {
                 return primaryFields.get(i - 1).getName();
@@ -162,8 +162,8 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
     }
 
     public String viewElementFieldToViewField(Entity viewElementTable, String viewElementField) throws UPAException {
-        List<Field> pf = viewElementTable.getPrimaryFields();
-        List<Field> primaryFields = getEntity().getPrimaryFields();
+        List<Field> pf = viewElementTable.getIdFields();
+        List<Field> primaryFields = getEntity().getIdFields();
         for (int i = 0; i < pf.size(); i++) {
             if (viewElementField.equals(pf.get(i).getName())) {
                 return primaryFields.get(i + 1).getName();
@@ -191,8 +191,8 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
     }
 
     public Expression getViewElementExpressionAt(int updatableTableIndex, Expression expression) throws UPAException {
-        List<Field> pf = getEntity().getPrimaryFields();
-        List<Field> pft = updatableTables.get(updatableTableIndex).getPrimaryFields();
+        List<Field> pf = getEntity().getIdFields();
+        List<Field> pft = updatableTables.get(updatableTableIndex).getIdFields();
         Expression[] pfte = new Expression[pft.size()];
         for (int i = 0; i < pfte.length; i++) {
             Field f = pft.get(i);

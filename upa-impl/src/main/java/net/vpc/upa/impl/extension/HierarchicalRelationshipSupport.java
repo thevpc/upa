@@ -223,7 +223,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
         List<Field> lfs = getTreeRelationship().getSourceRole().getFields();
         Concat concat = new Concat();
         concat.add(new Literal(r.getString(getHierarchyPathField()), getEntity().getField(getHierarchyPathField()).getDataType()));
-        List<Field> primaryFields = getEntity().getPrimaryFields();
+        List<Field> primaryFields = getEntity().getIdFields();
         for (Field f : primaryFields) {
             concat.add(new Literal(getHierarchyPathSeparator()));
             DataType t = f.getDataType();

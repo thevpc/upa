@@ -33,7 +33,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
             right.setTypeTransform(leftType);
         }
         this.operator = operator;
-        prepareChildren(left, right);
+        bindChildren(left, right);
     }
 
     public DefaultCompiledExpression getLeft() {
@@ -69,15 +69,17 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
         switch (index) {
             case 0: {
                 if (left != expression) {
+                    unbindChildren(this.left);
                     left = expression;
-                    prepareChildren(left);
+                    bindChildren(left);
                 }
                 break;
             }
             case 1: {
                 if (right != expression) {
+                    unbindChildren(this.right);
                     right = expression;
-                    prepareChildren(right);
+                    bindChildren(right);
                 }
                 break;
             }

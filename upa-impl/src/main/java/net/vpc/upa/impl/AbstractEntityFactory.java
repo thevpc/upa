@@ -34,7 +34,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
                 r.setObject(k, allFieldsDocument.getObject(k));
             }
             if(ensureIncludeIds) {
-                for (Field o : getEntity().getPrimaryFields()) {
+                for (Field o : getEntity().getIdFields()) {
                     String idname = o.getName();
                     if (!r.isSet(idname)) {
                         r.setObject(idname, allFieldsDocument.getObject(idname));
@@ -54,7 +54,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         Entity entity = getEntity();
         R r = createObject();
         Document ur = objectToDocument(r, true);
-        List<Field> primaryFields = entity.getPrimaryFields();
+        List<Field> primaryFields = entity.getIdFields();
         if (id == null) {
             for (Field aF : primaryFields) {
                 ur.setObject(aF.getName(), null);
@@ -75,7 +75,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         }
         Entity entity = getEntity();
         Document ur = createDocument();
-        List<Field> primaryFields = entity.getPrimaryFields();
+        List<Field> primaryFields = entity.getIdFields();
 //        if (k == null) {
 //            for (Field aF : primaryFields) {
 //                ur.setObject(aF.getName(), null);
@@ -98,7 +98,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             return documentToId((Document) object);
         }
         Entity entity = getEntity();
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Object[] rawKey = new Object[f.size()];
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
@@ -118,7 +118,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             return null;
         }
         Entity entity = getEntity();
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Object[] rawKey = new Object[f.size()];
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
@@ -141,7 +141,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             return documentToKey((Document) object);
         }
         Entity entity = getEntity();
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Object[] rawKey = new Object[f.size()];
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
@@ -161,7 +161,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             return null;
         }
         Entity entity = getEntity();
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Object[] rawKey = new Object[f.size()];
         for (int i = 0; i < rawKey.length; i++) {
             final Field field = f.get(i);
@@ -189,7 +189,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
             return null;
         }
         Document ur = createDocument();
-        List<Field> primaryFields = getEntity().getPrimaryFields();
+        List<Field> primaryFields = getEntity().getIdFields();
         if (key == null) {
             for (Field aF : primaryFields) {
                 ur.setObject(aF.getName(), null);
@@ -243,7 +243,7 @@ public abstract class AbstractEntityFactory implements EntityFactory {
 //    }
 
     public void setDocmentId(Document document, Object id) throws UPAException {
-        List<Field> f = getEntity().getPrimaryFields();
+        List<Field> f = getEntity().getIdFields();
         if (id == null) {
             for (Field aF : f) {
                 document.remove(aF.getName());

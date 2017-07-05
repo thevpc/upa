@@ -86,7 +86,7 @@ public class Between extends OperatorExpression
         } else if (tag.equals(MAX)) {
             this.max = e;
         } else {
-            throw new IllegalArgumentException("Insupported");
+            throw new IllegalArgumentException("Unsupported");
         }
     }
 

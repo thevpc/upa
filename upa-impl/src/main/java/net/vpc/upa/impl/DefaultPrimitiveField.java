@@ -152,7 +152,7 @@ public class DefaultPrimitiveField extends AbstractField implements PrimitiveFie
 //    }
 //
 //    public boolean isTopPrimaryField() {
-//            return equals(entity.getPrimaryFields()[0]);
+//            return equals(entity.getIdFields()[0]);
 //    }
 
 

@@ -16,14 +16,14 @@ import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.persistence.shared.marshallers.ConstantDataMarshallerFactory;
 import net.vpc.upa.impl.persistence.shared.marshallers.DefaultSerializablePlatformObjectMarshaller;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.util.*;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
@@ -44,22 +44,23 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public static final String DRIVER_TYPE_GENERIC = "GENERIC";
     public static final String DRIVER_TYPE_ODBC = "ODBC";
     protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
-
-    protected static Logger log = Logger.getLogger(DefaultPersistenceStore.class.getName());
-
     protected static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
     protected static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
     public static boolean DO_WARNINGS = false;
+    protected static Logger log = Logger.getLogger(DefaultPersistenceStore.class.getName());
+    private static PlatformLenientType JAVAMELODY_JDBCDRIVER = new PlatformLenientType("net.bull.javamelody.JdbcDriver");
+    private static HashSet<String> SQL2003_RESERVED_WORDS = new HashSet<String>(Arrays.asList(
+            "ADD", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "AS", "ASENSITIVE", "ASYMMETRIC", "AT", "ATOMIC", "AUTHORIZATION", "BEGIN", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOOLEAN", "BOTH", "BY", "CALL", "CALLED", "CASCADED", "CASE", "CAST", "CHAR", "CHARACTER", "CHECK", "CLOB", "CLOSE", "COLLATE", "COLUMN", "COMMIT", "CONNECT", "CONSTRAINT", "CONTINUE", "CORRESPONDING", "CREATE", "CROSS", "CUBE", "CURRENT", "CURRENT_DATE", "CURRENT_DEFAULT_TRANSFORM_GROUP", "CURRENT_PATH", "CURRENT_ROLE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_TRANSFORM_GROUP_FOR_TYPE", "CURRENT_USER", "CURSOR", "CYCLE", "DATE", "DAY", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT", "DELETE", "DEREF", "DESCRIBE", "DETERMINISTIC", "DISCONNECT", "DISTINCT", "DOUBLE", "DROP", "DYNAMIC", "EACH", "ELEMENT", "ELSE", "END", "END-EXEC", "ESCAPE", "EXCEPT", "EXEC", "EXECUTE", "EXISTS", "EXTERNAL", "FALSE", "FETCH", "FILTER", "FLOAT", "FOR", "FOREIGN", "FREE", "FROM", "FULL", "FUNCTION", "GET", "GLOBAL", "GRANT", "GROUP", "GROUPING", "HAVING", "HOLD", "HOUR", "IDENTITY", "IMMEDIATE", "IN", "INDICATOR", "INNER", "INOUT", "INPUT", "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTERSECT", "INTERVAL", "INTO", "IS", "ISOLATION", "JOIN", "LANGUAGE", "LARGE", "LATERAL", "LEADING", "LEFT", "LIKE", "LOCAL", "LOCALTIME", "LOCALTIMESTAMP", "MATCH", "MEMBER", "MERGE", "METHOD", "MINUTE", "MODIFIES", "MODULE", "MONTH", "MULTISET", "NATIONAL", "NATURAL", "NCHAR", "NCLOB", "NEXT", "NEW", "NO", "NONE", "NOT", "NULL", "NUMERIC", "OF", "OLD", "ON", "ONLY", "OPEN", "OR", "ORDER", "OUT", "OUTER", "OUTPUT", "OVER", "OVERLAPS", "PARAMETER", "PARTITION", "PRECISION", "PREPARE", "PRIMARY", "PROCEDURE", "RANGE", "READS", "REAL", "RECURSIVE", "REF", "REFERENCES", "REFERENCING", "REGR_AVGX", "REGR_AVGY", "REGR_COUNT", "REGR_INTERCEPT", "REGR_R2", "REGR_SLOPE", "REGR_SXX", "REGR_SXY", "REGR_SYY", "RELEASE", "RESULT", "RETURN", "RETURNS", "REVOKE", "RIGHT", "ROLLBACK", "ROLLUP", "ROW", "ROWS", "SAVEPOINT", "SCROLL", "SEARCH", "SECOND", "SELECT", "SENSITIVE", "SESSION_USER", "SET", "SIMILAR", "SMALLINT", "SOME", "SPECIFIC", "SPECIFICTYPE", "SQL", "SQLEXCEPTION", "SQLSTATE", "SQLWARNING", "START", "STATIC", "SUBMULTISET", "SYMMETRIC", "SYSTEM", "SYSTEM_USER", "TABLE", "THEN", "TIME", "TIMESTAMP", "TIMEZONE_HOUR", "TIMEZONE_MINUTE", "TO", "TRAILING", "TRANSLATION", "TREAT", "TRIGGER", "TRUE", "UESCAPE", "UNION", "UNIQUE", "UNKNOWN", "UNNEST", "UPDATE", "UPPER", "USER", "USING", "VALUE", "VALUES", "VAR_POP", "VAR_SAMP", "VARCHAR", "VARYING", "WHEN", "WHENEVER", "WHERE", "WIDTH_BUCKET", "WINDOW", "WITH", "WITHIN", "WITHOUT", "YEAR"));
+    @PortabilityHint(target = "C#", name = "suppress")
+    private final Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
+    boolean isUpdateComplexValuesStatementSupported;
+    boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
     //    String verrou;
 //    private boolean isOpen;
     private boolean readOnly;
     private String persistenceUnitName;
     private ObjectFactory factory;
     private IdentifierStoreTranslator identifierStoreTranslator;
-    private static PlatformLenientType JAVAMELODY_JDBCDRIVER=new PlatformLenientType("net.bull.javamelody.JdbcDriver");
-
-
-
     //    private StatementDelegate statement;
 //    private ConnectionProfile profile;
 //    private String dbName;
@@ -77,14 +78,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     private String identifierQuoteString;
     private PersistenceNameConfig nameConfig;
     private HashSet<String> reservedWords;
-    private static HashSet<String> SQL2003_RESERVED_WORDS = new HashSet<String>(Arrays.asList(
-            "ADD", "ALL", "ALLOCATE", "ALTER", "AND", "ANY", "ARE", "ARRAY", "AS", "ASENSITIVE", "ASYMMETRIC", "AT", "ATOMIC", "AUTHORIZATION", "BEGIN", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOOLEAN", "BOTH", "BY", "CALL", "CALLED", "CASCADED", "CASE", "CAST", "CHAR", "CHARACTER", "CHECK", "CLOB", "CLOSE", "COLLATE", "COLUMN", "COMMIT", "CONNECT", "CONSTRAINT", "CONTINUE", "CORRESPONDING", "CREATE", "CROSS", "CUBE", "CURRENT", "CURRENT_DATE", "CURRENT_DEFAULT_TRANSFORM_GROUP", "CURRENT_PATH", "CURRENT_ROLE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_TRANSFORM_GROUP_FOR_TYPE", "CURRENT_USER", "CURSOR", "CYCLE", "DATE", "DAY", "DEALLOCATE", "DEC", "DECIMAL", "DECLARE", "DEFAULT", "DELETE", "DEREF", "DESCRIBE", "DETERMINISTIC", "DISCONNECT", "DISTINCT", "DOUBLE", "DROP", "DYNAMIC", "EACH", "ELEMENT", "ELSE", "END", "END-EXEC", "ESCAPE", "EXCEPT", "EXEC", "EXECUTE", "EXISTS", "EXTERNAL", "FALSE", "FETCH", "FILTER", "FLOAT", "FOR", "FOREIGN", "FREE", "FROM", "FULL", "FUNCTION", "GET", "GLOBAL", "GRANT", "GROUP", "GROUPING", "HAVING", "HOLD", "HOUR", "IDENTITY", "IMMEDIATE", "IN", "INDICATOR", "INNER", "INOUT", "INPUT", "INSENSITIVE", "INSERT", "INT", "INTEGER", "INTERSECT", "INTERVAL", "INTO", "IS", "ISOLATION", "JOIN", "LANGUAGE", "LARGE", "LATERAL", "LEADING", "LEFT", "LIKE", "LOCAL", "LOCALTIME", "LOCALTIMESTAMP", "MATCH", "MEMBER", "MERGE", "METHOD", "MINUTE", "MODIFIES", "MODULE", "MONTH", "MULTISET", "NATIONAL", "NATURAL", "NCHAR", "NCLOB", "NEXT", "NEW", "NO", "NONE", "NOT", "NULL", "NUMERIC", "OF", "OLD", "ON", "ONLY", "OPEN", "OR", "ORDER", "OUT", "OUTER", "OUTPUT", "OVER", "OVERLAPS", "PARAMETER", "PARTITION", "PRECISION", "PREPARE", "PRIMARY", "PROCEDURE", "RANGE", "READS", "REAL", "RECURSIVE", "REF", "REFERENCES", "REFERENCING", "REGR_AVGX", "REGR_AVGY", "REGR_COUNT", "REGR_INTERCEPT", "REGR_R2", "REGR_SLOPE", "REGR_SXX", "REGR_SXY", "REGR_SYY", "RELEASE", "RESULT", "RETURN", "RETURNS", "REVOKE", "RIGHT", "ROLLBACK", "ROLLUP", "ROW", "ROWS", "SAVEPOINT", "SCROLL", "SEARCH", "SECOND", "SELECT", "SENSITIVE", "SESSION_USER", "SET", "SIMILAR", "SMALLINT", "SOME", "SPECIFIC", "SPECIFICTYPE", "SQL", "SQLEXCEPTION", "SQLSTATE", "SQLWARNING", "START", "STATIC", "SUBMULTISET", "SYMMETRIC", "SYSTEM", "SYSTEM_USER", "TABLE", "THEN", "TIME", "TIMESTAMP", "TIMEZONE_HOUR", "TIMEZONE_MINUTE", "TO", "TRAILING", "TRANSLATION", "TREAT", "TRIGGER", "TRUE", "UESCAPE", "UNION", "UNIQUE", "UNKNOWN", "UNNEST", "UPDATE", "UPPER", "USER", "USING", "VALUE", "VALUES", "VAR_POP", "VAR_SAMP", "VARCHAR", "VARYING", "WHEN", "WHENEVER", "WHERE", "WIDTH_BUCKET", "WINDOW", "WITH", "WITHIN", "WITHOUT", "YEAR"));
     private ConnectionProfile connectionProfile;
-    boolean isUpdateComplexValuesStatementSupported;
-    boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
-
-    @PortabilityHint(target = "C#", name = "suppress")
-    private final Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
     @PortabilityHint(target = "C#", name = "suppress")
     private EmbeddedDatasourceFactoryComparator embeddedDatasourceFactoryComparator = DefaultEmbeddedDatasourceFactoryComparator.INSTANCE;
     @PortabilityHint(target = "C#", name = "suppress")
@@ -121,6 +115,36 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //    private Hashtable registredFunctionsMap=new Hashtable();
 
 
+    public DefaultPersistenceStore() {
+        parameters = new DefaultProperties();
+        net.vpc.upa.Properties map = parameters;
+        map.setBoolean("isComplexSelectSupported", false);
+        map.setBoolean("isUpdateComplexValuesStatementSupported", false);
+        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+        map.setBoolean("isFromClauseInUpdateStatementSupported", false);
+        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
+        map.setBoolean("isReferencingSupported", true);
+        map.setBoolean("isViewSupported", false);
+        map.setBoolean("isTopSupported", false);
+//        this.parser = (new SQLParser());
+        marshallManager = new DefaultMarshallManager();
+        sqlManager = new DefaultSQLManager(marshallManager);
+
+//        setWrapper(java.util.Date.class,DATETIME);
+//        setWrapper(java.sql.Date.class,DATE);
+//        setWrapper(java.sql.Time.class,TIME);
+//        setWrapper(java.sql.Timestamp.class,TIMESTAMP);
+        getMarshallManager().setTypeMarshaller(Object.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
+        getMarshallManager().setTypeMarshaller(FileData.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
+        getMarshallManager().setTypeMarshaller(DataType.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
+        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
+        getMarshallManager().setTypeMarshaller(java.sql.Date.class, TypeMarshallerUtils.SQL_DATE);
+        getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
+        getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
+        getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
+
+    }
+
     @Override
     public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile, PersistenceNameConfig nameConfig) throws UPAException {
         this.persistenceUnitName = persistenceUnit.toString();
@@ -128,7 +152,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         this.readOnly = readOnly;
         this.connectionProfile = connectionProfile;
 
-        embeddedDataSourceSupported=null;
+        embeddedDataSourceSupported = null;
         /**
          * @PortabilityHint(target = "C#", name = "suppress")
          */
@@ -178,36 +202,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
     @Override
     public Set<String> getSupportedDrivers() {
         return new HashSet<String>();
-    }
-
-    public DefaultPersistenceStore() {
-        parameters = new DefaultProperties();
-        net.vpc.upa.Properties map = parameters;
-        map.setBoolean("isComplexSelectSupported", false);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", false);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", false);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
-        map.setBoolean("isReferencingSupported", true);
-        map.setBoolean("isViewSupported", false);
-        map.setBoolean("isTopSupported", false);
-//        this.parser = (new SQLParser());
-        marshallManager = new DefaultMarshallManager();
-        sqlManager = new DefaultSQLManager(marshallManager);
-
-//        setWrapper(java.util.Date.class,DATETIME);
-//        setWrapper(java.sql.Date.class,DATE);
-//        setWrapper(java.sql.Time.class,TIME);
-//        setWrapper(java.sql.Timestamp.class,TIMESTAMP);
-        getMarshallManager().setTypeMarshaller(Object.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(FileData.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(DataType.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(java.sql.Date.class, TypeMarshallerUtils.SQL_DATE);
-        getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
-        getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
-        getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
-
     }
 
     public boolean isComplexSelectSupported() {
@@ -662,8 +656,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
                                                   String password,
                                                   Map<String, String> properties) throws UPAException {
         try {
-            Map<String, String> jdbcProperties=new HashMap<String, String>();
-            if(properties!=null){
+            Map<String, String> jdbcProperties = new HashMap<String, String>();
+            if (properties != null) {
                 jdbcProperties.putAll(properties);
             }
             if (user != null) {
@@ -679,12 +673,12 @@ public class DefaultPersistenceStore implements PersistenceStore {
              */
             {
                 String monitor = jdbcProperties.get("monitor");
-                if(monitor!=null){
+                if (monitor != null) {
                     for (String mon : monitor.split(" ,;\n")) {
-                        if("javamelody".equalsIgnoreCase(mon)){
-                            if(JAVAMELODY_JDBCDRIVER.isValid()){
-                                jdbcProperties.put("driver",driver);
-                                driver=JAVAMELODY_JDBCDRIVER.getTypeName();
+                        if ("javamelody".equalsIgnoreCase(mon)) {
+                            if (JAVAMELODY_JDBCDRIVER.isValid()) {
+                                jdbcProperties.put("driver", driver);
+                                driver = JAVAMELODY_JDBCDRIVER.getTypeName();
                             }
                         }
                     }
@@ -697,11 +691,11 @@ public class DefaultPersistenceStore implements PersistenceStore {
              */
             {
                 String poolName = jdbcProperties.get("pool");
-                if(poolName==null){
-                    poolName="";
+                if (poolName == null) {
+                    poolName = "";
                 }
-                poolName=poolName.trim();
-                boolean pool = poolName.length()>0 && !("false".equalsIgnoreCase(poolName));
+                poolName = poolName.trim();
+                boolean pool = poolName.length() > 0 && !("false".equalsIgnoreCase(poolName));
                 if (pool) {
                     DataSource ds = resolvePoolableDataSource(driver, url, user, password, jdbcProperties);
                     if (ds != null) {
@@ -710,7 +704,6 @@ public class DefaultPersistenceStore implements PersistenceStore {
                     log.severe("Datasource is not supported, ignored pooling");
                 }
             }
-
 
 
             /**
@@ -801,6 +794,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     protected int getMaxQueryJoinCount() {
         return getProperties().getInt("maxQueryJoinCount", -1);
     }
+
     protected int getMaxQueryColumnsCount() {
         return getProperties().getInt("maxQueryColumnsCount", -1);
     }
@@ -851,7 +845,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             VarVal varVal = update2.getVarVal(i);
             boolean complexSelect = false;
             Expression fieldExpression = varVal.getVal();
-            if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported,isUpdateComplexValuesIncludingUpdatedTableSupported))) {
+            if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported, isUpdateComplexValuesIncludingUpdatedTableSupported))) {
                 complexSelect = true;
             }
             if (complexSelect) {
@@ -872,7 +866,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
             FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
 
         if (defaultFieldFilter == null) {
-            defaultFieldFilter = Fields2.READ;
+            defaultFieldFilter = FieldFilters2.READ;
         }
         ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
         ResultMetaData m = expressionManager.createMetaData((EntityStatement) baseExpression, defaultFieldFilter);
@@ -921,23 +915,21 @@ public class DefaultPersistenceStore implements PersistenceStore {
         int maxQueryJoinCount = getMaxQueryJoinCount();
         int maxQueryColumnsCount = getMaxQueryColumnsCount();
         ExpressionCompilerConfig config = new ExpressionCompilerConfig();
-        config.setExpandEntityFilter(true);
         config.setExpandFieldFilter(defaultFieldFilter);
-        config.setExpandFields(true);
-        config.setValidate(true);
         config.setHints(hints);
-        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())? UQLUtils.THIS:statement.getEntityAlias());
+        config.setResolveThis(true);
+//        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())? UQLUtils.THIS:statement.getEntityAlias());
 
         DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
-        if (maxQueryJoinCount > 0 || maxQueryColumnsCount >0) {
+        if (maxQueryJoinCount > 0 || maxQueryColumnsCount > 0) {
             for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                 CompiledSelect cs = (CompiledSelect) ce;
-                if (maxQueryJoinCount>0 && cs.getJoins().length >= maxQueryJoinCount) {
+                if (maxQueryJoinCount > 0 && cs.getJoins().length >= maxQueryJoinCount) {
                     log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                     reeavluateWithLessJoin = true;
                     break;
-                }else if(maxQueryColumnsCount>0 && cs.getFields().size()>maxQueryColumnsCount){
+                } else if (maxQueryColumnsCount > 0 && cs.getFields().size() > maxQueryColumnsCount) {
                     log.warning("this query is very likely to fail. It uses " + cs.getFields().size() + " > " + maxQueryColumnsCount + " columns : " + statement);
                     reeavluateWithLessJoin = true;
                 }
@@ -945,11 +937,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
             if (reeavluateWithLessJoin) {
                 //reset expression
                 config = new ExpressionCompilerConfig()
-                        .setExpandEntityFilter(true)
                         .setExpandFieldFilter(defaultFieldFilter)
-                        .setExpandFields(true)
-                        .setValidate(true)
-                        .setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())?statement.getEntityName():statement.getEntityAlias());
+                        .setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias()) ? statement.getEntityName() : statement.getEntityAlias());
 
                 hints.put(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
                 config.setHints(hints);
@@ -957,11 +946,11 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 reeavluateWithLessJoin = false;
                 for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                     CompiledSelect cs = (CompiledSelect) ce;
-                    if (maxQueryJoinCount>0 && cs.getJoins().length >= maxQueryJoinCount) {
+                    if (maxQueryJoinCount > 0 && cs.getJoins().length >= maxQueryJoinCount) {
                         log.warning("this query is very likely to fail. It STILL uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                         reeavluateWithLessJoin = true;
                         break;
-                    }else if(maxQueryColumnsCount>0 && cs.getFields().size()>maxQueryColumnsCount){
+                    } else if (maxQueryColumnsCount > 0 && cs.getFields().size() > maxQueryColumnsCount) {
                         log.warning("this query is very likely to fail. It STILL uses " + cs.getFields().size() + " > " + maxQueryColumnsCount + " columns : " + statement);
                         reeavluateWithLessJoin = true;
                     }
@@ -980,11 +969,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 CompiledQueryField field = cquery.getField(i);
 //                String fieldAlias = field.getAliasBinding();
                 net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression expression1 = field.getExpression();
-                String binding = field.getBinding();
-//                if(binding==null){
-//                    binding=field.getAlias();
-//                }
-                String exprString = expression1.toString();
+                BindingId binding = field.getBinding();
                 String validName = field.getName() != null ? field.getName() : expression1.toString();
                 if (validName == null) {
                     validName = "#" + i;
@@ -993,18 +978,19 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 DataTypeTransform tc = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                 DataTypeTransform c = null;
                 if (tc == null) {
+                    tc = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                     throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
                 }
                 Field f = null;
-                Field fbase = null;
                 if (expression1 instanceof CompiledVar) {
                     CompiledVar v = (CompiledVar) expression1;
                     CompiledVarOrMethod leaf = v.getDeepChild();
-                    Object referrer = leaf.getReferrer();
-                    if (referrer instanceof Field) {
-                        f = (Field) referrer;
-                        fbase = (Field) leaf.getBaseReferrer();
-                        c = UPAUtils.getTypeTransformOrIdentity(f);
+                    if (leaf != null) {
+                        Object referrer = leaf.getReferrer();
+                        if (referrer instanceof Field) {
+                            f = (Field) referrer;
+                            c = UPAUtils.getTypeTransformOrIdentity(f);
+                        }
                     }
                 }
                 if (c == null) {
@@ -1020,7 +1006,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 DataTypeTransform baseTransform = c;
                 c = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                ne[i] = new NativeField(validName, binding, exprString, field.getIndex(), field.isExpanded(), f, fbase,c);
+                ne[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), f, null, c);
             }
         } else {
             ne = new NativeField[0];
@@ -1028,7 +1014,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
         String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
 
-        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(CompiledExpressionUtils.PARAM_FILTER);
+        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
         List<Parameter> values = new ArrayList<Parameter>();
         for (CompiledParam e : cvalues) {
             if (e.isUnspecified()) {
@@ -1344,7 +1330,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //                sb.append(getFieldDeclaration(keys[j]));
 //            }
 //
-//            Field[] pk = entity.getPrimaryFields();
+//            Field[] pk = entity.getIdFields();
 //            if (pk.length > 0) {
 //                if (firstElement)
 //                    firstElement = false;
@@ -1611,7 +1597,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 //            }
 //            if (complexVals.size() > 0) {
 //                Select q = new Select();
-//                for (Field primaryField : entity.getPrimaryFields()) {
+//                for (Field primaryField : entity.getIdFields()) {
 //                    q.field(primaryField.getName());
 //                }
 //                String oldAlias = query.getEntityAlias();

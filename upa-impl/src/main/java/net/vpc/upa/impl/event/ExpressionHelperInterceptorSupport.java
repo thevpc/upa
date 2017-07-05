@@ -137,7 +137,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
     }
 
     private IdCollectionExpression createInCollection(Entity entity, Collection<Key> collection) throws UPAException {
-        List<Field> pfs = entity.getPrimaryFields();
+        List<Field> pfs = entity.getIdFields();
         Var[] v = new Var[pfs.size()];
         for (int i = 0; i < pfs.size(); i++) {
             v[i] = new Var(new Var(pfs.get(i).getEntity().getName()), pfs.get(i).getName());

@@ -10,6 +10,7 @@ import net.vpc.upa.bulk.*;
 import net.vpc.upa.bulk.TextFixedWidthFormatter;
 import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -18,20 +19,18 @@ import org.junit.Test;
  */
 public class ExportUC {
 
-    static {
-        LogUtils.prepare();
-    }
     private static final Logger log = Logger.getLogger(ExportUC.class.getName());
 
-    public static void main(String[] args) {
-        new ExportUC().run();
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(ExportUC.class);
+        pu.start();
+        bo = UPA.makeSessionAware(new Business());
     }
 
     @Test
-    public void run() {
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
-        pu.start();
-        Business bo = UPA.makeSessionAware(new Business());
+    public void process() {
         bo.process();
     }
 
@@ -44,7 +43,7 @@ public class ExportUC {
 
         public void process() {
             try {
-                PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
+                PersistenceUnit pu = UPA.getPersistenceUnit();
                 ImportExportManager iem = pu.getImportExportManager();
 //                processTextFixedWidth(pu, iem);
                 processSheet(pu, iem);
@@ -91,7 +90,7 @@ public class ExportUC {
         }
     }
 
-    public static enum Status {
+    public enum Status {
 
         VALID,
         INVALID

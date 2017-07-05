@@ -10,7 +10,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface CompiledQueryStatement extends CompiledEntityStatement {
-    public int countFields();
-    public List<CompiledQueryField> getFields();
-    public CompiledQueryField getField(int i);
+    int countFields();
+    List<CompiledQueryField> getFields();
+    CompiledQueryField getField(int i);
 }

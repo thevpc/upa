@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.persistence.result;
 
+import net.vpc.upa.impl.uql.BindingId;
+
 /**
  * Created by vpc on 6/29/16.
  */

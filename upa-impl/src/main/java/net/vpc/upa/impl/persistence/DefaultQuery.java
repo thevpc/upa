@@ -4,7 +4,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.result.*;
 import net.vpc.upa.impl.uql.util.UQLUtils;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -97,7 +97,6 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     protected CompiledEntityStatement createCompiledEntityStatement() {
-        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
         String alias = null;
         String ent = null;
         if (query instanceof Select) {
@@ -112,12 +111,11 @@ public class DefaultQuery extends AbstractQuery {
                 alias = ent;
             }
         }
+        ExpressionCompilerConfig config = new ExpressionCompilerConfig();
+        config.setTranslateOnly();
         if (alias != null) {
             config.setThisAlias(alias);
         }
-        config.setExpandFields(false);
-        config.setExpandEntityFilter(false);
-        config.setValidate(false);
         return (CompiledEntityStatement) context.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
     }
 
@@ -135,7 +133,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getMultiDocumentList();
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             MultiDocumentList r = new MultiDocumentList(queryExecutor, isUpdatable());
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {
@@ -157,7 +155,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.isEmpty();
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             QueryResult r = null;
             try {
                 r = queryExecutor.getQueryResult();
@@ -191,21 +189,21 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getResultList(builder);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
             if (fetchStrategy == null) {
                 fetchStrategy = QueryFetchStrategy.JOIN;
             }
             boolean itemAsDocument = builder instanceof DocumentQueryResultItemBuilder;
-            boolean relationAsDocument = false;
-            boolean supportCache = false;
+            boolean relationAsDocument = itemAsDocument;//false;
+            int supportCache = 10000;
             QueryResultRelationLoader loader = null;
             switch (fetchStrategy) {
                 case JOIN: {
                     break;
                 }
                 case SELECT: {
-                    supportCache = true;
+                    supportCache = 10000;
                     loader = new QueryRelationLoaderSelectObject();
                     break;
                 }
@@ -247,7 +245,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(index);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             if (index < 0 || index > queryExecutor.getMetaData().getResultFields().size()) {
                 throw new ArrayIndexOutOfBoundsException("Invalid index " + index);
             }
@@ -292,7 +290,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getValueList(name);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             List<ResultField> ne = queryExecutor.getMetaData().getResultFields();
             int index = -1;
             for (int i = 0; i < ne.size(); i++) {
@@ -324,7 +322,7 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.getTypeList(type, fields);
         }
         try {
-            QueryExecutor queryExecutor = executeQuery(Fields2.READ);
+            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
             TypeList<T> r = new TypeList<T>(queryExecutor, type, fields);
             allResults.add(r);
             if (!isLazyListLoadingEnabled()) {

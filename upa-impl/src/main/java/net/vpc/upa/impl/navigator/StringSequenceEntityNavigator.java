@@ -13,7 +13,6 @@ import net.vpc.upa.impl.EntitySequenceManager;
 import net.vpc.upa.impl.SequenceManager;
 import net.vpc.upa.impl.PrivateSequence;
 import net.vpc.upa.impl.persistence.SequencePatternEvaluator;
-import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 
 /**
@@ -48,7 +47,7 @@ public class StringSequenceEntityNavigator extends DefaultEntityNavigator {
     @Override
     public Object getNewKey()
             throws UPAException {
-        return entity.createId(getNewValue(entity.getPrimaryFields().get(0)));
+        return entity.createId(getNewValue(entity.getIdFields().get(0)));
     }
 
     private String getNewValue(Field field)

@@ -14,15 +14,15 @@ import java.util.Set;
  */
 public interface EntityFactory {
 
-    public Document createDocument();
+    Document createDocument();
 
-    public <R> R createObject();
+    <R> R createObject();
 
-    public Document objectToDocument(Object object, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
+    Document objectToDocument(Object object, Set<String> fields, boolean ignoreUnspecified, boolean ensureIncludeIds);
 
-    public void setProperty(Object object, String property, Object value) throws UPAException;
+    void setProperty(Object object, String property, Object value) throws UPAException;
 
-    public Object getProperty(Object object, String property) throws UPAException;
+    Object getProperty(Object object, String property) throws UPAException;
 
 
     /**
@@ -88,23 +88,23 @@ public interface EntityFactory {
 
     Document keyToDocument(Key key) throws UPAException;
 
-    public void setDocmentId(Document document, Object id) throws UPAException;
+    void setDocmentId(Document document, Object id) throws UPAException;
 
-    public void setObjectId(Object object, Object id) throws UPAException;
+    void setObjectId(Object object, Object id) throws UPAException;
 
-    public Expression documentToExpression(Document document, String alias) throws UPAException;
+    Expression documentToExpression(Document document, String alias) throws UPAException;
 
-    public Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException;
+    Expression objectToExpression(Object object, boolean ignoreUnspecified, String alias) throws UPAException;
 
     //    public Expression idToExpression(Object key) throws UPAException;
-    public Expression idToExpression(Object id, String alias) throws UPAException;
+    Expression idToExpression(Object id, String alias) throws UPAException;
 
-    public Expression objectToIdExpression(Object objectOrDocument, String alias) throws UPAException;
+    Expression objectToIdExpression(Object objectOrDocument, String alias) throws UPAException;
 
-    public Expression keyToExpression(Key documentKey, String alias) throws UPAException;
+    Expression keyToExpression(Key documentKey, String alias) throws UPAException;
 
-    public <K> Expression idListToExpression(List<K> idList, String alias) throws UPAException;
+    <K> Expression idListToExpression(List<K> idList, String alias) throws UPAException;
 
-    public Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException;
+    Expression keyListToExpression(List<Key> keyList, String alias) throws UPAException;
 
 }

@@ -61,7 +61,7 @@ public class QualifiedIdentifier {
     }
 
     public Object getValue(String fieldName) throws UPAException {
-        List<Field> f = entity.getPrimaryFields();
+        List<Field> f = entity.getIdFields();
         Key uKey = getKey();
         for (int i = 0; i < f.size(); i++) {
             if (f.get(i).getName().equals(fieldName)) {

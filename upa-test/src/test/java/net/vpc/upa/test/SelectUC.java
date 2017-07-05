@@ -1,16 +1,15 @@
 package net.vpc.upa.test;
 
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.Assert;
 import net.vpc.upa.*;
-import net.vpc.upa.filters.EntityFilters;
-import net.vpc.upa.test.model.Client;
-import net.vpc.upa.test.util.LogUtils;
-import net.vpc.upa.Query;
+import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -18,34 +17,54 @@ import org.junit.Test;
  */
 public class SelectUC {
 
-    static {
-        LogUtils.prepare();
-    }
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(SelectUC.class.getName());
+    private static Business bo;
+
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(SelectUC.class);
+        pu.addEntity(SharedClient.class);
+        pu.start();
+        bo = UPA.makeSessionAware(new Business());
+        bo.init();
+    }
 
     @Test
-    public void testSelect() {
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
-        pu.addEntity(Client.class);
-        pu.start();
+    public void testQuery1() {
+        bo.testQuery1();
+    }
 
-        Business bo = UPA.makeSessionAware(new Business());
-        bo.init();
+    @Test
+    public void testQuery2() {
         bo.testQuery2();
+    }
+
+    @Test
+    public void testQuery3() {
+        bo.testQuery3();
+    }
+
+    @Test
+    public void testQuery4() {
+        bo.testQuery4();
+    }
+
+    @Test
+    public void testQuery5() {
+        bo.testQuery5();
     }
 
     public static class Business {
 
         public void init() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
-            pu.clear(EntityFilters.all(),null);
-            Client c = getRefClient();
-            pu.persist(c);
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            pu.clear(null, null);
+            pu.persist(getRefClient1());
+            pu.persist(getRefClient2());
         }
 
-        private Client getRefClient() {
-            Client c=new Client();
+        private SharedClient getRefClient1() {
+            SharedClient c = new SharedClient();
             c.setId(1);
             c.setFirstName("emma");
             c.setLastName("community");
@@ -53,55 +72,82 @@ public class SelectUC {
             return c;
         }
 
-        public void testQuery() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
-            Query q = pu.createQuery("Select a from Client a where a.firstName like :v or a.firstName like :v  or a.firstName like :v")
-                    .setParameter("v", "%mm%")
-                    ;
-            List<Document> r = q.getDocumentList();
-            Assert.assertEquals(r, Arrays.asList(pu.getEntity(Client.class).getBuilder().objectToDocument(getRefClient())));
+        private SharedClient getRefClient2() {
+            SharedClient c = new SharedClient();
+            c.setId(2);
+            c.setFirstName("thomson");
+            c.setLastName("community");
+            c.setRight("up");
+            return c;
         }
-        public void testQuery2() {
-            PersistenceUnit pu = UPA.getPersistenceGroup().getPersistenceUnit();
-//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
-            Query q = pu.createQuery("Select a. `right` from Client a");
+
+        public void testQuery1() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            Query q = pu.createQuery("Select a from SharedClient a order by a.firstName");
             List<Document> r = q.getDocumentList();
-            Document er = pu.getEntity(Client.class).getBuilder().createDocument();
-            er.setString("right","left");
-            Assert.assertEquals(r, Arrays.asList(er));
+            EntityBuilder b = pu.getEntity(SharedClient.class).getBuilder();
+            List<Document> expected = Arrays.asList(
+                    b.objectToDocument(getRefClient1()),
+                    b.objectToDocument(getRefClient2())
+            );
+            Assert.assertEquals(expected, r);
+
+        }
+
+        public void testQuery2() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            Query q = pu.createQuery("Select a from SharedClient a order by a.firstName");
+            List<SharedClient> r = q.getResultList();
+            List<SharedClient> expected = Arrays.asList(
+                    (getRefClient1()),
+                    (getRefClient2())
+            );
+            Assert.assertEquals(expected, r);
+
+        }
+
+        public void testQuery3() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a. `right` from SharedClient a order by a. `right`");
+            List<Document> found = q.getDocumentList();
+            EntityBuilder b = pu.getEntity(SharedClient.class).getBuilder();
+            List<Document> expected=new ArrayList<>();
+
+            Document d = b.createDocument();
+            d.setString("right", "left");
+            expected.add(d);
+
+            d = b.createDocument();
+            d.setString("right", "up");
+            expected.add(d);
+
+            Assert.assertEquals(expected, found);
+        }
+
+
+        public void testQuery4() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a from SharedClient a where a.firstName like :v or a.firstName like :v  or a.firstName like :v")
+                    .setParameter("v", "%mm%");
+            List<Document> r = q.getDocumentList();
+            List<Document> expected = Arrays.asList(pu.getEntity(SharedClient.class).getBuilder().objectToDocument(getRefClient1()));
+            Assert.assertEquals(expected, r);
+
+        }
+
+        public void testQuery5() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a. `right` from SharedClient a order by a.id desc");
+            List<Object> r = q.getValueList(0);
+            List<String> expected = new ArrayList<>();
+            expected.add("up");
+            expected.add("left");
+            Assert.assertEquals(expected, r);
         }
     }
 
-    //@Test
-//    public void crudMixedDocumentsAndEntities() {
-//        log.fine("********************************************");
-//        log.fine("test select Entities");
-//        log.fine("");
-//        log.fine("insert,update, find, delete");
-//        log.fine("********************************************");
-//        PersistenceUnit sm = UPA.getPersistenceUnit();
-//
-//        Session s = sm.openSession();
-//
-//        sm.beginStructureModification();
-//        Entity entityManager = sm.getEntity("Client");
-//
-//        Client client = entityManager.createEntity();
-//        int key = entityManager.nextId();
-//        log.info("Next Id is " + key);
-//        client.setId(key);
-//        client.setFirstName("Hammadi");
-//        sm.beginTransaction(TransactionType.REQUIRED);
-//        sm.insert(client);
-//        final Query q = sm.createQuery("Select u from Client u where u.firstName like :v");
-//        q.setParameter("v", "%mm%");
-//        final List<Client> found = q.getEntityList();
-//        assertEquals(found.size(), 1);
-//
-//        sm.delete(found.get(0).getId());
-//        sm.commitTransaction();
-//        s.close();
-//
-//    }
+
 }

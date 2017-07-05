@@ -9,7 +9,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
-import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -87,7 +87,7 @@ public class FormulaUpdateProcessor {
             Expression fe = getFieldExpression(f, onPersist);
 
             DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe,null);
-            boolean found = ce.findFirstExpression(CompiledExpressionUtils.QUERY_STATEMENT_FILTER)!=null;
+            boolean found = ce.findFirstExpression(UQLCompiledUtils.QUERY_STATEMENT_FILTER)!=null;
             if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
                 if (pass == null) {
@@ -443,7 +443,7 @@ public class FormulaUpdateProcessor {
 //        int count2=0;
 //        if (selectBasedFields.size() > 0) {
 //            Select s = new Select().from(entity.getName(),UQLUtils.THIS);
-//            for (Field primaryField : entity.getPrimaryFields()) {
+//            for (Field primaryField : entity.getIdFields()) {
 //                s.field(primaryField.getName());
 //            }
 //            for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {

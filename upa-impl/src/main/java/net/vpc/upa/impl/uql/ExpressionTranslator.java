@@ -10,5 +10,5 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * To change this template use File | Settings | File Templates.
  */
 public interface ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations);
+    DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations);
 }

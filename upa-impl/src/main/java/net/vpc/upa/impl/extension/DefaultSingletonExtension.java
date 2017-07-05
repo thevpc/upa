@@ -22,7 +22,7 @@ public class DefaultSingletonExtension extends AbstractEntityExtension implement
     @Override
     public void commitModelChanges() throws UPAException {
         Entity entity = getEntity();
-        if (entity.getPrimaryFields().isEmpty()) {
+        if (entity.getIdFields().isEmpty()) {
 
             Field field = entity.addField(new DefaultFieldBuilder().setName("SGLcode")
                     .addModifier(UserFieldModifier.ID)

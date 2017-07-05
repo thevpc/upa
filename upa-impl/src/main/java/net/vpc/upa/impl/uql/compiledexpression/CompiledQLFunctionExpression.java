@@ -3,6 +3,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.EvalContext;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Function;
+import net.vpc.upa.impl.uql.ExpressionCompiler;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**
@@ -14,7 +15,7 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public class CompiledQLFunctionExpression extends CompiledFunction {
     private static final long serialVersionUID = 1L;
-    private Function handler;
+    protected Function handler;
 
     public CompiledQLFunctionExpression(String name, DefaultCompiledExpression[] arguments,DataTypeTransform type,Function handler) {
         super(name);
@@ -23,7 +24,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
         }
         this.handler = handler;
         setTypeTransform(type);
-//        prepareChildren(arguments);
+//        bindChildren(arguments);
     }
 
     @Override
@@ -38,17 +39,17 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
         return o;
     }
 
-    public DefaultCompiledExpression expand(PersistenceUnit persistenceUnit) {
+    public DefaultCompiledExpression expand(PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler) {
         int argumentsCount = getArgumentsCount();
         Object[] args=new Object[argumentsCount];
         for (int i = 0; i < args.length; i++) {
-            args[i]=eval(getArgument(i), persistenceUnit);
+            args[i]=eval(getArgument(i), persistenceUnit,expressionCompiler);
         }
-        Object v = getHandler().eval(new EvalContext(getName(),args,persistenceUnit));
+        Object v = getHandler().eval(new EvalContext(getName(),args,persistenceUnit,expressionCompiler));
         return new CompiledParam(v, null, getTypeTransform(), false);
     }
 
-    protected Object eval(DefaultCompiledExpression o, PersistenceUnit persistenceUnit){
+    protected Object eval(DefaultCompiledExpression o, PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler){
         if(o==null){
             return null;
         }
@@ -57,9 +58,9 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
             int argumentsCount = s.getArgumentsCount();
             Object[] args=new Object[argumentsCount];
             for (int i = 0; i < args.length; i++) {
-                args[i]=eval(s.getArgument(i), persistenceUnit);
+                args[i]=eval(s.getArgument(i), persistenceUnit,expressionCompiler);
             }
-            return (s.getHandler().eval(new EvalContext(s.getName(),args,persistenceUnit)));
+            return (s.getHandler().eval(new EvalContext(s.getName(),args,persistenceUnit,expressionCompiler)));
         }
         if(o instanceof CompiledLiteral){
             return ((CompiledLiteral)o).getValue();

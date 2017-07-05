@@ -51,8 +51,11 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
         if (e == null) {
             throw new IllegalArgumentException();
         }
+        if(i<expressions.size()){
+            unbindChildren(this.expressions.get(i));
+        }
         expressions.set(i, e);
-        prepareChildren(e);
+        bindChildren(e);
     }
 
     protected void protectedAddArgument(DefaultCompiledExpression e) {
@@ -60,7 +63,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
             throw new IllegalArgumentException();
         }
         expressions.add(e);
-        prepareChildren(e);
+        bindChildren(e);
     }
 
     public final DefaultCompiledExpression getArgumentImpl(int index) {

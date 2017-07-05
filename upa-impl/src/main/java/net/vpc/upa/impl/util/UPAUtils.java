@@ -12,6 +12,7 @@ import net.vpc.upa.impl.config.BaseScanSource;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
+import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
  * @creationdate 8/26/12 2:12 AM
  */
 public class UPAUtils {
+    public static boolean PRODUCTION_MODE=true;
 
     public static final Object[] UNDEFINED_ARRAY = new Object[0];
     protected static Logger log = Logger.getLogger(UPAUtils.class.getName());
@@ -521,10 +523,6 @@ public class UPAUtils {
                 ExprTypeInfo i = new ExprTypeInfo();
                 i.setReferrer(r);
                 i.setTransform(tr);
-                if (e instanceof CompiledVar) {
-                    CompiledVar cv = (CompiledVar) e;
-                    i.setOldReferrer(cv.getOldReferrer());
-                }
                 return i;
             }
         }

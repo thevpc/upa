@@ -11,6 +11,7 @@ public class CompiledNamedExpression {
     private String name;
     private DefaultCompiledExpression expression;
 
+
     public CompiledNamedExpression(String name, DefaultCompiledExpression expression) {
         this.name = name;
         this.expression = expression;

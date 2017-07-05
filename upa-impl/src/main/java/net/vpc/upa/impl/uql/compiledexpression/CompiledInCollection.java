@@ -47,7 +47,7 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
 
     public CompiledInCollection(DefaultCompiledExpression left, Collection<Object> collection) {
         this.left = left;
-        prepareChildren(left);
+        bindChildren(left);
         this.right = new ArrayList<DefaultCompiledExpression>(1);
         if(collection!=null){
             for (Object aCollection : collection) {
@@ -68,11 +68,13 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if(index==0){
+            unbindChildren(this.left);
             left=expression;
-            prepareChildren(expression);
+            bindChildren(expression);
         }else{
+            unbindChildren(this.right.get(index-1));
             right.set(index-1, expression);
-            prepareChildren(expression);
+            bindChildren(expression);
         }
     }
 
@@ -91,7 +93,7 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
 
     public void add(DefaultCompiledExpression e) {
         right.add(e);
-        prepareChildren(e);
+        bindChildren(e);
     }
 
     public void add(DefaultCompiledExpression[] e) {

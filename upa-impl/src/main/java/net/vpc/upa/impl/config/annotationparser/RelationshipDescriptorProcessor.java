@@ -167,7 +167,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                     et.setTargetEntityName(targetEntity.getName());
                 }
                 sourceUpdateType = RelationshipUpdateType.COMPOSED;
-                List<Field> masterPK = targetEntity.getPrimaryFields();
+                List<Field> masterPK = targetEntity.getIdFields();
                 if (relationDescriptor.getMappedTo() == null || relationDescriptor.getMappedTo().length == 0) {
                     if (masterPK.isEmpty()) {
                         if (throwErrors) {
@@ -237,8 +237,8 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             DataType dataType = slaveField.getDataType();
             if (dataType == null) {
                 //inherit master DataType
-                if (targetEntity.getPrimaryFields().size() > i) {
-                    DataType d = targetEntity.getPrimaryFields().get(i).getDataType();
+                if (targetEntity.getIdFields().size() > i) {
+                    DataType d = targetEntity.getIdFields().get(i).getDataType();
                     d = (DataType) d.copy();
                     d.setNullable(nullable);
                     slaveField.setDataType(d);

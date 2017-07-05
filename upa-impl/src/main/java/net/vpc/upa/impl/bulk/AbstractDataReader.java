@@ -121,7 +121,9 @@ public abstract class AbstractDataReader implements DataReader {
     protected abstract Object[] nextRowArray();
 
     protected DataColumn createColumn(int col) {
-        return (DataColumn) columnPrototype.copy();
+        DataColumn copy = (DataColumn) columnPrototype.copy();
+        copy.setIndex(col);
+        return copy;
     }
 
 //    public Iterator<DataRow> iterator() {

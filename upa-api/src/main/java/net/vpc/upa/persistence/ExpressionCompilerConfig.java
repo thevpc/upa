@@ -45,12 +45,11 @@ import java.util.Map;
  */
 public class ExpressionCompilerConfig {
 
-    private Map<String, String> aliasToEntityContext;
+    private Map<String, String> aliasToEntityContext=new HashMap<>();
     private Map<String, Object> hints;
-    private boolean validate = true;
-    private boolean expandFields = true;
+    private boolean compile = true;
+    private boolean resolveThis = true;
     private FieldFilter expandFieldFilter;
-    private boolean expandEntityFilter = true;
     private String thisAlias = null;
 
     public ExpressionCompilerConfig() {
@@ -60,7 +59,7 @@ public class ExpressionCompilerConfig {
         return aliasToEntityContext;
     }
 
-    public ExpressionCompilerConfig bindAliastoEntity(String alias, String entityName) {
+    public ExpressionCompilerConfig bindAliasToEntity(String alias, String entityName) {
         if (aliasToEntityContext == null) {
             aliasToEntityContext = new HashMap<String, String>();
         }
@@ -69,20 +68,6 @@ public class ExpressionCompilerConfig {
         } else {
             aliasToEntityContext.put(alias, entityName);
         }
-        return this;
-    }
-
-    public ExpressionCompilerConfig setAliasToEntityContext(Map<String, String> aliasToEntityContext) {
-        this.aliasToEntityContext = aliasToEntityContext;
-        return this;
-    }
-
-    public boolean isExpandFields() {
-        return expandFields;
-    }
-
-    public ExpressionCompilerConfig setExpandFields(boolean expandFields) {
-        this.expandFields = expandFields;
         return this;
     }
 
@@ -95,21 +80,21 @@ public class ExpressionCompilerConfig {
         return this;
     }
 
-    public boolean isExpandEntityFilter() {
-        return expandEntityFilter;
+    public boolean isCompile() {
+        return compile;
     }
 
-    public ExpressionCompilerConfig setExpandEntityFilter(boolean expandEntityFilter) {
-        this.expandEntityFilter = expandEntityFilter;
+    public boolean isTranslateOnly() {
+        return !compile;
+    }
+
+    public ExpressionCompilerConfig setCompile(boolean compile) {
+        this.compile=compile;
         return this;
     }
 
-    public boolean isValidate() {
-        return validate;
-    }
-
-    public ExpressionCompilerConfig setValidate(boolean validate) {
-        this.validate = validate;
+    public ExpressionCompilerConfig setTranslateOnly() {
+        this.compile =false;
         return this;
     }
 
@@ -139,9 +124,28 @@ public class ExpressionCompilerConfig {
         this.hints = hints;
         return this;
     }
+    public ExpressionCompilerConfig copy(){
+        ExpressionCompilerConfig other = new ExpressionCompilerConfig();
+
+        other.aliasToEntityContext=aliasToEntityContext==null?null:new HashMap<String, String>(aliasToEntityContext);
+        other.hints=hints==null?null:new HashMap<String, Object>(hints);
+        other.compile = compile;
+        other.thisAlias = thisAlias;
+
+        return other;
+    }
+
+    public boolean isResolveThis() {
+        return resolveThis;
+    }
+
+    public ExpressionCompilerConfig setResolveThis(boolean resolveThis) {
+        this.resolveThis = resolveThis;
+        return this;
+    }
 
     @Override
     public String toString() {
-        return "ExpressionCompilerConfig{" + "aliasToEntityContext=" + aliasToEntityContext + ", validate=" + validate + ", expandFields=" + expandFields + ", expandFieldFilter=" + expandFieldFilter + ", expandEntityFilter=" + expandEntityFilter + ", thisAlias=" + thisAlias + '}';
+        return "ExpressionCompilerConfig{" + "aliasToEntityContext=" + aliasToEntityContext + ", " + (compile?"compile":"translate") + ", expandFieldFilter=" + expandFieldFilter + ", thisAlias=" + thisAlias + '}';
     }
 }

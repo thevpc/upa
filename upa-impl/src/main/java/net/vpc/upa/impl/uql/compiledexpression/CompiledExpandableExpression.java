@@ -10,5 +10,5 @@ import net.vpc.upa.PersistenceUnit;
  * To change this template use File | Settings | File Templates.
  */
 public interface CompiledExpandableExpression extends DefaultCompiledExpression {
-    public DefaultCompiledExpression expand(PersistenceUnit persistenceUnit);
+    DefaultCompiledExpression expand(PersistenceUnit persistenceUnit);
 }

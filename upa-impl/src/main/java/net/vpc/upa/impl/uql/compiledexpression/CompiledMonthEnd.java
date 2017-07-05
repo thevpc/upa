@@ -44,7 +44,7 @@ public class CompiledMonthEnd extends CompiledFunction {
     public CompiledMonthEnd(DefaultCompiledExpression count) {
         this();
         protectedAddArgument(count);
-        prepareChildren(count);
+        bindChildren(count);
     }
 
     @Override

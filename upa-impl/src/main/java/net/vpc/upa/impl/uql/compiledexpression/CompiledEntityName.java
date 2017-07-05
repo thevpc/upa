@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -62,7 +63,7 @@ public class CompiledEntityName extends DefaultCompiledExpressionImpl implements
 
     @Override
     public String toString() {
-        return String.valueOf(name);
+        return ExpressionHelper.escapeIdentifier(name);
     }
 
     @Override

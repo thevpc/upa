@@ -36,7 +36,7 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
     private CompiledInsertSelection into(String entity, String alias) {
         this.entity = new CompiledEntityName(entity);
         tableAlias = alias;
-        prepareChildren(this.entity);
+        bindChildren(this.entity);
         exportDeclaration(alias, DecObjectType.ENTITY, entity, alias);
         return this;
     }
@@ -66,7 +66,7 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
             if (other.tableAlias != null) {
                 tableAlias = other.tableAlias;
             }
-            prepareChildren(this.entity);
+            bindChildren(this.entity);
             exportDeclaration(tableAlias, DecObjectType.ENTITY, other.entity.getName(), null);
         }
         for (int i = 0; i < other.fields.size(); i++) {
@@ -161,11 +161,17 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
         if (index == 0) {
+            unbindChildren(this.entity);
             entity = (CompiledEntityName) expression;
+            bindChildren(expression);
         } else if (index - 1 < fields.size()) {
+            unbindChildren(this.fields.get(index-1));
             fields.set(index - 1, (CompiledVar) expression);
+            bindChildren(expression);
         } else {
+            unbindChildren(this.selection);
             selection = (CompiledSelect) expression;
+            bindChildren(expression);
         }
     }
 

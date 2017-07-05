@@ -25,7 +25,8 @@ public class CompiledQLFunctionExpressionSQLProvider implements SQLProvider {
         for (int i = 0; i < args.length; i++) {
             args[i] = eval(o.getArgument(i), qlContext);
         }
-        return sqlManager.getMarshallManager().formatSqlValue(o.getHandler().eval(new EvalContext(o.getName(), args, qlContext.getPersistenceUnit())));
+        //no compiler context
+        return sqlManager.getMarshallManager().formatSqlValue(o.getHandler().eval(new EvalContext(o.getName(), args, qlContext.getPersistenceUnit(),null)));
     }
 
     protected Object eval(DefaultCompiledExpression o, EntityExecutionContext qlContext) {
@@ -39,7 +40,8 @@ public class CompiledQLFunctionExpressionSQLProvider implements SQLProvider {
             for (int i = 0; i < args.length; i++) {
                 args[i] = eval(s.getArgument(i), qlContext);
             }
-            return (s.getHandler().eval(new EvalContext(s.getName(), args, qlContext.getPersistenceUnit())));
+            //no compiler context
+            return (s.getHandler().eval(new EvalContext(s.getName(), args, qlContext.getPersistenceUnit(),null)));
         }
         if (o instanceof CompiledLiteral) {
             return ((CompiledLiteral) o).getValue();

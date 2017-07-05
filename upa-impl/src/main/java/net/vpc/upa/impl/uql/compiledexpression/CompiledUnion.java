@@ -19,7 +19,7 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
     private List<CompiledQueryStatement> queryStatements=new ArrayList<CompiledQueryStatement>();
     public void add(CompiledQueryStatement s){
         queryStatements.add(s);
-        prepareChildren(s);
+        bindChildren(s);
     }
 
     public List<CompiledQueryStatement> getQueryStatements() {
@@ -116,7 +116,9 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
 
     @Override
     public void setSubExpression(int index, DefaultCompiledExpression expression) {
+        unbindChildren(this.queryStatements.get(index));
         queryStatements.set(index, (CompiledQueryStatement) expression);
+        bindChildren(expression);
     }
 
     @Override

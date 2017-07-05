@@ -13,11 +13,19 @@ public class PlatformTypeProxyJavaCGLib implements PlatformTypeProxy {
     public <T> T create(Class<T> type, final PlatformMethodProxy pmethodProxy) {
         return (T) net.sf.cglib.proxy.Enhancer.create(
                 type, null,
-                new net.sf.cglib.proxy.MethodInterceptor() {
-                    @Override
-                    public Object intercept(Object object, Method method, Object[] args, net.sf.cglib.proxy.MethodProxy methodProxy) throws Throwable {
-                        return pmethodProxy.intercept(new PlatformMethodProxyEventCGLibJava(object, args, method, methodProxy));
-                    }
-                });
+                new ProxyMethodInterceptor(pmethodProxy));
+    }
+
+    private static class ProxyMethodInterceptor implements net.sf.cglib.proxy.MethodInterceptor {
+        private final PlatformMethodProxy pmethodProxy;
+
+        public ProxyMethodInterceptor(PlatformMethodProxy pmethodProxy) {
+            this.pmethodProxy = pmethodProxy;
+        }
+
+        @Override
+        public Object intercept(Object object, Method method, Object[] args, net.sf.cglib.proxy.MethodProxy methodProxy) throws Throwable {
+            return pmethodProxy.intercept(new PlatformMethodProxyEventCGLibJava(object, args, method, methodProxy));
+        }
     }
 }

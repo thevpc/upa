@@ -2,6 +2,7 @@ package net.vpc.upa.impl.uql.compiledfilteredreplacers;
 
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
+import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 
 /**
@@ -10,18 +11,23 @@ import net.vpc.upa.impl.uql.compiledexpression.*;
 public class AliasEnforcerCompiledExpressionFilteredReplacer implements CompiledExpressionFilteredReplacer {
 
     @Override
-    public boolean accept(DefaultCompiledExpression e) {
-        return e instanceof CompiledEntityStatement;
+    public boolean isTopDown() {
+        return false;
     }
 
     @Override
-    public CompiledExpression update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e) {
+        if(!(e instanceof CompiledEntityStatement)){
+            return ReplaceResult.NO_UPDATES_CONTINUE;
+        }
+        boolean changed=false;
         if (e instanceof CompiledSelect) {
             CompiledSelect q = ((CompiledSelect) e);
             if (q.getEntityAlias() == null) {
                 CompiledNameOrSelect entity = q.getEntity();
                 if (entity instanceof CompiledEntityName) {
                     q.setEntityAlias(((CompiledEntityName) entity).getName());
+                    changed=true;
                 } else {
                     //
                 }
@@ -31,6 +37,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
                     CompiledNameOrSelect entity = q.getEntity();
                     if (entity instanceof CompiledEntityName) {
                         c.setEntityAlias(((CompiledEntityName) entity).getName());
+                        changed=true;
                     } else {
                         //
                     }
@@ -42,6 +49,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
                 CompiledNameOrSelect entity = q.getEntity();
                 if (entity instanceof CompiledEntityName) {
                     q.setEntityAlias(((CompiledEntityName) entity).getName());
+                    changed=true;
                 } else {
                     //
                 }
@@ -52,6 +60,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
                 CompiledNameOrSelect entity = q.getEntity();
                 if (entity instanceof CompiledEntityName) {
                     q.setEntityAlias(((CompiledEntityName) entity).getName());
+                    changed=true;
                 } else {
                     //
                 }
@@ -67,7 +76,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
                 }
             }
         }
-        return null;
+        return changed ? ReplaceResult.UPDATE_AND_CONTINUE_CLEAN : ReplaceResult.NO_UPDATES_CONTINUE;
     }
 
 }

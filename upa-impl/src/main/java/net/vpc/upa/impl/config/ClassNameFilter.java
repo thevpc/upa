@@ -5,5 +5,5 @@ package net.vpc.upa.impl.config;
  * @creationdate 12/16/12 1:05 PM
  */
 public interface ClassNameFilter {
-    public boolean accept(String cls) ;
+    boolean accept(String cls) ;
 }

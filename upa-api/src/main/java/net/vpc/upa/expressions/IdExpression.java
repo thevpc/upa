@@ -27,8 +27,24 @@ public class IdExpression extends DefaultExpression implements Cloneable {
         }
 //        entity.getIdType().cast(key);
         this.id = id;
-        entityName = entity.getName();
+        this.entityName = entity.getName();
         this.alias = alias;
+        this.entity = entity;
+    }
+
+    public void setId(Object id) {
+        this.id = id;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setEntity(Entity entity) {
         this.entity = entity;
     }
 

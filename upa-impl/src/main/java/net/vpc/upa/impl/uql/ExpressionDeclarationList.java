@@ -8,13 +8,13 @@ import java.util.List;
  */
 public interface ExpressionDeclarationList {
 
-    public List<ExpressionDeclaration> getExportedDeclarations();
+    List<ExpressionDeclaration> getExportedDeclarations();
 
-    public void exportDeclaration(String name, DecObjectType type, Object referrerName, Object referrerParentId);
+    void exportDeclaration(String name, DecObjectType type, Object referrerName, Object referrerParentId);
 
-    public List<ExpressionDeclaration> getDeclarations(String alias);
+    List<ExpressionDeclaration> getDeclarations(String alias);
 
-    public ExpressionDeclaration getDeclaration(String name);
+    ExpressionDeclaration getDeclaration(String name);
 
 //    public ExpressionDeclarationList getParentDeclaration();
 //

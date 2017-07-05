@@ -8,7 +8,7 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldOrFilter;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.impl.util.filters.Fields2;
+import net.vpc.upa.impl.util.filters.FieldFilters2;
 
 import java.util.*;
 
@@ -307,7 +307,7 @@ public class DefaultUpdateQuery implements UpdateQuery{
 
     @Override
     public UpdateQuery validateAll() {
-        return validate(Fields2.UPDATE_FORMULA);
+        return validate(FieldFilters2.UPDATE_FORMULA);
     }
     @Override
     public UpdateQuery validateNone() {

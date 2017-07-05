@@ -99,12 +99,17 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
         return value;
     }
 
-    private void setValue(Object o) {
+    public void setValue(Object o) {
         this.value = o;
         if (o == null) {
             type = IdentityDataTypeTransform.OBJECT;
+        }else {
+            type = IdentityDataTypeTransform.forNativeType(o.getClass());
         }
-        type = IdentityDataTypeTransform.forNativeType(o.getClass());
+    }
+
+    public void setType(DataTypeTransform type) {
+        this.type = type;
     }
 
     @Override
@@ -154,6 +159,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
         }
         return d;
     }
+
     
     
 }

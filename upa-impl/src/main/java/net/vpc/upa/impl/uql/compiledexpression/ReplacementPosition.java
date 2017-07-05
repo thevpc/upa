@@ -4,13 +4,13 @@ package net.vpc.upa.impl.uql.compiledexpression;
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 * @creationdate 1/8/13 12:27 AM
 */
-class ReplacementPosition {
+public class ReplacementPosition {
 
     private DefaultCompiledExpression parent;
     private DefaultCompiledExpression child;
     private int pos;
 
-    ReplacementPosition(DefaultCompiledExpression parent, DefaultCompiledExpression child, int pos) {
+    public ReplacementPosition(DefaultCompiledExpression parent, DefaultCompiledExpression child, int pos) {
         this.setParent(parent);
         this.setChild(child);
         this.setPos(pos);
