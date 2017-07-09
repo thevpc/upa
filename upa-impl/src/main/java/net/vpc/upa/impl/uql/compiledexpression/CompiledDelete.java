@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.DecObjectType;
 
 public class CompiledDelete extends DefaultCompiledEntityStatement
         implements Cloneable, CompiledUpdateStatement {
 
     private static final long serialVersionUID = 1L;
-    protected DefaultCompiledExpression condition;
+    protected CompiledExpressionExt condition;
     protected CompiledEntityName entity;
     protected String entityAlias;
 
@@ -53,13 +54,13 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
         this.entityAlias=alias;
     }
 
-    public CompiledDelete where(DefaultCompiledExpression condition) {
+    public CompiledDelete where(CompiledExpressionExt condition) {
         this.condition = condition;
         bindChildren(condition);
         return this;
     }
 
-    public DefaultCompiledExpression getCondition() {
+    public CompiledExpressionExt getCondition() {
         return condition;
     }
 
@@ -83,7 +84,7 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
 //
 //        return this;
 //    }
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledDelete o = new CompiledDelete();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -124,19 +125,19 @@ public class CompiledDelete extends DefaultCompiledEntityStatement
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all = new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all = new ArrayList<CompiledExpressionExt>();
         if (entity != null) {
             all.add(entity);
         }
         if (condition != null) {
             all.add(condition);
         }
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         int i = 0;
         if (entity != null) {
             if (i == index) {

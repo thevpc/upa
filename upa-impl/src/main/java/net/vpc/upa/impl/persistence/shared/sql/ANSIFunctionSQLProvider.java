@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.parser.FunctionSQLProvider;
 
 /**

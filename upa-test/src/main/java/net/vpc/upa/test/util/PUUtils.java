@@ -7,7 +7,7 @@ package net.vpc.upa.test.util;
 import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
-import net.vpc.upa.impl.util.StringUtils;
+//import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.ConnectionConfig;
 
 import java.util.Arrays;
@@ -19,7 +19,14 @@ import java.util.logging.Logger;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class PUUtils {
+    public static final String getVersion(){
+        return "1.2.0.34";
+    }
+
     static{
+        System.out.println("*************************************");
+        System.out.println(""+getVersion());
+        System.out.println("*************************************");
         LogUtils.prepare();
     }
     private static final Logger log = Logger.getLogger(PUUtils.class.getName());
@@ -48,13 +55,14 @@ public class PUUtils {
     }
 
     public static PersistenceUnit createTestPersistenceUnit(Class clz,Store type,String desc) {
+        String v = getVersion().replace(".","_");
         String puId = clz == null ? "test" : clz.getName();
         if(type==null){
             type=Store.EMBEDDED;
         }
         StringBuilder header=new StringBuilder();
         header.append("Create Persistence Unit ").append(puId);
-        if(!StringUtils.isNullOrEmpty(desc)){
+        if(desc!=null && desc.trim().length()>0){
             header.append(desc);
         }
         drawBox(header);
@@ -69,11 +77,11 @@ public class PUUtils {
 //        pu.scan(null);
         final ConnectionConfig cc = new ConnectionConfig();
         if(Store.MYSQL.equals(type)){
-            cc.setConnectionString("mysql:default://localhost/UPA_TEST;structure=create;userName=root;password=''");
+            cc.setConnectionString("mysql:default://localhost/UPA_TEST"+v+";structure=create;userName=root;password=''");
         }else if(Store.DERBY.equals(type)){
-            cc.setConnectionString("derby:default://localhost/upatest;structure=create;userName=upatest;password=upatest");
+            cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
         }else if(Store.EMBEDDED.equals(type)){
-            cc.setConnectionString("derby:embedded://db-embedded/upatest;structure=create;userName=upatest;password=upatest");
+            cc.setConnectionString("derby:embedded://db-embedded/upatest"+v+";structure=create;userName=upatest;password=upatest");
         }else{
             throw new IllegalArgumentException("Not Supported "+type);
         }

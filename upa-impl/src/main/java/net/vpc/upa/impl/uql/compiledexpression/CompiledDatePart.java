@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.DatePartType;
 
 import java.util.Date;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -24,7 +26,7 @@ public class CompiledDatePart extends CompiledFunction {
         this(type, new UserCompiledExpression(varDate,IdentityDataTypeTransform.DATETIME));
     }
 
-    public CompiledDatePart(DatePartType type, DefaultCompiledExpression value) {
+    public CompiledDatePart(DatePartType type, CompiledExpressionExt value) {
         super("Datepart");
         protectedAddArgument(new CompiledCst(type));
         protectedAddArgument(value);
@@ -38,7 +40,7 @@ public class CompiledDatePart extends CompiledFunction {
         return (DatePartType)getDatePartTypeExpression().getValue();
     }
 
-    public DefaultCompiledExpression getValue() {
+    public CompiledExpressionExt getValue() {
         return getArgument(1);
     }
 
@@ -48,7 +50,7 @@ public class CompiledDatePart extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledDatePart o=new CompiledDatePart(getDatePartType(), getValue().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

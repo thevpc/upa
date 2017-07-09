@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigInteger;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public final class CompiledReminder extends CompiledBinaryOperatorExpression
@@ -10,7 +12,7 @@ public final class CompiledReminder extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledReminder(DefaultCompiledExpression left, Object right) {
+    public CompiledReminder(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.REM, left, right);
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();
@@ -23,7 +25,7 @@ public final class CompiledReminder extends CompiledBinaryOperatorExpression
         }
     }
 
-    public CompiledReminder(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledReminder(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.REM, left, right);
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();

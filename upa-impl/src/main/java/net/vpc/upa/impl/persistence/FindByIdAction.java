@@ -21,6 +21,6 @@ class FindByIdAction implements Action<Object> {
 
     @Override
     public Object run() {
-        return e.createQueryBuilder().byId(id).setHints(hints).getEntity();
+        return e.createQueryBuilder().byId(id).setHints(hints).getFirstResultOrNull();
     }
 }

@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.DatePartType;
 
 import java.util.Date;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 /**
@@ -23,7 +25,7 @@ public class CompiledDateTrunc extends CompiledFunction {
         this(type, new UserCompiledExpression(varDate,IdentityDataTypeTransform.DATETIME));
     }
 
-    public CompiledDateTrunc(DatePartType type, DefaultCompiledExpression val) {
+    public CompiledDateTrunc(DatePartType type, CompiledExpressionExt val) {
         super("Datetrunc");
         protectedAddArgument(new CompiledCst(type));
         protectedAddArgument(val);
@@ -37,12 +39,12 @@ public class CompiledDateTrunc extends CompiledFunction {
         return (DatePartType)getDatePartTypeExpression().getValue();
     }
 
-    public DefaultCompiledExpression getValue() {
+    public CompiledExpressionExt getValue() {
         return getArgument(1);
     }
     
    @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledDateTrunc o = new CompiledDateTrunc(getDatePartType(),getValue().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

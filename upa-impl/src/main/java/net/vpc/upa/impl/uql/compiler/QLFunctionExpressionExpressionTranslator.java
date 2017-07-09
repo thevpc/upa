@@ -10,15 +10,15 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.QLFunctionExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledQLFunctionExpression;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class QLFunctionExpressionExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileQLFunctionExpression((QLFunctionExpression) o,manager, declarations);
     }
 
@@ -28,7 +28,7 @@ public class QLFunctionExpressionExpressionTranslator implements ExpressionTrans
         }
         FunctionDefinition h = manager.getPersistenceUnit().getExpressionManager().getFunction(v.getName());
         CompiledQLFunctionExpression s = new CompiledQLFunctionExpression(v.getName(), manager.translateArray(v.getArguments(), declarations)
-                , new IdentityDataTypeTransform(h.getDataType()), h.getFunction());
+                , IdentityDataTypeTransform.ofType(h.getDataType()), h.getFunction());
         //        s.setDeclarationList(declarations);
         return s;
     }

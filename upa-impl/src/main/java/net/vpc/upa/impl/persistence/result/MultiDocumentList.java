@@ -1,9 +1,12 @@
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.DefaultMultiDocument;
+import net.vpc.upa.impl.persistence.FieldTracking;
+import net.vpc.upa.impl.persistence.NativeField;
+import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.QueryResult;
 
@@ -41,8 +44,8 @@ public class MultiDocumentList extends QueryResultLazyList<MultiDocument> {
             NativeField namedExpression = fields[i];
             Field field = namedExpression.getField();
             entities[i] = field == null ? null : field.getEntity();
-            if (namedExpression.getGroupName() != null) {
-                documentName[i] = namedExpression.getGroupName().toString();
+            if (namedExpression.getBindingId() != null) {
+                documentName[i] = namedExpression.getBindingId().toString();
             } else if (entities[i] != null) {
                 documentName[i] = entities[i].getName();
             }

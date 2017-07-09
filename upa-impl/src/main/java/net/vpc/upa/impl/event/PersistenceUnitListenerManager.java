@@ -5,6 +5,7 @@ import net.vpc.upa.Package;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.Init;
 import net.vpc.upa.exceptions.EntityAlreadyExistsException;
+import net.vpc.upa.exceptions.IllegalArgumentException;
 import net.vpc.upa.exceptions.NoSuchEntityException;
 import net.vpc.upa.exceptions.ObjectAlreadyExistsException;
 import net.vpc.upa.expressions.Select;
@@ -51,6 +52,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         this.persistenceUnit = persistenceUnit;
         this.model = model;
         this.decorationRepository = decorationRepository;
+    }
+
+    public void itemRenamed(UPAObject object, String oldName, String newName,EventPhase phase) {
+        if (object instanceof Entity) {
+            if(StringUtils.isNullOrEmpty(newName)){
+                throw new IllegalArgumentException("Empty New Name for "+oldName);
+            }
+            model.renameEntity(oldName,newName);
+            return;
+        }
+        throw new IllegalArgumentException("Renaming "+object+" is not yet Supported");
     }
 
     public void itemAdded(UPAObject object, int position, UPAObject parent, EventPhase phase) {

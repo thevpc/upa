@@ -1,23 +1,25 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 * @creationdate 1/8/13 12:14 AM
 */
 public class CompiledOrderItem {
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
     private boolean asc;
 
-    CompiledOrderItem(DefaultCompiledExpression expression, boolean asc) {
+    CompiledOrderItem(CompiledExpressionExt expression, boolean asc) {
         this.setExpression(expression);
         this.setAsc(asc);
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return expression;
     }
 
-    public void setExpression(DefaultCompiledExpression expression) {
+    public void setExpression(CompiledExpressionExt expression) {
         this.expression = expression;
     }
 

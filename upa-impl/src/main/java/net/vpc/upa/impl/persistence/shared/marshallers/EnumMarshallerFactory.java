@@ -1,9 +1,10 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
-import net.vpc.upa.impl.persistence.shared.marshallers.EnumAsIntMarshaller;
 import net.vpc.upa.types.EnumType;
 import net.vpc.upa.types.DataType;
 
@@ -14,14 +15,24 @@ import net.vpc.upa.types.DataType;
 public class EnumMarshallerFactory implements TypeMarshallerFactory {
 
     private MarshallManager pm;
+    private static Map<Class,EnumAsIntMarshaller> byType=new HashMap<Class,EnumAsIntMarshaller>();
 
     public EnumMarshallerFactory() {
     }
 
+    public static TypeMarshaller getSharedTypeMarshaller(Class platformType) {
+        EnumAsIntMarshaller found = byType.get(platformType);
+        if(found==null){
+            found=new EnumAsIntMarshaller(platformType);
+            byType.put(platformType,found);
+        }
+        //TODO should get more info about marshalling info
+        return found;
+    }
+    
     public TypeMarshaller createTypeMarshaller(DataType type) {
         EnumType n = (EnumType) type;
-        //TODO should get more info about marshalling info
-        return new EnumAsIntMarshaller(n.getPlatformType());
+        return getSharedTypeMarshaller(n.getPlatformType());
     }
 
 

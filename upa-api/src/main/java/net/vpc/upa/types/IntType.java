@@ -117,4 +117,24 @@ public class IntType extends NumberType implements Cloneable {
         }
         return Integer.parseInt(value);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        IntType intType = (IntType) o;
+
+        if (min != null ? !min.equals(intType.min) : intType.min != null) return false;
+        return max != null ? max.equals(intType.max) : intType.max == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
 }

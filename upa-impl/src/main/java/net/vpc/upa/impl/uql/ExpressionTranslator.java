@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.uql;
 
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +10,5 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  * To change this template use File | Settings | File Templates.
  */
 public interface ExpressionTranslator {
-    DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations);
+    CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager expressionTranslationManager, ExpressionDeclarationList declarations);
 }

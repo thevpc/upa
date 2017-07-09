@@ -12,6 +12,7 @@ import net.vpc.upa.callbacks.PersistenceUnitEvent;
 import net.vpc.upa.callbacks.PersistenceUnitListener;
 import net.vpc.upa.callbacks.PersistenceUnitListenerAdapter;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataType;
 
@@ -23,9 +24,9 @@ import java.util.List;
  */
 class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements PersistenceUnitListener {
 
-    private final DefaultPersistenceUnit outer;
+    private final PersistenceUnitExt outer;
 
-    public UPASystemEntitiesTrigger(final DefaultPersistenceUnit outer) {
+    public UPASystemEntitiesTrigger(final PersistenceUnitExt outer) {
         this.outer = outer;
     }
 

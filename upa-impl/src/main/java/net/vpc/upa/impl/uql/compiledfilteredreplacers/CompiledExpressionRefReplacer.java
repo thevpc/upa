@@ -6,10 +6,11 @@
 package net.vpc.upa.impl.uql.compiledfilteredreplacers;
 
 import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.ReplaceResult;
-import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+
+import java.util.Map;
 
 /**
  *
@@ -17,8 +18,8 @@ import net.vpc.upa.impl.uql.util.UQLUtils;
  */
 public class CompiledExpressionRefReplacer implements CompiledExpressionFilteredReplacer {
 
-    private DefaultCompiledExpression oldRef;
-    private DefaultCompiledExpression newRef;
+    private CompiledExpressionExt oldRef;
+    private CompiledExpressionExt newRef;
 
 
     @Override
@@ -26,12 +27,12 @@ public class CompiledExpressionRefReplacer implements CompiledExpressionFiltered
         return true;
     }
 
-    public CompiledExpressionRefReplacer(DefaultCompiledExpression oldRef, DefaultCompiledExpression newRef) {
+    public CompiledExpressionRefReplacer(CompiledExpressionExt oldRef, CompiledExpressionExt newRef) {
         this.oldRef = oldRef;
         this.newRef = newRef;
     }
 
-    public ReplaceResult update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         if(oldRef==e){
             return ReplaceResult.stopWithNewObj(newRef);
         }

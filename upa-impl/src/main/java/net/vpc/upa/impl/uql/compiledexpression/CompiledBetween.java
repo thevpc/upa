@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 import net.vpc.upa.types.DataTypeTransform;
@@ -8,14 +9,14 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private DefaultCompiledExpression left;
-    private DefaultCompiledExpression min;
-    private DefaultCompiledExpression max;
+    private CompiledExpressionExt left;
+    private CompiledExpressionExt min;
+    private CompiledExpressionExt max;
 
     private CompiledBetween() {
     }
 
-    public CompiledBetween(DefaultCompiledExpression expression, Object min, Object max) {
+    public CompiledBetween(CompiledExpressionExt expression, Object min, Object max) {
         this(expression, CompiledExpressionFactory.toLiteral(min), CompiledExpressionFactory.toLiteral(max));
     }
 
@@ -24,22 +25,22 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
         return IdentityDataTypeTransform.BOOLEAN;
     }
 
-    public CompiledBetween(DefaultCompiledExpression expression, DefaultCompiledExpression min, DefaultCompiledExpression max) {
+    public CompiledBetween(CompiledExpressionExt expression, CompiledExpressionExt min, CompiledExpressionExt max) {
         this.left = expression;
         this.min = min;
         this.max = max;
         bindChildren(left, min, max);
     }
 
-    public DefaultCompiledExpression getLeft() {
+    public CompiledExpressionExt getLeft() {
         return left;
     }
 
-    public DefaultCompiledExpression getMin() {
+    public CompiledExpressionExt getMin() {
         return min;
     }
 
-    public DefaultCompiledExpression getMax() {
+    public CompiledExpressionExt getMax() {
         return max;
     }
 
@@ -49,12 +50,12 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{left, min, max};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{left, min, max};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         switch (index) {
             case 0: {
                 unbindChildren(this.left);
@@ -84,7 +85,7 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
 //        String s = getLeft().toSQL(true, database) + " between " + getMin().toSQL(true, database) +" and "+getMax().toSQL(true, database);
 //        return integrated ? "(" + s + ")" : s;
 //    }
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledBetween o = new CompiledBetween();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

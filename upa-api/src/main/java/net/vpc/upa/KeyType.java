@@ -122,4 +122,26 @@ public class KeyType extends StructType {
         return value == null ? null : ((Key) value).getValue();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        KeyType keyType = (KeyType) o;
+
+        if (filter != null ? !filter.equals(keyType.filter) : keyType.filter != null) return false;
+        if (relationship != null ? !relationship.equals(keyType.relationship) : keyType.relationship != null)
+            return false;
+        return entity != null ? entity.equals(keyType.entity) : keyType.entity == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+        result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
+        result = 31 * result + (entity != null ? entity.hashCode() : 0);
+        return result;
+    }
 }

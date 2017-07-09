@@ -35,7 +35,6 @@
 package net.vpc.upa.types;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface StringEncoder {

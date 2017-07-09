@@ -14,11 +14,8 @@ import java.util.Map;
 import net.vpc.upa.*;
 import net.vpc.upa.NamingStrategy;
 import net.vpc.upa.Package;
-import net.vpc.upa.exceptions.MultipleEntityMatchForTypeException;
-import net.vpc.upa.exceptions.NoSuchEntityException;
-import net.vpc.upa.exceptions.NoSuchIndexException;
-import net.vpc.upa.exceptions.NoSuchRelationshipException;
-import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.*;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
@@ -33,7 +30,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     private LinkedHashMap<String, Index> indexes = new LinkedHashMap<String, Index>();
     private LinkedHashMap<String, Field> fields = new LinkedHashMap<String, Field>();
     private LinkedHashMap<String, Section> sections = new LinkedHashMap<String, Section>();
-    private DefaultPersistenceUnit unit;
+    private PersistenceUnitExt unit;
     private HashSet<Class> entityManagerByEntityTypeAmbiguity = new HashSet<Class>();
     private HashMap<Class, Entity> entityManagerByEntityType = new HashMap<Class, Entity>();
     private HashSet<Class> entityManagerByIdTypeAmbiguity = new HashSet<Class>();
@@ -41,8 +38,17 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     private Map<String, List<Index>> indexesByEntity = new HashMap<String, List<Index>>();
 //    private Map<String, Relationship> cache_relationsByName;
 
-    public DefaultPersistenceUnitRegistrationModel(DefaultPersistenceUnit unit) {
+    public DefaultPersistenceUnitRegistrationModel(PersistenceUnitExt unit) {
         this.unit = unit;
+    }
+
+    public void renameEntity(String oldName,String newName) {
+        oldName = uniformName(oldName);
+        newName = uniformName(newName);
+        Entity item = entities.remove(oldName);
+        if(item!=null){
+            entities.put(newName,item);
+        }
     }
 
     public void registerPackage(Package item, Package parent) {
@@ -71,17 +77,17 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public boolean containsEntity(Entity item, Package parent) {
-        NamingStrategy namingStrategy = unit.getNamingStrategy();
-        String s = item.getName();
-        s = namingStrategy.getUniformValue(s);
+        String s = uniformName(item.getName());
         return (entities.containsKey(s));
+    }
+    private String uniformName(String name){
+        NamingStrategy namingStrategy = unit.getNamingStrategy();
+        return namingStrategy.getUniformValue(name);
     }
 
     public void registerEntity(Entity item, Package parent) {
-        NamingStrategy namingStrategy = unit.getNamingStrategy();
-        String s = item.getName();
-        s = namingStrategy.getUniformValue(s);
-        Entity entity = (Entity) item;
+        String s = uniformName(item.getName());
+        Entity entity = item;
         entities.put(s, item);
 
         Class<?> entityType = entity.getEntityType();
@@ -233,11 +239,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public Entity findEntity(String name) throws UPAException {
-        NamingStrategy namingStrategy = unit.getNamingStrategy();
-        String s = name;
-        name = namingStrategy.getUniformValue(s);
-
-        return entities.get(name);
+        return entities.get(uniformName(name));
     }
 
     public Relationship findRelationship(String name) throws UPAException {

@@ -2,10 +2,10 @@ package net.vpc.upa.impl.uql.util;
 
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.expressions.CompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.ReplaceResult;
-import net.vpc.upa.impl.uql.ReplaceResultType;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilteredreplacers.AliasEnforcerCompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.compiledfilteredreplacers.CompiledExpressionRefReplacer;
@@ -19,6 +19,7 @@ import net.vpc.upa.impl.uql.compiledreplacer.CompiledExpressionThisRemover;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vpc on 6/9/17.
@@ -35,19 +36,30 @@ public class UQLCompiledUtils {
     }
 
     public static List<CompiledVar> findChildrenLeafVars(CompiledExpression v) {
-        return ((DefaultCompiledExpression) v).findExpressionsList(CompiledExpressionFilterLeafVar.INSTANCE);
+        return ((CompiledExpressionExt) v).findExpressionsList(CompiledExpressionFilterLeafVar.INSTANCE);
     }
 
     public static List<CompiledVar> findChildrenRootVars(CompiledExpression v) {
-        return ((DefaultCompiledExpression) v).findExpressionsList(CompiledExpressionFilterRootVar.INSTANCE);
+        return ((CompiledExpressionExt) v).findExpressionsList(CompiledExpressionFilterRootVar.INSTANCE);
     }
 
     public static CompiledVar findThisVar(CompiledExpression v) {
-        return ((DefaultCompiledExpression)v).findFirstExpression(THIS_VAR_FILTER);
+        return ((CompiledExpressionExt)v).findFirstExpression(THIS_VAR_FILTER);
     }
 
-    public static DefaultCompiledExpression findThisVarOrAlias(CompiledExpression v) {
-        return ((DefaultCompiledExpression)v).findFirstExpression(THIS_VAR_OR_ALIAS_FILTER);
+    public static CompiledExpressionExt findThisVarOrAlias(CompiledExpression v) {
+        return ((CompiledExpressionExt)v).findFirstExpression(THIS_VAR_OR_ALIAS_FILTER);
+    }
+
+    public static CompiledVar copyToRootVar(CompiledVar v) {
+        v=(CompiledVar) v.copy();
+        CompiledExpressionExt r = v.getParentExpression();
+        if(r instanceof CompiledVar) {
+            CompiledVar compiledVar = copyToRootVar((CompiledVar) r);
+            compiledVar.setChild(v);
+            return compiledVar;
+        }
+        return v;
     }
 
     public static CompiledVar findRootVar(CompiledVar v) {
@@ -61,8 +73,8 @@ public class UQLCompiledUtils {
         return v;
     }
 
-    public static DefaultCompiledExpression findRootNonVar(CompiledVarOrMethod v0) {
-        DefaultCompiledExpression v=v0;
+    public static CompiledExpressionExt findRootNonVar(CompiledVarOrMethod v0) {
+        CompiledExpressionExt v=v0;
         while (v != null) {
             if (v instanceof CompiledVarOrMethod) {
                 v = v.getParentExpression();
@@ -74,7 +86,7 @@ public class UQLCompiledUtils {
     }
 
     public static CompiledUpdate findRootCompiledUpdate(CompiledVar v) {
-        DefaultCompiledExpression e=v;
+        CompiledExpressionExt e=v;
         while (e != null) {
             if(e instanceof CompiledUpdate){
                 return (CompiledUpdate) e;
@@ -85,7 +97,7 @@ public class UQLCompiledUtils {
     }
 
     public static CompiledVarVal findRootCompiledVarVal(CompiledVar v) {
-        DefaultCompiledExpression e=v;
+        CompiledExpressionExt e=v;
         while (e != null) {
             if(e instanceof CompiledVarVal){
                 return (CompiledVarVal) e;
@@ -96,7 +108,7 @@ public class UQLCompiledUtils {
     }
 
     public static CompiledQueryField findRootCompiledQueryField(CompiledVar v) {
-        DefaultCompiledExpression e=v;
+        CompiledExpressionExt e=v;
         while (e != null) {
             if(e instanceof CompiledQueryField){
                 return (CompiledQueryField) e;
@@ -107,7 +119,7 @@ public class UQLCompiledUtils {
     }
 
     public static CompiledEntityStatement findEnclosingStatement(CompiledVar v, PersistenceUnit pu) {
-        DefaultCompiledExpression e = v;
+        CompiledExpressionExt e = v;
         CompiledVar rv = findRootVar(v);
         while (e != null) {
             if (e instanceof CompiledSelect) {
@@ -172,7 +184,7 @@ public class UQLCompiledUtils {
     }
 
     public static CompiledEntityStatement findRootStatement(CompiledVar v, PersistenceUnit pu) {
-        DefaultCompiledExpression e = v;
+        CompiledExpressionExt e = v;
         while (e != null) {
             if (e instanceof CompiledEntityStatement && e.getParentExpression()==null) {
                 return (CompiledEntityStatement) e;
@@ -200,54 +212,58 @@ public class UQLCompiledUtils {
         return false;
     }
 
-    public static DefaultCompiledExpression cast(CompiledExpression expression) {
-        return (DefaultCompiledExpression) expression;
+    public static CompiledExpressionExt cast(CompiledExpression expression) {
+        return (CompiledExpressionExt) expression;
     }
 
-    public static ReplaceResult replaceThisVar(CompiledExpression expression, String newName) {
-        return cast(expression).replaceExpressions(new CompiledExpressionThisReplacer(newName));
+    public static ReplaceResult replaceThisVar(CompiledExpression expression, String newName, Map<String, Object> updateContext) {
+        return cast(expression).replaceExpressions(new CompiledExpressionThisReplacer(newName), updateContext);
     }
 
-    public static ReplaceResult replaceThisVar(CompiledExpression expression, CompiledVarOrMethod thisReplacement) {
-        return UQLCompiledUtils.replaceExpressions(cast(expression),new CompiledThisRefReplacer(thisReplacement));
+    public static ReplaceResult replaceThisVar(CompiledExpression expression, CompiledVarOrMethod thisReplacement, Map<String, Object> updateContext) {
+        return UQLCompiledUtils.replaceExpressions(cast(expression),new CompiledThisRefReplacer(thisReplacement), updateContext);
     }
 
-    public static DefaultCompiledExpression removeThisVar(CompiledExpression expression) {
+    public static CompiledExpressionExt removeThisVar(CompiledExpression expression, Map<String, Object> updateContext) {
         return cast(expression).replaceExpressions(THIS_VAR_FILTER, new CompiledExpressionThisRemover());
     }
 
-    public static void replaceRef(CompiledExpression baseExpr, CompiledExpression oldExpr, CompiledExpression newRef) {
+    public static void replaceRef(CompiledExpression baseExpr, CompiledExpression oldExpr, CompiledExpression newRef, Map<String, Object> updateContext) {
         if(oldExpr!=newRef){
-            UQLCompiledUtils.replaceExpressions(cast(baseExpr),new CompiledExpressionRefReplacer(cast(oldExpr),cast(newRef)));
+            UQLCompiledUtils.replaceExpressions(cast(baseExpr),new CompiledExpressionRefReplacer(cast(oldExpr),cast(newRef)), updateContext);
         }
     }
 
-    public static ReplaceResult replaceExpressionChildren(DefaultCompiledExpression newParent,CompiledExpressionFilteredReplacer replacer) {
+    public static ReplaceResult replaceExpressionChildren(CompiledExpressionExt newParent, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
         List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
         int i = 0;
-        DefaultCompiledExpression[] subExpressions = newParent.getSubExpressions();
+        CompiledExpressionExt[] subExpressions = newParent.getSubExpressions();
         if (subExpressions == null) {
-            subExpressions = new DefaultCompiledExpression[0];
+            subExpressions = new CompiledExpressionExt[0];
         }
-        for (DefaultCompiledExpression expression : subExpressions) {
+        for (CompiledExpressionExt expression : subExpressions) {
             replacementPositions.add(new ReplacementPosition(newParent, expression, i));
             i++;
         }
         boolean someChildUpdates = false;
         List<ReplacementPosition> toRemove = new ArrayList<>();
         for (ReplacementPosition r : replacementPositions) {
-            DefaultCompiledExpression child = r.getChild();
+            CompiledExpressionExt child = r.getChild();
                 if (child == null) {
                     //System.out.println("Child is null?");
                 } else {
-                    ReplaceResult c = replaceExpressions(child,replacer);
+                    ReplaceResult c = replaceExpressions(child,replacer, updateContext);
                     switch (c.getType()) {
                         case NO_UPDATES: {
                             break;
                         }
                         case NEW_INSTANCE:{
                             someChildUpdates = true;
-                            newParent.setSubExpression(r.getPos(), c.getExpression());
+                            if(c.getExpression().getParentExpression()==null || c.getExpression().getParentExpression()==newParent) {
+                                newParent.setSubExpression(r.getPos(), c.getExpression());
+                            }else{
+                                return c;
+                            }
                             break;
                         }
                         case UPDATE: {
@@ -274,15 +290,15 @@ public class UQLCompiledUtils {
         return ReplaceResult.UPDATE_AND_STOP;
     }
 
-    private static ReplaceResult replaceExpressionNodeToClean(DefaultCompiledExpression expr, CompiledExpressionFilteredReplacer replacer) {
+    private static ReplaceResult replaceExpressionNodeToClean(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
         ReplaceResult exprUpdate=null;
         boolean remove=false;
         boolean stop=false;
         boolean newInstance=false;
         boolean update=false;
-        DefaultCompiledExpression oldParent=expr.getParentExpression();
+        CompiledExpressionExt oldParent=expr.getParentExpression();
         while(!remove) {
-            exprUpdate = replacer.update(expr);
+            exprUpdate = replacer.update(expr, updateContext);
             expr=exprUpdate.getExpression(expr);
             if(exprUpdate.isStop()){
                 stop=true;
@@ -293,7 +309,9 @@ public class UQLCompiledUtils {
                     break;
                 }
                 case NEW_INSTANCE:{
-                    expr.setParentExpression(oldParent);
+//                    if(expr.getParentExpression()==null) {
+//                        expr.setParentExpression(oldParent);
+//                    }
                     newInstance=true;
                     break;
                 }
@@ -332,12 +350,12 @@ public class UQLCompiledUtils {
         }
     }
 
-    public static ReplaceResult replaceExpressions(DefaultCompiledExpression expr,CompiledExpressionFilteredReplacer replacer) {
+    public static ReplaceResult replaceExpressions(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
         if (replacer == null) {
             return ReplaceResult.NO_UPDATES_STOP;
         }
         if (replacer.isTopDown()) {
-            ReplaceResult exprUpdate = replaceExpressionNodeToClean(expr,replacer);
+            ReplaceResult exprUpdate = replaceExpressionNodeToClean(expr,replacer, updateContext);
             //if stop will not check children!
             if (exprUpdate.isStop()) {
                 switch (exprUpdate.getType()) {
@@ -356,15 +374,19 @@ public class UQLCompiledUtils {
                 }
                 return exprUpdate;
             }
-            DefaultCompiledExpression oldParent = expr.getParentExpression();
-            DefaultCompiledExpression newExpr = exprUpdate.getExpression(expr);
-            newExpr.setParentExpression(oldParent);
+//            CompiledExpressionExt oldParent = expr.getParentExpression();
+            CompiledExpressionExt newExpr = exprUpdate.getExpression(expr);
             switch (exprUpdate.getType()) {
                 case REMOVE: {
                     return ReplaceResult.REMOVE_AND_STOP;
                 }
             }
-            ReplaceResult creplaceResult = replaceExpressionChildren(newExpr, replacer);
+//            if(newExpr.getParentExpression()!=null){
+//
+//            }
+            //newExpr.setParentExpression(oldParent);
+
+            ReplaceResult creplaceResult = replaceExpressionChildren(newExpr, replacer, updateContext);
             switch (exprUpdate.getType()) {
                 case NEW_INSTANCE: {
                     return ReplaceResult.stopWithNewObj(exprUpdate.getExpression());
@@ -381,18 +403,18 @@ public class UQLCompiledUtils {
 //
 //            List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
 //            int i = 0;
-//            DefaultCompiledExpression[] subExpressions = newParent.getSubExpressions();
+//            CompiledExpressionExt[] subExpressions = newParent.getSubExpressions();
 //            if (subExpressions == null) {
-//                subExpressions = new DefaultCompiledExpression[0];
+//                subExpressions = new CompiledExpressionExt[0];
 //            }
-//            for (DefaultCompiledExpression expression : subExpressions) {
+//            for (CompiledExpressionExt expression : subExpressions) {
 //                replacementPositions.add(new ReplacementPosition(expr, expression, i));
 //                i++;
 //            }
 //            boolean someChildUpdates = false;
 //            List<ReplacementPosition> toRemove = new ArrayList<>();
 //            for (ReplacementPosition r : replacementPositions) {
-//                DefaultCompiledExpression child = r.getChild();
+//                CompiledExpressionExt child = r.getChild();
 //                boolean again = true;
 //                while (again) {
 //                    again=false;
@@ -406,7 +428,7 @@ public class UQLCompiledUtils {
 //                            }
 //                            case NEW_INSTANCE:{
 //                                someChildUpdates = true;
-//                                subExpressions[r.getPos()].setParentExpression(null);
+//                                subExpressions[r.getPos()].unsetParent();
 //                                expr.setSubExpression(r.getPos(), c.getExpression());
 //                                if(!c.isStop()) {
 //                                    child = c.getExpression();
@@ -458,21 +480,21 @@ public class UQLCompiledUtils {
         } else {
             List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
             int i = 0;
-            DefaultCompiledExpression[] subExpressions = expr.getSubExpressions();
+            CompiledExpressionExt[] subExpressions = expr.getSubExpressions();
             if (subExpressions == null) {
-                subExpressions = new DefaultCompiledExpression[0];
+                subExpressions = new CompiledExpressionExt[0];
             }
-            for (DefaultCompiledExpression expression : subExpressions) {
+            for (CompiledExpressionExt expression : subExpressions) {
                 replacementPositions.add(new ReplacementPosition(expr, expression, i));
                 i++;
             }
             boolean someChildUpdates = false;
             for (ReplacementPosition r : replacementPositions) {
-                DefaultCompiledExpression child = r.getChild();
+                CompiledExpressionExt child = r.getChild();
                 if (child == null) {
                     //System.out.println("Child is null?");
                 } else {
-                    ReplaceResult c = child.replaceExpressions(replacer);
+                    ReplaceResult c = child.replaceExpressions(replacer, updateContext);
                     switch (c.getType()) {
                         case UPDATE: {
                             someChildUpdates = true;
@@ -485,8 +507,8 @@ public class UQLCompiledUtils {
                             someChildUpdates = true;
                             int pos = r.getPos();
                             if (subExpressions[pos] != c.getExpression()) {
-                                subExpressions[pos].setParentExpression(null);
-                                expr.setSubExpression(pos, (DefaultCompiledExpression) c.getExpression());
+                                subExpressions[pos].unsetParent();
+                                expr.setSubExpression(pos, (CompiledExpressionExt) c.getExpression());
                             }
                             if (c.isStop()) {
                                 return ReplaceResult.UPDATE_AND_STOP;
@@ -501,7 +523,7 @@ public class UQLCompiledUtils {
                     }
                 }
             }
-            ReplaceResult update = replacer.update(expr);
+            ReplaceResult update = replacer.update(expr, updateContext);
             switch (update.getType()) {
                 case NO_UPDATES: {
                     if (someChildUpdates) {

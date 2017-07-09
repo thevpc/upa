@@ -113,4 +113,23 @@ public class ShortType extends NumberType implements Cloneable {
         return Short.parseShort(value);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ShortType shortType = (ShortType) o;
+
+        if (min != null ? !min.equals(shortType.min) : shortType.min != null) return false;
+        return max != null ? max.equals(shortType.max) : shortType.max == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
 }

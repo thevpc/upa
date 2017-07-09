@@ -9,7 +9,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledXOr;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
@@ -17,7 +17,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class XOrExpressionTranslator implements ExpressionTranslator {
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileXOr((XOr) o, manager,declarations);
     }
 

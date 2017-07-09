@@ -139,7 +139,7 @@ public final class TypesFactory {
         register(Long.TYPE, LONG);
         register(Short.class, SHORT);
         register(Short.TYPE, SHORT);
-        register(String.class, StringType.DEFAULT);
+        register(String.class, STRING);
         register(Date.class, DATE);
         register(Month.class, MONTH);
         register(Year.class, YEAR);
@@ -151,6 +151,8 @@ public final class TypesFactory {
         register(char[].class, CHARS);
         register(Byte[].class, BYTE_REFS);
         register(Character[].class, CHAR_REFS);
+        register(Void.class, VOID);
+        register(Void.TYPE, VOID);
 
         /**@PortabilityHint(target="C#",name="suppress")*/
         //All the of the following types are not supported in C#
@@ -177,7 +179,9 @@ public final class TypesFactory {
             return o;
         }
         if (clazz.isEnum()) {
-            return new EnumType(clazz, true);
+            EnumType value = new EnumType(clazz, true);
+            defaultMapping.put(clazz, value);
+            return value;
         }
         return OBJECT;
     }

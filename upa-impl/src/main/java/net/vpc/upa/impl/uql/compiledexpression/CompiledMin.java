@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 public final class CompiledMin extends CompiledFunction
@@ -10,12 +11,12 @@ public final class CompiledMin extends CompiledFunction
 //    public Min(String fieldName,DataType type) {
 //        this(new Var(fieldName,type));
 //    }
-    public CompiledMin(DefaultCompiledExpression expression) {
+    public CompiledMin(CompiledExpressionExt expression) {
         super("Min");
         protectedAddArgument(expression);
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return getArgument(0);
     }
 
@@ -25,7 +26,7 @@ public final class CompiledMin extends CompiledFunction
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledMin o = new CompiledMin(getExpression().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

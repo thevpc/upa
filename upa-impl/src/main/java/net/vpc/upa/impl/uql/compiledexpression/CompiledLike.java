@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.expressions.BinaryOperator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public final class CompiledLike extends CompiledBinaryOperatorExpression
@@ -8,12 +9,12 @@ public final class CompiledLike extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledLike(DefaultCompiledExpression left, Object right) {
+    public CompiledLike(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.LIKE, left, right);
         setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }
 
-    public CompiledLike(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledLike(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.LIKE, left, right);
         setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
     }

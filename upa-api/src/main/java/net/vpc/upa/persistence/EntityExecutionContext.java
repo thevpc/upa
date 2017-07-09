@@ -48,8 +48,6 @@ import java.util.Map;
 
 public interface EntityExecutionContext extends Properties {
 
-    void initPersistenceUnit(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore, ContextOperation contextOperation);
-
     ContextOperation getOperation();
 
     Entity getEntity();
@@ -88,8 +86,6 @@ public interface EntityExecutionContext extends Properties {
     PersistenceStore getPersistenceStore();
 
     EntityOperationManager getEntityOperationManager();
-
-    void initEntity(Entity currentEntity, EntityOperationManager entityOperationManager);
 
     void addGeneratedValue(String name, DataType type);
 

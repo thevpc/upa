@@ -4,6 +4,8 @@ import net.vpc.upa.PersistenceUnit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataTypeTransform;
@@ -12,10 +14,10 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
         implements Cloneable, CompiledExpandableExpression {
 
     private static final long serialVersionUID = 1L;
-    private DefaultCompiledExpression[] expressions;
+    private CompiledExpressionExt[] expressions;
     private CompiledCst pattern;
 
-    public CompiledStrFormat(String pattern, DefaultCompiledExpression... expressions) {
+    public CompiledStrFormat(String pattern, CompiledExpressionExt... expressions) {
         this.pattern = new CompiledCst(pattern);
         bindChildren(this.pattern);
         this.expressions = expressions;
@@ -33,8 +35,8 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
-        DefaultCompiledExpression[] expressions1 = new DefaultCompiledExpression[expressions.length];
+    public CompiledExpressionExt copy() {
+        CompiledExpressionExt[] expressions1 = new CompiledExpressionExt[expressions.length];
         for (int i = 0; i < expressions.length; i++) {
             expressions1[i] = expressions[i].copy();
         }
@@ -50,7 +52,7 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
 //    }
 
     @Override
-    public DefaultCompiledExpression expand(PersistenceUnit PersistenceUnit) {
+    public CompiledExpressionExt expand(PersistenceUnit PersistenceUnit) {
         CompiledConcat c = new CompiledConcat();
 
         int i=0;
@@ -86,15 +88,15 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all=new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all=new ArrayList<CompiledExpressionExt>();
         all.add(pattern);
         all.addAll(Arrays.asList(expressions));
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index==0){
             unbindChildren(this.pattern);
             pattern=(CompiledCst)expression;

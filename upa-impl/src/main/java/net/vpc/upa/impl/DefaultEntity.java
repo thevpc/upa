@@ -14,11 +14,13 @@ import net.vpc.upa.impl.event.FormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.RelationshipSourceFormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.RelationshipTargetFormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.SingleDataInterceptorSupport;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.impl.navigator.EntityNavigatorFactory;
 import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.FieldListPersistenceInfo;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.parser.syntax.ParseException;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.uql.util.UQLUtils;
@@ -71,7 +73,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    private Section currentSection;
 //    private CompoundField currentCompoundField;
     //private Hashtable cached_fields;
-    private CacheMap<FieldFilter, List<Field>> fieldsByFilter = new CacheMap<FieldFilter, List<Field>>(MAX_CACHE_SIZE);
+    private CacheMap<FieldFilter, List<Field>> fieldsByFilter = new LRUCacheMap<FieldFilter, List<Field>>(MAX_CACHE_SIZE);
     private Set<String> dependsOnTables = new TreeSet<String>();
     private String parentSecurityAction;
     private Relationship compositionRelation;
@@ -204,7 +206,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         extensionManager = factory.createObject(DefaultEntityExtensionManager.class);
         tuningMaxInline = getPersistenceUnit().getProperties().getInt(Relationship.class.getName() + ".maxInline", 10);
         entityOperationManager = factory.createObject(EntityOperationManager.class);
-        documentListenerSupport = new DocumentListenerSupport(this, ((DefaultPersistenceUnit) persistenceUnit).getPersistenceUnitListenerManager());
+        documentListenerSupport = new DocumentListenerSupport(this, ((PersistenceUnitExt) persistenceUnit).getPersistenceUnitListenerManager());
         addTrigger(null, cache.cache_isEmpty_Listener);
     }
 
@@ -744,7 +746,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     Formula selectFormula = field.getSelectFormula();
                     if (selectFormula instanceof ExpressionFormula) {
                         ExpressionFormula ef = (ExpressionFormula) selectFormula;
-                        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(ef.getExpression(), null);
+                        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) compile(ef.getExpression(), null);
                         complexFormula = compiledExpression.findFirstExpression(UQLCompiledUtils.SELECT_FILTER) != null;
                     } else {
                         complexFormula = true;
@@ -1172,7 +1174,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public Trigger addTrigger(String triggerName, EntityInterceptor trigger) throws UPAException {
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit) getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt) getPersistenceUnit();
         if (StringUtils.isNullOrEmpty(triggerName)) {
             while (true) {
                 String n = "anonymous" + triggerAnonymousNameIndex;
@@ -1222,7 +1224,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public void removeTrigger(String triggerName) throws UPAException {
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit) getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt) getPersistenceUnit();
         Trigger tr = triggers.get(triggerName);
         if (tr == null) {
             throw new IllegalArgumentException("Trigger Not found " + triggerName);
@@ -2510,11 +2512,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         //add default values
         for (Field field : persistWithDefaultValue) {
             Object value = field.getDefaultValue();
-            if (value == null) {
-                if (!field.getDataType().isNullable()) {
-                    value = field.getDataType().getDefaultNonNullValue();
-                }
-            }
             document.setObject(field.getName(), value);
             ((AbstractField) field).getFieldPersister().prepareFieldForPersist(field, value, document, persistentDocument, executionContext, persistNonNullable, emptySet);
         }
@@ -2729,7 +2726,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public EntityExecutionContext createContext(ContextOperation contextOperation, Map<String, Object> hints) {
-        EntityExecutionContext context = ((DefaultPersistenceUnit) getPersistenceUnit()).createContext(contextOperation, hints);
+        EntityExecutionContextExt context = (EntityExecutionContextExt) (((PersistenceUnitExt) getPersistenceUnit()).createContext(contextOperation, hints));
         context.initEntity(this, entityOperationManager);
         context.setHints(hints);
         return context;
@@ -3395,7 +3392,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public DecorationRepository getDecorationRepository() {
-        DefaultPersistenceUnit persistenceUnit = (DefaultPersistenceUnit) getPersistenceUnit();
+        PersistenceUnitExt persistenceUnit = (PersistenceUnitExt) getPersistenceUnit();
         return persistenceUnit.getDecorationRepository();
     }
 
@@ -3623,7 +3620,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (f instanceof ExpressionFormula) {
             ExpressionFormula expressionFormula = (ExpressionFormula) f;
             try {
-                DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) compile(expressionFormula.getExpression(), null);
+                CompiledExpressionExt compiledExpression = (CompiledExpressionExt) compile(expressionFormula.getExpression(), null);
                 compiledExpression.visit(new FieldCollectorCompiledExpressionVisitor(usedFields));
             } catch (RuntimeException ex) {
                 throw new InvalidFormulaException(String.valueOf(expressionFormula.getExpression()), ex);

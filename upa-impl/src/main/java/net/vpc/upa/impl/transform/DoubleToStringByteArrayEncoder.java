@@ -13,6 +13,7 @@ import net.vpc.upa.types.ByteArrayEncoder;
  */
 public class DoubleToStringByteArrayEncoder implements ByteArrayEncoder {
     public static final DoubleToStringByteArrayEncoder INSTANCE=new DoubleToStringByteArrayEncoder();
+
     public byte[] encode(Object o) {
         if (o == null) {
             return null;
@@ -27,4 +28,15 @@ public class DoubleToStringByteArrayEncoder implements ByteArrayEncoder {
         return Double.parseDouble(new String(bytes));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().getName().hashCode();
+    }
 }

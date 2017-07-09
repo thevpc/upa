@@ -5,7 +5,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.SQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledQLFunctionExpression;
@@ -29,7 +29,7 @@ public class CompiledQLFunctionExpressionSQLProvider implements SQLProvider {
         return sqlManager.getMarshallManager().formatSqlValue(o.getHandler().eval(new EvalContext(o.getName(), args, qlContext.getPersistenceUnit(),null)));
     }
 
-    protected Object eval(DefaultCompiledExpression o, EntityExecutionContext qlContext) {
+    protected Object eval(CompiledExpressionExt o, EntityExecutionContext qlContext) {
         if (o == null) {
             return null;
         }

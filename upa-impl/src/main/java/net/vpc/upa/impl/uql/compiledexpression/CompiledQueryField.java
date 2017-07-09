@@ -1,5 +1,8 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.Entity;
+import net.vpc.upa.Field;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.BindingId;
 
 /**
@@ -8,19 +11,27 @@ import net.vpc.upa.impl.uql.BindingId;
  */
 public class CompiledQueryField extends DefaultCompiledExpressionImpl {
     private String name;
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
 
     private int index=-1;
     private boolean expanded=false;
     private String alias;
     private BindingId binding;
     private String aliasBinding;
-    public CompiledQueryField(String alias, DefaultCompiledExpression expression/*, Object relative*/) {
-        this(resolveName(alias, expression), expression,-1,false,alias,null,null);
+    private boolean partialObject;
+    private Field referrerField;
+    private Entity parentBindingEntity;
+    public CompiledQueryField(String alias, CompiledExpressionExt expression/*, Object relative*/) {
+        this(resolveName(alias, expression), expression,-1,false,alias,null,null,false);
         this.alias = alias;
         this.binding = resolveBinding(expression);
     }
-    public CompiledQueryField(String name, DefaultCompiledExpression expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding) {
+
+    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding) {
+        this(name, expression, index,expanded,alias,binding,aliasBinding,false);
+    }
+
+    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding,boolean partialObject) {
 //        super(name, expression);
         this.name = name;
         setExpression(expression);
@@ -29,25 +40,52 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         this.alias = alias;
         this.binding = binding;
         this.aliasBinding = aliasBinding;
+        this.partialObject = partialObject;
         bindChildren(expression);
+    }
 
+    public Field getReferrerField() {
+        return referrerField;
+    }
+
+    public void setReferrerField(Field referrerField) {
+        this.referrerField = referrerField;
+    }
+
+    public void setPartialObject(boolean partialObject) {
+        this.partialObject = partialObject;
+    }
+
+    public Entity getParentBindingEntity() {
+        return parentBindingEntity;
+    }
+
+    public void setParentBindingEntity(Entity parentBindingEntity) {
+        this.parentBindingEntity = parentBindingEntity;
+    }
+
+    public boolean isPartialObject() {
+        return partialObject;
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{expression};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{expression};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index==0){
             setExpression(this.expression);
         }
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
-        return new CompiledQueryField(name, expression, index, expanded, alias, binding, aliasBinding);
+    public CompiledExpressionExt copy() {
+        CompiledQueryField compiledQueryField = new CompiledQueryField(name, expression, index, expanded, alias, binding, aliasBinding, partialObject);
+        compiledQueryField.referrerField=referrerField;
+        compiledQueryField.parentBindingEntity = parentBindingEntity;
+        return compiledQueryField;
     }
 
     public String getName() {
@@ -58,17 +96,17 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         this.name = name;
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return expression;
     }
 
-    public void setExpression(DefaultCompiledExpression expression) {
+    public void setExpression(CompiledExpressionExt expression) {
         unbindChildren(this.expression);
         this.expression = expression;
         bindChildren(expression);
     }
 
-    private static String resolveName(String alias, DefaultCompiledExpression expression) {
+    private static String resolveName(String alias, CompiledExpressionExt expression) {
         if (alias != null) {
             return alias;
         }
@@ -80,12 +118,12 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         return null;
     }
 
-    private static BindingId resolveBinding(DefaultCompiledExpression expression) {
+    private static BindingId resolveBinding(CompiledExpressionExt expression) {
         if (expression instanceof CompiledVar) {
             CompiledVar cv = (CompiledVar) expression;
             CompiledVarOrMethod cv1 = cv.getDeepChild();
             if (cv1 != null && cv1 instanceof CompiledVar) {
-                DefaultCompiledExpression cv2 = cv1.getParentExpression();
+                CompiledExpressionExt cv2 = cv1.getParentExpression();
                 if (cv2 != null && cv2 instanceof CompiledVar) {
                     return ((CompiledVar) cv2).getBinding();
                 }
@@ -107,7 +145,7 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
 
     @Override
     public String toString() {
-        DefaultCompiledExpression e = getExpression();
+        CompiledExpressionExt e = getExpression();
         return (e == null ? "NULL" : e.toString()) + (alias == null ? "" : (" " + alias));
     }
 

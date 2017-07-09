@@ -1,10 +1,19 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.Field;
+import net.vpc.upa.QueryHints;
+import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
+import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
+import net.vpc.upa.impl.util.ExprTypeInfo;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -17,7 +26,6 @@ public class DefaultQueryExecutor implements QueryExecutor {
     private String query;
     private UConnection connection;
 
-    private PersistenceStore persistenceStore;
     private net.vpc.upa.impl.persistence.NativeStatementType type;
     private HashMap<String, String> parameters;
     private Object returnValue;
@@ -27,24 +35,56 @@ public class DefaultQueryExecutor implements QueryExecutor {
     private NativeField[] fields;
     private ResultMetaData metaData;
     private List<Parameter> queryParameters;
-    private List<Parameter> generatedKeys;
-    public DefaultQueryExecutor(NativeStatementType type, Map<String, Object> hints,
-                                String query, List<Parameter> queryParameters, List<Parameter> generatedKeys,
-                                PersistenceStore persistenceStore,UConnection connection,
-                                NativeField[] nativeFields,boolean updatable,ResultMetaData metaData
-                                ) {
-        this.type = type;
+//    private List<Parameter> generatedValues;
+    private CompiledExpressionExt compiledExpression;
+    private boolean noTypeTransform;
+    private List<CompiledParam> compiledParams;
+    private EntityExecutionContext context;
+    public DefaultQueryExecutor(CompiledExpressionExt compiledExpression, Map<String, Object> hints,
+                                String query,
+                                NativeField[] nativeFields, boolean updatable, ResultMetaData metaData,
+                                boolean noTypeTransform,
+                                EntityExecutionContext context
+    ) {
+        this.context = context;
+        this.type = context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE;
         this.updatable = updatable;
         this.metaData = metaData;
         this.query = query;
         this.fields = nativeFields;
-        this.queryParameters = queryParameters;
-        this.generatedKeys = generatedKeys;
-        this.persistenceStore = persistenceStore;
-        this.connection = connection;
+//        this.generatedValues = generatedValues;
+        this.connection = context.getConnection();
+        this.compiledExpression = compiledExpression;
+        this.noTypeTransform = noTypeTransform;
 
         parameters = new HashMap<String, String>();
         this.hints=hints;
+        this.compiledParams = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
+
+        this.queryParameters = new ArrayList<Parameter>();
+        for (CompiledParam e : this.compiledParams) {
+            ExprTypeInfo ei = UPAUtils.resolveExprTypeInfo(e);
+            Object objectValue = e.getValue();
+            if (ei.getOldReferrer() != null) {
+                Field oldField = (Field) ei.getOldReferrer();
+                if (oldField.getDataType() instanceof ManyToOneType) {
+                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
+                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
+                }
+            }
+            boolean fieldNoTypeTransform = noTypeTransform;
+            if (ei.getReferrer() instanceof Field) {
+                if (!noTypeTransform) {
+                    Field field = (Field) ei.getReferrer();
+                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + field.getAbsoluteName();
+                    fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
+                }
+            }
+            DataTypeTransform baseTransform = ei.getTypeTransform();
+            DataTypeTransform preferedTransform = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
+
+            queryParameters.add(new DefaultParameter(e.getName(), objectValue, preferedTransform));
+        }
     }
 
     public NativeStatementType getStatementType() {
@@ -76,7 +116,8 @@ public class DefaultQueryExecutor implements QueryExecutor {
 
     public QueryExecutor execute()
             throws UPAException {
-        String logString = null;
+        preExec();
+//        String logString = null;
         try {
             errorTrace = null;
             this.currentStatementIndex = 0;
@@ -92,8 +133,9 @@ public class DefaultQueryExecutor implements QueryExecutor {
                     break;
                 }
                 case UPDATE: {
-                    if (generatedKeys != null && generatedKeys.size() > 0) {
-                        int updates = connection.executeNonQuery(query, queryParameters, generatedKeys);
+                    List<Parameter> generatedValues = context.getGeneratedValues();
+                    if (generatedValues != null && generatedValues.size() > 0) {
+                        int updates = connection.executeNonQuery(query, queryParameters, generatedValues);
                         setResultCount(updates);
                     } else {
                         setResultCount(connection.executeNonQuery(query, queryParameters, null));
@@ -176,5 +218,57 @@ public class DefaultQueryExecutor implements QueryExecutor {
     @Override
     public UConnection getConnection() {
         return connection;
+    }
+
+    @Override
+    public void setConnection(UConnection connection) {
+        this.connection = connection;
+    }
+
+    public void preExec(){
+        List<Parameter> queryParameters2 = new ArrayList<Parameter>();
+        for (CompiledParam e : compiledParams) {
+            if (e.isUnspecified()) {
+                throw new IllegalArgumentException("Unspecified Param " + e);
+            }
+            ExprTypeInfo ei = UPAUtils.resolveExprTypeInfo(e);
+            Object objectValue = e.getValue();
+            if (ei.getOldReferrer() != null) {
+                Field oldField = (Field) ei.getOldReferrer();
+                if (oldField.getDataType() instanceof ManyToOneType) {
+                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
+                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
+                }
+            }
+            boolean fieldNoTypeTransform = noTypeTransform;
+            if (ei.getReferrer() instanceof Field) {
+                if (!noTypeTransform) {
+                    Field field = (Field) ei.getReferrer();
+                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + field.getAbsoluteName();
+                    fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
+                }
+            }
+            DataTypeTransform baseTransform = ei.getTypeTransform();
+            DataTypeTransform preferredTransform = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
+
+            queryParameters2.add(new DefaultParameter(e.getName(), objectValue, preferredTransform));
+        }
+        this.queryParameters=queryParameters2;
+    }
+
+    public void setParam(int index,Object value){
+        compiledParams.get(index).setValue(value);
+    }
+
+    public void setParam(String name,Object value){
+        for (CompiledParam compiledParam : compiledParams) {
+            if(name.equals(compiledParam.getName())){
+                compiledParam.setValue(value);
+            }
+        }
+    }
+
+    public void setContext(EntityExecutionContext context) {
+        this.context = context;
     }
 }

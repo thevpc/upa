@@ -4,20 +4,15 @@
  */
 package net.vpc.upa.impl.config.annotationparser;
 
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.FieldDefinitionListener;
-import net.vpc.upa.callbacks.FieldEvent;
-import net.vpc.upa.callbacks.PersistenceUnitEvent;
 import net.vpc.upa.*;
+import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.impl.DefaultPersistenceUnit;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
-import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +37,10 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
     public RelationshipDescriptorProcessor(PersistenceUnit persistenceUnit, RelationshipDescriptor relationInfo) {
         this.persistenceUnit = persistenceUnit;
         this.relationDescriptor = relationInfo;
-        if(StringUtils.isNullOrEmpty(relationDescriptor.getTargetEntity()) && relationDescriptor.getTargetEntityType()==null){
+        if (StringUtils.isNullOrEmpty(relationDescriptor.getTargetEntity()) && relationDescriptor.getTargetEntityType() == null) {
             throw new UPAException("NoneOfTargetEntityAndTargetEntityTypeDefined");
         }
-        if(StringUtils.isNullOrEmpty(relationDescriptor.getSourceEntity()) && relationDescriptor.getSourceEntityType()==null){
+        if (StringUtils.isNullOrEmpty(relationDescriptor.getSourceEntity()) && relationDescriptor.getSourceEntityType() == null) {
             throw new UPAException("NoneOfSourceEntityAndSourceEntityTypeDefined");
         }
     }
@@ -284,7 +279,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             rd.setHierarchyPathSeparator(relationDescriptor.getHierarchyPathSeparator());
             rd.setNullable(relationDescriptor.isNullable());
 
-            relation = ((DefaultPersistenceUnit) pu).addRelationshipImmediate(rd);
+            relation = ((PersistenceUnitExt) pu).addRelationshipImmediate(rd);
 //                    relationDescriptor.getName(),
 //                    relationDescriptor.getRelationType(),
 //                    sourceEntity.getName(),

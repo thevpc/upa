@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -40,7 +41,7 @@ public final class CompiledExists extends CompiledFunction
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledQueryStatement qq = getQuery();
         CompiledExists o = qq==null?new CompiledExists():new CompiledExists((CompiledQueryStatement) qq.copy());
         o.setDescription(getDescription());

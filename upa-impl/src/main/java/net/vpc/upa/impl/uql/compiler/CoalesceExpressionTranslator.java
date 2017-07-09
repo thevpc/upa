@@ -9,14 +9,14 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledCoalesce;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class CoalesceExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileCoalesce((Coalesce) o, manager,declarations);
     }
 

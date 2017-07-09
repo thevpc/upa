@@ -8,15 +8,15 @@ import net.vpc.upa.expressions.Param;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class ParamExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileVal((Param) o, manager,declarations);
     }
 

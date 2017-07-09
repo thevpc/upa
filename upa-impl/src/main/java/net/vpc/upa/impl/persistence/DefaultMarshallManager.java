@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.impl.persistence.shared.marshallers.*;
+import net.vpc.upa.impl.util.LRUMap;
 import net.vpc.upa.types.*;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class DefaultMarshallManager implements MarshallManager {
     //    private ConnectionManager connectionManager;
     //    public static final DataWrapper JAVA_OBJECT = new JavaObjectWrapper();
     private final Map<Class, TypeMarshallerFactory> typeToMarshallerFactory = new HashMap<Class, TypeMarshallerFactory>();
+    private final Map<DataTypeTransform, TypeMarshaller> dataTypeTransformToMarshaller = new LRUMap<DataTypeTransform, TypeMarshaller>(200);
 
     public DefaultMarshallManager() {
         this.nullMarshaller = (TypeMarshallerUtils.NULL);
@@ -107,12 +109,12 @@ public class DefaultMarshallManager implements MarshallManager {
 
     @Override
     public TypeMarshaller getTypeMarshaller(Class platformType) {
-        TypeMarshaller c = (TypeMarshaller) typeToMarshallerMap.get(platformType);
+        TypeMarshaller c = typeToMarshallerMap.get(platformType);
         if (c != null) {
             return c;
         }
         if (platformType.isEnum()) {
-            return new EnumAsIntMarshaller(platformType);
+            return EnumMarshallerFactory.getSharedTypeMarshaller(platformType);
         }
         Class[] interfaces = platformType.getInterfaces();
         for (Class anInterface : interfaces) {
@@ -132,8 +134,14 @@ public class DefaultMarshallManager implements MarshallManager {
         return getTypeMarshaller(superClass);
     }
 
+    @Override
     public TypeMarshaller getTypeMarshaller(DataTypeTransform p) {
-        return new DataTypeTransformMarshaller(p, getTypeMarshaller(p.getTargetType()));
+        TypeMarshaller mm = dataTypeTransformToMarshaller.get(p);
+        if(mm==null){
+            mm=new DataTypeTransformMarshaller(p, getTypeMarshaller(p.getTargetType()));
+            dataTypeTransformToMarshaller.put(p,mm);
+        }
+        return mm;
     }
 
     @Override
@@ -148,7 +156,7 @@ public class DefaultMarshallManager implements MarshallManager {
     }
 
     private TypeMarshallerFactory getTypeMarshallerFactory0(Class someClass) {
-        TypeMarshallerFactory c = (TypeMarshallerFactory) typeToMarshallerFactory.get(someClass);
+        TypeMarshallerFactory c = typeToMarshallerFactory.get(someClass);
         if (c != null) {
             return c;
         }

@@ -14,6 +14,8 @@ import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAException;
 
 import java.util.List;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
@@ -115,7 +117,7 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledKeyExpression o = new CompiledKeyExpression(entity, key, entityAlias);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -123,12 +125,12 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         return null;
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         throw new UnsupportedOperationException("Not supported.");
     }
     

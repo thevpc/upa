@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
 * Created by vpc on 1/4/14.
@@ -12,7 +12,7 @@ class BindingJoinInfo {
     BindingId binding;
     Entity entity;
     String alias;
-    DefaultCompiledExpression cond;
+    CompiledExpressionExt cond;
 
     @Override
     public String toString() {

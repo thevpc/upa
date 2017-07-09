@@ -4,13 +4,13 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.NativeField;
 import net.vpc.upa.impl.persistence.QueryExecutor;
-import net.vpc.upa.impl.persistence.QueryResultLazyList;
 import net.vpc.upa.impl.uql.BindingId;
-import net.vpc.upa.impl.util.CacheMap;
-import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.uql.NativeFieldByBindingIdComparator;
+import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.persistence.ResultMetaData;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -19,35 +19,26 @@ import java.util.*;
  * Created by vpc on 6/18/16.
  */
 public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> {
+    public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE=new NoCacheMap<NamedId, ResultObject>();
     private boolean updatable;
     private ResultMetaData metaData;
-    private CacheMap<NamedId, Object> referencesCache;
+    private CacheMap<NamedId, ResultObject> referencesCache;
     private Map<String, Object> hints;
     private ObjectFactory ofactory;
-    private boolean defaultsToDocument;
-    private boolean relationAsDocument;
     private TypeInfo[] typeInfos;
-    private LinkedHashMap<BindingId, TypeInfo> bindingToTypeInfos;
     private QueryResultItemBuilder resultBuilder;
-    private QueryResultRelationLoader loader;
     private LoaderContext loaderContext;
 
     public DefaultObjectQueryResultLazyList(
             PersistenceUnit pu,
             QueryExecutor queryExecutor,
-            boolean loadManyToOneRelations,
-            boolean defaultsToDocument,
             boolean relationAsDocument,
             int supportCacheSize,
             boolean updatable,
-            QueryResultRelationLoader loader,
             QueryResultItemBuilder resultBuilder
     ) throws SQLException {
         super(queryExecutor);
         this.resultBuilder = resultBuilder;
-        this.loader = loader;
-        this.defaultsToDocument = defaultsToDocument;
-        this.relationAsDocument = relationAsDocument;
         metaData = queryExecutor.getMetaData();
         hints = queryExecutor.getHints();
         if (hints == null) {
@@ -56,47 +47,75 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             hints = new HashMap<String, Object>(hints);
         }
         if (supportCacheSize>0) {
-            CacheMap<NamedId, Object> sharedCache = (CacheMap<NamedId, Object>) hints.get("queryCache");
+            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get("queryCache");
             if (sharedCache == null) {
-                sharedCache = new CacheMap<NamedId, Object>(supportCacheSize);
+                sharedCache = new LRUCacheMap<NamedId, ResultObject>(supportCacheSize);
                 hints.put("queryCache", sharedCache);
             }
             referencesCache = sharedCache;
+        }else {
+            referencesCache=NO_RESULT_CACHE;
         }
         loaderContext = new LoaderContext(referencesCache, hints);
         LinkedHashMap<BindingId, TypeInfo> bindingToTypeInfos0 = new LinkedHashMap<BindingId, TypeInfo>();
         ofactory = pu.getFactory();
         NativeField[] fields = queryExecutor.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            NativeField nativeField = fields[i];
+
+        //reorder fields by binding so that parent bindings are always seen first!
+        SortPreserveIndexIndexedItem[] indexed=UPAUtils.sortPreserveIndex0(fields, NativeFieldByBindingIdComparator.INSTANCE);
+
+        for (int i = 0; i < indexed.length; i++) {
+            NativeField nativeField = (NativeField) indexed[i].getItem();
             FieldInfo f = new FieldInfo();
-            f.dbIndex = i;
+            f.dbIndex = indexed[i].getIndex();
             f.nativeField = nativeField;
             f.name = nativeField.getName();
-            BindingId gn = nativeField.getGroupName();
-            f.binding = gn;
-            BindingId pgn = gn.getParent();
-            TypeInfo typeInfo = bindingToTypeInfos0.get(pgn);
-            if (typeInfo == null) {
-                if (nativeField.getField() != null) {
-                    typeInfo = new TypeInfo(pgn, nativeField.getField().getEntity());
-                    typeInfo.document = pgn != null ? relationAsDocument : defaultsToDocument;
-                    bindingToTypeInfos0.put(pgn, typeInfo);
-                } else {
-                    typeInfo = new TypeInfo(pgn);
-                    typeInfo.document = false;//n.contains(".") ? relationAsDocument : defaultsToDocument;
-                    bindingToTypeInfos0.put(pgn, typeInfo);
-                }
-            }
+            f.binding = nativeField.getBindingId();
             f.field = nativeField.getField();
-            if (loadManyToOneRelations) {
-                if (f.field != null) {
-                    for (Relationship relationship : f.field.getManyToOneRelationships()) {
-                        if (relationship.getSourceRole().getEntityField() != null) {
-                            typeInfo.manyToOneRelations.add(relationship);
-                        }
+            f.parentBindingReferrer = nativeField.getParentBindingEntity();
+
+            if(f.parentBindingReferrer==null && f.field!=null){
+                //work around!
+                f.parentBindingReferrer=f.field.getEntity();
+            }
+
+            BindingId parentBinding = f.binding.getParent();
+            TypeInfo typeInfo = bindingToTypeInfos0.get(parentBinding);
+            if (typeInfo == null) {
+                TypeInfo ancestor = null;
+                if((parentBinding==null || parentBinding.getParent()==null)){
+                    //do nothing
+                }else{
+                    ancestor = bindingToTypeInfos0.get(parentBinding.getParent());
+                    if(ancestor==null){
+                        throw new IllegalArgumentException("Unexpected");
                     }
                 }
+                if(ancestor!=null){
+                    if(ancestor.entity==null){
+                        throw new IllegalArgumentException("Unsupported");
+                    }else{
+                        Field field = ancestor.entity.getField(parentBinding.getName());
+                        if(field.getDataType() instanceof ManyToOneType){
+                            typeInfo = new TypeInfo(parentBinding, ((ManyToOneType) field.getDataType()).getTargetEntity(),ofactory);
+                            typeInfo.documentType = relationAsDocument;
+                            bindingToTypeInfos0.put(parentBinding, typeInfo);
+                        }else{
+                            throw new IllegalArgumentException("Unsupported");
+                        }
+                    }
+                }else {
+                    if (f.parentBindingReferrer != null && parentBinding!=null) {
+                        typeInfo = new TypeInfo(parentBinding, f.parentBindingReferrer,ofactory);
+                        typeInfo.documentType = relationAsDocument;
+                        bindingToTypeInfos0.put(parentBinding, typeInfo);
+                    } else {
+                        typeInfo = new TypeInfo(parentBinding,ofactory);
+                        typeInfo.documentType = false;//n.contains(".") ? relationAsDocument : defaultsToDocument;
+                        bindingToTypeInfos0.put(parentBinding, typeInfo);
+                    }
+                }
+                typeInfo.partialObject=f.nativeField.isPartialObject();
             }
             f.typeInfo = typeInfo;
             if(f.field!=null && f.field.isId()){
@@ -104,15 +123,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }else {
                 typeInfo.nonIdFields.add(f);
             }
-            if (typeInfo.leadPrimaryField == null && f.nativeField.getField() != null && f.nativeField.getField().isId()) {
-                typeInfo.leadPrimaryField = f;
-            }
-            if (typeInfo.entity != null && typeInfo.leadField == null) {
-                typeInfo.leadField = f;
-            }
             typeInfo.fieldsMap.put(f.binding.getName(), f);
         }
-        bindingToTypeInfos = bindingToTypeInfos0;
         typeInfos = bindingToTypeInfos0.values().toArray(new TypeInfo[bindingToTypeInfos0.size()]);
         for (TypeInfo typeInfo : typeInfos) {
             if(typeInfo.entity!=null){
@@ -157,13 +169,21 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if(typeInfo.binding==null){
                 typeInfo.parser= SupParserNoBinding.INSTANCE;
             }else if(typeInfo.entity!=null && typeInfo.identifiable) {
-                if(typeInfo.idFields.size()==1) {
-                    typeInfo.parser = new SupParserSingleIdEntity(ofactory);
+                if(typeInfo.partialObject){
+                    if (typeInfo.idFields.size() == 1) {
+                        typeInfo.parser = SupParserSingleIdExternalLoadEntity.INSTANCE;
+                    } else {
+                        typeInfo.parser = SupParserMultiIdExternalLoadEntity.INSTANCE;
+                    }
                 }else {
-                    typeInfo.parser = new SupParserMultiIdEntity(ofactory);
+                    if (typeInfo.idFields.size() == 1) {
+                        typeInfo.parser = SupParserSingleIdEntity.INSTANCE;
+                    } else {
+                        typeInfo.parser = SupParserMultiIdEntity.INSTANCE;
+                    }
                 }
             }else if(typeInfo.entity!=null && !typeInfo.identifiable){
-                typeInfo.parser= new SupParserNoIdEntity(ofactory);
+                typeInfo.parser= SupParserNoIdEntity.INSTANCE;
             }else {
                 throw new IllegalArgumentException("Unsupported binding "+typeInfo.binding);
             }
@@ -182,10 +202,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         ResultColumn[] values = new ResultColumn[resultFields.size()];
         for (TypeInfo typeInfo : typeInfos) {
             groupTypes.put(typeInfo.binding,typeInfo);
-            typeInfo.parser.parse(result,typeInfo,groupValues,referencesCache);
+            typeInfo.parser.parse(result,typeInfo,groupValues, loaderContext);
             if (updatable) {
                 ResultObject currentResult = typeInfo.currentResult;
-                if (typeInfo.document) {
+                if (typeInfo.documentType) {
                     QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(typeInfo, result);
                     currentResult.entityDocument.addPropertyChangeListener(li);
                 } else {

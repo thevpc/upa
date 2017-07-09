@@ -24,9 +24,9 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: stax:stax-api:1.0.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.derby:derby:10.9.1.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.apache.derby:derbyclient:10.9.1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derby:10.9.1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derbyclient:10.9.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
-    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.35" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:5.1.35" level="project" />
   </component>
 </module>

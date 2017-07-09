@@ -2,10 +2,9 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityStatement;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledInCollection;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -34,7 +33,7 @@ public class InCollectionSQLProvider extends AbstractSQLProvider {
         }else {
             if (mySize == 1 && !(o.getRight(0) instanceof CompiledEntityStatement)) {
                 sb.append(sqlManager.getSQL(o.getLeft(),qlContext, declarations));
-                DefaultCompiledExpression e = o.getRight(0);
+                CompiledExpressionExt e = o.getRight(0);
                 if (e == null || (e instanceof CompiledLiteral && ((CompiledLiteral)e).getValue()==null)) {
                     sb.append(" Is Null");
                 } else {
@@ -48,7 +47,7 @@ public class InCollectionSQLProvider extends AbstractSQLProvider {
                     if (i > 0) {
                         sb.append(",");
                     }
-                    DefaultCompiledExpression e = o.getRight(i);
+                    CompiledExpressionExt e = o.getRight(i);
                     if(e==null){
                         sb.append("Null");
                     }else{

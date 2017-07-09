@@ -25,11 +25,13 @@ public abstract class AbstractUPAObject implements UPAObject {
     private PersistenceUnit persistenceUnit;
     private final Properties parameters = new DefaultProperties();
     private PersistenceState persistenceState = PersistenceState.UNKNOWN;
-    protected PropertyChangeSupport propertyChangeSupport;
+    protected PropertyChangeSupport beforePropertyChangeSupport;
+    protected PropertyChangeSupport afterPropertyChangeSupport;
     protected List<UPAObjectListener> objectListeners;
 
     protected AbstractUPAObject() {
-        propertyChangeSupport = new PropertyChangeSupport(this);
+        beforePropertyChangeSupport = new PropertyChangeSupport(this);
+        afterPropertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     public String getName() {
@@ -39,8 +41,10 @@ public abstract class AbstractUPAObject implements UPAObject {
     public void setName(String name) {
         checkValidIdentifier(name);
         String old = this.name;
+        String recent = name;
+        beforePropertyChangeSupport.firePropertyChange("name", old, recent);
         this.name = name;
-        propertyChangeSupport.firePropertyChange("name", old, name);
+        afterPropertyChangeSupport.firePropertyChange("name", old, recent);
     }
 
     public String getPersistenceName() {
@@ -49,8 +53,10 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     public void setPersistenceName(String persistenceName) {
         String old = this.persistenceName;
+        String recent = persistenceName;
+        beforePropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
         this.persistenceName = persistenceName;
-        propertyChangeSupport.firePropertyChange("persistenceName", old, persistenceName);
+        afterPropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
     }
 
     public I18NString getTitle() {
@@ -59,8 +65,10 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     public void setTitle(I18NString title) {
         I18NString old = this.title;
+        I18NString recent = title;
+        beforePropertyChangeSupport.firePropertyChange("title", old, recent);
         this.title = title;
-        propertyChangeSupport.firePropertyChange("title", old, title);
+        afterPropertyChangeSupport.firePropertyChange("title", old, recent);
     }
 
     public I18NString getDescription() {
@@ -69,8 +77,10 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     public void setDescription(I18NString description) {
         I18NString old = this.description;
+        I18NString recent = description;
+        beforePropertyChangeSupport.firePropertyChange("description", old, recent);
         this.description = description;
-        propertyChangeSupport.firePropertyChange("description", old, description);
+        afterPropertyChangeSupport.firePropertyChange("description", old, recent);
     }
 
     public I18NString getI18NString() {
@@ -79,8 +89,10 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     public void setI18NString(I18NString i18NString) {
         I18NString old = this.i18NString;
+        I18NString recent = i18NString;
+        beforePropertyChangeSupport.firePropertyChange("i18NString", old, recent);
         this.i18NString = i18NString;
-        propertyChangeSupport.firePropertyChange("i18NString", old, i18NString);
+        afterPropertyChangeSupport.firePropertyChange("i18NString", old, recent);
     }
 
     public PersistenceUnit getPersistenceUnit() {
@@ -89,8 +101,10 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
         PersistenceUnit old = this.persistenceUnit;
+        PersistenceUnit recent = persistenceUnit;
+        beforePropertyChangeSupport.firePropertyChange("persistenceUnit", old, recent);
         this.persistenceUnit = persistenceUnit;
-        propertyChangeSupport.firePropertyChange("persistenceUnit", old, persistenceUnit);
+        afterPropertyChangeSupport.firePropertyChange("persistenceUnit", old, recent);
     }
 
     @Override
@@ -106,8 +120,12 @@ public abstract class AbstractUPAObject implements UPAObject {
 //    @Override
     public void setPersistenceState(PersistenceState persistenceState) {
         PersistenceState old = this.persistenceState;
-        this.persistenceState = PlatformUtils.isUndefinedValue(PersistenceState.class,persistenceState) ? PersistenceState.UNKNOWN : persistenceState;
-        propertyChangeSupport.firePropertyChange("persistenceState", old, this.persistenceState);
+        persistenceState = PlatformUtils.isUndefinedValue(PersistenceState.class,persistenceState) ? PersistenceState.UNKNOWN : persistenceState;
+        PersistenceState recent = persistenceState;
+
+        beforePropertyChangeSupport.firePropertyChange("persistenceState", old, recent);
+        this.persistenceState = persistenceState;
+        afterPropertyChangeSupport.firePropertyChange("persistenceState", old, recent);
     }
 
     @Override
@@ -168,20 +186,76 @@ public abstract class AbstractUPAObject implements UPAObject {
         return objectListeners==null?new UPAObjectListener[0]:objectListeners.toArray(new UPAObjectListener[objectListeners.size()]);
     }
 
-    public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(property, listener);
+    public void addPropertyChangeListener(String property, EventPhase phase,PropertyChangeListener listener) {
+        switch (phase){
+            case DEFAULT:{
+                beforePropertyChangeSupport.addPropertyChangeListener(property, listener);
+                afterPropertyChangeSupport.addPropertyChangeListener(property, listener);
+                break;
+            }
+            case BEFORE:{
+                beforePropertyChangeSupport.addPropertyChangeListener(property, listener);
+                break;
+            }
+            case AFTER:{
+                afterPropertyChangeSupport.addPropertyChangeListener(property, listener);
+                break;
+            }
+        }
     }
 
-    public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(property, listener);
+    public void removePropertyChangeListener(String property, EventPhase phase, PropertyChangeListener listener) {
+        switch (phase){
+            case DEFAULT:{
+                beforePropertyChangeSupport.removePropertyChangeListener(property, listener);
+                afterPropertyChangeSupport.removePropertyChangeListener(property, listener);
+                break;
+            }
+            case BEFORE:{
+                beforePropertyChangeSupport.removePropertyChangeListener(property, listener);
+                break;
+            }
+            case AFTER:{
+                afterPropertyChangeSupport.removePropertyChangeListener(property, listener);
+                break;
+            }
+        }
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public void addPropertyChangeListener(EventPhase phase,PropertyChangeListener listener) {
+        switch (phase){
+            case DEFAULT:{
+                beforePropertyChangeSupport.addPropertyChangeListener(listener);
+                afterPropertyChangeSupport.addPropertyChangeListener(listener);
+                break;
+            }
+            case BEFORE:{
+                beforePropertyChangeSupport.addPropertyChangeListener(listener);
+                break;
+            }
+            case AFTER:{
+                afterPropertyChangeSupport.addPropertyChangeListener(listener);
+                break;
+            }
+        }
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    public void removePropertyChangeListener(EventPhase phase,PropertyChangeListener listener) {
+        switch (phase){
+            case DEFAULT:{
+                beforePropertyChangeSupport.removePropertyChangeListener(listener);
+                afterPropertyChangeSupport.removePropertyChangeListener(listener);
+                break;
+            }
+            case BEFORE:{
+                beforePropertyChangeSupport.removePropertyChangeListener(listener);
+                break;
+            }
+            case AFTER:{
+                afterPropertyChangeSupport.removePropertyChangeListener(listener);
+                break;
+            }
+        }
     }
 
     @Override

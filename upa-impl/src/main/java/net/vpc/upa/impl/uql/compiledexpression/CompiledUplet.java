@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -13,9 +14,9 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public class CompiledUplet extends DefaultCompiledExpressionImpl {
     private static final long serialVersionUID = 1L;
-    private DefaultCompiledExpression[] expressions;
+    private CompiledExpressionExt[] expressions;
 
-    public CompiledUplet(DefaultCompiledExpression[] expressions) {
+    public CompiledUplet(CompiledExpressionExt[] expressions) {
         super();
         this.expressions=expressions;
         bindChildren(expressions);
@@ -43,13 +44,13 @@ public class CompiledUplet extends DefaultCompiledExpressionImpl {
         return IdentityDataTypeTransform.STRING;
     }
 
-    public DefaultCompiledExpression[] getExpressions() {
+    public CompiledExpressionExt[] getExpressions() {
         return expressions;
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
-        DefaultCompiledExpression[] expressions2=new DefaultCompiledExpression[expressions.length];
+    public CompiledExpressionExt copy() {
+        CompiledExpressionExt[] expressions2=new CompiledExpressionExt[expressions.length];
         for (int i = 0; i < expressions2.length; i++) {
             expressions2[i]=expressions[i].copy();
         }
@@ -60,14 +61,14 @@ public class CompiledUplet extends DefaultCompiledExpressionImpl {
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        DefaultCompiledExpression[] r=new DefaultCompiledExpression[expressions.length];
+    public CompiledExpressionExt[] getSubExpressions() {
+        CompiledExpressionExt[] r=new CompiledExpressionExt[expressions.length];
         System.arraycopy(expressions, 0, r, 0, expressions.length);
         return r;
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         unbindChildren(this.expressions[index]);
         expressions[index]=expression;
         bindChildren(expression);

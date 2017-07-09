@@ -11,6 +11,7 @@ import net.vpc.upa.impl.config.URLAnnotationStrategySupport;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.event.PersistenceGroupListenerManager;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -162,7 +163,7 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
         if (name == null) {
             name = "";
         }
-        PersistenceUnit persistenceUnit = getFactory().createObject(PersistenceUnit.class);
+        PersistenceUnitExt persistenceUnit = (PersistenceUnitExt) getFactory().createObject(PersistenceUnit.class);
 //        persistenceUnit.setName(name);
 //        persistenceUnit.setPersistenceGroup(this);
         persistenceUnit.init(name, this);

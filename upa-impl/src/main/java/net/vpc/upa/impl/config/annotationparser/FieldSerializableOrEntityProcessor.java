@@ -76,7 +76,7 @@ public class FieldSerializableOrEntityProcessor extends DefinitionListenerAdapte
         if (dataType instanceof SerializableOrManyToOneType) {
             field.setDataType(new ManyToOneType(dataType.getName(), dataType.getPlatformType(), masterEntity.getName(), true, dataType.isNullable()));
             field.setTypeTransform(null);
-            field.setTypeTransform(new IdentityDataTypeTransform(field.getDataType()));
+            field.setTypeTransform(IdentityDataTypeTransform.ofType(field.getDataType()));
             DefaultRelationshipDescriptor relationDescriptor = new DefaultRelationshipDescriptor();
             relationDescriptor.setBaseField(field.getName());
             relationDescriptor.setTargetEntityType(masterEntity.getEntityType());

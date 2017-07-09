@@ -10,7 +10,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledCast;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
@@ -19,7 +19,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 public class CastExpressionTranslator implements ExpressionTranslator {
 
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileCast((Cast) o, manager,declarations);
     }
 
@@ -27,7 +27,7 @@ public class CastExpressionTranslator implements ExpressionTranslator {
         if (v == null) {
             return null;
         }
-        CompiledCast s = new CompiledCast(manager.translateAny(v.getValue(), declarations), new IdentityDataTypeTransform(v.getDataType()));
+        CompiledCast s = new CompiledCast(manager.translateAny(v.getValue(), declarations), IdentityDataTypeTransform.ofType(v.getDataType()));
         //        s.setDeclarationList(declarations);
         return s;
     }

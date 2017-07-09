@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 public final class CompiledNullVal extends CompiledFunction
@@ -34,7 +35,7 @@ public final class CompiledNullVal extends CompiledFunction
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledNullVal o = new CompiledNullVal(getNullTypeExpression().getTypeTransform());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

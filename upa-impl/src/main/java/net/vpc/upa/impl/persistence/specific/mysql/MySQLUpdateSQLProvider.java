@@ -5,7 +5,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.UpdateSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -68,7 +68,7 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
                 fv = (CompiledVar) vv.getChild();
             }
 
-            DefaultCompiledExpression fieldValue = o.getFieldValue(i);
+            CompiledExpressionExt fieldValue = o.getFieldValue(i);
 //            Object referrer = vv.getReferrer();
             Field f = ((Field) fv.getReferrer());
             Entity entityManager = f.getEntity();

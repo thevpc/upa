@@ -24,6 +24,20 @@ public class LogUtils {
         }
     }
 
+    public static void silence(){
+        java.util.logging.Logger rootLogger = java.util.logging.Logger.getLogger("");
+        rootLogger.setLevel(Level.OFF);
+        for (Handler handler : rootLogger.getHandlers()) {
+            handler.setLevel(Level.OFF);
+            handler.setFormatter(new LogFormatter());
+            handler.setFilter(new Filter() {
+                public boolean isLoggable(LogRecord record) {
+                    return record.getLoggerName().startsWith("net.vpc.");
+                }
+            });
+        }
+    }
+
     public static void prepare(){
         //do nothing
     }

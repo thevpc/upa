@@ -1,87 +1,106 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.Entity;
-import net.vpc.upa.Document;
+import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Insert;
 import net.vpc.upa.expressions.Param;
-import net.vpc.upa.persistence.EntityPersistOperation;
+import net.vpc.upa.impl.BeanAdapterDocument;
+import net.vpc.upa.impl.ext.QueryExt;
 import net.vpc.upa.persistence.EntityExecutionContext;
+import net.vpc.upa.persistence.EntityPersistOperation;
+import net.vpc.upa.persistence.UConnection;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.util.Map;
-import net.vpc.upa.Field;
-import net.vpc.upa.Key;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.Query;
-import net.vpc.upa.types.ManyToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/30/12 1:09 AM
  */
 public class DefaultEntityPersistOperation implements EntityPersistOperation {
+    private <T> T get(String name,Entity entity,EntityExecutionContext context){
+        return (T)context.getConnection().getProperty("DefaultEntityPersistOperation."+entity.getName()+"."+name);
+    }
+    private void set(String name,Object value,Entity entity,EntityExecutionContext context){
+        context.getConnection().setProperty("DefaultEntityPersistOperation."+entity.getName()+"."+name,value);
+    }
 
-//    private static final FieldFilter INSERT = Fields.byModifiersAllOf(FieldModifier.INSERT);
-//    private static final FieldFilter INSERT_NON_NULLABLE = new AbstractFieldFilter() {
-//        @Override
-//        public boolean acceptDynamic() throws UPAException {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean accept(Field f) throws UPAException {
-//            return f.getModifiers().contains(FieldModifier.INSERT)
-//                    && !f.getModifiers().contains(FieldModifier.ID)
-//                    && !f.getDataType().isNullable();
-//        }
-//    };
-//    private static final FieldFilter INSERT_WITH_DEFAULT_VALUE = new AbstractFieldFilter() {
-//        @Override
-//        public boolean acceptDynamic() throws UPAException {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean accept(Field f) throws UPAException {
-//            FlagSet<FieldModifier> effectiveModifiers = f.getModifiers();
-//            return effectiveModifiers.contains(FieldModifier.INSERT)
-//                    && !effectiveModifiers.contains(FieldModifier.ID)
-//                    && !effectiveModifiers.contains(FieldModifier.INSERT_SEQUENCE)
-//                    //                    && f.getDefaultObject() != null
-//                    ;
-//        }
-//    };
     public void insert(Entity entity, Document originalDocument, Document document, EntityExecutionContext context) throws UPAException {
         PersistenceUnit pu = context.getPersistenceUnit();
-        Insert insert = new Insert().into(entity.getName());
-        for (Map.Entry<String, Object> entry : document.entrySet()) {
-            Object value = entry.getValue();
-            String key = entry.getKey();
-            Field field = entity.findField(key);
-            //should process specific entity fields
-            if ((field.getDataType() instanceof ManyToOneType)) {
-                ManyToOneType e = (ManyToOneType) field.getDataType();
-                if (e.isUpdatable()) {
-                    Entity masterEntity = pu.getEntity(e.getTargetEntityName());
-                    Key k = null;
-                    if (value instanceof Document) {
-                        k = masterEntity.getBuilder().documentToKey((Document) value);
-                    } else {
-                        k = masterEntity.getBuilder().objectToKey(value);
+        QueryExt query=get("query",entity,context);
+        Boolean noCache=get("noCache",entity,context);
+        if (query == null || (noCache!=null && noCache) || !(originalDocument instanceof BeanAdapterDocument)) {
+            Insert insert = new Insert().into(entity.getName());
+            for (Map.Entry<String, Object> entry : document.entrySet()) {
+                Object value = entry.getValue();
+                String key = entry.getKey();
+                Field field = entity.findField(key);
+                //should process specific entity fields
+                if ((field.getDataType() instanceof ManyToOneType)) {
+                    ManyToOneType e = (ManyToOneType) field.getDataType();
+                    if (e.isUpdatable()) {
+                        Entity masterEntity = pu.getEntity(e.getTargetEntityName());
+                        Key k = null;
+                        if (value instanceof Document) {
+                            k = masterEntity.getBuilder().documentToKey((Document) value);
+                        } else {
+                            k = masterEntity.getBuilder().objectToKey(value);
+                        }
+                        int x = 0;
+                        for (Field fk : e.getRelationship().getSourceRole().getFields()) {
+                            insert.set(fk.getName(), new Param(fk.getName(), k.getObjectAt(x)));
+                            x++;
+                        }
                     }
-                    int x = 0;
-                    for (Field fk : e.getRelationship().getSourceRole().getFields()) {
-                        insert.set(fk.getName(), new Param(fk.getName(), k.getObjectAt(x)));
-                        x++;
+                } else {
+                    if (value == null || !(value instanceof Expression)) {
+                        insert.set(key, new Param(field.getName(), value));
+                    } else if (value instanceof Param) {
+                        insert.set(key, (Expression) value);
+                    } else {
+                        set("noCache",true,entity,context);
+                        insert.set(key, (Expression) value);
                     }
                 }
-            } else {
-                Expression valueExpression = (value instanceof Expression) ? (Expression) value : new Param(field.getName(), value);
-                insert.set(key, valueExpression);
             }
+            query = (QueryExt) context.getPersistenceStore().createQuery(insert, context);
+            set("query",query,entity,context);
+        } else {
+            for (Map.Entry<String, Object> entry : document.entrySet()) {
+                Object value = entry.getValue();
+                String key = entry.getKey();
+                Field field = entity.findField(key);
+                //should process specific entity fields
+                if ((field.getDataType() instanceof ManyToOneType)) {
+                    ManyToOneType e = (ManyToOneType) field.getDataType();
+                    if (e.isUpdatable()) {
+                        Entity masterEntity = pu.getEntity(e.getTargetEntityName());
+                        Key k = null;
+                        if (value instanceof Document) {
+                            k = masterEntity.getBuilder().documentToKey((Document) value);
+                        } else {
+                            k = masterEntity.getBuilder().objectToKey(value);
+                        }
+                        int x = 0;
+                        for (Field fk : e.getRelationship().getSourceRole().getFields()) {
+                            query.setParameter(fk.getName(), k.getObjectAt(x));
+                            x++;
+                        }
+                    }
+                } else {
+                    if (value == null || !(value instanceof Expression)) {
+                        query.setParameter(field.getName(), value);
+                    } else if (value instanceof Param) {
+                        query.setParameter(field.getName(), ((Param)value).getValue());
+                    } else {
+                        throw new IllegalArgumentException("Unexpected Expression " + value);
+                    }
+                }
+            }
+            query.setContext(context);
         }
-        context.getPersistenceStore().createQuery(insert, context).executeNonQuery();
+        query.executeNonQuery();
     }
 
     public Query createQuery(Entity e, Insert query, EntityExecutionContext context) throws UPAException {

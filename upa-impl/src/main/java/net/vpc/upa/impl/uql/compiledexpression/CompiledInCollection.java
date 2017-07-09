@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
         implements Cloneable {
     private static final long serialVersionUID = 1L;
 
-    private DefaultCompiledExpression left;
-    protected List<DefaultCompiledExpression> right;
+    private CompiledExpressionExt left;
+    protected List<CompiledExpressionExt> right;
 
-    public CompiledInCollection(DefaultCompiledExpression left) {
+    public CompiledInCollection(CompiledExpressionExt left) {
         this(left,(Collection<Object>) null);
     }
     
@@ -25,7 +26,7 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
         return IdentityDataTypeTransform.BOOLEAN;
     }
 
-    public CompiledInCollection(DefaultCompiledExpression[] left){
+    public CompiledInCollection(CompiledExpressionExt[] left){
         this(new CompiledUplet(left),(Collection<Object>)null);
     }
 
@@ -37,18 +38,18 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
 //        this(new Var(left,type),collection!=null ? Arrays.asList(collection) : null);
 //    }
 
-    public CompiledInCollection(DefaultCompiledExpression[] left, Collection<Object> collection) {
+    public CompiledInCollection(CompiledExpressionExt[] left, Collection<Object> collection) {
         this(new CompiledUplet(left),collection);
     }
 
-    public CompiledInCollection(DefaultCompiledExpression left, Object[] collection) {
+    public CompiledInCollection(CompiledExpressionExt left, Object[] collection) {
         this(left,collection!=null ? Arrays.asList(collection) :  null);
     }
 
-    public CompiledInCollection(DefaultCompiledExpression left, Collection<Object> collection) {
+    public CompiledInCollection(CompiledExpressionExt left, Collection<Object> collection) {
         this.left = left;
         bindChildren(left);
-        this.right = new ArrayList<DefaultCompiledExpression>(1);
+        this.right = new ArrayList<CompiledExpressionExt>(1);
         if(collection!=null){
             for (Object aCollection : collection) {
                 add(aCollection);
@@ -57,16 +58,16 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all=new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all=new ArrayList<CompiledExpressionExt>();
         all.add(getLeft());
         all.addAll(right);
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index==0){
             unbindChildren(this.left);
             left=expression;
@@ -83,7 +84,7 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
         return right.size()+1;
     }
 
-    public DefaultCompiledExpression getLeft() {
+    public CompiledExpressionExt getLeft() {
         return left;
     }
 
@@ -91,12 +92,12 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
         add(CompiledExpressionFactory.toExpression(e, CompiledLiteral.class));
     }
 
-    public void add(DefaultCompiledExpression e) {
+    public void add(CompiledExpressionExt e) {
         right.add(e);
         bindChildren(e);
     }
 
-    public void add(DefaultCompiledExpression[] e) {
+    public void add(CompiledExpressionExt[] e) {
         add(new CompiledUplet(e));
     }
 
@@ -139,16 +140,16 @@ public class CompiledInCollection extends DefaultCompiledExpressionImpl
         return right.size();
     }
 
-    public DefaultCompiledExpression getRight(int i){
+    public CompiledExpressionExt getRight(int i){
         return right.get(i);
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledInCollection o=new CompiledInCollection(left.copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
-        for (DefaultCompiledExpression expression : right) {
+        for (CompiledExpressionExt expression : right) {
             o.add(expression.copy());
         }
         return o;

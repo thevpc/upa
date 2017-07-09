@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImpl
@@ -7,9 +8,9 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
 
     private static final long serialVersionUID = 1L;
     private String operator;
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
 
-    public CompiledUnaryOperator(String operator, DefaultCompiledExpression expression) {
+    public CompiledUnaryOperator(String operator, CompiledExpressionExt expression) {
         this.operator = operator;
         this.expression = expression;
         bindChildren(expression);
@@ -30,7 +31,7 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if (index == 0) {
             unbindChildren(this.expression);
             this.expression = expression;
@@ -41,14 +42,14 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{expression};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{expression};
     }
 
 //    public synchronized String toSQL(boolean integrated, PersistenceUnitFilter database) {
 //        return operator + expression.toSQL(true, database);
 //    }
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return expression;
     }
 

@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,6 +10,6 @@ import net.vpc.upa.PersistenceUnit;
  * Time: 11:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface CompiledExpandableExpression extends DefaultCompiledExpression {
-    DefaultCompiledExpression expand(PersistenceUnit persistenceUnit);
+public interface CompiledExpandableExpression extends CompiledExpressionExt {
+    CompiledExpressionExt expand(PersistenceUnit persistenceUnit);
 }

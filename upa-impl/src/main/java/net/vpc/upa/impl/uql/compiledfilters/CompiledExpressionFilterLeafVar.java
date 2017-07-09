@@ -6,8 +6,8 @@
 package net.vpc.upa.impl.uql.compiledfilters;
 
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
@@ -15,7 +15,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class CompiledExpressionFilterLeafVar implements CompiledExpressionFilter {
     public static final CompiledExpressionFilter INSTANCE=new CompiledExpressionFilterLeafVar(); 
-    public boolean accept(DefaultCompiledExpression e) {
+    public boolean accept(CompiledExpressionExt e) {
         if (!(e != null && CompiledVar.class.isInstance(e))) {
             return false;
         }

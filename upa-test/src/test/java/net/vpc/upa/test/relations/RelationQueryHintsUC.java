@@ -26,7 +26,7 @@ public class RelationQueryHintsUC {
         pu.addEntity(Phone.class);
         pu.start();
         bo = UPA.makeSessionAware(new Business());
-        bo.init();
+        //bo.init();
     }
 
     @Test
@@ -34,18 +34,18 @@ public class RelationQueryHintsUC {
 
     }
 
-    @Test
-    public void testQuery() {
-        bo.testQuery();
-    }
-    @Test
-    public void testQuery2() {
-        bo.testQuery2();
-    }
-    @Test
-    public void testQuery3() {
-        bo.testQuery3();
-    }
+//    @Test
+//    public void testQuery() {
+//        bo.testQuery();
+//    }
+//    @Test
+//    public void testQuery2() {
+//        bo.testQuery2();
+//    }
+//    @Test
+//    public void testQuery3() {
+//        bo.testQuery3();
+//    }
     @Test
     public void testQuery4() {
         bo.testQuery4();

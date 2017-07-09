@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
 
-    private List<DefaultCompiledExpression> expressions = new ArrayList<DefaultCompiledExpression>();
+    private List<CompiledExpressionExt> expressions = new ArrayList<CompiledExpressionExt>();
     private String name;
 
     public CompiledFunction(String name) {
@@ -43,11 +45,11 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
         return expressions.size();
     }
 
-    public DefaultCompiledExpression getArgument(int index) {
+    public CompiledExpressionExt getArgument(int index) {
         return expressions.get(index);
     }
 
-    protected void protectedSetArgument(int i, DefaultCompiledExpression e) {
+    protected void protectedSetArgument(int i, CompiledExpressionExt e) {
         if (e == null) {
             throw new IllegalArgumentException();
         }
@@ -58,7 +60,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
         bindChildren(e);
     }
 
-    protected void protectedAddArgument(DefaultCompiledExpression e) {
+    protected void protectedAddArgument(CompiledExpressionExt e) {
         if (e == null) {
             throw new IllegalArgumentException();
         }
@@ -66,23 +68,23 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
         bindChildren(e);
     }
 
-    public final DefaultCompiledExpression getArgumentImpl(int index) {
+    public final CompiledExpressionExt getArgumentImpl(int index) {
         return null;
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         return getArguments();
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         protectedSetArgument(index, expression);
     }
 
-    public DefaultCompiledExpression[] getArguments() {
+    public CompiledExpressionExt[] getArguments() {
         int max = getArgumentsCount();
-        DefaultCompiledExpression[] p = new DefaultCompiledExpression[max];
+        CompiledExpressionExt[] p = new CompiledExpressionExt[max];
         for (int i = 0; i < max; i++) {
             p[i] = getArgument(i);
         }
@@ -107,7 +109,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
         int max = getArgumentsCount();
         boolean valid = max==0;
         for (int i = 0; i < max; i++) {
-            DefaultCompiledExpression e = getArgument(i);
+            CompiledExpressionExt e = getArgument(i);
             if (e.isValid()) {
                 valid = true;
             }
@@ -116,7 +118,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
     }
     
     protected void protectedCopyTo(CompiledFunction o){
-        for (DefaultCompiledExpression element : getArguments()) {
+        for (CompiledExpressionExt element : getArguments()) {
             o.protectedAddArgument(element.copy());
         }
         o.setDescription(getDescription());

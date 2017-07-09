@@ -51,8 +51,8 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <github.global.server>github</github.global.server>
-        <upa-api-version>1.2.0.33</upa-api-version>
-        <upa-impl-version>1.2.0.33.0</upa-impl-version>
+        <upa-api-version>1.2.0.34</upa-api-version>
+        <upa-impl-version>1.2.0.34.0</upa-impl-version>
         <!--<upa-api-version>1.2.0.29</upa-api-version>-->
         <!--<upa-impl-version>1.2.0.29.0</upa-impl-version>-->
     </properties>
@@ -78,13 +78,13 @@
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <version>10.9.1.0</version>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
             <version>10.9.1.0</version>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -96,6 +96,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.35</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>

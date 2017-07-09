@@ -5,11 +5,17 @@
  */
 package net.vpc.upa.impl.uql.util;
 
-import net.vpc.upa.ExpressionManager;
-import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.*;
+import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
+import net.vpc.upa.impl.uql.ExpressionDeclaration;
+import net.vpc.upa.impl.uql.ExpressionDeclarationList;
+import net.vpc.upa.impl.uql.ExpressionTranslationManager;
+import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.util.UPAUtils;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author taha.bensalah@gmail.com
@@ -160,5 +166,35 @@ public class UQLUtils {
             l=-l;//could it ever happen
         }
         return ("u"+((int)(Math.random()*10000))+""+ l);
+    }
+
+    public static Expression expandIdExpression(String paramName,IdExpression o) throws UPAException {
+        Expression ret = null;
+
+        Entity entity = o.getEntity();
+        if (entity == null) {
+            throw new IllegalArgumentException("Key enumeration must by associated to and entity");
+        }
+
+        Key key = entity.getBuilder().idToKey(o.getId());
+        Object[] values = key==null?null:key.getValue();
+        Entity entity1 = o.getEntity();
+        List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getIdFields());
+        for (int i = 0; i < f.size(); i++) {
+            Var ppp = o.getAlias() == null ? null : new Var(o.getAlias());
+            if(ppp==null){
+                ppp=new Var(f.get(i).getName());
+            }else{
+                Var var = new Var(f.get(i).getName());
+                var.setApplier(ppp);
+                ppp=var;
+            }
+            Equals e = new Equals(ppp, new Param(paramName+""+(i+1),values==null?null:values[i]));
+            ret = (ret == null) ? e : new And(ret, e);
+        }
+        if (ret == null) {
+            ret = new Equals(new Literal(1), new Literal(1));
+        }
+        return ret;
     }
 }

@@ -45,4 +45,18 @@ public class EnumToStringByteArrayEncoder implements ByteArrayEncoder {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EnumToStringByteArrayEncoder that = (EnumToStringByteArrayEncoder) o;
+
+        return enumClass != null ? enumClass.equals(that.enumClass) : that.enumClass == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return enumClass != null ? enumClass.hashCode() : 0;
+    }
 }

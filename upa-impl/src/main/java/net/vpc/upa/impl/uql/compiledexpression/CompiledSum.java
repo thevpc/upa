@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 public final class CompiledSum extends CompiledFunction
@@ -7,12 +8,12 @@ public final class CompiledSum extends CompiledFunction
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledSum(DefaultCompiledExpression expression) {
+    public CompiledSum(CompiledExpressionExt expression) {
         super("Sum");
         protectedAddArgument(expression);
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return getArgument(0);
     }
 
@@ -21,7 +22,7 @@ public final class CompiledSum extends CompiledFunction
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledSum o = new CompiledSum(getExpression().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

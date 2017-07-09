@@ -1,6 +1,8 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 public final class CompiledCst extends DefaultCompiledExpressionImpl
         implements Cloneable {
     private static final long serialVersionUID = 1L;
@@ -19,17 +21,17 @@ public final class CompiledCst extends DefaultCompiledExpressionImpl
         return value;
     }
  
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         return new CompiledCst(value);
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         return null;
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         throw new UnsupportedOperationException("Not supported.");
     }
 

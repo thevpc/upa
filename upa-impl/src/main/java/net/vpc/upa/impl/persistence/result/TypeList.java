@@ -1,7 +1,10 @@
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.persistence.NativeField;
+import net.vpc.upa.impl.persistence.QueryExecutor;
+import net.vpc.upa.impl.persistence.result.QueryResultLazyList;
 import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
 import net.vpc.upa.persistence.QueryResult;
 

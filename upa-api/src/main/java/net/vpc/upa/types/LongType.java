@@ -117,4 +117,23 @@ public class LongType extends NumberType implements Cloneable {
         return Long.parseLong(value);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        LongType longType = (LongType) o;
+
+        if (min != null ? !min.equals(longType.min) : longType.min != null) return false;
+        return max != null ? max.equals(longType.max) : longType.max == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
 }

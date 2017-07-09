@@ -1,11 +1,9 @@
 package net.vpc.upa.impl.persistence.result;
 
-import net.vpc.upa.Document;
 import net.vpc.upa.NamedId;
 import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.uql.BindingId;
-import net.vpc.upa.impl.util.CacheMap;
 import net.vpc.upa.persistence.QueryResult;
 
 import java.util.List;
@@ -15,14 +13,14 @@ import java.util.Map;
  * Created by vpc on 7/2/17.
  */
 class SupParserMultiIdEntity implements TypeInfoSupParser {
-    private ObjectFactory ofactory;
+    public static final TypeInfoSupParser INSTANCE = new SupParserMultiIdEntity();
 
-    public SupParserMultiIdEntity(ObjectFactory ofactory) {
-        this.ofactory = ofactory;
+    private SupParserMultiIdEntity() {
+
     }
 
     @Override
-    public void parse(QueryResult result, TypeInfo typeInfo, Map<BindingId, Object> groupValues, CacheMap<NamedId, Object> sharedCache) throws UPAException {
+    public void parse(QueryResult result, TypeInfo typeInfo, Map<BindingId, Object> groupValues, LoaderContext loaderContext) throws UPAException {
         int size = typeInfo.idFields.size();
         Object[] idarr = new Object[size];
         List<FieldInfo> idFields = typeInfo.idFields;
@@ -40,25 +38,10 @@ class SupParserMultiIdEntity implements TypeInfoSupParser {
             typeInfo.currentResult = new ResultObject();
         } else {
             NamedId key = new NamedId(idarr, typeInfo.entity);
-            ResultObject o = sharedCache == null ? null : ((ResultObject) sharedCache.get(key));
+            ResultObject o = loaderContext.getReferencesCache().get(key);
             if (o == null) {
-                o = new ResultObject();
-                if (typeInfo.document) {
-                    Object entityObject = null;
-                    Document entityDocument = typeInfo.builder == null ? ofactory.createObject(Document.class) : typeInfo.builder.createDocument();
-                    o.entityObject = entityObject;
-                    o.entityDocument = entityDocument;
-                    o.entityResult = entityDocument;
-                } else {
-                    Object entityObject = typeInfo.builder.createObject();
-                    Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
-                    o.entityObject = entityObject;
-                    o.entityDocument = entityDocument;
-                    o.entityResult = entityObject;
-                }
-                if (sharedCache != null) {
-                    sharedCache.put(key, o);
-                }
+                o = typeInfo.createResultObject();
+                loaderContext.getReferencesCache().put(key, o);
                 List<FieldInfo> entityFields = typeInfo.idFields;
                 for (int i = 0; i < size; i++) {
                     FieldInfo idField = entityFields.get(i);

@@ -8,15 +8,15 @@ import net.vpc.upa.expressions.I2V;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledI2V;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class I2VExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileI2V((I2V) o, manager,declarations);
     }
 

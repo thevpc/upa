@@ -6,6 +6,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.CompiledExpressionVisitor;
 
@@ -16,20 +18,20 @@ import net.vpc.upa.impl.uql.CompiledExpressionVisitor;
 public class CompiledExpressionVisitorCollector implements CompiledExpressionVisitor {
 
     private CompiledExpressionFilter filter;
-    private List<DefaultCompiledExpression> expressions = new ArrayList<DefaultCompiledExpression>();
+    private List<CompiledExpressionExt> expressions = new ArrayList<CompiledExpressionExt>();
 
     public CompiledExpressionVisitorCollector(CompiledExpressionFilter filter) {
         this.filter = filter;
     }
 
-    public boolean visit(DefaultCompiledExpression e) {
+    public boolean visit(CompiledExpressionExt e) {
         if (filter == null || filter.accept(e)) {
             expressions.add(e);
         }
         return true;
     }
 
-    public List<DefaultCompiledExpression> getExpressions() {
+    public List<CompiledExpressionExt> getExpressions() {
         return expressions;
     }
 }

@@ -88,4 +88,6 @@ public interface ObjectRegistrationModel {
     boolean containsEntity(Class entityType) throws UPAException;
 
     List<Index> getIndexes(String entityName) throws UPAException;
+
+    void renameEntity(String oldName,String newName);
 }

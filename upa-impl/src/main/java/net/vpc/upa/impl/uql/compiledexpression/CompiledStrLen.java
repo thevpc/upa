@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -11,18 +12,18 @@ public class CompiledStrLen extends CompiledFunction {
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledStrLen(DefaultCompiledExpression value) {
+    public CompiledStrLen(CompiledExpressionExt value) {
         super("StrLen");
         protectedAddArgument(value);
 
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return getArgument(0);
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledStrLen o = new CompiledStrLen(getExpression().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

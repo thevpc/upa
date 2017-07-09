@@ -50,18 +50,20 @@ public class RelationIsHierarchyDescendantUC {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             pu.reset();
 
-            a=new Node("a",null);
-            b=new Node("b",a);
-            c=new Node("c",a);
-            d=new Node("d",b);
+            a=new Node(1,"a",null);
+            b=new Node(2,"b",a);
+            c=new Node(3,"c",a);
+            d=new Node(4,"d",b);
 
-            Person pa=new Person("a",a);
-            Person pb=new Person("b",b);
-            Person pc=new Person("c",c);
-            Person pd=new Person("d",d);
+            Person pa=new Person(10,"a",a);
+            Person pb=new Person(11,"b",b);
+            Person pc=new Person(12,"c",c);
+            Person pd=new Person(13,"d",d);
 
             pu.persist(a);
             pu.persist(b);
+            Document documentById = pu.findDocumentById(Node.class, b.getId());
+
             pu.persist(c);
             pu.persist(d);
 
@@ -81,6 +83,9 @@ public class RelationIsHierarchyDescendantUC {
             for (Document r : t) {
                 System.out.println(r);
             }
+
+            q = pu.createQuery("Select a from Node a");
+            List<Document> all = q.getDocumentList();
 
             q = pu.createQuery("Select a from Node a where IsHierarchyDescendant(:p,a,Node)").setParameter("p",b);
             t = q.getDocumentList();
@@ -115,7 +120,6 @@ public class RelationIsHierarchyDescendantUC {
     public static class Person {
 
         @Id
-        @net.vpc.upa.config.Sequence
         private Integer id;
 
         @Main
@@ -126,7 +130,8 @@ public class RelationIsHierarchyDescendantUC {
         public Person() {
         }
 
-        public Person(String name, Node node) {
+        public Person(int id,String name, Node node) {
+            this.id = id;
             this.name = name;
             this.node = node;
         }
@@ -160,7 +165,6 @@ public class RelationIsHierarchyDescendantUC {
     public static class Node {
 
         @Id
-        @net.vpc.upa.config.Sequence
         private Integer id;
 
         @Main
@@ -172,7 +176,8 @@ public class RelationIsHierarchyDescendantUC {
         public Node() {
         }
 
-        public Node(String name, Node parent) {
+        public Node(int id,String name, Node parent) {
+            this.id = id;
             this.name = name;
             this.parent = parent;
         }

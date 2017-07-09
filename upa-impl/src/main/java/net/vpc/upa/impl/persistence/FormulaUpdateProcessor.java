@@ -8,7 +8,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.DefaultEntity;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -86,7 +86,7 @@ public class FormulaUpdateProcessor {
         } else if (!entityOperationManager.getPersistenceStore().isComplexSelectSupported()) {
             Expression fe = getFieldExpression(f, onPersist);
 
-            DefaultCompiledExpression ce = (DefaultCompiledExpression) entity.compile(fe,null);
+            CompiledExpressionExt ce = (CompiledExpressionExt) entity.compile(fe,null);
             boolean found = ce.findFirstExpression(UQLCompiledUtils.QUERY_STATEMENT_FILTER)!=null;
             if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];

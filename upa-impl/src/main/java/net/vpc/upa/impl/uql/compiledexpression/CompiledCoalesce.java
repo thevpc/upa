@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 
 import java.util.List;
@@ -14,16 +15,16 @@ public final class CompiledCoalesce extends CompiledFunction
         super("Coalesce");
     }
 
-    public CompiledCoalesce(List<DefaultCompiledExpression> expressions) {
+    public CompiledCoalesce(List<CompiledExpressionExt> expressions) {
         this();
-        for (DefaultCompiledExpression expression : expressions) {
+        for (CompiledExpressionExt expression : expressions) {
             add(expression);
         }
     }
 
-    public CompiledCoalesce(DefaultCompiledExpression... expressions) {
+    public CompiledCoalesce(CompiledExpressionExt... expressions) {
         this();
-        for (DefaultCompiledExpression expression : expressions) {
+        for (CompiledExpressionExt expression : expressions) {
             add(expression);
         }
     }
@@ -32,7 +33,7 @@ public final class CompiledCoalesce extends CompiledFunction
         return add(CompiledExpressionFactory.toVar(varName));
     }
 
-    public CompiledCoalesce add(DefaultCompiledExpression expression) {
+    public CompiledCoalesce add(CompiledExpressionExt expression) {
         protectedAddArgument(expression);
         return this;
     }
@@ -55,7 +56,7 @@ public final class CompiledCoalesce extends CompiledFunction
 //        sb.append(')');
 //        return sb.toString();
 //    }
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledCoalesce o = new CompiledCoalesce();
         protectedCopyTo(o);
         return o;
@@ -63,7 +64,7 @@ public final class CompiledCoalesce extends CompiledFunction
 
     @Override
     public DataTypeTransform getTypeTransform() {
-        for (DefaultCompiledExpression a : getArguments()) {
+        for (CompiledExpressionExt a : getArguments()) {
             DataTypeTransform t = a.getEffectiveDataType();
             if (t != null && !t.getTargetType().getPlatformType().equals(Object.class)) {
                 return t;

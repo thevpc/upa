@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -35,13 +36,13 @@ public class CompiledMonthStart extends CompiledFunction {
         super("MonthStart");
     }
 
-    public CompiledMonthStart(DefaultCompiledExpression date, DefaultCompiledExpression count) {
+    public CompiledMonthStart(CompiledExpressionExt date, CompiledExpressionExt count) {
         this();
         protectedAddArgument(date);
         protectedAddArgument(count);
     }
 
-    public CompiledMonthStart(DefaultCompiledExpression count) {
+    public CompiledMonthStart(CompiledExpressionExt count) {
         this();
         protectedAddArgument(count);
     }
@@ -52,9 +53,9 @@ public class CompiledMonthStart extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledMonthStart o = new CompiledMonthStart();
-        for (DefaultCompiledExpression expression : getArguments()) {
+        for (CompiledExpressionExt expression : getArguments()) {
             o.protectedAddArgument(expression.copy());
         }
         o.setDescription(getDescription());

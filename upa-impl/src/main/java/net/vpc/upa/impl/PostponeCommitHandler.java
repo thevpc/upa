@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.callbacks.SectionDefinitionListener;
 import net.vpc.upa.callbacks.TriggerEvent;
 import net.vpc.upa.callbacks.FieldDefinitionListener;
@@ -15,6 +16,7 @@ import net.vpc.upa.callbacks.RelationshipDefinitionListener;
 import net.vpc.upa.callbacks.DefinitionListenerAdapter;
 import net.vpc.upa.exceptions.InvalidStructureModificationContextException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.persistence.DefaultOnHoldCommitAction;
 
 /**
@@ -41,7 +43,7 @@ class PostponeCommitHandler extends DefinitionListenerAdapter implements
 
     @Override
     public void onCreateField(FieldEvent event) throws UPAException {
-        DefaultPersistenceUnit defaultPersistenceUnit = (DefaultPersistenceUnit) event.getPersistenceUnit();
+        PersistenceUnitExt defaultPersistenceUnit = (PersistenceUnitExt) event.getPersistenceUnit();
         defaultPersistenceUnit.postponeCommit(new DefaultOnHoldCommitAction(event.getField(), OnHoldCommitActionType.CREATE, DefaultPersistenceUnit.COMMIT_ORDER_FIELD));
     }
 
@@ -64,7 +66,7 @@ class PostponeCommitHandler extends DefinitionListenerAdapter implements
 
     @Override
     public void onCreateTrigger(TriggerEvent event) {
-        DefaultPersistenceUnit defaultPersistenceUnit = (DefaultPersistenceUnit) event.getEntity().getPersistenceUnit();
+        PersistenceUnitExt defaultPersistenceUnit = (PersistenceUnitExt) event.getEntity().getPersistenceUnit();
         defaultPersistenceUnit.postponeCommit(new DefaultOnHoldCommitAction(event.getTrigger(), OnHoldCommitActionType.CREATE, DefaultPersistenceUnit.COMMIT_ORDER_TRIGGER));
     }
 
@@ -78,7 +80,7 @@ class PostponeCommitHandler extends DefinitionListenerAdapter implements
 
     @Override
     public void onCreateIndex(IndexEvent event) {
-        DefaultPersistenceUnit defaultPersistenceUnit = (DefaultPersistenceUnit) event.getPersistenceUnit();
+        PersistenceUnitExt defaultPersistenceUnit = (PersistenceUnitExt) event.getPersistenceUnit();
         defaultPersistenceUnit.postponeCommit(new DefaultOnHoldCommitAction(event.getIndex(), OnHoldCommitActionType.CREATE, DefaultPersistenceUnit.COMMIT_ORDER_INDEX));
     }
 
@@ -92,7 +94,7 @@ class PostponeCommitHandler extends DefinitionListenerAdapter implements
 
     @Override
     public void onCreateRelationship(RelationshipEvent event) {
-        DefaultPersistenceUnit defaultPersistenceUnit = (DefaultPersistenceUnit) event.getPersistenceUnit();
+        PersistenceUnitExt defaultPersistenceUnit = (PersistenceUnitExt) event.getPersistenceUnit();
         defaultPersistenceUnit.postponeCommit(new DefaultOnHoldCommitAction(event.getRelationship(), OnHoldCommitActionType.CREATE, DefaultPersistenceUnit.COMMIT_ORDER_RELATION));
     }
 
@@ -105,7 +107,7 @@ class PostponeCommitHandler extends DefinitionListenerAdapter implements
 
     @Override
     public void onCreateEntity(EntityEvent event) {
-        DefaultPersistenceUnit defaultPersistenceUnit = (DefaultPersistenceUnit) event.getPersistenceUnit();
+        PersistenceUnitExt defaultPersistenceUnit = (PersistenceUnitExt) event.getPersistenceUnit();
         defaultPersistenceUnit.postponeCommit(new DefaultOnHoldCommitAction(event.getEntity(), OnHoldCommitActionType.CREATE, DefaultPersistenceUnit.COMMIT_ORDER_ENTITY));
     }
 

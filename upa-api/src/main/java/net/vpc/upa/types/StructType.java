@@ -141,4 +141,23 @@ public class StructType extends DefaultDataType implements Cloneable {
         return (Object[]) value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        StructType that = (StructType) o;
+
+        if (elementsMap != null ? !elementsMap.equals(that.elementsMap) : that.elementsMap != null) return false;
+        return elementsList != null ? elementsList.equals(that.elementsList) : that.elementsList == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (elementsMap != null ? elementsMap.hashCode() : 0);
+        result = 31 * result + (elementsList != null ? elementsList.hashCode() : 0);
+        return result;
+    }
 }

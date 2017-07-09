@@ -48,8 +48,10 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     public void setEntity(Entity entity) {
         Entity old = this.entity;
+        Entity recent = entity;
+        beforePropertyChangeSupport.firePropertyChange("entity", old, recent);
         this.entity = entity;
-        propertyChangeSupport.firePropertyChange("entity", old, entity);
+        afterPropertyChangeSupport.firePropertyChange("entity", old, recent);
     }
 
     public void addPart(EntityPart child) throws UPAException {
@@ -195,8 +197,10 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     public void setParent(EntityPart item) {
         EntityPart old = this.parent;
+        EntityPart recent = item;
+        afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
         this.parent = item;
-        propertyChangeSupport.firePropertyChange("parent", old, parent);
+        afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
     }
 
     // -------------------------- PATH SUPPORT
@@ -248,8 +252,10 @@ public class DefaultSection extends AbstractUPAObject implements Section {
             for (EntityPart child : parts) {
                 child.close();
             }
+            boolean recent=true;
+            afterPropertyChangeSupport.firePropertyChange("closed", old, recent);
             this.closed = true;
-            propertyChangeSupport.firePropertyChange("closed", old, closed);
+            afterPropertyChangeSupport.firePropertyChange("closed", old, recent);
         }
     }
 

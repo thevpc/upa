@@ -3,6 +3,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.BindingId;
 
 public class CompiledVar extends CompiledVarOrMethod {
@@ -25,7 +26,7 @@ public class CompiledVar extends CompiledVarOrMethod {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledVar o = new CompiledVar(getName(), getReferrer(),getBinding());
         CompiledVarOrMethod c = getChild();
         if (c != null) {
@@ -39,7 +40,7 @@ public class CompiledVar extends CompiledVarOrMethod {
     }
 
     public CompiledExpression getNonVarParent() {
-        DefaultCompiledExpression p=getParentExpression();
+        CompiledExpressionExt p=getParentExpression();
         while(p!=null){
             if(!(p instanceof CompiledVarOrMethod)){
                 return p;
@@ -75,7 +76,7 @@ public class CompiledVar extends CompiledVarOrMethod {
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if (index == 0) {
             setChild((CompiledVarOrMethod) expression);
         }else {
@@ -84,8 +85,8 @@ public class CompiledVar extends CompiledVarOrMethod {
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        DefaultCompiledExpression c = getChild();
-        return c == null ? null : new DefaultCompiledExpression[]{c};
+    public CompiledExpressionExt[] getSubExpressions() {
+        CompiledExpressionExt c = getChild();
+        return c == null ? null : new CompiledExpressionExt[]{c};
     }
 }

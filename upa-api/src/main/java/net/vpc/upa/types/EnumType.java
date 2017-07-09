@@ -76,4 +76,21 @@ public class EnumType extends SeriesType implements Cloneable {
         return Enum.valueOf(enumClass, value);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        EnumType enumType = (EnumType) o;
+
+        return enumClass != null ? enumClass.equals(enumType.enumClass) : enumType.enumClass == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (enumClass != null ? enumClass.hashCode() : 0);
+        return result;
+    }
 }

@@ -67,19 +67,22 @@ public class RelationUC3 {
 
         public void testCrud() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
+//            pu.createQueryBuilder(Person.class).byId(31).setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.SELECT).getFirstResultOrNull();
 
             Phone phone=new Phone();
             phone.setValue("111111");
             pu.persist(phone);
-
+            System.out.println("phone persisted : "+phone);
             Phone phone2=new Phone();
             phone2.setValue("222222");
             pu.persist(phone2);
+            System.out.println("phone persisted : "+phone2);
 
             Person person=new Person();
             person.setName("Hammadi");
             person.setPhone(phone);
             pu.persist(person);
+            System.out.println("person persisted : "+person);
 
             Phone ephone=new Phone();
             ephone.setId(phone.getId());
@@ -93,7 +96,6 @@ public class RelationUC3 {
             eperson.setId(person.getId());
             eperson.setName("Hammadi");
             eperson.setPhone(ephone);
-            System.out.println(person);
             Assert.assertEquals(eperson,person);
 
             person =pu.findById(Person.class,person.getId());
@@ -124,6 +126,32 @@ public class RelationUC3 {
             System.out.println(phone);
             Assert.assertEquals(eperson,person);
             Assert.assertEquals(ephone,phone);
+
+
+            person =pu.createQueryBuilder(Person.class).byId(person.getId()).getFirstResultOrNull();
+            phone =pu.createQueryBuilder(Phone.class).byId(phone.getId()).getFirstResultOrNull();
+
+            System.out.println(person);
+            System.out.println(phone);
+            Assert.assertEquals(eperson,person);
+            Assert.assertEquals(ephone,phone);
+
+            person =pu.createQueryBuilder(Person.class).byId(person.getId()).setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).getFirstResultOrNull();
+            phone =pu.createQueryBuilder(Phone.class).byId(phone.getId()).setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).getFirstResultOrNull();
+
+            System.out.println(person);
+            System.out.println(phone);
+            Assert.assertEquals(eperson,person);
+            Assert.assertEquals(ephone,phone);
+
+            person =pu.createQueryBuilder(Person.class).byId(person.getId()).setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.SELECT).getFirstResultOrNull();
+            System.out.println(person);
+            Assert.assertEquals(eperson,person);
+
+            phone =pu.createQueryBuilder(Phone.class).byId(phone.getId()).setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.SELECT).getFirstResultOrNull();
+            System.out.println(phone);
+            Assert.assertEquals(ephone,phone);
+
         }
 
         public void testRemove() {

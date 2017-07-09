@@ -18,7 +18,7 @@ public class CompiledExpressionThisRemover implements CompiledExpressionReplacer
         if (e instanceof CompiledVar) {
             CompiledVarOrMethod child = ((CompiledVar) e).getChild();
             if (child != null) {
-                child.setParentExpression(null);
+                child.unsetParent();
             }
             return child;
         }

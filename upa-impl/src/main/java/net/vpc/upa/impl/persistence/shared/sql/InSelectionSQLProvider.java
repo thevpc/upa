@@ -2,9 +2,8 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledInSelection;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUplet;
@@ -25,7 +24,7 @@ public class InSelectionSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException{
         CompiledInSelection o=(CompiledInSelection) oo;
-        DefaultCompiledExpression[] left = o.getLeft();
+        CompiledExpressionExt[] left = o.getLeft();
         CompiledSelect query = o.getSelection();
         if (left.length == 1) {
             String q = sqlManager.getSQL(left[0],qlContext, declarations) + " in (" + sqlManager.getSQL(query,qlContext, declarations) + ")";

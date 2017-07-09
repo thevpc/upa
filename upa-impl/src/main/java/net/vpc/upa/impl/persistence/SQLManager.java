@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -14,5 +14,5 @@ public interface SQLManager {
 
     MarshallManager getMarshallManager();
 
-    String getSQL(DefaultCompiledExpression expression, EntityExecutionContext context, ExpressionDeclarationList declarations) throws UPAException;
+    String getSQL(CompiledExpressionExt expression, EntityExecutionContext context, ExpressionDeclarationList declarations) throws UPAException;
 }

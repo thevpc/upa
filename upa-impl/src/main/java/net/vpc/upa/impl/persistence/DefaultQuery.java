@@ -40,6 +40,7 @@ public class DefaultQuery extends AbstractQuery {
 
     private List<Object> allResults = new ArrayList<Object>();
     private QueryExecutor lastQueryExecutor = null;
+    private FieldFilter lastFieldFilter = null;
     private DefaultQuery sessionAwareInstance;
     private Map<String, Object> parametersByName;
     private Map<Integer, Object> parametersByIndex;
@@ -84,6 +85,13 @@ public class DefaultQuery extends AbstractQuery {
         store = (DefaultPersistenceStore) context.getPersistenceStore();
     }
 
+    public void setContext(EntityExecutionContext context){
+        this.context=context;
+        boolean lazyListLoadingEnabled = context.getPersistenceUnit().getProperties().getBoolean("Query.LazyListLoadingEnabled", true);
+        this.setLazyListLoadingEnabled(lazyListLoadingEnabled);
+
+    }
+
     public int executeNonQuery() {
         if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
             if (sessionAwareInstance == null) {
@@ -92,8 +100,8 @@ public class DefaultQuery extends AbstractQuery {
             return sessionAwareInstance.executeNonQuery();
         }
         //
-        QueryExecutor queryExecutor = createNativeSQL(null);
-        return queryExecutor.execute().getResultCount();
+        QueryExecutor executor= getOrCreateQueryExecutor(null);
+        return executor.execute().getResultCount();
     }
 
     protected CompiledEntityStatement createCompiledEntityStatement() {
@@ -117,11 +125,6 @@ public class DefaultQuery extends AbstractQuery {
             config.setThisAlias(alias);
         }
         return (CompiledEntityStatement) context.getPersistenceUnit().getExpressionManager().compileExpression(query, config);
-    }
-
-    @Override
-    public <R2> List<R2> getEntityList() throws UPAException {
-        return getResultList();
     }
 
     @Override
@@ -190,33 +193,18 @@ public class DefaultQuery extends AbstractQuery {
         }
         try {
             QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
-            QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
-            if (fetchStrategy == null) {
-                fetchStrategy = QueryFetchStrategy.JOIN;
-            }
+//            QueryFetchStrategy fetchStrategy = (QueryFetchStrategy) queryExecutor.getHints().get(QueryHints.FETCH_STRATEGY);
+//            if (fetchStrategy == null) {
+//                fetchStrategy = QueryFetchStrategy.JOIN;
+//            }
             boolean itemAsDocument = builder instanceof DocumentQueryResultItemBuilder;
             boolean relationAsDocument = itemAsDocument;//false;
-            int supportCache = 10000;
-            QueryResultRelationLoader loader = null;
-            switch (fetchStrategy) {
-                case JOIN: {
-                    break;
-                }
-                case SELECT: {
-                    supportCache = 10000;
-                    loader = new QueryRelationLoaderSelectObject();
-                    break;
-                }
-            }
             QueryResultLazyList<T> r = new DefaultObjectQueryResultLazyList<T>(
                     pu,
                     queryExecutor,
-                    fetchStrategy != QueryFetchStrategy.JOIN,
-                    itemAsDocument,
                     relationAsDocument,
-                    supportCache,
+                    10000,
                     isUpdatable(),
-                    loader,
                     builder
             );
             allResults.add(r);
@@ -412,37 +400,27 @@ public class DefaultQuery extends AbstractQuery {
         return set;
     }
 
+    protected QueryExecutor getOrCreateQueryExecutor(FieldFilter fieldFilter) {
+        if(lastQueryExecutor==null || lastFieldFilter!=fieldFilter) {
+            lastQueryExecutor = store.createExecutor(query, parametersByName, parametersByIndex, isUpdatable(), fieldFilter, context.setHints(getHints()));
+            //EntityStatement statement = lastQueryExecutor.getMetaData().getStatement();
+        }else {
+            //rebind Connection
+            lastQueryExecutor.setConnection(context.getConnection());
+            lastQueryExecutor.setContext(context);
+            UPAUtils.setQueryExecutorParams(lastQueryExecutor,parametersByIndex,parametersByName);
+        }
+        return lastQueryExecutor;
+    }
+
     protected QueryExecutor executeQuery(FieldFilter fieldFilter) {
-//        if (result != null) {
-//            throw new FindException("QueryAlreadyExecutedException");
-//        }
-        QueryExecutor queryExecutor = createNativeSQL(fieldFilter);
-//        DefaultResultMetaData m = new DefaultResultMetaData();
-//        for (NativeField x : queryExecutor.getFields()) {
-//            m.addField(x.getName(), x.getTypeTransform(), x.getField());
-//        }
-//        this.metadata = m;
+        QueryExecutor queryExecutor = getOrCreateQueryExecutor(fieldFilter);
         queryExecutor.execute();
+        allResults.clear();
         result = queryExecutor.getQueryResult();
         return queryExecutor;
     }
 
-    protected QueryExecutor createNativeSQL(FieldFilter fieldFilter) {
-//        applyParameters();
-        lastQueryExecutor = store.createExecutor(query, parametersByName, parametersByIndex, isUpdatable(), fieldFilter, context.setHints(getHints()));
-        EntityStatement statement = lastQueryExecutor.getMetaData().getStatement();
-        return lastQueryExecutor;
-    }
-
-    //        CompiledNamedExpression[] ne = new CompiledNamedExpression[query.countFields()];
-//        for (int i = 0; i < ne.length; i++) {
-//            CompiledQueryField field = query.getField(i);
-//            String validName = field.getName() != null ? field.getName() : field.getExpression().toString();
-//            if (validName == null) {
-//                validName = "#" + i;
-//            }
-//            ne[i] = new CompiledNamedExpression(validName, field.getExpression());
-//        }
     @Override
     public Query setParameter(final String name, Object value) {
         if (parametersByName == null) {

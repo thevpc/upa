@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 
 import net.vpc.upa.*;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
 
@@ -20,7 +21,6 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
-import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.persistence.DatabaseIdentityPersister;
 import net.vpc.upa.impl.persistence.NavigatorIdentityPersister;
 import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterInt;
@@ -30,7 +30,7 @@ import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ConnectionOption;
@@ -182,7 +182,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
         EntityExecutionContext context = pu.createContext(ContextOperation.FIND,executionContext.getHints());
         if(field.getDataType()==null){
             throw new UPAException(new I18NString("MissingDataTypeException"),field);
@@ -326,7 +326,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         sb.append(")");
         sb.append(" As ").append("\n\t");
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
         sb.append(getSqlManager().getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }
@@ -356,10 +356,10 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 s.field(new Var(new Var(table.getName()), key.getName()));
             }
         }
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
 
         EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(getSqlManager().getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }

@@ -8,15 +8,15 @@ import net.vpc.upa.expressions.LShift;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLShift;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class LShiftExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileLShift((LShift) o,manager, declarations);
     }
 
@@ -24,8 +24,8 @@ public class LShiftExpressionTranslator implements ExpressionTranslator {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
+        CompiledExpressionExt left = manager.translateAny(v.getLeft(), declarations);
+        CompiledExpressionExt right = manager.translateAny(v.getRight(), declarations);
         CompiledLShift s = new CompiledLShift(left, right);
         //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

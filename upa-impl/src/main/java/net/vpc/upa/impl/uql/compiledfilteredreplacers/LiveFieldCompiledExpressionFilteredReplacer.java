@@ -8,7 +8,7 @@
 //import net.vpc.upa.impl.uql.ReplaceResultType;
 //import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 //import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
-//import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+//import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 //import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionUtils;
 //import net.vpc.upa.persistence.ExpressionCompilerConfig;
 //
@@ -52,7 +52,7 @@
 //        Field referrer = (Field) workspace.resolveReferrer(v);
 //        Formula selectFormula = referrer.getSelectFormula();
 //        if (selectFormula instanceof ExpressionFormula) {
-//            DefaultCompiledExpression expr2 = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(((ExpressionFormula) selectFormula).getExpression(), new ExpressionCompilerConfig().setExpandFields(false).setValidate(false));
+//            CompiledExpressionExt expr2 = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(((ExpressionFormula) selectFormula).getExpression(), new ExpressionCompilerConfig().setExpandFields(false).setValidate(false));
 //            //Remove this!
 //            expr2 = CompiledExpressionUtils.removeThisVar(expr2);
 //            if (c == null) {

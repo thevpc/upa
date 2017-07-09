@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.uql.compiledfilters;
 
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -15,7 +15,7 @@ public class TypeCompiledExpressionFilter implements CompiledExpressionFilter {
     }
 
     @Override
-    public boolean accept(DefaultCompiledExpression e) {
+    public boolean accept(CompiledExpressionExt e) {
         return e !=null && type.isInstance(e);
     }
 }

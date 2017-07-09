@@ -4,6 +4,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
@@ -19,12 +20,12 @@ import net.vpc.upa.impl.util.UPAUtils;
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
  * this template use File | Settings | File Templates.
  */
-public class KeyExpressionCompiler implements ExpressionTranslator {
+public class IdExpressionCompiler implements ExpressionTranslator {
 
     @Override
-    public DefaultCompiledExpression translateExpression(Object x, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) throws UPAException {
+    public CompiledExpressionExt translateExpression(Object x, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) throws UPAException {
         IdExpression o = (IdExpression) x;
-        DefaultCompiledExpression ret = null;
+        CompiledExpressionExt ret = null;
 
         Entity entity = null;
         if (o.getEntity() != null) {

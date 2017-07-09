@@ -2,8 +2,6 @@ package net.vpc.upa.impl.uql.filters;
 
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.ExpressionFilter;
-import net.vpc.upa.impl.uql.CompiledExpressionFilter;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

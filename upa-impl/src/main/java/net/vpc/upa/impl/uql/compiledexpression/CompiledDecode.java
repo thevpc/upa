@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 
@@ -18,12 +19,12 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
         super("Decode");
     }
 
-//    public CompiledDecode(List<DefaultCompiledExpression> expressions) {
-//        params=new ArrayList<DefaultCompiledExpression>(expressions);
+//    public CompiledDecode(List<CompiledExpressionExt> expressions) {
+//        params=new ArrayList<CompiledExpressionExt>(expressions);
 //        state=VALID;
 //        bindChildren(params);
 //    }
-    public CompiledDecode(DefaultCompiledExpression expression) {
+    public CompiledDecode(CompiledExpressionExt expression) {
         super("Decode");
         add(expression);
         state = EXPECT_CONDITION;
@@ -33,7 +34,7 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
 //    public If Then(Object value){
 //        return Then(Litteral.toExpression(value));
 //    }
-    public CompiledDecode map(DefaultCompiledExpression oldValue, DefaultCompiledExpression newValue) {
+    public CompiledDecode map(CompiledExpressionExt oldValue, CompiledExpressionExt newValue) {
         if (state != VALID) {
             add(oldValue);
             add(newValue);
@@ -46,7 +47,7 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
 //    public If Else(Object value){
 //        return Else(Litteral.toExpression(value));
 //    }
-    public CompiledDecode otherwise(DefaultCompiledExpression value) {
+    public CompiledDecode otherwise(CompiledExpressionExt value) {
         if (state != VALID) {
             add(value);
             state = VALID;
@@ -56,7 +57,7 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
         }
     }
 
-    private void add(DefaultCompiledExpression expression) {
+    private void add(CompiledExpressionExt expression) {
         protectedAddArgument(expression);
     }
 
@@ -75,9 +76,9 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledDecode o = new CompiledDecode();
-        for (DefaultCompiledExpression param : getArguments()) {
+        for (CompiledExpressionExt param : getArguments()) {
             o.protectedAddArgument(param.copy());
         }
         o.state = state;

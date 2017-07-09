@@ -100,4 +100,26 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
         return "ManyToOneType{" + n + ", updatable=" + updatable + '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ManyToOneType that = (ManyToOneType) o;
+
+        if (updatable != that.updatable) return false;
+        if (targetEntityName != null ? !targetEntityName.equals(that.targetEntityName) : that.targetEntityName != null)
+            return false;
+        return relationship != null ? relationship.equals(that.relationship) : that.relationship == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (targetEntityName != null ? targetEntityName.hashCode() : 0);
+        result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
+        result = 31 * result + (updatable ? 1 : 0);
+        return result;
+    }
 }

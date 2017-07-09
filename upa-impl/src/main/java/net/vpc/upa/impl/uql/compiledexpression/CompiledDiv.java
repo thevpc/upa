@@ -4,6 +4,8 @@ import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public final class CompiledDiv extends CompiledBinaryOperatorExpression
@@ -11,7 +13,7 @@ public final class CompiledDiv extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledDiv(DefaultCompiledExpression left, Object right) {
+    public CompiledDiv(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.DIV, left, right);
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();
@@ -46,7 +48,7 @@ public final class CompiledDiv extends CompiledBinaryOperatorExpression
         }
     }
 
-    public CompiledDiv(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledDiv(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.DIV, left, right);
         Class t = left.getTypeTransform().getTargetType().getPlatformType();
         Class r = left.getTypeTransform().getTargetType().getPlatformType();

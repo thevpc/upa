@@ -92,4 +92,24 @@ public class StringType extends DefaultDataType implements Cloneable {
         }
         return s.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        StringType that = (StringType) o;
+
+        if (min != that.min) return false;
+        return max == that.max;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + min;
+        result = 31 * result + max;
+        return result;
+    }
 }

@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 /**
  * Created with IntelliJ IDEA.
  * User: vpc
@@ -9,10 +11,10 @@ package net.vpc.upa.impl.uql.compiledexpression;
  */
 public class CompiledNamedExpression {
     private String name;
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
 
 
-    public CompiledNamedExpression(String name, DefaultCompiledExpression expression) {
+    public CompiledNamedExpression(String name, CompiledExpressionExt expression) {
         this.name = name;
         this.expression = expression;
     }
@@ -21,11 +23,11 @@ public class CompiledNamedExpression {
         return name;
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return expression;
     }
 
-    public void setExpression(DefaultCompiledExpression expression) {
+    public void setExpression(CompiledExpressionExt expression) {
         this.expression = expression;
     }
 }

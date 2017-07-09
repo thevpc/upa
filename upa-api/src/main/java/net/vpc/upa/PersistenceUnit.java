@@ -106,7 +106,7 @@ public interface PersistenceUnit extends Closeable {
 
     Package getPackage(String path);
 
-    Package getDefaulPackage();
+    Package getDefaultPackage();
 
     //    DatabaseResources getResources();
     boolean isReadOnly();
@@ -208,17 +208,6 @@ public interface PersistenceUnit extends Closeable {
 
     List<Relationship> getRelationshipsBySource(Entity entity);
 
-    //    List<Field> findField(String name) ;
-    //    Script getDisableIdentityConstraintsScript() {
-    //        Script script = new Script();
-    //        for (Iterator iterator = entities.values().iterator(); iterator.hasNext();) {
-    //            Entity entity = (Entity) iterator.next();
-    //            if (entity.isAutoIncrement()) {
-    //                script.addStatement(getAdapterName().getDisableIdentityConstraintsStatement(entity));
-    //            }
-    //        }
-    //        return script;
-    //    }
     void installDemoData();
 
     void start();
@@ -229,16 +218,7 @@ public interface PersistenceUnit extends Closeable {
 
     void setPersistenceName(String persistenceName);
 
-    //    List<Entity> getAllPersistentEntities() ;
-//
-//    List<Entity> getAllViewEntities() ;
-    //    boolean checkCreatedSilently() ;
-//    boolean checkCreatedPersistenceUnit(boolean ask) ;
     boolean isValidPersistenceUnit();
-
-//    DBConfigModel getDBConfigModel() ;
-
-//    void setDBConfigModel(DBConfigModel dbConfigModel) ;
 
     void clear(EntityFilter entityFilter, Map<String, Object> hints);
 
@@ -260,7 +240,6 @@ public interface PersistenceUnit extends Closeable {
 
     PropertyChangeListener[] getPropertyChangeListeners(String propertyName);
 
-    //    DefaultDatabase.LocalizedDatabase getLocalizedDatabase();
     int getStatus();
 
     void setStatus(int status);
@@ -312,30 +291,12 @@ public interface PersistenceUnit extends Closeable {
 
     void removeDefinitionListener(Class entityType, DefinitionListener definitionListener);
 
-    //    Application getApplication();
-//
-//    void setApplication(Application application);
     void addPersistenceUnitListener(PersistenceUnitListener listener);
 
     void removePersistenceUnitListener(PersistenceUnitListener listener);
 
-    //    List<StructureInterceptor> getRelationListeners(String entityName1, String entityName2);
     List<PersistenceUnitListener> getPersistenceUnitListeners();
 
-    //    void saveConfig(Configuration configuration);
-//
-//    void loadConfig(Configuration configuration);
-    //    void storeConfigModel(DBConfigModel configModel) {
-    //        application.getConfigurationManager().getStartupConfiguration().setStringArray("used_adapters", configModel.getAdaptersStringArray(), '\n');
-    //        application.getAppInfos().setString(REG_PERSISTENCE_MANAGER, configModel.getAdapterString());
-    //    }
-    //
-    //    DBConfigModel loadConfigModel(DBConfigModel configModel) {
-    //        configModel.setAdapterString(application.getAppInfos().getString(REG_PERSISTENCE_MANAGER, null));
-    //        configModel.setAdaptersStringArray(application.getConfigurationManager().getStartupConfiguration().getStringArray("used_adapters", new String[]{configModel.getAdapterString()}));
-    //        return configModel;
-    //    }
-//    DBMacroHelper getDbMacroHelper();
     PersistenceStoreFactory getPersistenceStoreFactory();
 
     void addSQLParameterProcessor(QLParameterProcessor p);
@@ -387,9 +348,6 @@ public interface PersistenceUnit extends Closeable {
 
     List<Trigger> getTriggers(String entityName);
 
-    //    PersistenceUnitTrigger addPersistenceUnitTrigger(String name, PersistenceUnitInterceptor interceptor) ;
-//    void removePersistenceUnitTrigger(String triggerName) ;
-//    List<PersistenceUnitTrigger> getPersistenceUnitTriggers() ;
     boolean isTriggersEnabled();
 
     void setTriggersEnabled(boolean triggersEnabled);
@@ -422,58 +380,17 @@ public interface PersistenceUnit extends Closeable {
     boolean save(Object objectOrDocument);
 
 
-    //    void merge(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
-//    void merge(String entityName, Object objectOrDocument) ;
-//
     boolean save(Class entityType, Object objectOrDocument);
 
     boolean save(String entityName, Object objectOrDocument);
 
-    //    boolean save(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
-//
-//
     void update(Class entityType, Object objectOrDocument);
 
     void update(String entityName, Object objectOrDocument);
-//    void update(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
-//
-//
-//    void updatePartial(String entityName, Object objectOrDocument,String... fields)  ;
-//
-//    void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified)  ;
-//
-//    void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints,String... fields)  ;
-//
-//    void updatePartial(String entityName, Object objectOrDocument,Set<String> fields, boolean ignoreUnspecified,Map<String,Object> hints)  ;
-//
-//    void updatePartial(Object objectOrDocument,String... fields)  ;
-//
-//    void updatePartial(Object objectOrDocument,Set<String> fields,boolean ignoreUnspecified)  ;
-//
-//    void updatePartial(Object objectOrDocument) ;
-//
-//    void updatePartial(String entityName, Object objectOrDocument) ;
-//    void updatePartial(String entityName, Object objectOrDocument,Map<String,Object> hints) ;
 
     void updateFormulas();
 
     void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) throws UPAException;
-
-    //////////
-//    int updateDocuments(String entityName, Document document, Expression condition) ;
-//    int updateDocuments(String entityName, Document document, Expression condition,Map<String,Object> hints) ;
-
-//    void updateFormulas(String entityName, FieldFilter filter, Expression expr) ;
-//    void updateFormulas(String entityName, FieldFilter filter, Expression expr,Map<String,Object> hints) ;
-
-//    void updateFormulasById(String entityName, FieldFilter filter, Object id) ;
-//    void updateFormulasById(String entityName, FieldFilter filter, Object id,Map<String,Object> hints) ;
-
-//    int updateDocuments(Class entityType, Document document, Expression condition) ;
-
-//    void updateFormulas(Class entityType, FieldFilter filter, Expression expr) ;
-
-//    void updateFormulasById(Class entityType, FieldFilter filter, Object id) ;
 
     //////// REMOVE
     RemoveTrace remove(Class entityType, Object object);
@@ -519,7 +436,7 @@ public interface PersistenceUnit extends Closeable {
     Query createQuery(String query);
 
     /**
-     * @param transactionType
+     * @param transactionType transactionType
      * @return true if a transaction has been created
      * @
      */
@@ -541,26 +458,9 @@ public interface PersistenceUnit extends Closeable {
 
     boolean isClosed();
 
-    //    Expression parse(String query) ;
-//
-//    net.vpc.upa.expressions.CompiledExpression compile(Expression expression, ExpressionCompilerConfig compilerConfig) ;
-//
-//    net.vpc.upa.expressions.CompiledExpression compile(net.vpc.upa.expressions.CompiledExpression expression, ExpressionCompilerConfig compilerConfig) ;
-//
-//    QLFunction addQLFunction(String name, DataType type, QLFunctionHandler function);
-//
-//    void removeQLFunction(String name);
-//
-//    boolean containsQLFunction(String name);
-//
-//    Set<String> getQLFunctionNames();
-//
-//    QLFunction getQLFunction(String name);
     ExpressionManager getExpressionManager();
 
     ImportExportManager getImportExportManager();
-
-    void init(String name, PersistenceGroup persistenceGroup);
 
     DataTypeTransformFactory getTypeTransformFactory();
 
@@ -593,8 +493,8 @@ public interface PersistenceUnit extends Closeable {
     /**
      * push new user context if login and credentials are valid
      *
-     * @param login
-     * @param credentials
+     * @param login login
+     * @param credentials credentials
      */
     void login(String login, String credentials);
 

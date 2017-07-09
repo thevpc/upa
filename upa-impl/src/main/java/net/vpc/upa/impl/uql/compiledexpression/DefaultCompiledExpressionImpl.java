@@ -3,33 +3,35 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.Properties;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.DefaultProperties;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.*;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledExpression {
+public abstract class DefaultCompiledExpressionImpl implements CompiledExpressionExt {
 
     private static final long serialVersionUID = 1L;
-    public static DefaultCompiledExpression[] EMPTY_ERRAY = new DefaultCompiledExpressionImpl[0];
+    public static CompiledExpressionExt[] EMPTY_ERRAY = new DefaultCompiledExpressionImpl[0];
     private String description;
     private Properties clientParameters;
     private DataTypeTransform type;
-    private DefaultCompiledExpression parent;
+    private CompiledExpressionExt parent;
     private List<ExpressionDeclaration> exportedDeclarations;
 
     protected DefaultCompiledExpressionImpl() {
     }
 
-    public DefaultCompiledExpression getParentExpression() {
+    public CompiledExpressionExt getParentExpression() {
         return parent;
     }
 
-    public void setParentExpression(DefaultCompiledExpression parent) {
+    public void setParentExpression(CompiledExpressionExt parent) {
         if (parent != null) {
-            DefaultCompiledExpression x = parent;
+            CompiledExpressionExt x = parent;
             while (x != null) {
                 if (x == this) {
                     throw new IllegalArgumentException("Recursive Tree");
@@ -38,7 +40,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
             }
         }
         if (this.parent != null && parent != null && this.parent!=parent) {
-            throw new IllegalArgumentException("Unexpected");
+            throw new IllegalArgumentException("Unexpected changing parent of "+this+" from "+this.parent+" to "+parent);
         }
         this.parent = parent;
     }
@@ -47,10 +49,10 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return true;
     }
 
-    public abstract DefaultCompiledExpression[] getSubExpressions();
+    public abstract CompiledExpressionExt[] getSubExpressions();
 
     @Override
-    public abstract void setSubExpression(int index, DefaultCompiledExpression expression);
+    public abstract void setSubExpression(int index, CompiledExpressionExt expression);
     //    public abstract String toSQL(boolean integrated, PersistenceUnitFilter database);
 
     //    public final String toSQL(PersistenceUnitFilter database) {
@@ -67,7 +69,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
 //        String d = getDescription();
 //        return d != null ? d : toString();
 //    }
-    public final DefaultCompiledExpression setDescription(String newDesc) {
+    public final CompiledExpressionExt setDescription(String newDesc) {
         description = newDesc;
         return this;
     }
@@ -87,7 +89,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return clientParameters;
     }
 
-    public DefaultCompiledExpression setClientProperty(String name, Object value) {
+    public CompiledExpressionExt setClientProperty(String name, Object value) {
         if (value != null) {
             getClientParameters().setObject(name, value);
         } else {
@@ -104,9 +106,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         if (!visitor.visit(this)) {
             return false;
         }
-        DefaultCompiledExpression[] subExpressions = getSubExpressions();
+        CompiledExpressionExt[] subExpressions = getSubExpressions();
         if (subExpressions != null) {
-            for (DefaultCompiledExpression subExpression : subExpressions) {
+            for (CompiledExpressionExt subExpression : subExpressions) {
                 if (subExpression != null) {
                     if (!subExpression.visit(visitor)) {
                         return false;
@@ -128,9 +130,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
             //this double casting is needed in C#
             list.add((T) (Object) this);
         }
-        DefaultCompiledExpression[] subExpressions = getSubExpressions();
+        CompiledExpressionExt[] subExpressions = getSubExpressions();
         if (subExpressions != null) {
-            for (DefaultCompiledExpression subExpression : subExpressions) {
+            for (CompiledExpressionExt subExpression : subExpressions) {
                 if (subExpression != null) {
                     ((DefaultCompiledExpressionImpl) subExpression).findExpressionsList(filter, list);
                 }
@@ -144,9 +146,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
             //this double casting is needed in C#
             return ((T) (Object) this);
         }
-        DefaultCompiledExpression[] subExpressions = getSubExpressions();
+        CompiledExpressionExt[] subExpressions = getSubExpressions();
         if (subExpressions != null) {
-            for (DefaultCompiledExpression subExpression : subExpressions) {
+            for (CompiledExpressionExt subExpression : subExpressions) {
                 if (subExpression != null) {
                     CompiledExpression e = ((DefaultCompiledExpressionImpl) subExpression).findFirstExpression(filter);
                     if (e != null) {
@@ -159,12 +161,12 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
     }
 
     @Override
-    public ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer) {
+    public ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
         if (replacer == null) {
             return ReplaceResult.NO_UPDATES_STOP;
         }
         if (replacer.isTopDown()) {
-            ReplaceResult parentUpdate = replacer.update(this);
+            ReplaceResult parentUpdate = replacer.update(this, updateContext);
             //if stop will not check children!
             if (parentUpdate.isStop()) {
                 switch (parentUpdate.getType()) {
@@ -183,7 +185,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
                 }
                 return parentUpdate;
             }
-            DefaultCompiledExpression newParent = this;
+            CompiledExpressionExt newParent = this;
             switch (parentUpdate.getType()) {
                 case NEW_INSTANCE: {
                     newParent = parentUpdate.getExpression();
@@ -196,32 +198,32 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
 
             List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
             int i = 0;
-            DefaultCompiledExpression[] subExpressions = newParent.getSubExpressions();
+            CompiledExpressionExt[] subExpressions = newParent.getSubExpressions();
             if (subExpressions == null) {
-                subExpressions = new DefaultCompiledExpression[0];
+                subExpressions = new CompiledExpressionExt[0];
             }
-            for (DefaultCompiledExpression expression : subExpressions) {
+            for (CompiledExpressionExt expression : subExpressions) {
                 replacementPositions.add(new ReplacementPosition(this, expression, i));
                 i++;
             }
             boolean someChildUpdates = false;
             List<ReplacementPosition> toRemove = new ArrayList<>();
             for (ReplacementPosition r : replacementPositions) {
-                DefaultCompiledExpression child = r.getChild();
+                CompiledExpressionExt child = r.getChild();
                 boolean again = true;
                 while (again) {
                     again=false;
                     if (child == null) {
                         //System.out.println("Child is null?");
                     } else {
-                        ReplaceResult c = child.replaceExpressions(replacer);
+                        ReplaceResult c = child.replaceExpressions(replacer, updateContext);
                         switch (c.getType()) {
                             case NO_UPDATES: {
                                 break;
                             }
                             case NEW_INSTANCE:{
                                 someChildUpdates = true;
-                                subExpressions[r.getPos()].setParentExpression(null);
+                                subExpressions[r.getPos()].unsetParent();
                                 this.setSubExpression(r.getPos(), c.getExpression());
                                 if(!c.isStop()) {
                                     child = c.getExpression();
@@ -273,21 +275,21 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         } else {
             List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
             int i = 0;
-            DefaultCompiledExpression[] subExpressions = getSubExpressions();
+            CompiledExpressionExt[] subExpressions = getSubExpressions();
             if (subExpressions == null) {
-                subExpressions = new DefaultCompiledExpression[0];
+                subExpressions = new CompiledExpressionExt[0];
             }
-            for (DefaultCompiledExpression expression : subExpressions) {
+            for (CompiledExpressionExt expression : subExpressions) {
                 replacementPositions.add(new ReplacementPosition(this, expression, i));
                 i++;
             }
             boolean someChildUpdates = false;
             for (ReplacementPosition r : replacementPositions) {
-                DefaultCompiledExpression child = r.getChild();
+                CompiledExpressionExt child = r.getChild();
                 if (child == null) {
                     //System.out.println("Child is null?");
                 } else {
-                    ReplaceResult c = child.replaceExpressions(replacer);
+                    ReplaceResult c = child.replaceExpressions(replacer, updateContext);
                     switch (c.getType()) {
                         case UPDATE: {
                             someChildUpdates = true;
@@ -300,8 +302,8 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
                             someChildUpdates = true;
                             int pos = r.getPos();
                             if (subExpressions[pos] != c.getExpression()) {
-                                subExpressions[pos].setParentExpression(null);
-                                this.setSubExpression(pos, (DefaultCompiledExpression) c.getExpression());
+                                subExpressions[pos].unsetParent();
+                                this.setSubExpression(pos, (CompiledExpressionExt) c.getExpression());
                             }
                             if (c.isStop()) {
                                 return ReplaceResult.UPDATE_AND_STOP;
@@ -316,7 +318,7 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
                     }
                 }
             }
-            ReplaceResult update = replacer.update(this);
+            ReplaceResult update = replacer.update(this, updateContext);
             switch (update.getType()) {
                 case NO_UPDATES: {
                     if (someChildUpdates) {
@@ -330,8 +332,8 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         }
     }
 
-    public DefaultCompiledExpression replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer) {
-        DefaultCompiledExpression t = (DefaultCompiledExpression) ((filter == null || filter.accept(this)) ? replacer.update(this) : null);
+    public CompiledExpressionExt replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer) {
+        CompiledExpressionExt t = (CompiledExpressionExt) ((filter == null || filter.accept(this)) ? replacer.update(this) : null);
         boolean updated = false;
         if (t != null) {
             updated = true;
@@ -341,9 +343,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         if (!updated) {
             List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
             int i = 0;
-            DefaultCompiledExpression[] subExpressions = t.getSubExpressions();
+            CompiledExpressionExt[] subExpressions = t.getSubExpressions();
             if (subExpressions != null) {
-                for (DefaultCompiledExpression expression : subExpressions) {
+                for (CompiledExpressionExt expression : subExpressions) {
                     replacementPositions.add(new ReplacementPosition(t, expression, i));
                     i++;
                 }
@@ -352,14 +354,14 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
                 if (r.getChild() == null) {
                     //System.out.println("Child is null?");
                 } else {
-                    DefaultCompiledExpression c = r.getChild().replaceExpressions(filter, replacer);
+                    CompiledExpressionExt c = r.getChild().replaceExpressions(filter, replacer);
                     if (c != null) {
                         int pos = r.getPos();
 //                if (!updated) {
 //                    t = t.copy();
 //                }
                         if (subExpressions[pos] != c) {
-                            subExpressions[pos].setParentExpression(null);
+                            subExpressions[pos].unsetParent();
                             t.setSubExpression(pos, c);
                         }
                         updated = true;
@@ -373,11 +375,11 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         return null;
     }
 
-    protected final void bindChildren(DefaultCompiledExpression... children) {
+    protected final void bindChildren(CompiledExpressionExt... children) {
         if (children != null) {
-            for (DefaultCompiledExpression e : children) {
+            for (CompiledExpressionExt e : children) {
                 if (e != null) {
-                    DefaultCompiledExpression oldParent = e.getParentExpression();
+                    CompiledExpressionExt oldParent = e.getParentExpression();
                     if (oldParent != null && oldParent!=this) {
                         throw new IllegalArgumentException("Expression already bound");
                     }
@@ -387,22 +389,22 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
         }
     }
 
-    protected final void unbindChildren(DefaultCompiledExpression... children) {
+    protected final void unbindChildren(CompiledExpressionExt... children) {
         if (children != null) {
-            for (DefaultCompiledExpression e : children) {
+            for (CompiledExpressionExt e : children) {
                 if (e != null) {
-                    DefaultCompiledExpression oldParent = e.getParentExpression();
+                    CompiledExpressionExt oldParent = e.getParentExpression();
                     if (oldParent != null && oldParent==this) {
-                        e.setParentExpression(null);
+                        e.unsetParent();
                     }
                 }
             }
         }
     }
 
-    protected final void bindChildren(List<DefaultCompiledExpression> children) {
+    protected final void bindChildren(List<CompiledExpressionExt> children) {
         if (children != null) {
-            for (DefaultCompiledExpression e : children) {
+            for (CompiledExpressionExt e : children) {
                 e.setParentExpression(this);
             }
         }
@@ -467,9 +469,9 @@ public abstract class DefaultCompiledExpressionImpl implements DefaultCompiledEx
     }
 
     public void validate() {
-        DefaultCompiledExpression[] subExpressions = getSubExpressions();
+        CompiledExpressionExt[] subExpressions = getSubExpressions();
         if (subExpressions != null) {
-            for (DefaultCompiledExpression e : subExpressions) {
+            for (CompiledExpressionExt e : subExpressions) {
                 if (e.getParentExpression() != this) {
                     throw new IllegalArgumentException("Illegal Hierarchy");
                 }

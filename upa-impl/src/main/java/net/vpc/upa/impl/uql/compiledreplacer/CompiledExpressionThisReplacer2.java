@@ -24,7 +24,7 @@ public class CompiledExpressionThisReplacer2 implements CompiledExpressionReplac
 
     public CompiledExpression update(CompiledExpression e) {
         CompiledVar t = (CompiledVar) e;
-        var.getFinest().setChild(t);
+        var.getDeepest().setChild(t);
         return t;
     }
 }

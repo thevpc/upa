@@ -3,6 +3,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.Date;
 import net.vpc.upa.Field;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
@@ -52,33 +53,18 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     }
 
     public CompiledLiteral(Object value, DataTypeTransform type) {
-
-//        if (
-//                value != null
-//                && !(value instanceof String)
-//                && !(value instanceof Number)
-//                && !(value instanceof Date)
-//                && !(value instanceof Boolean)
-//        ) {
-//            throw new RuntimeException("bad sql value : " + value.getClass().getName() + " ==> " + value);
-//        } else {
         this.value = value;
 
         if (type == null) {
             if (value == null) {
                 type = IdentityDataTypeTransform.OBJECT;
             } else {
-                type = IdentityDataTypeTransform.forNativeType(value.getClass());
+                type = IdentityDataTypeTransform.ofType(value.getClass());
             }
         }
-        this.type = type;
-//            return;
-//        }
+        setType(type);
     }
 
-//    public String toSQL(boolean integrated, PersistenceUnitFilter database) {
-//        return database.getPersistenceManager().literal(value);
-//    }
 
     @Override
     public String toString() {
@@ -91,7 +77,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
         return String.valueOf(value);
     }
 
-    public static boolean isNull(DefaultCompiledExpression e) {
+    public static boolean isNull(CompiledExpressionExt e) {
         return e == null || ((e instanceof CompiledLiteral) && (((CompiledLiteral) e).value == null));
     }
 
@@ -101,15 +87,14 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
 
     public void setValue(Object o) {
         this.value = o;
-        if (o == null) {
-            type = IdentityDataTypeTransform.OBJECT;
-        }else {
-            type = IdentityDataTypeTransform.forNativeType(o.getClass());
-        }
+        setType((o == null)?IdentityDataTypeTransform.OBJECT:IdentityDataTypeTransform.ofType(o.getClass()));
     }
 
     public void setType(DataTypeTransform type) {
         this.type = type;
+        if(type==null){
+            throw new IllegalArgumentException("How Come");
+        }
     }
 
     @Override
@@ -119,7 +104,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
 
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledLiteral o = new CompiledLiteral(value, type);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -127,30 +112,30 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         return null;
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
     public DataTypeTransform getEffectiveDataType() {
         DataTypeTransform d = getTypeTransform();
-        DefaultCompiledExpression p = getParentExpression();
+        CompiledExpressionExt p = getParentExpression();
         if (p instanceof CompiledVarVal) {
             CompiledVarOrMethod v = ((CompiledVarVal) p).getVar();
-            v = ((CompiledVarOrMethod) v).getFinest();
+            v = ((CompiledVarOrMethod) v).getDeepest();
             final Object r = v.getReferrer();
             if (r instanceof Field) {
                 return UPAUtils.getTypeTransformOrIdentity(((Field) r));
             }
         } else if ((p instanceof CompiledEquals) || (p instanceof CompiledDifferent)) {
-            DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(this);
+            CompiledExpressionExt o = ((CompiledBinaryOperatorExpression) p).getOther(this);
             if (o instanceof CompiledVarOrMethod) {
-                o = ((CompiledVarOrMethod) o).getFinest();
+                o = ((CompiledVarOrMethod) o).getDeepest();
                 Object r = ((CompiledVarOrMethod) o).getReferrer();
                 if (r instanceof Field) {
                     return UPAUtils.getTypeTransformOrIdentity((Field) r);

@@ -57,4 +57,24 @@ public class DefaultPasswordStrategy implements PasswordStrategy {
     public int getMaxSize() {
         return maxSize;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultPasswordStrategy that = (DefaultPasswordStrategy) o;
+
+        if (fixedSize != that.fixedSize) return false;
+        if (maxSize != that.maxSize) return false;
+        return digest != null ? digest.equals(that.digest) : that.digest == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = digest != null ? digest.hashCode() : 0;
+        result = 31 * result + (fixedSize ? 1 : 0);
+        result = 31 * result + maxSize;
+        return result;
+    }
 }

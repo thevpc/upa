@@ -3,6 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.persistence.*;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import net.vpc.upa.Session;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataType;
 
-public class DefaultExecutionContext extends DefaultProperties implements EntityExecutionContext {
+public class DefaultExecutionContext extends DefaultProperties implements EntityExecutionContextExt {
 
     private ContextOperation contextOperation;
     private Entity currentEntity;
@@ -83,7 +84,7 @@ public class DefaultExecutionContext extends DefaultProperties implements Entity
         if (generatedValues.containsKey(name)) {
             throw new IllegalArgumentException("GeneratedValue already exists " + name);
         }
-        generatedValues.put(name, new DefaultParameter(name, null, new IdentityDataTypeTransform(type)));
+        generatedValues.put(name, new DefaultParameter(name, null, IdentityDataTypeTransform.ofType(type)));
     }
 
     public void removeGeneratedValue(Parameter parameter) {

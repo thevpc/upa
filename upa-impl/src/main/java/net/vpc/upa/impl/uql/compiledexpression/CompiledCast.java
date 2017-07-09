@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**
@@ -10,13 +11,13 @@ public class CompiledCast extends CompiledFunction {
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledCast(DefaultCompiledExpression value, DataTypeTransform primitiveType) {
+    public CompiledCast(CompiledExpressionExt value, DataTypeTransform primitiveType) {
         super("Cast");
         protectedAddArgument(value);
         protectedAddArgument(new CompiledTypeName(primitiveType));
     }
 
-    public DefaultCompiledExpression getValue() {
+    public CompiledExpressionExt getValue() {
         return getArgument(0);
     }
 
@@ -30,7 +31,7 @@ public class CompiledCast extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledCast o = new CompiledCast(getValue().copy(), getTypeTransform());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

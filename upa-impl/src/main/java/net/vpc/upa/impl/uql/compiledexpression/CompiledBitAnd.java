@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigInteger;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 
@@ -11,7 +13,7 @@ public final class CompiledBitAnd extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledBitAnd(DefaultCompiledExpression left, Object right) {
+    public CompiledBitAnd(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.BIT_AND, left, right);
         Class t = left.getTypeTransform().getSourceType().getPlatformType();
         Class r = left.getTypeTransform().getSourceType().getPlatformType();
@@ -24,7 +26,7 @@ public final class CompiledBitAnd extends CompiledBinaryOperatorExpression
         }
     }
 
-    public CompiledBitAnd(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledBitAnd(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.BIT_AND, left, right);
         Class t = left.getTypeTransform().getSourceType().getPlatformType();
         Class r = left.getTypeTransform().getSourceType().getPlatformType();

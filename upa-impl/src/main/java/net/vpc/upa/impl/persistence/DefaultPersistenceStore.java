@@ -9,9 +9,11 @@ import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.SessionParams;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.persistence.shared.marshallers.ConstantDataMarshallerFactory;
 import net.vpc.upa.impl.persistence.shared.marshallers.DefaultSerializablePlatformObjectMarshaller;
@@ -21,7 +23,6 @@ import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
@@ -36,7 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @PortabilityHint(target = "C#", name = "partial")
-public class DefaultPersistenceStore implements PersistenceStore {
+public class DefaultPersistenceStore implements PersistenceStoreExt {
 
     public static final String DRIVER_TYPE_EMBEDDED = "EMBEDDED";
     public static final String DRIVER_TYPE_DEFAULT = "DEFAULT";
@@ -167,7 +168,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         PlatformBeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
         b.inject(persistenceNameStrategy, "persistenceStore", this);
         b.inject(persistenceNameStrategy, "persistenceUnit", persistenceUnit);
-        commitManager.init(persistenceUnit, this);
+        commitManager.init((PersistenceUnitExt) persistenceUnit, this);
     }
 
     public final MarshallManager getMarshallManager() {
@@ -858,20 +859,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         return new CustomUpdateQueryExecutor(this, finalHints, update2, parametersByName, parametersByIndex, updatable, defaultFieldFilter, context, complexVals, entity, entityName, metadata);
     }
 
-    public QueryExecutor createDefaultExecutor(
-            Expression baseExpression,
-            Map<String, Object> parametersByName,
-            Map<Integer, Object> parametersByIndex,
-            boolean updatable,
-            FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
-
-        if (defaultFieldFilter == null) {
-            defaultFieldFilter = FieldFilters2.READ;
-        }
-        ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
-        ResultMetaData m = expressionManager.createMetaData((EntityStatement) baseExpression, defaultFieldFilter);
-        EntityStatement statement = m.getStatement();
-
+    private void applyParameters(EntityStatement statement, Map<String, Object> parametersByName, Map<Integer, Object> parametersByIndex) {
         //apply parameters
         if (parametersByName != null) {
             for (Map.Entry<String, Object> entry : parametersByName.entrySet()) {
@@ -905,6 +893,22 @@ public class DefaultPersistenceStore implements PersistenceStore {
                 p.setUnspecified(false);
             }
         }
+    }
+
+    public QueryExecutor createDefaultExecutor(
+            Expression baseExpression,
+            Map<String, Object> parametersByName,
+            Map<Integer, Object> parametersByIndex,
+            boolean updatable,
+            FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException {
+
+        if (defaultFieldFilter == null) {
+            defaultFieldFilter = FieldFilters2.READ;
+        }
+        ExpressionManager expressionManager = context.getPersistenceUnit().getExpressionManager();
+        ResultMetaData m = expressionManager.createMetaData(baseExpression, defaultFieldFilter);
+        EntityStatement statement = m.getStatement();
+        applyParameters(statement, parametersByName, parametersByIndex);
 
 
         Map<String, Object> hints = context.getHints();
@@ -920,7 +924,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         config.setResolveThis(true);
 //        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())? UQLUtils.THIS:statement.getEntityAlias());
 
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(statement, config);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
         if (maxQueryJoinCount > 0 || maxQueryColumnsCount > 0) {
             for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
@@ -942,7 +946,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
                 hints.put(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.SELECT);
                 config.setHints(hints);
-                compiledExpression = (DefaultCompiledExpression) expressionManager.compileExpression(baseExpression, config);
+                compiledExpression = (CompiledExpressionExt) expressionManager.compileExpression(baseExpression, config);
                 reeavluateWithLessJoin = false;
                 for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                     CompiledSelect cs = (CompiledSelect) ce;
@@ -967,46 +971,36 @@ public class DefaultPersistenceStore implements PersistenceStore {
             ne = new NativeField[cquery.countFields()];
             for (int i = 0; i < ne.length; i++) {
                 CompiledQueryField field = cquery.getField(i);
+                boolean partialObject = field.isPartialObject();
 //                String fieldAlias = field.getAliasBinding();
-                net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression expression1 = field.getExpression();
+                CompiledExpressionExt expression1 = field.getExpression();
                 BindingId binding = field.getBinding();
                 String validName = field.getName() != null ? field.getName() : expression1.toString();
                 if (validName == null) {
                     validName = "#" + i;
                 }
-
-                DataTypeTransform tc = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
+                Field referrerField = field.getReferrerField();
                 DataTypeTransform c = null;
-                if (tc == null) {
-                    tc = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
-                    throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
-                }
-                Field f = null;
-                if (expression1 instanceof CompiledVar) {
-                    CompiledVar v = (CompiledVar) expression1;
-                    CompiledVarOrMethod leaf = v.getDeepChild();
-                    if (leaf != null) {
-                        Object referrer = leaf.getReferrer();
-                        if (referrer instanceof Field) {
-                            f = (Field) referrer;
-                            c = UPAUtils.getTypeTransformOrIdentity(f);
-                        }
-                    }
+                if (referrerField != null) {
+                    c = UPAUtils.getTypeTransformOrIdentity(referrerField);
+                } else {
+                    c = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                 }
                 if (c == null) {
-                    c = tc;
+                    throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
                 }
+
                 boolean fieldNoTypeTransform = noTypeTransform;
                 if (!noTypeTransform) {
-                    if (f != null) {
-                        String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + f.getAbsoluteName();
+                    if (referrerField != null) {
+                        String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + referrerField.getAbsoluteName();
                         fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
                     }
                 }
                 DataTypeTransform baseTransform = c;
-                c = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
+                c = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                ne[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), f, null, c);
+                ne[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, partialObject);
             }
         } else {
             ne = new NativeField[0];
@@ -1014,39 +1008,11 @@ public class DefaultPersistenceStore implements PersistenceStore {
 
         String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
 
-        List<CompiledParam> cvalues = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
-        List<Parameter> values = new ArrayList<Parameter>();
-        for (CompiledParam e : cvalues) {
-            if (e.isUnspecified()) {
-                throw new IllegalArgumentException("Unspecified Param " + e);
-            }
-            ExprTypeInfo ei = UPAUtils.resolveExprTypeInfo(e);
-            Object objectValue = e.getValue();
-            if (ei.getOldReferrer() != null) {
-                Field oldField = (Field) ei.getOldReferrer();
-                if (oldField.getDataType() instanceof ManyToOneType) {
-                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
-                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
-                }
-            }
-            boolean fieldNoTypeTransform = noTypeTransform;
-            if (ei.getReferrer() instanceof Field) {
-                if (!noTypeTransform) {
-                    Field field = (Field) ei.getReferrer();
-                    String fieldKey = QueryHints.NO_TYPE_TRANSFORM + "." + field.getAbsoluteName();
-                    fieldNoTypeTransform = (Boolean) (hints.get(fieldKey) == null ? false : hints.get(fieldKey));
-                }
-            }
-            DataTypeTransform baseTransform = ei.getTypeTransform();
-            DataTypeTransform preferedTransform = fieldNoTypeTransform ? IdentityDataTypeTransform.forDataType(baseTransform.getSourceType()) : baseTransform;
-
-            values.add(new DefaultParameter(e.getName(), objectValue, preferedTransform));
-        }
-        return new DefaultQueryExecutor(
-                context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE,
-                hints, query, values, context.getGeneratedValues()
-                , this, context.getConnection(), ne, updatable, m
+        DefaultQueryExecutor defaultQueryExecutor = new DefaultQueryExecutor(compiledExpression,
+                hints, query,
+                ne, updatable, m, noTypeTransform, context
         );
+        return defaultQueryExecutor;
     }
 
     //    @Override
@@ -1125,7 +1091,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        EntityExecutionContext context = ((DefaultPersistenceUnit) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND, entityPersistenceContext.getHints());
+        EntityExecutionContext context = ((PersistenceUnitExt) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND, entityPersistenceContext.getHints());
         sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (defaultObject == null && !cr.getTargetType().isNullable()) {
             defaultObject = cr.getTargetType().getDefaultValue();
@@ -1164,7 +1130,7 @@ public class DefaultPersistenceStore implements PersistenceStore {
     public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
         StringBuilder sb = new StringBuilder();
         sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager))).append(" As ").append("\n").append("\t");
-        net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression compiledExpression = (net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
         sb.append(sqlManager.getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
         return sb.toString();
     }
@@ -1186,8 +1152,8 @@ public class DefaultPersistenceStore implements PersistenceStore {
             }
         }
 
-        EntityExecutionContext qlContext = ((DefaultPersistenceUnit) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME, executionContext.getHints());
-        net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression compiledExpression = (net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
+        EntityExecutionContext qlContext = ((PersistenceUnitExt) executionContext.getPersistenceUnit()).createContext(ContextOperation.CREATE_PERSISTENCE_NAME, executionContext.getHints());
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(sqlManager.getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }

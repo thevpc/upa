@@ -2,6 +2,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.DecObjectType;
 
 public class CompiledInsertSelection extends DefaultCompiledEntityStatement
@@ -79,7 +81,7 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
         return this;
     }
 
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledInsertSelection o = new CompiledInsertSelection();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -142,8 +144,8 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all = new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all = new ArrayList<CompiledExpressionExt>();
         if (entity != null) {
             all.add(entity);
         }
@@ -155,11 +157,11 @@ public class CompiledInsertSelection extends DefaultCompiledEntityStatement
             all.add(field);
         }
         all.add(selection);
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if (index == 0) {
             unbindChildren(this.entity);
             entity = (CompiledEntityName) expression;

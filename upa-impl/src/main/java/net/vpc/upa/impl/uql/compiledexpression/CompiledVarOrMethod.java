@@ -81,7 +81,7 @@ public abstract class CompiledVarOrMethod extends DefaultCompiledExpressionImpl 
         return getTypeTransform();
     }
     
-    public CompiledVarOrMethod getFinest(){
+    public CompiledVarOrMethod getDeepest(){
         CompiledVarOrMethod c = getDeepChild();
         if(c==null){
             return this;

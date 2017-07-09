@@ -4,6 +4,7 @@ import net.vpc.upa.Field;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.expressions.JoinType;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.DecObjectType;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 
     private static final long serialVersionUID = 1L;
     private List<CompiledVarVal> fields;
-    private DefaultCompiledExpression condition;
+    private CompiledExpressionExt condition;
     private CompiledEntityName entityName;
     private String entityAlias;
     private List<CompiledJoinCriteria> joinsTables=new ArrayList<>();
@@ -34,8 +35,8 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         addQuery(other);
     }
 
-    public Map<CompiledVar, DefaultCompiledExpression> getUpdatesMapping() {
-        Map<CompiledVar, DefaultCompiledExpression> m = new HashMap<CompiledVar, DefaultCompiledExpression>();
+    public Map<CompiledVar, CompiledExpressionExt> getUpdatesMapping() {
+        Map<CompiledVar, CompiledExpressionExt> m = new HashMap<CompiledVar, CompiledExpressionExt>();
         for (CompiledVarVal f : fields) {
             m.put(f.getVar(), f.getVal());
         }
@@ -86,7 +87,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         for (int i = 0; i < other.fields.size(); i++) {
             CompiledVar fvar = other.getField(i);
             Field field = (Field) fvar.getReferrer();
-            DefaultCompiledExpression fieldValue = other.getFieldValue(i);
+            CompiledExpressionExt fieldValue = other.getFieldValue(i);
             set(field, fieldValue == null ? null : fieldValue.copy());
         }
 
@@ -100,7 +101,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return this;
     }
 
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledUpdate o = new CompiledUpdate();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -109,7 +110,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return o;
     }
 
-    public CompiledUpdate set(Field key, DefaultCompiledExpression value) {
+    public CompiledUpdate set(Field key, CompiledExpressionExt value) {
         CompiledVarVal varVal = new CompiledVarVal(new CompiledVar(key), value);
         fields.add(varVal);
         bindChildren(varVal);
@@ -129,13 +130,13 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //
 //        return this;
 //    }
-    public CompiledUpdate where(DefaultCompiledExpression condition) {
+    public CompiledUpdate where(CompiledExpressionExt condition) {
         this.condition = condition;
         bindChildren(condition);
         return this;
     }
 
-    public DefaultCompiledExpression getCondition() {
+    public CompiledExpressionExt getCondition() {
         return condition;
     }
 
@@ -188,13 +189,13 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return fields.get(i).getVar();
     }
 
-    public DefaultCompiledExpression getFieldValue(int i) {
+    public CompiledExpressionExt getFieldValue(int i) {
         return fields.get(i).getVal();
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all = new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all = new ArrayList<CompiledExpressionExt>();
         if (entityName != null) {
             all.add(entityName);
         }
@@ -207,11 +208,11 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
             all.add(varVal);
         }
         all.add(condition);
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         int i = 0;
         if (entityName != null) {
             if (i == index) {
@@ -319,7 +320,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         }
     }
 
-    private CompiledUpdate join(JoinType joinType, CompiledNameOrSelect entityName, String alias, DefaultCompiledExpression condition) {
+    private CompiledUpdate join(JoinType joinType, CompiledNameOrSelect entityName, String alias, CompiledExpressionExt condition) {
         join(new CompiledJoinCriteria(joinType, entityName, alias, condition));
         //getContext().declare(alias, entityName);
         return this;
@@ -332,43 +333,43 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         return this;
     }
 
-    public CompiledUpdate join(String entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate join(String entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.INNER_JOIN, new CompiledEntityName(entityName), alias, condition);
     }
 
-    public CompiledUpdate join(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate join(CompiledSelect entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.INNER_JOIN, entityName, alias, condition);
     }
 
-    public CompiledUpdate innerJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate innerJoin(String entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.INNER_JOIN, new CompiledEntityName(entityName), alias, condition);
     }
 
-    public CompiledUpdate innerJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate innerJoin(CompiledSelect entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.INNER_JOIN, entityName, alias, condition);
     }
 
-    public CompiledUpdate leftJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate leftJoin(String entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.LEFT_JOIN, new CompiledEntityName(entityName), alias, condition);
     }
 
-    public CompiledUpdate leftJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate leftJoin(CompiledSelect entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.LEFT_JOIN, entityName, alias, condition);
     }
 
-    public CompiledUpdate rightJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate rightJoin(String entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.RIGHT_JOIN, new CompiledEntityName(entityName), alias, condition);
     }
 
-    public CompiledUpdate rightJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate rightJoin(CompiledSelect entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.RIGHT_JOIN, entityName, alias, condition);
     }
 
-    public CompiledUpdate fullJoin(String entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate fullJoin(String entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.FULL_JOIN, new CompiledEntityName(entityName), alias, condition);
     }
 
-    public CompiledUpdate fullJoin(CompiledSelect entityName, String alias, DefaultCompiledExpression condition) {
+    public CompiledUpdate fullJoin(CompiledSelect entityName, String alias, CompiledExpressionExt condition) {
         return join(JoinType.FULL_JOIN, entityName, alias, condition);
     }
 

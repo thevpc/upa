@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 import java.util.Collection;
 
 /**
@@ -12,23 +14,23 @@ import java.util.Collection;
 public class CompiledKeyCollectionExpression extends CompiledInCollection implements Cloneable {
     private static final long serialVersionUID = 1L;
 
-    public CompiledKeyCollectionExpression(DefaultCompiledExpression left) {
+    public CompiledKeyCollectionExpression(CompiledExpressionExt left) {
         super(left);
     }
 
-    public CompiledKeyCollectionExpression(DefaultCompiledExpression left, Collection<Object> collection) {
+    public CompiledKeyCollectionExpression(CompiledExpressionExt left, Collection<Object> collection) {
         super(left, collection);
     }
 
-    public CompiledKeyCollectionExpression(DefaultCompiledExpression left, Object[] collection) {
+    public CompiledKeyCollectionExpression(CompiledExpressionExt left, Object[] collection) {
         super(left, collection);
     }
 
-    public CompiledKeyCollectionExpression(DefaultCompiledExpression[] left) {
+    public CompiledKeyCollectionExpression(CompiledExpressionExt[] left) {
         super(left);
     }
 
-    public CompiledKeyCollectionExpression(DefaultCompiledExpression[] left, Collection<Object> collection) {
+    public CompiledKeyCollectionExpression(CompiledExpressionExt[] left, Collection<Object> collection) {
         super(left, collection);
     }
 
@@ -41,11 +43,11 @@ public class CompiledKeyCollectionExpression extends CompiledInCollection implem
 //    }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledKeyCollectionExpression o=new CompiledKeyCollectionExpression(getLeft().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
-        for (DefaultCompiledExpression expression : right) {
+        for (CompiledExpressionExt expression : right) {
             o.add(expression);
         }
         return o;

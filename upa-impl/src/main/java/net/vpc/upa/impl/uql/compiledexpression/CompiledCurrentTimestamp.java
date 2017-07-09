@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -24,7 +25,7 @@ public class CompiledCurrentTimestamp extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledCurrentTimestamp o = new CompiledCurrentTimestamp();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

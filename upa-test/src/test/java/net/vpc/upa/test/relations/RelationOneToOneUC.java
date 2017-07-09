@@ -7,6 +7,8 @@ import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
 import net.vpc.upa.test.util.PUUtils;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -20,51 +22,64 @@ public class RelationOneToOneUC {
     }
     private static final Logger log = Logger.getLogger(RelationOneToOneUC.class.getName());
 
-    public static void main(String[] args) {
-        new RelationOneToOneUC().run();
-    }
-
-    @Test
-    public void run() {
-        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(getClass());
+    private static Business bo;
+    @BeforeClass
+    public static void setup() {
+        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationOneToOneUC.class);
         pu.addEntity(Client.class);
         pu.addEntity(ClientInfo.class);
         pu.start();
-        Business bo = UPA.makeSessionAware(new Business());
+        bo = UPA.makeSessionAware(new Business());
+        bo.init();
+    }
+
+    @Test
+    public void testQueries() {
+        bo.testQueries();
+    }
+
+    @Test
+    public void process() {
         bo.process();
     }
 
     public static class Business {
 
+        public void init() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            pu.clear();
+        }
         public void process() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            Client val0 = new Client();
+            val0.setName("hello0");
+            pu.persist(val0);
+            ClientInfo ci = new ClientInfo();
+            ci.setClient(val0);
+            ci.setAddress("Sousse");
+            pu.persist(ci);
+
+            List<Client> entityList = pu.createQuery("Select a from Client a").getResultList();
+            Assert.assertEquals(1,entityList.size());
+            Assert.assertEquals(1,pu.findAll("Client").size());
+            Assert.assertEquals(1L,pu.getEntityCount("Client"));
+        }
+        public void testQueries() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             List<Client> entityList;
 //            pu.createQuery("Select a from ClientInfo a where a.client=null").getEntityList();
             pu.createQuery("Select a from ClientInfo a where a.client=:cc").setParameter("cc", new Client()).getResultList();
-//            pu.createQuery("Select a from ClientInfo a where a.client=null").executeNonQuery();
-//            pu.createQuery("Delete from ClientInfo").executeNonQuery();
-//            pu.createQuery("Delete from Client").executeNonQuery();
-//            final Query findAll = pu.createQuery("Select a from Client a");
-//            entityList = findAll.getEntityList();
-//            Assert.assertTrue(entityList.size() == 0);
-////            if(true){
-////                return;
-////            }
-//            Client val0 = new Client();
-//            val0.setName("hello0");
-//            pu.insert(val0);
-//            ClientInfo ci = new ClientInfo();
-//            ci.setClient(val0);
-//            ci.setAddress("Sousse");
-//            pu.insert(ci);
-//
-//            entityList = findAll.getEntityList();
-//            Assert.assertTrue(entityList.size() == 1);
+            pu.createQuery("Select a from ClientInfo a where a.client=null").getResultList().size();
+            pu.createQuery("Delete from ClientInfo").executeNonQuery();
+            pu.createQuery("Delete from Client").executeNonQuery();
+            final Query findAll = pu.createQuery("Select a from Client a");
+            entityList = findAll.getResultList();
+            Assert.assertTrue(entityList.size() == 0);
         }
     }
 
     @Ignore
-    @net.vpc.upa.config.Entity
+    @net.vpc.upa.config.Entity(modifiers = EntityModifier.CLEAR)
     public static class Client {
 
         @Id
@@ -97,7 +112,7 @@ public class RelationOneToOneUC {
         }
     }
 
-    @net.vpc.upa.config.Entity
+    @net.vpc.upa.config.Entity(modifiers = EntityModifier.CLEAR)
     public static class ClientInfo {
 
         @Id

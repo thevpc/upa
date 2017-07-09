@@ -13,8 +13,4 @@ public class IdentifierStoreTranslators {
     public static IdentifierStoreTranslator LOWER=new IdentifierStoreTranslatorLower();
     public static IdentifierStoreTranslator MIXED=new IdentifierStoreTranslatorMixed();
     public static IdentifierStoreTranslator MIXED_DBL_QUOTE=new IdentifierStoreTranslatorMixedDoubleQuote();
-
-
-
-
 }

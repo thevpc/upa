@@ -9,7 +9,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledDiv;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
@@ -17,7 +17,7 @@ import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
  */
 public class DivExpressionTranslator implements ExpressionTranslator {
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileDiv((Div) o, manager,declarations);
     }
 
@@ -25,8 +25,8 @@ public class DivExpressionTranslator implements ExpressionTranslator {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
+        CompiledExpressionExt left = manager.translateAny(v.getLeft(), declarations);
+        CompiledExpressionExt right = manager.translateAny(v.getRight(), declarations);
         CompiledDiv s = new CompiledDiv(left, right);
 //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

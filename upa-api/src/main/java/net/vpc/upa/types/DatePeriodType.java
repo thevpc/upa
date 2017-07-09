@@ -144,4 +144,30 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        DatePeriodType that = (DatePeriodType) o;
+
+        if (countName != null ? !countName.equals(that.countName) : that.countName != null) return false;
+        if (periodTypeName != null ? !periodTypeName.equals(that.periodTypeName) : that.periodTypeName != null)
+            return false;
+        if (countDataType != null ? !countDataType.equals(that.countDataType) : that.countDataType != null)
+            return false;
+        return periodTypeDataType != null ? periodTypeDataType.equals(that.periodTypeDataType) : that.periodTypeDataType == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (countName != null ? countName.hashCode() : 0);
+        result = 31 * result + (periodTypeName != null ? periodTypeName.hashCode() : 0);
+        result = 31 * result + (countDataType != null ? countDataType.hashCode() : 0);
+        result = 31 * result + (periodTypeDataType != null ? periodTypeDataType.hashCode() : 0);
+        return result;
+    }
 }

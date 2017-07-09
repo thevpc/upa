@@ -3,8 +3,8 @@ package net.vpc.upa.impl.persistence.shared.sql;
 import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Select;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -126,7 +126,7 @@ public class SelectSQLProvider extends AbstractSQLProvider {
 //            PersistenceStore persistenceStore = context.getPersistenceStore();
             for (int i = 0; i < o.countFields(); i++) {
                 CompiledQueryField fi = o.getField(i);
-                DefaultCompiledExpression e = fi.getExpression();
+                CompiledExpressionExt e = fi.getExpression();
                 boolean fieldIsSelect=e instanceof CompiledSelect;
                 valueString = sqlManager.getSQL(e, context, declarations);
                 if(fieldIsSelect){
@@ -164,7 +164,7 @@ public class SelectSQLProvider extends AbstractSQLProvider {
         }
     }
 
-    protected void appendWhere(DefaultCompiledExpression cond, StringBuilder sb, EntityExecutionContext context, SQLManager sqlManager, ExpressionDeclarationList declarations) {
+    protected void appendWhere(CompiledExpressionExt cond, StringBuilder sb, EntityExecutionContext context, SQLManager sqlManager, ExpressionDeclarationList declarations) {
         
         if (cond != null && cond.isValid()) {
             sb.append(" Where ").append(sqlManager.getSQL(cond, context, declarations));
@@ -175,7 +175,7 @@ public class SelectSQLProvider extends AbstractSQLProvider {
     }
 
     protected void appendHaving(CompiledSelect o, StringBuilder sb, EntityExecutionContext context, SQLManager sqlManager, ExpressionDeclarationList declarations) {
-        DefaultCompiledExpression hav = o.getHaving();
+        CompiledExpressionExt hav = o.getHaving();
         if (hav != null && hav.isValid()) {
             sb.append(" Having ").append(sqlManager.getSQL(hav, context, declarations));
         }

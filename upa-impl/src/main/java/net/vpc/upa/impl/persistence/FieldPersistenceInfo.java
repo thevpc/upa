@@ -97,7 +97,7 @@ public class FieldPersistenceInfo {
                 if (re.rebuiltFormula != null) {
                     field.setUpdateFormula(re.rebuiltFormula);
                 }
-//                List<DefaultCompiledExpression> complex = re.compiledExpression.findExpressionsList(CompiledExpressionUtils.THIS_VAR_FILTER);
+//                List<CompiledExpressionExt> complex = re.compiledExpression.findExpressionsList(CompiledExpressionUtils.THIS_VAR_FILTER);
                 updateFormulaPass = field.getUpdateFormulaOrder();
                 if (/*complex.isEmpty() && */updateFormulaPass == 0) {
                     updateExpression = re.expression;

@@ -2,12 +2,11 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.ExpressionCompiler;
-import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.*;
 
@@ -17,12 +16,12 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
         implements Cloneable,net.vpc.upa.Function {
 
     private static final long serialVersionUID = 1L;
-    private DefaultCompiledExpression ancestorExpression;
-    private DefaultCompiledExpression childExpression;
+    private CompiledExpressionExt ancestorExpression;
+    private CompiledExpressionExt childExpression;
     private CompiledEntityName entityName;
 
-    public IsHierarchyDescendantCompiled(DefaultCompiledExpression ancestorExpression, DefaultCompiledExpression childExpression, CompiledEntityName entityName) {
-        super("treeAncestor",new DefaultCompiledExpression[]{ancestorExpression,childExpression,entityName},new IdentityDataTypeTransform(TypesFactory.BOOLEAN),null);
+    public IsHierarchyDescendantCompiled(CompiledExpressionExt ancestorExpression, CompiledExpressionExt childExpression, CompiledEntityName entityName) {
+        super("treeAncestor",new CompiledExpressionExt[]{ancestorExpression,childExpression,entityName},IdentityDataTypeTransform.BOOLEAN,null);
         this.handler = this;
         this.ancestorExpression = ancestorExpression;
         this.childExpression = childExpression;
@@ -32,11 +31,11 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
 //        protectedAddArgument(entityName);
     }
 
-    public DefaultCompiledExpression getAncestorExpression() {
+    public CompiledExpressionExt getAncestorExpression() {
         return ancestorExpression;
     }
 
-    public DefaultCompiledExpression getChildExpression() {
+    public CompiledExpressionExt getChildExpression() {
         return childExpression;
     }
 
@@ -44,7 +43,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
         return entityName;
     }
     
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         return new IsHierarchyDescendantCompiled(ancestorExpression.copy(), childExpression.copy(),(CompiledEntityName)entityName.copy());
     }
 
@@ -53,13 +52,13 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
         IsHierarchyDescendantCompiled o=this;
         ExpressionCompiler expressionCompiler=(ExpressionCompiler) evalContext.getCompilerContext();
         PersistenceUnit persistenceUnit=evalContext.getPersistenceUnit();
-        DefaultCompiledExpression c = o.getChildExpression();
-        DefaultCompiledExpression p = o.getAncestorExpression();
+        CompiledExpressionExt c = o.getChildExpression();
+        CompiledExpressionExt p = o.getAncestorExpression();
         CompiledEntityName n = o.getEntityName();
         Entity treeEntity = null;
         if (c instanceof CompiledVar) {
 
-            Object childReferrer = resolveReferrer((CompiledVar) ((CompiledVar) c).getFinest(),expressionCompiler);
+            Object childReferrer = resolveReferrer((CompiledVar) ((CompiledVar) c).getDeepest(),expressionCompiler);
             if (childReferrer != null) {
                 if (childReferrer instanceof Entity) {
                     if (treeEntity == null) {
@@ -83,7 +82,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
 //            Object co = ((CompiledParam) c).getEffectiveDataType();
         }
         if (p instanceof CompiledVar) {
-            Object parentReferrer = resolveReferrer((CompiledVar) ((CompiledVar) p).getFinest(),expressionCompiler);
+            Object parentReferrer = resolveReferrer((CompiledVar) ((CompiledVar) p).getDeepest(),expressionCompiler);
             if (parentReferrer != null) {
                 if (parentReferrer instanceof Entity) {
                     if (treeEntity == null) {
@@ -134,16 +133,16 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
         return createConditionForDeepSearch(c, p, true, pathField, pathSep,expressionCompiler);
     }
 
-    public DefaultCompiledExpression createConditionForDeepSearch(DefaultCompiledExpression alias, DefaultCompiledExpression id, boolean includeId, Field field, String pathSep,ExpressionCompiler expressionCompiler) throws UPAException {
+    public CompiledExpressionExt createConditionForDeepSearch(CompiledExpressionExt alias, CompiledExpressionExt id, boolean includeId, Field field, String pathSep, ExpressionCompiler expressionCompiler) throws UPAException {
         alias = alias.copy();
         if (alias instanceof CompiledVar) {
 //            CompiledVar cv = (CompiledVar) alias;
-            CompiledVarOrMethod finest = ((CompiledVar) alias).getFinest();
+            CompiledVarOrMethod finest = ((CompiledVar) alias).getDeepest();
             Object referrer = resolveReferrer((CompiledVar) finest,expressionCompiler);
             if (referrer instanceof Entity) {
 
                 CompiledVar v = new CompiledVar(field.getName());
-                ((CompiledVar) alias).getFinest().setChild(v);
+                ((CompiledVar) alias).getDeepest().setChild(v);
             } else if (referrer instanceof Field && ((Field) referrer).getDataType() instanceof ManyToOneType &&
                     ((ManyToOneType) ((Field) referrer).getDataType()).getTargetEntity().getName().equals(field.getEntity().getName())
                     ) {
@@ -161,7 +160,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
             throw new IllegalArgumentException("Composite ID unsupported for function isHierarchyDescendant");
         }
         DataType pkType = primaryFields.get(0).getDataType();
-        DefaultCompiledExpression strId = null;
+        CompiledExpressionExt strId = null;
         if (pkType instanceof IntType) {
             strId = new CompiledI2V(id);
         } else if (pkType instanceof LongType) {

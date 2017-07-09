@@ -1,5 +1,6 @@
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.persistence.result;
 
+import net.vpc.upa.impl.persistence.FieldTracking;
 import net.vpc.upa.persistence.QueryResult;
 
 import java.beans.PropertyChangeEvent;

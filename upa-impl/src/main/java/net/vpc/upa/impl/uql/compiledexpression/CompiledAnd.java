@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.expressions.BinaryOperator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -9,7 +10,7 @@ public final class CompiledAnd extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public static DefaultCompiledExpression tryAddCopies(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public static CompiledExpressionExt tryAddCopies(CompiledExpressionExt left, CompiledExpressionExt right) {
         if (left != null) {
             left = left.copy();
         }
@@ -19,7 +20,7 @@ public final class CompiledAnd extends CompiledBinaryOperatorExpression
         return tryAdd(left, right);
     }
 
-    public static DefaultCompiledExpression tryAdd(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public static CompiledExpressionExt tryAdd(CompiledExpressionExt left, CompiledExpressionExt right) {
         if (left == null) {
             return right;
         }
@@ -29,7 +30,7 @@ public final class CompiledAnd extends CompiledBinaryOperatorExpression
         return new CompiledAnd(right, left);
     }
 
-    public CompiledAnd(DefaultCompiledExpression left, Object right) {
+    public CompiledAnd(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.AND, left, right);
         Class t = left.getTypeTransform().getSourceType().getPlatformType();
         Class r = left.getTypeTransform().getSourceType().getPlatformType();
@@ -42,7 +43,7 @@ public final class CompiledAnd extends CompiledBinaryOperatorExpression
 //        }
     }
 
-    public CompiledAnd(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledAnd(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.AND, left, right);
 //        Class t = left.getDataType().getPlatformType();
 //        Class r = left.getDataType().getPlatformType();

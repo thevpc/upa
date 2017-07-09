@@ -9,7 +9,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledBitOr;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
@@ -20,7 +20,7 @@ public class BitOrExpressionTranslator implements ExpressionTranslator {
 
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileBitOr((BitOr) o, manager,declarations);
     }
 
@@ -28,8 +28,8 @@ public class BitOrExpressionTranslator implements ExpressionTranslator {
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression left = manager.translateAny(v.getLeft(), declarations);
-        DefaultCompiledExpression right = manager.translateAny(v.getRight(), declarations);
+        CompiledExpressionExt left = manager.translateAny(v.getLeft(), declarations);
+        CompiledExpressionExt right = manager.translateAny(v.getRight(), declarations);
         CompiledBitOr s = new CompiledBitOr(left, right);
         //        s.setDeclarationList(new ExpressionDeclarationList(declarations));
         return s;

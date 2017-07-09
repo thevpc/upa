@@ -117,4 +117,24 @@ public class ByteType extends NumberType implements Cloneable {
         }
         return Byte.parseByte(value);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ByteType byteType = (ByteType) o;
+
+        if (min != null ? !min.equals(byteType.min) : byteType.min != null) return false;
+        return max != null ? max.equals(byteType.max) : byteType.max == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        return result;
+    }
 }

@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.uql;
 
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,5 +14,5 @@ public interface CompiledExpressionVisitor {
      * @param e visited expression
      * @return true to continue visiting false otherwise
      */
-    boolean visit(DefaultCompiledExpression e);
+    boolean visit(CompiledExpressionExt e);
 }

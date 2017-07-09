@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.expressions.DatePartType;
 
 import java.util.Date;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -20,7 +22,7 @@ public class CompiledDateDiff extends CompiledFunction {
         this(datePartType, new CompiledLiteral(date1),new CompiledLiteral(date2));
     }
 
-    public CompiledDateDiff(DatePartType datePartType, DefaultCompiledExpression startDate, DefaultCompiledExpression endDate) {
+    public CompiledDateDiff(DatePartType datePartType, CompiledExpressionExt startDate, CompiledExpressionExt endDate) {
         super("DateDiff");
         protectedAddArgument(new CompiledCst(datePartType));
         protectedAddArgument(startDate);
@@ -35,11 +37,11 @@ public class CompiledDateDiff extends CompiledFunction {
         return (DatePartType)getDatePartTypeExpression().getValue();
     }
 
-    public DefaultCompiledExpression getStart() {
+    public CompiledExpressionExt getStart() {
         return getArgument(1);
     }
 
-    public DefaultCompiledExpression getEnd() {
+    public CompiledExpressionExt getEnd() {
         return getArgument(1);
     }
     //    public String toSQL(boolean flag, PersistenceUnitFilter database) {
@@ -52,7 +54,7 @@ public class CompiledDateDiff extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledDateDiff o = new CompiledDateDiff(getDatePartType(),getStart().copy(),getEnd().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

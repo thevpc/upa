@@ -7,7 +7,7 @@ import net.vpc.upa.impl.persistence.shared.sql.SelectSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledAnd;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.UserCompiledExpression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -30,7 +30,7 @@ public class OracleSelectSQLProvider extends SelectSQLProvider {
         appendFrom(o, sb, context, sqlManager, declarations);
         appendJoins(o, sb, context, sqlManager, declarations);
         if (o.getTop() > 0) {
-            DefaultCompiledExpression w = CompiledAnd.tryAddCopies(o.getWhere(),new UserCompiledExpression("ROWNUM <= " + o.getTop(), null));
+            CompiledExpressionExt w = CompiledAnd.tryAddCopies(o.getWhere(),new UserCompiledExpression("ROWNUM <= " + o.getTop(), null));
             appendWhere(w, sb, context, sqlManager, declarations);
         } else {
             appendWhere(o, sb, context, sqlManager, declarations);

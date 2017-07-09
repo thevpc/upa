@@ -119,7 +119,7 @@ public class DefaultUConnection implements UConnection {
 
                     types = new DataTypeTransform[columnCount];
                     for (int i = 0; i < types.length; i++) {
-                        types[i] = new IdentityDataTypeTransform(TypesFactory.forPlatformType(colTypes[i]));
+                        types[i] = IdentityDataTypeTransform.ofType(colTypes[i]);
                     }
                 }
                 TypeMarshaller[] marshallers = new TypeMarshaller[types.length];
@@ -184,13 +184,11 @@ public class DefaultUConnection implements UConnection {
                 ResultSet rs = s.getGeneratedKeys();
                 if (rs.next()) {
                     index = 1;
-                    if (generatedKeys != null) {
-                        for (Parameter entry : generatedKeys) {
-                            DataTypeTransform chain = entry.getTypeTransform();
-                            TypeMarshaller marshaller = marshallManager.getTypeMarshaller(chain);
-                            entry.setValue(marshaller.read(index, rs));
-                            index += marshaller.getSize();
-                        }
+                    for (Parameter entry : generatedKeys) {
+                        DataTypeTransform chain = entry.getTypeTransform();
+                        TypeMarshaller marshaller = marshallManager.getTypeMarshaller(chain);
+                        entry.setValue(marshaller.read(index, rs));
+                        index += marshaller.getSize();
                     }
                 }
             }

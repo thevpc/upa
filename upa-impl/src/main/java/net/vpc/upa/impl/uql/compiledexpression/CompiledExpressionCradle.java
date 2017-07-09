@@ -4,28 +4,30 @@
  */
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class CompiledExpressionCradle extends DefaultCompiledExpressionImpl {
 
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
 
     public CompiledExpressionCradle() {
     }
-    public CompiledExpressionCradle(DefaultCompiledExpression expression) {
+    public CompiledExpressionCradle(CompiledExpressionExt expression) {
         this.expression = expression;
         bindChildren(expression);
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{expression};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{expression};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index==0){
             unbindChildren(this.expression);
             this.expression=expression;
@@ -35,7 +37,7 @@ public class CompiledExpressionCradle extends DefaultCompiledExpressionImpl {
         }
     }
 
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         return new CompiledExpressionCradle(expression);
     }
 }

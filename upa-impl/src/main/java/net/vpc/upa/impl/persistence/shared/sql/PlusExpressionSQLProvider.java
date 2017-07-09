@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -21,10 +21,10 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
         CompiledPlus o = (CompiledPlus) oo;
-        DefaultCompiledExpression left = o.getLeft();
-        DefaultCompiledExpression right = o.getRight();
-        DefaultCompiledExpression left0 = left;
-        DefaultCompiledExpression right0 = right;
+        CompiledExpressionExt left = o.getLeft();
+        CompiledExpressionExt right = o.getRight();
+        CompiledExpressionExt left0 = left;
+        CompiledExpressionExt right0 = right;
         while(left0!=null && (left0 instanceof CompiledVar) && ((CompiledVar) left0).getChild()!=null){
             left0=((CompiledVar) left0).getChild();
         }
@@ -37,10 +37,10 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
         boolean s1 = t1.equals(String.class);
         boolean s2 = t2.equals(String.class);
         if (s0 || s1 || s2) {
-            DefaultCompiledExpression c1 = left.copy();
-            DefaultCompiledExpression c2 = right.copy();
-            c1.setParentExpression(null);
-            c2.setParentExpression(null);
+            CompiledExpressionExt c1 = left.copy();
+            CompiledExpressionExt c2 = right.copy();
+            c1.unsetParent();
+            c2.unsetParent();
             if (!s1) {
                 if (PlatformUtils.isAnyInteger(t1)) {
                     c1 = new CompiledI2V(c1.copy());

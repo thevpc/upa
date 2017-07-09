@@ -3,11 +3,11 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.persistence.*;
 
 import java.util.*;
 import java.util.logging.Logger;
-import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.persistence.commit.EntityImplicitViewStructureCommit;
 import net.vpc.upa.impl.persistence.commit.EntityPKStructureCommit;
 import net.vpc.upa.impl.persistence.commit.EntityStructureCommit;
@@ -24,12 +24,12 @@ public class DefaultPersistenceUnitCommitManager {
 
     protected static Logger log = Logger.getLogger(DefaultPersistenceUnitCommitManager.class.getName());
     List<StructureCommit> storage = new ArrayList<StructureCommit>();
-    private PersistenceUnit persistenceUnit;
+    private PersistenceUnitExt persistenceUnit;
     DefaultPersistenceStore persistenceStore;
     static StructureCommitComparator structureCommitComparator = new StructureCommitComparator();
     private Map<UPAObject, UPAPersistenceInfo> persistenceInfoMap = new HashMap<UPAObject, UPAPersistenceInfo>();
 
-    public void init(PersistenceUnit persistenceUnit, DefaultPersistenceStore persistenceStore) {
+    public void init(PersistenceUnitExt persistenceUnit, DefaultPersistenceStore persistenceStore) {
         this.persistenceUnit = persistenceUnit;
         this.persistenceStore = persistenceStore;
     }
@@ -98,7 +98,7 @@ public class DefaultPersistenceUnitCommitManager {
     }
 
     public boolean commitStructure() throws UPAException {
-        EntityExecutionContext context = ((DefaultPersistenceUnit)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
+        EntityExecutionContext context = persistenceUnit.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
         Collections.sort(storage, structureCommitComparator);
         boolean someCommit = false;
         for (StructureCommit next : storage) {

@@ -13,7 +13,7 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledKeyEnumerationExpression;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledOr;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.ManyToOneType;
@@ -57,9 +57,9 @@ public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
             return sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);
         }
         List<Field> pfs = entity.getIdFields();
-        DefaultCompiledExpression o2 = null;
+        CompiledExpressionExt o2 = null;
         for (Object key : ee.getKeys()) {
-            DefaultCompiledExpression a = null;
+            CompiledExpressionExt a = null;
             boolean processed = false;
             if (entity.getPersistenceUnit().containsEntity(entity.getIdType())) {
                 if (!entity.getIdType().isInstance(key)) {

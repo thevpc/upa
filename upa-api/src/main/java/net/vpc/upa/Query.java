@@ -67,9 +67,6 @@ public interface Query extends Closeable {
 
     Document getDocument() throws UPAException;
 
-    @Deprecated
-    <R> List<R> getEntityList() throws UPAException;
-
     /**
      * Executes a Select query and returns a single result.
      * @param <R> Result Type
@@ -97,9 +94,6 @@ public interface Query extends Closeable {
      * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
      */
     <R> R getFirstResultOrNull() throws UPAException;
-
-    @Deprecated
-    <R> R getEntity() throws UPAException;
 
     boolean isEmpty() throws UPAException;
 

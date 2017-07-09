@@ -51,4 +51,24 @@ public class CharArrayEncoderDataTypeTransform implements DataTypeTransform {
         return DataTypeTransformList.chain(this, other);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CharArrayEncoderDataTypeTransform that = (CharArrayEncoderDataTypeTransform) o;
+
+        if (charArrayEncoder != null ? !charArrayEncoder.equals(that.charArrayEncoder) : that.charArrayEncoder != null)
+            return false;
+        if (sourceType != null ? !sourceType.equals(that.sourceType) : that.sourceType != null) return false;
+        return targetType != null ? targetType.equals(that.targetType) : that.targetType == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = charArrayEncoder != null ? charArrayEncoder.hashCode() : 0;
+        result = 31 * result + (sourceType != null ? sourceType.hashCode() : 0);
+        result = 31 * result + (targetType != null ? targetType.hashCode() : 0);
+        return result;
+    }
 }

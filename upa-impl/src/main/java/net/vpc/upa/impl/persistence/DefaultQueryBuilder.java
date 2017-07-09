@@ -5,6 +5,8 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
+import net.vpc.upa.impl.ext.QueryExt;
+import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.ResultMetaData;
 
 import java.util.*;
@@ -27,7 +29,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     private Object prototype;
     private Document documentPrototype;
     private Map<String, Object> hints = new HashMap<String, Object>();
-    private Query query;
+    private QueryExt query;
     private LinkedHashMap<String, Object> paramsByName = new LinkedHashMap<String, Object>();
     private LinkedHashMap<Integer, Object> paramsByIndex = new LinkedHashMap<Integer, Object>();
 
@@ -181,7 +183,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         s.setWhere(criteria);
         s.orderBy(getOrder());
         s.top(getTop());
-        query = entity.createQuery(s);
+        query = (QueryExt) entity.createQuery(s);
         for (Map.Entry<String, Object> e : paramsByName.entrySet()) {
             query.setParameter(e.getKey(), e.getValue());
         }
@@ -262,12 +264,6 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     }
 
     @Override
-    public <R2> List<R2> getEntityList() throws UPAException {
-        Query q = build();
-        return q.getEntityList();
-    }
-
-    @Override
     public <R2> List<R2> getResultList() throws UPAException {
         Query q = build();
         return q.getResultList();
@@ -277,11 +273,6 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     public <T> Set<T> getResultSet() {
         Query q = build();
         return q.getResultSet();
-    }
-
-    @Override
-    public <R> R getEntity() throws UPAException {
-        return build().getEntity();
     }
 
     @Override
@@ -490,5 +481,12 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     @Override
     public Set<Key> getKeySet() throws UPAException {
         return build().getKeySet();
+    }
+
+    @Override
+    public void setContext(EntityExecutionContext context) {
+        if(query!=null){
+            query.setContext(context);
+        }
     }
 }

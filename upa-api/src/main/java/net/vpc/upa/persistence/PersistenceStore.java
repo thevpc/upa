@@ -63,8 +63,6 @@ public interface PersistenceStore {
 
     void checkAccessible(ConnectionProfile connectionProfile);
 
-    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection, PersistenceNameConfig nameConfig) throws UPAException;
-
     Set<String> getSupportedDrivers();
 
     boolean isCreatedStorage() throws UPAException;

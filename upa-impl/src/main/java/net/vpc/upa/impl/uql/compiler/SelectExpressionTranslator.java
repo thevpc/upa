@@ -16,14 +16,14 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledJoinCriteria;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledNameOrSelect;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class SelectExpressionTranslator implements ExpressionTranslator {
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileSelect((Select) o, manager,declarations);
     }
 

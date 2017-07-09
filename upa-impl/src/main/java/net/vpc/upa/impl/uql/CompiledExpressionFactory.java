@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.uql;
 
 
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUplet;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
@@ -17,14 +17,14 @@ import java.lang.reflect.Constructor;
  * To change this template use File | Settings | File Templates.
  */
 public class CompiledExpressionFactory {
-    public static DefaultCompiledExpression toExpression(Object e, Class defaultInstance) {
+    public static CompiledExpressionExt toExpression(Object e, Class defaultInstance) {
         if (e == null) {
             return new CompiledLiteral(null, null);
-        } else if (e instanceof DefaultCompiledExpression) {
-            return (DefaultCompiledExpression) e;
+        } else if (e instanceof CompiledExpressionExt) {
+            return (CompiledExpressionExt) e;
         } else if (e.getClass().isArray()) {
             int l = Array.getLength(e);
-            DefaultCompiledExpression[] eitems = new DefaultCompiledExpression[l];
+            CompiledExpressionExt[] eitems = new CompiledExpressionExt[l];
             for (int i = 0; i < eitems.length; i++) {
                 eitems[i] = toExpression(Array.get(e, i), defaultInstance);
             }
@@ -41,7 +41,7 @@ public class CompiledExpressionFactory {
                 }
             }
             try {
-                return (DefaultCompiledExpression) c.newInstance(new Object[]{e});
+                return (CompiledExpressionExt) c.newInstance(new Object[]{e});
             } catch (Throwable e1) {
                 throw new IllegalArgumentException(e1.toString());
             }
@@ -73,11 +73,11 @@ public class CompiledExpressionFactory {
     //                : (value instanceof Serializable) ? ("'java.io.Serializable!" + Utils.replaceString(DBUtils.bytesToString(Utils.getSerializedFormOf(value)), "'", "''") + "'")
     //                : null;
     //    }
-    public static DefaultCompiledExpression toLiteral(Object value) {
-        return ((DefaultCompiledExpression) (value == null || !(value instanceof DefaultCompiledExpression) ? new CompiledLiteral(value, null) : (DefaultCompiledExpression) value));
+    public static CompiledExpressionExt toLiteral(Object value) {
+        return ((CompiledExpressionExt) (value == null || !(value instanceof CompiledExpressionExt) ? new CompiledLiteral(value, null) : (CompiledExpressionExt) value));
     }
 
-    public static DefaultCompiledExpression toVar(Object value) {
-        return ((DefaultCompiledExpression) (value == null || !(value instanceof DefaultCompiledExpression) ? new CompiledVar((String) (value)) : (DefaultCompiledExpression) value));
+    public static CompiledExpressionExt toVar(Object value) {
+        return ((CompiledExpressionExt) (value == null || !(value instanceof CompiledExpressionExt) ? new CompiledVar((String) (value)) : (CompiledExpressionExt) value));
     }
 }

@@ -6,12 +6,15 @@ package net.vpc.upa;
 public final class QueryHints {
     /**
      * when true password transformations are disabled. this is helpful when copying entities (import/export)
-     * type : boolean, default is false
+     * type : boolean
+     * default : false
      */
     public static final String NO_TYPE_TRANSFORM = "noTypeTransform";
 
     /**
-     * type : string enum {select, join}, default is 'join'
+     * type :QueryFetchStrategy enum {select, join}
+     * default is 'join'
+     * @see QueryFetchStrategy see QueryFetchStrategy for possible values
      */
     public static final String FETCH_STRATEGY = "fetchStrategy";
 

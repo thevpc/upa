@@ -284,4 +284,45 @@ public abstract class DefaultDataType implements DataType {
     public void setProperties(Properties properties) {
         this.properties = properties;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultDataType that = (DefaultDataType) o;
+
+        if (nullable != that.nullable) return false;
+        if (scale != that.scale) return false;
+        if (precision != that.precision) return false;
+        if (unitName != null ? !unitName.equals(that.unitName) : that.unitName != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (properties != null ? !properties.equals(that.properties) : that.properties != null) return false;
+        if (defaultNonNullValue != null ? !defaultNonNullValue.equals(that.defaultNonNullValue) : that.defaultNonNullValue != null)
+            return false;
+        if (defaultValue != null ? !defaultValue.equals(that.defaultValue) : that.defaultValue != null) return false;
+        if (defaultUnspecifiedValue != null ? !defaultUnspecifiedValue.equals(that.defaultUnspecifiedValue) : that.defaultUnspecifiedValue != null)
+            return false;
+        if (platformType != null ? !platformType.equals(that.platformType) : that.platformType != null) return false;
+        if (valueValidators != null ? !valueValidators.equals(that.valueValidators) : that.valueValidators != null)
+            return false;
+        return valueRewriters != null ? valueRewriters.equals(that.valueRewriters) : that.valueRewriters == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = unitName != null ? unitName.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (nullable ? 1 : 0);
+        result = 31 * result + (properties != null ? properties.hashCode() : 0);
+        result = 31 * result + (defaultNonNullValue != null ? defaultNonNullValue.hashCode() : 0);
+        result = 31 * result + (defaultValue != null ? defaultValue.hashCode() : 0);
+        result = 31 * result + (defaultUnspecifiedValue != null ? defaultUnspecifiedValue.hashCode() : 0);
+        result = 31 * result + (platformType != null ? platformType.hashCode() : 0);
+        result = 31 * result + scale;
+        result = 31 * result + precision;
+        result = 31 * result + (valueValidators != null ? valueValidators.hashCode() : 0);
+        result = 31 * result + (valueRewriters != null ? valueRewriters.hashCode() : 0);
+        return result;
+    }
 }

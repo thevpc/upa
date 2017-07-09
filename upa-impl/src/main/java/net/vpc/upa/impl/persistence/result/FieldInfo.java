@@ -5,11 +5,6 @@ import net.vpc.upa.Field;
 import net.vpc.upa.impl.persistence.NativeField;
 import net.vpc.upa.impl.uql.BindingId;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 /**
 * Created by vpc on 1/4/14.
 */
@@ -22,17 +17,18 @@ class FieldInfo {
     public String name;
     public NativeField nativeField;
     public Field field;
+    public Entity parentBindingReferrer;
 //    public FieldInfoSetter setter;
 
     @Override
     public String toString() {
         StringBuilder sb=new StringBuilder();
         if(nativeField!=null){
-            sb.append(nativeField.toString());
+            sb.append(nativeField.getBindingId());
         }else{
             sb.append(name);
         }
-        sb.append("@").append(dbIndex);
+        sb.append(" @").append(dbIndex);
         return sb.toString();
     }
 }

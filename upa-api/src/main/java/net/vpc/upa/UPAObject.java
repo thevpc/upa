@@ -46,9 +46,9 @@ public interface UPAObject {
 
     String getName();
 
-    String getAbsoluteName();
-
     void setName(String name);
+
+    String getAbsoluteName();
 
     String getPersistenceName();
 
@@ -83,13 +83,13 @@ public interface UPAObject {
 
     UPAObjectListener[] getObjectListeners();
 
-    void addPropertyChangeListener(String property, PropertyChangeListener listener);
+    void addPropertyChangeListener(String property, EventPhase phase, PropertyChangeListener listener);
 
-    void removePropertyChangeListener(String property, PropertyChangeListener listener);
+    void removePropertyChangeListener(String property, EventPhase phase, PropertyChangeListener listener);
 
-    void addPropertyChangeListener(PropertyChangeListener listener);
+    void addPropertyChangeListener(EventPhase phase, PropertyChangeListener listener);
 
-    void removePropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(EventPhase phase, PropertyChangeListener listener);
 
     @Override
     boolean equals(Object other);

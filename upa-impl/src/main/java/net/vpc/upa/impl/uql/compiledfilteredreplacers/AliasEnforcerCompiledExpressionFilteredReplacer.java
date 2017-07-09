@@ -5,6 +5,8 @@ import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 
+import java.util.Map;
+
 /**
  * Created by vpc on 6/25/17.
  */
@@ -16,7 +18,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
     }
 
     @Override
-    public ReplaceResult update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         if(!(e instanceof CompiledEntityStatement)){
             return ReplaceResult.NO_UPDATES_CONTINUE;
         }

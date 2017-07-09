@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -8,12 +9,12 @@ public final class CompiledCount extends CompiledFunction
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledCount(DefaultCompiledExpression expression) {
+    public CompiledCount(CompiledExpressionExt expression) {
         super("Count");
         protectedAddArgument(expression);
     }
 
-    public DefaultCompiledExpression getValue() {
+    public CompiledExpressionExt getValue() {
         return getArgument(0);
     }
 
@@ -26,7 +27,7 @@ public final class CompiledCount extends CompiledFunction
 //        return "Count(" + expression.toSQL(database) + ")";
 //    }
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledCount o = new CompiledCount(getValue().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

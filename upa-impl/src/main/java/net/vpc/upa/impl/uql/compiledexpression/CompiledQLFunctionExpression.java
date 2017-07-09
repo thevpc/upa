@@ -3,6 +3,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 import net.vpc.upa.EvalContext;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Function;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.ExpressionCompiler;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -17,9 +18,9 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
     private static final long serialVersionUID = 1L;
     protected Function handler;
 
-    public CompiledQLFunctionExpression(String name, DefaultCompiledExpression[] arguments,DataTypeTransform type,Function handler) {
+    public CompiledQLFunctionExpression(String name, CompiledExpressionExt[] arguments, DataTypeTransform type, Function handler) {
         super(name);
-        for (DefaultCompiledExpression a : arguments) {
+        for (CompiledExpressionExt a : arguments) {
             protectedAddArgument(a);
         }
         this.handler = handler;
@@ -28,8 +29,8 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
-        DefaultCompiledExpression[] arguments = getArguments();
+    public CompiledExpressionExt copy() {
+        CompiledExpressionExt[] arguments = getArguments();
         for (int i = 0; i < arguments.length; i++) {
             arguments[i]=arguments[i].copy();
         }
@@ -39,7 +40,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
         return o;
     }
 
-    public DefaultCompiledExpression expand(PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler) {
+    public CompiledExpressionExt expand(PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler) {
         int argumentsCount = getArgumentsCount();
         Object[] args=new Object[argumentsCount];
         for (int i = 0; i < args.length; i++) {
@@ -49,7 +50,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
         return new CompiledParam(v, null, getTypeTransform(), false);
     }
 
-    protected Object eval(DefaultCompiledExpression o, PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler){
+    protected Object eval(CompiledExpressionExt o, PersistenceUnit persistenceUnit, ExpressionCompiler expressionCompiler){
         if(o==null){
             return null;
         }

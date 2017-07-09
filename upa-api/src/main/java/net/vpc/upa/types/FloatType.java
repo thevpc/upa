@@ -147,4 +147,28 @@ public class FloatType extends NumberType implements Cloneable {
         }
         return Float.parseFloat(value);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        FloatType floatType = (FloatType) o;
+
+        if (fixedDigits != floatType.fixedDigits) return false;
+        if (min != null ? !min.equals(floatType.min) : floatType.min != null) return false;
+        if (max != null ? !max.equals(floatType.max) : floatType.max != null) return false;
+        return userFormatName != null ? userFormatName.equals(floatType.userFormatName) : floatType.userFormatName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (min != null ? min.hashCode() : 0);
+        result = 31 * result + (max != null ? max.hashCode() : 0);
+        result = 31 * result + (fixedDigits ? 1 : 0);
+        result = 31 * result + (userFormatName != null ? userFormatName.hashCode() : 0);
+        return result;
+    }
 }

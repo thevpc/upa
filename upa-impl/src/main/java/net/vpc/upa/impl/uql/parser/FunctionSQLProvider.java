@@ -4,7 +4,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.SQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledFunction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -28,7 +28,7 @@ public abstract class FunctionSQLProvider implements SQLProvider {
         return simplify(qlContext, sqlManager,declarations,cc.getArguments());
     }
 
-    public String simplify(EntityExecutionContext ctx, SQLManager sqlManager, ExpressionDeclarationList declarations,DefaultCompiledExpression... params) throws UPAException{
+    public String simplify(EntityExecutionContext ctx, SQLManager sqlManager, ExpressionDeclarationList declarations,CompiledExpressionExt... params) throws UPAException{
         String[] p = new String[params.length];
         for (int i = 0; i < p.length; i++) {
             p[i] = sqlManager.getSQL(params[i], ctx, declarations);

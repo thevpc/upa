@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -53,7 +55,7 @@ public class CompiledKeyEnumerationExpression extends DefaultCompiledExpressionI
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledKeyEnumerationExpression o=new CompiledKeyEnumerationExpression(new ArrayList<Object>(keys),alias==null?null:(CompiledVar)alias.copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -61,12 +63,12 @@ public class CompiledKeyEnumerationExpression extends DefaultCompiledExpressionI
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return alias==null?new DefaultCompiledExpression[0]: new DefaultCompiledExpression[]{alias};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return alias==null?new CompiledExpressionExt[0]: new CompiledExpressionExt[]{alias};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index ==0){
             unbindChildren(this.alias);
             alias=(CompiledVar)expression;

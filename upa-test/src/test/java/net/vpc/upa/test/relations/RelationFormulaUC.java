@@ -44,20 +44,20 @@ public class RelationFormulaUC {
 
         public void testQuery0() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-//            Query q = pu.createQuery("Select a.phoneWithPrefix1 from Person a ");
-//            List<Phone> t = q.getEntityList();
-//            for (Phone r : t) {
-//                System.out.println(r);
-//            }
-//            Query q = pu.createQuery("Select a.phoneWithPrefix1 from Person a ");
-//            List<Document> t = q.getDocumentList();
-//            for (Document r : t) {
-//                System.out.println(r);
-//            }
-            Query q = pu.createQuery("Select a.id,a.name,a.phoneWithPrefix1,a.phoneWithPrefix1 toto,58 titi from Person a ");
-            List<Document> t = q.getDocumentList();
-            Assert.assertEquals(t.size(), 1);
-            for (Document r : t) {
+            Query q = pu.createQuery("Select a.phoneWithPrefix1 from Person a ");
+            List<Phone> t = q.getResultList();
+            for (Phone r : t) {
+                System.out.println(r);
+            }
+            q = pu.createQuery("Select a.phoneWithPrefix1 from Person a ");
+            List<Document> dd = q.getDocumentList();
+            for (Document r : dd) {
+                System.out.println(r);
+            }
+            Query q2 = pu.createQuery("Select a.id,a.name,a.phoneWithPrefix1,a.phoneWithPrefix1 toto,58 titi from Person a ");
+            List<Document> t2 = q2.getDocumentList();
+            Assert.assertEquals(t2.size(), 1);
+            for (Document r : t2) {
                 System.out.println(r);
                 Assert.assertEquals(r.size(), 5);
                 Assert.assertEquals("Hammadi", r.getObject("name"));

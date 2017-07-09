@@ -2,11 +2,12 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Document;
 import net.vpc.upa.MultiDocument;
+import net.vpc.upa.Query;
 import net.vpc.upa.exceptions.NoResultException;
 import net.vpc.upa.exceptions.NonUniqueResultException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.QueryExt;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created with IntelliJ IDEA. User: vpc Date: 8/19/12 Time: 6:14 PM To change
  * this template use File | Settings | File Templates.
  */
-public abstract class AbstractQuery implements Query {
+public abstract class AbstractQuery implements QueryExt {
 
     private boolean updatable = false;
 
@@ -33,19 +34,19 @@ public abstract class AbstractQuery implements Query {
     @Override
     public Integer getInteger() throws UPAException {
         Number n = (Number) getSingleValue();
-        return n==null?null:n.intValue();
+        return n == null ? null : n.intValue();
     }
 
     @Override
     public Long getLong() throws UPAException {
         Number n = (Number) getSingleValue();
-        return n==null?null:n.longValue();
+        return n == null ? null : n.longValue();
     }
 
     @Override
     public Double getDouble() throws UPAException {
         Number n = (Number) getSingleValue();
-        return n==null?null:n.doubleValue();
+        return n == null ? null : n.doubleValue();
     }
 
     @Override
@@ -101,19 +102,6 @@ public abstract class AbstractQuery implements Query {
         }
     }
 
-    @Override
-    public <R> R getEntity() throws UPAException {
-        List<R> r = null;
-        try {
-            r = getEntityList();
-            if (!r.isEmpty()) {
-                return r.get(0);
-            }
-            return null;
-        } finally {
-            UPAUtils.close(r);
-        }
-    }
 
     public <R> R getSingleResult() throws UPAException {
         List<R> entityList = null;
@@ -188,27 +176,27 @@ public abstract class AbstractQuery implements Query {
     }
 
     @Override
-    public Query setParameter(String name, Object value,boolean condition) {
-        if(!condition){
+    public Query setParameter(String name, Object value, boolean condition) {
+        if (!condition) {
             return this;
         }
-        return setParameter(name,value);
+        return setParameter(name, value);
     }
 
     @Override
-    public Query setParameters(Map<String, Object> parameters,boolean condition) {
-        if(!condition){
+    public Query setParameters(Map<String, Object> parameters, boolean condition) {
+        if (!condition) {
             return this;
         }
         return setParameters(parameters);
     }
 
     @Override
-    public Query setParameter(int index, Object value,boolean condition) {
-        if(!condition){
+    public Query setParameter(int index, Object value, boolean condition) {
+        if (!condition) {
             return this;
         }
-        return setParameter(index,value);
+        return setParameter(index, value);
     }
 
 

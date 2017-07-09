@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -9,7 +10,7 @@ public final class CompiledNot extends CompiledUnaryOperator
 //        return "Not(" + expression.toSQL(database) + ")";
     private static final long serialVersionUID = 1L;
 
-    public CompiledNot(DefaultCompiledExpression expression) {
+    public CompiledNot(CompiledExpressionExt expression) {
         super("not", expression);
     }
     
@@ -21,7 +22,7 @@ public final class CompiledNot extends CompiledUnaryOperator
 
     
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledNot o=new CompiledNot(getExpression().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

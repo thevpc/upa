@@ -5,12 +5,11 @@
  */
 package net.vpc.upa.impl.uql.compiledfilters;
 
-import net.vpc.upa.expressions.EntityName;
 import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityStatement;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 
 /**
@@ -23,7 +22,7 @@ public class CompiledExpressionFilterThisVar implements CompiledExpressionFilter
         this.varOnly=varOnly;
     }
 
-    public boolean accept(DefaultCompiledExpression e) {
+    public boolean accept(CompiledExpressionExt e) {
         if (e instanceof CompiledVar) {
             CompiledVar c = (CompiledVar) e;
             if (UQLUtils.THIS.equals(c.getName())) {

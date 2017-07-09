@@ -53,7 +53,7 @@
 //    public CompiledExpression compile(CompiledExpression expression, ExpressionCompilerConfig config) {
 //        log.log(Level.FINEST, "Validate Compiled Expression {0}\n\t using config {1}", new Object[]{expression, config});
 //
-//        DefaultCompiledExpression dce = (DefaultCompiledExpression) expression;
+//        CompiledExpressionExt dce = (CompiledExpressionExt) expression;
 //        //dce.copy()
 //        String entityBaseName = null;
 //        String entityAlias = null;
@@ -104,7 +104,7 @@
 //            CompiledInsert ci = (CompiledInsert) expression;
 //            for (int i = 0; i < ci.countFields(); i++) {
 //                CompiledVar fvar = ci.getField(i);
-//                DefaultCompiledExpression vv = ci.getFieldValue(i);
+//                CompiledExpressionExt vv = ci.getFieldValue(i);
 //                Field f = (Field) fvar.getReferrer();
 //                if (config.isCompile()) {
 //                    if (f == null) {
@@ -121,7 +121,7 @@
 //            CompiledUpdate ci = (CompiledUpdate) expression;
 //            for (int i = 0; i < ci.countFields(); i++) {
 //                CompiledVar fvar = ci.getField(i);
-//                DefaultCompiledExpression vv = ci.getFieldValue(i);
+//                CompiledExpressionExt vv = ci.getFieldValue(i);
 //
 //                Field f = (Field) fvar.getReferrer();
 //                if (config.isCompile()) {
@@ -198,11 +198,11 @@
 //                conf2.bindAliasToEntity(name, entityName);
 //                conf2.setValidate(true);
 //                conf2.setThisAlias(name);
-//                DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
+//                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
 ////                                    compiledFilter.getClientParameters().setBoolean("UPA.EntityFilter:", true);
-////                                    DefaultCompiledExpression oldCond = compiledSelect.getCondition();
-////                                    List<DefaultCompiledExpression> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
-////                                        public boolean accept(DefaultCompiledExpression e) {
+////                                    CompiledExpressionExt oldCond = compiledSelect.getCondition();
+////                                    List<CompiledExpressionExt> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
+////                                        public boolean accept(CompiledExpressionExt e) {
 ////                                            return e.getClientParameters().getBoolean("UPA.EntityFilter", false);
 ////                                        }
 ////                                    });
@@ -223,7 +223,7 @@
 //                //just to help compileExpressionTo Work as it needs to upderstands where fields are from!
 ////                Select s=new Select().field("1").from(entityName,name).where(f2);
 //
-//                DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(f2, conf2);
+//                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(f2, conf2);
 //                compiledFilter = CompiledExpressionUtils.replaceThisVar(compiledFilter, name);
 //                compiledSelect.addWhere(compiledFilter);
 //            }
@@ -247,11 +247,11 @@
 //                        conf2.bindAliasToEntity(name, entityName);
 //                        conf2.setValidate(true);
 //                        conf2.setThisAlias(name);
-//                        DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
+//                        CompiledExpressionExt compiledFilter = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
 ////                                    compiledFilter.getClientParameters().setBoolean("UPA.EntityFilter:", true);
-////                                    DefaultCompiledExpression oldCond = compiledSelect.getCondition();
-////                                    List<DefaultCompiledExpression> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
-////                                        public boolean accept(DefaultCompiledExpression e) {
+////                                    CompiledExpressionExt oldCond = compiledSelect.getCondition();
+////                                    List<CompiledExpressionExt> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
+////                                        public boolean accept(CompiledExpressionExt e) {
 ////                                            return e.getClientParameters().getBoolean("UPA.EntityFilter", false);
 ////                                        }
 ////                                    });
@@ -273,11 +273,11 @@
 //                        conf2.bindAliasToEntity(name, entityName);
 //                        conf2.setValidate(true);
 //                        conf2.setThisAlias(name);
-//                        DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
+//                        CompiledExpressionExt compiledFilter = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(filter, conf2);
 ////                                    compiledFilter.getClientParameters().setBoolean("UPA.EntityFilter:", true);
-////                                    DefaultCompiledExpression oldCond = compiledSelect.getCondition();
-////                                    List<DefaultCompiledExpression> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
-////                                        public boolean accept(DefaultCompiledExpression e) {
+////                                    CompiledExpressionExt oldCond = compiledSelect.getCondition();
+////                                    List<CompiledExpressionExt> found = oldCond == null ? null : oldCond.findExpressionsList(new CompiledExpressionFilter() {
+////                                        public boolean accept(CompiledExpressionExt e) {
 ////                                            return e.getClientParameters().getBoolean("UPA.EntityFilter", false);
 ////                                        }
 ////                                    });
@@ -290,7 +290,7 @@
 //    }
 //
 //    private void expandField(CompiledSelect qs, boolean expandAll,CompiledQueryField f,ExpansionVisitTracker visitedEntities,ExpressionCompilerConfig config) {
-//        DefaultCompiledExpression fe = f.getExpression();
+//        CompiledExpressionExt fe = f.getExpression();
 //        String fieldAlias = f.getAlias();
 //        int fieldIndex = f.getIndex();
 //        if (fe instanceof CompiledVar) {
@@ -335,7 +335,7 @@
 //                        entityAlias = selectedEntry.alias;
 //                        expandOnNeedField(qs, false,fieldIndex, ef, entityAlias, binding, fieldAlias, visitedEntities,config);
 //                    } else if (ef.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
-//                        DefaultCompiledExpression pe = cv.getParentExpression();
+//                        CompiledExpressionExt pe = cv.getParentExpression();
 //                        CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
 //                        entityAlias = pp == null ? null : pp.getName();
 //                        expandOnNeedField(qs, false, fieldIndex, ef, entityAlias, null, fieldAlias, visitedEntities,config);
@@ -345,7 +345,7 @@
 //                }
 //            } else if (referrer instanceof Field) {
 //                Field ef = (Field) referrer;
-//                DefaultCompiledExpression pe = cv.getParentExpression();
+//                CompiledExpressionExt pe = cv.getParentExpression();
 //                CompiledVar pp = pe instanceof CompiledVar ? ((CompiledVar) pe) : null;
 //                boolean expandAll2=cv.getChild() == null;
 //                if (!expandOnNeedField(qs, expandAll && expandAll2,fieldIndex, ef, pp == null ? null : pp.getName(), null, fieldAlias, visitedEntities,config)) {
@@ -406,7 +406,7 @@
 //                cfg.setExpandFields(false);
 //                cfg.setValidate(false);
 //                cfg.bindAliasToEntity(entityAlias, field.getEntity().getName());
-//                DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
+//                CompiledExpressionExt rr = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
 //                if (rr instanceof CompiledVarOrMethod) {
 //                    ((CompiledVarOrMethod) rr).getFinest().setBaseReferrer(field);
 //                }
@@ -560,7 +560,7 @@
 //            }
 //            generatedAlias = "upa" + upaBindingAliasIndex;
 //            qs.setClientProperty("upaBindingAliasIndex", upaBindingAliasIndex + 1);
-//            DefaultCompiledExpression cond = null;
+//            CompiledExpressionExt cond = null;
 //            Entity detailEntity = field.getEntity();
 //            for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
 //
@@ -606,7 +606,7 @@
 //            }
 //            generatedAlias = "upa" + upaBindingAliasIndex;
 //            qs.setClientProperty("upaBindingAliasIndex", upaBindingAliasIndex + 1);
-//            DefaultCompiledExpression cond = null;
+//            CompiledExpressionExt cond = null;
 //            Entity detailEntity = field.getEntity();
 //            for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
 //
@@ -648,7 +648,7 @@
 //        return found;
 //    }
 //
-//    private ExpressionDeclaration getDeclaration(String name, DefaultCompiledExpression expression, ExpressionCompilerConfig config) {
+//    private ExpressionDeclaration getDeclaration(String name, CompiledExpressionExt expression, ExpressionCompilerConfig config) {
 //        ExpressionDeclaration declaration = expression.getDeclaration(name);
 //        if (declaration != null) {
 //            return declaration;
@@ -661,7 +661,7 @@
 //        return null;
 //    }
 //
-//    private List<ExpressionDeclaration> getDeclarations(String name, DefaultCompiledExpression expression, ExpressionCompilerConfig config) {
+//    private List<ExpressionDeclaration> getDeclarations(String name, CompiledExpressionExt expression, ExpressionCompilerConfig config) {
 //        List<ExpressionDeclaration> declarations = expression.getDeclarations(name);
 //        if (declarations != null && declarations.size() > 0) {
 //            return declarations;
@@ -689,7 +689,7 @@
 //                return v;
 //            }
 //        }
-//        DefaultCompiledExpression pe = v.getParentExpression();
+//        CompiledExpressionExt pe = v.getParentExpression();
 //        if (pe instanceof CompiledBinaryOperatorExpression) {
 //            CompiledBinaryOperatorExpression c = (CompiledBinaryOperatorExpression) pe;
 //            BinaryOperator operator = c.getOperator();
@@ -711,8 +711,8 @@
 //                case RSHIFT:
 //                case XOR:
 //                case URSHIFT: {
-//                    DefaultCompiledExpression a = c.getLeft();
-//                    DefaultCompiledExpression b = c.getRight();
+//                    CompiledExpressionExt a = c.getLeft();
+//                    CompiledExpressionExt b = c.getRight();
 //                    if (v == a) {
 //                        DataTypeTransform d2 = getValidDataType(b);
 //                        if (d2 != null) {
@@ -729,8 +729,8 @@
 //                    return v;
 //                }
 //                case LIKE: {
-//                    DefaultCompiledExpression a = c.getLeft();
-//                    DefaultCompiledExpression b = c.getRight();
+//                    CompiledExpressionExt a = c.getLeft();
+//                    CompiledExpressionExt b = c.getRight();
 //                    v.setTypeTransform(IdentityDataTypeTransform.STRING_UNLIMITED);
 //                    return v;
 //                }
@@ -751,7 +751,7 @@
 //        return v;
 //    }
 //
-//    private DataTypeTransform getValidDataType(DefaultCompiledExpression a) {
+//    private DataTypeTransform getValidDataType(CompiledExpressionExt a) {
 //        DataTypeTransform d = a.getEffectiveDataType();
 //        if (d == null) {
 //            return null;
@@ -812,9 +812,9 @@
 //
 //                    //remove p1, disconnect it form parent and child
 //                    p2.setChild(null);
-//                    p1.setParentExpression(null);
+//                    p1.unsetParent();
 //                    p1.setChild(null);
-//                    v.setParentExpression(null);
+//                    v.unsetParent();
 //
 //                    //connect v to p2
 //                    p2.setChild(v);
@@ -834,9 +834,9 @@
 //
 //                    //remove p1, disconnect it form parent and child
 //                    p2.setChild(null);
-//                    p1.setParentExpression(null);
+//                    p1.unsetParent();
 //                    p1.setChild(null);
-//                    v.setParentExpression(null);
+//                    v.unsetParent();
 //
 //                    //connect v to p2
 //                    p2.setChild(v);
@@ -857,7 +857,7 @@
 //                s.insert(0, ".");
 //            }
 //            s.insert(0, ExpressionHelper.escapeIdentifier(t.getName()));
-//            DefaultCompiledExpression pe = t.getParentExpression();
+//            CompiledExpressionExt pe = t.getParentExpression();
 //            if (pe instanceof CompiledVarOrMethod) {
 //                t = (CompiledVarOrMethod) pe;
 //            } else {
@@ -914,7 +914,7 @@
 ////                                    CompiledVarOrMethod c = v.getChild();
 ////                                    if (c != null) {
 ////                                        v.setChild(null);
-////                                        c.setParentExpression(null);
+////                                        c.unsetParent();
 ////                                        v2.setChild(c);
 ////                                    }
 ////                                    v.setName(ref.getValidName());
@@ -926,7 +926,7 @@
 //                                    v2.setName(ref.getValidName());
 //                                    v2.setReferrer(ee);
 //                                    v.getParentExpression().replaceExpressions(new RefEqualCompiledExpressionFilter(v), new ValueCompiledExpressionReplacer(v2));
-//                                    v.setParentExpression(null);
+//                                    v.unsetParent();
 //                                    v.setReferrer(ee.getField(v.getName()));
 //                                    v2.setChild(v);
 //                                    return v2;
@@ -1031,7 +1031,7 @@
 ////        if (p.getReferrer() instanceof Field) {
 ////            Field f = (Field) p.getReferrer();
 ////            CompiledVar p2 = resolveToAlias((CompiledVar) p.getParentExpression());
-////            DefaultCompiledExpression ce = p;
+////            CompiledExpressionExt ce = p;
 ////            CompiledSelect s = null;
 ////            while (ce != null) {
 ////                if (ce instanceof CompiledSelect) {

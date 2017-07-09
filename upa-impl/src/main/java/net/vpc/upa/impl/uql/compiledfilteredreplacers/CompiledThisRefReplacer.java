@@ -10,8 +10,9 @@ import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVarOrMethod;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.util.UQLUtils;
+
+import java.util.Map;
 
 /**
  *
@@ -31,14 +32,14 @@ public class CompiledThisRefReplacer implements CompiledExpressionFilteredReplac
         this.newRef = newRef;
     }
 
-    public ReplaceResult update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         if(e instanceof CompiledVar && UQLUtils.THIS.equals(((CompiledVar) e).getName())){
             CompiledVar t = (CompiledVar) e;
             CompiledVarOrMethod child = t.getChild();
             CompiledVarOrMethod c = (CompiledVarOrMethod) newRef.copy();
             if(child!=null){
                 t.setChild(null);
-                child.setParentExpression(null);
+                child.unsetParent();
                 c.setChild(child);
                 return ReplaceResult.stopWithNewObj(c);
             }

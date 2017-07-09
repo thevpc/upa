@@ -38,6 +38,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     private PropertyAccessType accessType;
     private List<Relationship> relationships;
     private int preferredIndex=-1;
+    private boolean _customDefaultObject=false;
+    private Object _typeDefaultObject=false;
 
     protected AbstractField() {
     }
@@ -53,8 +55,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     public void setParent(EntityPart item) {
         EntityPart old = this.parent;
+        EntityPart recent = item;
+        beforePropertyChangeSupport.firePropertyChange("parent", old, recent);
         this.parent = item;
-        propertyChangeSupport.firePropertyChange("parent", old, parent);
+        afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
     }
 
     @Override
@@ -222,6 +226,11 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     @Override
     public void setDataType(DataType datatype) {
         this.dataType = datatype;
+        if (!getDataType().isNullable()) {
+            _typeDefaultObject = getDataType().getDefaultNonNullValue();
+        }else{
+            _typeDefaultObject=null;
+        }
     }
 
     public DataType getDataType() {
@@ -235,11 +244,25 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
      */
     public void setDefaultObject(Object o) {
         defaultObject = o;
+        if(o instanceof CustomDefaultObject){
+            _customDefaultObject=true;
+        }
     }
 
     public Object getDefaultValue() {
-        Object _defaultValue = getDefaultObject();
-        return _defaultValue != null ? (_defaultValue instanceof CustomDefaultObject) ? ((CustomDefaultObject) _defaultValue).getObject() : _defaultValue : null;
+        if(_customDefaultObject){
+            Object o=((CustomDefaultObject) defaultObject).getObject();
+            if (o == null) {
+                o=_typeDefaultObject;
+            }
+            return o;
+        }else{
+            Object o=defaultObject;
+            if (o == null) {
+                o=_typeDefaultObject;
+            }
+            return o;
+        }
     }
 
     public Object getDefaultObject() {
@@ -511,4 +534,5 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     public void check(Object value) {
         getDataType().check(value,getName(),null);
     }
+
 }

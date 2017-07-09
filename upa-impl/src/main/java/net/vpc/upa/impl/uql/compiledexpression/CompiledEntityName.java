@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -53,7 +54,7 @@ public class CompiledEntityName extends DefaultCompiledExpressionImpl implements
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledEntityName o = new CompiledEntityName(name);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -67,12 +68,12 @@ public class CompiledEntityName extends DefaultCompiledExpressionImpl implements
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         return null;
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         throw new UnsupportedOperationException("Not supported.");
     }
 }

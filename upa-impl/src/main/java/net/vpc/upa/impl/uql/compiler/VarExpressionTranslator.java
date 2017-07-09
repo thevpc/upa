@@ -11,7 +11,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  *
@@ -23,7 +23,7 @@ public class VarExpressionTranslator implements ExpressionTranslator {
 
     }
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         return compileVar((Var) o, manager,declarations);
     }
     
@@ -40,7 +40,7 @@ public class VarExpressionTranslator implements ExpressionTranslator {
         } else {
             CompiledVar r = new CompiledVar(v.getName());
             if(p instanceof CompiledVar) {
-                ((CompiledVar) ((CompiledVar)p).getFinest()).setChild(r);
+                ((CompiledVar) ((CompiledVar)p).getDeepest()).setChild(r);
                 return (CompiledVar) p;
             }else{
                 throw new UPAException("Unsupported");

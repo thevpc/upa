@@ -138,4 +138,19 @@ public class DataTypeAdapter implements DataType, Cloneable {
             throw new UnexpectedException("Clone Not Supported", ex);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DataTypeAdapter that = (DataTypeAdapter) o;
+
+        return dataType != null ? dataType.equals(that.dataType) : that.dataType == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return dataType != null ? dataType.hashCode() : 0;
+    }
 }

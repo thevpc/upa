@@ -11,6 +11,8 @@ import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 
+import java.util.Map;
+
 /**
  *
  * @author taha.bensalah@gmail.com
@@ -34,7 +36,7 @@ public class CompiledExpressionThisReplacer implements CompiledExpressionFiltere
         this.varOnly = varOnly;
     }
 
-    public ReplaceResult update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         if (e instanceof CompiledVar) {
             CompiledVar c = (CompiledVar) e;
             if (UQLUtils.THIS.equals(c.getName())) {

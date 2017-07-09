@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.uql;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryField;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpressionImpl;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         throw new IllegalArgumentException("Unsupported. Should I?");
     }
 
@@ -30,7 +30,7 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
+    public CompiledExpressionExt[] getSubExpressions() {
         throw new IllegalArgumentException("Unsupported. Should I?");
     }
 
@@ -39,7 +39,7 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         throw new IllegalArgumentException("Unsupported. Should I?");
     }
 }

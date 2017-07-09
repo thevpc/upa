@@ -7,7 +7,6 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.ExpressionFormula;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 
 /**
  *

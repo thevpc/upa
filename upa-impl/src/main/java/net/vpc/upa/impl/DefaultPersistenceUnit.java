@@ -22,6 +22,9 @@ import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.eval.functions.FunctionCallback;
 import net.vpc.upa.impl.eval.functions.PasswordQLFunction;
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
+import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipDataInterceptor;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
@@ -32,6 +35,7 @@ import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Timestamp;
@@ -41,7 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //import net.vpc.upa.impl.util.ListUtils;
-public class DefaultPersistenceUnit implements PersistenceUnit {
+public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     public static final int STATUS_INITIALIZING = 0;
     private static final Logger log = Logger.getLogger(DefaultPersistenceUnit.class.getName());
@@ -65,7 +69,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //    private HashSet<String> entityShortNames = new HashSet<String>();
 //    private List<Relationship> relations;
 //    private List<Entity> initializableEntities = new ArrayList<Entity>();
-    private PersistenceStore persistenceStore;
+    private PersistenceStoreExt persistenceStore;
     private boolean lastStartSucceeded;
     private boolean readOnly;
     private String name;
@@ -100,7 +104,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     private DefaultExpressionManager expressionManager;
     private Package defaultPackage;
 
-    private DefaultPersistenceUnit sessionAwarePU;
+    private PersistenceUnitExt sessionAwarePU;
     private DecorationRepository decorationRepository;
     private int triggerAnonymousNameIndex = 1;
     private Map<String, Object> defaultHints;
@@ -263,7 +267,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return getPackage(path, MissingStrategy.ERROR);
     }
 
-    public Package getDefaulPackage() {
+    public Package getDefaultPackage() {
         if (defaultPackage == null) {
             //should return default package
             Package currentModule = getFactory().createObject(Package.class);
@@ -276,18 +280,18 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public Package getPackage(String path, MissingStrategy missingStrategy) {
         if (path == null) {
-            return getDefaulPackage();
+            return getDefaultPackage();
         }
 
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
         if (canonicalPathArray.length == 0) {
-            return getDefaulPackage();
+            return getDefaultPackage();
         }
         Package module = null;
         for (String n : canonicalPathArray) {
             Package next = null;
             if (module == null) {
-                for (PersistenceUnitPart persistenceUnitItem : getDefaulPackage().getParts()) {
+                for (PersistenceUnitPart persistenceUnitItem : getDefaultPackage().getParts()) {
                     if (persistenceUnitItem instanceof Package) {
                         if (persistenceUnitItem.getName().equals(n)) {
                             next = (Package) persistenceUnitItem;
@@ -602,8 +606,25 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         if (parent != null) {
             parent.addPart(t, pos);
         } else {
-            getDefaulPackage().addPart(t, pos);
+            getDefaultPackage().addPart(t, pos);
         }
+        t.addPropertyChangeListener("name", EventPhase.BEFORE, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                String newName=(String) evt.getNewValue();
+                if(containsEntity(newName)){
+                    throw new ObjectAlreadyExistsException("ObjectAlreadyExistsException",getEntity(newName));
+                }
+            }
+        });
+        t.addPropertyChangeListener("name", EventPhase.AFTER, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                String oldName=(String) evt.getOldValue();
+                String newName=(String) evt.getNewValue();
+                persistenceUnitListenerManager.itemRenamed((UPAObject) evt.getSource(), oldName,newName, EventPhase.AFTER);
+            }
+        });
 
         if (entitySpecs != null) {
             for (EntityExtensionDefinition s : entitySpecs) {
@@ -883,7 +904,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         persistenceUnitListenerManager.removeDefinitionListener(entityName, definitionListener);
     }
 
-    protected void postponeCommit(OnHoldCommitAction modelCommit) {
+    public void postponeCommit(OnHoldCommitAction modelCommit) {
         commitModelActions.add(modelCommit);
         ///should fire event here
     }
@@ -1113,11 +1134,11 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
         persistenceStoreFactory = getPersistenceGroup().getFactory().createObject(PersistenceStoreFactory.class);
 
-        PersistenceStore validPersistenceStore = null;
+        PersistenceStoreExt validPersistenceStore = null;
         List<ConnectionProfile> validConnectionProfiles = getValidConnectionProfiles(false);
         List<Object[]> errors = new ArrayList<Object[]>();
         for (ConnectionProfile p : validConnectionProfiles) {
-            PersistenceStore pm0 = persistenceStoreFactory.createPersistenceStore(p, getPersistenceGroup().getFactory(), getProperties());
+            PersistenceStoreExt pm0 = (PersistenceStoreExt) persistenceStoreFactory.createPersistenceStore(p, getPersistenceGroup().getFactory(), getProperties());
             try {
                 pm0.checkAccessible(p);
                 connectionProfile = p;
@@ -1486,33 +1507,6 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return new ArrayList<PersistenceUnitListener>(persistenceUnitListenerManager.persistenceUnitListeners);
     }
 
-    //    @Override
-//    public void saveConfig(Configuration configuration) {
-//        configuration.setBoolean(APP_DB_START_SUCCESS, lastStartSucceeded);
-//        configuration.setStringArray(APP_PERSISTENCE_MANAGER_LIST, dbConfigModel == null ? null : dbConfigModel.getConnectionStringArray(), '\n');
-//        application.getConfigurationManager().getStartupConfiguration().setString(REG_PERSISTENCE_MANAGER, dbConfigModel == null ? null : dbConfigModel.getConnectionString());
-//    }
-//
-//    @Override
-//    public void loadConfig(Configuration configuration) {
-//        getDBConfigModel().setConnectionString(application.getConfigurationManager().getStartupConfiguration().getString(REG_PERSISTENCE_MANAGER, null));
-//        getDBConfigModel().setConnectionStringArray(configuration.getStringArray(APP_PERSISTENCE_MANAGER_LIST, new String[]{getDBConfigModel().getConnectionString()}));
-//        setLastStartSucceeded(configuration.getBoolean(APP_DB_START_SUCCESS, isLastStartSucceeded()));
-//    }
-    //    public void storeConfigModel(DBConfigModel configModel) {
-//        application.getConfigurationManager().getStartupConfiguration().setStringArray("used_adapters", configModel.getAdaptersStringArray(), '\n');
-//        application.getAppInfos().setString(REG_PERSISTENCE_MANAGER, configModel.getAdapterString());
-//    }
-//
-//    public DBConfigModel loadConfigModel(DBConfigModel configModel) {
-//        configModel.setAdapterString(application.getAppInfos().getString(REG_PERSISTENCE_MANAGER, null));
-//        configModel.setAdaptersStringArray(application.getConfigurationManager().getStartupConfiguration().getStringArray("used_adapters", new String[]{configModel.getAdapterString()}));
-//        return configModel;
-//    }
-//    @Override
-//    public DBMacroHelper getDbMacroHelper() {
-//        return dbMacroHelper;
-//    }
     @Override
     public PersistenceStoreFactory getPersistenceStoreFactory() {
         return persistenceStoreFactory;
@@ -1529,7 +1523,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
     }
 
     //    @Override
-    public Map<String, Expression> processSQLParameters(List<QLParameter> parameters, String message) {
+    public Map<String, Expression> processQLParameters(List<QLParameter> parameters, String message) {
         Map<String, Expression> output = new HashMap<String, Expression>();
         for (QLParameterProcessor parameterProcessor : parameterProcessors) {
             parameterProcessor.processSQLParameters(parameters, output, message);
@@ -1550,7 +1544,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         return entity;
     }
 
-    protected void addLockingSupport(Entity entity) throws UPAException {
+    public void addLockingSupport(Entity entity) throws UPAException {
         entity.addField(
                 new DefaultFieldDescriptor()
                         .setName("lockId")
@@ -2434,7 +2428,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
         EntityExecutionContext context = createContext(ContextOperation.CLOSE, defaultHints);
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
-        getDefaulPackage().close();
+        getDefaultPackage().close();
         closed = true;
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
@@ -2759,7 +2753,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 
     public EntityExecutionContext createContext(ContextOperation operation, Map<String, Object> hints) throws UPAException {
 //        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
-        EntityExecutionContext context = null;
+        EntityExecutionContextExt context = null;
 //        if (currentSession != null) {
 //            context = currentSession.getParam(persistenceUnit, ExecutionContext.class, SessionParams.EXECUTION_CONTEXT, null);
 //            if (context
@@ -2770,7 +2764,7 @@ public class DefaultPersistenceUnit implements PersistenceUnit {
 //        } else {
 //            context = persistenceUnit.getFactory().createObject(ExecutionContext.class, null);
 //        }
-        context = getFactory().createObject(EntityExecutionContext.class);
+        context = (EntityExecutionContextExt) getFactory().createObject(EntityExecutionContext.class);
         context.initPersistenceUnit(this, getPersistenceStore(), operation);
         context.setHints(hints);
         return context;

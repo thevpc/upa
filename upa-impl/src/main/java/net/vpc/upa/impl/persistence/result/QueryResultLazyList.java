@@ -1,7 +1,10 @@
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.CloseListener;
+import net.vpc.upa.impl.persistence.CloseListenerImpl;
+import net.vpc.upa.impl.persistence.QueryExecutor;
+import net.vpc.upa.impl.persistence.QueryResultReader;
 import net.vpc.upa.impl.util.LazyList;
 import net.vpc.upa.persistence.QueryResultParser;
 
@@ -10,7 +13,7 @@ import net.vpc.upa.persistence.QueryResultParser;
  * @creationdate 11/21/12 4:09 PM
  */
 public abstract class QueryResultLazyList<R>  extends LazyList<R> implements QueryResultParser<R> {
-    QueryExecutor queryExecutor;
+    public QueryExecutor queryExecutor;
     private CloseListener closeListener;
 
     protected QueryResultLazyList(QueryExecutor _queryExecutor) {

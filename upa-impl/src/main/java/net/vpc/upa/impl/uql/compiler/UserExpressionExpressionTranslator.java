@@ -9,8 +9,8 @@ import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 
 /**
@@ -19,12 +19,12 @@ import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
  */
 public class UserExpressionExpressionTranslator implements ExpressionTranslator {
 
-    public DefaultCompiledExpression translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         UserExpression v = (UserExpression) o;
         if (v == null) {
             return null;
         }
-        DefaultCompiledExpression compiledExpression = manager.translateAny(manager.getExpressionManager().parseExpression(v), declarations);
+        CompiledExpressionExt compiledExpression = manager.translateAny(manager.getExpressionManager().parseExpression(v), declarations);
         List<CompiledParam> cvalues = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
         for (CompiledParam e : cvalues) {
             if (v.containsParameter(e.getName())) {

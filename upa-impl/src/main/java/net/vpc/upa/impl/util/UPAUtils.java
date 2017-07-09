@@ -9,10 +9,11 @@ import net.vpc.upa.expressions.Cst;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.impl.config.BaseScanSource;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
-import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
@@ -506,17 +507,17 @@ public class UPAUtils {
         return !(dataType instanceof ManyToOneType);
     }
 
-    public static DataTypeTransform resolveDataTypeTransform(DefaultCompiledExpression e) {
+    public static DataTypeTransform resolveDataTypeTransform(CompiledExpressionExt e) {
         return resolveExprTypeInfo(e).getTypeTransform();
     }
 
-    public static ExprTypeInfo resolveExprTypeInfo(DefaultCompiledExpression e) {
+    public static ExprTypeInfo resolveExprTypeInfo(CompiledExpressionExt e) {
         return resolveExprTypeInfo(e, true);
     }
 
-    public static ExprTypeInfo resolveExprTypeInfo(DefaultCompiledExpression e, boolean byBrother) {
+    public static ExprTypeInfo resolveExprTypeInfo(CompiledExpressionExt e, boolean byBrother) {
         if (e instanceof CompiledVarOrMethod) {
-            e = ((CompiledVarOrMethod) e).getFinest();
+            e = ((CompiledVarOrMethod) e).getDeepest();
             final Object r = ((CompiledVarOrMethod) e).getReferrer();
             if (r instanceof Field) {
                 DataTypeTransform tr = getTypeTransformOrIdentity(((Field) r));
@@ -531,8 +532,11 @@ public class UPAUtils {
             return resolveExprTypeInfo(v);
         }
         DataTypeTransform typeTransform = e.getTypeTransform();
+        if(typeTransform==null){
+            throw new NullPointerException("Unexpected Null typeTransform for "+e);
+        }
         if (e instanceof CompiledParam || e instanceof CompiledLiteral) {
-            DefaultCompiledExpression p = e.getParentExpression();
+            CompiledExpressionExt p = e.getParentExpression();
             if (p instanceof CompiledVarVal) {
                 return resolveExprTypeInfo(p);
             } else {
@@ -543,7 +547,7 @@ public class UPAUtils {
                         (p instanceof CompiledBinaryOperatorExpression)
                                 && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())
                         ) {
-                    DefaultCompiledExpression o = ((CompiledBinaryOperatorExpression) p).getOther(e);
+                    CompiledExpressionExt o = ((CompiledBinaryOperatorExpression) p).getOther(e);
                     if (byBrother) {
                         return resolveExprTypeInfo(o, false);
                     }
@@ -556,7 +560,7 @@ public class UPAUtils {
                                 || !sourceType.isInstance(object))
                         ) {
 
-                    bestType = IdentityDataTypeTransform.forNativeType(object.getClass());
+                    bestType = IdentityDataTypeTransform.ofType(object.getClass());
                 }
                 ExprTypeInfo typeInfo1 = new ExprTypeInfo();
                 typeInfo1.setTransform(bestType);
@@ -657,7 +661,7 @@ public class UPAUtils {
     public static DataTypeTransform getTypeTransformOrIdentity(net.vpc.upa.Field f) {
         DataTypeTransform t = f.getTypeTransform();
         if (t == null) {
-            return new IdentityDataTypeTransform(f.getDataType());
+            return IdentityDataTypeTransform.ofType(f.getDataType());
         }
         return t;
     }
@@ -717,5 +721,59 @@ public class UPAUtils {
             return new XNumber((Number) o);
         }
         return null;
+    }
+
+    public static void setQueryExecutorParams(QueryExecutor lastQueryExecutor,Map<Integer, Object> parametersByIndex,Map<String, Object> parametersByName){
+        if(parametersByIndex!=null) {
+            for (Map.Entry<Integer, Object> ee : parametersByIndex.entrySet()) {
+                lastQueryExecutor.setParam(ee.getKey(), ee.getValue());
+            }
+        }
+        if(parametersByName!=null) {
+            for (Map.Entry<String, Object> ee : parametersByName.entrySet()) {
+                lastQueryExecutor.setParam(ee.getKey(), ee.getValue());
+            }
+        }
+
+    }
+
+    public static <T> List<T> sortPreserveIndex(List<T> list, final Comparator<T> comp) {
+        SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.size()];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new SortPreserveIndexIndexedItem<>(list.get(i), i,comp);
+        }
+        Arrays.sort(items);
+        for (int i = 0; i < items.length; i++) {
+            list.set(i, items[i].item);
+        }
+        return list;
+    }
+    public static <T> T[] sortPreserveIndex(T[] list, final Comparator<T> comp) {
+        SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new SortPreserveIndexIndexedItem<>(list[i], i,comp);
+        }
+        Arrays.sort(items);
+        for (int i = 0; i < items.length; i++) {
+            list[i]=items[i].item;
+        }
+        return list;
+    }
+    public static <T> SortPreserveIndexIndexedItem<T>[] sortPreserveIndex0(T[] list, final Comparator<T> comp) {
+        SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = new SortPreserveIndexIndexedItem<>(list[i], i,comp);
+        }
+        Arrays.sort(items);
+        return items;
+    }
+
+    public static String formatLeft(String number,int size){
+        StringBuilder sb=new StringBuilder();
+        sb.append(number);
+        while (sb.length()<size){
+            sb.append(' ');
+        }
+        return sb.toString();
     }
 }

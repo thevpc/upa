@@ -9,6 +9,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.expressions.JoinType;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
     private JoinType joinType;
     private CompiledNameOrSelect entity;
     private String alias;
-    private DefaultCompiledExpression condition;
+    private CompiledExpressionExt condition;
 
-    public CompiledJoinCriteria(JoinType joinType, CompiledNameOrSelect entity, String alias, DefaultCompiledExpression condition) {
+    public CompiledJoinCriteria(JoinType joinType, CompiledNameOrSelect entity, String alias, CompiledExpressionExt condition) {
         this.joinType = joinType;
         this.entity = entity;
         this.alias = alias;
@@ -52,11 +53,11 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
     }
 
 
-    public DefaultCompiledExpression getCondition() {
+    public CompiledExpressionExt getCondition() {
         return condition;
     }
 
-    public void addCondition(DefaultCompiledExpression condition) {
+    public void addCondition(CompiledExpressionExt condition) {
         if (condition != null) {
             if (this.condition == null) {
                 setCondition(condition);
@@ -68,13 +69,13 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        ArrayList<DefaultCompiledExpression> all = new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        ArrayList<CompiledExpressionExt> all = new ArrayList<CompiledExpressionExt>();
         all.add(entity);
         if (condition != null) {
             all.add(condition);
         }
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     public void setEntity(CompiledNameOrSelect expression) {
@@ -83,14 +84,14 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
         bindChildren(expression);
     }
 
-    public final void setCondition(DefaultCompiledExpression expression) {
+    public final void setCondition(CompiledExpressionExt expression) {
         unbindChildren(condition);
         this.condition = expression;
         bindChildren(expression);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         switch (index) {
             case 0: {
                 setEntity((CompiledNameOrSelect) expression);
@@ -104,7 +105,7 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
         throw new IllegalArgumentException("Invalid index");
     }
 
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
        return new CompiledJoinCriteria(joinType, (CompiledNameOrSelect)(entity==null?null:entity.copy()), alias, condition==null?null:condition.copy());
     }
 
@@ -135,7 +136,7 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
                 joinKey = "CROSS JOIN";
                 break;
         }
-        sb.append(" ").append(joinKey).append(" ").append(valueString);
+        sb.append(joinKey).append(" ").append(valueString);
         if (aliasString != null && !valueString.equals(aliasString)) {
             sb.append(" ").append(aliasString);
         }

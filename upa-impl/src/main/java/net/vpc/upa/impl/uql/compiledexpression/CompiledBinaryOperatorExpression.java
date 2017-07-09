@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
 import net.vpc.upa.expressions.BinaryOperator;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -8,15 +9,15 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    protected DefaultCompiledExpression left;
-    protected DefaultCompiledExpression right;
+    protected CompiledExpressionExt left;
+    protected CompiledExpressionExt right;
     protected BinaryOperator operator;
 
-    public CompiledBinaryOperatorExpression(BinaryOperator operator, DefaultCompiledExpression left, Object right) {
+    public CompiledBinaryOperatorExpression(BinaryOperator operator, CompiledExpressionExt left, Object right) {
         this(operator, left, CompiledExpressionFactory.toLiteral(right));
     }
 
-    public CompiledBinaryOperatorExpression(BinaryOperator operator, DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledBinaryOperatorExpression(BinaryOperator operator, CompiledExpressionExt left, CompiledExpressionExt right) {
         this.left = left;
         this.right = right;
         DataTypeTransform leftType = null;
@@ -36,15 +37,15 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
         bindChildren(left, right);
     }
 
-    public DefaultCompiledExpression getLeft() {
+    public CompiledExpressionExt getLeft() {
         return left;
     }
 
-    public DefaultCompiledExpression getRight() {
+    public CompiledExpressionExt getRight() {
         return right;
     }
     
-    public DefaultCompiledExpression getOther(DefaultCompiledExpression r){
+    public CompiledExpressionExt getOther(CompiledExpressionExt r){
         if(r==left){
             return right;
         }
@@ -60,12 +61,12 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{left, right};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{left, right};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         switch (index) {
             case 0: {
                 if (left != expression) {
@@ -166,14 +167,14 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
         return s;
     }
 
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledBinaryOperatorExpression o = create(getOperator(), getLeft().copy(), getRight().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;
     }
 
-    public static CompiledBinaryOperatorExpression create(BinaryOperator operator, DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public static CompiledBinaryOperatorExpression create(BinaryOperator operator, CompiledExpressionExt left, CompiledExpressionExt right) {
         switch (operator) {
             case AND: {
                 return new CompiledAnd(left, right);

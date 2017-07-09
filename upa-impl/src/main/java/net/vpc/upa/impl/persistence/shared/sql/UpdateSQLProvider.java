@@ -5,8 +5,8 @@ import net.vpc.upa.EntityPart;
 import net.vpc.upa.Field;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -55,7 +55,7 @@ public class UpdateSQLProvider extends AbstractSQLProvider {
                 fv = (CompiledVar) vv.getChild();
             }
 
-            DefaultCompiledExpression fieldValue = o.getFieldValue(i);
+            CompiledExpressionExt fieldValue = o.getFieldValue(i);
 //            Object referrer = vv.getReferrer();
             Field f = ((Field) fv.getReferrer());
             Entity entityManager = f.getEntity();

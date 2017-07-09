@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.uql;
 
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
  * Created by vpc on 6/28/17.
@@ -13,7 +13,7 @@ public class ReplaceResult {
     public static final ReplaceResult UPDATE_AND_STOP = new ReplaceResult(null, ReplaceResultType.UPDATE, true,true);
 //    public static final ReplaceResult REMOVE_AND_CONTINUE = new ReplaceResult(null, ReplaceResultType.REMOVE, false);
     public static final ReplaceResult REMOVE_AND_STOP = new ReplaceResult(null, ReplaceResultType.REMOVE, true,false);
-    private DefaultCompiledExpression expression;
+    private CompiledExpressionExt expression;
     private ReplaceResultType type;
     /**
      * if true do not process children
@@ -24,7 +24,7 @@ public class ReplaceResult {
      */
     private boolean clean;
 
-    private ReplaceResult(DefaultCompiledExpression expression, ReplaceResultType type, boolean stop,boolean clean) {
+    private ReplaceResult(CompiledExpressionExt expression, ReplaceResultType type, boolean stop, boolean clean) {
         this.expression = expression;
         this.type = type;
         this.stop = stop;
@@ -39,23 +39,23 @@ public class ReplaceResult {
         return !clean;
     }
 
-//    public static ReplaceResult continueWithNewObj(DefaultCompiledExpression expression) {
+//    public static ReplaceResult continueWithNewObj(CompiledExpressionExt expression) {
 //        return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, false);
 //    }
-    public static ReplaceResult stopWithNewObj(DefaultCompiledExpression expression) {
+    public static ReplaceResult stopWithNewObj(CompiledExpressionExt expression) {
         return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, true,true);
     }
 
-    public static ReplaceResult continueWithNewCleanObj(DefaultCompiledExpression expression) {
+    public static ReplaceResult continueWithNewCleanObj(CompiledExpressionExt expression) {
         return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, false,true);
     }
-    public static ReplaceResult continueWithNewDirtyObj(DefaultCompiledExpression expression) {
+    public static ReplaceResult continueWithNewDirtyObj(CompiledExpressionExt expression) {
         return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, false,false);
     }
-    public static ReplaceResult stopWithNewCleanObj(DefaultCompiledExpression expression) {
+    public static ReplaceResult stopWithNewCleanObj(CompiledExpressionExt expression) {
         return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, true,true);
     }
-    public static ReplaceResult stopWithNewDirtyObj(DefaultCompiledExpression expression) {
+    public static ReplaceResult stopWithNewDirtyObj(CompiledExpressionExt expression) {
         return new ReplaceResult(expression, ReplaceResultType.NEW_INSTANCE, true,false);
     }
 
@@ -64,14 +64,14 @@ public class ReplaceResult {
         return stop;
     }
 
-    public DefaultCompiledExpression getExpression(DefaultCompiledExpression old) {
+    public CompiledExpressionExt getExpression(CompiledExpressionExt old) {
         switch (type){
             case NEW_INSTANCE:return expression;
         }
         return old;
     }
 
-    public DefaultCompiledExpression getExpression() {
+    public CompiledExpressionExt getExpression() {
         return expression;
     }
 

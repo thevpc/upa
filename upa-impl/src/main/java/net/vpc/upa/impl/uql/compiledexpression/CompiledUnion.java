@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.TypesFactory;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
     @Override
     public DataTypeTransform getTypeTransform() {
         if(queryStatements.isEmpty()){
-            return new IdentityDataTypeTransform(TypesFactory.VOID);
+            return IdentityDataTypeTransform.VOID;
         }
         return queryStatements.get(0).getTypeTransform();
     }
@@ -66,8 +67,8 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return queryStatements.toArray(new DefaultCompiledExpression[queryStatements.size()]);
+    public CompiledExpressionExt[] getSubExpressions() {
+        return queryStatements.toArray(new CompiledExpressionExt[queryStatements.size()]);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledUnion o=new CompiledUnion();
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
@@ -115,7 +116,7 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         unbindChildren(this.queryStatements.get(index));
         queryStatements.set(index, (CompiledQueryStatement) expression);
         bindChildren(expression);

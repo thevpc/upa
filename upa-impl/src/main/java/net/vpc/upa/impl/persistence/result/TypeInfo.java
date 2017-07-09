@@ -11,17 +11,15 @@ import java.util.*;
  */
 class TypeInfo {
 
-    boolean document;
+    boolean initialized;
+    boolean documentType;
     BindingId binding;
     boolean read;
     boolean identifiable;
 //    List<Integer> indexesToRead =new ArrayList<Integer>();
     List<FieldInfo> nonIdFields = new ArrayList<FieldInfo>();
     List<FieldInfo> idFields = new ArrayList<FieldInfo>();
-    Set<Relationship> manyToOneRelations = new HashSet<Relationship>();
     FieldInfo[] fieldsArray;
-    FieldInfo leadPrimaryField;
-    FieldInfo leadField;
     ResultObject currentResult;
     Entity entity;
     Class resultType;
@@ -30,9 +28,33 @@ class TypeInfo {
     Map<String, FieldInfo> fieldsMap = new HashMap<String, FieldInfo>();
     Map<String, FieldInfoSetter> setters = new HashMap<String, FieldInfoSetter>();
     TypeInfoSupParser parser;
+    boolean partialObject;
+    ObjectFactory ofactory;
 
-    public TypeInfo(BindingId binding) {
+    public TypeInfo(BindingId binding,ObjectFactory ofactory) {
+        this(binding,(Entity) null,null,ofactory);
+    }
+
+    public TypeInfo(BindingId binding, Entity entity,ObjectFactory ofactory) {
+        this(binding,entity,null,ofactory);
+    }
+
+    public TypeInfo(BindingId binding, Class resultType,ObjectFactory ofactory) {
+        this(binding,null,resultType,ofactory);
+    }
+
+    private TypeInfo(BindingId binding, Entity entity,Class resultType,ObjectFactory ofactory) {
         this.binding = binding;
+        this.ofactory = ofactory;
+        this.entity = entity;
+        if (entity != null) {
+            this.builder = entity.getBuilder();
+            this.entityConverter = entity.getBuilder();
+            this.resultType = entity.getEntityType();
+        }
+        if(resultType!=null){
+            this.resultType=resultType;
+        }
     }
 
     public FieldInfoSetter setterFor(String name){
@@ -41,7 +63,7 @@ class TypeInfo {
             return setter;
         }
 
-        if(document){
+        if(documentType){
             setter= new DocumentFieldInfoSetter(name);
         }else if(entity!=null){
             setter= new EntityBuilderFieldInfoSetter(name, builder);
@@ -52,20 +74,6 @@ class TypeInfo {
         return setter;
     }
 
-    public TypeInfo(BindingId binding, Entity entity) {
-        this.binding = binding;
-        this.entity = entity;
-        if (entity != null) {
-            builder = entity.getBuilder();
-            entityConverter = entity.getBuilder();
-            resultType = entity.getEntityType();
-        }
-    }
-
-    public TypeInfo(BindingId binding, Class resultType) {
-        this.binding = binding;
-        this.resultType = resultType;
-    }
 
     @Override
     public String toString() {
@@ -75,4 +83,22 @@ class TypeInfo {
                 '}';
     }
 
+    public ResultObject createResultObject(){
+        TypeInfo typeInfo=this;
+        ResultObject result=new ResultObject();
+        if (typeInfo.documentType) {
+            Object entityObject = null;
+            Document entityDocument = typeInfo.builder == null ? ofactory.createObject(Document.class) : typeInfo.builder.createDocument();
+            result.entityObject = entityObject;
+            result.entityDocument = entityDocument;
+            result.entityResult = entityDocument;
+        } else {
+            Object entityObject = typeInfo.builder.createObject();
+            Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
+            result.entityObject = entityObject;
+            result.entityDocument = entityDocument;
+            result.entityResult = entityObject;
+        }
+        return result;
+    }
 }

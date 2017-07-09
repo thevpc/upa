@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.TypesFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -24,15 +24,15 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
         super("If");
     }
     
-    public CompiledIf(List<DefaultCompiledExpression> expressions) {
+    public CompiledIf(List<CompiledExpressionExt> expressions) {
         this();
-        for (DefaultCompiledExpression defaultCompiledExpression : expressions) {
-            protectedAddArgument(defaultCompiledExpression);
+        for (CompiledExpressionExt expr : expressions) {
+            protectedAddArgument(expr);
         }
         state=VALID;
     }
     
-    public CompiledIf(DefaultCompiledExpression condition) {
+    public CompiledIf(CompiledExpressionExt condition) {
         this();
         condition.getTypeTransform().getSourceType().cast(TypesFactory.BOOLEAN);
         add(condition);
@@ -43,7 +43,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
 //        return Then(Litteral.toExpression(value));
 //    }
 
-    public CompiledIf Then(DefaultCompiledExpression value){
+    public CompiledIf Then(CompiledExpressionExt value){
         if(state==EXPECT_VALUE){
             add(value);
             state=EXPECT_CONDITION;
@@ -59,7 +59,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
 //        return Else(Litteral.toExpression(value));
 //    }
 
-    public CompiledIf Else(DefaultCompiledExpression value){
+    public CompiledIf Else(CompiledExpressionExt value){
         if(state==EXPECT_CONDITION){
             add(value);
             state=VALID;
@@ -75,7 +75,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
 //        return ElseIf(new UserExpression(condition));
 //    }
 
-    public CompiledIf ElseIf(DefaultCompiledExpression condition){
+    public CompiledIf ElseIf(CompiledExpressionExt condition){
         if(state==EXPECT_CONDITION){
             condition.getTypeTransform().getSourceType().cast(TypesFactory.BOOLEAN);
             add(condition);
@@ -88,7 +88,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
         }
     }
 
-    private void add(DefaultCompiledExpression expression){
+    private void add(CompiledExpressionExt expression){
         protectedAddArgument(expression);
     }
 
@@ -107,10 +107,10 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledIf o=new CompiledIf();
         o.state=state;
-        for (DefaultCompiledExpression param : getArguments()) {
+        for (CompiledExpressionExt param : getArguments()) {
             o.protectedAddArgument(param.copy());
         }
         o.setDescription(getDescription());
@@ -124,7 +124,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
     public String toString() {
         StringBuilder s=new StringBuilder();
         int i=0;
-        for (DefaultCompiledExpression expression : getArguments()) {
+        for (CompiledExpressionExt expression : getArguments()) {
             if(i%2==0){
                 if(i==0){
                     s.append("if (").append(expression).append(") then ");

@@ -1,13 +1,11 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.ExpressionHelper;
-import net.vpc.upa.extensions.HierarchyExtension;
-import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
@@ -46,7 +44,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         this.config = config;
         navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH, -1);
         if (navigationDepth < 0) {
-            navigationDepth = 4;
+            navigationDepth = 1;
         }
         fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
         if (fetchStrategy == null) {
@@ -70,10 +68,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
     public CompiledExpression compile() {
         //will not create a copy in production mode
-        CompiledExpression expression = UPAUtils.PRODUCTION_MODE?rootExpression:((DefaultCompiledExpression) rootExpression).copy();
+        CompiledExpression expression = UPAUtils.PRODUCTION_MODE?rootExpression:((CompiledExpressionExt) rootExpression).copy();
         log.log(Level.FINEST, "Validate Compiled Expression {0}\n\t using config {1}", new Object[]{expression, config});
 
-        DefaultCompiledExpression dce = (DefaultCompiledExpression) expression;
+        CompiledExpressionExt dce = (CompiledExpressionExt) expression;
         //dce.copy()
         String entityBaseName = null;
         String entityAlias = null;
@@ -91,8 +89,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 }
             }
         }
+        Map<String, Object> updateContext=new HashMap<>();
 
-        ReplaceResult v2 = UQLCompiledUtils.replaceExpressions(dce, this);
+        ReplaceResult v2 = UQLCompiledUtils.replaceExpressions(dce, this, updateContext);
         if (v2.isNewInstance()) {
             return v2.getExpression();
         }
@@ -114,38 +113,44 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return true;
     }
 
-    public ReplaceResult update(CompiledExpression e) {
+    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         ReplaceResult result = ReplaceResult.NO_UPDATES_CONTINUE;
         if (e instanceof CompiledSelect) {
-            return updateCompiledSelect((CompiledSelect) e);
+            return updateCompiledSelect((CompiledSelect) e,updateContext);
         } else if (e instanceof CompiledUpdate) {
-            return updateCompiledUpdate((CompiledUpdate) e);
+            return updateCompiledUpdate((CompiledUpdate) e,updateContext);
         } else if (e instanceof CompiledInsert) {
-            return updateCompiledInsert((CompiledInsert) e);
+            return updateCompiledInsert((CompiledInsert) e,updateContext);
         } else if (e instanceof CompiledQueryField) {
             throw new IllegalArgumentException("Should have been processed elsewhere");
         } else if (e instanceof CompiledVar) {
-            return updateCompiledVar((CompiledVar) e, null, null, true);
+            return updateCompiledVar((CompiledVar) e, updateContext);
         } else if (e instanceof CompiledParam) {
-            return updateCompiledParam((CompiledParam) e);
+            return updateCompiledParam((CompiledParam) e,updateContext);
 //        } else if (e instanceof IsHierarchyDescendantCompiled) {
 //            return updateIsHierarchyDescendantCompiled((IsHierarchyDescendantCompiled) e);
         } else if (e instanceof CompiledQLFunctionExpression) {
-            return updateCompiledQLFunctionExpression((CompiledQLFunctionExpression) e);
+            return updateCompiledQLFunctionExpression((CompiledQLFunctionExpression) e,updateContext);
         } else if (e instanceof CompiledBinaryOperatorExpression) {
-            return updateCompiledBinaryOperatorExpression((CompiledBinaryOperatorExpression) e);
+            return updateCompiledBinaryOperatorExpression((CompiledBinaryOperatorExpression) e,updateContext);
         }
         return result;
     }
 
-    private ReplaceResult updateCompiledBinaryOperatorExpression(CompiledBinaryOperatorExpression tt) {
-        UQLCompiledUtils.replaceExpressionChildren(tt, this);
+    private ReplaceResult updateCompiledBinaryOperatorExpression(CompiledBinaryOperatorExpression tt,Map<String, Object> updateContext) {
+        UQLCompiledUtils.replaceExpressionChildren(tt, this, updateContext);
         //process children first !!
-        DefaultCompiledExpression left = tt.getLeft();
-        DefaultCompiledExpression right = tt.getRight();
+        CompiledExpressionExt left = tt.getLeft();
+        CompiledExpressionExt right = tt.getRight();
+        if(left instanceof CompiledVarOrMethod){
+            left=((CompiledVarOrMethod) left).getDeepest();
+        }
+        if(right instanceof CompiledVarOrMethod){
+            right=((CompiledVarOrMethod) right).getDeepest();
+        }
         Field clientProperty = (Field) left.getClientProperty("UPA.Flattened.BaseField");
         if (right instanceof CompiledVar && !(left instanceof CompiledVar)) {
-            DefaultCompiledExpression temp = left;
+            CompiledExpressionExt temp = left;
             left = right;
             right = temp;
         }
@@ -168,7 +173,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     //the id is supposed simple (single value, not an array)
                     //TODO : what to do if array?
                     p.setValue(id);
-                    p.setType(dataType.getRelationship().getSourceRole().getField(0).getTypeTransform());
+                    Field field = dataType.getRelationship().getSourceRole().getField(0);
+                    p.setType(UPAUtils.getTypeTransformOrIdentity(field));
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
             }
@@ -177,7 +183,13 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
-    private ReplaceResult updateCompiledQueryField(CompiledQueryField tt, CompiledEntityStatement enclosingStmt, int index, int depth) {
+    private ReplaceResult updateCompiledQueryField(CompiledQueryField tt, Map<String, Object> updateContext) {
+        updateContext=updateContext==null?new HashMap<String,Object>():new HashMap<String, Object>(updateContext);
+        CompiledEntityStatement enclosingStmt=(CompiledEntityStatement) updateContext.get("updateContext");
+        Integer depth=(Integer) updateContext.get("depth");
+        if(depth==null){
+            depth=navigationDepth;
+        }
         if (enclosingStmt == null) {
             enclosingStmt = (CompiledEntityStatement) tt.getParentExpression();
         }
@@ -185,13 +197,16 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             throw new IllegalArgumentException("No Enclosing Select for " + tt);
         }
         boolean again = true;
-        DefaultCompiledExpression ttExpr = tt.getExpression();
-        DefaultCompiledExpression ttExpr0 = ttExpr;
+        CompiledExpressionExt ttExpr = tt.getExpression();
+        CompiledExpressionExt ttExpr0 = ttExpr;
         ReplaceResult r = null;
         boolean someUpdates = false;
+        updateContext.put("enclosingStmt",enclosingStmt);
+        updateContext.put("depth",depth);
         while (again) {
             again = false;
-            r = (ttExpr0 instanceof CompiledVar) ? updateCompiledVar((CompiledVar) ttExpr0, null, enclosingStmt, false) : UQLCompiledUtils.replaceExpressions(ttExpr0, this);
+            updateContext.put("flattenId",false);
+            r = UQLCompiledUtils.replaceExpressions(ttExpr0, this, updateContext);
             if (r.getType() != ReplaceResultType.NO_UPDATES) {
                 someUpdates = true;
             }
@@ -201,26 +216,73 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 tt.setExpression(ttExpr0);
             }
         }
-        DefaultCompiledExpression e2 = r.getExpression(ttExpr0);
+        CompiledQueryFieldsTuple tuple = new CompiledQueryFieldsTuple();
+        CompiledExpressionExt e2 = r.getExpression(ttExpr0);
         if (e2 instanceof CompiledVar) {
             CompiledVar cv = (CompiledVar) e2;
             if (cv.getChild() != null && cv.getChild().getChild() != null) {
                 throw new IllegalArgumentException("Unexpected!!");
             }
-            CompiledVar finest = (CompiledVar) cv.getFinest();
+            CompiledVar finest = (CompiledVar) cv.getDeepest();
             List<Field> fieldsToExpand = new ArrayList<>();
-            List<Field> fieldsToPreserve = new ArrayList<>();
+//            List<Field> fieldsToPreserve = new ArrayList<>();
             Object referrer = resolveReferrer(finest);
             if (referrer instanceof Entity) {
                 fieldsToExpand.addAll(((Entity) referrer).getFields(depth == 0 ? FieldFilters2.ID : config.getExpandFieldFilter()));
             } else if (referrer instanceof Field) {
                 Field field = (Field) referrer;
+                Field oldReferrerField = tt.getReferrerField();
+                Entity oldReferrerEntity = tt.getParentBindingEntity();
+                if(oldReferrerEntity==null && oldReferrerField!=null){
+                    oldReferrerEntity=oldReferrerField.getEntity();
+                }
+                if(oldReferrerEntity==null){
+                    oldReferrerEntity=((Field) referrer).getEntity();
+//                    throw new IllegalArgumentException("Unexpected");
+                }
                 if (field.getDataType() instanceof ManyToOneType) {
                     ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
-                    if (depth <= 0 || fetchStrategy == QueryFetchStrategy.SELECT) {
-                        fieldsToPreserve.addAll(manyToOneType.getRelationship().getSourceRole().getFields());
-                    } else if (fetchStrategy == QueryFetchStrategy.JOIN) {
-                        DefaultCompiledExpression pp = finest.getParentExpression();
+//                    if (depth <= 0 || (depth<navigationDepth && fetchStrategy == QueryFetchStrategy.SELECT)) {
+                    Relationship relationship = manyToOneType.getRelationship();
+                    if (depth <= 0 || (fetchStrategy == QueryFetchStrategy.SELECT)) {
+                        List<Field> sfields = relationship.getSourceRole().getFields();
+                        List<Field> tfields = relationship.getTargetRole().getFields();
+                        for (int i = 0; i < sfields.size(); i++) {
+                            Field sfield = sfields.get(i);
+                            Field tfield = tfields.get(i);
+                            CompiledExpressionExt pp = finest.getParentExpression();
+                            if (pp == null || (pp.getParentExpression() != null && !(pp.getParentExpression() instanceof CompiledQueryField))) {
+                                throw new IllegalArgumentException("Unexpected");
+                            }
+                            pp = pp.copy();
+                            BindingId lbinding = BindingId.createChild(tt.getBinding(), tfield.getName());
+                            CompiledVar f3 = new CompiledVar(sfield.getName(), sfield, lbinding);
+                            ((CompiledVar) pp).setChild(f3);
+                            resolveReferrer((CompiledVar) pp);
+                            resolveReferrer(f3);
+
+                            CompiledQueryField item = new CompiledQueryField(
+                                    tfield.getName(),
+                                    pp,
+                                    -1,
+                                    false,
+                                    null,
+                                    lbinding,
+                                    null,
+                                    true
+
+                            );
+                            item.setReferrerField(tfield);
+                            item.setParentBindingEntity(oldReferrerEntity);
+                            tuple.add(item);
+                        }
+
+
+
+                    } else if (
+                            fetchStrategy == QueryFetchStrategy.JOIN
+                            ) {
+                        CompiledExpressionExt pp = finest.getParentExpression();
                         String joinAlias = null;//tt.getAlias()
                         if (pp != null && pp instanceof CompiledVar) {
                             joinAlias = ((CompiledVar) pp).getName();
@@ -234,43 +296,23 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 bindingJoinInfo.entity,
                                 bindingJoinInfo.binding
                         );
-                        fieldsToExpand.addAll(FieldFilters2.filter(manyToOneType.getRelationship().getTargetEntity().getFields(), config.getExpandFieldFilter()));
+                        fieldsToExpand.addAll(FieldFilters2.filter(relationship.getTargetEntity().getFields(), config.getExpandFieldFilter()));
                     } else {
                         throw new IllegalArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
                     }
                 } else {
                     if (someUpdates) {
                         tt.setExpression(e2);
+                        tt.setReferrerField(field);
+                        tt.setParentBindingEntity(oldReferrerEntity);
                         return ReplaceResult.UPDATE_AND_STOP;
                     }
+                    tt.setReferrerField(field);
+                    tt.setParentBindingEntity(field.getEntity());
                     return ReplaceResult.NO_UPDATES_STOP;
                 }
             } else {
                 throw new IllegalArgumentException("Unexpected");
-            }
-            CompiledQueryFieldsTuple t = new CompiledQueryFieldsTuple();
-            for (Field field : fieldsToPreserve) {
-                DefaultCompiledExpression pp = finest.getParentExpression();
-                if (pp == null || (pp.getParentExpression() != null && !(pp.getParentExpression() instanceof CompiledQueryField))) {
-                    throw new IllegalArgumentException("Unexpected");
-                }
-                pp = pp.copy();
-                CompiledVar f3 = new CompiledVar(field.getName(), field, BindingId.createChild(tt.getBinding(), field.getName()));
-                ((CompiledVar) pp).setChild(f3);
-                resolveReferrer((CompiledVar) pp);
-                resolveReferrer(f3);
-
-                CompiledQueryField item = new CompiledQueryField(
-                        field.getName(),
-                        pp,
-                        -1,
-                        false,
-                        null,
-                        BindingId.createChild(tt.getBinding().getParent(), field.getName()),
-                        null
-
-                );
-                t.add(item);
             }
 
             for (Field field : fieldsToExpand) {
@@ -288,41 +330,58 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         null
 
                 );
+                item.setReferrerField(field);
+                tt.setParentBindingEntity(field.getEntity());
 
                 //just to help sub replacements!
                 item.setParentExpression(enclosingStmt);
 
                 if (depth > 0) {
-                    ReplaceResult replaceResult = updateCompiledQueryField(item, enclosingStmt, -1, depth - 1);
+                    updateContext=new HashMap<String, Object>(updateContext);
+                    updateContext.put("depth",depth - 1);
+                    ReplaceResult replaceResult = updateCompiledQueryField(item, updateContext);
                     CompiledExpression expression = replaceResult.getExpression(item);
                     if (expression instanceof CompiledQueryFieldsTuple) {
                         for (CompiledQueryField compiledQueryField : ((CompiledQueryFieldsTuple) expression).getItems()) {
-                            t.add(compiledQueryField);
+                            tuple.add(compiledQueryField);
                         }
                     } else {
-                        t.add((CompiledQueryField) expression);
+                        tuple.add((CompiledQueryField) expression);
                     }
                 } else {
-                    t.add(item);
+                    tuple.add(item);
                 }
 
                 //remove Binding
-                item.setParentExpression(null);
+                item.unsetParent();
             }
-            if (t.getItems().size() == 1) {
-                return ReplaceResult.stopWithNewObj(t.getItems().get(0));
-            } else if (t.getItems().size() == 0) {
+            if (tuple.getItems().size() == 1) {
+                return ReplaceResult.stopWithNewObj(tuple.getItems().get(0));
+            } else if (tuple.getItems().size() == 0) {
                 throw new IllegalArgumentException("Unexpected");
             } else {
-                return ReplaceResult.stopWithNewObj(t);
+                return ReplaceResult.stopWithNewObj(tuple);
             }
         } else {
+            tt.setExpression(e2);
             return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
         }
     }
 
 
-    private ReplaceResult updateCompiledVar(CompiledVar o, CompiledEntityStatement rootStatement, CompiledEntityStatement enclosingStmt, boolean flattenId) {
+    private ReplaceResult updateCompiledVar(CompiledVar o, Map<String, Object> updateContext) {
+        if(updateContext==null){
+            updateContext=new HashMap<>();
+        }
+        CompiledEntityStatement rootStatement=(CompiledEntityStatement)updateContext.get("rootStatement");
+        CompiledEntityStatement enclosingStmt=(CompiledEntityStatement)updateContext.get("enclosingStmt");
+        Boolean flattenId=(Boolean)updateContext.get("flattenId");
+        if(flattenId==null){
+            flattenId=true;
+        }
+        updateContext.put("rootStatement",rootStatement);
+        updateContext.put("enclosingStmt",enclosingStmt);
+        updateContext.put("flattenId",flattenId);
         Object ref = resolveReferrer(o);
         if(o.getImplicitDeclaration()!=null){
             if(o.getImplicitDeclaration().getName()!=null) {
@@ -346,13 +405,14 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         throw new IllegalArgumentException("Unexpected unknown declaration");
                     }
                 }
-                DefaultCompiledExpression p = o.getParentExpression();
+                CompiledExpressionExt p = o.getParentExpression();
                 o.unsetParent();
                 o.setImplicitDeclaration(null);
                 v2.setChild(o);
                 v2.setParentExpression(p);
-                ReplaceResult r2 = updateCompiledVar(v2, rootStatement, enclosingStmt, flattenId);
-                v2.setParentExpression(null);
+                ReplaceResult r2 = UQLCompiledUtils.replaceExpressions(v2, this,updateContext);
+                v2=(CompiledVar) r2.getExpression(v2);
+                v2.unsetParent();
                 return ReplaceResult.stopWithNewObj(v2);
             }
         }
@@ -362,6 +422,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         if (enclosingStmt == null) {
             throw new IllegalArgumentException("No Enclosing Statement for " + o);
         }
+        updateContext.put("rootStatement",rootStatement);
+        updateContext.put("enclosingStmt",enclosingStmt);
+        updateContext.put("flattenId",flattenId);
         boolean isThis = !(o.getParentExpression() instanceof CompiledVar) && UQLUtils.THIS.equals(o.getName());
         if (isThis) {
             if (rootStatement == null) {
@@ -370,6 +433,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             if (rootStatement == null) {
                 throw new IllegalArgumentException("No Root Statement for " + o);
             }
+            updateContext.put("rootStatement",rootStatement);
             if (rootStatement.getEntityAlias() == null) {
                 CompiledVarOrMethod child = o.getChild();
                 if (child == null) {
@@ -380,13 +444,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
                 }
                 ReplaceResult replaceChild = null;
-                if (child instanceof CompiledVar) {
-                    replaceChild = updateCompiledVar((CompiledVar) child, rootStatement, enclosingStmt, flattenId);
-                } else {
-                    replaceChild = UQLCompiledUtils.replaceExpressions(child, this);
-                }
-                DefaultCompiledExpression e2 = replaceChild.getExpression(child);
-                e2.setParentExpression(null);
+                replaceChild = UQLCompiledUtils.replaceExpressions( child, this,updateContext);
+                CompiledExpressionExt e2 = replaceChild.getExpression(child);
+                e2.unsetParent();
                 return ReplaceResult.continueWithNewCleanObj(e2);
             }
         }
@@ -410,8 +470,19 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     cfg.setTranslateOnly();
                     cfg.setThisAlias(entityAlias);
                     cfg.bindAliasToEntity(entityAlias, field.getEntity().getName());
-                    DefaultCompiledExpression rr = (DefaultCompiledExpression) expressionManager.compileExpression(expr, cfg);
-                    return ReplaceResult.continueWithNewDirtyObj(rr);
+                    CompiledExpressionExt rr = (CompiledExpressionExt) expressionManager.compileExpression(expr, cfg);
+                    CompiledExpressionExt parentExpression = o.getParentExpression();
+                    if(parentExpression==null){
+                        return ReplaceResult.continueWithNewDirtyObj(rr);
+                    }else if(parentExpression instanceof CompiledVar){
+                        parentExpression=UQLCompiledUtils.copyToRootVar((CompiledVar) parentExpression);
+                        ReplaceResult pr = UQLCompiledUtils.replaceThisVar(rr, (CompiledVarOrMethod) parentExpression, updateContext);
+                        CompiledExpressionExt expression = pr.getExpression(rr);
+                        expression.setParentExpression(UQLCompiledUtils.findRootNonVar(o));
+                        return ReplaceResult.continueWithNewDirtyObj(expression);
+                    }else{
+                        throw new IllegalArgumentException("Should replace this with some thing else");
+                    }
                 } else {
                     throw new IllegalArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
                 }
@@ -420,12 +491,13 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 if (dataType instanceof ManyToOneType) {
                     ManyToOneType manyToOneType = (ManyToOneType) dataType;
                     if (o.getChild() == null) {
-                        DefaultCompiledExpression baseRoot = UQLCompiledUtils.findRootNonVar(o);
+                        CompiledExpressionExt baseRoot = UQLCompiledUtils.findRootNonVar(o);
                         if (baseRoot instanceof CompiledQueryField) {
                             //good no further guesses!
                         } else if (baseRoot instanceof CompiledBinaryOperatorExpression) {
                             //force flatten!
                             flattenId = true;
+                            updateContext.put("flattenId",flattenId);
                         } else {
 
                         }
@@ -447,7 +519,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     } else {
                         BindingJoinInfo d = addBindingJoin(enclosingStmt, field, entityAlias, BindingId.createChild(o.getBinding(), field.getName()));
                         CompiledVarOrMethod child = o.getChild();
-                        ReplaceResult repl = updateCompiledVar((CompiledVar) child, rootStatement, enclosingStmt, flattenId);
+                        ReplaceResult repl = UQLCompiledUtils.replaceExpressions(child, this,updateContext);
                         CompiledVar newVar = new CompiledVar(d.alias, d.entity, d.binding);
                         newVar.setBinding(d.binding);
                         o.setChild(null); //unbind child to old parent
@@ -472,32 +544,43 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 return ReplaceResult.NO_UPDATES_STOP;
             }
             ReplaceResult replaceChild = null;
-            if (child instanceof CompiledVar) {
-                replaceChild = updateCompiledVar((CompiledVar) child, rootStatement, enclosingStmt, flattenId);
-            } else {
-                replaceChild = UQLCompiledUtils.replaceExpressions(child, this);
-            }
+            replaceChild = UQLCompiledUtils.replaceExpressions(child, this, updateContext);
             switch (replaceChild.getType()) {
                 case NEW_INSTANCE: {
-                    o.setChild(null);
-                    ReplaceResult e2 = UQLCompiledUtils.replaceThisVar(replaceChild.getExpression(), o);
-                    return replaceChild.isStop() ?
-                            ReplaceResult.stopWithNewObj(e2.getExpression(replaceChild.getExpression())) :
-                            ReplaceResult.continueWithNewCleanObj(e2.getExpression(replaceChild.getExpression()))
-                            ;
-//                    child.setParentExpression(null);
-//                    if(replaceChild.getExpression() instanceof CompiledVarOrMethod) {
-//                        o.setChild((CompiledVarOrMethod) replaceChild.getExpression());
-//                    }else{
-//                        throw new IllegalArgumentException("Could not replace "+child+" by "+replaceChild.getExpression()+" for parent "+o);
-//                    }
-//                    return ReplaceResult.UPDATE_AND_STOP;
+                    ReplaceResult e2 = UQLCompiledUtils.replaceThisVar(replaceChild.getExpression(), o, updateContext);
+                    switch (ReplaceResultType.max(e2.getType(),replaceChild.getType())){
+                        case NO_UPDATES:{
+                            return ReplaceResult.NO_UPDATES_STOP;
+                        }
+                        case UPDATE:{
+                            return ReplaceResult.UPDATE_AND_STOP;
+                        }
+                        case NEW_INSTANCE:{
+                            CompiledExpressionExt expression = e2.getExpression(replaceChild.getExpression(child));
+                            if(expression instanceof CompiledVar) {
+                                CompiledVarOrMethod cvar = (CompiledVarOrMethod) e2.getExpression(replaceChild.getExpression(child));
+                                if (cvar.getChild() != null) {
+                                    return ReplaceResult.stopWithNewCleanObj(cvar);
+                                } else {
+                                    o.setChild(cvar);
+                                    return ReplaceResult.UPDATE_AND_STOP;
+                                }
+                            }else{
+                                return ReplaceResult.stopWithNewDirtyObj(expression);
+                            }
+                        }
+                        case REMOVE:{
+                            o.setChild(null);
+                            return ReplaceResult.UPDATE_AND_STOP;
+                        }
+                    }
+                    throw new IllegalArgumentException("Unexpected");
                 }
                 case UPDATE: {
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
                 case REMOVE: {
-                    child.setParentExpression(null);
+                    child.unsetParent();
                     o.setChild(null);
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
@@ -506,10 +589,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
-    private ReplaceResult updateCompiledUpdate(CompiledUpdate s) {
+    private ReplaceResult updateCompiledUpdate(CompiledUpdate s,Map<String, Object> updateContext) {
         for (int i = 0; i < s.countFields(); i++) {
             CompiledVar fvar = s.getField(i);
-            DefaultCompiledExpression vv = s.getFieldValue(i);
+            CompiledExpressionExt vv = s.getFieldValue(i);
 
             Field f = (Field) resolveReferrer(fvar);
             if (f == null) {
@@ -532,10 +615,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
     }
 
-    private ReplaceResult updateCompiledInsert(CompiledInsert s) {
+    private ReplaceResult updateCompiledInsert(CompiledInsert s,Map<String, Object> updateContext) {
         for (int i = 0; i < s.countFields(); i++) {
             CompiledVar fvar = s.getField(i);
-            DefaultCompiledExpression vv = s.getFieldValue(i);
+            CompiledExpressionExt vv = s.getFieldValue(i);
             Field f = (Field) resolveReferrer(fvar);
             if (f == null) {
                 throw new IllegalArgumentException("Field not found " + fvar + " in " + s.getEntity().getName());
@@ -549,7 +632,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
     }
 
-    private ReplaceResult updateCompiledSelect(CompiledSelect s) {
+    private ReplaceResult updateCompiledSelect(CompiledSelect s,Map<String, Object> updateContext) {
         ReplaceResult result = ReplaceResult.NO_UPDATES_STOP;
         if (s.getParentExpression() == null) {
             //this is the root select
@@ -569,16 +652,21 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 throw new IllegalArgumentException("Inner Select Should have at least one selected field");
             }
         }
-        expandEntityFilters(s);
+        updateContext=updateContext==null?new HashMap<String,Object>():new HashMap<String, Object>(updateContext);
+        expandEntityFilters(s,updateContext);
         List<CompiledQueryField> fields = new ArrayList<>(s.getFields());
         List<Integer> toRemove = new ArrayList<>();
         for (int i = 0; i < fields.size(); i++) {
             CompiledQueryField qf = fields.get(i);
             qf.setBinding(BindingId.create(String.valueOf(i)));
-            ReplaceResult rqf = updateCompiledQueryField(qf, s, i, navigationDepth);
+            updateContext.put("enclosingStmt",s);
+            updateContext.put("depth",navigationDepth);
+            updateContext.put("index",i);
+
+            ReplaceResult rqf = updateCompiledQueryField(qf, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 result = ReplaceResult.UPDATE_AND_STOP;
-                DefaultCompiledExpression replacement = rqf.getExpression();
+                CompiledExpressionExt replacement = rqf.getExpression();
                 if (replacement instanceof CompiledQueryFieldsTuple) {
                     CompiledQueryField[] subExpressions = ((CompiledQueryFieldsTuple) replacement).getCompiledQueryFields();
                     toRemove.add(i);
@@ -599,10 +687,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         for (int i = toRemove.size() - 1; i >= 0; i--) {
             s.removeField(toRemove.get(i));
         }
-        DefaultCompiledExpression[] groupByExpressions = s.getGroupByExpressions();
+        CompiledExpressionExt[] groupByExpressions = s.getGroupByExpressions();
         for (int i = 0; i < groupByExpressions.length; i++) {
-            DefaultCompiledExpression ee = groupByExpressions[i];
-            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(ee, this);
+            CompiledExpressionExt ee = groupByExpressions[i];
+            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(ee, this, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 s.setGroupBy(rqf.getExpression(), i);
             }
@@ -612,8 +700,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         CompiledOrderItem[] orders = s.getOrderByExpressions();
         for (int i = 0; i < orders.length; i++) {
-            DefaultCompiledExpression ee = orders[i].getExpression();
-            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(ee, this);
+            CompiledExpressionExt ee = orders[i].getExpression();
+            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(ee, this, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 orders[i].setExpression(rqf.getExpression());
             }
@@ -623,7 +711,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         CompiledNameOrSelect entity = s.getEntity();
         if (entity != null) {
-            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(entity, this);
+            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(entity, this, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 s.from((CompiledNameOrSelect) rqf.getExpression(), s.getEntityAlias());
             }
@@ -631,9 +719,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
-        DefaultCompiledExpression where = s.getWhere();
+        CompiledExpressionExt where = s.getWhere();
         if (where != null) {
-            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(where, this);
+            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(where, this, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 s.where(rqf.getExpression(where));
             }
@@ -641,9 +729,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
-        DefaultCompiledExpression having = s.getHaving();
+        CompiledExpressionExt having = s.getHaving();
         if (having != null) {
-            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(having, this);
+            ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(having, this, updateContext);
             if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                 s.having(rqf.getExpression(having));
             }
@@ -653,9 +741,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         CompiledJoinCriteria[] joins = s.getJoins();
         for (int i = 0; i < joins.length; i++) {
-            DefaultCompiledExpression condition = joins[i].getCondition();
+            CompiledExpressionExt condition = joins[i].getCondition();
             if (condition != null) {
-                ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(condition, this);
+                ReplaceResult rqf = UQLCompiledUtils.replaceExpressions(condition, this, updateContext);
                 if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
                     joins[i].setCondition(rqf.getExpression());
 
@@ -669,19 +757,19 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     }
 
 
-    private ReplaceResult updateCompiledParam(CompiledParam o) {
+    private ReplaceResult updateCompiledParam(CompiledParam o, Map<String, Object> updateContext) {
         DataTypeTransform d = getValidDataType(o);
         if (d != null) {
             return ReplaceResult.NO_UPDATES_STOP;
         }
         if (o.getValue() != null) {
-            o.setTypeTransform(IdentityDataTypeTransform.forNativeType(o.getValue().getClass()));
+            o.setTypeTransform(IdentityDataTypeTransform.ofType(o.getValue().getClass()));
             d = getValidDataType(o);
             if (d != null) {
                 return ReplaceResult.NO_UPDATES_STOP;
             }
         }
-        DefaultCompiledExpression pe = o.getParentExpression();
+        CompiledExpressionExt pe = o.getParentExpression();
         if (pe instanceof CompiledBinaryOperatorExpression) {
             CompiledBinaryOperatorExpression c = (CompiledBinaryOperatorExpression) pe;
             BinaryOperator operator = c.getOperator();
@@ -703,8 +791,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 case RSHIFT:
                 case XOR:
                 case URSHIFT: {
-                    DefaultCompiledExpression a = c.getLeft();
-                    DefaultCompiledExpression b = c.getRight();
+                    CompiledExpressionExt a = c.getLeft();
+                    CompiledExpressionExt b = c.getRight();
                     if (o == a) {
                         DataTypeTransform d2 = getValidDataType(b);
                         if (d2 != null) {
@@ -721,8 +809,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     return ReplaceResult.NO_UPDATES_STOP;
                 }
                 case LIKE: {
-                    DefaultCompiledExpression a = c.getLeft();
-                    DefaultCompiledExpression b = c.getRight();
+                    CompiledExpressionExt a = c.getLeft();
+                    CompiledExpressionExt b = c.getRight();
                     o.setTypeTransform(IdentityDataTypeTransform.STRING_UNLIMITED);
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
@@ -760,7 +848,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         } else {
             ret.newlyCreated = true;
             generatedAlias = context.createAliasFor(binding);
-            DefaultCompiledExpression cond = null;
+            CompiledExpressionExt cond = null;
             Entity detailEntity = field.getEntity();
             for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
 
@@ -837,9 +925,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //                cfg.setExpandFields(false);
 //                cfg.setValidate(false);
 //                cfg.bindAliasToEntity(entityAlias, field.getEntity().getName());
-//                DefaultCompiledExpression rr = (DefaultCompiledExpression) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
+//                CompiledExpressionExt rr = (CompiledExpressionExt) persistenceUnit.getExpressionManager().compileExpression(expr, cfg);
 //                if (rr instanceof CompiledVarOrMethod) {
-//                    ((CompiledVarOrMethod) rr).getFinest().setBaseReferrer(field);
+//                    ((CompiledVarOrMethod) rr).getDeepest().setBaseReferrer(field);
 //                }
 //
 //                cfg = new ExpressionCompilerConfig();
@@ -1005,7 +1093,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return found;
     }
 
-    private ExpressionDeclaration getDeclaration(String name, DefaultCompiledExpression expression) {
+    private ExpressionDeclaration getDeclaration(String name, CompiledExpressionExt expression) {
         ExpressionDeclaration declaration = expression.getDeclaration(name);
         if (declaration != null) {
             return declaration;
@@ -1018,7 +1106,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return null;
     }
 
-    private List<ExpressionDeclaration> getDeclarations(String name, DefaultCompiledExpression expression) {
+    private List<ExpressionDeclaration> getDeclarations(String name, CompiledExpressionExt expression) {
         List<ExpressionDeclaration> declarations = expression.getDeclarations(name);
         if (declarations != null && declarations.size() > 0) {
             return declarations;
@@ -1034,7 +1122,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return PlatformUtils.emptyList();
     }
 
-    private DataTypeTransform getValidDataType(DefaultCompiledExpression a) {
+    private DataTypeTransform getValidDataType(CompiledExpressionExt a) {
         DataTypeTransform d = a.getEffectiveDataType();
         if (d == null) {
             return null;
@@ -1053,7 +1141,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 s.insert(0, ".");
             }
             s.insert(0, ExpressionHelper.escapeIdentifier(t.getName()));
-            DefaultCompiledExpression pe = t.getParentExpression();
+            CompiledExpressionExt pe = t.getParentExpression();
             if (pe instanceof CompiledVarOrMethod) {
                 t = (CompiledVarOrMethod) pe;
             } else {
@@ -1118,9 +1206,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //                                            CompiledVar v2 = new CompiledVar(var.getName());
 //                                            v2.setName(ref.getValidName());
 //                                            v2.setReferrer(ee);
-//                                            DefaultCompiledExpression parentExpression = var.getParentExpression();
+//                                            CompiledExpressionExt parentExpression = var.getParentExpression();
 //                                            UQLCompiledUtils.replaceRef(parentExpression, var, v2);
-//                                            var.setParentExpression(null);
+//                                            var.unsetParent();
 //                                            var.setReferrer(ee.getField(var.getName()));
 //                                            v2.setChild(var);
 //                                            return v2.getReferrer();
@@ -1159,7 +1247,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     return var.getReferrer();
                 }
                 if (thisAlias != null) {
-                    UQLCompiledUtils.replaceRef(var.getParentExpression(), var, new CompiledVar(thisAlias));
+                    UQLCompiledUtils.replaceRef(var.getParentExpression(), var, new CompiledVar(thisAlias), null);
                     //check if field
                     List<ExpressionDeclaration> values2 = getDeclarations(thisAlias, var);
                     if (values2 != null) {
@@ -1218,7 +1306,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return var.getReferrer();
     }
 
-    protected Object evalQLFunction(DefaultCompiledExpression o) {
+    protected Object evalQLFunction(CompiledExpressionExt o) {
         if (o == null) {
             return null;
         }
@@ -1240,7 +1328,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return o;
     }
 
-    public ReplaceResult updateCompiledQLFunctionExpression(CompiledQLFunctionExpression o) {
+    public ReplaceResult updateCompiledQLFunctionExpression(CompiledQLFunctionExpression o,Map<String, Object> updateContext) {
         int argumentsCount = o.getArgumentsCount();
         Object[] args = new Object[argumentsCount];
         for (int i = 0; i < args.length; i++) {
@@ -1249,7 +1337,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         Object v = o.getHandler().eval(new EvalContext(o.getName(), args, persistenceUnit,this));
         if (v != null) {
             if (v instanceof CompiledExpression) {
-                return ReplaceResult.continueWithNewDirtyObj((DefaultCompiledExpression) v);
+                return ReplaceResult.continueWithNewDirtyObj((CompiledExpressionExt) v);
             }
             if (v instanceof Expression) {
                 throw new IllegalArgumentException("Function should return literals of compiled expressions (CompiledExpression type)");
@@ -1261,13 +1349,13 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     }
 
 //    public ReplaceResult updateIsHierarchyDescendantCompiled(IsHierarchyDescendantCompiled o) {
-//        DefaultCompiledExpression c = o.getChildExpression();
-//        DefaultCompiledExpression p = o.getAncestorExpression();
+//        CompiledExpressionExt c = o.getChildExpression();
+//        CompiledExpressionExt p = o.getAncestorExpression();
 //        CompiledEntityName n = o.getEntityName();
 //        Entity treeEntity = null;
 //        if (c instanceof CompiledVar) {
 //
-//            Object childReferrer = resolveReferrer((CompiledVar) ((CompiledVar) c).getFinest());
+//            Object childReferrer = resolveReferrer((CompiledVar) ((CompiledVar) c).getDeepest());
 //            if (childReferrer != null) {
 //                if (childReferrer instanceof Entity) {
 //                    if (treeEntity == null) {
@@ -1291,7 +1379,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 ////            Object co = ((CompiledParam) c).getEffectiveDataType();
 //        }
 //        if (p instanceof CompiledVar) {
-//            Object parentReferrer = resolveReferrer((CompiledVar) ((CompiledVar) p).getFinest());
+//            Object parentReferrer = resolveReferrer((CompiledVar) ((CompiledVar) p).getDeepest());
 //            if (parentReferrer != null) {
 //                if (parentReferrer instanceof Entity) {
 //                    if (treeEntity == null) {
@@ -1344,16 +1432,16 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //        );
 //    }
 
-//    public DefaultCompiledExpression createConditionForDeepSearch(DefaultCompiledExpression alias, DefaultCompiledExpression id, boolean includeId, Field field, String pathSep) throws UPAException {
+//    public CompiledExpressionExt createConditionForDeepSearch(CompiledExpressionExt alias, CompiledExpressionExt id, boolean includeId, Field field, String pathSep) throws UPAException {
 //        alias = alias.copy();
 //        if (alias instanceof CompiledVar) {
 ////            CompiledVar cv = (CompiledVar) alias;
-//            CompiledVarOrMethod finest = ((CompiledVar) alias).getFinest();
+//            CompiledVarOrMethod finest = ((CompiledVar) alias).getDeepest();
 //            Object referrer = resolveReferrer((CompiledVar) finest);
 //            if (referrer instanceof Entity) {
 //
 //                CompiledVar v = new CompiledVar(field.getName());
-//                ((CompiledVar) alias).getFinest().setChild(v);
+//                ((CompiledVar) alias).getDeepest().setChild(v);
 //            } else if (referrer instanceof Field && ((Field) referrer).getDataType() instanceof ManyToOneType &&
 //                    ((ManyToOneType) ((Field) referrer).getDataType()).getTargetEntity().getName().equals(field.getEntity().getName())
 //                    ) {
@@ -1371,7 +1459,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //            throw new IllegalArgumentException("Composite ID unsupported for function isHierarchyDescendant");
 //        }
 //        DataType pkType = primaryFields.get(0).getDataType();
-//        DefaultCompiledExpression strId = null;
+//        CompiledExpressionExt strId = null;
 //        if (pkType instanceof IntType) {
 //            strId = new CompiledI2V(id);
 //        } else if (pkType instanceof LongType) {
@@ -1414,7 +1502,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //        }
 //    }
 
-    private void expandEntityFilters(CompiledSelect compiledSelect) {
+    private void expandEntityFilters(CompiledSelect compiledSelect,Map<String, Object> updateContext) {
         CompiledNameOrSelect nameOrSelect = compiledSelect.getEntity();
         if (nameOrSelect instanceof CompiledEntityName) {
             String entityName = ((CompiledEntityName) nameOrSelect).getName();
@@ -1429,7 +1517,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 conf2.setTranslateOnly();
                 conf2.bindAliasToEntity(name, entityName);
                 conf2.setThisAlias(name);
-                DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) expressionManager.compileExpression(filter, conf2);
+                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(filter, conf2);
                 if (compiledFilter != null) {
                     compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":" + filterName);
                 }
@@ -1445,8 +1533,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 conf2.bindAliasToEntity(name, entityName);
                 conf2.setTranslateOnly();
                 conf2.setThisAlias(name);
-                DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) expressionManager.compileExpression(securityFilter, conf2);
-                compiledFilter = UQLCompiledUtils.replaceThisVar(compiledFilter, name).getExpression(compiledFilter);
+                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(securityFilter, conf2);
+                compiledFilter = UQLCompiledUtils.replaceThisVar(compiledFilter, name, updateContext).getExpression(compiledFilter);
 
                 if (compiledFilter != null) {
                     compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":(SecurityManager)");
@@ -1474,7 +1562,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         conf2.bindAliasToEntity(name, entityName);
                         conf2.setTranslateOnly();
                         conf2.setThisAlias(name);
-                        DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) expressionManager.compileExpression(filter, conf2);
+                        CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(filter, conf2);
                         if (compiledFilter != null) {
                             compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":" + filterName);
                         }
@@ -1496,7 +1584,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         conf2.bindAliasToEntity(name, entityName);
                         conf2.setTranslateOnly();
                         conf2.setThisAlias(name);
-                        DefaultCompiledExpression compiledFilter = (DefaultCompiledExpression) expressionManager.compileExpression(filter, conf2);
+                        CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(filter, conf2);
                         if (compiledFilter != null) {
                             compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":" + filterName);
                         }

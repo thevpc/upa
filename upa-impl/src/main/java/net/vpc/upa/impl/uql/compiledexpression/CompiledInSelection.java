@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataTypeTransform;
@@ -11,11 +13,11 @@ import net.vpc.upa.types.DataTypeTransform;
 public final class CompiledInSelection extends DefaultCompiledExpressionImpl
         implements Cloneable {
     private static final long serialVersionUID = 1L;
-    private DefaultCompiledExpression[] left;
+    private CompiledExpressionExt[] left;
     private CompiledSelect query;
 
-    public CompiledInSelection(DefaultCompiledExpression left, CompiledSelect query) {
-        this(new DefaultCompiledExpression[]{
+    public CompiledInSelection(CompiledExpressionExt left, CompiledSelect query) {
+        this(new CompiledExpressionExt[]{
             left
         }, query);
     }
@@ -24,7 +26,7 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
         return IdentityDataTypeTransform.BOOLEAN;
     }
 
-    public CompiledInSelection(DefaultCompiledExpression[] left, CompiledSelect query) {
+    public CompiledInSelection(CompiledExpressionExt[] left, CompiledSelect query) {
         this.left = left;
         this.query = query;
         bindChildren(left);
@@ -35,7 +37,7 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
         return 2;
     }
 
-    public DefaultCompiledExpression[] getLeft() {
+    public CompiledExpressionExt[] getLeft() {
         return left;
     }
 
@@ -48,8 +50,8 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
-        DefaultCompiledExpression[] left2=new DefaultCompiledExpression[left.length];
+    public CompiledExpressionExt copy() {
+        CompiledExpressionExt[] left2=new CompiledExpressionExt[left.length];
         for (int i = 0; i < left2.length; i++) {
             left2[i]=left[i].copy();
         }
@@ -60,15 +62,15 @@ public final class CompiledInSelection extends DefaultCompiledExpressionImpl
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        List<DefaultCompiledExpression> all=new ArrayList<DefaultCompiledExpression>();
+    public CompiledExpressionExt[] getSubExpressions() {
+        List<CompiledExpressionExt> all=new ArrayList<CompiledExpressionExt>();
         PlatformUtils.addAll(all, left);
         all.add(query);
-        return all.toArray(new DefaultCompiledExpression[all.size()]);
+        return all.toArray(new CompiledExpressionExt[all.size()]);
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         if(index<left.length){
             unbindChildren(this.left[index]);
             left[index]=expression;

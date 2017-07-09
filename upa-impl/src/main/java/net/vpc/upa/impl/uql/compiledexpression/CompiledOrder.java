@@ -8,6 +8,8 @@
  */
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,11 +20,11 @@ public class CompiledOrder implements Serializable, Cloneable {
     public CompiledOrder() {
     }
 
-    public CompiledOrder ascendant(DefaultCompiledExpression field) {
+    public CompiledOrder ascendant(CompiledExpressionExt field) {
         return addOrder(field, true);
     }
 
-    public CompiledOrder descendant(DefaultCompiledExpression field) {
+    public CompiledOrder descendant(CompiledExpressionExt field) {
         return addOrder(field, false);
     }
 
@@ -33,12 +35,12 @@ public class CompiledOrder implements Serializable, Cloneable {
         return this;
     }
 
-    public CompiledOrder addOrder(DefaultCompiledExpression field, boolean is_asc) {
+    public CompiledOrder addOrder(CompiledExpressionExt field, boolean is_asc) {
         items.add(new CompiledOrderItem(field, is_asc));
         return this;
     }
 
-    public int indexOf(DefaultCompiledExpression field) {
+    public int indexOf(CompiledExpressionExt field) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getExpression().equals(field)) {
                 return i;
@@ -47,7 +49,7 @@ public class CompiledOrder implements Serializable, Cloneable {
         return -1;
     }
 
-    public CompiledOrder removeOrder(DefaultCompiledExpression field) {
+    public CompiledOrder removeOrder(CompiledExpressionExt field) {
 
         int i = indexOf(field);
         if (i >= 0) {
@@ -61,16 +63,16 @@ public class CompiledOrder implements Serializable, Cloneable {
         return this;
     }
 
-    public CompiledOrder insertOrder(int index, DefaultCompiledExpression field, boolean is_asc) {
+    public CompiledOrder insertOrder(int index, CompiledExpressionExt field, boolean is_asc) {
         items.add(index, new CompiledOrderItem(field, is_asc));
         return this;
     }
 
-    public void setOrderAt(int index, DefaultCompiledExpression expression) {
+    public void setOrderAt(int index, CompiledExpressionExt expression) {
         items.get(index).setExpression(expression);
     }
 
-    public DefaultCompiledExpression getOrderAt(int index) {
+    public CompiledExpressionExt getOrderAt(int index) {
         return items.get(index).getExpression();
     }
 

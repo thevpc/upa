@@ -55,4 +55,24 @@ public class SecretDataTypeTransform implements DataTypeTransform {
         return DataTypeTransformList.chain(this, other);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SecretDataTypeTransform that = (SecretDataTypeTransform) o;
+
+        if (secretStrategy != null ? !secretStrategy.equals(that.secretStrategy) : that.secretStrategy != null)
+            return false;
+        if (sourceType != null ? !sourceType.equals(that.sourceType) : that.sourceType != null) return false;
+        return targetType != null ? targetType.equals(that.targetType) : that.targetType == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = secretStrategy != null ? secretStrategy.hashCode() : 0;
+        result = 31 * result + (sourceType != null ? sourceType.hashCode() : 0);
+        result = 31 * result + (targetType != null ? targetType.hashCode() : 0);
+        return result;
+    }
 }

@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -14,11 +15,11 @@ public class CompiledSign extends CompiledFunction {
     private static final long serialVersionUID = 1L;
 
     
-    public CompiledSign(DefaultCompiledExpression value) {
+    public CompiledSign(CompiledExpressionExt value) {
         super("Sign");
         protectedAddArgument(value);
     }
-    public DefaultCompiledExpression getExpression(){
+    public CompiledExpressionExt getExpression(){
         return getArgument(0);
     }
 
@@ -30,7 +31,7 @@ public class CompiledSign extends CompiledFunction {
 
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledSign o=new CompiledSign(getExpression().copy());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());

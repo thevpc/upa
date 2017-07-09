@@ -1,5 +1,7 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/29/12 5:52 PM
@@ -7,21 +9,21 @@ package net.vpc.upa.impl.uql.compiledexpression;
 public class CompiledVarVal extends DefaultCompiledExpressionImpl {
 
     private CompiledVar var;
-    private DefaultCompiledExpression val;
+    private CompiledExpressionExt val;
 
-    public CompiledVarVal(CompiledVar var, DefaultCompiledExpression val) {
+    public CompiledVarVal(CompiledVar var, CompiledExpressionExt val) {
         this.var = var;
         this.val = val;
         bindChildren(var, val);
     }
 
     @Override
-    public DefaultCompiledExpression[] getSubExpressions() {
-        return new DefaultCompiledExpression[]{var, val};
+    public CompiledExpressionExt[] getSubExpressions() {
+        return new CompiledExpressionExt[]{var, val};
     }
 
     @Override
-    public void setSubExpression(int index, DefaultCompiledExpression expression) {
+    public void setSubExpression(int index, CompiledExpressionExt expression) {
         switch (index) {
             case 0: {
                 unbindChildren(this.val);
@@ -39,19 +41,19 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
         throw new UnsupportedOperationException("Invalid index");
     }
 
-    public DefaultCompiledExpression copy() {
-        return new CompiledVarVal(var == null ? null : ((CompiledVar) var.copy()), val == null ? null : ((DefaultCompiledExpression) val.copy()));
+    public CompiledExpressionExt copy() {
+        return new CompiledVarVal(var == null ? null : ((CompiledVar) var.copy()), val == null ? null : ((CompiledExpressionExt) val.copy()));
     }
 
     public CompiledVar getVar() {
         return var;
     }
 
-    public DefaultCompiledExpression getVal() {
+    public CompiledExpressionExt getVal() {
         return val;
     }
 
-    public void setVal(DefaultCompiledExpression val) {
+    public void setVal(CompiledExpressionExt val) {
         this.val = val;
     }
 }

@@ -6,12 +6,13 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.CloseListener;
+import net.vpc.upa.impl.persistence.result.QueryResultLazyList;
 
 /**
  *
  * @author taha.bensalah@gmail.com
  */
-class CloseListenerImpl<R> implements CloseListener {
+public class CloseListenerImpl<R> implements CloseListener {
     private final QueryResultLazyList<R> outer;
 
     public CloseListenerImpl(final QueryResultLazyList<R> outer) {

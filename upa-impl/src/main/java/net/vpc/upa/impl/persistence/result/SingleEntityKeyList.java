@@ -1,7 +1,9 @@
-package net.vpc.upa.impl.persistence;
+package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.persistence.QueryExecutor;
+import net.vpc.upa.impl.persistence.result.QueryResultLazyList;
 import net.vpc.upa.persistence.QueryResult;
 
 import java.sql.SQLException;

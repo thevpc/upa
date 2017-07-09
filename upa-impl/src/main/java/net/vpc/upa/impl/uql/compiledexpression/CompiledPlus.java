@@ -4,6 +4,8 @@ import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public final class CompiledPlus extends CompiledBinaryOperatorExpression
@@ -11,12 +13,12 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
 
     private static final long serialVersionUID = 1L;
 
-    public CompiledPlus(DefaultCompiledExpression left, Object right) {
+    public CompiledPlus(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.PLUS, left, right);
         buildDataType();
     }
 
-    public CompiledPlus(DefaultCompiledExpression left, DefaultCompiledExpression right) {
+    public CompiledPlus(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.PLUS, left, right);
         buildDataType();
     }

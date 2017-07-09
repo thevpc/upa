@@ -180,4 +180,24 @@ public class ListType extends SeriesType implements Cloneable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        ListType listType = (ListType) o;
+
+        if (elementType != null ? !elementType.equals(listType.elementType) : listType.elementType != null)
+            return false;
+        return elements != null ? elements.equals(listType.elements) : listType.elements == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (elementType != null ? elementType.hashCode() : 0);
+        result = 31 * result + (elements != null ? elements.hashCode() : 0);
+        return result;
+    }
 }

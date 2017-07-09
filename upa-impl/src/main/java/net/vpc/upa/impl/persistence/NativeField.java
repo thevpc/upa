@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.types.DataTypeTransform;
@@ -11,27 +12,34 @@ import net.vpc.upa.types.DataTypeTransform;
 public class NativeField {
     private int index;
     private boolean expanded;
-    private BindingId groupName;
+    private BindingId bindingId;
 //    private String fullBinding;
 //    private String exprString;
     private String name;
     private DataTypeTransform typeTransform;
     private Field field;
-    private Field bindingField;
+    private Entity parentBindingEntity;
 
-    public NativeField(String name, BindingId groupName, int index, boolean expanded, Field field, Field bindingField, DataTypeTransform typeChain) {
-        this.groupName = groupName;
+    /**
+     * true if this field a key part of a partial object that should be loaded out of this query
+     * mainly because it is a "SELECT" fetch strategy
+     */
+    private boolean partialObject;
+
+    public NativeField(String name, BindingId bindingId, int index, boolean expanded, Entity entity,Field field, DataTypeTransform typeChain, boolean partialObject) {
+        this.bindingId = bindingId;
+        this.partialObject = partialObject;
         this.expanded = expanded;
         this.index = index;
 //        this.exprString = exprString;
         this.name = name;
-//        if(StringUtils.isNullOrEmpty(groupName)){
+//        if(StringUtils.isNullOrEmpty(bindingId)){
 //            fullBinding=name;
 //        }else{
-//            fullBinding=groupName+"."+name;
+//            fullBinding=bindingId+"."+name;
 //        }
         this.field = field;
-        this.bindingField = bindingField;
+        this.parentBindingEntity = entity;
         this.typeTransform = typeChain;
         //REMOVE ME
         if(typeChain==null){
@@ -39,8 +47,12 @@ public class NativeField {
         }
     }
 
-    public Field getBindingField() {
-        return bindingField;
+    public Entity getParentBindingEntity() {
+        return parentBindingEntity;
+    }
+
+    public boolean isPartialObject() {
+        return partialObject;
     }
 
     public int getIndex() {
@@ -51,8 +63,8 @@ public class NativeField {
 //        return fullBinding;
 //    }
 
-    public BindingId getGroupName() {
-        return groupName;
+    public BindingId getBindingId() {
+        return bindingId;
     }
 
     public Field getField() {
@@ -69,7 +81,7 @@ public class NativeField {
 
     @Override
     public String toString() {
-        return "NativeField{" + "groupName=" + groupName + ", name=" + name + ", typeChain=" + typeTransform + ", field=" + field + '}';
+        return "NativeField{" + "bindingId=" + bindingId + ", name=" + name + ", typeChain=" + typeTransform + ", field=" + field + '}';
     }
 
 //    public String getExprString() {

@@ -3,6 +3,8 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -20,9 +22,9 @@ public final class CompiledConcat extends CompiledFunction
         return IdentityDataTypeTransform.STRING;
     }
 
-    public CompiledConcat(DefaultCompiledExpression... expressions) {
+    public CompiledConcat(CompiledExpressionExt... expressions) {
         this();
-        for (DefaultCompiledExpression expression : expressions) {
+        for (CompiledExpressionExt expression : expressions) {
             add(expression);
         }
     }
@@ -34,13 +36,13 @@ public final class CompiledConcat extends CompiledFunction
 
     public CompiledConcat addAll(CompiledConcat other) {
         for (int i = 0; i < other.getArgumentsCount(); i++) {
-            add((DefaultCompiledExpression) other.getArgument(i));
+            add((CompiledExpressionExt) other.getArgument(i));
         }
 
         return this;
     }
 
-    public CompiledConcat add(DefaultCompiledExpression expression) {
+    public CompiledConcat add(CompiledExpressionExt expression) {
         if (expression == this) {
             throw new RuntimeException("WOOOOOOOODOOOOOOO");
         } else {
@@ -58,7 +60,7 @@ public final class CompiledConcat extends CompiledFunction
     }
 
     @Override
-    public DefaultCompiledExpression copy() {
+    public CompiledExpressionExt copy() {
         CompiledConcat o = new CompiledConcat();
         protectedCopyTo(o);
         return o;

@@ -16,7 +16,7 @@ public abstract class DefaultCompiledEntityStatement extends DefaultCompiledExpr
 
     @Override
     public DataTypeTransform getTypeTransform() {
-        return new IdentityDataTypeTransform(TypesFactory.VOID);
+        return IdentityDataTypeTransform.VOID;
     }
 
     protected abstract List<CompiledNamedExpression> findEntityDefinitions();

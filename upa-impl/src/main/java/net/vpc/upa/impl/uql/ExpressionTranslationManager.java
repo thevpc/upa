@@ -5,8 +5,7 @@
 package net.vpc.upa.impl.uql;
 
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryField;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledQueryStatement;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiler.CurrentTimeExpressionTranslator;
 import net.vpc.upa.impl.uql.compiler.DateDiffExpressionTranslator;
 import net.vpc.upa.impl.uql.compiler.D2VExpressionTranslator;
@@ -55,7 +54,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledExpandableExpression;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 
@@ -73,9 +71,9 @@ public class ExpressionTranslationManager {
     public ExpressionTranslationManager(DefaultExpressionManager expressionManager, PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
         this.expressionManager = expressionManager;
-        register0(DefaultCompiledExpression.class, new CompiledExpressionToExpressionCompiler());
+        register0(CompiledExpressionExt.class, new CompiledExpressionToExpressionCompiler());
         register0(IdEnumerationExpression.class, new IdEnumerationExpressionCompiler());
-        register0(IdExpression.class, new KeyExpressionCompiler());
+        register0(IdExpression.class, new IdExpressionCompiler());
         register0(And.class, new AndExpressionTranslator());
         register0(Or.class, new OrExpressionTranslator());
         register0(Plus.class, new PlusExpressionTranslator());
@@ -148,7 +146,7 @@ public class ExpressionTranslationManager {
         expressionProviders.put(t, compiler);
     }
 
-    public DefaultCompiledExpression translateExpression(Expression expression, ExpressionCompilerConfig config) {
+    public CompiledExpressionExt translateExpression(Expression expression, ExpressionCompilerConfig config) {
         if (log.isLoggable(Level.FINE)) {
             //expected api 1.2.1
 //            log.log(Level.FINE,"Compiling Expression " + expression);
@@ -164,7 +162,7 @@ public class ExpressionTranslationManager {
 
             dec.exportDeclaration(entry.getKey(), DecObjectType.ENTITY, entry.getValue(), null);
         }
-        DefaultCompiledExpression s = translateAny(expression, dec);
+        CompiledExpressionExt s = translateAny(expression, dec);
 
 //        if (s instanceof CompiledQueryStatement) {
 //            CompiledQueryStatement qs=(CompiledQueryStatement) s;
@@ -178,7 +176,7 @@ public class ExpressionTranslationManager {
         return s;
     }
 
-    public DefaultCompiledExpression translateAny(Expression o, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateAny(Expression o, ExpressionDeclarationList declarations) {
         if (o == null) {
             return null;
         }
@@ -188,7 +186,7 @@ public class ExpressionTranslationManager {
             if (p == null) {
                 throw new IllegalArgumentException("No compiler found for " + o0.getClass());
             }
-            DefaultCompiledExpression e = p.translateExpression(o0, this, declarations);
+            CompiledExpressionExt e = p.translateExpression(o0, this, declarations);
             if (e == null) {
                 throw new NullPointerException();
             }
@@ -209,11 +207,11 @@ public class ExpressionTranslationManager {
         return expressionManager;
     }
 
-    public DefaultCompiledExpression[] translateArray(Expression[] e, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt[] translateArray(Expression[] e, ExpressionDeclarationList declarations) {
         if (e == null) {
             return null;
         }
-        DefaultCompiledExpression[] ce = new DefaultCompiledExpression[e.length];
+        CompiledExpressionExt[] ce = new CompiledExpressionExt[e.length];
         for (int i = 0; i < ce.length; i++) {
             ce[i] = translateAny(e[i], declarations);
         }

@@ -9,15 +9,16 @@ import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.marshallers.FloatAsDoubleMarshaller;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.marshallers.StringToBlobDataMarshallerFactory;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.*;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import net.vpc.upa.impl.DefaultPersistenceUnit;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class DerbyPersistenceStore extends DefaultPersistenceStore {
@@ -186,7 +186,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
         EntityExecutionContext context = pu.createContext(ContextOperation.FIND,executionContext.getHints());
         sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (isIdentityField(field)) {
@@ -381,7 +381,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         }
         sb.append(")");
         sb.append(" As ").append("\n\t");
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
         sb.append(getSqlManager().getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }
@@ -412,9 +412,9 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             }
         }
 
-        DefaultPersistenceUnit pu = (DefaultPersistenceUnit)executionContext.getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
         EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
-        DefaultCompiledExpression compiledExpression = (DefaultCompiledExpression) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
+        CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(getSqlManager().getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }

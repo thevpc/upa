@@ -28,7 +28,7 @@ public final class ExpressionFilterFactory {
         return new ParamFilter(name);
     }
 //    public static List<CompiledVar> findChildrenLeafVars(CompiledExpression v) {
-//        return ((DefaultCompiledExpression) v).findExpressionsList(CompiledExpressionFilterLeafVar.INSTANCE);
+//        return ((CompiledExpressionExt) v).findExpressionsList(CompiledExpressionFilterLeafVar.INSTANCE);
 //    }
 //
 //    public static CompiledVar findRootVar(CompiledVar v) {
@@ -42,7 +42,7 @@ public final class ExpressionFilterFactory {
 //        return v;
 //    }
 //    public static CompiledQueryField findRootCompiledQueryField(CompiledVar v) {
-//        DefaultCompiledExpression e=v;
+//        CompiledExpressionExt e=v;
 //        while (e != null) {
 //            if(e instanceof CompiledQueryField){
 //                return (CompiledQueryField) e;
@@ -53,7 +53,7 @@ public final class ExpressionFilterFactory {
 //    }
 //
 //    public static CompiledSelect findEnclosingStatement(CompiledVar v) {
-//        DefaultCompiledExpression e = (DefaultCompiledExpression) v;
+//        CompiledExpressionExt e = (CompiledExpressionExt) v;
 //        CompiledVar rv = findRootVar(v);
 //        while (e != null) {
 //            if (e instanceof CompiledSelect) {

@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.compiler;
 
 import net.vpc.upa.expressions.Var;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.*;
@@ -12,7 +13,7 @@ import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 public class IdEnumerationExpressionCompiler implements ExpressionTranslator {
 
     @Override
-    public DefaultCompiledExpression translateExpression(Object x, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
+    public CompiledExpressionExt translateExpression(Object x, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         IdEnumerationExpression o = (IdEnumerationExpression) x;
         List<Object> keys = o.getIds();
         Var tableAlias = o.getAlias();

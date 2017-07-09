@@ -25,7 +25,7 @@ public class IntegerMarshaller
             if (n == 0 && resultSet.wasNull()) {
                 return null;
             }
-            return new Integer(n);
+            return Integer.valueOf(n);
         }
     }
 

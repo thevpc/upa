@@ -8,7 +8,6 @@ package net.vpc.upa.impl.transform;
 import net.vpc.upa.types.StringEncoder;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class PlainStringEncoder implements StringEncoder {
@@ -33,5 +32,17 @@ public class PlainStringEncoder implements StringEncoder {
     public String toString() {
         return "PlainStringEncoder";
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().getName().hashCode();
+    }
+
 }

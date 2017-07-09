@@ -2,10 +2,9 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledConcat;
-import net.vpc.upa.impl.uql.compiledexpression.DefaultCompiledExpression;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUplet;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -26,8 +25,8 @@ public class UpletSQLProvider extends AbstractSQLProvider {
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException{
         CompiledUplet o=(CompiledUplet) oo;
 //        PersistenceUnitManager queryLanguageManager = qlContext.getPersistenceUnitManager();
-        DefaultCompiledExpression sql;
-        DefaultCompiledExpression[] expressions = o.getExpressions();
+        CompiledExpressionExt sql;
+        CompiledExpressionExt[] expressions = o.getExpressions();
         if(expressions.length>1){
             CompiledConcat concat=new CompiledConcat();
             for(int i=0;i<expressions.length;i++){
