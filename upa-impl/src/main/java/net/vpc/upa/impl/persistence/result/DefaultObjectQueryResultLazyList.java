@@ -5,7 +5,6 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
-import net.vpc.upa.impl.ext.QueryHintsExt;
 import net.vpc.upa.impl.persistence.NativeField;
 import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.uql.BindingId;
@@ -64,10 +63,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             supportCacheSize=UPAImplDefaults.QueryHints_CACHE_SIZE;
         }
         if (supportCacheSize > 0) {
-            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(QueryHintsExt.QUERY_CACHE);
+            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(UPAImplKeys.QueryHints_QUERY_CACHE);
             if (sharedCache == null) {
                 sharedCache = new LRUCacheMap<NamedId, ResultObject>(supportCacheSize);
-                hints.put(QueryHintsExt.QUERY_CACHE, sharedCache);
+                hints.put(UPAImplKeys.QueryHints_QUERY_CACHE, sharedCache);
             }
             referencesCache = sharedCache;
         } else {
@@ -247,6 +246,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
                 Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce)).setHints(getHints());
                 CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
+                int count=0;
                 if (itemAsDocument) {
                     for (Document o : query.getDocumentList()) {
                         ResultObject resultObject = new ResultObject();
@@ -259,6 +259,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         if (!referencesCache.containsKey(id)) {
                             referencesCache.put(id, resultObject);
                         }
+                        count++;
                     }
                 } else {
                     for (Object o : query.getResultList()) {
@@ -272,7 +273,11 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         if (!referencesCache.containsKey(id)) {
                             referencesCache.put(id, resultObject);
                         }
+                        count++;
                     }
+                }
+                if(count!=itemsToReduce.size()){
+                    throw new UPAIllegalArgumentException("Problem");
                 }
             }
             workspace_missingObjects.clear();

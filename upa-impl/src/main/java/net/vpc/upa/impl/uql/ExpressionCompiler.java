@@ -7,7 +7,7 @@ import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.UPAImplDefaults;
-import net.vpc.upa.impl.ext.QueryHintsExt;
+import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
@@ -39,6 +39,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     private int navigationDepth;
     private int maxJoins;
     private int maxColumns;
+    private int maxHierarchyDepth;
     private int currentJoins;
     private QueryFetchStrategy fetchStrategy;
     private ExpressionManager expressionManager;
@@ -62,11 +63,18 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 maxJoins = UPAImplDefaults.QueryHints_MAX_JOINS;
             }
         }
-        this.maxColumns = (Integer) config.getHint(QueryHintsExt.MAX_COLUMNS, -1);
+        this.maxColumns = (Integer) config.getHint(UPAImplKeys.QueryHints_MAX_COLUMNS, -1);
         if (maxColumns < 0) {
-            maxColumns = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHintsExt.MAX_COLUMNS,UPAImplDefaults.QueryHints_MAX_COLUMNS);
+            maxColumns = persistenceUnit.getProperties().getInt("System.QueryHints."+ UPAImplKeys.QueryHints_MAX_COLUMNS,UPAImplDefaults.QueryHints_MAX_COLUMNS);
             if (maxColumns < 0) {
                 maxColumns = UPAImplDefaults.QueryHints_MAX_COLUMNS;
+            }
+        }
+        this.maxHierarchyDepth = (Integer) config.getHint(UPAImplKeys.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH, -1);
+        if (maxHierarchyDepth < 0) {
+            maxHierarchyDepth = persistenceUnit.getProperties().getInt("System.QueryHints."+ UPAImplKeys.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH,UPAImplDefaults.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH);
+            if (maxHierarchyDepth < 0) {
+                maxHierarchyDepth = UPAImplDefaults.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH;
             }
         }
         fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
@@ -74,20 +82,6 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             fetchStrategy = QueryFetchStrategy.JOIN;
         }
     }
-
-//    private int incDepth(String n) {
-//        int v = getDepth(n) + 1;
-//        depthTracker.put(n, v);
-//        return v;
-//    }
-//
-//    private int getDepth(String n) {
-//        Integer v = depthTracker.get(n);
-//        if (v == null) {
-//            return 0;
-//        }
-//        return v;
-//    }
 
     public CompiledExpression compile() {
         //will not create a copy in production mode
@@ -321,6 +315,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         );
                         fieldsToExpand.addAll(newFields);
                         updateContext.put("columnsCount",newFields.size()+currColumnsCount);
+                        if(relationship.getHierarchyExtension()!=null && depth>3){
+                            depth=3;
+                            updateContext.put("depth",depth);
+                        }
                     } else {
                         throw new UPAIllegalArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
                     }

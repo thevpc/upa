@@ -11,8 +11,8 @@ import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.SessionParams;
+import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
-import net.vpc.upa.impl.ext.QueryHintsExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
@@ -933,19 +933,18 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         }
         hints.put(QueryHints.MAX_JOINS,maxJoins);
 
-        int maxColumns = UPAUtils.convertToInt(config.getHint(QueryHintsExt.MAX_COLUMNS),-1);
+        int maxColumns = UPAUtils.convertToInt(config.getHint(UPAImplKeys.QueryHints_MAX_COLUMNS),-1);
         if(maxColumns<0 || maxColumns>maxQueryColumnsCount){
             maxColumns=maxQueryColumnsCount;
         }
-
-        hints.put(QueryHintsExt.MAX_COLUMNS,maxColumns);
+        hints.put(UPAImplKeys.QueryHints_MAX_COLUMNS,maxColumns);
 
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
         if (maxQueryJoinCount > 0 || maxQueryColumnsCount > 0) {
             for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                 CompiledSelect cs = (CompiledSelect) ce;
-                if (maxQueryJoinCount > 0 && cs.getJoins().length >= maxQueryJoinCount) {
+                if (maxQueryJoinCount > 0 && cs.getJoins().length > maxQueryJoinCount) {
                     log.warning("this query is very likely to fail. It uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                     reeavluateWithLessJoin = true;
                     break;
@@ -966,7 +965,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                 reeavluateWithLessJoin = false;
                 for (CompiledExpression ce : compiledExpression.findExpressionsList(new TypeCompiledExpressionFilter(CompiledSelect.class))) {
                     CompiledSelect cs = (CompiledSelect) ce;
-                    if (maxQueryJoinCount > 0 && cs.getJoins().length >= maxQueryJoinCount) {
+                    if (maxQueryJoinCount > 0 && cs.getJoins().length > maxQueryJoinCount) {
                         log.warning("this query is very likely to fail. It STILL uses " + cs.getJoins().length + " > " + maxQueryJoinCount + " join tables : " + statement);
                         reeavluateWithLessJoin = true;
                         break;
