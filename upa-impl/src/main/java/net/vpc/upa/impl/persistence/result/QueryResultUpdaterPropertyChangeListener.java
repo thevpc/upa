@@ -12,15 +12,15 @@ import java.beans.PropertyChangeListener;
 class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
 
     private final QueryResult result;
-    private final TypeInfo typeInfo;
+    private final ColumnFamily columnFamily;
 
-    public QueryResultUpdaterPropertyChangeListener(TypeInfo typeInfo, QueryResult result) {
+    public QueryResultUpdaterPropertyChangeListener(ColumnFamily columnFamily, QueryResult result) {
         this.result = result;
-        this.typeInfo = typeInfo;
+        this.columnFamily = columnFamily;
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        int index = typeInfo.fieldsMap.get(evt.getPropertyName()).dbIndex;
+        int index = columnFamily.fieldsMap.get(evt.getPropertyName()).dbIndex;
         result.write(index, evt.getNewValue());
     }
 }

@@ -10,16 +10,16 @@ import java.util.*;
  * this template use File | Settings | File Templates.
  */
 @PortabilityHint(target = "C#", name = "ignore")
-public class LazyList<T> implements List<T>, Closeable {
+public abstract class LazyList<T> implements List<T>, Closeable {
 
-    protected Iterator<T> base;
+//    protected Iterator<T> base;
     private List<T> loaded = new ArrayList<T>();
     private int actualSize = 0;
     boolean end = false;
     private int startIndex = 0;
 
     public LazyList(Iterator<T> base) {
-        this.base = base;
+//        this.base = base;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class LazyList<T> implements List<T>, Closeable {
             return false;
         }
         if (!end) {
-            loadNext();
+            checkLoadNext();
         }
         return actualSize <= 0;
     }
@@ -163,7 +163,7 @@ public class LazyList<T> implements List<T>, Closeable {
             throw new IllegalStateException(index + " < Window = " + startIndex);
         }
         while (!end && index >= actualSize) {
-            loadNext();
+            checkLoadNext();
         }
     }
 
@@ -226,15 +226,18 @@ public class LazyList<T> implements List<T>, Closeable {
     }
 
     public void ensureLoadAll() {
-        while (loadNext()) {
+        while (checkLoadNext()) {
             //do nothing
         }
     }
 
-    private boolean loadNext() {
+    protected abstract boolean checkHasNext();
+    protected abstract T loadNext();
+
+    private boolean checkLoadNext() {
         if (!end) {
-            if (base.hasNext()) {
-                loaded.add(base.next());
+            if (checkHasNext()) {
+                loaded.add(loadNext());
                 actualSize++;
                 return true;
             }

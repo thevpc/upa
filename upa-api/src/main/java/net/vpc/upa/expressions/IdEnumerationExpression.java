@@ -13,8 +13,8 @@ public class IdEnumerationExpression extends DefaultExpression implements Clonea
     private List<Object> ids;
     private Var alias;
 
-    public IdEnumerationExpression(List<Object> keys, Var alias) {
-        this.ids = keys;
+    public IdEnumerationExpression(List<Object> ids, Var alias) {
+        this.ids = ids;
         this.alias = alias;
     }
 

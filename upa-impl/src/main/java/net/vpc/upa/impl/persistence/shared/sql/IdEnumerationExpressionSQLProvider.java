@@ -9,7 +9,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledAnd;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEquals;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledKeyEnumerationExpression;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledIdEnumerationExpression;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledOr;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
@@ -22,15 +22,15 @@ import net.vpc.upa.types.ManyToOneType;
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
  * this template use File | Settings | File Templates.
  */
-public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
+public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
 
-    public KeyEnumerationExpressionSQLProvider() {
-        super(CompiledKeyEnumerationExpression.class);
+    public IdEnumerationExpressionSQLProvider() {
+        super(CompiledIdEnumerationExpression.class);
     }
 
     @Override
     public String getSQL(Object o, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) {
-        CompiledKeyEnumerationExpression ee = (CompiledKeyEnumerationExpression) o;
+        CompiledIdEnumerationExpression ee = (CompiledIdEnumerationExpression) o;
         Entity entity = null;
         CompiledVar compiledVar = null;
         if (ee.getAlias() != null) {
@@ -51,7 +51,7 @@ public class KeyEnumerationExpressionSQLProvider extends AbstractSQLProvider {
             }
         }
         if (entity == null) {
-            throw new IllegalArgumentException("Key enumeration must by associated to and entity");
+            throw new IllegalArgumentException("Id enumeration must by associated to and entity");
         }
         if (ee.getKeys().isEmpty()) {
             return sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);

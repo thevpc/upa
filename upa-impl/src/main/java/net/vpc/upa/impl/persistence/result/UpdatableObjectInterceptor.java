@@ -12,9 +12,9 @@ import net.vpc.upa.persistence.QueryResult;
 class UpdatableObjectInterceptor implements PlatformMethodProxy<Object> {
     private final Object object;
     private final QueryResult result;
-    private TypeInfo singleEntityQueryResult;
+    private ColumnFamily singleEntityQueryResult;
 
-    public UpdatableObjectInterceptor(TypeInfo singleEntityQueryResult, Object object, QueryResult result) {
+    public UpdatableObjectInterceptor(ColumnFamily singleEntityQueryResult, Object object, QueryResult result) {
         this.singleEntityQueryResult = singleEntityQueryResult;
         this.object = object;
         this.result = result;

@@ -47,7 +47,7 @@ public class DefaultSQLManager implements SQLManager {
         register0(new TypeNameSQLProvider());
         register0(new CurrentUserSQLProvider());
         register0(new CompiledQLFunctionExpressionSQLProvider());
-        register0(new KeyEnumerationExpressionSQLProvider());
+        register0(new IdEnumerationExpressionSQLProvider());
     }
 
     public void register(SQLProvider provider) {

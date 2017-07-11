@@ -19,7 +19,13 @@ public class ValueList<T> extends QueryResultLazyList<T> {
         this.index = index;
     }
 
-    public T parse(QueryResult result) throws UPAException {
-        return result.read(index);
+    @Override
+    protected boolean checkHasNext() {
+        return getQueryResult().hasNext();
+    }
+
+    @Override
+    protected T loadNext() {
+        return getQueryResult().read(index);
     }
 }

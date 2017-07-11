@@ -77,7 +77,8 @@ public class MultiDocumentList extends QueryResultLazyList<MultiDocument> {
     }
 
     @Override
-    public MultiDocument parse(final QueryResult result) throws UPAException {
+    public MultiDocument loadNext() throws UPAException {
+        final QueryResult result=getQueryResult();
         if (forUpdate) {
             resetListeners();
             MultiDocument multiDocument = new DefaultMultiDocument();
@@ -121,6 +122,10 @@ public class MultiDocumentList extends QueryResultLazyList<MultiDocument> {
             }
             return multiDocument;
         }
+    }
+
+    public boolean checkHasNext() throws UPAException {
+        return getQueryResult().hasNext();
     }
 
 }

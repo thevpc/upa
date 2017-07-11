@@ -17,6 +17,6 @@ public class IdEnumerationExpressionCompiler implements ExpressionTranslator {
         IdEnumerationExpression o = (IdEnumerationExpression) x;
         List<Object> keys = o.getIds();
         Var tableAlias = o.getAlias();
-        return new CompiledKeyEnumerationExpression(keys, (CompiledVar) manager.translateAny(tableAlias, declarations));
+        return new CompiledIdEnumerationExpression(keys, (CompiledVar) manager.translateAny(tableAlias, declarations));
     }
 }

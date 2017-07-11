@@ -10,7 +10,7 @@ import net.vpc.upa.impl.uql.BindingId;
 */
 class FieldInfo {
 
-    public TypeInfo typeInfo;
+    public ColumnFamily columnFamily;
     public int dbIndex;
     public BindingId binding;
     public boolean read;

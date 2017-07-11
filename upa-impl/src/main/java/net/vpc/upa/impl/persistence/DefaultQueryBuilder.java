@@ -6,6 +6,8 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
 import net.vpc.upa.impl.ext.QueryExt;
+import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.ResultMetaData;
 
@@ -415,6 +417,21 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         if (query != null) {
             query.close();
         }
+    }
+
+    @Override
+    public QueryBuilder byIdList(List<Object> ids) {
+        if(ids==null || ids.size()==0){
+            return byId(null);
+        }
+        Expression[] objects = ids.toArray(new Expression[ids.size()]);
+        if(ids.size()==1){
+            return byId(objects[0]);
+        }
+        if(entity==null){
+            throw new IllegalArgumentException("Missing Entity");
+        }
+        return byExpression(entity.getBuilder().idListToExpression(ids, UQLUtils.THIS));
     }
 
     public QueryBuilder byField(String field, Object value) {

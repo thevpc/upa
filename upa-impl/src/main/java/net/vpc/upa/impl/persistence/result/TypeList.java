@@ -39,8 +39,8 @@ public class TypeList<T> extends QueryResultLazyList<T> {
         columns = expressions.length;
     }
 
-    @Override
-    public T parse(QueryResult result) throws UPAException {
+    public T loadNext() throws UPAException {
+        QueryResult result = getQueryResult();
         T instance = (T) platformBeanType.newInstance();
         for (int i = 0; i < columns; i++) {
             Object v = result.read(i);
@@ -50,4 +50,10 @@ public class TypeList<T> extends QueryResultLazyList<T> {
         }
         return instance;
     }
+
+    @Override
+    public boolean checkHasNext() throws UPAException {
+        return getQueryResult().hasNext();
+    }
+
 }

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Created by vpc on 1/4/14.
  */
-class TypeInfo {
+class ColumnFamily {
 
     boolean initialized;
     boolean documentType;
@@ -20,30 +20,29 @@ class TypeInfo {
     List<FieldInfo> nonIdFields = new ArrayList<FieldInfo>();
     List<FieldInfo> idFields = new ArrayList<FieldInfo>();
     FieldInfo[] fieldsArray;
-    ResultObject currentResult;
     Entity entity;
     Class resultType;
     EntityBuilder builder;
     EntityBuilder entityConverter;
     Map<String, FieldInfo> fieldsMap = new HashMap<String, FieldInfo>();
     Map<String, FieldInfoSetter> setters = new HashMap<String, FieldInfoSetter>();
-    TypeInfoSupParser parser;
+    ColumnFamilyParser parser;
     boolean partialObject;
     ObjectFactory ofactory;
 
-    public TypeInfo(BindingId binding,ObjectFactory ofactory) {
+    public ColumnFamily(BindingId binding, ObjectFactory ofactory) {
         this(binding,(Entity) null,null,ofactory);
     }
 
-    public TypeInfo(BindingId binding, Entity entity,ObjectFactory ofactory) {
+    public ColumnFamily(BindingId binding, Entity entity, ObjectFactory ofactory) {
         this(binding,entity,null,ofactory);
     }
 
-    public TypeInfo(BindingId binding, Class resultType,ObjectFactory ofactory) {
+    public ColumnFamily(BindingId binding, Class resultType, ObjectFactory ofactory) {
         this(binding,null,resultType,ofactory);
     }
 
-    private TypeInfo(BindingId binding, Entity entity,Class resultType,ObjectFactory ofactory) {
+    private ColumnFamily(BindingId binding, Entity entity, Class resultType, ObjectFactory ofactory) {
         this.binding = binding;
         this.ofactory = ofactory;
         this.entity = entity;
@@ -77,24 +76,41 @@ class TypeInfo {
 
     @Override
     public String toString() {
-        return "TypeInfo{" +
+        return "ColumnFamily{" +
                 "binding="+(binding==null?"''":("'" + binding + '\'')) +
                 ", entity=" + entity +
                 '}';
     }
 
     public ResultObject createResultObject(){
-        TypeInfo typeInfo=this;
+        ColumnFamily columnFamily =this;
         ResultObject result=new ResultObject();
-        if (typeInfo.documentType) {
+        if (columnFamily.documentType) {
             Object entityObject = null;
-            Document entityDocument = typeInfo.builder == null ? ofactory.createObject(Document.class) : typeInfo.builder.createDocument();
+            Document entityDocument = columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument();
             result.entityObject = entityObject;
             result.entityDocument = entityDocument;
             result.entityResult = entityDocument;
         } else {
-            Object entityObject = typeInfo.builder.createObject();
-            Document entityDocument = typeInfo.entityConverter.objectToDocument(entityObject, true);
+            Object entityObject = columnFamily.builder.createObject();
+            Document entityDocument = columnFamily.entityConverter.objectToDocument(entityObject, true);
+            result.entityObject = entityObject;
+            result.entityDocument = entityDocument;
+            result.entityResult = entityObject;
+        }
+        return result;
+    }
+    public static ResultObject createResultObject(Entity entity,boolean documentType){
+        ResultObject result=new ResultObject();
+        if (documentType) {
+            Object entityObject = null;
+            Document entityDocument = entity.getBuilder().createDocument();
+            result.entityObject = entityObject;
+            result.entityDocument = entityDocument;
+            result.entityResult = entityDocument;
+        } else {
+            Object entityObject = entity.getBuilder().createObject();
+            Document entityDocument = entity.getBuilder().objectToDocument(entityObject, true);
             result.entityObject = entityObject;
             result.entityDocument = entityDocument;
             result.entityResult = entityObject;

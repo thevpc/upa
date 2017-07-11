@@ -36,6 +36,8 @@ import net.vpc.upa.expressions.Order;
 import net.vpc.upa.filters.FieldFilter;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -58,6 +60,8 @@ public interface QueryBuilder extends Query, Serializable {
     QueryBuilder setFieldFilter(FieldFilter fieldFilter);
 
     QueryBuilder byId(Object id);
+
+    QueryBuilder byIdList(List<Object> id);
 
     QueryBuilder byKey(Key key);
 

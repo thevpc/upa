@@ -8,7 +8,6 @@ import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.uql.NativeFieldByBindingIdComparator;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.QueryResult;
-import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -18,26 +17,35 @@ import java.util.*;
 /**
  * Created by vpc on 6/18/16.
  */
-public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> {
-    public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE=new NoCacheMap<NamedId, ResultObject>();
+public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> implements QueryResultParserHelper {
+    public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE = new NoCacheMap<NamedId, ResultObject>();
+    boolean workspace_hasNext=true;
+    Map<String, Set<Object>> workspace_missingObjects = new HashMap<>();
+    List<LazyResult> workspace_todos = new ArrayList<>();
+    LinkedList<T> workspace_available = new LinkedList<>();
+    int workspace_missingObjectsCount = 0;
+    int workspace_bulkSize = 100;
+    boolean workspace_hasTodos = false;
+    PersistenceUnit persistenceUnit;
     private boolean updatable;
+    private boolean itemAsDocument;
     private ResultMetaData metaData;
     private CacheMap<NamedId, ResultObject> referencesCache;
     private Map<String, Object> hints;
     private ObjectFactory ofactory;
-    private TypeInfo[] typeInfos;
+    private ColumnFamily[] columnFamilies;
     private QueryResultItemBuilder resultBuilder;
-    private LoaderContext loaderContext;
 
     public DefaultObjectQueryResultLazyList(
             PersistenceUnit pu,
             QueryExecutor queryExecutor,
-            boolean relationAsDocument,
+            boolean itemAsDocument,
             int supportCacheSize,
             boolean updatable,
             QueryResultItemBuilder resultBuilder
     ) throws SQLException {
         super(queryExecutor);
+        this.itemAsDocument = itemAsDocument;
         this.resultBuilder = resultBuilder;
         metaData = queryExecutor.getMetaData();
         hints = queryExecutor.getHints();
@@ -46,23 +54,23 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         } else {
             hints = new HashMap<String, Object>(hints);
         }
-        if (supportCacheSize>0) {
+        if (supportCacheSize > 0) {
             CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get("queryCache");
             if (sharedCache == null) {
                 sharedCache = new LRUCacheMap<NamedId, ResultObject>(supportCacheSize);
                 hints.put("queryCache", sharedCache);
             }
             referencesCache = sharedCache;
-        }else {
-            referencesCache=NO_RESULT_CACHE;
+        } else {
+            referencesCache = NO_RESULT_CACHE;
         }
-        loaderContext = new LoaderContext(referencesCache, hints);
-        LinkedHashMap<BindingId, TypeInfo> bindingToTypeInfos0 = new LinkedHashMap<BindingId, TypeInfo>();
+        LinkedHashMap<BindingId, ColumnFamily> bindingToTypeInfos0 = new LinkedHashMap<BindingId, ColumnFamily>();
         ofactory = pu.getFactory();
+        persistenceUnit = pu;
         NativeField[] fields = queryExecutor.getFields();
 
         //reorder fields by binding so that parent bindings are always seen first!
-        SortPreserveIndexIndexedItem[] indexed=UPAUtils.sortPreserveIndex0(fields, NativeFieldByBindingIdComparator.INSTANCE);
+        SortPreserveIndexIndexedItem[] indexed = UPAUtils.sortPreserveIndex0(fields, NativeFieldByBindingIdComparator.INSTANCE);
 
         for (int i = 0; i < indexed.length; i++) {
             NativeField nativeField = (NativeField) indexed[i].getItem();
@@ -74,170 +82,237 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             f.field = nativeField.getField();
             f.parentBindingReferrer = nativeField.getParentBindingEntity();
 
-            if(f.parentBindingReferrer==null && f.field!=null){
+            if (f.parentBindingReferrer == null && f.field != null) {
                 //work around!
-                f.parentBindingReferrer=f.field.getEntity();
+                f.parentBindingReferrer = f.field.getEntity();
             }
 
             BindingId parentBinding = f.binding.getParent();
-            TypeInfo typeInfo = bindingToTypeInfos0.get(parentBinding);
-            if (typeInfo == null) {
-                TypeInfo ancestor = null;
-                if((parentBinding==null || parentBinding.getParent()==null)){
+            ColumnFamily columnFamily = bindingToTypeInfos0.get(parentBinding);
+            if (columnFamily == null) {
+                ColumnFamily ancestor = null;
+                if ((parentBinding == null || parentBinding.getParent() == null)) {
                     //do nothing
-                }else{
+                } else {
                     ancestor = bindingToTypeInfos0.get(parentBinding.getParent());
-                    if(ancestor==null){
+                    if (ancestor == null) {
                         throw new IllegalArgumentException("Unexpected");
                     }
                 }
-                if(ancestor!=null){
-                    if(ancestor.entity==null){
+                if (ancestor != null) {
+                    if (ancestor.entity == null) {
                         throw new IllegalArgumentException("Unsupported");
-                    }else{
+                    } else {
                         Field field = ancestor.entity.getField(parentBinding.getName());
-                        if(field.getDataType() instanceof ManyToOneType){
-                            typeInfo = new TypeInfo(parentBinding, ((ManyToOneType) field.getDataType()).getTargetEntity(),ofactory);
-                            typeInfo.documentType = relationAsDocument;
-                            bindingToTypeInfos0.put(parentBinding, typeInfo);
-                        }else{
+                        if (field.getDataType() instanceof ManyToOneType) {
+                            columnFamily = new ColumnFamily(parentBinding, ((ManyToOneType) field.getDataType()).getTargetEntity(), ofactory);
+                            columnFamily.documentType = itemAsDocument;
+                            bindingToTypeInfos0.put(parentBinding, columnFamily);
+                        } else {
                             throw new IllegalArgumentException("Unsupported");
                         }
                     }
-                }else {
-                    if (f.parentBindingReferrer != null && parentBinding!=null) {
-                        typeInfo = new TypeInfo(parentBinding, f.parentBindingReferrer,ofactory);
-                        typeInfo.documentType = relationAsDocument;
-                        bindingToTypeInfos0.put(parentBinding, typeInfo);
+                } else {
+                    if (f.parentBindingReferrer != null && parentBinding != null) {
+                        columnFamily = new ColumnFamily(parentBinding, f.parentBindingReferrer, ofactory);
+                        columnFamily.documentType = itemAsDocument;
+                        bindingToTypeInfos0.put(parentBinding, columnFamily);
                     } else {
-                        typeInfo = new TypeInfo(parentBinding,ofactory);
-                        typeInfo.documentType = false;//n.contains(".") ? relationAsDocument : defaultsToDocument;
-                        bindingToTypeInfos0.put(parentBinding, typeInfo);
+                        columnFamily = new ColumnFamily(parentBinding, ofactory);
+                        columnFamily.documentType = itemAsDocument;//n.contains(".") ? relationAsDocument : defaultsToDocument;
+                        bindingToTypeInfos0.put(parentBinding, columnFamily);
                     }
                 }
-                typeInfo.partialObject=f.nativeField.isPartialObject();
+                columnFamily.partialObject = f.nativeField.isPartialObject();
             }
-            f.typeInfo = typeInfo;
-            if(f.field!=null && f.field.isId()){
-                typeInfo.idFields.add(f);
-            }else {
-                typeInfo.nonIdFields.add(f);
+            f.columnFamily = columnFamily;
+            if (f.field != null && f.field.isId()) {
+                columnFamily.idFields.add(f);
+            } else {
+                columnFamily.nonIdFields.add(f);
             }
-            typeInfo.fieldsMap.put(f.binding.getName(), f);
+            columnFamily.fieldsMap.put(f.binding.getName(), f);
         }
-        typeInfos = bindingToTypeInfos0.values().toArray(new TypeInfo[bindingToTypeInfos0.size()]);
-        for (TypeInfo typeInfo : typeInfos) {
-            if(typeInfo.entity!=null){
-                Set<String> visitedIds=new HashSet<>();
-                Set<String> expectedIds=new HashSet<>();
-                List<Field> idFields = typeInfo.entity.getIdFields();
+        columnFamilies = bindingToTypeInfos0.values().toArray(new ColumnFamily[bindingToTypeInfos0.size()]);
+        for (ColumnFamily columnFamily : columnFamilies) {
+            if (columnFamily.entity != null) {
+                Set<String> visitedIds = new HashSet<>();
+                Set<String> expectedIds = new HashSet<>();
+                List<Field> idFields = columnFamily.entity.getIdFields();
                 for (Field field : idFields) {
                     expectedIds.add(field.getName());
                 }
-                for (Iterator<FieldInfo> iterator = typeInfo.idFields.iterator(); iterator.hasNext(); ) {
+                for (Iterator<FieldInfo> iterator = columnFamily.idFields.iterator(); iterator.hasNext(); ) {
                     FieldInfo field = iterator.next();
                     //id field defined twice, not so reasonable, but may happen
                     //if user defines by him self columns
                     String fieldName = field.field.getName();
-                    if(visitedIds.contains(fieldName)){
-                       iterator.remove();
-                       typeInfo.nonIdFields.add(field);
-                    }else if(expectedIds.contains(fieldName)){
+                    if (visitedIds.contains(fieldName)) {
+                        iterator.remove();
+                        columnFamily.nonIdFields.add(field);
+                    } else if (expectedIds.contains(fieldName)) {
                         visitedIds.add(fieldName);
                         expectedIds.remove(fieldName);
-                    }else{
+                    } else {
                         //should never happen
                         throw new IllegalArgumentException("Should never Happen");
                     }
                 }
-                FieldInfo[] nonOrderedIdFields = typeInfo.idFields.toArray(new FieldInfo[typeInfo.idFields.size()]);
+                FieldInfo[] nonOrderedIdFields = columnFamily.idFields.toArray(new FieldInfo[columnFamily.idFields.size()]);
 
                 //now re-order id fields
                 for (int i = 0; i < idFields.size(); i++) {
                     for (int j = 0; j < nonOrderedIdFields.length; j++) {
-                        if(typeInfo.idFields.get(j).field.getName().equals(idFields.get(i).getName())){
-                            nonOrderedIdFields[i]=typeInfo.idFields.get(j);
+                        if (columnFamily.idFields.get(j).field.getName().equals(idFields.get(i).getName())) {
+                            nonOrderedIdFields[i] = columnFamily.idFields.get(j);
                             break;
                         }
                     }
                 }
 
-                if(expectedIds.isEmpty() && !typeInfo.idFields.isEmpty()){
-                    typeInfo.identifiable=true;
+                if (expectedIds.isEmpty() && !columnFamily.idFields.isEmpty()) {
+                    columnFamily.identifiable = true;
                 }
             }
-            if(typeInfo.binding==null){
-                typeInfo.parser= SupParserNoBinding.INSTANCE;
-            }else if(typeInfo.entity!=null && typeInfo.identifiable) {
-                if(typeInfo.partialObject){
-                    if (typeInfo.idFields.size() == 1) {
-                        typeInfo.parser = SupParserSingleIdExternalLoadEntity.INSTANCE;
+            if (columnFamily.binding == null) {
+                columnFamily.parser = ColumnFamilyParserNoBinding.INSTANCE;
+            } else if (columnFamily.entity != null && columnFamily.identifiable) {
+                if (columnFamily.partialObject) {
+                    if (columnFamily.idFields.size() == 1) {
+                        columnFamily.parser = ColumnFamilyParserSingleIdExternalLoadEntity.INSTANCE;
                     } else {
-                        typeInfo.parser = SupParserMultiIdExternalLoadEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserMultiIdExternalLoadEntity.INSTANCE;
                     }
-                }else {
-                    if (typeInfo.idFields.size() == 1) {
-                        typeInfo.parser = SupParserSingleIdEntity.INSTANCE;
+                } else {
+                    if (columnFamily.idFields.size() == 1) {
+                        columnFamily.parser = ColumnFamilyParserSingleIdEntity.INSTANCE;
                     } else {
-                        typeInfo.parser = SupParserMultiIdEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserMultiIdEntity.INSTANCE;
                     }
                 }
-            }else if(typeInfo.entity!=null && !typeInfo.identifiable){
-                typeInfo.parser= SupParserNoIdEntity.INSTANCE;
-            }else {
-                throw new IllegalArgumentException("Unsupported binding "+typeInfo.binding);
+            } else if (columnFamily.entity != null && !columnFamily.identifiable) {
+                columnFamily.parser = ColumnFamilyParserNoIdEntity.INSTANCE;
+            } else {
+                throw new IllegalArgumentException("Unsupported binding " + columnFamily.binding);
             }
         }
-        for (TypeInfo typeInfo : typeInfos) {
-            typeInfo.fieldsArray = typeInfo.nonIdFields.toArray(new FieldInfo[typeInfo.nonIdFields.size()]);
+        for (ColumnFamily columnFamily : columnFamilies) {
+            columnFamily.fieldsArray = columnFamily.nonIdFields.toArray(new FieldInfo[columnFamily.nonIdFields.size()]);
         }
 
         this.updatable = updatable;
     }
 
-    public T parse(final QueryResult result) throws UPAException {
-        Map<BindingId, Object> groupValues = new HashMap<BindingId, Object>();
-        Map<BindingId, TypeInfo> groupTypes = new HashMap<BindingId, TypeInfo>();
-        List<ResultField> resultFields = metaData.getResultFields();
-        ResultColumn[] values = new ResultColumn[resultFields.size()];
-        for (TypeInfo typeInfo : typeInfos) {
-            groupTypes.put(typeInfo.binding,typeInfo);
-            typeInfo.parser.parse(result,typeInfo,groupValues, loaderContext);
-            if (updatable) {
-                ResultObject currentResult = typeInfo.currentResult;
-                if (typeInfo.documentType) {
-                    QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(typeInfo, result);
-                    currentResult.entityDocument.addPropertyChangeListener(li);
-                } else {
-                    currentResult.entityUpdatable = PlatformUtils.createObjectInterceptor(
-                            typeInfo.resultType,
-                            new UpdatableObjectInterceptor(typeInfo, currentResult.entityObject, result));
-                    groupValues.put(typeInfo.binding, currentResult.entityUpdatable);
-                    int index = typeInfo.nonIdFields.get(0).nativeField.getIndex();
-                    if (values[index].getValue() == typeInfo.resultType) {
-                        values[index].setValue(currentResult.entityUpdatable);
+
+    public void addWorkspaceMissingObject(String entity, Object id) {
+        Set<Object> list = workspace_missingObjects.get(entity);
+        if (list == null) {
+            list = new HashSet<>();
+        }
+        if (list.add(id)) {
+            workspace_missingObjectsCount++;
+        }
+    }
+
+    private void addWorkspaceTodo(LazyResult result) {
+        workspace_todos.add(result);
+        workspace_hasTodos = false;
+    }
+
+    private void reduceWorkspace() {
+        for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
+            String entityName = e.getKey();
+            Entity entity = persistenceUnit.getEntity(entityName);
+            EntityBuilder builder = entity.getBuilder();
+            Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(e.getValue())).setHints(getHints());
+            CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
+            if (itemAsDocument) {
+                for (Document o : query.getDocumentList()) {
+                    ResultObject resultObject = new ResultObject();
+                    Object entityObject = null;
+                    Document entityDocument = o;
+                    resultObject.entityObject = entityObject;
+                    resultObject.entityDocument = entityDocument;
+                    resultObject.entityResult = entityDocument;
+                    NamedId id = new NamedId(builder.objectToId(o), entityName);
+                    if (!referencesCache.containsKey(id)) {
+                        referencesCache.put(id, resultObject);
+                    }
+                }
+            } else {
+                for (Object o : query.getResultList()) {
+                    ResultObject resultObject = new ResultObject();
+                    Object entityObject = o;
+                    Document entityDocument = builder.objectToDocument(entityObject, true);
+                    resultObject.entityObject = entityObject;
+                    resultObject.entityDocument = entityDocument;
+                    resultObject.entityResult = entityObject;
+                    NamedId id = new NamedId(builder.objectToId(o), entityName);
+                    if (!referencesCache.containsKey(id)) {
+                        referencesCache.put(id, resultObject);
                     }
                 }
             }
         }
-        for (Map.Entry<BindingId, Object> e : groupValues.entrySet()) {
-            BindingId currBinding = e.getKey();
-            Object currValue = e.getValue();
-            BindingId parentBinding = currBinding.getParent();
-            if(parentBinding !=null){
-                TypeInfo parentType=groupTypes.get(parentBinding);
-                Object parent = groupValues.get(parentBinding);
-                if(parent!=null){
-                    parentType.setterFor(currBinding.getName()).set(parent,currValue);
+        workspace_missingObjects.clear();
+        for (LazyResult lazyResult : workspace_todos) {
+            for (Map.Entry<BindingId, NamedId> t : lazyResult.todos.entrySet()) {
+                ResultObject ro = referencesCache.get(t.getValue());
+                if (ro == null) {
+                    throw new IllegalArgumentException("Problem");
+                }
+                lazyResult.values.put(t.getKey(), ro.entityResult);
+            }
+            workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
+        }
+        workspace_todos.clear();
+        workspace_missingObjectsCount = 0;
+    }
+
+    @Override
+    public boolean checkHasNext() throws UPAException {
+        QueryResult result=getQueryResult();
+        if (!workspace_available.isEmpty()) {
+            return true;
+        }
+        while (workspace_hasNext) {
+            workspace_hasNext = result.hasNext();
+            if (workspace_hasNext) {
+                LazyResult lazyResult = new LazyResult(result, updatable, metaData);
+                for (ColumnFamily columnFamily : columnFamilies) {
+                    lazyResult.types.put(columnFamily.binding, columnFamily);
+                    columnFamily.parser.parse(result, columnFamily, lazyResult, this);
+                }
+                if (lazyResult.incomplete || workspace_hasTodos) {
+                    addWorkspaceTodo(lazyResult);
+                    if (workspace_missingObjectsCount >= workspace_bulkSize) {
+                        reduceWorkspace();
+                        return true;
+                    }
+                } else {
+                    workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
+                    return true;
+                }
+            } else {
+                if (workspace_missingObjectsCount > 0) {
+                    reduceWorkspace();
+                    return true;
                 }
             }
         }
-        for (int i = 0; i < values.length; i++) {
-            ResultColumn c=values[i] = new ResultColumn();
-            c.setLabel(resultFields.get(i).getAlias());
-            c.setValue(groupValues.get(BindingId.create(String.valueOf(i))));
-        }
-        return (T) this.resultBuilder.createResult(values, metaData);
+        return false;
     }
 
+
+    public T loadNext() throws UPAException {
+        return (T) workspace_available.remove();
+    }
+
+    public CacheMap<NamedId, ResultObject> getReferencesCache() {
+        return referencesCache;
+    }
+
+    public Map<String, Object> getHints() {
+        return hints;
+    }
 }
