@@ -44,7 +44,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         this.config = config;
         navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH, -1);
         if (navigationDepth < 0) {
-            navigationDepth = 1;
+            navigationDepth = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHints.NAVIGATION_DEPTH,5);
+            if (navigationDepth < 0) {
+                navigationDepth = 5;
+            }
         }
         fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
         if (fetchStrategy == null) {
@@ -188,7 +191,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         CompiledEntityStatement enclosingStmt=(CompiledEntityStatement) updateContext.get("updateContext");
         Integer depth=(Integer) updateContext.get("depth");
         if(depth==null){
-            depth=navigationDepth;
+            depth=navigationDepth+1;
         }
         if (enclosingStmt == null) {
             enclosingStmt = (CompiledEntityStatement) tt.getParentExpression();
@@ -669,7 +672,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             CompiledQueryField qf = fields.get(i);
             qf.setBinding(BindingId.create(String.valueOf(i)));
             updateContext.put("enclosingStmt",s);
-            updateContext.put("depth",navigationDepth);
+            updateContext.put("depth",navigationDepth+1);
             updateContext.put("index",i);
 
             ReplaceResult rqf = updateCompiledQueryField(qf, updateContext);

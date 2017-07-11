@@ -13,11 +13,14 @@ import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by vpc on 6/18/16.
  */
 public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> implements QueryResultParserHelper {
+    private static final Logger log=Logger.getLogger(DefaultObjectQueryResultLazyList.class.getName());
     public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE = new NoCacheMap<NamedId, ResultObject>();
     boolean workspace_hasNext=true;
     Map<String, Set<Object>> workspace_missingObjects = new HashMap<>();
@@ -221,54 +224,66 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     }
 
     private void reduceWorkspace() {
-        for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
-            String entityName = e.getKey();
-            Entity entity = persistenceUnit.getEntity(entityName);
-            EntityBuilder builder = entity.getBuilder();
-            Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(e.getValue())).setHints(getHints());
-            CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
-            if (itemAsDocument) {
-                for (Document o : query.getDocumentList()) {
-                    ResultObject resultObject = new ResultObject();
-                    Object entityObject = null;
-                    Document entityDocument = o;
-                    resultObject.entityObject = entityObject;
-                    resultObject.entityDocument = entityDocument;
-                    resultObject.entityResult = entityDocument;
-                    NamedId id = new NamedId(builder.objectToId(o), entityName);
-                    if (!referencesCache.containsKey(id)) {
-                        referencesCache.put(id, resultObject);
+        if(workspace_missingObjectsCount>0) {
+            for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
+                String entityName = e.getKey();
+                Entity entity = persistenceUnit.getEntity(entityName);
+                EntityBuilder builder = entity.getBuilder();
+                Set<Object> itemsToReduce = e.getValue();
+                if(!UPAUtils.PRODUCTION_MODE) {
+                    net.vpc.upa.Properties properties = persistenceUnit.getProperties();
+                    long oldMaxReduceSize = properties.getLong("System.Perf.ResultList.MaxReduceSize", 0);
+                    if(oldMaxReduceSize<itemsToReduce.size()){
+                        oldMaxReduceSize=itemsToReduce.size();
+                        properties.setLong("System.Perf.ResultList.MaxReduceSize",oldMaxReduceSize);
                     }
                 }
-            } else {
-                for (Object o : query.getResultList()) {
-                    ResultObject resultObject = new ResultObject();
-                    Object entityObject = o;
-                    Document entityDocument = builder.objectToDocument(entityObject, true);
-                    resultObject.entityObject = entityObject;
-                    resultObject.entityDocument = entityDocument;
-                    resultObject.entityResult = entityObject;
-                    NamedId id = new NamedId(builder.objectToId(o), entityName);
-                    if (!referencesCache.containsKey(id)) {
-                        referencesCache.put(id, resultObject);
+
+                Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce)).setHints(getHints());
+                CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
+                if (itemAsDocument) {
+                    for (Document o : query.getDocumentList()) {
+                        ResultObject resultObject = new ResultObject();
+                        Object entityObject = null;
+                        Document entityDocument = o;
+                        resultObject.entityObject = entityObject;
+                        resultObject.entityDocument = entityDocument;
+                        resultObject.entityResult = entityDocument;
+                        NamedId id = new NamedId(builder.objectToId(o), entityName);
+                        if (!referencesCache.containsKey(id)) {
+                            referencesCache.put(id, resultObject);
+                        }
+                    }
+                } else {
+                    for (Object o : query.getResultList()) {
+                        ResultObject resultObject = new ResultObject();
+                        Object entityObject = o;
+                        Document entityDocument = builder.objectToDocument(entityObject, true);
+                        resultObject.entityObject = entityObject;
+                        resultObject.entityDocument = entityDocument;
+                        resultObject.entityResult = entityObject;
+                        NamedId id = new NamedId(builder.objectToId(o), entityName);
+                        if (!referencesCache.containsKey(id)) {
+                            referencesCache.put(id, resultObject);
+                        }
                     }
                 }
             }
-        }
-        workspace_missingObjects.clear();
-        for (LazyResult lazyResult : workspace_todos) {
-            for (Map.Entry<BindingId, NamedId> t : lazyResult.todos.entrySet()) {
-                ResultObject ro = referencesCache.get(t.getValue());
-                if (ro == null) {
-                    throw new IllegalArgumentException("Problem");
+            workspace_missingObjects.clear();
+            for (LazyResult lazyResult : workspace_todos) {
+                for (Map.Entry<BindingId, NamedId> t : lazyResult.todos.entrySet()) {
+                    ResultObject ro = referencesCache.get(t.getValue());
+                    if (ro == null) {
+                        throw new IllegalArgumentException("Problem");
+                    }
+                    lazyResult.values.put(t.getKey(), ro.entityResult);
                 }
-                lazyResult.values.put(t.getKey(), ro.entityResult);
+                workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
             }
-            workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
+            workspace_todos.clear();
+            workspace_hasTodos = false;
+            workspace_missingObjectsCount = 0;
         }
-        workspace_todos.clear();
-        workspace_hasTodos=false;
-        workspace_missingObjectsCount = 0;
     }
 
     @Override

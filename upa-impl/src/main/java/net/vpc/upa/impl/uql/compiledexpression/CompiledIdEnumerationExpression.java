@@ -85,7 +85,7 @@ public class CompiledIdEnumerationExpression extends DefaultCompiledExpressionIm
         sb.append(" in ");
         sb.append("(");
         for (int i = 0; i < keys.size(); i++) {
-            if(i==0){
+            if(i>0){
                 sb.append(",");
             }
             sb.append(keys.get(i));

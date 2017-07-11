@@ -1,11 +1,13 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.CloseListener;
+import net.vpc.upa.*;
+import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryScript;
 import net.vpc.upa.impl.persistence.connection.CloseListenerSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.Parameter;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.UConnection;
@@ -35,6 +37,7 @@ public class DefaultUConnection implements UConnection {
     private String name;
     private String nameDebugString;
     private Connection connection;
+    private Properties perfProperties;
     private Connection metadataAccessibleConnection;
     private MarshallManager marshallManager;
     private CloseListenerSupport support;
@@ -44,9 +47,10 @@ public class DefaultUConnection implements UConnection {
     private static final List<UConnection> activeConnections = new ArrayList<UConnection>();
     private static int activeConnectionsMaxCount=0;
 
-    public DefaultUConnection(String name, Connection connection, MarshallManager marshallManager) {
+    public DefaultUConnection(String name, Connection connection, MarshallManager marshallManager,Properties perfProperties) {
         this.name = name;
         this.connection = connection;
+        this.perfProperties = perfProperties;
         this.marshallManager = marshallManager;
         this.support = new CloseListenerSupport();
         nameDebugString = StringUtils.isNullOrEmpty(name) ? "[]" : ("[" + name + "]");
@@ -60,6 +64,10 @@ public class DefaultUConnection implements UConnection {
     public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
+        }
+        if(!UPAUtils.PRODUCTION_MODE) {
+            perfProperties.setLong("System.Perf.Connection.Query",perfProperties.getLong("System.Perf.Connection.Query",0)+1);
+            perfProperties.setLong("System.Perf.Connection.Statement",perfProperties.getLong("System.Perf.Connection.Statement",0)+1);
         }
         long startTime = System.currentTimeMillis();
         SQLException error = null;
@@ -151,6 +159,10 @@ public class DefaultUConnection implements UConnection {
     public int executeNonQuery(String query, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException {
         if (closed) {
             throw new IllegalArgumentException("Connection closed");
+        }
+        if(!UPAUtils.PRODUCTION_MODE) {
+            perfProperties.setLong("System.Perf.Connection.NonQuery",perfProperties.getLong("System.Perf.Connection.NonQuery",0)+1);
+            perfProperties.setLong("System.Perf.Connection.Statement",perfProperties.getLong("System.Perf.Connection.Statement",0)+1);
         }
         SQLException error = null;
         int count = -1;

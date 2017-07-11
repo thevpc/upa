@@ -62,6 +62,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     private String persistenceUnitName;
     private ObjectFactory factory;
     private IdentifierStoreTranslator identifierStoreTranslator;
+    private net.vpc.upa.Properties perfProperties;
     //    private StatementDelegate statement;
 //    private ConnectionProfile profile;
 //    private String dbName;
@@ -152,6 +153,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         this.nameConfig = nameConfig;
         this.readOnly = readOnly;
         this.connectionProfile = connectionProfile;
+        this.perfProperties = persistenceUnit.getProperties();
 
         embeddedDataSourceSupported = null;
         /**
@@ -437,7 +439,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     public UConnection wrapConnection(Connection connection) throws UPAException {
-        return new DefaultUConnection(persistenceUnitName, connection, getMarshallManager());
+        return new DefaultUConnection(persistenceUnitName, connection, getMarshallManager(),perfProperties);
     }
 
     public UConnection createRootUConnection(EntityExecutionContext context) throws UPAException {
