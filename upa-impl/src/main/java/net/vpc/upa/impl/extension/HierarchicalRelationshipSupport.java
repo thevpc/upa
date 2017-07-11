@@ -2,6 +2,7 @@ package net.vpc.upa.impl.extension;
 
 import java.util.ArrayList;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
@@ -103,7 +104,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
         } else {
             Expression r = getEntity().getPersistenceUnit().getExpressionManager().parseExpression(alias);
             if (!(r instanceof Var)) {
-                throw new IllegalArgumentException("Only var expressions are supported");
+                throw new UPAIllegalArgumentException("Only var expressions are supported");
             }
             v = new Var((Var) r, getHierarchyPathField());
         }
@@ -240,7 +241,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             } else if (t instanceof FloatType) {
                 svar = new D2V(var);
             } else {
-                throw new IllegalArgumentException("Unsupported ");
+                throw new UPAIllegalArgumentException("Unsupported ");
             }
             concat.add(svar);
         }

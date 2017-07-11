@@ -7,6 +7,7 @@ package net.vpc.upa.impl.uql.util;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -173,7 +174,7 @@ public class UQLUtils {
 
         Entity entity = o.getEntity();
         if (entity == null) {
-            throw new IllegalArgumentException("Key enumeration must by associated to and entity");
+            throw new UPAIllegalArgumentException("Key enumeration must by associated to and entity");
         }
 
         Key key = entity.getBuilder().idToKey(o.getId());

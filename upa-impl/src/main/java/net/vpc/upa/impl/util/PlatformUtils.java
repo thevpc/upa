@@ -3,6 +3,7 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.filters.ObjectFilter;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.types.Date;
@@ -139,7 +140,7 @@ public class PlatformUtils {
             Class t = (w1 >= w2) ? numberClass1 : numberClass2;
             return nullable ? toRefType(t) : toPrimitiveType(t);
         }
-        throw new IllegalArgumentException("Invalid Number Expr " + numberClass1 + " , " + numberClass2);
+        throw new UPAIllegalArgumentException("Invalid Number Expr " + numberClass1 + " , " + numberClass2);
     }
 
     public static int getIntWeight(Class clazz) {
@@ -175,7 +176,7 @@ public class PlatformUtils {
             return pos;
         }
 
-        throw new IllegalArgumentException("Not an integer");
+        throw new UPAIllegalArgumentException("Not an integer");
     }
 
     public static int getFloatWeight(Class clazz) {
@@ -193,7 +194,7 @@ public class PlatformUtils {
         if (isBigFloat(clazz)) {
             return pos;
         }
-        throw new IllegalArgumentException("Not an integer");
+        throw new UPAIllegalArgumentException("Not an integer");
     }
 
     public static boolean isTime(Class clazz) {
@@ -383,7 +384,7 @@ public class PlatformUtils {
                 break;
             }
             default: {
-                throw new IllegalArgumentException("Unsupported Temperal " + option);
+                throw new UPAIllegalArgumentException("Unsupported Temperal " + option);
             }
         }
         if (baseType == null) {

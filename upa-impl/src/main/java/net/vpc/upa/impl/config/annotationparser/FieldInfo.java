@@ -6,6 +6,7 @@ import net.vpc.upa.Property;
 import net.vpc.upa.Sequence;
 import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -116,7 +117,7 @@ class FieldInfo implements FieldDescriptor {
                     try {
                         fieldDescContainerInstance = (javaField.getDeclaringClass()).newInstance();
                     } catch (Exception e) {
-                        throw new IllegalArgumentException(e);
+                        throw new UPAIllegalArgumentException(e);
                     }
                     ctx.put("FieldDescContainerInstance" + javaField.getDeclaringClass().getName(), fieldDescContainerInstance);
                 }
@@ -124,7 +125,7 @@ class FieldInfo implements FieldDescriptor {
                 try {
                     fieldDesc = (FieldDesc) javaField.get(fieldDescContainerInstance);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             }
             if (fieldDesc != null) {
@@ -163,7 +164,7 @@ class FieldInfo implements FieldDescriptor {
                 }
             }
         } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
+            throw new UPAIllegalArgumentException(e);
         }
     }
 
@@ -250,7 +251,7 @@ class FieldInfo implements FieldDescriptor {
                             (Year) AnnotationParserUtils.parseDate(Year.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (Month.class.isAssignableFrom(asType)) {
                 try {
@@ -260,7 +261,7 @@ class FieldInfo implements FieldDescriptor {
                             (Month) AnnotationParserUtils.parseDate(Month.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Date.class.isAssignableFrom(asType)) {
                 try {
@@ -270,7 +271,7 @@ class FieldInfo implements FieldDescriptor {
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (DateTime.class.isAssignableFrom(asType)) {
                 try {
@@ -280,7 +281,7 @@ class FieldInfo implements FieldDescriptor {
                             (DateTime) AnnotationParserUtils.parseDate(DateTime.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Timestamp.class.isAssignableFrom(asType) || java.sql.Timestamp.class.isAssignableFrom(asType)) {
                 try {
@@ -290,7 +291,7 @@ class FieldInfo implements FieldDescriptor {
                             (Timestamp) AnnotationParserUtils.parseDate(Timestamp.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Time.class.isAssignableFrom(asType)) {
                 try {
@@ -300,7 +301,7 @@ class FieldInfo implements FieldDescriptor {
                             (Time) AnnotationParserUtils.parseDate(Time.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else if (java.sql.Date.class.isAssignableFrom(asType)) {
                 try {
@@ -310,7 +311,7 @@ class FieldInfo implements FieldDescriptor {
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             } else {
                 try {
@@ -320,7 +321,7 @@ class FieldInfo implements FieldDescriptor {
                             (DateTime) AnnotationParserUtils.parseDate(DateTime.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new IllegalArgumentException(e);
+                    throw new UPAIllegalArgumentException(e);
                 }
             }
         } else if (Boolean.TYPE.equals(nativeClass)) {
@@ -601,16 +602,16 @@ class FieldInfo implements FieldDescriptor {
                 if (length == 1) {
                     FieldInfo f = entityInfo.fieldsMap.get(foreignInfo.getMappedTo()[0]);
                     if (f == null) {
-                        throw new IllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
+                        throw new UPAIllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
                     if (!f.foreignInfo.isSpecified()) {
                         ManyToOneType manyToOneType = new ManyToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
                         f.overriddenDataType.setValue(manyToOneType);
                     } else {
-                        throw new IllegalArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
+                        throw new UPAIllegalArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
                     }
                 } else if (length > 1) {
-                    throw new IllegalArgumentException("Illegal mapping for " + name);
+                    throw new UPAIllegalArgumentException("Illegal mapping for " + name);
                 }
             }
         }
@@ -911,7 +912,7 @@ class FieldInfo implements FieldDescriptor {
                         } else if (stringStrategyType == StringEncoderType.DEFAULT) {
                             s2.setEncoder(fieldDecoration.getString("custom"));
                         } else {
-                            throw new IllegalArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
+                            throw new UPAIllegalArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
                         }
                     }
                     transforms.add(s2);
@@ -936,9 +937,9 @@ class FieldInfo implements FieldDescriptor {
                     String type = fieldDecoration.getString("type");
                     String expression = fieldDecoration.getString("expression");
                     if (type.length() > 0 && expression.length() > 0) {
-                        throw new IllegalArgumentException("Invalid Converter definition : both type and expression are mentioned");
+                        throw new UPAIllegalArgumentException("Invalid Converter definition : both type and expression are mentioned");
                     } else if (type.length() == 0 && expression.length() == 0) {
-                        throw new IllegalArgumentException("Invalid Converter definition : none of type and expression are mentioned");
+                        throw new UPAIllegalArgumentException("Invalid Converter definition : none of type and expression are mentioned");
                     } else if (type.length() > 0) {
                         CustomTypeDataTypeTransform s2 = new CustomTypeDataTypeTransform(type);
                         transforms.add(s2);

@@ -35,6 +35,8 @@
 package net.vpc.upa.expressions;
 
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 public final class Avg extends FunctionExpression
         implements Cloneable {
     private static final long serialVersionUID = 1L;
@@ -55,7 +57,7 @@ public final class Avg extends FunctionExpression
         if (index == 0) {
             this.expression = e;
         } else {
-            throw new IllegalArgumentException();
+            throw new UPAIllegalArgumentException();
         }
     }
 

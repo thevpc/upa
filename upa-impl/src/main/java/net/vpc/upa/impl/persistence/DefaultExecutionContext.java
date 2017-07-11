@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
@@ -82,7 +83,7 @@ public class DefaultExecutionContext extends DefaultProperties implements Entity
 
     public void addGeneratedValue(String name, DataType type) {
         if (generatedValues.containsKey(name)) {
-            throw new IllegalArgumentException("GeneratedValue already exists " + name);
+            throw new UPAIllegalArgumentException("GeneratedValue already exists " + name);
         }
         generatedValues.put(name, new DefaultParameter(name, null, IdentityDataTypeTransform.ofType(type)));
     }

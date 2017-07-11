@@ -5,7 +5,7 @@ import net.vpc.upa.Package;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.Init;
 import net.vpc.upa.exceptions.EntityAlreadyExistsException;
-import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.exceptions.NoSuchEntityException;
 import net.vpc.upa.exceptions.ObjectAlreadyExistsException;
 import net.vpc.upa.expressions.Select;
@@ -57,12 +57,12 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
     public void itemRenamed(UPAObject object, String oldName, String newName,EventPhase phase) {
         if (object instanceof Entity) {
             if(StringUtils.isNullOrEmpty(newName)){
-                throw new IllegalArgumentException("Empty New Name for "+oldName);
+                throw new UPAIllegalArgumentException("Empty New Name for "+oldName);
             }
             model.renameEntity(oldName,newName);
             return;
         }
-        throw new IllegalArgumentException("Renaming "+object+" is not yet Supported");
+        throw new UPAIllegalArgumentException("Renaming "+object+" is not yet Supported");
     }
 
     public void itemAdded(UPAObject object, int position, UPAObject parent, EventPhase phase) {
@@ -194,7 +194,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                             } else if (Entity.class.equals(parameterTypes[i])) {
                                 params[i] = entity;
                             } else {
-                                throw new IllegalArgumentException("Unexpected parameter " + (i + 1) + " for " + m);
+                                throw new UPAIllegalArgumentException("Unexpected parameter " + (i + 1) + " for " + m);
                             }
                         }
                         try {
@@ -288,7 +288,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 fireOnCreateRelationship(relation, position, phase);
             }
         } else {
-            throw new IllegalArgumentException("No supported");
+            throw new UPAIllegalArgumentException("No supported");
         }
     }
 
@@ -366,7 +366,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 fireOnDropRelationship(relation, position, phase);
             }
         } else {
-            throw new IllegalArgumentException("No supported");
+            throw new UPAIllegalArgumentException("No supported");
         }
     }
 
@@ -935,7 +935,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             packages.add((PackageDefinitionListener) definitionListener);
         }
         if (!supported) {
-            throw new IllegalArgumentException("Unsupported DefinitionListener. See Documentation for detailed information.");
+            throw new UPAIllegalArgumentException("Unsupported DefinitionListener. See Documentation for detailed information.");
         }
     }
 
@@ -970,7 +970,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             packages.remove((PackageDefinitionListener) definitionListener);
         }
         if (!supported) {
-            throw new IllegalArgumentException("Unsupported DefinitionListener. See Documentation for detailed information.");
+            throw new UPAIllegalArgumentException("Unsupported DefinitionListener. See Documentation for detailed information.");
         }
     }
 

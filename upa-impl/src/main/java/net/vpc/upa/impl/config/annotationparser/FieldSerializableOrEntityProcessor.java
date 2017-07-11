@@ -13,6 +13,7 @@ import net.vpc.upa.DefaultRelationshipDescriptor;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -61,7 +62,7 @@ public class FieldSerializableOrEntityProcessor extends DefinitionListenerAdapte
                 field.setTypeTransform(null);
 //                field.setTypeTransform(new IdentityDataTypeTransform(field.getDataType()));
             } else {
-                throw new IllegalArgumentException("Type " + tt + " is neither Entity nor Serializable for " + field);
+                throw new UPAIllegalArgumentException("Type " + tt + " is neither Entity nor Serializable for " + field);
             }
         }
     }

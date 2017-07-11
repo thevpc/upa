@@ -133,7 +133,7 @@ package net.vpc.upa.impl.uql.parser;
 //                            params[i] = simplify(params[i], context);
 //                        }
 //                        if (!isFunctionSupported(t.getValue(), params)) {
-//                            throw new IllegalArgumentException("Function " + t.getValue() + "(<" + params.length + " params>) is not supported");
+//                            throw new UPAIllegalArgumentException("Function " + t.getValue() + "(<" + params.length + " params>) is not supported");
 //                        }
 //                        sb.append(getFunction(t.getValue()).simplify(t.getValue(), params, context));
 //                        index = next_next.getEnd();
@@ -155,7 +155,7 @@ package net.vpc.upa.impl.uql.parser;
 //            } else if (t.accept(SQLToken.PAR)) {
 //                sb.append('(');
 //                if (t.getEnd() < 0) {
-//                    throw new IllegalArgumentException("Expected closing parentheses near '" + query.substring(t.getStart() - 8, t.getStart() + 8));
+//                    throw new UPAIllegalArgumentException("Expected closing parentheses near '" + query.substring(t.getStart() - 8, t.getStart() + 8));
 //                }
 //                sb.append(simplify(t.getValue().substring(1, t.getValue().length() - 1), context));
 //                sb.append(')');

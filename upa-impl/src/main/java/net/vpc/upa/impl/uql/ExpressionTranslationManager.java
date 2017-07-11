@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.uql;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiler.CurrentTimeExpressionTranslator;
@@ -184,7 +185,7 @@ public class ExpressionTranslationManager {
         while (true) {
             ExpressionTranslator p = expressionProviders.get(o0.getClass());
             if (p == null) {
-                throw new IllegalArgumentException("No compiler found for " + o0.getClass());
+                throw new UPAIllegalArgumentException("No compiler found for " + o0.getClass());
             }
             CompiledExpressionExt e = p.translateExpression(o0, this, declarations);
             if (e == null) {

@@ -13,6 +13,7 @@ import java.util.Set;
 import net.vpc.upa.FlagSet;
 import net.vpc.upa.FlagSets;
 import net.vpc.upa.config.DecorationTarget;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 /**
  *
@@ -55,7 +56,7 @@ public class DefaultDecorationFilter implements DecorationFilter {
         for (Class c : all) {
             java.lang.annotation.Target t = (java.lang.annotation.Target) c.getAnnotation(java.lang.annotation.Target.class);
             if (t == null) {
-                throw new IllegalArgumentException(c + " seems not to be an annotation");
+                throw new UPAIllegalArgumentException(c + " seems not to be an annotation");
             }
             /**
              * @PortabilityHint(target = "C#",name = "replace")

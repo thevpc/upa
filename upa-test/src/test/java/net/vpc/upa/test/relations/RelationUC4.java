@@ -2,7 +2,8 @@ package net.vpc.upa.test.relations;
 
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
-import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.impl.UPAImplDefaults;
+import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -22,7 +23,7 @@ public class RelationUC4 {
 
     @BeforeClass
     public static void setup() {
-        UPAUtils.PRODUCTION_MODE=false;
+        UPAImplDefaults.PRODUCTION_MODE=false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationUC4.class);
         pu.addEntity(A.class);
         pu.addEntity(B.class);
@@ -109,10 +110,10 @@ public class RelationUC4 {
         public void testQuery2() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             reset();
-            long beforeConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            long beforeConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            long beforeConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            long beforeResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            long beforeConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            long beforeConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            long beforeConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            long beforeResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
 
             System.out.println("before ConnectionQuery        : "+beforeConnectionQuery);
             System.out.println("before ConnectionNonQuery     : "+beforeConnectionNonQuery);
@@ -121,12 +122,12 @@ public class RelationUC4 {
 
             /// CHECK QueryFetchStrategy.JOIN with Navigation 5
             String PREFIX="JOIN5  ";
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,5).getResultList().size();
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,5).getResultList().size();
 
-            long afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            long afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            long afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            long afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            long afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            long afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            long afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            long afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
 
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
@@ -141,11 +142,11 @@ public class RelationUC4 {
             beforeConnectionNonQuery=afterConnectionNonQuery;
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,4).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,4).getResultList().size();
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
@@ -158,11 +159,11 @@ public class RelationUC4 {
             beforeConnectionNonQuery=afterConnectionNonQuery;
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,3).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,3).getResultList().size();
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
@@ -175,11 +176,11 @@ public class RelationUC4 {
             beforeConnectionNonQuery=afterConnectionNonQuery;
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,2).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,2).getResultList().size();
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
@@ -192,11 +193,11 @@ public class RelationUC4 {
             beforeConnectionNonQuery=afterConnectionNonQuery;
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,1).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,1).getResultList().size();
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
@@ -210,11 +211,11 @@ public class RelationUC4 {
             beforeConnectionNonQuery=afterConnectionNonQuery;
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
-            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.NAVIGATION_DEPTH,0).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.JOIN).setHint(QueryHints.MAX_NAVIGATION_DEPTH,0).getResultList().size();
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
@@ -229,10 +230,10 @@ public class RelationUC4 {
             beforeConnectionStatement=afterConnectionStatement;
             beforeResultListMaxReduceSize=afterResultListMaxReduceSize;
             pu.createQueryBuilder("A").setHint(QueryHints.FETCH_STRATEGY,QueryFetchStrategy.SELECT).getResultList().size();
-            afterConnectionQuery=pu.getProperties().getLong("System.Perf.Connection.Query",0);
-            afterConnectionNonQuery=pu.getProperties().getLong("System.Perf.Connection.NonQuery",0);
-            afterConnectionStatement=pu.getProperties().getLong("System.Perf.Connection.Statement",0);
-            afterResultListMaxReduceSize=pu.getProperties().getLong("System.Perf.ResultList.MaxReduceSize",0);
+            afterConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
+            afterConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
+            afterConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);
+            afterResultListMaxReduceSize=pu.getProperties().getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,0);
             System.out.println(PREFIX+"after  ConnectionQuery        : "+(afterConnectionQuery-beforeConnectionQuery)+" / "+afterConnectionQuery+" <- "+beforeConnectionQuery);
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);

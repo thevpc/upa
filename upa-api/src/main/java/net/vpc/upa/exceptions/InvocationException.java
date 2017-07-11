@@ -44,7 +44,7 @@ public class InvocationException extends UPAException {
     public InvocationException(Throwable throwable) {
         super((throwable instanceof InvocationException) ? throwable.getCause() : throwable, new I18NString("InvocationException"));
         if (throwable == null) {
-            throw new java.lang.IllegalArgumentException("InnalidInvocationException");
+            throw new UPAIllegalArgumentException("InvalidInvocationException");
         }
     }
 }

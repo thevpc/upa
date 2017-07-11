@@ -10,6 +10,7 @@ import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.DataWriter;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 /**
  *
@@ -43,7 +44,7 @@ public abstract class AbstractDataWriter implements DataWriter {
     public void writeObject(Object row) {
         DataRowConverter os = getDataRowConverter();
         if (os == null) {
-            throw new IllegalArgumentException("Missing DataRowConverter");
+            throw new UPAIllegalArgumentException("Missing DataRowConverter");
         }
         writeRow(os.objectToRow(row));
     }

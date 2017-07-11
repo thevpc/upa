@@ -38,7 +38,7 @@ public class CompiledEntityName extends DefaultCompiledExpressionImpl implements
 
 //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnitFilter database) {
-//        throw new IllegalArgumentException("Not supported");
+//        throw new UPAIllegalArgumentException("Not supported");
 //    }
     @Override
     public DataTypeTransform getTypeTransform() {

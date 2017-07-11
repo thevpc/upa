@@ -60,7 +60,7 @@ class DefaultPlatformBeanProperty extends AbstractPlatformBeanProperty {
         try {
             setter.invoke(o, new Object[]{value});
         } catch (Exception e) {
-            //throw new IllegalArgumentException("Unable to set value " + (value == null ? "null" : value.getClass()) + " for property " + getName() + ". Expected Type is " + getPlatformType(), e);
+            //throw new UPAIllegalArgumentException("Unable to set value " + (value == null ? "null" : value.getClass()) + " for property " + getName() + ". Expected Type is " + getPlatformType(), e);
             if (e instanceof InvocationTargetException) {
                 e= (Exception)((InvocationTargetException)e).getTargetException();
             }

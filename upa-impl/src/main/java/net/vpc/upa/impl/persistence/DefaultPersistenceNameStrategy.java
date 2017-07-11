@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import net.vpc.upa.*;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
@@ -147,7 +148,7 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
                 return validatePersistenceName((String) source, PersistenceNameType.ALIAS, null, upaObjectAndSpec, types);
             }
         }
-        throw new IllegalArgumentException("No Supported");
+        throw new UPAIllegalArgumentException("No Supported");
     }
 
     private String getParamValue(String confPrefix, PersistenceNameType type, String name, Properties parameters) {
@@ -408,11 +409,11 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
                     }
                     return pattern.replace("{OBJECT_NAME}", s.toString());
                 } else {
-                    throw new IllegalArgumentException("Unsupported format. User one of objectName,ObjectName,objectname,OBJECTNAME,object_name,OBJECT_NAME");
+                    throw new UPAIllegalArgumentException("Unsupported format. User one of objectName,ObjectName,objectname,OBJECTNAME,object_name,OBJECT_NAME");
                 }
             }
         } else {
-            throw new IllegalArgumentException("Unsupported format. User one of *,{},{objectName},{ObjectName},{objectname},{OBJECTNAME},{object_name},{OBJECT_NAME} patterns");
+            throw new UPAIllegalArgumentException("Unsupported format. User one of *,{},{objectName},{ObjectName},{objectname},{OBJECTNAME},{object_name},{OBJECT_NAME} patterns");
         }
         return objectName;
     }

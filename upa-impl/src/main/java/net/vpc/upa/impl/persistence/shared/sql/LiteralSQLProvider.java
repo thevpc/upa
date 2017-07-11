@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import java.util.List;
 import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -41,7 +42,7 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
                 objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
                 List<Field> tf = et.getRelationship().getTargetEntity().getIdFields();
                 if(tf.size()!=1){
-                    throw new IllegalArgumentException("Unsupported");
+                    throw new UPAIllegalArgumentException("Unsupported");
                 }
                 d = UPAUtils.getTypeTransformOrIdentity(tf.get(0));
             }

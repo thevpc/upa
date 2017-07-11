@@ -4,6 +4,7 @@ import net.vpc.upa.CompoundField;
 import net.vpc.upa.EntityPart;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.Section;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
 
@@ -23,7 +24,7 @@ class DefaultEntityPrivateAddItemInterceptor implements ItemInterceptor<EntityPa
         EntityPart oldParent = item.getParent();
         if (oldParent != null) {
             if (!(oldParent instanceof Section) && !(oldParent instanceof CompoundField)) {
-                throw new IllegalArgumentException(
+                throw new UPAIllegalArgumentException(
                         "Field Parent is neither a Field Section nor a Field");
             }
         }

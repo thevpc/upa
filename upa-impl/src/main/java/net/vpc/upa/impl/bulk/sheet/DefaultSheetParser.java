@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.bulk.sheet;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.bulk.xml.DefaultSheetSAXReader;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class DefaultSheetParser extends SheetParser {
 
     public void configure(Object source) throws IOException {
         if (source == null) {
-            throw new IllegalArgumentException("Missing configuration");
+            throw new UPAIllegalArgumentException("Missing configuration");
         }
         if (source instanceof File) {
             this.file = (File) source;
@@ -38,7 +39,7 @@ public class DefaultSheetParser extends SheetParser {
             this.file = f;
             this.created = f;
         } else {
-            throw new IllegalArgumentException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL");
+            throw new UPAIllegalArgumentException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL");
         }
     }
 
@@ -60,7 +61,7 @@ public class DefaultSheetParser extends SheetParser {
 
     public DataReader parse() throws IOException {
         if (file == null) {
-            throw new IllegalArgumentException("Missing configuration");
+            throw new UPAIllegalArgumentException("Missing configuration");
         }
         DefaultSheetSAXReader w = new DefaultSheetSAXReader(this, file);
         w.setObjectDeserializer(getDataDeserializer());

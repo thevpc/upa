@@ -4,6 +4,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -34,7 +35,7 @@ public abstract class AbstractKey
         }
         Class clz = o1.getClass().getComponentType();
         if (clz.isPrimitive()) {
-            throw new IllegalArgumentException("could not compare primitive arrays");
+            throw new UPAIllegalArgumentException("could not compare primitive arrays");
             //return false;
         }
         Object[] o1arr = (Object[]) o1;

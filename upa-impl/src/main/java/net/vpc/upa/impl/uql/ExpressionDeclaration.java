@@ -50,7 +50,7 @@ public class ExpressionDeclaration {
             return (String)referrerName;
         }
         return null;
-//        throw new IllegalArgumentException("Invalid Declaration Name");
+//        throw new UPAIllegalArgumentException("Invalid Declaration Name");
     }
     public String getName() {
         return name;

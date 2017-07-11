@@ -162,29 +162,29 @@ public class PersistenceUnitImporter {
         Entity entity = source.getEntity(type);
         QueryBuilder queryBuilder = entity.createQueryBuilder();
         queryBuilder.setHints(configureHints(entity));
-        Object reloaded = queryBuilder.byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 1).getFirstResultOrNull();
+        Object reloaded = queryBuilder.byId(id).setHint(QueryHints.MAX_NAVIGATION_DEPTH, 1).getFirstResultOrNull();
         return reloaded;
     }
 
     private Object loadTargetObject(String type, Object id, PersistenceUnit target) {
         Entity entity = target.getEntity(type);
-//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
-        Object reloaded0 = entity.createQueryBuilder().byId(id).setHint(QueryHints.NAVIGATION_DEPTH, 0).getDocument();
-//        Object reloaded1 = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).objectToDocument();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.MAX_NAVIGATION_DEPTH, 1).setId(id).getEntity();
+        Object reloaded0 = entity.createQueryBuilder().byId(id).setHint(QueryHints.MAX_NAVIGATION_DEPTH, 0).getDocument();
+//        Object reloaded1 = entity.createQueryBuilder().setHint(QueryHints.MAX_NAVIGATION_DEPTH, 1).setId(id).objectToDocument();
         return reloaded0;
     }
 
 //    public Obj reloadSourceObject(Obj oo) {
 //        Entity entity = source.getEntity(oo.name);
 //        Object id = resolveId(entity.getName(), oo.value, source);
-//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.MAX_NAVIGATION_DEPTH, 1).setId(id).getEntity();
 //        return new Obj(oo.name, reloaded);
 //    }
 //
 //    public Obj reloadTargetObject(Obj oo) {
 //        Entity entity = target.getEntity(oo.name);
 //        Object id = resolveId(entity.getName(), oo.value, source);
-//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.NAVIGATION_DEPTH, 1).setId(id).getEntity();
+//        Object reloaded = entity.createQueryBuilder().setHint(QueryHints.MAX_NAVIGATION_DEPTH, 1).setId(id).getEntity();
 //        return new Obj(oo.name, reloaded);
 //    }
     private Object importObjectById(String type, Object id, ExecInfo ii) {

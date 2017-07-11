@@ -38,7 +38,7 @@ public class RelationshipProcessor implements StackBlockingSAXProcessor<XLSXPack
 //                    try {
 //                        target = new File(cwd + "/" + target).getCanonicalPath();
 //                    } catch (IOException ex) {
-//                        throw new IllegalArgumentException("");
+//                        throw new UPAIllegalArgumentException("");
 //                    }
                     target = cwd + "/" + target;
                 }

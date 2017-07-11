@@ -35,6 +35,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -57,7 +58,7 @@ public class DateTimeType extends TemporalType implements Cloneable {
     public DateTimeType(String name, Class<? extends java.util.Date> type, DateTime min, DateTime max, boolean nullable) {
         super(name, type == null ? DateTime.class : type, 0, 0, nullable);
         if (type != null && !type.equals(DateTime.class) && !type.equals(java.util.Date.class) && !type.equals(java.sql.Timestamp.class)) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid Temporal Type " + type);
+            throw new UPAIllegalArgumentException("Invalid Temporal Type " + type);
         }
         this.min = min;
         this.max = max;
@@ -124,7 +125,7 @@ public class DateTimeType extends TemporalType implements Cloneable {
         } else if (java.util.Date.class.isAssignableFrom(type)) {
             return new java.util.Date(time);
         } else {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException();
+            throw new UPAIllegalArgumentException();
         }
     }
 

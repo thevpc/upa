@@ -5,6 +5,7 @@
 package net.vpc.upa.impl.bulk;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.DateUtils;
 import net.vpc.upa.types.*;
 
@@ -45,7 +46,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).intValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -61,7 +62,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).longValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -77,7 +78,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).shortValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -93,7 +94,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).byteValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -109,7 +110,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).floatValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -125,7 +126,7 @@ public class ValueParser {
                     } else if (Number.class.isAssignableFrom(value.getClass())) {
                         value = (((Number) (value)).floatValue());
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 }
             }
@@ -150,11 +151,11 @@ public class ValueParser {
                         }else if (t instanceof MonthType){
                             value = DateUtils.parseUniversalMonth(String.valueOf(value).trim());
                         }else{
-                            throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                            throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                         }
                         value = type.convert(value);
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 } else {
                     value = t.convert(value);
@@ -172,7 +173,7 @@ public class ValueParser {
                     }else if (value instanceof Number) {
                             value = ((Number)value).doubleValue()!=0;
                     } else {
-                        throw new IllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
+                        throw new UPAIllegalArgumentException("Unsupported Convertion from " + value.getClass() + " to "+type);
                     }
                 } else {
                     value = t.convert(value);
@@ -181,6 +182,6 @@ public class ValueParser {
             t.check(value, null, null);
             return value;
         }
-        throw new IllegalArgumentException("UnsupportedType from " + (value == null ? "null" : value.getClass().getName()) + " to " + type);
+        throw new UPAIllegalArgumentException("UnsupportedType from " + (value == null ? "null" : value.getClass().getName()) + " to " + type);
     }
 }

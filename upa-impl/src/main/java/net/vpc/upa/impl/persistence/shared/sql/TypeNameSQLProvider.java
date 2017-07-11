@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -78,7 +79,7 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
                 .equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new IllegalArgumentException(
+        throw new UPAIllegalArgumentException(
                 "UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 

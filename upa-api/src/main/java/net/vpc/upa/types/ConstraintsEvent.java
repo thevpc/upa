@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,11 +52,11 @@ public class ConstraintsEvent {
      * Constructs a prototypical Event.
      *
      * @param source The object on which the Event initially occurred.
-     * @throws IllegalArgumentException if source is null.
+     * @throws UPAIllegalArgumentException if source is null.
      */
     public ConstraintsEvent(Object source) {
         if (source == null)
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("null source");
+            throw new UPAIllegalArgumentException("null source");
 
         this.source = source;
     }

@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Field;
 import net.vpc.upa.QueryHints;
-import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
@@ -238,7 +238,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
         List<Parameter> queryParameters2 = new ArrayList<Parameter>();
         for (CompiledParam e : compiledParams) {
             if (e.isUnspecified()) {
-                throw new IllegalArgumentException("Unspecified Param " + e);
+                throw new UPAIllegalArgumentException("Unspecified Param " + e);
             }
             ExprTypeInfo ei = UPAUtils.resolveExprTypeInfo(e);
             Object objectValue = e.getValue();

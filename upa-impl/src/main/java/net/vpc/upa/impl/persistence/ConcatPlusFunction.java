@@ -13,7 +13,7 @@
 //public class ConcatPlusFunction extends Function {
 //    public String simplify(String functionName, String[] params, java.util.HashMap context) {
 //        if(params.length<2){
-//            throw new IllegalArgumentException("function '"+functionName+"' requieres at least 2 arguments.\n Error near "+functionName+"("+StringFormatter.format(params)+")");
+//            throw new UPAIllegalArgumentException("function '"+functionName+"' requieres at least 2 arguments.\n Error near "+functionName+"("+StringFormatter.format(params)+")");
 //        }else{
 //            return StringFormatter.format(params,"(",", ",")",null);
 ////            StringBuffer sb=new StringBuffer("(");

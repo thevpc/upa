@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.NumberType;
 import net.vpc.upa.impl.persistence.SQLManager;
@@ -98,7 +99,7 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new IllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+        throw new UPAIllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

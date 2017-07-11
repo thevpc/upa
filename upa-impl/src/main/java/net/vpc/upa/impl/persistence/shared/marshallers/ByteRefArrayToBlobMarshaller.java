@@ -2,6 +2,8 @@ package net.vpc.upa.impl.persistence.shared.marshallers;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Blob;
+
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
 
@@ -56,7 +58,7 @@ public class ByteRefArrayToBlobMarshaller
         if(object==null){
             return super.toSQLLiteral(object);
         }
-        throw new IllegalArgumentException("Unsupported");
+        throw new UPAIllegalArgumentException("Unsupported");
     }
 
     public void write(Object object, int i, PreparedStatement preparedStatement)

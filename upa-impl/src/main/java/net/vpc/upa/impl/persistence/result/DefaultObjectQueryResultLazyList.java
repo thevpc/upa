@@ -2,6 +2,10 @@ package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.UPAImplDefaults;
+import net.vpc.upa.impl.UPAImplKeys;
+import net.vpc.upa.impl.ext.QueryHintsExt;
 import net.vpc.upa.impl.persistence.NativeField;
 import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.uql.BindingId;
@@ -13,7 +17,6 @@ import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +30,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     List<LazyResult> workspace_todos = new ArrayList<>();
     LinkedList<T> workspace_available = new LinkedList<>();
     int workspace_missingObjectsCount = 0;
-    int workspace_bulkSize = 100;
+    int workspace_bulkSize = UPAImplDefaults.QueryHints_REDUCE_BUFFER_SIZE;
     boolean workspace_hasTodos = false;
     PersistenceUnit persistenceUnit;
     private boolean updatable;
@@ -43,7 +46,6 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             PersistenceUnit pu,
             QueryExecutor queryExecutor,
             boolean itemAsDocument,
-            int supportCacheSize,
             boolean updatable,
             QueryResultItemBuilder resultBuilder
     ) throws SQLException {
@@ -57,11 +59,15 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         } else {
             hints = new HashMap<String, Object>(hints);
         }
+        int supportCacheSize=UPAUtils.convertToInt(hints.get(QueryHints.QUERY_CACHE_SIZE),UPAImplDefaults.QueryHints_CACHE_SIZE);
+        if (supportCacheSize < 0) {
+            supportCacheSize=UPAImplDefaults.QueryHints_CACHE_SIZE;
+        }
         if (supportCacheSize > 0) {
-            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get("queryCache");
+            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(QueryHintsExt.QUERY_CACHE);
             if (sharedCache == null) {
                 sharedCache = new LRUCacheMap<NamedId, ResultObject>(supportCacheSize);
-                hints.put("queryCache", sharedCache);
+                hints.put(QueryHintsExt.QUERY_CACHE, sharedCache);
             }
             referencesCache = sharedCache;
         } else {
@@ -99,12 +105,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 } else {
                     ancestor = bindingToTypeInfos0.get(parentBinding.getParent());
                     if (ancestor == null) {
-                        throw new IllegalArgumentException("Unexpected");
+                        throw new UPAIllegalArgumentException("Unexpected");
                     }
                 }
                 if (ancestor != null) {
                     if (ancestor.entity == null) {
-                        throw new IllegalArgumentException("Unsupported");
+                        throw new UPAIllegalArgumentException("Unsupported");
                     } else {
                         Field field = ancestor.entity.getField(parentBinding.getName());
                         if (field.getDataType() instanceof ManyToOneType) {
@@ -112,7 +118,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                             columnFamily.documentType = itemAsDocument;
                             bindingToTypeInfos0.put(parentBinding, columnFamily);
                         } else {
-                            throw new IllegalArgumentException("Unsupported");
+                            throw new UPAIllegalArgumentException("Unsupported");
                         }
                     }
                 } else {
@@ -158,7 +164,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         expectedIds.remove(fieldName);
                     } else {
                         //should never happen
-                        throw new IllegalArgumentException("Should never Happen");
+                        throw new UPAIllegalArgumentException("Should never Happen");
                     }
                 }
                 FieldInfo[] nonOrderedIdFields = columnFamily.idFields.toArray(new FieldInfo[columnFamily.idFields.size()]);
@@ -196,7 +202,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             } else if (columnFamily.entity != null && !columnFamily.identifiable) {
                 columnFamily.parser = ColumnFamilyParserNoIdEntity.INSTANCE;
             } else {
-                throw new IllegalArgumentException("Unsupported binding " + columnFamily.binding);
+                throw new UPAIllegalArgumentException("Unsupported binding " + columnFamily.binding);
             }
         }
         for (ColumnFamily columnFamily : columnFamilies) {
@@ -230,12 +236,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 Entity entity = persistenceUnit.getEntity(entityName);
                 EntityBuilder builder = entity.getBuilder();
                 Set<Object> itemsToReduce = e.getValue();
-                if(!UPAUtils.PRODUCTION_MODE) {
+                if(!UPAImplDefaults.PRODUCTION_MODE) {
                     net.vpc.upa.Properties properties = persistenceUnit.getProperties();
-                    long oldMaxReduceSize = properties.getLong("System.Perf.ResultList.MaxReduceSize", 0);
+                    long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
                     if(oldMaxReduceSize<itemsToReduce.size()){
                         oldMaxReduceSize=itemsToReduce.size();
-                        properties.setLong("System.Perf.ResultList.MaxReduceSize",oldMaxReduceSize);
+                        properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,oldMaxReduceSize);
                     }
                 }
 
@@ -274,7 +280,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 for (Map.Entry<BindingId, NamedId> t : lazyResult.todos.entrySet()) {
                     ResultObject ro = referencesCache.get(t.getValue());
                     if (ro == null) {
-                        throw new IllegalArgumentException("Problem");
+                        throw new UPAIllegalArgumentException("Problem");
                     }
                     lazyResult.values.put(t.getKey(), ro.entityResult);
                 }

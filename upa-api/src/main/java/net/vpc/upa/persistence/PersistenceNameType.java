@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.persistence;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.util.LinkedHashMap;
 
 /**
@@ -66,17 +68,17 @@ public final class PersistenceNameType {
     public static PersistenceNameType valueOf(String name) {
         PersistenceNameType f = values.get(name);
         if (f == null) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("PersistenceNameType not found " + name);
+            throw new UPAIllegalArgumentException("PersistenceNameType not found " + name);
         }
         return f;
     }
 
     public static PersistenceNameType create(String name, boolean globalScope) {
         if (name == null || name.length() == 0 || name.trim().length() != name.length()) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid PersistenceNameType Name " + name);
+            throw new UPAIllegalArgumentException("Invalid PersistenceNameType Name " + name);
         }
         if (values.containsKey(name)) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("PersistenceNameType already exists " + name);
+            throw new UPAIllegalArgumentException("PersistenceNameType already exists " + name);
         }
         PersistenceNameType t = new PersistenceNameType(name, globalScope);
         values.put(t.name(), t);

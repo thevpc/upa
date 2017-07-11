@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -47,7 +48,7 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
                 } else if (PlatformUtils.isAnyFloat(t1)) {
                     c1 = new CompiledI2V(c1.copy());
                 } else {
-                    throw new IllegalArgumentException("Unsupported");
+                    throw new UPAIllegalArgumentException("Unsupported");
                 }
             }
             if (!s2) {
@@ -56,7 +57,7 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
                 } else if (PlatformUtils.isAnyFloat(t2)) {
                     c2 = new CompiledI2V(c2.copy());
                 } else {
-                    throw new IllegalArgumentException("Unsupported");
+                    throw new UPAIllegalArgumentException("Unsupported");
                 }
             }
             CompiledConcat cc = new CompiledConcat(c1, c2);

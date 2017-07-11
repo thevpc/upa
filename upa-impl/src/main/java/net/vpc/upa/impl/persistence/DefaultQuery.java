@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.result.*;
@@ -203,7 +204,6 @@ public class DefaultQuery extends AbstractQuery {
                     pu,
                     queryExecutor,
                     relationAsDocument,
-                    10000,
                     isUpdatable(),
                     builder
             );
@@ -457,7 +457,7 @@ public class DefaultQuery extends AbstractQuery {
 //                List<Expression> params = query.findAll(ExpressionFilterFactory.forParam(name));
 //                if (params.isEmpty()) {
 //                    params=query.findAll(ExpressionFilterFactory.forParam(name));
-//                    throw new IllegalArgumentException("Parameter not found " + name);
+//                    throw new UPAIllegalArgumentException("Parameter not found " + name);
 //                }
 //                for (Expression e : params) {
 //                    Param p=(Param) e;
@@ -472,11 +472,11 @@ public class DefaultQuery extends AbstractQuery {
 //                Integer index = entry.getKey();
 //                Object value = entry.getValue();
 //                if (params.size() <= index) {
-//                    throw new IllegalArgumentException("Parameter not found " + index);
+//                    throw new UPAIllegalArgumentException("Parameter not found " + index);
 //                }
 //                Param p = (Param) params.get(index);
 //                if (p == null) {
-//                    throw new IllegalArgumentException("Parameter not found " + index);
+//                    throw new UPAIllegalArgumentException("Parameter not found " + index);
 //                }
 //                p.setValue(value);
 //                p.setUnspecified(false);
@@ -513,7 +513,7 @@ public class DefaultQuery extends AbstractQuery {
 
     public void updateCurrent() {
         if (!isUpdatable()) {
-            throw new IllegalArgumentException("IsForUpdateMissing");
+            throw new UPAIllegalArgumentException("IsForUpdateMissing");
         }
         result.updateCurrent();
     }

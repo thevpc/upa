@@ -35,6 +35,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.*;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Date;
 
@@ -103,13 +104,13 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
                         Character.toUpperCase(periodTypeName.charAt(0)) + periodTypeName.substring(1)
         };
         if (fieldDescriptor.getPersistFormula() != null) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Persist Formula");
+            throw new UPAIllegalArgumentException("Unsupported composing Persist Formula");
         }
         if (fieldDescriptor.getUpdateFormula() != null) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Update Formula");
+            throw new UPAIllegalArgumentException("Unsupported composing Update Formula");
         }
         if (fieldDescriptor.getSelectFormula() != null) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported composing Select Formula");
+            throw new UPAIllegalArgumentException("Unsupported composing Select Formula");
         }
         FieldDescriptor[] fieldDescriptors = new FieldDescriptor[names.length];
         Object[] def = getPrimitiveValues(fieldDescriptor.getDefaultObject());

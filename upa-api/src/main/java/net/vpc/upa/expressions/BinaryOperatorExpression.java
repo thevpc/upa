@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.expressions;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public abstract class BinaryOperatorExpression extends OperatorExpression implem
         } else if (tag.equals(RIGHT)) {
             this.right = e;
         } else {
-            throw new IllegalArgumentException("Insuppoerted");
+            throw new UPAIllegalArgumentException("Insuppoerted");
         }
     }
 
@@ -157,7 +159,7 @@ public abstract class BinaryOperatorExpression extends OperatorExpression implem
                 return "Like";
             }
             default: {
-                throw new IllegalArgumentException("Not Supported Yet");
+                throw new UPAIllegalArgumentException("Not Supported Yet");
             }
         }
     }
@@ -235,7 +237,7 @@ public abstract class BinaryOperatorExpression extends OperatorExpression implem
                 return new Like(left, right);
             }
             default: {
-                throw new IllegalArgumentException("Not Supported Yet");
+                throw new UPAIllegalArgumentException("Not Supported Yet");
             }
         }
     }

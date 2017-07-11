@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import net.vpc.upa.Field;
 import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.expressions.Param;
@@ -67,13 +68,13 @@ public class PasswordTypeFieldPersister implements FieldPersister {
                 if (value instanceof String) {
                     value = ((String) value).getBytes();
                 } else {
-                    throw new IllegalArgumentException("Unvalid  Value " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid  Value " + value + " for type " + type);
                 }
             } else if (type instanceof CharArrayType) {
                 if (value instanceof String) {
                     value = ((String) value).toCharArray();
                 } else {
-                    throw new IllegalArgumentException("Unvalid  Value " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid  Value " + value + " for type " + type);
                 }
             } else if (type instanceof NumberType) {
                 if (value instanceof String) {
@@ -83,7 +84,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
                         value = ((NumberType) type).parse(((String) value));
                     }
                 } else {
-                    throw new IllegalArgumentException("Unvalid  Value " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid  Value " + value + " for type " + type);
                 }
             } else if (type instanceof EnumType) {
                 if (value instanceof String) {
@@ -93,7 +94,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
                         value = ((EnumType) type).parse(((String) value));
                     }
                 } else {
-                    throw new IllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
                 }
             } else if (type instanceof BooleanType) {
                 if (value instanceof String) {
@@ -103,16 +104,16 @@ public class PasswordTypeFieldPersister implements FieldPersister {
                         value = ((BooleanType) type).parse(((String) value));
                     }
                 } else {
-                    throw new IllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
                 }
             } else if (type instanceof StringType) {
                 if (value instanceof String) {
                     //okkay!
                 } else {
-                    throw new IllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
+                    throw new UPAIllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
                 }
             } else {
-                throw new IllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
+                throw new UPAIllegalArgumentException("Unvalid Cipher  " + value + " for type " + type);
             }
         }
         return value;

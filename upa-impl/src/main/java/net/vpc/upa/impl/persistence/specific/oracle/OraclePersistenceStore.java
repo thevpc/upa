@@ -80,7 +80,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
         String s = super.getFieldDeclaration(field,entityPersistenceContext);
 //        if (field.isAutoIncrement()) {
-        //throw new IllegalArgumentException("Not yet supported");
+        //throw new UPAIllegalArgumentException("Not yet supported");
         //s += " IDENTITY(" + field.getAutoIncrement().getSeed() + "," + field.getAutoIncrement().getIncrement() + ")";
 //        }
         return s;

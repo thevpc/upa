@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.EntityDescriptor;
 import net.vpc.upa.exceptions.UPAException;
@@ -30,7 +31,7 @@ public class EntityDescriptorResolver {
 
     public EntityDescriptor resolve(Object source) throws UPAException {
         if (source == null) {
-            throw new IllegalArgumentException("null entity descriptor");
+            throw new UPAIllegalArgumentException("null entity descriptor");
         }
         if (source instanceof EntityDescriptor) {
             return (EntityDescriptor) source;

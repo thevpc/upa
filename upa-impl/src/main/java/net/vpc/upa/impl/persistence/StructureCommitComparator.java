@@ -8,6 +8,8 @@ import net.vpc.upa.Relationship;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.persistence.PersistenceNameType;
 
 /**
@@ -42,10 +44,10 @@ class StructureCommitComparator implements Comparator<StructureCommit> {
         Integer p1 = pos.get(oo1);
         Integer p2 = pos.get(oo2);
         if(p1==null){
-            throw new IllegalArgumentException("Unknown order for "+oo1);
+            throw new UPAIllegalArgumentException("Unknown order for "+oo1);
         }
         if(p2==null){
-            throw new IllegalArgumentException("Unknown order for "+oo2);
+            throw new UPAIllegalArgumentException("Unknown order for "+oo2);
         }
         return p1 - p2;
     }

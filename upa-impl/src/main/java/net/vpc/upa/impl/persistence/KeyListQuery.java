@@ -39,7 +39,7 @@
 //
 //    @Override
 //    public <K2, R2> List<R2> getEntityList(Entity<K2, R2> e) throws UPAException {
-//        throw new IllegalArgumentException("No supported");
+//        throw new UPAIllegalArgumentException("No supported");
 //    }
 //
 //    @Override
@@ -47,7 +47,7 @@
 //        if (getDefaultEntity().equals(e)) {
 //            return (List<K2>) list;
 //        }
-//        throw new IllegalArgumentException("No supported");
+//        throw new UPAIllegalArgumentException("No supported");
 //    }
 //
 //    @Override
@@ -63,18 +63,18 @@
 //    @Override
 //    public Entity getDefaultEntity() {
 //        if (defaultEntity == null) {
-//            throw new IllegalArgumentException("No Default Entity is associated to this Find Query");
+//            throw new UPAIllegalArgumentException("No Default Entity is associated to this Find Query");
 //        }
 //        return defaultEntity;
 //    }
 //
 //    @Override
 //    public List<MultiDocument> getMultiDocumentList() throws UPAException {
-//        throw new IllegalArgumentException("No supported");
+//        throw new UPAIllegalArgumentException("No supported");
 //    }
 //
 //    @Override
 //    public List<Document> getDocumentList() throws UPAException {
-//        throw new IllegalArgumentException("No supported");
+//        throw new UPAIllegalArgumentException("No supported");
 //    }
 //}

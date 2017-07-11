@@ -7,6 +7,7 @@ package net.vpc.upa.impl.config.annotationparser;
 import net.vpc.upa.*;
 import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -149,7 +150,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             sourceFieldNames.addAll(Arrays.asList(relationDescriptor.getSourceFields()));
             if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                 if (relationDescriptor.getMappedTo().length > 1) {
-                    throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
+                    throw new UPAIllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                 }
                 manyToOneField = sourceEntity.getField(relationDescriptor.getMappedTo()[0]);
             }
@@ -187,14 +188,14 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                 }
                 if (sourceFieldNames.size() != masterPK.size()) {
                     if (throwErrors) {
-                        throw new IllegalArgumentException("Incorrect parameters");
+                        throw new UPAIllegalArgumentException("Incorrect parameters");
                     } else {
                         return false;
                     }
                 }
                 if (sourceFieldNames.isEmpty()) {
                     if (throwErrors) {
-                        throw new IllegalArgumentException("Incorrect parameters");
+                        throw new UPAIllegalArgumentException("Incorrect parameters");
                     } else {
                         return false;
                     }
@@ -220,7 +221,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                 sourceFieldNames.add(baseField.getName());
                 if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                     if (relationDescriptor.getMappedTo().length > 1) {
-                        throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
+                        throw new UPAIllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                     }
                     manyToOneField = sourceEntity.getField(relationDescriptor.getMappedTo()[0]);
                 }
@@ -240,7 +241,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                     //reset transform!
                     slaveField.setTypeTransform(null);
                 } else {
-                    throw new IllegalArgumentException("Invalid Relation");
+                    throw new UPAIllegalArgumentException("Invalid Relation");
                 }
             }
         }

@@ -15,6 +15,7 @@ import net.vpc.upa.config.*;
 
 import java.lang.reflect.Method;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
 import net.vpc.upa.impl.util.*;
@@ -520,7 +521,7 @@ public class URLAnnotationStrategySupport {
                 }
                 Decoration entityAnnotation = newrepo.getTypeDecoration(tt, net.vpc.upa.config.Entity.class);
                 if (entityAnnotation == null) {
-                    throw new IllegalArgumentException("Missing @Entity along with @Partial for " + tt);
+                    throw new UPAIllegalArgumentException("Missing @Entity along with @Partial for " + tt);
                 }
                 partialEntities.put(tt, at.getType("value"));
                 entityClasses.remove(tt);
@@ -536,7 +537,7 @@ public class URLAnnotationStrategySupport {
                 Class rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
                 if (rootEntity == null) {
 //                    rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
-                    throw new IllegalArgumentException("Partial Entity " + entry.getKey() + " references invalid Entity or Partial (" + entry.getValue() + ")");
+                    throw new UPAIllegalArgumentException("Partial Entity " + entry.getKey() + " references invalid Entity or Partial (" + entry.getValue() + ")");
                 }
                 entityClasses.get(rootEntity).add(entry.getKey());
             }

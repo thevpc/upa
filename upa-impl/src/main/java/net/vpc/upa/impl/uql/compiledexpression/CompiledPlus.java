@@ -66,7 +66,7 @@ public final class CompiledPlus extends CompiledBinaryOperatorExpression
                 setTypeTransform(IdentityDataTypeTransform.INT);
             } else {
                 setTypeTransform(IdentityDataTypeTransform.DOUBLE);
-//                throw new IllegalArgumentException("Unsupported types");
+//                throw new UPAIllegalArgumentException("Unsupported types");
             }
         }
     }

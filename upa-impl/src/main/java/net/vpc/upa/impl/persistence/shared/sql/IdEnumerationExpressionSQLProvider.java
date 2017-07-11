@@ -4,6 +4,7 @@ import java.util.List;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -51,7 +52,7 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
             }
         }
         if (entity == null) {
-            throw new IllegalArgumentException("Id enumeration must by associated to and entity");
+            throw new UPAIllegalArgumentException("Id enumeration must by associated to and entity");
         }
         if (ee.getKeys().isEmpty()) {
             return sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);

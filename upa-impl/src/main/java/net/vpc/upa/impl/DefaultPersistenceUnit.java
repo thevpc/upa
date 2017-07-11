@@ -8,7 +8,7 @@ import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.*;
-import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.*;
 import net.vpc.upa.filters.DefaultEntityFilter;
@@ -228,7 +228,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new NullPointerException();
         }
         if (name.contains("/")) {
-            throw new IllegalArgumentException("Name cannot contain '/'");
+            throw new UPAIllegalArgumentException("Name cannot contain '/'");
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(parentPath);
         Package parentModule = null;
@@ -716,7 +716,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 detailUpdateType = RelationshipUpdateType.COMPOSED;
             } else if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                 if (relationDescriptor.getMappedTo().length > 1) {
-                    throw new IllegalArgumentException("mappedTo cannot only apply to single Entity Field");
+                    throw new UPAIllegalArgumentException("mappedTo cannot only apply to single Entity Field");
                 }
                 detailEntityFieldName = getEntity(detailEntityName).getField(relationDescriptor.getMappedTo()[0]).getName();
             }
@@ -766,7 +766,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
         if (detailEntityFieldName == null) {
             if (PlatformUtils.isUndefinedValue(RelationshipUpdateType.class, detailUpdateType) && detailUpdateType != RelationshipUpdateType.FLAT) {
-                throw new IllegalArgumentException("MissingDetailEntityFieldName");
+                throw new UPAIllegalArgumentException("MissingDetailEntityFieldName");
             }
             if (PlatformUtils.isUndefinedValue(RelationshipUpdateType.class, detailUpdateType)) {
                 detailUpdateType = RelationshipUpdateType.FLAT;
@@ -1780,7 +1780,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (SingletonExtensionDefinition.class.equals(entityExtensionDefinitionType)) {
             return SingletonExtension.class;
         }
-        throw new IllegalArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
+        throw new UPAIllegalArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
     }
 
     public void setName(String name) {

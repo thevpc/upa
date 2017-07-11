@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.connection;
 
 import net.vpc.upa.Properties;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.regexp.PortablePattern;
@@ -97,7 +98,7 @@ public class ConnectionProfileParser {
         String connectionString = parameters.getString(connectionStringPropertyName);
 //        System.out.println(connectionString);
         if (connectionString == null) {
-            throw new IllegalArgumentException(connectionStringPropertyName + " not found in parameters");
+            throw new UPAIllegalArgumentException(connectionStringPropertyName + " not found in parameters");
         }
         DefaultConnectionProfileData matchFound = parseDefaultConnectionProfileData(connectionString);
 
@@ -161,7 +162,7 @@ public class ConnectionProfileParser {
             }
             return profile;
         }
-        throw new IllegalArgumentException("invalid connection string. Expected 'product:driver://info' Found : " + connectionString);
+        throw new UPAIllegalArgumentException("invalid connection string. Expected 'product:driver://info' Found : " + connectionString);
     }
 
     protected void setParam(DefaultConnectionProfile d, String propertyName, String propertyValue, Properties parameters, String connectionStringPropertyName) {

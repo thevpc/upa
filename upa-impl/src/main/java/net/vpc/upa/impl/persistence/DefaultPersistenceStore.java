@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.*;
-import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
@@ -871,7 +871,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
                 List<Expression> params = statement.findAll(ExpressionFilterFactory.forParam(name));
                 if (params.isEmpty()) {
-                    throw new IllegalArgumentException("Parameter not found " + name);
+                    throw new UPAIllegalArgumentException("Parameter not found " + name);
                 }
                 for (Expression e : params) {
                     Param p = (Param) e;
@@ -886,11 +886,11 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                 Integer index = entry.getKey();
                 Object value = entry.getValue();
                 if (params.size() <= index) {
-                    throw new IllegalArgumentException("Parameter not found " + index);
+                    throw new UPAIllegalArgumentException("Parameter not found " + index);
                 }
                 Param p = (Param) params.get(index);
                 if (p == null) {
-                    throw new IllegalArgumentException("Parameter not found " + index);
+                    throw new UPAIllegalArgumentException("Parameter not found " + index);
                 }
                 p.setValue(value);
                 p.setUnspecified(false);
@@ -1003,7 +1003,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                     c = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                 }
                 if (c == null) {
-                    throw new IllegalArgumentException("Unable to resolve type for expression : " + expression1);
+                    throw new UPAIllegalArgumentException("Unable to resolve type for expression : " + expression1);
                 }
 
                 boolean fieldNoTypeTransform = noTypeTransform;
@@ -1881,7 +1881,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public void alterPersistenceUnitRemoveObject(UPAObject object) throws UPAException {
-        throw new IllegalArgumentException("No supported");
+        throw new UPAIllegalArgumentException("No supported");
 //        StructureStrategy option = persistenceManager.getConnectionProfile().getStructureStrategy();
 //        switch (option) {
 //            case DROP:
@@ -1920,7 +1920,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) throws UPAException {
-        throw new IllegalArgumentException("No supported");
+        throw new UPAIllegalArgumentException("No supported");
 //        StructureStrategy option = persistenceManager.getConnectionProfile().getStructureStrategy();
 //        switch (option) {
 //            case DROP:
@@ -2000,7 +2000,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         if (object instanceof Index) {
             return getIndexPersistenceState((Index) object, spec, entityExecutionContext, connection);
         }
-        throw new IllegalArgumentException("Unknown type " + object);
+        throw new UPAIllegalArgumentException("Unknown type " + object);
         //log.log(Level.FINE,"getPersistenceState " + object + " " + PersistenceState.TRANSIENT);
         //return PersistenceState.TRANSIENT;
     }
@@ -2028,7 +2028,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             }
             return persistenceState;
         } else {
-            throw new IllegalArgumentException("Unknown Spec for Entity : " + spec);
+            throw new UPAIllegalArgumentException("Unknown Spec for Entity : " + spec);
         }
     }
 
@@ -2077,7 +2077,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return status;
         } else {
-            throw new IllegalArgumentException("Unknown Spec for Entity : " + spec);
+            throw new UPAIllegalArgumentException("Unknown Spec for Entity : " + spec);
         }
     }
 

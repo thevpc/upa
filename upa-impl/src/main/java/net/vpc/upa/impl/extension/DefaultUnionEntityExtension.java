@@ -2,6 +2,7 @@ package net.vpc.upa.impl.extension;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
@@ -107,17 +108,17 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
 //        StringBuilder sb=new StringBuilder("");
         if (tables.length < 2) {
             if (tables.length == 0) {
-                throw new IllegalArgumentException("UnionTableUpdatableView must be over at least a couple of entities");
+                throw new UPAIllegalArgumentException("UnionTableUpdatableView must be over at least a couple of entities");
             }
             System.err.println("[WARNING] UnionTableUpdatableView must be over at least a couple of tables");
         }
         if (fieldsMapping != null && tables.length != fieldsMapping.length) {
-            throw new IllegalArgumentException("tables.length!=fieldsMapping.length");
+            throw new UPAIllegalArgumentException("tables.length!=fieldsMapping.length");
         }
         Union u = new Union();
         for (int i = 0; i < tables.length; i++) {
             if (fieldsMapping != null && viewFields.size() != fieldsMapping[i].length) {
-                throw new IllegalArgumentException("UnionTableUpdatableView " + name + " requires " + viewFields.size() + " fields but got " + fieldsMapping[i].length + " for " + tables[i]);
+                throw new UPAIllegalArgumentException("UnionTableUpdatableView " + name + " requires " + viewFields.size() + " fields but got " + fieldsMapping[i].length + " for " + tables[i]);
             }
             Select s = new Select();
             s.field(new Literal(tables[i]), updatableTableFieldName);

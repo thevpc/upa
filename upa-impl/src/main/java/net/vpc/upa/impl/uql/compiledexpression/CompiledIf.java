@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.TypesFactory;
 
@@ -49,9 +50,9 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
             state=EXPECT_CONDITION;
             return this;
         }else if(state==VALID){
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new UPAIllegalArgumentException("No more tokens are expected");
         }else{
-            throw new IllegalArgumentException("Expected a value");
+            throw new UPAIllegalArgumentException("Expected a value");
         }
     }
 
@@ -65,9 +66,9 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
             state=VALID;
             return this;
         }else if(state==VALID){
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new UPAIllegalArgumentException("No more tokens are expected");
         }else{
-            throw new IllegalArgumentException("Expected a value");
+            throw new UPAIllegalArgumentException("Expected a value");
         }
     }
 
@@ -82,9 +83,9 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
             state=EXPECT_VALUE;
             return this;
         }else if(state==VALID){
-            throw new IllegalArgumentException("No more tokens are expected");
+            throw new UPAIllegalArgumentException("No more tokens are expected");
         }else{
-            throw new IllegalArgumentException("Expected a condition");
+            throw new UPAIllegalArgumentException("Expected a condition");
         }
     }
 

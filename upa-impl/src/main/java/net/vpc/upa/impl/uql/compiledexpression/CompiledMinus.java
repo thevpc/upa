@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigDecimal;
@@ -44,7 +45,7 @@ public final class CompiledMinus extends CompiledBinaryOperatorExpression
         } else if (Integer.class.equals(t) || Integer.class.equals(r)) {
             setTypeTransform(IdentityDataTypeTransform.INT);
         } else {
-            throw new IllegalArgumentException("Unsupported types");
+            throw new UPAIllegalArgumentException("Unsupported types");
         }
     }
 
@@ -79,7 +80,7 @@ public final class CompiledMinus extends CompiledBinaryOperatorExpression
         } else if (Integer.class.equals(t) || Integer.class.equals(r)) {
             setTypeTransform(IdentityDataTypeTransform.INT);
         } else {
-            throw new IllegalArgumentException("Unsupported types");
+            throw new UPAIllegalArgumentException("Unsupported types");
         }
     }
 }

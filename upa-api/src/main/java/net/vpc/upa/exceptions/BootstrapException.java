@@ -50,6 +50,6 @@ public class BootstrapException extends UPAException {
     }
 
     public BootstrapException(String message, Throwable throwable) {
-        super(throwable, new I18NString("IllegalArgumentException"), message);
+        super(throwable, new I18NString("BootstrapException"), message);
     }
 }

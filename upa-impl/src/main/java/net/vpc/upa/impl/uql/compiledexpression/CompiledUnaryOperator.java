@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -37,7 +38,7 @@ public abstract class CompiledUnaryOperator extends DefaultCompiledExpressionImp
             this.expression = expression;
             bindChildren(expression);
         } else {
-            throw new IllegalArgumentException("Invalid Index");
+            throw new UPAIllegalArgumentException("Invalid Index");
         }
     }
 

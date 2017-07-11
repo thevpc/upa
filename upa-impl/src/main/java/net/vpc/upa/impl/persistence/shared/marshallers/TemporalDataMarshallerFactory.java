@@ -54,7 +54,7 @@ public class TemporalDataMarshallerFactory implements TypeMarshallerFactory {
 //        }else if(java.util.Date.class.isAssignableFrom(primitiveType)){
 //            return pm.getTypeMarshaller(java.util.Date.class);
 //        }else{
-//            throw new IllegalArgumentException();
+//            throw new UPAIllegalArgumentException();
 //        }
     }
 }

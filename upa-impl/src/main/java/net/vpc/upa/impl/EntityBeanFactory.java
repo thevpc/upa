@@ -5,6 +5,7 @@ import net.vpc.upa.*;
 import java.util.List;
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
 
@@ -39,7 +40,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         try {
             return (R) entity.getPlatformBeanType().newInstance();
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            throw new UPAIllegalArgumentException(e);
         }
     }
 

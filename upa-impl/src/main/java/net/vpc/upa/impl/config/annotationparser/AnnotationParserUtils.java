@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.config.annotationparser;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.util.DateUtils;
 
@@ -45,7 +46,7 @@ public class AnnotationParserUtils {
             if (type.isAssignableFrom(c)) {
                 return c;
             } else {
-                throw new IllegalArgumentException("Expected type " + type);
+                throw new UPAIllegalArgumentException("Expected type " + type);
             }
         }
         return oldVal;
@@ -56,7 +57,7 @@ public class AnnotationParserUtils {
             if (type.isAssignableFrom(c)) {
                 oldVal.setBetterValue(c, processOrder);
             } else {
-                throw new IllegalArgumentException("Expected type " + type);
+                throw new UPAIllegalArgumentException("Expected type " + type);
             }
         }
     }

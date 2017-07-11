@@ -11,13 +11,14 @@ import java.util.logging.Logger;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Function;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.uql.parser.syntax.FunctionFactory;
 import net.vpc.upa.impl.uql.util.SimplifyVarsExpressionTransformer;
 import net.vpc.upa.impl.uql.util.UserExpressionParserVisitor;
 import net.vpc.upa.impl.uql.util.UserExpressionParametersMatcherVisitor;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.DataType;
@@ -94,7 +95,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         }
         ExpressionCompiler w=new ExpressionCompiler(expression,config, persistenceUnit);
         CompiledExpression compiledExpression = w.compile();
-        if(!UPAUtils.PRODUCTION_MODE) {
+        if(!UPAImplDefaults.PRODUCTION_MODE) {
             System.out.println("==========DefaultExpressionManager==============");
             System.out.println(expression);
             System.out.println(compiledExpression);
@@ -110,7 +111,7 @@ public class DefaultExpressionManager implements ExpressionManager {
             throw new NullPointerException();
         }
         if (containsFunction(name)) {
-            throw new IllegalArgumentException("Function already exists " + name);
+            throw new UPAIllegalArgumentException("Function already exists " + name);
         }
         FunctionDefinition q = new DefaultFunction(name, type, function);
         addFunction(q);
@@ -125,7 +126,7 @@ public class DefaultExpressionManager implements ExpressionManager {
     public void removeFunction(String name) {
         name = persistenceUnit.getNamingStrategy().getUniformValue(name);
         if (!qlFunctionMap.containsKey(name)) {
-            throw new IllegalArgumentException("No Such Function " + name);
+            throw new UPAIllegalArgumentException("No Such Function " + name);
         }
         qlFunctionMap.remove(name);
     }
@@ -151,7 +152,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         name = persistenceUnit.getNamingStrategy().getUniformValue(name);
         FunctionDefinition qlFunction = qlFunctionMap.get(name);
         if (qlFunction == null) {
-            throw new IllegalArgumentException("No Such QLFunction " + name);
+            throw new UPAIllegalArgumentException("No Such QLFunction " + name);
         }
         return qlFunction;
     }

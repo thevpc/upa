@@ -4,6 +4,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.ExpressionTranslator;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -57,7 +58,7 @@ public class IdExpressionCompiler implements ExpressionTranslator {
             }
         }
         if (entity == null) {
-            throw new IllegalArgumentException("Key enumeration must by associated to and entity");
+            throw new UPAIllegalArgumentException("Key enumeration must by associated to and entity");
         }
 
         Key key = entity.getBuilder().idToKey(o.getId());

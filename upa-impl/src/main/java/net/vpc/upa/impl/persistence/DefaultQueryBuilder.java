@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
@@ -342,7 +343,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     @Override
     public Query setParameter(String name, Object value) {
         if (query != null) {
-            throw new IllegalArgumentException("Query is already executed");
+            throw new UPAIllegalArgumentException("Query is already executed");
         }
         paramsByName.put(name, value);
         return this;
@@ -351,7 +352,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     public Query setParameters(Map<String, Object> parameters) {
         if (parameters != null) {
             if (query != null) {
-                throw new IllegalArgumentException("Query is already executed");
+                throw new UPAIllegalArgumentException("Query is already executed");
             }
             paramsByName.putAll(parameters);
         }
@@ -361,7 +362,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     @Override
     public Query setParameter(int index, Object value) {
         if (query != null) {
-            throw new IllegalArgumentException("Query is already executed");
+            throw new UPAIllegalArgumentException("Query is already executed");
         }
         paramsByIndex.put(index, value);
         return this;
@@ -404,7 +405,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
 
     public void updateCurrent() {
         if (query == null) {
-            throw new IllegalArgumentException("Not yet executed");
+            throw new UPAIllegalArgumentException("Not yet executed");
         }
         query.updateCurrent();
     }
@@ -429,7 +430,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
             return byId(objects[0]);
         }
         if(entity==null){
-            throw new IllegalArgumentException("Missing Entity");
+            throw new UPAIllegalArgumentException("Missing Entity");
         }
         return byExpression(entity.getBuilder().idListToExpression(ids, UQLUtils.THIS));
     }
@@ -470,7 +471,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     @Override
     public Query setHint(String key, Object value) {
         if (query != null) {
-            throw new IllegalArgumentException("Query is already executed");
+            throw new UPAIllegalArgumentException("Query is already executed");
         }
         if (value == null) {
             hints.remove(key);

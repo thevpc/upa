@@ -2,6 +2,8 @@ package net.vpc.upa.impl.extension;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.DefaultExpression;
 import net.vpc.upa.expressions.DefaultTag;
 import net.vpc.upa.expressions.EntityName;
@@ -53,7 +55,7 @@ class TreeEntityJoinCondition extends DefaultExpression {
         } else if (tag.equals(EXPR)) {
             expression = e;
         } else {
-            throw new IllegalArgumentException("Unsupported");
+            throw new UPAIllegalArgumentException("Unsupported");
         }
     }
 

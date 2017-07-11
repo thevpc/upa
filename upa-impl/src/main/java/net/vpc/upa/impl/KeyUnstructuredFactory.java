@@ -2,6 +2,7 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -25,7 +26,7 @@ public class KeyUnstructuredFactory implements KeyFactory {
     @Override
     public Object createId(Object... idValues) {
         if(entity.getIdFields().size()!=idValues.length){
-            throw new IllegalArgumentException("Invalid Key Size. Expected "+entity.getIdFields().size()+" but found "+idValues.length);
+            throw new UPAIllegalArgumentException("Invalid Key Size. Expected "+entity.getIdFields().size()+" but found "+idValues.length);
         }
         return new DefaultKey(idValues);
     }

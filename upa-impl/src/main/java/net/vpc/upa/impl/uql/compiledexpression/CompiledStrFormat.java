@@ -5,6 +5,7 @@ import net.vpc.upa.PersistenceUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -48,7 +49,7 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
     }
     //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnitFilter database) {
-//        throw new IllegalArgumentException("Not supported");
+//        throw new UPAIllegalArgumentException("Not supported");
 //    }
 
     @Override
@@ -79,7 +80,7 @@ public final class CompiledStrFormat extends DefaultCompiledExpressionImpl
                 } else if (PlatformUtils.isInt32(varName)) {
                     c.add(expressions[Integer.parseInt(varName)]);
                 } else {
-                    throw new IllegalArgumentException("Unsupported");
+                    throw new UPAIllegalArgumentException("Unsupported");
                 }
                 varPos++;
             }

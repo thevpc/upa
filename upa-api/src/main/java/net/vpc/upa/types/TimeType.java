@@ -35,6 +35,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -79,7 +80,7 @@ public class TimeType extends TemporalType implements Cloneable {
                         !java.sql.Time.class.equals(type) &&
                         /**@PortabilityHint(target="C#",name="suppress",value="end")*/
                         !Time.class.equals(type) && !java.util.Date.class.equals(type)) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException("Invalid Temporal Type " + type);
+            throw new UPAIllegalArgumentException("Invalid Temporal Type " + type);
         }
         this.min = min;
         this.max = max;
@@ -147,7 +148,7 @@ public class TimeType extends TemporalType implements Cloneable {
         } else if (java.util.Date.class.isAssignableFrom(type)) {
             return new java.util.Date(time);
         } else {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException();
+            throw new UPAIllegalArgumentException();
         }
     }
 

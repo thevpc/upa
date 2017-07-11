@@ -84,7 +84,7 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
 
     //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnit database) {
-//        throw new net.vpc.upa.exceptions.IllegalArgumentException("Unsupported");
+//        throw new net.vpc.upa.exceptions.UPAIllegalArgumentException("Unsupported");
 //    }
     @Override
     public int countFields() {

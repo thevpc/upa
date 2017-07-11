@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,13 +49,13 @@ public class StructType extends DefaultDataType implements Cloneable {
     public StructType(String name, Class clazz, String[] fieldNames, DataType[] datatypes, boolean nullable) {
         super(name, clazz, datatypes.length, 0, nullable);
         if (fieldNames.length != datatypes.length) {
-            throw new net.vpc.upa.exceptions.IllegalArgumentException();
+            throw new UPAIllegalArgumentException();
         }
         elementsMap = new HashMap<String, DataType>(fieldNames.length);
         elementsList = new ArrayList<String>(fieldNames.length);
         for (int i = 0; i < fieldNames.length; i++) {
             if (elementsMap.containsKey(fieldNames[i])) {
-                throw new net.vpc.upa.exceptions.IllegalArgumentException();
+                throw new UPAIllegalArgumentException();
             }
             elementsMap.put(fieldNames[i], datatypes[i]);
             elementsList.add(fieldNames[i]);

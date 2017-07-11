@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Insert;
 import net.vpc.upa.expressions.Param;
@@ -94,7 +95,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                     } else if (value instanceof Param) {
                         query.setParameter(field.getName(), ((Param)value).getValue());
                     } else {
-                        throw new IllegalArgumentException("Unexpected Expression " + value);
+                        throw new UPAIllegalArgumentException("Unexpected Expression " + value);
                     }
                 }
             }

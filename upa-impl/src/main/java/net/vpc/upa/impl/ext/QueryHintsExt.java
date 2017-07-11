@@ -9,4 +9,5 @@ public class QueryHintsExt {
      * type int &gt;= 0 : default is 60, meaningful in join fetch strategy
      */
     public static final String MAX_COLUMNS = "maxColumns";
+    public static final String QUERY_CACHE = "queryCache";
 }

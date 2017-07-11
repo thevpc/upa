@@ -4,6 +4,7 @@ import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PropertyAccessType;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.filters.ObjectFilter;
 
 import java.lang.reflect.Field;
@@ -27,7 +28,7 @@ public class EntityPlatformBeanType implements PlatformBeanType {
         try {
             entity.getEntityType().getConstructor().setAccessible(true);
         } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException("Unable to resolve default constructor for type " + entity.getEntityType() + " (entity " + entity.getName() + ")", e);
+            throw new UPAIllegalArgumentException("Unable to resolve default constructor for type " + entity.getEntityType() + " (entity " + entity.getName() + ")", e);
         }
         for (net.vpc.upa.Field field : entity.getFields()) {
             getAttrAdapter(field.getName());

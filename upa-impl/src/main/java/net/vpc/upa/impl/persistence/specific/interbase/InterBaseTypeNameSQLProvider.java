@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.interbase;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -67,7 +68,7 @@ public class InterBaseTypeNameSQLProvider extends AbstractSQLProvider {
         if (platformType.equals(java.util.Date.class) || platformType.equals(java.sql.Date.class)) {
             return "DATE";
         } else {
-            throw new IllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+            throw new UPAIllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
         }
     }
 

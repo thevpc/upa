@@ -11,6 +11,7 @@ import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.InvocationException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.DefaultUPAContextFactory;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.callback.DefaultMethodArgumentsConverter;
@@ -138,7 +139,7 @@ public class DefaultUPAContext implements UPAContext {
 
     private PersistenceGroupContextProvider getPersistenceGroupContextProvider() {
         if (persistenceGroupContextProvider == null) {
-            throw new IllegalArgumentException("PersistenceGroupContextProvider not found");
+            throw new UPAIllegalArgumentException("PersistenceGroupContextProvider not found");
         }
         return persistenceGroupContextProvider;
     }
@@ -156,7 +157,7 @@ public class DefaultUPAContext implements UPAContext {
             name = "";
         }
         if (!persistenceGroups.containsKey(name)) {
-            throw new IllegalArgumentException("PersistenceGroup " + name + " does not exist");
+            throw new UPAIllegalArgumentException("PersistenceGroup " + name + " does not exist");
         }
         return persistenceGroups.get(name);
     }
@@ -173,7 +174,7 @@ public class DefaultUPAContext implements UPAContext {
             name = "";
         }
         if (persistenceGroups.containsKey(name)) {
-            throw new IllegalArgumentException("PersistenceGroup " + name + " already exists");
+            throw new UPAIllegalArgumentException("PersistenceGroup " + name + " already exists");
         }
         ObjectFactory factory = getFactory();
         if (!isContextProviderSet()) {
@@ -663,7 +664,7 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(UpdateObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -671,7 +672,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -679,7 +680,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -687,7 +688,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -748,14 +749,14 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(RemoveObjectEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
                             }
                             if (parameterType.equals(RemoveEvent.class)) {
                                 if (found) {
-                                    throw new IllegalArgumentException("Ambiguous");
+                                    throw new UPAIllegalArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;

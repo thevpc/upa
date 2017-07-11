@@ -3,6 +3,7 @@ package net.vpc.upa.impl;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.NoSuchSectionException;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.util.ListUtils;
 
@@ -103,7 +104,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
         if (canonicalPathArray.length == 0) {
-            throw new IllegalArgumentException("invalid module path " + path);
+            throw new UPAIllegalArgumentException("invalid module path " + path);
         }
         Section module = null;
         for (String n : canonicalPathArray) {
@@ -345,7 +346,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
             throw new NullPointerException();
         }
         if (name.contains("/")) {
-            throw new IllegalArgumentException("Name cannot contain '/'");
+            throw new UPAIllegalArgumentException("Name cannot contain '/'");
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(parentPath);
         Section parentModule = null;

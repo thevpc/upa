@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.types.Month;
@@ -43,7 +44,7 @@ public class KeyTypeFactory implements KeyFactory {
     private Class keyType;
     public KeyTypeFactory(Class keyType) {
         if(!ACCEPTED_TYPES.contains(keyType)){
-            throw new IllegalArgumentException("No Supported");
+            throw new UPAIllegalArgumentException("No Supported");
         }
         this.keyType = keyType;
     }

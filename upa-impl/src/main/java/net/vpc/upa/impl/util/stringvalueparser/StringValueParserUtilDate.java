@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.util.stringvalueparser;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.DateUtils;
 
 import java.text.ParseException;
@@ -17,7 +18,7 @@ public class StringValueParserUtilDate implements StringValueParser{
             try {
                 return DateUtils.parseDateTime(value, format);
             } catch (ParseException ex) {
-                throw new IllegalArgumentException("Unable to parse date " + value);
+                throw new UPAIllegalArgumentException("Unable to parse date " + value);
             }
         }
         return DateUtils.parseUniversalDate(value);

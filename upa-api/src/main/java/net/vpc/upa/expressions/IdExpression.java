@@ -9,6 +9,7 @@
 package net.vpc.upa.expressions;
 
 import net.vpc.upa.Entity;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class IdExpression extends DefaultExpression implements Cloneable {
 
     public IdExpression(Entity entity, Object id, String alias) {
         if (id == null) {
-            throw new IllegalArgumentException("Id could not be null");
+            throw new UPAIllegalArgumentException("Id could not be null");
         }
 //        entity.getIdType().cast(key);
         this.id = id;
@@ -56,7 +57,7 @@ public class IdExpression extends DefaultExpression implements Cloneable {
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new IllegalArgumentException("Insupported");
+        throw new UPAIllegalArgumentException("Insupported");
     }
 
     public Object getId() {

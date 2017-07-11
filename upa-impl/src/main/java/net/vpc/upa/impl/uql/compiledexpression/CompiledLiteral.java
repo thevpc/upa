@@ -3,6 +3,7 @@ package net.vpc.upa.impl.uql.compiledexpression;
 
 import java.util.Date;
 import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -93,7 +94,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     public void setType(DataTypeTransform type) {
         this.type = type;
         if(type==null){
-            throw new IllegalArgumentException("How Come");
+            throw new UPAIllegalArgumentException("How Come");
         }
     }
 

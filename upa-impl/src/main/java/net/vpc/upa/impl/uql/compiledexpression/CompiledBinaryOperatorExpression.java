@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
@@ -52,7 +53,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
         if(r==right){
             return left;
         }
-        throw new IllegalArgumentException("Not a child");
+        throw new UPAIllegalArgumentException("Not a child");
     }
 
     @Override
@@ -85,7 +86,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
                 break;
             }
             default: {
-                throw new IllegalArgumentException();
+                throw new UPAIllegalArgumentException();
             }
         }
     }
@@ -154,7 +155,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
                 return " LIKE ";
             }
             default: {
-                throw new IllegalArgumentException("Not Supported Yet");
+                throw new UPAIllegalArgumentException("Not Supported Yet");
             }
         }
     }
@@ -234,7 +235,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
                 return new CompiledLike(left, right);
             }
             default: {
-                throw new IllegalArgumentException("Not Supported Yet");
+                throw new UPAIllegalArgumentException("Not Supported Yet");
             }
         }
     }

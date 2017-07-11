@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql.parser;
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.SQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
@@ -53,7 +54,7 @@ public abstract class FunctionSQLProvider implements SQLProvider {
     }
 
     public String error(String msg, String[] params) throws IllegalArgumentException {
-        throw new IllegalArgumentException("Error in function '" + getExpressionType().getSimpleName() + "' params\n" + msg + "\n.Error near " + getExpressionType().getSimpleName() + "(" + Arrays.toString(params) + ")");
+        throw new UPAIllegalArgumentException("Error in function '" + getExpressionType().getSimpleName() + "' params\n" + msg + "\n.Error near " + getExpressionType().getSimpleName() + "(" + Arrays.toString(params) + ")");
     }
 
     /**
@@ -63,7 +64,7 @@ public abstract class FunctionSQLProvider implements SQLProvider {
      * @return
      */
     public String simplify(String functionName, String[] params, Map<String, Object> context){
-        throw new IllegalArgumentException("Never");
+        throw new UPAIllegalArgumentException("Never");
     }
 
 

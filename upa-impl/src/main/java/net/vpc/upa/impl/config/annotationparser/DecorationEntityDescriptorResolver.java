@@ -6,6 +6,7 @@ import net.vpc.upa.UserFieldModifier;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.Entity;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.extensions.*;
 import net.vpc.upa.impl.util.CompareUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -37,7 +38,7 @@ public class DecorationEntityDescriptorResolver {
 
     public EntityDescriptor resolve(Class[] classes) throws UPAException {
         if (classes.length == 0) {
-            throw new IllegalArgumentException("Empty Class Array");
+            throw new UPAIllegalArgumentException("Empty Class Array");
         } else {
             if (classes.length > 1) {
                 CompareUtils.sort(classes, new ClassIndexedComparator(repo));
@@ -152,7 +153,7 @@ public class DecorationEntityDescriptorResolver {
 //            }
             return entityInfo;
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            throw new UPAIllegalArgumentException(e);
         }
     }
 
@@ -279,7 +280,7 @@ public class DecorationEntityDescriptorResolver {
                 String name = fieldInfo.name;
                 FieldInfo old = entityInfo.fieldsMap.get(name);
                 if (old != null) {
-                    throw new IllegalArgumentException("Should never happen");
+                    throw new UPAIllegalArgumentException("Should never happen");
                 }
                 entityInfo.fieldsMap.put(name, fieldInfo);
             }
@@ -331,7 +332,7 @@ public class DecorationEntityDescriptorResolver {
             if (view != null) {
                 Class<ViewEntityExtensionDefinition> spec = view.getType("spec");
                 if (spec.equals(ViewEntityExtensionDefinition.class)) {
-                    throw new IllegalArgumentException("Unsupported");
+                    throw new UPAIllegalArgumentException("Unsupported");
                 } else {
                     entityInfo.specs.add(factory.createObject(spec));
                 }

@@ -93,8 +93,8 @@ class EntityBeanGetterSetterAttribute extends AbstractEntityBeanAttribute {
 //                throw (RuntimeException) e;
 //            }
 //            throw new RuntimeException(e);
-//        } catch (IllegalArgumentException e) {
-//            throw new IllegalArgumentException("Unable to set value for field " + field + ". Value was " + (value == null ? "null" : ("of type " + value.getClass())), e);
+//        } catch (UPAIllegalArgumentException e) {
+//            throw new UPAIllegalArgumentException("Unable to set value for field " + field + ". Value was " + (value == null ? "null" : ("of type " + value.getClass())), e);
 //        } catch (IllegalAccessException e) {
 //            throw new RuntimeException("Unable to set value for field " + field + ". Value was " + (value == null ? "null" : ("of type " + value.getClass())), e);
 //        } catch (InvocationTargetException e) {

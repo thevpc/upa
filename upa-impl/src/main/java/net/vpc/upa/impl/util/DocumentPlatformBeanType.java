@@ -25,7 +25,7 @@ public class DocumentPlatformBeanType implements PlatformBeanType {
 //        try {
 //            entity.getEntityType().getConstructor().setAccessible(true);
 //        } catch (NoSuchMethodException e) {
-//            throw new IllegalArgumentException("Unable to resolve default constructor for type " + entity.getEntityType() + " (entity " + entity.getName() + ")", e);
+//            throw new UPAIllegalArgumentException("Unable to resolve default constructor for type " + entity.getEntityType() + " (entity " + entity.getName() + ")", e);
 //        }
     }
 

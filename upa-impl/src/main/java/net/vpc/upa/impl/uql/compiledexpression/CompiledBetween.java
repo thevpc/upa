@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.CompiledExpressionFactory;
@@ -76,7 +77,7 @@ public class CompiledBetween extends DefaultCompiledExpressionImpl
                 break;
             }
             default: {
-                throw new IllegalArgumentException("Invalid index");
+                throw new UPAIllegalArgumentException("Invalid index");
             }
         }
     }

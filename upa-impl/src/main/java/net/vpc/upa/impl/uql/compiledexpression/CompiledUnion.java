@@ -29,7 +29,7 @@ public class CompiledUnion extends DefaultCompiledEntityStatement implements Com
 
 //    @Override
 //    public String toSQL(boolean integrated, PersistenceUnitFilter database) {
-//        throw new IllegalArgumentException("Unsupported");
+//        throw new UPAIllegalArgumentException("Unsupported");
 //    }
 
 

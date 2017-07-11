@@ -7,6 +7,7 @@ package net.vpc.upa.impl.eval;
 
 import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.PatternType;
@@ -157,7 +158,7 @@ class BinaryOperatorExpressionEvaluator implements QLTypeEvaluator {
                 }
         }
         //TODO other binary operators
-        throw new IllegalArgumentException("Not supported");
+        throw new UPAIllegalArgumentException("Not supported");
     }
 
     public String formatResult(Object result) {

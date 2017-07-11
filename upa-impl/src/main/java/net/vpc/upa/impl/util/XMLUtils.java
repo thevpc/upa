@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
@@ -38,7 +39,7 @@ public class XMLUtils {
                 if (n2 != null) {
                     values.put(n2, a.getNodeValue());
                 } else {
-                    throw new IllegalArgumentException("Unsupported attribute " + n + " for tag " + e.getTagName());
+                    throw new UPAIllegalArgumentException("Unsupported attribute " + n + " for tag " + e.getTagName());
                 }
             }
         }

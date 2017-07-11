@@ -8,6 +8,7 @@ import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPAContext;
 import net.vpc.upa.config.ScanFilter;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.classpath.ClassPathUtils;
 import net.vpc.upa.impl.util.classpath.DefaultConfigFilter;
 import net.vpc.upa.impl.util.classpath.URLClassIterable;
@@ -69,7 +70,7 @@ public class ContextScanSource extends BaseScanSource {
                 _filters.add(filter);
             }
         } else {
-            throw new IllegalArgumentException("Unsupported context " + context);
+            throw new UPAIllegalArgumentException("Unsupported context " + context);
         }
         return new URLClassIterable(getUrls(),
                 new DefaultConfigFilter(_filters.toArray(new ScanFilter[_filters.size()])),

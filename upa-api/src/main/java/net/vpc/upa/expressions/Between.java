@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.expressions;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +88,7 @@ public class Between extends OperatorExpression
         } else if (tag.equals(MAX)) {
             this.max = e;
         } else {
-            throw new IllegalArgumentException("Unsupported");
+            throw new UPAIllegalArgumentException("Unsupported");
         }
     }
 

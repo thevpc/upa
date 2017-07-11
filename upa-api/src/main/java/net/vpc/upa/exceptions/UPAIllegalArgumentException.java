@@ -40,16 +40,21 @@ import net.vpc.upa.types.I18NString;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/7/12 9:27 PM
  */
-public class IllegalArgumentException extends UPAException {
-    public IllegalArgumentException() {
-        this(null);
+public class UPAIllegalArgumentException extends UPAException {
+    public UPAIllegalArgumentException() {
+        this((String)null);
     }
 
-    public IllegalArgumentException(String message) {
+    public UPAIllegalArgumentException(String message) {
         this(message, null);
     }
 
-    public IllegalArgumentException(String message, Throwable throwable) {
-        super(throwable, new I18NString("IllegalArgumentException"), message);
+    public UPAIllegalArgumentException(String message, Throwable throwable) {
+        super(throwable, new I18NString("UPAIllegalArgumentException"), message);
     }
+
+    public UPAIllegalArgumentException(Throwable throwable) {
+        super(throwable, new I18NString("UPAIllegalArgumentException"));
+    }
+
 }

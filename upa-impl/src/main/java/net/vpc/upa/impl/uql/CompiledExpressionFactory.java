@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.uql;
 
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledUplet;
@@ -37,13 +38,13 @@ public class CompiledExpressionFactory {
                 try {
                     c = defaultInstance.getConstructor(new Class[]{Object.class});
                 } catch (NoSuchMethodException e2) {
-                    throw new IllegalArgumentException("Could not cast " + e + " as Expression");
+                    throw new UPAIllegalArgumentException("Could not cast " + e + " as Expression");
                 }
             }
             try {
                 return (CompiledExpressionExt) c.newInstance(new Object[]{e});
             } catch (Throwable e1) {
-                throw new IllegalArgumentException(e1.toString());
+                throw new UPAIllegalArgumentException(e1.toString());
             }
         }
     }

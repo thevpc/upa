@@ -3,6 +3,7 @@ package net.vpc.upa.impl.config;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
@@ -300,7 +301,7 @@ public class DefaultUPAContextLoader {
                             varContext.declare(p.getName(), svalue);
                             pg.properties.add(p);
                         } else {
-                            throw new IllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getTagName() + ". valid tags are "
+                            throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getTagName() + ". valid tags are "
                                     + "include, persistenceGroup, persistenceUnit, "
                                     + "scan, connection, rootConnection, property");
                         }
@@ -336,7 +337,7 @@ public class DefaultUPAContextLoader {
                     Element el = (Element) item;
                     String tagName = el.getTagName();
                     if (defaultVisited) {
-                        throw new IllegalArgumentException("tag 'default' should be the very last tag in include");
+                        throw new UPAIllegalArgumentException("tag 'default' should be the very last tag in include");
                     }
                     if (XMLUtils.equalsUniform(tagName, "url")) {
                         Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
@@ -440,7 +441,7 @@ public class DefaultUPAContextLoader {
                         }
                         defaultVisited = true;
                     } else {
-                        throw new IllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getTagName() + ". valid tags are "
+                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getTagName() + ". valid tags are "
                                 + "file, url, resource, default");
                     }
                 }
@@ -483,7 +484,7 @@ public class DefaultUPAContextLoader {
                         gvarContext.declare(p.getName(), svalue);
                         c.properties.add(p);
                     } else {
-                        throw new IllegalArgumentException("Unsupported tag " + tagName + " for PersistenceGroup. "
+                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for PersistenceGroup. "
                                 + "valid tags are persistenceUnit, scan, property");
                     }
                 }
@@ -546,7 +547,7 @@ public class DefaultUPAContextLoader {
                     } else if (XMLUtils.equalsUniform(tagName, "scan")) {
                         s.scanElements.add(parseScan(el, uvarContext));
                     } else {
-                        throw new IllegalArgumentException("Unsupported tag " + tagName + " for PersistenceUnit. "
+                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for PersistenceUnit. "
                                 + "valid tags are connection, rootConnection, property, scan");
                     }
                 } else {
@@ -614,7 +615,7 @@ public class DefaultUPAContextLoader {
                         varContext2.declare(p.getName(), svalue);
                         s.properties.put(p.getName(), svalue);
                     } else {
-                        throw new IllegalArgumentException("Unsupported tag " + tagName + " for Connection and RootConnection. "
+                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for Connection and RootConnection. "
                                 + "valid tags are connectionString, userName, password, "
                                 + "structure, enabled, property");
                     }

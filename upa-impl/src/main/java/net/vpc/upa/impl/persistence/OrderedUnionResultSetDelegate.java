@@ -52,18 +52,18 @@
 //    public OrderedUnionResultSetDelegate(ResultSet[] rs, int[] orderColumns, boolean[] asc) {
 //        super(rs[0]);
 //        if (orderColumns != null && orderColumns.length > 2) {
-//            throw new IllegalArgumentException("sorry, order columns > 2 not yet implemented...");
+//            throw new UPAIllegalArgumentException("sorry, order columns > 2 not yet implemented...");
 //        }
 //        this.rs = rs;
 //        this.orderColumns = orderColumns;
 //        this.asc = asc;
 //        if (orderColumns != null) {
 //            if (orderColumns.length == 0 || asc == null || asc.length != orderColumns.length) {
-//                throw new IllegalArgumentException();
+//                throw new UPAIllegalArgumentException();
 //            }
 //        } else {
 //            if (asc != null) {
-//                throw new IllegalArgumentException();
+//                throw new UPAIllegalArgumentException();
 //            }
 //        }
 //        this.rs_next_call_consumed = new int[rs.length];

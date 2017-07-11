@@ -67,7 +67,7 @@
 //                    vexpr2.setBaseReferrer(referrer);
 //                    return ReplaceResult.continueWithNewObj(vexpr2);
 //                } else {
-//                    throw new IllegalArgumentException("Invalid expression when expanding LiveFormula for " + referrer + " (" + expr2 + ")." + c);
+//                    throw new UPAIllegalArgumentException("Invalid expression when expanding LiveFormula for " + referrer + " (" + expr2 + ")." + c);
 //                }
 //            }
 //        }

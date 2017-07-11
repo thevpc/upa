@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -265,20 +266,20 @@ public abstract class AbstractUPAObject implements UPAObject {
     public void checkValidIdentifier(String s) {
         // an empty or null string cannot be a valid identifier
         if (s == null || s.length() == 0) {
-            throw new IllegalArgumentException("Empty name");
+            throw new UPAIllegalArgumentException("Empty name");
         }
         if (!s.trim().equals(s)) {
-            throw new IllegalArgumentException(s);
+            throw new UPAIllegalArgumentException(s);
         }
 
         char[] c = s.toCharArray();
         if (!ExpressionHelper.isIdentifierStart(c[0])) {
-            throw new IllegalArgumentException("Invalid name start " + s);
+            throw new UPAIllegalArgumentException("Invalid name start " + s);
         }
 
         for (int i = 1; i < c.length; i++) {
             if (!ExpressionHelper.isIdentifierPart(c[i])) {
-                throw new IllegalArgumentException("Invalid name char '" + c[i] + "' in name " + s);
+                throw new UPAIllegalArgumentException("Invalid name char '" + c[i] + "' in name " + s);
             }
         }
     }

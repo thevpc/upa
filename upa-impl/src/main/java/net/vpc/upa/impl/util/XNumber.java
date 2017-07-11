@@ -5,6 +5,8 @@
  */
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
@@ -42,7 +44,7 @@ public class XNumber {
         } else if (type == BigDecimal.class) {
             return new XNumber(bigDecimalValue().negate());
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber inv() {
@@ -61,7 +63,7 @@ public class XNumber {
         } else if (type == BigDecimal.class) {
                 return new XNumber(new BigDecimal("1").divide(bigDecimalValue(), BigDecimal.ROUND_UP));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber complement() {
@@ -80,7 +82,7 @@ public class XNumber {
         } else if (type == BigDecimal.class) {
 
         }
-        throw new IllegalArgumentException("Unsupported");
+        throw new UPAIllegalArgumentException("Unsupported");
     }
 
     public XNumber add(XNumber other) {
@@ -100,7 +102,7 @@ public class XNumber {
         } else if (c == BigDecimal.class) {
             return new XNumber(bigDecimalValue().add(other.bigDecimalValue()));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber subtract(XNumber other) {
@@ -120,7 +122,7 @@ public class XNumber {
         } else if (c == BigDecimal.class) {
             return new XNumber(bigDecimalValue().subtract(other.bigDecimalValue()));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber multiply(XNumber other) {
@@ -140,7 +142,7 @@ public class XNumber {
         } else if (c == BigDecimal.class) {
             return new XNumber(bigDecimalValue().multiply(other.bigDecimalValue()));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber divide(XNumber other) {
@@ -160,7 +162,7 @@ public class XNumber {
         } else if (c == BigDecimal.class) {
             return new XNumber(bigDecimalValue().divide(other.bigDecimalValue()));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public Object toNumber() {
@@ -179,7 +181,7 @@ public class XNumber {
         } else if (type == BigDecimal.class) {
             return bigDecimalValue();
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     @Override
@@ -239,7 +241,7 @@ public class XNumber {
         } else if (c == BigDecimal.class) {
             return (bigDecimalValue().compareTo(other.bigDecimalValue()));
         }
-        throw new IllegalArgumentException("Invalid");
+        throw new UPAIllegalArgumentException("Invalid");
     }
 
     public static Class validateType(Class cls1) {
@@ -262,7 +264,7 @@ public class XNumber {
         } else if (cls1.equals(BigInteger.class)) {
             return BigInteger.class;
         } else {
-            throw new IllegalArgumentException("Invalid Type " + cls1);
+            throw new UPAIllegalArgumentException("Invalid Type " + cls1);
         }
     }
 
@@ -325,7 +327,7 @@ public class XNumber {
             if (isFloating()) {
                 return new BigDecimal(number.doubleValue());
             }
-            throw new IllegalArgumentException("Invalid bigDecimaValue()");
+            throw new UPAIllegalArgumentException("Invalid bigDecimaValue()");
         }
     }
 
@@ -347,7 +349,7 @@ public class XNumber {
             return new BigInteger("" + number.longValue());
             //return new BigDecimal(number.doubleValue()).toBigInteger();
         }
-        throw new IllegalArgumentException("Invalid bigDecimaValue()");
+        throw new UPAIllegalArgumentException("Invalid bigDecimaValue()");
     }
 
     public static Class bestFit(Class cls1, Class cls2) {
@@ -405,7 +407,7 @@ public class XNumber {
         } else if (cls1.equals(BigDecimal.class)) {
             return cls1;
         } else {
-            throw new IllegalArgumentException("Unsupported");
+            throw new UPAIllegalArgumentException("Unsupported");
         }
     }
 

@@ -36,6 +36,7 @@ package net.vpc.upa;
 
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class QualifiedIdentifier {
                 return uKey.getObjectAt(i);
             }
         }
-        throw new net.vpc.upa.exceptions.IllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
+        throw new UPAIllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
     }
 
 }

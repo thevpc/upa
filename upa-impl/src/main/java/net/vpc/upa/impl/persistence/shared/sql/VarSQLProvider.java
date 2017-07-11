@@ -37,7 +37,7 @@ public class VarSQLProvider extends AbstractSQLProvider {
         } else if (referrer instanceof Entity) {
             Entity entity = (Entity) referrer;
 //            if (UQLUtils.THIS.equals(o.getName())) {
-//                throw new IllegalArgumentException("Unexpected this alias");
+//                throw new UPAIllegalArgumentException("Unexpected this alias");
 //                //this must be resolved to the ancestor alias
 //                ExpressionDeclarationList declarationList = o.getDeclarationList();
 //                name = persistenceManager.getPersistenceName(declarationList.getValue(null).getName(), PersistenceNameStrategyNames.ALIAS);

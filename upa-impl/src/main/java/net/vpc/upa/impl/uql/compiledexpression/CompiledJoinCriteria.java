@@ -8,6 +8,7 @@
  */
 package net.vpc.upa.impl.uql.compiledexpression;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.JoinType;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
@@ -102,7 +103,7 @@ public class CompiledJoinCriteria extends DefaultCompiledExpressionImpl implemen
                 return;
             }
         }
-        throw new IllegalArgumentException("Invalid index");
+        throw new UPAIllegalArgumentException("Invalid index");
     }
 
     public CompiledExpressionExt copy() {

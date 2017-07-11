@@ -66,7 +66,7 @@ public class DefaultPrimitiveField extends AbstractField implements PrimitiveFie
 //                    rsrcDescKey, rsrcDescKeyGen}, false));
 //
 //        if (name == null) {
-//            throw new IllegalArgumentException("Null Table.Field");
+//            throw new UPAIllegalArgumentException("Null Table.Field");
 //        } else {
 //            hash = toString().hashCode();
 //        }

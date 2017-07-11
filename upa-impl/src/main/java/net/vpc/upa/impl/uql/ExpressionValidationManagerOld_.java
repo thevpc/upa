@@ -108,7 +108,7 @@
 //                Field f = (Field) fvar.getReferrer();
 //                if (config.isCompile()) {
 //                    if (f == null) {
-//                        throw new IllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
+//                        throw new UPAIllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
 //                    }
 //                    if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
 //                        vv.setTypeTransform(UPAUtils.getTypeTransformOrIdentity(f));
@@ -126,7 +126,7 @@
 //                Field f = (Field) fvar.getReferrer();
 //                if (config.isCompile()) {
 //                    if (f == null) {
-//                        throw new IllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
+//                        throw new UPAIllegalArgumentException("Field not found " + fvar + " in " + ci.getEntity().getName());
 //                    }
 //                    if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
 //                        vv.setTypeTransform(UPAUtils.getTypeTransformOrIdentity(f));
@@ -136,10 +136,10 @@
 //                }
 //                if (fvar.getChild() != null) {
 //                    if (!(fvar.getChild() instanceof CompiledVar)) {
-//                        throw new IllegalArgumentException();
+//                        throw new UPAIllegalArgumentException();
 //                    }
 //                    if (fvar.getChild().getChild() != null) {
-//                        throw new IllegalArgumentException();
+//                        throw new UPAIllegalArgumentException();
 //                    }
 //                }
 //            }
@@ -158,7 +158,7 @@
 //                }
 //                if (config.isCompile()) {
 //                    if (compiledSelect.countFields() == 0) {
-//                        throw new IllegalArgumentException("Empty Field List in " + compiledSelect);
+//                        throw new UPAIllegalArgumentException("Empty Field List in " + compiledSelect);
 //                    }
 //                }
 //            }
@@ -320,7 +320,7 @@
 //                    }
 //                }
 //                if (selectedEntry == null) {
-//                    throw new IllegalArgumentException("Unknown alias " + cv.getName());
+//                    throw new UPAIllegalArgumentException("Unknown alias " + cv.getName());
 //                }
 //                final Entity _entity = selectedEntry.entity;
 //                if (cv.getChild() == null || cv.getChild().getName().equals("*")) {
@@ -844,7 +844,7 @@
 //                }
 //                return v;
 //            }
-//            throw new IllegalArgumentException("No enclosing Select o update found for " + v);
+//            throw new UPAIllegalArgumentException("No enclosing Select o update found for " + v);
 //        }
 //        return v;
 //    }
@@ -875,7 +875,7 @@
 //                if (thisAlias != null) {
 //                    v.setName(thisAlias);
 //                } else {
-////                    throw new IllegalArgumentException("Incountered this alias but never declared");
+////                    throw new UPAIllegalArgumentException("Incountered this alias but never declared");
 //                }
 //                ExpressionDeclaration declaration = getDeclaration(v.getName(), v, config);
 //                if (declaration != null) {
@@ -888,12 +888,12 @@
 //                }
 //                if (UQLUtils.THIS.equals(config.getThisAlias())) {
 //                    if (entityBaseName == null) {
-//                        throw new IllegalArgumentException("'this' alias is not declared");
+//                        throw new UPAIllegalArgumentException("'this' alias is not declared");
 //                    }
 //                    v.setReferrer(persistenceUnit.getEntity(entityBaseName));
 //                    return v;
 //                } else {
-//                    throw new IllegalArgumentException("'this' alias is not declared");
+//                    throw new UPAIllegalArgumentException("'this' alias is not declared");
 //                }
 //            }
 //            //check if field
@@ -952,7 +952,7 @@
 //                            return v;
 //                        }
 //                    }
-//                    throw new IllegalArgumentException("Problem");
+//                    throw new UPAIllegalArgumentException("Problem");
 //                }
 //            }
 //            //check if entity

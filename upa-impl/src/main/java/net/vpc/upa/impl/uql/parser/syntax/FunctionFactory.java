@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.uql.parser.syntax;
 
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 import net.vpc.upa.expressions.*;
@@ -79,7 +80,7 @@ public class FunctionFactory {
                     d = new ManyToOneType(name, null, name, true, true);
                 }
             } else {
-                throw new IllegalArgumentException("Unupported cast type");
+                throw new UPAIllegalArgumentException("Unupported cast type");
             }
             return new Cast(e, d);
         }
@@ -177,7 +178,7 @@ public class FunctionFactory {
             }
         }
         return new QLFunctionExpression(name, args.toArray(new Expression[args.size()]));
-        //throw new IllegalArgumentException("Unknown Function "+name);
+        //throw new UPAIllegalArgumentException("Unknown Function "+name);
     }
 
     private static void checkArgCount(String name, List<Expression> args, int count) {

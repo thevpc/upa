@@ -41,7 +41,7 @@ public class DefaultPlatformBeanType implements PlatformBeanType {
 //                constructor.setAccessible(true);
 //            }
 //        } catch (NoSuchMethodException e) {
-//            throw new IllegalArgumentException(e);
+//            throw new UPAIllegalArgumentException(e);
 //        }
         try {
             return platformType.newInstance();

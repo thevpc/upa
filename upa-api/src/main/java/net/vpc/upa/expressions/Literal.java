@@ -97,7 +97,7 @@ public final class Literal extends DefaultExpression
 //                && !(value instanceof Date)
 //                && !(value instanceof Boolean)
 //        ) {
-//            throw new IllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
+//            throw new UPAIllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
 //        } else {
         this.value = value;
 
