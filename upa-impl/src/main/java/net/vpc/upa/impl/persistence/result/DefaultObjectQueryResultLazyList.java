@@ -179,9 +179,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             } else if (columnFamily.entity != null && columnFamily.identifiable) {
                 if (columnFamily.partialObject) {
                     if (columnFamily.idFields.size() == 1) {
-                        columnFamily.parser = ColumnFamilyParserSingleIdExternalLoadEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserSingleIdExternalTodoEntity.INSTANCE;
                     } else {
-                        columnFamily.parser = ColumnFamilyParserMultiIdExternalLoadEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserMultiIdExternalTodoEntity.INSTANCE;
                     }
                 } else {
                     if (columnFamily.idFields.size() == 1) {
@@ -208,6 +208,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         Set<Object> list = workspace_missingObjects.get(entity);
         if (list == null) {
             list = new HashSet<>();
+            workspace_missingObjects.put(entity,list);
         }
         if (list.add(id)) {
             workspace_missingObjectsCount++;
@@ -216,7 +217,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
     private void addWorkspaceTodo(LazyResult result) {
         workspace_todos.add(result);
-        workspace_hasTodos = false;
+        workspace_hasTodos = true;
     }
 
     private void reduceWorkspace() {
@@ -266,6 +267,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
         }
         workspace_todos.clear();
+        workspace_hasTodos=false;
         workspace_missingObjectsCount = 0;
     }
 

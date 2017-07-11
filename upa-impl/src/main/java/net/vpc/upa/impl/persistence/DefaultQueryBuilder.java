@@ -424,7 +424,7 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         if(ids==null || ids.size()==0){
             return byId(null);
         }
-        Expression[] objects = ids.toArray(new Expression[ids.size()]);
+        Object[] objects = ids.toArray(new Object[ids.size()]);
         if(ids.size()==1){
             return byId(objects[0]);
         }
