@@ -55,7 +55,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         map.setBoolean("isReferencingSupported", true);
         map.setBoolean("isViewSupported", true);
         map.setBoolean("isTopSupported", true);
-        map.setInt("maxQueryJoinCount", 61);
+        map.setInt("maxQueryJoinCount", 60); //actually 61=table+61joins!
         getSqlManager().register(new MySQLCoalesceSQLProvider());
         getSqlManager().register(new CastANSISQLProvider());
         getSqlManager().register(new MySQLConcatSQLProvider());
