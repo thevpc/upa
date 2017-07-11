@@ -1008,7 +1008,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
         String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
 
-        DefaultQueryExecutor defaultQueryExecutor = new DefaultQueryExecutor(compiledExpression,
+        DefaultQueryExecutor defaultQueryExecutor = new DefaultQueryExecutor(baseExpression,compiledExpression,
                 hints, query,
                 ne, updatable, m, noTypeTransform, context
         );

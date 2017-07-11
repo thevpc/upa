@@ -3,6 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Field;
 import net.vpc.upa.QueryHints;
 import net.vpc.upa.exceptions.IllegalArgumentException;
+import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
@@ -40,13 +41,15 @@ public class DefaultQueryExecutor implements QueryExecutor {
     private boolean noTypeTransform;
     private List<CompiledParam> compiledParams;
     private EntityExecutionContext context;
-    public DefaultQueryExecutor(CompiledExpressionExt compiledExpression, Map<String, Object> hints,
+    private Expression userQuery;
+    public DefaultQueryExecutor(Expression userQuery,CompiledExpressionExt compiledExpression, Map<String, Object> hints,
                                 String query,
                                 NativeField[] nativeFields, boolean updatable, ResultMetaData metaData,
                                 boolean noTypeTransform,
                                 EntityExecutionContext context
     ) {
         this.context = context;
+        this.userQuery = userQuery;
         this.type = context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE;
         this.updatable = updatable;
         this.metaData = metaData;
@@ -93,7 +96,11 @@ public class DefaultQueryExecutor implements QueryExecutor {
 
     @Override
     public String toString() {
-        return "BEGIN NATIVE_SQL" + "\n" + query + "\n" + "parameters=" + parameters + "\n" + "END NATIVE_SQL";
+        return "BEGIN NATIVE_SQL"
+                + "\n" + userQuery
+                + "\n" + query
+                + "\n" + "parameters=" + parameters
+                + "\n" + "END NATIVE_SQL";
     }
 
     public void dispose() {
@@ -149,7 +156,8 @@ public class DefaultQueryExecutor implements QueryExecutor {
         } catch (Exception e) {
             errorTrace
                     = "--ERROR-EXEC--" + "\n"
-                    + "        full query =" + query + "\n"
+                    + "        uql query  =" + userQuery + "\n"
+                    + "      native query =" + query + "\n"
                     + "   statement index =" + getCurrentStatementIndex() + "\n"
                     + " execution-context =" + this + "\n"
                     + "         exception =" + e + "\n"

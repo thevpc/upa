@@ -20,7 +20,7 @@ import java.util.Date;
 public class PerfUC1 {
 
     static int expand = 1000;
-    static int stability = 200;
+    static int stability = 20;
 
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(PerfUC1.class.getName());
 
