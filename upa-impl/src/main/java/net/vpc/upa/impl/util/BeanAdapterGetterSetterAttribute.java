@@ -38,7 +38,7 @@ class DefaultPlatformBeanProperty extends AbstractPlatformBeanProperty {
             throw new RuntimeException("Field inaccessible : no getter found for field " + getName());
         }
         try {
-            return getter.invoke(o,new Object[0]);
+            return getter.invoke(o,UPAUtils.UNDEFINED_ARRAY);
         } catch (Exception e) {
             if (e instanceof InvocationTargetException) {
                 e= (Exception)((InvocationTargetException)e).getTargetException();

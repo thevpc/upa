@@ -381,7 +381,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                 if (e != null) {
                     CompiledExpressionExt oldParent = e.getParentExpression();
                     if (oldParent != null && oldParent!=this) {
-                        throw new IllegalArgumentException("Expression already bound");
+                        throw new IllegalArgumentException("Expression already bound : "+e+" bound to "+oldParent+" <> "+this);
                     }
                     e.setParentExpression(this);
                 }

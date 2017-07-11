@@ -156,12 +156,13 @@ public class DefaultQueryExecutor implements QueryExecutor {
         } catch (Exception e) {
             errorTrace
                     = "--ERROR-EXEC--" + "\n"
-                    + "        uql query  =" + userQuery + "\n"
-                    + "      native query =" + query + "\n"
-                    + "   statement index =" + getCurrentStatementIndex() + "\n"
-                    + " execution-context =" + this + "\n"
-                    + "         exception =" + e + "\n"
-                    + "        stacktrace =" + "\n";
+                    + "     statement index =" + getCurrentStatementIndex() + "\n"
+                    + "   execution-context =" + this + "\n"
+                    + "          uql query  =" + userQuery + "\n"
+                    + "        native query =" + query + "\n"
+                    + " compiled uql query  =" + compiledExpression + "\n"
+                    + "           exception =" + e + "\n"
+                    + "          stacktrace =" + "\n";
 
             /**
              * @PortabilityHint(target="C#",name="suppress")

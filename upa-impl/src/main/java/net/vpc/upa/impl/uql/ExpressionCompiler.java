@@ -517,11 +517,20 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             return ReplaceResult.NO_UPDATES_STOP;
                         }
                     } else {
+                        String parentAlias=null;
+                        String oldEntityAlias=null;
+                        if(o.getParentExpression() instanceof CompiledVar && !entityAlias.equals(((CompiledVar) o.getParentExpression()).getName())){
+                            parentAlias = ((CompiledVar) o.getParentExpression()).getName();
+                            oldEntityAlias=entityAlias;
+                            entityAlias=parentAlias;
+                        }
                         BindingJoinInfo d = addBindingJoin(enclosingStmt, field, entityAlias, BindingId.createChild(o.getBinding(), field.getName()));
                         CompiledVarOrMethod child = o.getChild();
-                        ReplaceResult repl = UQLCompiledUtils.replaceExpressions(child, this,updateContext);
                         CompiledVar newVar = new CompiledVar(d.alias, d.entity, d.binding);
                         newVar.setBinding(d.binding);
+                        child.unsetParent();
+                        child.setParentExpression(newVar);
+                        ReplaceResult repl = UQLCompiledUtils.replaceExpressions(child, this,updateContext);
                         o.setChild(null); //unbind child to old parent
                         if (repl.isNewInstance()) {
                             CompiledVarOrMethod child2 = (CompiledVarOrMethod) repl.getExpression(child);

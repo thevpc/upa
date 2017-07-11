@@ -16,6 +16,7 @@ import java.util.Map;
 import net.vpc.upa.config.Config;
 import net.vpc.upa.config.ConfigAction;
 import net.vpc.upa.config.ConfigInfo;
+import net.vpc.upa.impl.util.UPAUtils;
 
 /**
  *
@@ -93,7 +94,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
             try {
                 Method method = ann.annotationType().getMethod("config");
                 if (method != null && method.getReturnType().getName().equals(Config.class.getName())) {
-                    Object t = method.invoke(ann,new Object[0]);
+                    Object t = method.invoke(ann, UPAUtils.UNDEFINED_ARRAY);
                     AnnotationDecoration c = new AnnotationDecoration((Annotation) t, null, null, null, null,0);
                     configInfo = new ConfigInfo(c.getInt("order"),
                             ConfigAction.valueOf(c.getString("action")),
