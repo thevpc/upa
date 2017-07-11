@@ -12,6 +12,7 @@ import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.SessionParams;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.ext.QueryHintsExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
@@ -925,6 +926,19 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         config.setHints(hints);
         config.setResolveThis(true);
 //        config.setThisAlias(StringUtils.isNullOrEmpty(statement.getEntityAlias())? UQLUtils.THIS:statement.getEntityAlias());
+
+        int maxJoins = UPAUtils.convertToInt(config.getHint(QueryHints.MAX_JOINS),-1);
+        if(maxJoins<0 || maxJoins>maxQueryJoinCount){
+            maxJoins=maxQueryJoinCount;
+        }
+        hints.put(QueryHints.MAX_JOINS,maxJoins);
+
+        int maxColumns = UPAUtils.convertToInt(config.getHint(QueryHintsExt.MAX_COLUMNS),-1);
+        if(maxColumns<0 || maxColumns>maxQueryColumnsCount){
+            maxColumns=maxQueryColumnsCount;
+        }
+
+        hints.put(QueryHintsExt.MAX_COLUMNS,maxColumns);
 
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;

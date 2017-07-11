@@ -20,9 +20,15 @@ public final class QueryHints {
 
     /**
      * sub entities depth
-     * type int &gt;= 0 : default is 3, meaningful in join fetch strategy
+     * type int &gt;= 0 : default is 60, meaningful in join fetch strategy
      */
     public static final String NAVIGATION_DEPTH = "navigationDepth";
+
+    /**
+     * max joins in a query (and all its sub queries)
+     * type int &gt;= 0 : default is 60, meaningful in join fetch strategy
+     */
+    public static final String MAX_JOINS = "maxJoins";
 
     private QueryHints() {
     }

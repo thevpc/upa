@@ -5,6 +5,7 @@ import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.ExpressionHelper;
+import net.vpc.upa.impl.ext.QueryHintsExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
@@ -34,6 +35,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     private CompiledExpression rootExpression;
     private ExpressionCompilerConfig config;
     private int navigationDepth;
+    private int maxJoins;
+    private int maxColumns;
+    private int currentJoins;
     private QueryFetchStrategy fetchStrategy;
     private ExpressionManager expressionManager;
 
@@ -44,9 +48,23 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         this.config = config;
         navigationDepth = (Integer) config.getHint(QueryHints.NAVIGATION_DEPTH, -1);
         if (navigationDepth < 0) {
-            navigationDepth = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHints.NAVIGATION_DEPTH,5);
+            navigationDepth = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHints.NAVIGATION_DEPTH,60);
             if (navigationDepth < 0) {
                 navigationDepth = 5;
+            }
+        }
+        this.maxJoins = (Integer) config.getHint(QueryHints.MAX_JOINS, -1);
+        if (maxJoins < 0) {
+            maxJoins = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHints.MAX_JOINS,60);
+            if (maxJoins < 0) {
+                maxJoins = 60;
+            }
+        }
+        this.maxColumns = (Integer) config.getHint(QueryHintsExt.MAX_COLUMNS, -1);
+        if (maxColumns < 0) {
+            maxColumns = persistenceUnit.getProperties().getInt("System.QueryHints."+QueryHintsExt.MAX_COLUMNS,1000);
+            if (maxColumns < 0) {
+                maxColumns = 60;
             }
         }
         fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
@@ -115,6 +133,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     public boolean isTopDown() {
         return true;
     }
+
 
     public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
         ReplaceResult result = ReplaceResult.NO_UPDATES_CONTINUE;
@@ -189,10 +208,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     private ReplaceResult updateCompiledQueryField(CompiledQueryField tt, Map<String, Object> updateContext) {
         updateContext=updateContext==null?new HashMap<String,Object>():new HashMap<String, Object>(updateContext);
         CompiledEntityStatement enclosingStmt=(CompiledEntityStatement) updateContext.get("updateContext");
-        Integer depth=(Integer) updateContext.get("depth");
-        if(depth==null){
-            depth=navigationDepth+1;
-        }
+        int depth=UPAUtils.convertToInt(updateContext.get("depth"),navigationDepth+1);
+        int currColumnsCount=UPAUtils.convertToInt(updateContext.get("columnsCount"),1);
         if (enclosingStmt == null) {
             enclosingStmt = (CompiledEntityStatement) tt.getParentExpression();
         }
@@ -247,7 +264,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
 //                    if (depth <= 0 || (depth<navigationDepth && fetchStrategy == QueryFetchStrategy.SELECT)) {
                     Relationship relationship = manyToOneType.getRelationship();
-                    if (depth <= 0 || (fetchStrategy == QueryFetchStrategy.SELECT)) {
+                    List<Field> newFields = FieldFilters2.filter(relationship.getTargetEntity().getFields(), config.getExpandFieldFilter());
+                    if (currentJoins>=maxJoins || depth <= 0 || (fetchStrategy == QueryFetchStrategy.SELECT) || (currColumnsCount+newFields.size())>maxColumns) {
                         List<Field> sfields = relationship.getSourceRole().getFields();
                         List<Field> tfields = relationship.getTargetRole().getFields();
                         for (int i = 0; i < sfields.size(); i++) {
@@ -299,7 +317,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 bindingJoinInfo.entity,
                                 bindingJoinInfo.binding
                         );
-                        fieldsToExpand.addAll(FieldFilters2.filter(relationship.getTargetEntity().getFields(), config.getExpandFieldFilter()));
+                        fieldsToExpand.addAll(newFields);
+                        updateContext.put("columnsCount",newFields.size()+currColumnsCount);
                     } else {
                         throw new IllegalArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
                     }
@@ -668,6 +687,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         expandEntityFilters(s,updateContext);
         List<CompiledQueryField> fields = new ArrayList<>(s.getFields());
         List<Integer> toRemove = new ArrayList<>();
+        updateContext.put("columnsCount",fields.size());
         for (int i = 0; i < fields.size(); i++) {
             CompiledQueryField qf = fields.get(i);
             qf.setBinding(BindingId.create(String.valueOf(i)));
@@ -685,6 +705,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     for (CompiledQueryField ee : subExpressions) {
                         s.addField(ee);
                     }
+                    updateContext.put("columnsCount",UPAUtils.convertToInt(updateContext.get("columnsCount"),0)-1+subExpressions.length);
                 } else if (replacement instanceof CompiledQueryField) {
                     CompiledQueryField replacement1 = (CompiledQueryField) replacement;
                     s.setField(replacement1, i);
@@ -752,6 +773,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
         }
         CompiledJoinCriteria[] joins = s.getJoins();
+        currentJoins+=joins.length;
+        if(s!=rootExpression){
+            currentJoins++;
+        }
         for (int i = 0; i < joins.length; i++) {
             CompiledExpressionExt condition = joins[i].getCondition();
             if (condition != null) {
@@ -858,6 +883,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         if (!addJoin) {
             ret.alias = generatedAlias;
         } else {
+            currentJoins++;
             ret.newlyCreated = true;
             generatedAlias = context.createAliasFor(binding);
             CompiledExpressionExt cond = null;

@@ -776,4 +776,26 @@ public class UPAUtils {
         }
         return sb.toString();
     }
+
+    public static int convertToInt(Object value,int nullValue){
+        if(value==null){
+            value=nullValue;
+        }else if(value instanceof Number && !(value instanceof Integer)){
+            value=((Number) value).intValue();
+        }else if(value instanceof String){
+            value=Integer.parseInt((String) value);
+        }
+        return ((Integer)value).intValue();
+    }
+
+    public static long convertToLong(Object value,long nullValue){
+        if(value==null){
+            value=nullValue;
+        }else if(value instanceof Number && !(value instanceof Long)){
+            value=((Long) value).longValue();
+        }else if(value instanceof String){
+            value=Long.parseLong((String) value);
+        }
+        return ((Long)value).longValue();
+    }
 }
