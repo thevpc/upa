@@ -23,7 +23,7 @@ class ColumnFamilyParserSingleIdEntity implements ColumnFamilyParser {
         Object id = result.read(idField.dbIndex);
         ResultObject resultObject;
         if (id == null) {
-            resultObject = new ResultObject();
+            resultObject = ResultObject.forNull();
         } else {
             NamedId key = new NamedId(id, columnFamily.entity);
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
@@ -42,6 +42,6 @@ class ColumnFamilyParserSingleIdEntity implements ColumnFamilyParser {
             resultObject = o;
         }
         lazyResult.values.put(columnFamily.binding, resultObject.entityResult);
-        lazyResult.currentResult=resultObject;
+        columnFamily.currentResult=resultObject;
     }
 }

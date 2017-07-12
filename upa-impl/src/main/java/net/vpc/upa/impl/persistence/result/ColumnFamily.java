@@ -10,25 +10,22 @@ import java.util.*;
  * Created by vpc on 1/4/14.
  */
 class ColumnFamily {
-
-    boolean initialized;
     boolean documentType;
     BindingId binding;
     boolean read;
     boolean identifiable;
-//    List<Integer> indexesToRead =new ArrayList<Integer>();
     List<FieldInfo> nonIdFields = new ArrayList<FieldInfo>();
     List<FieldInfo> idFields = new ArrayList<FieldInfo>();
     FieldInfo[] fieldsArray;
     Entity entity;
     Class resultType;
     EntityBuilder builder;
-    EntityBuilder entityConverter;
     Map<String, FieldInfo> fieldsMap = new HashMap<String, FieldInfo>();
     Map<String, FieldInfoSetter> setters = new HashMap<String, FieldInfoSetter>();
     ColumnFamilyParser parser;
     boolean partialObject;
     ObjectFactory ofactory;
+    ResultObject currentResult;
 
     public ColumnFamily(BindingId binding, ObjectFactory ofactory) {
         this(binding,(Entity) null,null,ofactory);
@@ -48,7 +45,6 @@ class ColumnFamily {
         this.entity = entity;
         if (entity != null) {
             this.builder = entity.getBuilder();
-            this.entityConverter = entity.getBuilder();
             this.resultType = entity.getEntityType();
         }
         if(resultType!=null){
@@ -84,37 +80,11 @@ class ColumnFamily {
 
     public ResultObject createResultObject(){
         ColumnFamily columnFamily =this;
-        ResultObject result=new ResultObject();
         if (columnFamily.documentType) {
-            Object entityObject = null;
-            Document entityDocument = columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument();
-            result.entityObject = entityObject;
-            result.entityDocument = entityDocument;
-            result.entityResult = entityDocument;
+            return ResultObject.forDocument(null,columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument());
         } else {
             Object entityObject = columnFamily.builder.createObject();
-            Document entityDocument = columnFamily.entityConverter.objectToDocument(entityObject, true);
-            result.entityObject = entityObject;
-            result.entityDocument = entityDocument;
-            result.entityResult = entityObject;
+            return ResultObject.forObject(entityObject,columnFamily.builder.objectToDocument(entityObject, true));
         }
-        return result;
-    }
-    public static ResultObject createResultObject(Entity entity,boolean documentType){
-        ResultObject result=new ResultObject();
-        if (documentType) {
-            Object entityObject = null;
-            Document entityDocument = entity.getBuilder().createDocument();
-            result.entityObject = entityObject;
-            result.entityDocument = entityDocument;
-            result.entityResult = entityDocument;
-        } else {
-            Object entityObject = entity.getBuilder().createObject();
-            Document entityDocument = entity.getBuilder().objectToDocument(entityObject, true);
-            result.entityObject = entityObject;
-            result.entityDocument = entityDocument;
-            result.entityResult = entityObject;
-        }
-        return result;
     }
 }

@@ -22,7 +22,7 @@ class ColumnFamilyParserMultiIdEntity implements ColumnFamilyParser {
         ResultObject resultObject;
         Object[] idarr = TypeInfoSupParserHelper.extractArrayId(result, columnFamily);
         if (idarr == null) {
-            resultObject = new ResultObject();
+            resultObject = ResultObject.forNull();
         } else {
             NamedId key = new NamedId(idarr, columnFamily.entity);
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
@@ -45,6 +45,6 @@ class ColumnFamilyParserMultiIdEntity implements ColumnFamilyParser {
             resultObject = o;
         }
         lazyResult.values.put(columnFamily.binding, resultObject.entityResult);
-        lazyResult.currentResult=resultObject;
+        columnFamily.currentResult=resultObject;
     }
 }

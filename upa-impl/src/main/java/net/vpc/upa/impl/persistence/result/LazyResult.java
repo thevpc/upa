@@ -19,12 +19,11 @@ public class LazyResult {
     boolean updatable;
     boolean incomplete;
     ResultMetaData metaData;
-    ResultObject currentResult;
     Map<BindingId, Object> values = new HashMap<BindingId, Object>();
     Map<BindingId, NamedId> todos = new HashMap<BindingId, NamedId>();
     Map<BindingId, ColumnFamily> types = new HashMap<BindingId, ColumnFamily>();
 
-    public LazyResult(QueryResult result, boolean updatable,ResultMetaData metaData) {
+    public LazyResult(QueryResult result, boolean updatable, ResultMetaData metaData) {
         this.result = result;
         this.updatable = updatable;
         this.metaData = metaData;
@@ -47,23 +46,25 @@ public class LazyResult {
         ResultColumn[] columns = new ResultColumn[resultFields.size()];
         if (updatable) {
             for (ColumnFamily columnFamily : types.values()) {
-                if (columnFamily.documentType) {
-                    QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(columnFamily, result);
-                    currentResult.entityDocument.addPropertyChangeListener(li);
-                } else {
-                    currentResult.entityUpdatable = PlatformUtils.createObjectInterceptor(
-                            columnFamily.resultType,
-                            new UpdatableObjectInterceptor(columnFamily, currentResult.entityObject, result));
-                    values.put(columnFamily.binding, currentResult.entityUpdatable);
-                    int index = columnFamily.nonIdFields.get(0).nativeField.getIndex();
-                    if (columns[index].getValue() == columnFamily.resultType) {
-                        columns[index].setValue(currentResult.entityUpdatable);
+                if (!columnFamily.currentResult.isNull()) {
+                    if (columnFamily.documentType) {
+                        QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(columnFamily, result);
+                        columnFamily.currentResult.entityDocument.addPropertyChangeListener(li);
+                    } else {
+                        columnFamily.currentResult.entityUpdatable = PlatformUtils.createObjectInterceptor(
+                                columnFamily.resultType,
+                                new UpdatableObjectInterceptor(columnFamily, columnFamily.currentResult.entityObject, result));
+                        values.put(columnFamily.binding, columnFamily.currentResult.entityUpdatable);
+                        int index = columnFamily.nonIdFields.get(0).nativeField.getIndex();
+                        if (columns[index].getValue() == columnFamily.resultType) {
+                            columns[index].setValue(columnFamily.currentResult.entityUpdatable);
+                        }
                     }
                 }
             }
         }
         for (int i = 0; i < columns.length; i++) {
-            ResultColumn c=columns[i] = new ResultColumn();
+            ResultColumn c = columns[i] = new ResultColumn();
             c.setLabel(resultFields.get(i).getAlias());
             c.setValue(values.get(BindingId.create(String.valueOf(i))));
         }

@@ -24,6 +24,6 @@ class ColumnFamilyParserNoIdEntity implements ColumnFamilyParser {
             resultObject.entityDocument.setObject(f.name, fieldValue);
         }
         lazyResult.values.put(columnFamily.binding, resultObject.entityResult);
-        lazyResult.currentResult=resultObject;
+        columnFamily.currentResult=resultObject;
     }
 }

@@ -230,54 +230,55 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
     private void reduceWorkspace() {
         if(workspace_missingObjectsCount>0) {
+            CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
             for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
                 String entityName = e.getKey();
                 Entity entity = persistenceUnit.getEntity(entityName);
                 EntityBuilder builder = entity.getBuilder();
                 Set<Object> itemsToReduce = e.getValue();
-                if(!UPAImplDefaults.PRODUCTION_MODE) {
-                    net.vpc.upa.Properties properties = persistenceUnit.getProperties();
-                    long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
-                    if(oldMaxReduceSize<itemsToReduce.size()){
-                        oldMaxReduceSize=itemsToReduce.size();
-                        properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize,oldMaxReduceSize);
-                    }
-                }
+                Set<Object> itemsToReduce2 = new HashSet<>(itemsToReduce.size());
 
-                Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce)).setHints(getHints());
-                CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
-                int count=0;
-                if (itemAsDocument) {
-                    for (Document o : query.getDocumentList()) {
-                        ResultObject resultObject = new ResultObject();
-                        Object entityObject = null;
-                        Document entityDocument = o;
-                        resultObject.entityObject = entityObject;
-                        resultObject.entityDocument = entityDocument;
-                        resultObject.entityResult = entityDocument;
-                        NamedId id = new NamedId(builder.objectToId(o), entityName);
-                        if (!referencesCache.containsKey(id)) {
-                            referencesCache.put(id, resultObject);
-                        }
-                        count++;
-                    }
-                } else {
-                    for (Object o : query.getResultList()) {
-                        ResultObject resultObject = new ResultObject();
-                        Object entityObject = o;
-                        Document entityDocument = builder.objectToDocument(entityObject, true);
-                        resultObject.entityObject = entityObject;
-                        resultObject.entityDocument = entityDocument;
-                        resultObject.entityResult = entityObject;
-                        NamedId id = new NamedId(builder.objectToId(o), entityName);
-                        if (!referencesCache.containsKey(id)) {
-                            referencesCache.put(id, resultObject);
-                        }
-                        count++;
+                //should remove already loaded objects
+                for (Object o : itemsToReduce) {
+                    NamedId id=new NamedId(o,entityName);
+                    if (!referencesCache.containsKey(id)) {
+                        itemsToReduce2.add(o);
                     }
                 }
-                if(count!=itemsToReduce.size()){
-                    throw new UPAIllegalArgumentException("Problem");
+                if(itemsToReduce2.size()>0) {
+                    if (!UPAImplDefaults.PRODUCTION_MODE) {
+                        net.vpc.upa.Properties properties = persistenceUnit.getProperties();
+                        long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
+                        if (oldMaxReduceSize < itemsToReduce2.size()) {
+                            oldMaxReduceSize = itemsToReduce2.size();
+                            properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, oldMaxReduceSize);
+                        }
+                    }
+
+                    Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
+                    int count = 0;
+                    if (itemAsDocument) {
+                        for (Document o : query.getDocumentList()) {
+                            ResultObject resultObject = ResultObject.forDocument(null,o);
+                            NamedId id = new NamedId(builder.objectToId(o), entityName);
+                            if (!referencesCache.containsKey(id)) {
+                                referencesCache.put(id, resultObject);
+                            }
+                            count++;
+                        }
+                    } else {
+                        for (Object o : query.getResultList()) {
+                            ResultObject resultObject = ResultObject.forObject(o,builder.objectToDocument(o, true));
+                            NamedId id = new NamedId(builder.objectToId(o), entityName);
+                            if (!referencesCache.containsKey(id)) {
+                                referencesCache.put(id, resultObject);
+                            }
+                            count++;
+                        }
+                    }
+                    if (count != itemsToReduce2.size()) {
+                        throw new UPAIllegalArgumentException("Problem");
+                    }
                 }
             }
             workspace_missingObjects.clear();

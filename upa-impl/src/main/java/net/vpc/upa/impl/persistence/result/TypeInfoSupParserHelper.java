@@ -36,41 +36,31 @@ public class TypeInfoSupParserHelper {
     public static void loadExternalObject(Object idarr, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
         ResultObject resultObject;
         if (idarr == null) {
-            resultObject = new ResultObject();
+            resultObject = ResultObject.forNull();
         } else {
             NamedId key = new NamedId(idarr, columnFamily.entity);
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
-                o = new ResultObject();
                 Query query = columnFamily.entity.createQueryBuilder().byId(idarr).setHints(parser.getHints());
                 if (columnFamily.documentType) {
-                    Object entityObject = null;
-                    Document entityDocument = query.getDocument();
-                    o.entityObject = entityObject;
-                    o.entityDocument = entityDocument;
-                    o.entityResult = entityDocument;
+                    o=ResultObject.forDocument(null,query.getDocument());
                 } else {
                     Object entityObject = query.<Object>getFirstResultOrNull();
-                    Document entityDocument = columnFamily.entityConverter.objectToDocument(entityObject, true);
-                    o.entityObject = entityObject;
-                    o.entityDocument = entityDocument;
-                    o.entityResult = entityObject;
+                    o=ResultObject.forObject(entityObject,columnFamily.builder.objectToDocument(entityObject, true));
                 }
                 referencesCache.put(key, o);
             }
             resultObject = o;
         }
         lazyResult.values.put(columnFamily.binding, resultObject.entityResult);
-        lazyResult.currentResult=resultObject;
+        columnFamily.currentResult=resultObject;
     }
 
     public static void todoExternalObject(Object idarr, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
-        ResultObject resultObject;
         if (idarr == null) {
-            resultObject = new ResultObject();
-            lazyResult.values.put(columnFamily.binding, resultObject.entityResult);
-            lazyResult.currentResult=resultObject;
+            lazyResult.values.put(columnFamily.binding, null);
+            columnFamily.currentResult=null;
         } else {
             NamedId key = new NamedId(idarr, columnFamily.entity);
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
