@@ -73,7 +73,7 @@ public class CrudUC {
 
             SharedClient c2 = entityManager.getBuilder().documentToObject(found0);
 
-            assertEquals(c2.getFirstName(), "Alia");
+            Assert.assertEquals(c2.getFirstName(), "Alia");
 
             pu.update(c2);
 
