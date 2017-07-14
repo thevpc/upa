@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.specific.derby.*;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
@@ -18,7 +19,8 @@ import java.sql.SQLException;
 public class DefaultSerializablePlatformObjectMarshaller
         extends SimpleTypeMarshaller {
 
-    public DefaultSerializablePlatformObjectMarshaller() {
+    public DefaultSerializablePlatformObjectMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 
     public Object read(int index, ResultSet resultSet)

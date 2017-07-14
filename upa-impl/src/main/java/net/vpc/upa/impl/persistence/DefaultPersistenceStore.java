@@ -45,7 +45,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     public static final String DRIVER_TYPE_DATASOURCE = "DATASOURCE";
     public static final String DRIVER_TYPE_GENERIC = "GENERIC";
     public static final String DRIVER_TYPE_ODBC = "ODBC";
-    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
+//    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
     protected static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
     protected static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
     public static boolean DO_WARNINGS = false;
@@ -129,22 +129,9 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         map.setBoolean("isReferencingSupported", true);
         map.setBoolean("isViewSupported", false);
         map.setBoolean("isTopSupported", false);
-//        this.parser = (new SQLParser());
         marshallManager = new DefaultMarshallManager();
         sqlManager = new DefaultSQLManager(marshallManager);
 
-//        setWrapper(java.util.Date.class,DATETIME);
-//        setWrapper(java.sql.Date.class,DATE);
-//        setWrapper(java.sql.Time.class,TIME);
-//        setWrapper(java.sql.Timestamp.class,TIMESTAMP);
-        getMarshallManager().setTypeMarshaller(Object.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(FileData.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(DataType.class, SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER);
-        getMarshallManager().setTypeMarshaller(java.sql.Date.class, TypeMarshallerUtils.SQL_DATE);
-        getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
-        getMarshallManager().setTypeMarshallerFactory(FileType.class, blobfactory);
-        getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
 
     }
 
@@ -980,11 +967,11 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         Boolean noTypeTransformO = (Boolean) hints.get(QueryHints.NO_TYPE_TRANSFORM);
         boolean noTypeTransform = noTypeTransformO == null ? false : noTypeTransformO;
 
-        NativeField[] ne = null;
+        NativeField[] nativeFields = null;
         if (compiledExpression instanceof CompiledQueryStatement) {
             CompiledQueryStatement cquery = (CompiledQueryStatement) compiledExpression;
-            ne = new NativeField[cquery.countFields()];
-            for (int i = 0; i < ne.length; i++) {
+            nativeFields = new NativeField[cquery.countFields()];
+            for (int i = 0; i < nativeFields.length; i++) {
                 CompiledQueryField field = cquery.getField(i);
                 boolean partialObject = field.isPartialObject();
 //                String fieldAlias = field.getAliasBinding();
@@ -1015,50 +1002,17 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                 DataTypeTransform baseTransform = c;
                 c = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                ne[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, partialObject);
+                nativeFields[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, partialObject);
             }
         } else {
-            ne = new NativeField[0];
+            nativeFields = new NativeField[0];
         }
 
-        String query = this.getSqlManager().getSQL(compiledExpression, context, new DefaultExpressionDeclarationList(null));
-
-        DefaultQueryExecutor defaultQueryExecutor = new DefaultQueryExecutor(baseExpression,compiledExpression,
-                hints, query,
-                ne, updatable, m, noTypeTransform, context
+        return new DefaultQueryExecutor(baseExpression,compiledExpression,
+                hints, nativeFields, updatable, m, noTypeTransform, context,getSqlManager()
         );
-        return defaultQueryExecutor;
     }
 
-    //    @Override
-//    public QueryExecutor queryExecutor(String query) throws SQLException {
-//        //query = validateFunctions(query);
-//        HashMap context = new HashMap(1);
-//        query = getParser().simplify(query, context);
-//        QueryExecutor queryExecutor = new DefaultQueryExecutor(NativeStatementType.SELECT);
-//        queryExecutor.setPersistenceStore(this);
-//        queryExecutor.addNativeStatement(new ReturnStatement(query));
-//        queryExecutor.setQuery(query);
-//        return queryExecutor;
-//    }
-//    public boolean warnings(SQLWarning warn)
-//            throws UPAException {
-//        if (!DO_WARNINGS) {
-//            return false;
-//        }
-////        checkConnection();
-//        boolean rc = false;
-//        if (warn != null) {
-//            String waringStr = "\n" + "*** Warning***" + "\n";
-//            rc = true;
-//            for (; warn != null; warn = warn.getNextWarning()) {
-//                waringStr = waringStr + "SQL State : " + warn.getSQLState() + "\n" + "Message   : " + warn.getMessage() + "\n" + "Error Code: " + warn.getErrorCode() + "\n";
-//            }
-//
-//            log.warn("-----SQL-WARNINIGS----- " + waringStr);
-//        }
-//        return rc;
-//    }
     @Override
     public void close()
             throws UPAException {
@@ -1076,33 +1030,8 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 //        }
     }
 
-    //    private Connection getNativeConnection() throws UPAException {
-//        Connection connection = getConnection();
-//        if (connection instanceof ConnectionDelegate) {
-//            connection = ((ConnectionDelegate) connection).getHandledConnection();
-//        }
-//        return connection;
-//    }
-    //    public StatementDelegate getStatement() {
-//        return statement;
-//    }
-    //
-//    public String toString() {
-//        String ver = getDBVersion();
-//        if ("*".equals(ver)) {
-//            return getDBName() + ':' + getConnectionProfile().toString();
-//        } else {
-//            return getDBName() + '/' + getDBVersion() + ':' + getConnectionProfile().toString();
-//        }
-//
-//    }
-    //    @Override
     public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
-//        FormatterInterface formatter = new StringFormatter(32);
         DataTypeTransform cr = UPAUtils.getTypeTransformOrIdentity(field);
-//        Class sqlType = cr.getPlatformType();
-//        int length = cr.getScale();
-//        int precision = cr.getPrecision();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
@@ -1124,24 +1053,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         return sb.toString();
     }
 
-    //    @Override
-//    @Override
-//    public String getDropTableStatement(Entity table) {
-//        return !(table instanceof EntityView) || !getProperties().getBoolean("isViewSupported", false)
-//                ? ("Drop Table " + table.getName())
-//                : ("Drop View " + table.getName());
-//    }
-//
-//    @Override
-//    public String getDropViewForTableStatement(Entity table) {
-//        return ("Drop View " + getImplicitViewName(table));
-//    }
-//
-//    @Override
-//    public String getDropViewStatement(Entity table) {
-//        return ("Drop View " + getPersistenceName(table));
-//    }
-    //    @Override
     public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
         StringBuilder sb = new StringBuilder();
         sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager))).append(" As ").append("\n").append("\t");
@@ -1151,7 +1062,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     //FIX ME
-    //    @Override
     public String getCreateImplicitViewStatement(Entity table, EntityExecutionContext executionContext) throws UPAException {
         StringBuilder sb = new StringBuilder();
         sb.append("Create View ").append(getValidIdentifier(getImplicitViewName(table))).append(" As ").append("\n");
@@ -1173,7 +1083,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         return (sb.toString());
     }
 
-    //    @Override
     public String getCreateRelationshipStatement(Relationship relation) throws UPAException {
         StringBuilder sb = new StringBuilder();
         RelationshipRole detailRole = relation.getSourceRole();
@@ -1297,63 +1206,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         return (sb.toString());
     }
 
-    //    public String getCreateTableStatement(Table entity) {
-//        StringBuffer sb = new StringBuffer();
-//        if (!entity.isTransientTable()) {
-//            sb.append("CREATE TABLE ").append(entity.getPersistenceName()).append('(').append("\n").append("\t");
-//            Field[] keys = entity.getFields(FieldFilters.PERSISTENT);
-//            boolean firstElement = true;
-//            for (int j = 0; j < keys.length; j++) {
-//                if (firstElement)
-//                    firstElement = false;
-//                else
-//                    sb.append(",").append("\n").append("\t");
-//                sb.append(getFieldDeclaration(keys[j]));
-//            }
-//
-//            Field[] pk = entity.getIdFields();
-//            if (pk.length > 0) {
-//                if (firstElement)
-//                    firstElement = false;
-//                else
-//                    sb.append(",").append("\n").append("\t");
-//                sb.append("defineId KEY (");
-//                for (int i = 0; i < pk.length; i++) {
-//                    if (i > 0)
-//                        sb.append(',');
-//                    sb.append(pk[i].getName());
-//                }
-//
-//                sb.append(')');
-//            }
-////            if (getProperties().get("isReferencingSupported", true)) {
-////                Collection rel = database.getRelationsForDetail(entity);
-////                for (Iterator e = rel.iterator(); e.hasNext();) {
-////                    Relationship r = (Relationship) e.next();
-////                    Field f = r.getSourceRole().getFields()[0];
-////                    if (!f.isTransient() && !f.isFormula()) {
-////                        if (firstElement)
-////                            firstElement = false;
-////                        else
-////                            sb.append(",").append("\n").append("\t");
-////                        sb.append("defineForeign KEY (");
-////                        for (int i = 0; i < r.getSourceRole().getFields().length; i++) {
-////                            if (i > 0)
-////                                sb.append(',');
-////                            sb.append(r.getSourceRole().getFields()[i].getName());
-////                        }
-////
-////                        sb.append(") REFERENCES ").append(r.getMasterTable().getPersistenceName());
-////                    }
-////                }
-////
-////            }
-//            sb.append("\n").append(')');
-//            return sb.toString();
-//        }
-//        return null;
-//    }
-//    @Override
     private void fillPrimitiveField(Field f, List<PrimitiveField> list) {
         if (f instanceof PrimitiveField) {
             PrimitiveField pf = (PrimitiveField) f;
@@ -1527,113 +1379,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         q.setLazyListLoadingEnabled(lazyListLoadingEnabled);
     }
 
-//    @Override
-//    public int executeNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
-//        if (query instanceof Delete) {
-//            return executeDelete((Delete) query, executionContext);
-//        } else if (query instanceof InsertSelection) {
-//            return executeInsertSelection((InsertSelection) query, executionContext);
-//        } else if (query instanceof Update) {
-//            return executeUpdate((Update) query, executionContext);
-//        } else if (query instanceof Insert) {
-//            return executeInsert((Insert) query, executionContext);
-//        }
-//        return defaultExecuteNonQuery(query, executionContext);
-//    }
-
-//    public int executeUpdate(Update query, EntityExecutionContext executionContext) throws UPAException {
-//        if (isUpdateComplexValuesIncludingUpdatedTableSupported) {
-//            return defaultExecuteNonQuery(query, executionContext);
-//        } else {
-//            PersistenceUnit pu = executionContext.getPersistenceUnit();
-//            Entity entity = pu.getEntity(query.getEntityName());
-//            final String entityName = entity.getName();
-//            List<VarVal> complexVals = new ArrayList<VarVal>();
-//            for (int i = query.countFields() - 1; i >= 0; i--) {
-//                VarVal varVal = query.getVarVal(i);
-//                Field field = entity.getField(varVal.getVar().getName());
-//
-//                String complexSelectKey = COMPLEX_SELECT_MERGE;
-////                String complexSelectString = field.getProperties().getString(complexSelectKey, null);
-//                boolean complexSelect = false;
-////                if (complexSelectString == null) {
-//                Expression fieldExpression = varVal.getVal();
-//                if (null != fieldExpression.findOne(new ComplexUpdateExpressionFilter(entityName, isUpdateComplexValuesStatementSupported))) {
-//                    complexSelect = true;
-//                }
-////                    field.getProperties().setString(complexSelectKey, String.valueOf(complexSelect));
-////                } else {
-////                    complexSelect = Boolean.valueOf(complexSelectString);
-////                }
-//                if (complexSelect) {
-//                    //complex expression
-//                    complexVals.add(varVal);
-//                    query.removeFieldAt(i);
-//                }
-//            }
-//            int c1 = 0;
-//            int c2 = 0;
-//            if (query.countFields() > 0) {
-//                c1 = defaultExecuteNonQuery(query, executionContext);
-//            }
-//            if (complexVals.size() > 0) {
-//                Select q = new Select();
-//                for (Field primaryField : entity.getIdFields()) {
-//                    q.field(primaryField.getName());
-//                }
-//                String oldAlias = query.getEntityAlias();
-//                if (oldAlias == null) {
-//                    oldAlias = entity.getName();
-//                }
-//                boolean replaceThis = !UQLUtils.THIS.equals(oldAlias);
-//                for (VarVal f : complexVals) {
-//                    Expression fieldExpression = f.getVal();
-//                    if (replaceThis) {
-//                        UQLUtils.replaceThisVar(fieldExpression, oldAlias, executionContext.getPersistenceUnit());
-//                    }
-//                    q.field(fieldExpression, f.getVar().getName());
-//                }
-//                q.from(entity.getName(), oldAlias);
-//                Expression cond = query.getCondition();
-//                q.setWhere(cond == null ? null : cond.copy());
-//
-//                EntityBuilder eb = entity.getBuilder();
-//
-//                for (Document document : entity.getPersistenceUnit().createQuery(q).getDocumentList()) {
-//                    Update u2 = new Update();
-//                    u2.entity(entityName);
-//                    for (VarVal f : complexVals) {
-//                        String fname = f.getVar().getName();
-//                        u2.set(fname, document.getObject(fname));
-//                    }
-//                    Expression exprId = eb.objectToIdExpression(document, oldAlias);
-//                    u2.where(exprId);
-//                    c2 += defaultExecuteNonQuery(u2, executionContext);
-//                }
-//            }
-//            return Math.max(c1, c2);
-//        }
-//    }
-//
-//    public int executeInsert(Insert query, EntityExecutionContext executionContext) throws UPAException {
-//        return defaultExecuteNonQuery(query, executionContext);
-//    }
-//
-//    public int executeInsertSelection(InsertSelection query, EntityExecutionContext executionContext) throws UPAException {
-//        return defaultExecuteNonQuery(query, executionContext);
-//    }
-//
-//    public int executeDelete(Delete query, EntityExecutionContext executionContext) throws UPAException {
-//        return defaultExecuteNonQuery(query, executionContext);
-//    }
-//
-//    public int defaultExecuteNonQuery(NonQueryStatement query, EntityExecutionContext executionContext) throws UPAException {
-//        requireTransaction(executionContext);
-//        QueryExecutor queryExecutor = createExecutor(query, null, executionContext);
-//        queryExecutor.execute();
-//        return queryExecutor.getResultCount();
-//    }
-
     @Override
     public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException {
         QueryScript script = new QueryScript();
@@ -1745,16 +1490,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         return script;
     }
 
-    //    //    @Override
-//    public QueryScript getEnableIdentityConstraintsScript(PersistenceUnitFilter database) {
-//        QueryScript script = new QueryScript();
-//        for (Entity entity : database.getEntities()) {
-//            if (entity.isAutoIncrement()) {
-//                script.addStatement(getEnableIdentityConstraintsStatement(entity));
-//            }
-//        }
-//        return script;
-//    }
     protected void requireTransaction(EntityExecutionContext executionContext) throws UPAException {
         Session currentSession = executionContext.getPersistenceUnit().getCurrentSession();
         if (currentSession != null) {

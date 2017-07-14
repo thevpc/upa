@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 
@@ -49,6 +50,7 @@ public class ObjectMarshaller
         return true;
     }
 
-    public ObjectMarshaller() {
+    public ObjectMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

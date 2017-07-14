@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -58,6 +59,7 @@ public class StringMarshaller extends SimpleTypeMarshaller {
         preparedStatement.setString(i, (String) object);
     }
 
-    public StringMarshaller() {
+    public StringMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

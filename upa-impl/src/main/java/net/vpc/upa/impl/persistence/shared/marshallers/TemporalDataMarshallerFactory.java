@@ -11,10 +11,11 @@ import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
 */
 public class TemporalDataMarshallerFactory implements TypeMarshallerFactory {
 
-    public TemporalDataMarshallerFactory() {
+    private MarshallManager pm;
+    public TemporalDataMarshallerFactory(MarshallManager pm) {
+        this.pm=pm;
     }
 
-    private MarshallManager pm;
 
     @Override
     public void setMarshallManager(MarshallManager pm) {

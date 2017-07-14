@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -18,7 +19,8 @@ public class DataTypeTransformMarshaller extends SimpleTypeMarshaller {
     private DataTypeTransform dataTypeTransform;
     private TypeMarshaller targetMarshaller;
 
-    public DataTypeTransformMarshaller(DataTypeTransform dataTypeTransform, TypeMarshaller targetMarshaller) {
+    public DataTypeTransformMarshaller(MarshallManager marshallManager,DataTypeTransform dataTypeTransform, TypeMarshaller targetMarshaller) {
+        super(marshallManager);
         this.dataTypeTransform = dataTypeTransform;
         this.targetMarshaller = targetMarshaller;
     }
@@ -47,4 +49,11 @@ public class DataTypeTransformMarshaller extends SimpleTypeMarshaller {
         return dataTypeTransform.getTargetType();
     }
 
+    @Override
+    public String toString() {
+        return "DataTypeTransformMarshaller{" +
+                "dataTypeTransform=" + dataTypeTransform +
+                ", targetMarshaller=" + targetMarshaller +
+                '}';
+    }
 }

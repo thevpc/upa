@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
 
@@ -59,6 +60,7 @@ public class SqlDateMarshaller
         }
     }
 
-    public SqlDateMarshaller() {
+    public SqlDateMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

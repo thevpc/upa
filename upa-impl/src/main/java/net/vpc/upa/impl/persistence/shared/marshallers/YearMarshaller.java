@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.types.Year;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
@@ -61,6 +62,7 @@ public class YearMarshaller
         }
     }
 
-    public YearMarshaller() {
+    public YearMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

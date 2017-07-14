@@ -1,16 +1,19 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 * @creationdate 12/20/12 2:46 AM
 */
-public class StringAsBlobUTFMarshaller extends SimpleTypeMarshaller {
+public class BooleanToNumberMarshaller
+        extends SimpleTypeMarshaller {
 
     public Object read(int index, ResultSet resultSet)
             throws SQLException {
@@ -18,47 +21,36 @@ public class StringAsBlobUTFMarshaller extends SimpleTypeMarshaller {
          * @PortabilityHint(target = "C#",name = "todo")
          **/
         if(true) {
-            byte[] b = resultSet.getBytes(index);
-            return b==null?null:new String(b);
+            return resultSet.getDouble(index) != 0.0D ? Boolean.TRUE : Boolean.FALSE;
         }
         return null;
+
     }
 
     public void write(Object object, int i, ResultSet updatableResultSet) throws SQLException {
         /**@PortabilityHint(target = "C#",name = "suppress")*/
-        updatableResultSet.updateBytes(i, object==null?null:((String) object).getBytes());
+        updatableResultSet.updateInt(i, ((Boolean) object) ? 1 : 0);
     }
-
-
     @Override
     public String toSQLLiteral(Object object) {
         if(object==null){
             return super.toSQLLiteral(object);
         }
-        StringBuilder s = new StringBuilder();
-        s.append('\'');
-        for (char c : object.toString().toCharArray()) {
-            switch (c) {
-                case '\'': {
-                    s.append("''");
-                    break;
-                }
-                default: {
-                    s.append(c);
-                    break;
-                }
-            }
-        }
-        s.append('\'');
-        return s.toString();
+        Boolean b = (Boolean) object;
+        return b.booleanValue() ? "1" : "0";
     }
 
     public void write(Object object, int i, PreparedStatement preparedStatement)
             throws SQLException {
         /**@PortabilityHint(target = "C#",name = "todo")*/
-        preparedStatement.setBytes(i, object==null?null:((String) object).getBytes());
+        if (object == null) {
+            preparedStatement.setNull(i, Types.INTEGER);
+        } else {
+            preparedStatement.setInt(i, ((Boolean) object).booleanValue() ? 1 : 0);
+        }
     }
 
-    public StringAsBlobUTFMarshaller() {
+    public BooleanToNumberMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

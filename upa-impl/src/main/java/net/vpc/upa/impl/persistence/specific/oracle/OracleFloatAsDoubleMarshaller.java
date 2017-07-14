@@ -55,11 +55,7 @@ public class OracleFloatAsDoubleMarshaller
         return true;
     }
 
-    public OracleFloatAsDoubleMarshaller() {
-    }
-
-    @Override
-    public void setMarshallManager(MarshallManager marshallManager) {
-
+    public OracleFloatAsDoubleMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

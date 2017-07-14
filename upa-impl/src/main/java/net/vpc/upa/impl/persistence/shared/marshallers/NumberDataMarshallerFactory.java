@@ -12,22 +12,23 @@ import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
  */
 public class NumberDataMarshallerFactory implements TypeMarshallerFactory {
 
-    public NumberDataMarshallerFactory() {
+    private MarshallManager marshallManager;
+    public NumberDataMarshallerFactory(MarshallManager marshallManager) {
+        this.marshallManager=marshallManager;
     }
 
-    private MarshallManager pm;
 
     @Override
-    public void setMarshallManager(MarshallManager pm) {
-        this.pm = pm;
+    public void setMarshallManager(MarshallManager marshallManager) {
+        this.marshallManager = marshallManager;
     }
 
     public TypeMarshaller createTypeMarshaller(DataType type) {
         NumberType n = (NumberType) type;
         Class c = n.getPlatformType();
-        TypeMarshaller m = pm.getTypeMarshaller(c);
+        TypeMarshaller m = marshallManager.getTypeMarshaller(c);
         if (m == null) {
-            m = pm.getTypeMarshaller(Object.class);
+            m = marshallManager.getTypeMarshaller(Object.class);
         }
         return m;
 

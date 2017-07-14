@@ -63,6 +63,7 @@ public class FloatAsDoubleMarshaller
         return true;
     }
 
-    public FloatAsDoubleMarshaller() {
+    public FloatAsDoubleMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

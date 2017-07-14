@@ -71,7 +71,9 @@ public class CompiledInsert extends DefaultCompiledEntityStatement
             bindChildren(entity);
         }
         for (int i = 0; i < other.fields.size(); i++) {
-            set(other.getField(i).getName(), other.getFieldValue(i).copy());
+            CompiledVarVal vv = (CompiledVarVal)other.fields.get(i).copy();
+            fields.add(vv);
+            bindChildren(vv);
         }
         return this;
     }

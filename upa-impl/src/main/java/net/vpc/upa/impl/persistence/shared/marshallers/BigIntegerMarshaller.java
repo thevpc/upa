@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.math.BigDecimal;
@@ -56,6 +57,7 @@ public class BigIntegerMarshaller
         }
     }
 
-    public BigIntegerMarshaller() {
+    public BigIntegerMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

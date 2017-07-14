@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 
@@ -17,7 +18,8 @@ public class ClassDelegateMarshaller
     private TypeMarshaller delegate;
     private Class delegateType;
 
-    public ClassDelegateMarshaller(Class delegateType) {
+    public ClassDelegateMarshaller(MarshallManager marshallManager, Class delegateType) {
+        super(marshallManager);
         this.delegateType = delegateType;
     }
 

@@ -38,6 +38,8 @@ import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DateType extends TemporalType implements Cloneable {
 
@@ -188,5 +190,21 @@ public class DateType extends TemporalType implements Cloneable {
         result = 31 * result + (min != null ? min.hashCode() : 0);
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("DateType[" + getPlatformType().getName() + "]");
+        Map<String, Object> v = new LinkedHashMap<>();
+        if (min != null) {
+            v.put("min", min);
+        }
+        if (min != null) {
+            v.put("max", max);
+        }
+        if (v.size() > 0) {
+            sb.append(v);
+        }
+        return sb.toString();
     }
 }

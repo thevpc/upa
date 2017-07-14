@@ -18,7 +18,8 @@ import java.sql.SQLException;
 public class OracleSerializablePlatformObjectMarshaller
         extends SimpleTypeMarshaller {
 
-    public OracleSerializablePlatformObjectMarshaller() {
+    public OracleSerializablePlatformObjectMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 
     public Object read(int index, ResultSet resultSet)

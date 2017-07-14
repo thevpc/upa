@@ -42,7 +42,8 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
     }
 
     public CompiledExpressionExt copy() {
-        return new CompiledVarVal(var == null ? null : ((CompiledVar) var.copy()), val == null ? null : ((CompiledExpressionExt) val.copy()));
+        CompiledVarVal compiledVarVal = new CompiledVarVal(var == null ? null : ((CompiledVar) var.copy()), val == null ? null : val.copy());
+        return compiledVarVal;
     }
 
     public CompiledVar getVar() {

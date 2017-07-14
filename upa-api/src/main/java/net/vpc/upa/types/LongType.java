@@ -106,6 +106,9 @@ public class LongType extends NumberType implements Cloneable {
             }
             s.append("]");
         }
+        if(isNullable()){
+            s.append("?");
+        }
         return s.toString();
     }
 

@@ -12,19 +12,20 @@ import net.vpc.upa.impl.persistence.TypeMarshallerFactory;
 */
 public class ListDataMarshallerFactory implements TypeMarshallerFactory {
 
-    private MarshallManager pm;
+    private MarshallManager marshallManager;
 
-    public ListDataMarshallerFactory() {
+    public ListDataMarshallerFactory(MarshallManager marshallManager) {
+        this.marshallManager=marshallManager;
     }
 
     public TypeMarshaller createTypeMarshaller(DataType type) {
         ListType n = (ListType) type;
-        return pm.getTypeMarshaller(n.getElementType());
+        return marshallManager.getTypeMarshaller(n.getElementType());
     }
 
 
     @Override
     public void setMarshallManager(MarshallManager pm) {
-        this.pm = pm;
+        this.marshallManager= pm;
     }
 }

@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -34,6 +35,7 @@ public class NullMarshaller
         throw new RuntimeException("setter not supported for NullMarshaller");
     }
 
-    public NullMarshaller() {
+    public NullMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

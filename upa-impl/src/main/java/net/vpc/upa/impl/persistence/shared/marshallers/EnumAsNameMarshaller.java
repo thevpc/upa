@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -21,10 +22,12 @@ public class EnumAsNameMarshaller
     private Class<? extends Enum> type;
     private Object[] values;
     private StringType persistentDataType;
-    public EnumAsNameMarshaller() {
+    public EnumAsNameMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 
-    public EnumAsNameMarshaller(Class<? extends Enum> type) {
+    public EnumAsNameMarshaller(MarshallManager marshallManager,Class<? extends Enum> type) {
+        super(marshallManager);
         this.type = type;
         try {
             values = PlatformUtils.getEnumValues(type);

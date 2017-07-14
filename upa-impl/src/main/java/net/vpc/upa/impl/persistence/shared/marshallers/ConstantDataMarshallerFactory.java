@@ -11,10 +11,16 @@ import net.vpc.upa.types.DataType;
 */
 public class ConstantDataMarshallerFactory implements TypeMarshallerFactory {
 
+    private MarshallManager marshallManager;
     private TypeMarshaller w;
 
-    public ConstantDataMarshallerFactory(TypeMarshaller w) {
+    public ConstantDataMarshallerFactory(MarshallManager marshallManager,String name) {
+        this(marshallManager,marshallManager.getTypeMarshaller(name));
+    }
+
+    public ConstantDataMarshallerFactory(MarshallManager marshallManager,TypeMarshaller w) {
         this.w = w;
+        this.marshallManager = marshallManager;
     }
 
     public TypeMarshaller createTypeMarshaller(DataType type) {
@@ -22,6 +28,7 @@ public class ConstantDataMarshallerFactory implements TypeMarshallerFactory {
     }
 
     @Override
-    public void setMarshallManager(MarshallManager pm) {
+    public void setMarshallManager(MarshallManager marshallManager) {
+        this.marshallManager=marshallManager;
     }
 }

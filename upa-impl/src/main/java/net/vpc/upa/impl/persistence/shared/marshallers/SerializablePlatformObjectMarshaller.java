@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
 import net.vpc.upa.impl.util.IOUtils;
@@ -42,7 +43,8 @@ import java.sql.SQLException;
 public class SerializablePlatformObjectMarshaller
         extends SimpleTypeMarshaller {
 
-    public SerializablePlatformObjectMarshaller() {
+    public SerializablePlatformObjectMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 
     public Object read(int index, ResultSet resultSet)
@@ -107,5 +109,10 @@ public class SerializablePlatformObjectMarshaller
 
     public boolean isLiteralSupported() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "SerializablePlatformObjectMarshaller";
     }
 }

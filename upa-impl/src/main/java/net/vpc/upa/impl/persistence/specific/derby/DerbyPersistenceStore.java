@@ -69,17 +69,8 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new DerbyMonthEndSQLProvider());
         getSqlManager().register(new DerbyTypeNameSQLProvider());
         getSqlManager().register(new DerbySelectSQLProvider());
-//        parser.registerFunction("datepart", new Derby_DatePart());
-
-//        parser.registerFunction("monthstart", new Derby_MonthStart());
-//        parser.registerFunction("monthend", new Derby_MonthEnd());
-//        DataWrapperUtils.setWrapperFactory(DateType.class, F_DATE);
-//        DataWrapperUtils.setWrapperFactory(NumberType.class, F_NUMBER);
-//        DataWrapperUtils.setWrapperFactory(StringType.class, F_STRING);
-//        DataWrapperUtils.setWrapperFactory(BooleanType.class, F_BOOLEAN_FROM_NUMBER);
-//        DataWrapperUtils.setWrapperFactory(ListType.class, F_LIST);
-        getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller());
-        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(32672));
+        getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(getMarshallManager(),32672));
         map.setInt("maxQueryColumnsCount", 1012);
 
     }

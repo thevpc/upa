@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
@@ -50,8 +51,7 @@ class MSSQLServerDateTimeMarshaller
     }
 
 
-
-    public MSSQLServerDateTimeMarshaller() {
+    public MSSQLServerDateTimeMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
-
 }

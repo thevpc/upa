@@ -14,16 +14,17 @@ import net.vpc.upa.types.DataType;
 */
 public class EnumMarshallerFactory implements TypeMarshallerFactory {
 
-    private MarshallManager pm;
+    private MarshallManager marshallManager;
     private static Map<Class,EnumAsIntMarshaller> byType=new HashMap<Class,EnumAsIntMarshaller>();
 
-    public EnumMarshallerFactory() {
+    public EnumMarshallerFactory(MarshallManager marshallManager) {
+        this.marshallManager=marshallManager;
     }
 
-    public static TypeMarshaller getSharedTypeMarshaller(Class platformType) {
+    public static TypeMarshaller getSharedTypeMarshaller(Class platformType,MarshallManager marshallManager) {
         EnumAsIntMarshaller found = byType.get(platformType);
         if(found==null){
-            found=new EnumAsIntMarshaller(platformType);
+            found=new EnumAsIntMarshaller(marshallManager,platformType);
             byType.put(platformType,found);
         }
         //TODO should get more info about marshalling info
@@ -32,12 +33,12 @@ public class EnumMarshallerFactory implements TypeMarshallerFactory {
     
     public TypeMarshaller createTypeMarshaller(DataType type) {
         EnumType n = (EnumType) type;
-        return getSharedTypeMarshaller(n.getPlatformType());
+        return getSharedTypeMarshaller(n.getPlatformType(),marshallManager);
     }
 
 
     @Override
     public void setMarshallManager(MarshallManager pm) {
-        this.pm = pm;
+        this.marshallManager = marshallManager;
     }
 }

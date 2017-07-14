@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -13,6 +14,9 @@ import java.sql.Types;
 */
 public class ShortMarshaller
         extends SimpleTypeMarshaller {
+    public ShortMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
+    }
 
     public Object read(int index, ResultSet resultSet)
             throws SQLException {
@@ -51,8 +55,5 @@ public class ShortMarshaller
         } else {
             preparedStatement.setShort(i, ((Number) object).shortValue());
         }
-    }
-
-    public ShortMarshaller() {
     }
 }

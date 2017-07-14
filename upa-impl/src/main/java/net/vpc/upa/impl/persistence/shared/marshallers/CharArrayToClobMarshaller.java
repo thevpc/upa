@@ -4,6 +4,7 @@ import java.io.CharArrayReader;
 import java.sql.Clob;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
 import java.sql.PreparedStatement;
@@ -69,6 +70,7 @@ public class CharArrayToClobMarshaller
         }
     }
 
-    public CharArrayToClobMarshaller() {
+    public CharArrayToClobMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

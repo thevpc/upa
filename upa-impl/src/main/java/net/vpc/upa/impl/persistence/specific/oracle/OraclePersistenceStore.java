@@ -18,7 +18,6 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 @PortabilityHint(target = "C#", name = "suppress")
 public class OraclePersistenceStore extends DefaultPersistenceStore {
 
-    private static final OracleSerializablePlatformObjectMarshaller oracleSerializablePlatformObjectWrapper = new OracleSerializablePlatformObjectMarshaller();
 
     public OraclePersistenceStore() {
         Properties map = getProperties();
@@ -50,12 +49,14 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new OracleTypeNameSQLProvider());
         getSqlManager().register(new OracleSelectSQLProvider());
 
-        getMarshallManager().setTypeMarshaller(Float.class, new OracleFloatAsDoubleMarshaller());
+        OracleSerializablePlatformObjectMarshaller oracleSerializablePlatformObjectWrapper = new OracleSerializablePlatformObjectMarshaller(getMarshallManager());
+
+        getMarshallManager().setTypeMarshaller(Float.class, new OracleFloatAsDoubleMarshaller(getMarshallManager()));
 //        getMarshallManager().setTypeMarshaller(ImageData.class, oracleSerializableJavaObjectWrapper);
         getMarshallManager().setTypeMarshaller(Object.class, oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshaller(FileData.class, oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshaller(DataType.class, oracleSerializablePlatformObjectWrapper);
-        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(oracleSerializablePlatformObjectWrapper);
+        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(getMarshallManager(),oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
 
         getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);

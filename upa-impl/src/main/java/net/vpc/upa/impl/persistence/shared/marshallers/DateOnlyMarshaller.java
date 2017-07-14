@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
@@ -60,6 +61,12 @@ public class DateOnlyMarshaller
         }
     }
 
-    public DateOnlyMarshaller() {
+    public DateOnlyMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
+    }
+
+    @Override
+    public String toString() {
+        return "DateOnlyMarshaller";
     }
 }

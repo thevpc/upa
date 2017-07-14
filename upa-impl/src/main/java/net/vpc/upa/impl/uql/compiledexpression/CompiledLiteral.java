@@ -15,7 +15,6 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     public static final CompiledLiteral IZERO = new CompiledLiteral(0);
     public static final CompiledLiteral DZERO = new CompiledLiteral(0.0);
     public static final CompiledLiteral ZERO = DZERO;
-    public static final CompiledLiteral NULL = new CompiledLiteral(0);
     public static final CompiledLiteral EMPTY_STRING = new CompiledLiteral("");
     private static final long serialVersionUID = 1L;
     private DataTypeTransform type;

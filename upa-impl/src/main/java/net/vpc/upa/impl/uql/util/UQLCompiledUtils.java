@@ -7,10 +7,7 @@ import net.vpc.upa.impl.uql.CompiledExpressionFilter;
 import net.vpc.upa.impl.uql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.uql.ReplaceResult;
 import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilteredreplacers.AliasEnforcerCompiledExpressionFilteredReplacer;
-import net.vpc.upa.impl.uql.compiledfilteredreplacers.CompiledExpressionRefReplacer;
-import net.vpc.upa.impl.uql.compiledfilteredreplacers.CompiledExpressionThisReplacer;
-import net.vpc.upa.impl.uql.compiledfilteredreplacers.CompiledThisRefReplacer;
+import net.vpc.upa.impl.uql.compiledfilteredreplacers.*;
 import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterLeafVar;
 import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterRootVar;
 import net.vpc.upa.impl.uql.compiledfilters.CompiledExpressionFilterThisVar;
@@ -222,6 +219,10 @@ public class UQLCompiledUtils {
 
     public static ReplaceResult replaceThisVar(CompiledExpression expression, CompiledVarOrMethod thisReplacement, Map<String, Object> updateContext) {
         return UQLCompiledUtils.replaceExpressions(cast(expression),new CompiledThisRefReplacer(thisReplacement), updateContext);
+    }
+
+    public static ReplaceResult replaceParam(CompiledExpression expression, String paramName,CompiledExpression replacement, Map<String, Object> updateContext) {
+        return UQLCompiledUtils.replaceExpressions(cast(expression),new CompiledParamRefReplacer(paramName,replacement), updateContext);
     }
 
     public static CompiledExpressionExt removeThisVar(CompiledExpression expression, Map<String, Object> updateContext) {

@@ -65,7 +65,7 @@ public class BooleanType extends SeriesType implements Cloneable {
 
     @Override
     public String toString() {
-        return "Boolean{null=" + isNullable() + '}';
+        return "Boolean" + (isNullable()?"?":"");
     }
 
     public Boolean parse(String value) {

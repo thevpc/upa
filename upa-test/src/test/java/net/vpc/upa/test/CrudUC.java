@@ -68,6 +68,7 @@ public class CrudUC {
             pu.persist(c);
 
             Document found0 = pu.createQueryBuilder(SharedClient.class).byId(key).getDocument();
+            Assert.assertNotNull(found0);
             log.info("Found " + found0);
             found0.setString("firstName", "Alia");
 
@@ -78,6 +79,16 @@ public class CrudUC {
             pu.update(c2);
 
             SharedClient found = pu.createQueryBuilder(SharedClient.class).byId(key).getFirstResultOrNull();
+
+            Assert.assertNotNull(found);
+            Assert.assertEquals(found, c2);
+
+            found = pu.createQuery("Select a from SharedClient a where a.integerValue=null").getFirstResultOrNull();
+
+            Assert.assertNotNull(found);
+            Assert.assertEquals(found, c2);
+
+            found = pu.createQuery("Select a from SharedClient a where a.integerValue=:param").setParameter("param",null).getFirstResultOrNull();
 
             Assert.assertNotNull(found);
             Assert.assertEquals(found, c2);

@@ -10,10 +10,19 @@ import net.vpc.upa.types.DataType;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class SimpleTypeMarshaller extends DefaultTypeMarshaller {
+    public SimpleTypeMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
+    }
 
     @Override
     public String toSQLLiteral(Object object) {
         if(object==null){
+            if(getMarshallManager()==null){
+                System.out.println("Why ??");
+            }
+            if(getMarshallManager().getNullMarshaller()==null){
+                System.out.println("Why ??");
+            }
             return getMarshallManager().getNullMarshaller().toSQLLiteral(object);
         }
         return null;

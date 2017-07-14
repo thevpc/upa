@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.sql.Blob;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
 
@@ -71,6 +72,7 @@ public class ByteRefArrayToBlobMarshaller
         }
     }
 
-    public ByteRefArrayToBlobMarshaller() {
+    public ByteRefArrayToBlobMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
 }

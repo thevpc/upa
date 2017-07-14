@@ -37,6 +37,8 @@ package net.vpc.upa.types;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MonthType extends TemporalType implements Cloneable {
     public static final MonthType DEFAULT = new MonthType("MONTH", null, true);
@@ -138,4 +140,21 @@ public class MonthType extends TemporalType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("MonthType[" + getPlatformType().getName() + "]");
+        Map<String, Object> v = new LinkedHashMap<>();
+        if (min != null) {
+            v.put("min", min);
+        }
+        if (min != null) {
+            v.put("max", max);
+        }
+        if (v.size() > 0) {
+            sb.append(v);
+        }
+        return sb.toString();
+    }
+
 }

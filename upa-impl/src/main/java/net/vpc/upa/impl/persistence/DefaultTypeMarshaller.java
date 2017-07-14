@@ -10,6 +10,10 @@ package net.vpc.upa.impl.persistence;
 public abstract class DefaultTypeMarshaller implements TypeMarshaller {
     private MarshallManager marshallManager;
 
+    public DefaultTypeMarshaller(MarshallManager marshallManager) {
+        this.marshallManager = marshallManager;
+    }
+
     public void setMarshallManager(MarshallManager marshallManager) {
         this.marshallManager =marshallManager;
     }

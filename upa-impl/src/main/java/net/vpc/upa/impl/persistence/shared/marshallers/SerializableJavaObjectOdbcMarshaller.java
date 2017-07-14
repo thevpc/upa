@@ -83,13 +83,9 @@ import java.sql.Types;
 public class SerializableJavaObjectOdbcMarshaller
         extends SimpleTypeMarshaller {
 
-    private MarshallManager pm;
-
-    @Override
-    public void setMarshallManager(MarshallManager marshallManager) {
-        this.pm = marshallManager;
+    public SerializableJavaObjectOdbcMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
     }
-
 
     public Object read(int index, ResultSet resultSet)
             throws SQLException {
@@ -116,7 +112,7 @@ public class SerializableJavaObjectOdbcMarshaller
         if(object==null){
             return super.toSQLLiteral(object);
         }
-        TypeMarshaller wrapper = pm.getTypeMarshaller(object.getClass());
+        TypeMarshaller wrapper = getMarshallManager().getTypeMarshaller(object.getClass());
         if (wrapper != null && wrapper.getClass() != getClass()) {
             return wrapper.toSQLLiteral(object);
         }

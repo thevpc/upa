@@ -102,6 +102,9 @@ public class ShortType extends NumberType implements Cloneable {
             }
             s.append("]");
         }
+        if(isNullable()){
+            s.append("?");
+        }
         return s.toString();
     }
 

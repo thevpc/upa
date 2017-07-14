@@ -4,8 +4,12 @@ import net.vpc.upa.Field;
 import net.vpc.upa.QueryHints;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
+import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.util.ExprTypeInfo;
@@ -42,25 +46,24 @@ public class DefaultQueryExecutor implements QueryExecutor {
     private List<CompiledParam> compiledParams;
     private EntityExecutionContext context;
     private Expression userQuery;
+    private SQLManager sqlManager;
+    private boolean forceRebuildSQL=true;
     public DefaultQueryExecutor(Expression userQuery,CompiledExpressionExt compiledExpression, Map<String, Object> hints,
-                                String query,
                                 NativeField[] nativeFields, boolean updatable, ResultMetaData metaData,
                                 boolean noTypeTransform,
-                                EntityExecutionContext context
+                                EntityExecutionContext context,SQLManager sqlManager
     ) {
         this.context = context;
         this.userQuery = userQuery;
         this.type = context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE;
         this.updatable = updatable;
         this.metaData = metaData;
-        this.query = query;
+        this.sqlManager = sqlManager;
         this.fields = nativeFields;
-//        this.generatedValues = generatedValues;
         this.connection = context.getConnection();
         this.compiledExpression = compiledExpression;
         this.noTypeTransform = noTypeTransform;
-
-        parameters = new HashMap<String, String>();
+        this.parameters = new HashMap<String, String>();
         this.hints=hints;
         this.compiledParams = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
 
@@ -235,10 +238,15 @@ public class DefaultQueryExecutor implements QueryExecutor {
     }
 
     public void preExec(){
-        List<Parameter> queryParameters2 = new ArrayList<Parameter>();
+        List<Parameter> nonNullParameters=new ArrayList<Parameter>();
+        List<Parameter> nullParameters=new ArrayList<Parameter>();
         for (CompiledParam e : compiledParams) {
             if (e.isUnspecified()) {
                 throw new UPAIllegalArgumentException("Unspecified Param " + e);
+            }
+            boolean isnull=false;
+            if(e.getValue()==null && e.getParentExpression() instanceof CompiledBinaryOperatorExpression && e==((CompiledBinaryOperatorExpression) e.getParentExpression()).getRight()){
+                isnull=true;
             }
             ExprTypeInfo ei = UPAUtils.resolveExprTypeInfo(e);
             Object objectValue = e.getValue();
@@ -260,9 +268,23 @@ public class DefaultQueryExecutor implements QueryExecutor {
             DataTypeTransform baseTransform = ei.getTypeTransform();
             DataTypeTransform preferredTransform = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
 
-            queryParameters2.add(new DefaultParameter(e.getName(), objectValue, preferredTransform));
+            if(isnull) {
+                nullParameters.add(new DefaultParameter(e.getName(), objectValue, preferredTransform));
+            }else {
+                nonNullParameters.add(new DefaultParameter(e.getName(), objectValue, preferredTransform));
+            }
         }
-        this.queryParameters=queryParameters2;
+        if(this.query==null || forceRebuildSQL || nullParameters.size()>0){
+            CompiledExpressionExt exprCopy = compiledExpression.copy();
+            for (Parameter nullParameter : nullParameters) {
+                UQLCompiledUtils.replaceParam(exprCopy,nullParameter.getName(), new CompiledLiteral(null,nullParameter.getTypeTransform()),null);
+            }
+            this.queryParameters=nonNullParameters;
+            this.query = sqlManager.getSQL(exprCopy, context, new DefaultExpressionDeclarationList(null));
+        }else{
+            this.queryParameters=nonNullParameters;
+        }
+        forceRebuildSQL=!nullParameters.isEmpty();
     }
 
     public void setParam(int index,Object value){

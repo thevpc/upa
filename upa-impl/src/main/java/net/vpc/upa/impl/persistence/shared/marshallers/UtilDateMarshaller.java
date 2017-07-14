@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 import net.vpc.upa.impl.util.DateUtils;
 
@@ -51,6 +52,12 @@ public class UtilDateMarshaller
         }
     }
 
-    public UtilDateMarshaller() {
+    public UtilDateMarshaller(MarshallManager marshallManager) {
+        super(marshallManager);
+    }
+
+    @Override
+    public String toString() {
+        return "UtilDateMarshaller";
     }
 }

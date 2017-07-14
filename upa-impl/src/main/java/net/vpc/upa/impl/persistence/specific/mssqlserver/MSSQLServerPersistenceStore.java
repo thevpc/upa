@@ -66,20 +66,20 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new MSSQLServerSelectSQLProvider());
         getSqlManager().register(new MSSQLServerDateTruncSQLProvider());
         getSqlManager().register(new MSSQLServerDecodeSQLProvider());
-        getMarshallManager().setTypeMarshaller(Date.class, new MSSQLServerDateOnlyMarshaller());
-        getMarshallManager().setTypeMarshaller(Month.class, new MSSQLServerMonthYearMarshaller());
-        getMarshallManager().setTypeMarshaller(Year.class, new MSSQLServerYearMarshaller());
-        getMarshallManager().setTypeMarshaller(net.vpc.upa.types.Time.class, new MSSQLServerTimeMarshaller());
-        getMarshallManager().setTypeMarshaller(DateTime.class, new MSSQLServerDateTimeMarshaller());
+        getMarshallManager().setTypeMarshaller(Date.class, new MSSQLServerDateOnlyMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(Month.class, new MSSQLServerMonthYearMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(Year.class, new MSSQLServerYearMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(net.vpc.upa.types.Time.class, new MSSQLServerTimeMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(DateTime.class, new MSSQLServerDateTimeMarshaller(getMarshallManager()));
 
-        getMarshallManager().setTypeMarshaller(Date.class, new MSSQLServerDateOnlyMarshaller());
+        getMarshallManager().setTypeMarshaller(Date.class, new MSSQLServerDateOnlyMarshaller(getMarshallManager()));
 
-        getMarshallManager().setTypeMarshaller(Month.class, new MSSQLServerMonthYearMarshaller());
+        getMarshallManager().setTypeMarshaller(Month.class, new MSSQLServerMonthYearMarshaller(getMarshallManager()));
 
-        getMarshallManager().setTypeMarshaller(Year.class, new MSSQLServerYearMarshaller());
-        getMarshallManager().setTypeMarshaller(DateTime.class, new MSSQLServerDateTimeMarshaller());
-        getMarshallManager().setTypeMarshaller(Time.class, new MSSQLServerTimeMarshaller());
-        getMarshallManager().setTypeMarshaller(Timestamp.class, new MSSQLServerTimeStampMarshaller());
+        getMarshallManager().setTypeMarshaller(Year.class, new MSSQLServerYearMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(DateTime.class, new MSSQLServerDateTimeMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(Time.class, new MSSQLServerTimeMarshaller(getMarshallManager()));
+        getMarshallManager().setTypeMarshaller(Timestamp.class, new MSSQLServerTimeStampMarshaller(getMarshallManager()));
     }
 
     @Override
