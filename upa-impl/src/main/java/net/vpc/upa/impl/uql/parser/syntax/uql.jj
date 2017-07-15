@@ -21,11 +21,13 @@ options {
 
 PARSER_BEGIN(UQLParser)
 package net.vpc.upa.impl.uql.parser.syntax;
+import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.util.*;
 import java.util.ArrayList;
 import java.util.List;
 /** UQL parser. */
+@PortabilityHint(target = "C#",name = "suppress")
 public class UQLParser {
 
   private String getIdentifierName(Token t){
@@ -34,7 +36,7 @@ public class UQLParser {
     }
     String s=t.image;
     if(s.startsWith("`")){
-        return Strings.unescapeString(s.substring(1,s.length()-1));
+        return StringUtils.unescapeString(s.substring(1,s.length()-1));
     }else{
       return s;
     }
@@ -42,7 +44,7 @@ public class UQLParser {
 
   private String getStringLiteral(Token t){
     String s=t.image;
-    return Strings.unescapeString(s.substring(1,s.length()-1));
+    return StringUtils.unescapeString(s.substring(1,s.length()-1));
   }
 }
 
@@ -133,6 +135,8 @@ TOKEN :
    < DISTINCT: "distinct" >
  |
    < TOP: "top" >
+ |
+   < EXISTS: "exists" >
 }
 
 TOKEN :
@@ -378,6 +382,21 @@ Select Select() :
     }
 }
 
+Exists Exists() :
+{
+    Expression expr=null;
+}
+{
+    <EXISTS>
+    <LPAREN>{
+        expr=Expression();
+    }
+    <RPAREN>
+    {
+        return new Exists(expr);
+    }
+}
+
 Update Update() :
 {
     Update r=new Update();
@@ -506,7 +525,7 @@ JoinCriteria JoinDec() :
     )?
     {
         return new JoinCriteria(type,
-            (fromToken !=null)? (NameOrSelect)new EntityName(getIdentifierName(fromToken)):(NameOrSelect)fromSelect,
+            (fromToken !=null)? (NameOrQuery)new EntityName(getIdentifierName(fromToken)):(NameOrQuery)fromSelect,
             getIdentifierName(fromAlias),
             condition
         );
@@ -635,6 +654,11 @@ Expression Expression() :
             r=Select()
         )
         |
+        LOOKAHEAD(<EXISTS>)
+        (
+            r=Exists()
+        )
+        |
         r=OrExpression()
         )
         {
@@ -691,7 +715,8 @@ Expression AndExpression() :
 Expression CompExpression() :
 {
     Expression r;
-    Operator op;
+    Expression n;
+    BinaryOperator op;
     List<Expression> parameters=null;
 }
 {
@@ -718,15 +743,15 @@ Expression CompExpression() :
         LOOKAHEAD(<EQ> | <EQ2> | <NE> | <NE2> | <LT> | <LE> | <GE> | <GT> | <LIKE>)
         (
         (
-              <EQ> {op=Operator.EQ;}
-            | <EQ2> {op=Operator.EQ;}
-            | <NE> {op=Operator.DIFF;}
-            | <NE2> {op=Operator.DIFF;}
-            | <LT> {op=Operator.LT;}
-            | <LE> {op=Operator.LE;}
-            | <GT> {op=Operator.GT;}
-            | <GE> {op=Operator.GE;}
-            | <LIKE> {op=Operator.LIKE;}
+              <EQ> {op=BinaryOperator.EQ;}
+            | <EQ2> {op=BinaryOperator.EQ;}
+            | <NE> {op=BinaryOperator.DIFF;}
+            | <NE2> {op=BinaryOperator.DIFF;}
+            | <LT> {op=BinaryOperator.LT;}
+            | <LE> {op=BinaryOperator.LE;}
+            | <GT> {op=BinaryOperator.GT;}
+            | <GE> {op=BinaryOperator.GE;}
+            | <LIKE> {op=BinaryOperator.LIKE;}
         )
         n=PlusExpression()
         {
@@ -752,15 +777,15 @@ Expression PlusExpression() :
 {
     Expression left;
     Expression right;
-    Operator op;
+    BinaryOperator op;
 }
 {
     left=MulExpression()
     (
         (
             (
-                  <PLUS> {op=Operator.PLUS;}
-                | <MINUS> {op=Operator.MINUS;}
+                  <PLUS> {op=BinaryOperator.PLUS;}
+                | <MINUS> {op=BinaryOperator.MINUS;}
             )
             right=MulExpression()
         )
@@ -781,16 +806,16 @@ Expression MulExpression() :
 {
     Expression left;
     Expression right;
-    Operator op;
+    BinaryOperator op;
 }
 {
     left=PowExpression()
     (
         (
             (
-                  <SLASH> {op=Operator.DIV;}
-                | <STAR> {op=Operator.MUL;}
-                | <REM> {op=Operator.REM;}
+                  <SLASH> {op=BinaryOperator.DIV;}
+                | <STAR> {op=BinaryOperator.MUL;}
+                | <REM> {op=BinaryOperator.REM;}
             )
             right=PowExpression()
         )
@@ -811,18 +836,18 @@ Expression PowExpression() :
 {
     Expression left;
     Expression right;
-    Operator op;
+    BinaryOperator op;
 }
 {
     left=PrimaryExpression()
     (
         (
-              <BIT_AND> {op=Operator.BIT_AND;}
-            | <BIT_OR> {op=Operator.BIT_OR;}
-            | <XOR> {op=Operator.XOR;}
-            | <LSHIFT> {op=Operator.LSHIFT;}
-            | <RSIGNEDSHIFT> {op=Operator.RSHIFT;}
-            | <RUNSIGNEDSHIFT> {op=Operator.URSHIFT;}
+              <BIT_AND> {op=BinaryOperator.BIT_AND;}
+            | <BIT_OR> {op=BinaryOperator.BIT_OR;}
+            | <XOR> {op=BinaryOperator.XOR;}
+            | <LSHIFT> {op=BinaryOperator.LSHIFT;}
+            | <RSIGNEDSHIFT> {op=BinaryOperator.RSHIFT;}
+            | <RUNSIGNEDSHIFT> {op=BinaryOperator.URSHIFT;}
         )
         right=PrimaryExpression()
         {

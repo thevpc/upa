@@ -42,6 +42,10 @@ public final class Exists extends FunctionExpression
     private QueryStatement query;
 
 
+    public Exists(Expression expressions) {
+        setQuery((QueryStatement) expressions);
+    }
+
     public Exists(Expression[] expressions) {
         checkArgCount(getName(), expressions, 1);
         setQuery((QueryStatement) expressions[0]);
