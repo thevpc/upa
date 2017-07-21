@@ -106,7 +106,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 }
             }
         }
-        Map<String, Object> updateContext=new HashMap<>();
+        Map<String, Object> updateContext=new HashMap<String, Object>();
 
         ReplaceResult v2 = UQLCompiledUtils.replaceExpressions(dce, this, updateContext);
         if (v2.isNewInstance()) {
@@ -240,7 +240,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 throw new UPAIllegalArgumentException("Unexpected!!");
             }
             CompiledVar finest = (CompiledVar) cv.getDeepest();
-            List<Field> fieldsToExpand = new ArrayList<>();
+            List<Field> fieldsToExpand = new ArrayList<Field>();
 //            List<Field> fieldsToPreserve = new ArrayList<>();
             Object referrer = resolveReferrer(finest);
             if (referrer instanceof Entity) {
@@ -393,7 +393,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
     private ReplaceResult updateCompiledVar(CompiledVar o, Map<String, Object> updateContext) {
         if(updateContext==null){
-            updateContext=new HashMap<>();
+            updateContext=new HashMap<String, Object>();
         }
         CompiledEntityStatement rootStatement=(CompiledEntityStatement)updateContext.get("rootStatement");
         CompiledEntityStatement enclosingStmt=(CompiledEntityStatement)updateContext.get("enclosingStmt");
@@ -685,8 +685,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         updateContext=updateContext==null?new HashMap<String,Object>():new HashMap<String, Object>(updateContext);
         expandEntityFilters(s,updateContext);
-        List<CompiledQueryField> fields = new ArrayList<>(s.getFields());
-        List<Integer> toRemove = new ArrayList<>();
+        List<CompiledQueryField> fields = new ArrayList<CompiledQueryField>(s.getFields());
+        List<Integer> toRemove = new ArrayList<Integer>();
         updateContext.put("columnsCount",fields.size());
         for (int i = 0; i < fields.size(); i++) {
             CompiledQueryField qf = fields.get(i);
@@ -1639,7 +1639,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         //        private ExpansionVisitTracker visitedEntities;
 //        private ExpressionCompilerConfig config;
 //        private List<CompiledJoinCriteria> joins=new ArrayList<>();
-        private Map<String, String> upaBindingAliases = new HashMap<>();
+        private Map<String, String> upaBindingAliases = new HashMap<String, String>();
         private int upaBindingAliasIndex = 0;
 
         public static ExprContext get(CompiledEntityStatement s) {

@@ -12,7 +12,7 @@ import java.util.List;
  * Created by vpc on 6/29/17.
  */
 public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
-    private List<CompiledQueryField> items=new ArrayList<>();
+    private List<CompiledQueryField> items=new ArrayList<CompiledQueryField>();
 
     public CompiledQueryFieldsTuple() {
     }

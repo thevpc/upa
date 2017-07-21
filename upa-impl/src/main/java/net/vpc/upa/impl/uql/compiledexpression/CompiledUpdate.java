@@ -19,7 +19,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     private CompiledExpressionExt condition;
     private CompiledEntityName entityName;
     private String entityAlias;
-    private List<CompiledJoinCriteria> joinsTables=new ArrayList<>();
+    private List<CompiledJoinCriteria> joinsTables=new ArrayList<CompiledJoinCriteria>();
 
     public CompiledUpdate() {
         fields = new ArrayList<CompiledVarVal>();

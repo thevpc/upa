@@ -2982,8 +2982,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                 }
                 List<Field> storedFieldsToValidate = getFields(formulaFields);
-                List<Field> nonImmediateStoredFieldsToValidate = new ArrayList<>();
-                List<Field> immediateStoredFieldsToValidate = new ArrayList<>();
+                List<Field> nonImmediateStoredFieldsToValidate = new ArrayList<Field>();
+                List<Field> immediateStoredFieldsToValidate = new ArrayList<Field>();
                 for (Field field : storedFieldsToValidate) {
                     Formula updateFormula = field.getUpdateFormula();
                     if ((updateFormula instanceof ExpressionFormula) && field.getUpdateFormulaOrder() <= 0) {

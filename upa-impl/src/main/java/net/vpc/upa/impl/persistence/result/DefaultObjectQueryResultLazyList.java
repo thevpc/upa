@@ -25,9 +25,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private static final Logger log=Logger.getLogger(DefaultObjectQueryResultLazyList.class.getName());
     public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE = new NoCacheMap<NamedId, ResultObject>();
     boolean workspace_hasNext=true;
-    Map<String, Set<Object>> workspace_missingObjects = new HashMap<>();
-    List<LazyResult> workspace_todos = new ArrayList<>();
-    LinkedList<T> workspace_available = new LinkedList<>();
+    Map<String, Set<Object>> workspace_missingObjects = new HashMap<String, Set<Object>>();
+    List<LazyResult> workspace_todos = new ArrayList<LazyResult>();
+    LinkedList<T> workspace_available = new LinkedList<T>();
     int workspace_missingObjectsCount = 0;
     int workspace_bulkSize = UPAImplDefaults.QueryHints_REDUCE_BUFFER_SIZE;
     boolean workspace_hasTodos = false;
@@ -144,8 +144,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         columnFamilies = bindingToTypeInfos0.values().toArray(new ColumnFamily[bindingToTypeInfos0.size()]);
         for (ColumnFamily columnFamily : columnFamilies) {
             if (columnFamily.entity != null) {
-                Set<String> visitedIds = new HashSet<>();
-                Set<String> expectedIds = new HashSet<>();
+                Set<String> visitedIds = new HashSet<String>();
+                Set<String> expectedIds = new HashSet<String>();
                 List<Field> idFields = columnFamily.entity.getIdFields();
                 for (Field field : idFields) {
                     expectedIds.add(field.getName());
@@ -215,7 +215,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     public void addWorkspaceMissingObject(String entity, Object id) {
         Set<Object> list = workspace_missingObjects.get(entity);
         if (list == null) {
-            list = new HashSet<>();
+            list = new HashSet<Object>();
             workspace_missingObjects.put(entity,list);
         }
         if (list.add(id)) {
@@ -236,7 +236,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 Entity entity = persistenceUnit.getEntity(entityName);
                 EntityBuilder builder = entity.getBuilder();
                 Set<Object> itemsToReduce = e.getValue();
-                Set<Object> itemsToReduce2 = new HashSet<>(itemsToReduce.size());
+                Set<Object> itemsToReduce2 = new HashSet<Object>(itemsToReduce.size());
 
                 //should remove already loaded objects
                 for (Object o : itemsToReduce) {

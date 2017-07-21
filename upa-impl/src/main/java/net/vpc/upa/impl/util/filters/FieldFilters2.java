@@ -32,7 +32,7 @@ public class FieldFilters2 {
     public static final FieldFilter ID = FieldFilters.regular().and(FieldFilters.byModifiersAnyOf(FieldModifier.ID));
 
     public static List<Field> filter(List<Field> list,FieldFilter filter){
-        List<Field> other=new ArrayList<>(list.size());
+        List<Field> other=new ArrayList<Field>(list.size());
         for (Field field : list) {
             if(filter==null || filter.accept(field)){
                 other.add(field);

@@ -208,7 +208,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                 i++;
             }
             boolean someChildUpdates = false;
-            List<ReplacementPosition> toRemove = new ArrayList<>();
+            List<ReplacementPosition> toRemove = new ArrayList<ReplacementPosition>();
             for (ReplacementPosition r : replacementPositions) {
                 CompiledExpressionExt child = r.getChild();
                 boolean again = true;

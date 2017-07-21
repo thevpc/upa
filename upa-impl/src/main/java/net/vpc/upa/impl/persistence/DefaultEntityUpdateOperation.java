@@ -43,7 +43,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
     }
 
     private static String createUpdateOneCacheId(Document updates, Expression condition){
-        HashSet<String> keys=new HashSet<>();
+        HashSet<String> keys=new HashSet<String>();
         for (Map.Entry<String, Object> e : updates.entrySet()) {
             Object v = e.getValue();
             if(v!=null && !(v instanceof Param) && v instanceof Expression){

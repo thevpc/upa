@@ -740,7 +740,7 @@ public class UPAUtils {
     public static <T> List<T> sortPreserveIndex(List<T> list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.size()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<>(list.get(i), i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list.get(i), i,comp);
         }
         Arrays.sort(items);
         for (int i = 0; i < items.length; i++) {
@@ -751,7 +751,7 @@ public class UPAUtils {
     public static <T> T[] sortPreserveIndex(T[] list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<>(list[i], i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i,comp);
         }
         Arrays.sort(items);
         for (int i = 0; i < items.length; i++) {
@@ -762,7 +762,7 @@ public class UPAUtils {
     public static <T> SortPreserveIndexIndexedItem<T>[] sortPreserveIndex0(T[] list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<>(list[i], i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i,comp);
         }
         Arrays.sort(items);
         return items;

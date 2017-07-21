@@ -194,7 +194,7 @@ public class CallbackManager {
             hash[system ? 1 : 0][callbackType.ordinal()][objectType.ordinal()]=t;
         }
         if(t.keys==null){
-            t.keys=new HashMap<>(3);
+            t.keys=new HashMap<String,CallbackInvokerKey>(3);
         }
         CallbackInvokerKey m = t.keys.get(name);
         if(m==null){

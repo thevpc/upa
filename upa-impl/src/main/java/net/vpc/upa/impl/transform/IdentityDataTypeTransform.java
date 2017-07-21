@@ -17,8 +17,8 @@ import java.util.Map;
  * @author taha.bensalah@gmail.com
  */
 public final class IdentityDataTypeTransform implements DataTypeTransform {
-    private static final Map<Class,IdentityDataTypeTransform> mapByType=new HashMap<>();
-    private static final Map<DataType,IdentityDataTypeTransform> mapByDataType=new HashMap<>();
+    private static final Map<Class,IdentityDataTypeTransform> mapByType=new HashMap<Class,IdentityDataTypeTransform>();
+    private static final Map<DataType,IdentityDataTypeTransform> mapByDataType=new HashMap<DataType,IdentityDataTypeTransform>();
     private static final Map<DataType,IdentityDataTypeTransform> mapByDataTypeCache=new LRUMap<DataType, IdentityDataTypeTransform>(100);
 
     public static final DataTypeTransform VOID = register(TypesFactory.VOID);
