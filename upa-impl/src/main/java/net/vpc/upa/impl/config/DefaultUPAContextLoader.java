@@ -376,7 +376,7 @@ public class DefaultUPAContextLoader {
                         if (StringUtils.isNullOrEmpty(value)) {
                             error = new IllegalArgumentException("Empty File");
                         }
-                        File fileObj = new File(value.trim());
+                        File fileObj = IOUtils.createFile(value.trim());
                         if (!fileObj.isFile() || !fileObj.exists()) {
                             error = new IllegalArgumentException("File does not exist " + value);
                         } else {

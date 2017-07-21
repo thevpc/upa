@@ -13,7 +13,7 @@ import net.vpc.j2cs.util.J2CSUtils;
 
 public class UPAConverterMain {
 
-    private static File xprojects = new File("/home/vpc/Data/xprojects");
+    private static File xprojects = new File("/data/vpc/Data/xprojects");
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
@@ -33,29 +33,32 @@ public class UPAConverterMain {
 
 
     public static void buildUPA(String filter,boolean erase) throws IOException, ParseException {
-//        buildAPI(filter,erase);
-        buildImpl(filter, erase);
+        buildAPI(filter,erase);
+//        buildImpl(filter, erase);
     }
 
     public static void buildAPI(String filterAPI,boolean erase) throws IOException, ParseException {
         String root = xprojects + "/net/vpc/upa/upa-api";
-        Project project = new Project();
+        Project project = new Project("upa-api");
         project.addMavenProject(new File(root), "net.vpc.upa");
         project.addConvertConfigurator(new UPAConverterManagerConfigurator());
-        ProjectProcessor processor = new ProjectProcessor(project);
         project.getTypeDeclarationFilters().add(typeDeclarationEquals(filterAPI));
-        processor.process(erase);
+
+        ProjectProcessor processor = new ProjectProcessor(project);
+        processor.setErase(erase);
+        processor.process();
     }
 
     public static void buildImpl(String filterImpl,boolean erase) throws IOException, ParseException {
         String root = xprojects + "/net/vpc/upa/upa-impl";
-        Project project = new Project();
+        Project project = new Project("upa-impl");
         project.addMavenProject(new File(root), "net.vpc.upa.impl");
         project.addConvertConfigurator(new UPAConverterManagerConfigurator());
 
         project.getTypeDeclarationFilters().add(typeDeclarationEquals(filterImpl));
         ProjectProcessor processor = new ProjectProcessor(project);
-        processor.process(erase);
+        processor.setErase(erase);
+        processor.process();
     }
 
     private static ItemFilter<TypeDeclaration> typeDeclarationEquals(final String typeName){

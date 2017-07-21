@@ -9,6 +9,7 @@ import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.types.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;

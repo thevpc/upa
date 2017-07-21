@@ -8,6 +8,7 @@ package net.vpc.upa.impl.eval.functions;
 import net.vpc.upa.EvalContext;
 import net.vpc.upa.Function;
 import net.vpc.upa.expressions.Literal;
+import net.vpc.upa.impl.util.IOUtils;
 
 import java.io.File;
 
@@ -27,7 +28,7 @@ public class FileExistsEvaluator implements net.vpc.upa.Function {
         if (file == null) {
             return Literal.FALSE;
         }
-        return new File(file).exists() ? Literal.TRUE : Literal.FALSE;
+        return IOUtils.createFile(file).exists() ? Literal.TRUE : Literal.FALSE;
     }
 
 

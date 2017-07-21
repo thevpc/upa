@@ -144,7 +144,7 @@ public class MonthType extends TemporalType implements Cloneable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("MonthType[" + getPlatformType().getName() + "]");
-        Map<String, Object> v = new LinkedHashMap<>();
+        Map<String, Object> v = new LinkedHashMap<String, Object>();
         if (min != null) {
             v.put("min", min);
         }

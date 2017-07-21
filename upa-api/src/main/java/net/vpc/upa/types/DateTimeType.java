@@ -132,7 +132,7 @@ public class DateTimeType extends TemporalType implements Cloneable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("DateTimeType[" + getPlatformType().getName() + "]");
-        Map<String, Object> v = new LinkedHashMap<>();
+        Map<String, Object> v = new LinkedHashMap<String, Object>();
 //        if(name!=null){
 //            v.put("name",name);
 //        }

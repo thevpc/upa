@@ -19,6 +19,7 @@ import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.util.IOUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.*;
@@ -219,10 +220,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             if (DRIVER_TYPE_EMBEDDED.equalsIgnoreCase(connectionDriver)) {
                 String url = "jdbc:derby:";
                 String path = concatPath(properties.get(ConnectionOption.SERVER_ADDRESS), properties.get(ConnectionOption.DATABASE_PATH), properties.get(ConnectionOption.DATABASE_NAME));
-                if (path == null || path.length() == 0) {
-                    path = new File(".").getAbsolutePath();
-                }
-                File file = new File(path);
+                File file = (path == null || path.length() == 0) ? IOUtils.createFile("."):IOUtils.createFile(path);
                 File parentFile = file.getParentFile();
                 if (parentFile != null) {
                     parentFile.mkdirs();

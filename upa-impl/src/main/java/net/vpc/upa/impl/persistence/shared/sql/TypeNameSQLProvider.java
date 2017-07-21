@@ -2,7 +2,6 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -30,12 +29,10 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
         if (platformType.equals(String.class)) {
-            if (length
-                    <= 0) {
+            if (length <= 0) {
                 length = 255;
             }
-            return "VARCHAR(" + length
-                    + ")";
+            return "VARCHAR(" + length + ")";
         }
         if (PlatformUtils.isInt32(platformType)) {
             return "INT";

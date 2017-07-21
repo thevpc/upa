@@ -6,6 +6,7 @@
 package net.vpc.upa.impl.util.classpath;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.util.IOUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class CommonClassPathUtils {
                     //ignore
                 } else {
                     try {
-                        urls.add(new File(s1).toURI().toURL());
+                        urls.add(IOUtils.createFile(s1).toURI().toURL());
                     } catch (MalformedURLException e) {
                         log.log(Level.SEVERE, "Unable to load UPA Context", e);
                     }
@@ -89,20 +90,20 @@ public class CommonClassPathUtils {
         String protocol = url.getProtocol();
         boolean unescaped = file.indexOf('%') == -1 && file.indexOf(' ') != -1;
         if ("file".equals(protocol)) {
-            root = new File(file).toURI().toURL();
+            root = IOUtils.createFileURL(file);
         } else if ("jar".equals(protocol) || "wsjar".equals(protocol)) {
             root = new URL(file);
             if ("file".equals(root.getProtocol())) {
                 if (unescaped) {
-                    root = new File(root.getFile()).toURI().toURL();
+                    root = IOUtils.createFileURL(root.getFile());
                 }
             }
         } else if ("zip".equals(protocol)
                 || "code-source".equals(url.getProtocol())) {
             if (unescaped) {
-                root = new File(file).toURI().toURL();
+                root = IOUtils.createFileURL(file);
             } else {
-                root = new File(file).toURI().toURL();//.toURL() ?? why ?
+                root = IOUtils.createFileURL(file);//.toURL() ?? why ?
             }
         } else {
             root = url;

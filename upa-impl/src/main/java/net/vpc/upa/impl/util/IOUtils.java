@@ -3,6 +3,8 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.PortabilityHint;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -143,6 +145,15 @@ public class IOUtils {
         }
     }
     
+    public static URL createFileURL(String filePath) throws MalformedURLException {
+        return createFile(filePath).toURI().toURL();
+    }
+
+    public static File createFile(String filePath){
+        filePath=filePath.replace('/',File.separatorChar);
+        return new File(filePath);
+    }
+
     public static void copyToFile(InputStream stream,File file,int bufferSize) throws IOException{
         FileOutputStream outWriter=new FileOutputStream(file);
         byte[] b=new byte[bufferSize];

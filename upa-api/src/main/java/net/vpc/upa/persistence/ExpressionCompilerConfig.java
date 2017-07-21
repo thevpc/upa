@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public class ExpressionCompilerConfig {
 
-    private Map<String, String> aliasToEntityContext=new HashMap<>();
+    private Map<String, String> aliasToEntityContext=new HashMap<String, String>();
     private Map<String, Object> hints;
     private boolean compile = true;
     private boolean resolveThis = true;
