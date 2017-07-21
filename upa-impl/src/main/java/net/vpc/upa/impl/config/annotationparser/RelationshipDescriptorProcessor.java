@@ -6,15 +6,18 @@ package net.vpc.upa.impl.config.annotationparser;
 
 import net.vpc.upa.*;
 import net.vpc.upa.callbacks.*;
+import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.ManyToOneType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -173,14 +176,36 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                         }
                     } else {
                         for (Field masterField : masterPK) {
-                            String f = masterField.getName();
-                            if (f.length() == 1) {
-                                f = f.toUpperCase();
-                            } else if (f.length() > 1) {
-                                f = f.substring(0, 1).toUpperCase() + f.substring(1);
+                            List<Field> mfields=null;
+                            try {
+                                mfields = resolveBaseFields(masterField);
+                            }catch(RuntimeException e){
+                                if(throwErrors){
+                                    throw e;
+                                }
+                                return false;
                             }
-                            String extraName = baseField.getName() + f;
-                            sourceFieldNames.add(extraName);
+                            if(mfields.size()==1 && mfields.get(0).equals(masterField)){
+                                String f = masterField.getName();
+                                if (f.length() == 1) {
+                                    f = f.toUpperCase();
+                                } else if (f.length() > 1) {
+                                    f = f.substring(0, 1).toUpperCase() + f.substring(1);
+                                }
+                                String extraName = baseField.getName() + f;
+                                sourceFieldNames.add(extraName);
+                            }else {
+                                for (Field mfield : mfields) {
+                                    String f = mfield.getName();
+                                    if (f.length() == 1) {
+                                        f = f.toUpperCase();
+                                    } else if (f.length() > 1) {
+                                        f = f.substring(0, 1).toUpperCase() + f.substring(1);
+                                    }
+                                    String extraName = baseField.getName() + f;
+                                    sourceFieldNames.add(extraName);
+                                }
+                            }
                         }
                     }
                 } else {
@@ -204,14 +229,28 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                     String extraName = sourceFieldNames.get(i);
                     Field idField = sourceEntity.findField(extraName);
                     if (idField == null) {
-                        DataType dt = (DataType) masterPK.get(i).getDataType().copy();
-                        boolean nullable = baseFieldType.isNullable();
-                        dt.setNullable(nullable);
-                        sourceEntity.addField(
-                                new DefaultFieldBuilder().setName(extraName).setPath("system").addModifier(UserFieldModifier.SYSTEM)
-                                        .addExcludeModifier(UserFieldModifier.UPDATE)
-                                        .setDataType(dt).setAccessLevel(AccessLevel.PRIVATE)
-                        );
+                        Field field = masterPK.get(i);
+                        List<Field> referencedFields2=null;
+                        try {
+                            referencedFields2 = resolveBaseFields(field);
+                        }catch (RuntimeException rt){
+                            if (throwErrors) {
+                                throw rt;
+                            }
+                            return false;
+                        }
+                        int ii=0;
+                        for (Field field1 : referencedFields2) {
+                            DataType dt = (DataType) field1.getDataType().copy();
+                            boolean nullable = baseFieldType.isNullable();
+                            dt.setNullable(nullable);
+                            sourceEntity.addField(
+                                    new DefaultFieldBuilder().setName(extraName+ (ii==0?"":(ii+1))).setPath("system").addModifier(UserFieldModifier.SYSTEM)
+                                            .addExcludeModifier(UserFieldModifier.UPDATE)
+                                            .setDataType(dt).setAccessLevel(AccessLevel.PRIVATE)
+                            );
+                            ii++;
+                        }
                     } else {
                         idField.setUserExcludeModifiers(idField.getUserExcludeModifiers().add(UserFieldModifier.UPDATE));
                     }
@@ -255,6 +294,20 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 //            }
 //        }
         return true;
+    }
+
+    private List<Field> resolveBaseFields(Field f){
+        List<Field> all=new ArrayList<>();
+        if(f.getDataType() instanceof SerializableOrManyToOneType) {
+            throw new UPAIllegalArgumentException("Unable to resolve type");
+        }else if(f.getDataType() instanceof ManyToOneType){
+            for (Field field : ((ManyToOneType) f.getDataType()).getTargetEntity().getIdFields()) {
+                all.addAll(resolveBaseFields(field));
+            }
+        }else{
+            all.add(f);
+        }
+        return all;
     }
 
     public boolean processImmediate() {

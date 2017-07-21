@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
+import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
@@ -48,7 +49,6 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 //    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
     protected static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
     protected static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
-    public static boolean DO_WARNINGS = false;
     protected static Logger log = Logger.getLogger(DefaultPersistenceStore.class.getName());
     private static PlatformLenientType JAVAMELODY_JDBCDRIVER = new PlatformLenientType("net.bull.javamelody.JdbcDriver");
     private static HashSet<String> SQL2003_RESERVED_WORDS = new HashSet<String>(Arrays.asList(
@@ -1109,12 +1109,23 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             for (int i = 0; i < relation.size(); i++) {
                 List<PrimitiveField> fields = masterRole.getEntity().toPrimitiveFields(Arrays.asList((EntityPart) masterRole.getField(i)));
                 for (Field field : fields) {
-                    if (first1) {
-                        first1 = false;
-                    } else {
-                        sb.append(',');
+                    if(field.getDataType() instanceof ManyToOneType) {
+                        for (Field field1 : ((ManyToOneType) ((Field) ((ArrayList) fields).get(0)).getDataType()).getRelationship().getSourceRole().getFields()) {
+                            if (first1) {
+                                first1 = false;
+                            } else {
+                                sb.append(',');
+                            }
+                            sb.append(getValidIdentifier(getColumnName(field1)));
+                        }
+                    }else {
+                        if (first1) {
+                            first1 = false;
+                        } else {
+                            sb.append(',');
+                        }
+                        sb.append(getValidIdentifier(getColumnName(field)));
                     }
-                    sb.append(getValidIdentifier(getColumnName(field)));
                 }
             }
             sb.append(")");
