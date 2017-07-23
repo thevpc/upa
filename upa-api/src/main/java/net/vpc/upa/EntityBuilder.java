@@ -108,6 +108,18 @@ public interface EntityBuilder {
     Document objectToDocument(Object objectValue);
 
     /**
+     * transforms id to PrimitiveId
+     * PrimitiveId is a representation of the Entity's Id where
+     * all Relationships composing the Id/Primary key are flattened
+     * to primitive fields and values
+     *
+     * @param id entity value
+     * @return entityToDocument(r, false)
+     * @
+     */
+    PrimitiveId idToPrimitiveId(Object id);
+
+    /**
      * Document value representation of the given entity. updates to the Document
      * are reflected in the provided value
      *

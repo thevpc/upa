@@ -129,6 +129,9 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     Section addSection(String name);
 
+    //@Contract("null->false")
+    boolean isInstance(Object object);
+
     Class getEntityType();
 
     Class getIdType();

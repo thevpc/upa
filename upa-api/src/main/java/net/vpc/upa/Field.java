@@ -46,13 +46,13 @@ import java.util.List;
  */
 public interface Field extends EntityPart {
 
-    void setPropertyAccessType(PropertyAccessType value);
-
     PropertyAccessType getPropertyAccessType();
 
-    void setUnspecifiedValue(Object o);
+    void setPropertyAccessType(PropertyAccessType value);
 
     Object getUnspecifiedValue();
+
+    void setUnspecifiedValue(Object o);
 
     /**
      * should return a valid value of UnspecifiedValue. Actually, if
@@ -65,11 +65,11 @@ public interface Field extends EntityPart {
 
     boolean isUnspecifiedValue(Object value);
 
-    void setDefaultObject(Object o);
-
     Object getDefaultValue();
 
     Object getDefaultObject();
+
+    void setDefaultObject(Object o);
 
     List<Relationship> getManyToOneRelationships();
 
@@ -79,44 +79,47 @@ public interface Field extends EntityPart {
 
     void setPersistFormula(String formula);
 
-    void setPersistFormula(Formula formula);
-
     Formula getPersistFormula();
+
+    void setPersistFormula(Formula formula);
 
     int getPersistFormulaOrder();
 
-    void setFormulaOrder(int order);
-
     void setPersistFormulaOrder(int order);
+
+    void setFormulaOrder(int order);
 
     Formula getUpdateFormula();
 
-    int getUpdateFormulaOrder();
-
-    void setUpdateFormula(String formula);
-
     void setUpdateFormula(Formula formula);
+
+    int getUpdateFormulaOrder();
 
     void setUpdateFormulaOrder(int order);
 
+    void setUpdateFormula(String formula);
+
     Formula getSelectFormula();
 
-    void setSelectFormula(String formula);
-
     void setSelectFormula(Formula formula);
+
+    void setSelectFormula(String formula);
 
     //    boolean isRequired() throws UPAException;
     DataType getDataType();
 
+    //    boolean is(long modifier);
+    void setDataType(DataType datatype);
+
     AccessLevel getPersistAccessLevel();
-
-    AccessLevel getUpdateAccessLevel();
-
-    AccessLevel getReadAccessLevel();
 
     void setPersistAccessLevel(AccessLevel accessLevel);
 
+    AccessLevel getUpdateAccessLevel();
+
     void setUpdateAccessLevel(AccessLevel accessLevel);
+
+    AccessLevel getReadAccessLevel();
 
     void setReadAccessLevel(AccessLevel accessLevel);
 
@@ -143,16 +146,13 @@ public interface Field extends EntityPart {
 
     boolean is(FieldFilter filter) throws UPAException;
 
-    //    boolean is(long modifier);
-    void setDataType(DataType datatype);
-
     SearchOperator getSearchOperator();
 
     void setSearchOperator(SearchOperator operator);
 
-    void setTypeTransform(DataTypeTransform transform);
-
     DataTypeTransform getTypeTransform();
+
+    void setTypeTransform(DataTypeTransform transform);
 
     /**
      * value of the field for the given instance
@@ -177,4 +177,9 @@ public interface Field extends EntityPart {
     int getPreferredIndex();
 
     void setPreferredIndex(int preferredIndex);
+
+    boolean isManyToOne();
+
+
+    Relationship getManyToOneRelationship();
 }
