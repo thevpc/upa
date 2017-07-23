@@ -47,12 +47,28 @@ public class RelationUC5 {
         bo.testModel();
     }
 
+    @Test
+    public void testQuery() {
+        bo.testQuery();
+    }
+
 
     public static class Business {
 
         public void init() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             pu.clear();
+            D d=new D("d");
+            pu.persist(d);
+            C c=new C("c");
+            c.setD(d);
+            pu.persist(c);
+            B b=new B("b");
+            b.setC(c);
+            pu.persist(b);
+            A a=new A("a");
+            a.setB(b);
+            pu.persist(a);
         }
 
         public void testModel() {
@@ -60,6 +76,12 @@ public class RelationUC5 {
             List<String> fieldNames = pu.getEntity(A.class).getFieldNames(null);
             System.out.println(fieldNames);
             Assert.assertEquals(new HashSet<String>(Arrays.asList("b", "name", "bId")),new HashSet<String>(fieldNames));
+        }
+
+        public void testQuery() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            List<Object> all = pu.findAll(A.class);
+            Assert.assertEquals(1,all.size());
         }
 
 

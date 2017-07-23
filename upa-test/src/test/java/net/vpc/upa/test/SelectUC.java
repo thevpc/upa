@@ -63,7 +63,7 @@ public class SelectUC {
 
         public void init() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            pu.clear(null, null);
+            pu.clear();
             pu.persist(getRefClient1());
             pu.persist(getRefClient2());
         }

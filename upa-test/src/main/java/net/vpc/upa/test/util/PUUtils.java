@@ -9,7 +9,10 @@ import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
 //import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.ConnectionConfig;
+import net.vpc.upa.persistence.QueryResult;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -101,5 +104,85 @@ public class PUUtils {
         MYSQL,
         DERBY,
         EMBEDDED
+    }
+    public static void println(QueryResult r){
+        println(r,System.out);
+    }
+
+    public static void println(QueryResult r, PrintStream out){
+        int count = r.getColumnsCount();
+        int[] width = new int[count];
+        StringTable strings = toStringTable(r);
+        for (int i = 0; i < count; i++) {
+            width[i]=Math.max(width[i],strings.header[i].length());
+        }
+        for (String[] row : strings.rows) {
+            for (int i = 0; i < count; i++) {
+                width[i]=Math.max(width[i],row[i].length());
+            }
+        }
+        int allWidth=4+(width.length-1)*3;
+        for (int i : width) {
+            allWidth+=i;
+        }
+        char[] br=new char[allWidth];
+        Arrays.fill(br,'-');
+
+
+        out.println(br);
+        out.print("| ");
+        for (int i = 0; i < count; i++) {
+            if(i>0){
+                out.print(" | ");
+            }
+            out.print(formatLeft(strings.header[i],width[i]));
+        }
+        out.println(" |");
+        out.println(br);
+        for (String[] row : strings.rows) {
+            out.print("| ");
+            for (int i = 0; i < count; i++) {
+                if(i>0){
+                    out.print(" | ");
+                }
+                out.print(formatLeft(row[i],width[i]));
+            }
+            out.println(" |");
+        }
+        out.println(br);
+    }
+
+    private static String formatLeft(String str,int len){
+        StringBuilder sb=new StringBuilder(str);
+        while(sb.length()<len){
+            sb.append(' ');
+        }
+        return sb.toString();
+    }
+
+    private static StringTable toStringTable(QueryResult r){
+        int count = r.getColumnsCount();
+        List<String[]> rows=new ArrayList<>();
+        String[] header=new String[count];
+        for (int i = 0; i < count; i++) {
+            header[i]=String.valueOf(r.getColumnName(i));
+        }
+        while(r.hasNext()) {
+            String[] row = new String[count];
+            for (int i = 0; i < count; i++) {
+                row[i]=String.valueOf(r.read(i));
+            }
+            rows.add(row);
+        }
+        return new StringTable(rows,header);
+    }
+    private static class StringTable{
+        List<String[]> rows;
+        String[] header;
+
+        public StringTable(List<String[]> rows, String[] header) {
+            this.rows = rows;
+            this.header = header;
+        }
     }
 }

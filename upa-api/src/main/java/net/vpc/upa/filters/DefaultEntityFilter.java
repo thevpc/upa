@@ -38,6 +38,9 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.EntityShield;
 import net.vpc.upa.exceptions.UPAException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
@@ -58,8 +61,40 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
     private int acceptRenamable = 0;
     private int acceptClear = 0;
     private Class rootClass;
+    private Set<String> acceptedNames;
+    private Set<String> rejectedNames;
 
     public DefaultEntityFilter() {
+    }
+
+    public DefaultEntityFilter setAcceptName(String name){
+        if(acceptedNames==null){
+            acceptedNames=new HashSet<>();
+        }
+        acceptedNames.add(name);
+        return this;
+    }
+
+    public DefaultEntityFilter unsetAcceptName(String name){
+        if(acceptedNames!=null){
+            acceptedNames.remove(name);
+        }
+        return this;
+    }
+
+    public DefaultEntityFilter setRejectName(String name){
+        if(rejectedNames==null){
+            rejectedNames=new HashSet<>();
+        }
+        rejectedNames.add(name);
+        return this;
+    }
+
+    public DefaultEntityFilter unsetRejectName(String name){
+        if(rejectedNames!=null){
+            rejectedNames.remove(name);
+        }
+        return this;
     }
 
     public Class getRootTableClass() {
@@ -268,6 +303,12 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
     public boolean accept(Entity entity) throws UPAException {
         Object source = entity.getEntityDescriptor().getSource();
         if (rootClass != null && (source == null || !rootClass.isAssignableFrom(source.getClass()))) {
+            return false;
+        }
+        if(acceptedNames!=null && acceptedNames.size()>0  && !acceptedNames.contains(entity.getName())){
+            return false;
+        }
+        if(rejectedNames!=null && rejectedNames.size()>0  && rejectedNames.contains(entity.getName())){
             return false;
         }
         EntityShield v = entity.getShield();

@@ -24,6 +24,7 @@ public class CrudUC {
         pu.addEntity(SharedClient.class);
         pu.start();
         bo = UPA.makeSessionAware(new Business());
+        bo.init();
     }
 
     @Test
@@ -48,6 +49,11 @@ public class CrudUC {
     }
 
     public static class Business {
+
+        public void init() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            pu.clear(SharedClient.class,null);
+        }
 
         public void testQueryEmpty() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
