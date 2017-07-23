@@ -41,7 +41,11 @@ import net.vpc.upa.Closeable;
  */
 public interface QueryResult extends Closeable {
 
-    int getFieldsCount();
+    String getColumnName(int index);
+
+    Class getColumnType(int index);
+
+    int getColumnsCount();
 
     <T> T read(int index);
 
