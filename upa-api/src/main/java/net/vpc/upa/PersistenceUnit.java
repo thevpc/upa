@@ -220,6 +220,10 @@ public interface PersistenceUnit extends Closeable {
 
     boolean isValidPersistenceUnit();
 
+    void clear(String name, Map<String, Object> hints);
+
+    void clear(Class entity, Map<String, Object> hints);
+
     void clear(EntityFilter entityFilter, Map<String, Object> hints);
 
     void clear();
@@ -478,9 +482,9 @@ public interface PersistenceUnit extends Closeable {
 
     void removeRootConnectionConfig(int index);
 
-    void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel);
-
     PersistenceNameConfig getPersistenceNameConfig();
+
+    void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel);
 
     void addContextAnnotationStrategyFilter(ScanFilter filter);
 
@@ -493,7 +497,7 @@ public interface PersistenceUnit extends Closeable {
     /**
      * push new user context if login and credentials are valid
      *
-     * @param login login
+     * @param login       login
      * @param credentials credentials
      */
     void login(String login, String credentials);
