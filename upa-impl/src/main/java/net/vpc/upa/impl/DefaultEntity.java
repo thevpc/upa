@@ -3,7 +3,6 @@ package net.vpc.upa.impl;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
 import net.vpc.upa.callbacks.*;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
@@ -15,11 +14,11 @@ import net.vpc.upa.impl.event.RelationshipSourceFormulaUpdaterInterceptorSupport
 import net.vpc.upa.impl.event.RelationshipTargetFormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.SingleDataInterceptorSupport;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.impl.navigator.EntityNavigatorFactory;
 import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.FieldListPersistenceInfo;
-import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
 import net.vpc.upa.impl.uql.parser.syntax.ParseException;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
@@ -818,7 +817,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
                         throw new UPAIllegalArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
                     }
-                    if (f.getDataType() instanceof ManyToOneType) {
+                    if (f.isManyToOne()) {
                         fmc.add(FieldModifier.SELECT_DEFAULT);
                     } else {
                         fmc.add(FieldModifier.SELECT_CUSTOM);
@@ -2188,12 +2187,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                                 + " use first relation " + r;
                         // System.out.println(trace);
                         removeInfo.addTrace(trace);
-                        String newThis= UQLUtils.generateID();
+                        String newThis = UQLUtils.generateID();
                         Expression expression2 = expression.copy();
-                        UQLUtils.replaceThisVar(expression2,newThis,getPersistenceUnit());
+                        UQLUtils.replaceThisVar(expression2, newThis, getPersistenceUnit());
                         r.getSourceRole().getEntity().remove(
                                 RemoveOptions.forExpression(((new InSelection(new Var(r.getSourceRole().getField(0).getName()),
-                                        (new Select()).from(r.getTargetRole().getEntity().getName(),newThis)
+                                        (new Select()).from(r.getTargetRole().getEntity().getName(), newThis)
                                                 .field(new Var(masterField.getName())).where(expression2)))))
                                         .setFollowLinks(true)
                                         .setSimulate(simulate)
@@ -2316,12 +2315,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (fields.size() > 0) {
                 updateFormulasCore(FieldFilters2.PERSIST_FORMULA, expr, context);
                 final Document formulaValues = createQueryBuilder().byExpression(expr).setFieldFilter(FieldFilters2.PERSIST_FORMULA).getDocument();
-                if(fields.size()==1 && fields.get(0).getDataType() instanceof ManyToOneType){
+                if (fields.size() == 1 && fields.get(0).isManyToOne()) {
                     //in this case, the document provided is flattened, it will be problematic to
                     //put it into the main entity
-                    document.setObject(fields.get(0).getName(),formulaValues);
+                    document.setObject(fields.get(0).getName(), formulaValues);
 
-                }else{
+                } else {
                     document.setAll(formulaValues);
                 }
             }
@@ -3389,6 +3388,17 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         } else {
             entityBuilder.setEntityFactory(new EntityBeanFactory(this, getPersistenceUnit().getFactory()));
         }
+    }
+
+    @Override
+    public boolean isInstance(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (object instanceof Document) {
+            return true;
+        }
+        return getEntityType().isInstance(object);
     }
 
     public DecorationRepository getDecorationRepository() {

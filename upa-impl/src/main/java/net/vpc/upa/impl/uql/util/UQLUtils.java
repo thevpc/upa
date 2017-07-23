@@ -6,6 +6,7 @@
 package net.vpc.upa.impl.uql.util;
 
 import net.vpc.upa.*;
+import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
@@ -14,7 +15,9 @@ import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.types.ManyToOneType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -180,21 +183,44 @@ public class UQLUtils {
         Key key = entity.getBuilder().idToKey(o.getId());
         Object[] values = key==null?null:key.getValue();
         Entity entity1 = o.getEntity();
-        List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getIdFields());
-        for (int i = 0; i < f.size(); i++) {
-            Var ppp = o.getAlias() == null ? null : new Var(o.getAlias());
-            if(ppp==null){
-                ppp=new Var(f.get(i).getName());
+        List<Field> idFields = entity1.getIdFields();
+        for (int i = 0; i < idFields.size(); i++) {
+            Field idField = idFields.get(i);
+            Relationship manyToOneRelationship= idField.getManyToOneRelationship();
+            if (manyToOneRelationship!=null) {
+                List<Field> fields = manyToOneRelationship.getSourceRole().getFields();
+                Entity targetEntity = manyToOneRelationship.getTargetEntity();
+                Object o2 = targetEntity.getBuilder().objectToId(values==null?null:values[i]);
+                Key key2 = entity.getBuilder().idToKey(o2);
+                Object[] values2 = key2==null?null:key2.getValue();
+                for (int j = 0; j < fields.size(); j++) {
+                    Var ppp = o.getAlias() == null ? null : new Var(o.getAlias());
+                    if(ppp==null){
+                        ppp=new Var(fields.get(j).getName());
+                    }else{
+                        Var var = new Var(fields.get(j).getName());
+                        var.setApplier(ppp);
+                        ppp=var;
+                    }
+                    Equals e = new Equals(ppp, new Param(paramName+""+(j+1),values2==null?null:values2[j]));
+                    ret = (ret == null) ? e : new And(ret, e);
+                }
             }else{
-                Var var = new Var(f.get(i).getName());
-                var.setApplier(ppp);
-                ppp=var;
+                Var ppp = o.getAlias() == null ? null : new Var(o.getAlias());
+                if(ppp==null){
+                    ppp=new Var(idField.getName());
+                }else{
+                    Var var = new Var(idField.getName());
+                    var.setApplier(ppp);
+                    ppp=var;
+                }
+                Equals e = new Equals(ppp, new Param(paramName+""+(i+1),values==null?null:values[i]));
+                ret = (ret == null) ? e : new And(ret, e);
             }
-            Equals e = new Equals(ppp, new Param(paramName+""+(i+1),values==null?null:values[i]));
-            ret = (ret == null) ? e : new And(ret, e);
         }
         if (ret == null) {
-            ret = new Equals(new Literal(1), new Literal(1));
+//            ret = new Equals(new Literal(1), new Literal(1));
+            throw new UPAIllegalArgumentException("Unable to resolve Id from "+o);
         }
         return ret;
     }

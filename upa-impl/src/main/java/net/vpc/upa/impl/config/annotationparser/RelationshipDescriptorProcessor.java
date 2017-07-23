@@ -300,8 +300,9 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         List<Field> all=new ArrayList<>();
         if(f.getDataType() instanceof SerializableOrManyToOneType) {
             throw new UPAIllegalArgumentException("Unable to resolve type");
-        }else if(f.getDataType() instanceof ManyToOneType){
-            for (Field field : ((ManyToOneType) f.getDataType()).getTargetEntity().getIdFields()) {
+        }else if(f.isManyToOne()){
+            Relationship manyToOneRelationship = f.getManyToOneRelationship();
+            for (Field field : manyToOneRelationship.getTargetEntity().getIdFields()) {
                 all.addAll(resolveBaseFields(field));
             }
         }else{

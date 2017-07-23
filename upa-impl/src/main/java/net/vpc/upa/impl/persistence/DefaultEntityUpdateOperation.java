@@ -75,7 +75,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             Field f = entity.findField(fieldName);
             if (f != null && FieldFilters2.UPDATE.accept(f)) {
                 Object value = updates.getObject(fieldName);
-                if ((f.getDataType() instanceof ManyToOneType)) {
+                if (f.isManyToOne()) {
                     ManyToOneType e = (ManyToOneType) f.getDataType();
                     if (e.isUpdatable()) {
                         String rname = e.getName()+"_";
@@ -173,7 +173,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             Field f = entity.findField(fieldName);
             if (f != null && FieldFilters2.UPDATE.accept(f)) {
                 Object value = updates.getObject(fieldName);
-                if ((f.getDataType() instanceof ManyToOneType)) {
+                if (f.isManyToOne()) {
                     ManyToOneType e = (ManyToOneType) f.getDataType();
                     if (e.isUpdatable()) {
                         String rname = e.getName()+"_";

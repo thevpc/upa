@@ -7,7 +7,11 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.impl.util.PrimitiveIdImpl;
+import net.vpc.upa.impl.util.UPAUtils;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.util.List;
 import java.util.Set;
@@ -77,6 +81,30 @@ public class DefaultEntityBuilder implements EntityBuilder {
     @Override
     public Document objectToDocument(Object entity) {
         return entityFactory.objectToDocument(entity);
+    }
+
+    @Override
+    public PrimitiveId idToPrimitiveId(Object id) {
+        if(id==null){
+            return null;
+        }
+        List<Field> idFields = entity.getIdFields();
+        if(entity.isInstance(id)){
+            Object v=entity.getBuilder().objectToId(id);
+            if(UPAUtils.isEntityWithSimpleRelationId(entity)){
+                Field field = idFields.get(0);
+                Relationship relationship = ((ManyToOneType) (field.getDataType())).getRelationship();
+                PrimitiveId idAndType = relationship.getTargetEntity().getBuilder().idToPrimitiveId(v);
+                relationship.getSourceRole().getFields().toArray(new Field[idFields.size()]);
+                return new PrimitiveIdImpl(
+                        idAndType.getValue(),
+                        relationship.getSourceRole().getFields(),
+                        PrimitiveIdImpl.KIND_PKFK
+                );
+            }
+            return new PrimitiveIdImpl(v, idFields, PrimitiveIdImpl.KIND_DEFAULT);
+        }
+        throw new UPAIllegalArgumentException("Not a valid Id");
     }
 
     @Override

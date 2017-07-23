@@ -144,8 +144,8 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
 
                 CompiledVar v = new CompiledVar(field.getName());
                 ((CompiledVar) alias).getDeepest().setChild(v);
-            } else if (referrer instanceof Field && ((Field) referrer).getDataType() instanceof ManyToOneType &&
-                    ((ManyToOneType) ((Field) referrer).getDataType()).getTargetEntity().getName().equals(field.getEntity().getName())
+            } else if (referrer instanceof Field && ((Field) referrer).isManyToOne() &&
+                    ((Field) referrer).getManyToOneRelationship().getTargetEntity().getName().equals(field.getEntity().getName())
                     ) {
                 CompiledVar v = new CompiledVar(field.getName());
                 finest.setChild(v);

@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Field;
 import net.vpc.upa.QueryHints;
+import net.vpc.upa.Relationship;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
@@ -73,9 +74,9 @@ public class DefaultQueryExecutor implements QueryExecutor {
             Object objectValue = e.getValue();
             if (ei.getOldReferrer() != null) {
                 Field oldField = (Field) ei.getOldReferrer();
-                if (oldField.getDataType() instanceof ManyToOneType) {
-                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
-                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
+                Relationship manyToOneRelationship= oldField.getManyToOneRelationship();
+                if (manyToOneRelationship!=null) {
+                    objectValue = manyToOneRelationship.getTargetEntity().getBuilder().objectToId(objectValue);
                 }
             }
             boolean fieldNoTypeTransform = noTypeTransform;
@@ -252,9 +253,9 @@ public class DefaultQueryExecutor implements QueryExecutor {
             Object objectValue = e.getValue();
             if (ei.getOldReferrer() != null) {
                 Field oldField = (Field) ei.getOldReferrer();
-                if (oldField.getDataType() instanceof ManyToOneType) {
-                    ManyToOneType et = (ManyToOneType) oldField.getDataType();
-                    objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
+                Relationship manyToOneRelationship= oldField.getManyToOneRelationship();
+                if (manyToOneRelationship!=null) {
+                    objectValue = manyToOneRelationship.getTargetEntity().getBuilder().objectToId(objectValue);
                 }
             }
             boolean fieldNoTypeTransform = noTypeTransform;

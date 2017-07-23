@@ -4,6 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.*;
 
 import java.util.ArrayList;
@@ -508,10 +509,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     public Object getMainValue(Object instance) {
         Object v = getValue(instance);
         if (v != null) {
-            DataType d = getDataType();
-            if (d instanceof ManyToOneType) {
-                ManyToOneType ed = (ManyToOneType) d;
-                v = ed.getRelationship().getTargetEntity().getBuilder().getMainValue(v);
+            Relationship manyToOneRelationship= getManyToOneRelationship();
+            if (manyToOneRelationship!=null) {
+                v = manyToOneRelationship.getTargetEntity().getBuilder().getMainValue(v);
             }
         }
         return v;
@@ -535,4 +535,17 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         getDataType().check(value,getName(),null);
     }
 
+    @Override
+    public boolean isManyToOne() {
+        return getDataType() instanceof ManyToOneType;
+    }
+
+    @Override
+    public Relationship getManyToOneRelationship() {
+        DataType dataType = getDataType();
+        if(dataType instanceof ManyToOneType){
+            return ((ManyToOneType) dataType).getRelationship();
+        }
+        return null;
+    }
 }

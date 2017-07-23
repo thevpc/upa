@@ -710,7 +710,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
         if (relationDescriptor.getBaseField() != null) {
             Field baseField = getEntity(detailEntityName).getField(relationDescriptor.getBaseField());
-            if (baseField.getDataType() instanceof ManyToOneType) {
+            if (baseField.isManyToOne()) {
                 detailEntityFieldName = baseField.getName();
                 manyToOneField = baseField;
                 detailUpdateType = RelationshipUpdateType.COMPOSED;
@@ -929,7 +929,17 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public void clear() throws UPAException {
-        clear(null, defaultHints);
+        clear((EntityFilter)null, defaultHints);
+    }
+
+    @Override
+    public void clear(String entity, Map<String, Object> hints) {
+        clear(new DefaultEntityFilter().setAcceptName(getEntity(entity).getName()),hints);
+    }
+
+    @Override
+    public void clear(Class type, Map<String, Object> hints) {
+        clear(getEntity(type).getName(),hints);
     }
 
     @Override

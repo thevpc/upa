@@ -1,9 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.Document;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Field;
-import net.vpc.upa.Key;
+import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.util.CastConverter;
@@ -226,8 +223,9 @@ public abstract class AbstractEntityFactory implements EntityFactory {
     public Object getMainProperty(Object object) throws UPAException {
         Field mf = getEntity().getMainField();
         Object v = getProperty(object, mf.getName());
-        if(v!=null && mf.getDataType() instanceof ManyToOneType && !UPAUtils.isSimpleFieldType(v.getClass())){
-            Entity t = ((ManyToOneType)mf.getDataType()).getRelationship().getTargetEntity();
+        Relationship manyToOneRelationship = mf.getManyToOneRelationship();
+        if(v!=null && manyToOneRelationship!=null && !UPAUtils.isSimpleFieldType(v.getClass())){
+            Entity t = manyToOneRelationship.getTargetEntity();
             return t.getMainFieldValue(v);
         }
         return v;
@@ -284,14 +282,14 @@ public abstract class AbstractEntityFactory implements EntityFactory {
                 switch (field.getSearchOperator()) {
                     case DEFAULT:
                     case EQ: {
-                        if (field.getDataType() instanceof ManyToOneType) {
-                            ManyToOneType et = (ManyToOneType) field.getDataType();
-                            Key foreignKey = et.getRelationship().getTargetRole().getEntity().getBuilder().objectToKey(value);
+                        Relationship manyToOneRelationship = field.getManyToOneRelationship();
+                        if (manyToOneRelationship!=null) {
+                            Key foreignKey = manyToOneRelationship.getTargetRole().getEntity().getBuilder().objectToKey(value);
                             Expression b = null;
                             int i = 0;
-                            for (Field df : et.getRelationship().getSourceRole().getFields()) {
+                            for (Field df : manyToOneRelationship.getSourceRole().getFields()) {
                                 e = new Equals(new Var((Var) p.copy(), df.getName()), ExpressionFactory.toLiteral(foreignKey.getObjectAt(i)));
-                                b = b == null ? b : new And(b, e);
+                                b = b == null ? e : new And(b, e);
                                 i++;
                             }
                         } else {

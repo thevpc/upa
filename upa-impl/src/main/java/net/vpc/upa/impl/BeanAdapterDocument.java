@@ -1,8 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.Document;
-import net.vpc.upa.Entity;
-import net.vpc.upa.PlatformBeanType;
+import net.vpc.upa.*;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.ManyToOneType;
@@ -54,9 +52,10 @@ public class BeanAdapterDocument extends AbstractDocument {
         setUpdated(key);
         Object oldValue = nfo.getProperty(userObject, key);
         if(value instanceof Document){
-            DataType dataType = entityName.getField(key).getDataType();
-            if(dataType instanceof ManyToOneType){
-                value = ((ManyToOneType) dataType).getTargetEntity().getBuilder().documentToObject((Document) value);
+            Field field = entityName.getField(key);
+            Relationship manyTonOneRelationship=field.getManyToOneRelationship();
+            if(manyTonOneRelationship !=null){
+                value = manyTonOneRelationship.getTargetEntity().getBuilder().documentToObject((Document) value);
             }
         }
         if (value instanceof Expression || !nfo.setProperty(userObject, key, value)) {

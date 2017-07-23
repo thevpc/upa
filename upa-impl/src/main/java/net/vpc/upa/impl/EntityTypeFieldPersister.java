@@ -23,19 +23,11 @@ public class EntityTypeFieldPersister implements FieldPersister {
     public void prepareFieldForPersist(Field field, Object value, Document userDocument, Document persistentDocument, EntityExecutionContext executionContext, Set<Field> persistNonNullable, Set<Field> persistWithDefaultValue) throws UPAException {
         ManyToOneType e = (ManyToOneType) field.getDataType();
         if (e.isUpdatable()) {
-            Entity masterEntity = executionContext.getPersistenceUnit().getEntity(e.getTargetEntityName());
-            Key k = null;
-            if (value instanceof Document) {
-                k = masterEntity.getBuilder().documentToKey((Document) value);
-            } else {
-                k = masterEntity.getBuilder().objectToKey(value);
-            }
-            int x = 0;
             for (Field fk : e.getRelationship().getSourceRole().getFields()) {
                 persistNonNullable.remove(fk);
                 persistWithDefaultValue.remove(fk);
-                persistentDocument.setObject(fk.getName(), k == null ? null : k.getObjectAt(x));
-                x++;
+                Object k = userDocument.get(fk.getName());
+                persistentDocument.setObject(fk.getName(), k);
             }
         }
     }

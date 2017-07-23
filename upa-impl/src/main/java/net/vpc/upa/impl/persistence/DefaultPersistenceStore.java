@@ -1109,8 +1109,9 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             for (int i = 0; i < relation.size(); i++) {
                 List<PrimitiveField> fields = masterRole.getEntity().toPrimitiveFields(Arrays.asList((EntityPart) masterRole.getField(i)));
                 for (Field field : fields) {
-                    if(field.getDataType() instanceof ManyToOneType) {
-                        for (Field field1 : ((ManyToOneType) ((Field) ((ArrayList) fields).get(0)).getDataType()).getRelationship().getSourceRole().getFields()) {
+                    Relationship manyToOneRelationship = field.getManyToOneRelationship();
+                    if(manyToOneRelationship!=null) {
+                        for (Field field1 : manyToOneRelationship.getSourceRole().getFields()) {
                             if (first1) {
                                 first1 = false;
                             } else {
@@ -1221,7 +1222,8 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         if (f instanceof PrimitiveField) {
             PrimitiveField pf = (PrimitiveField) f;
             DataType d = pf.getDataType();
-            if (d instanceof ManyToOneType) {
+            Relationship manyToOneRelationship= pf.getManyToOneRelationship();
+            if (manyToOneRelationship!=null) {
                 ManyToOneType rd = (ManyToOneType) d;
                 for (Field field : rd.getRelationship().getSourceRole().getFields()) {
                     fillPrimitiveField(field, list);
@@ -1353,7 +1355,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             for (PrimitiveField key : keys) {
                 if (key.getModifiers().contains(FieldModifier.SELECT_LIVE)) {
                     //live fields are not stored
-                } else if ((key.getDataType() instanceof ManyToOneType)) {
+                } else if (key.isManyToOne()) {
                     //relation 'object' fields are not stored
                 } else {
                     if (firstElement) {
@@ -1829,7 +1831,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     public PersistenceState getFieldPersistenceState(Field object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         PersistenceState status = PersistenceState.UNKNOWN;
         FlagSet<FieldModifier> fieldModifiers = object.getModifiers();
-        if ((object.getDataType() instanceof ManyToOneType)) {
+        if (object.isManyToOne()) {
 //            status = PersistenceState.VALID;
             status = PersistenceState.TRANSIENT;
         } else if (fieldModifiers.contains(FieldModifier.TRANSIENT)) {

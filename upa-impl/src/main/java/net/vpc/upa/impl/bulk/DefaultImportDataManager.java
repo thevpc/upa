@@ -51,9 +51,9 @@ public class DefaultImportDataManager implements ImportDataManager {
         for (Map.Entry<String, Object> entry : row.entrySet()) {
             Field f = entity.findField(entry.getKey());
             if (f != null) {
-                if (f.getDataType() instanceof ManyToOneType) {
-                    ManyToOneType et = (ManyToOneType) f.getDataType();
-                    Entity master = et.getRelationship().getTargetRole().getEntity();
+                Relationship manyToOneRelationship = f.getManyToOneRelationship();
+                if (manyToOneRelationship!=null) {
+                    Entity master = manyToOneRelationship.getTargetRole().getEntity();
                     Object value = entry.getValue();
                     if (value!= null && (!(value instanceof String) || !StringUtils.isNullOrEmpty(String.valueOf(value))))
                     {

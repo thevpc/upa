@@ -1,9 +1,6 @@
 package net.vpc.upa.impl.uql;
 
-import net.vpc.upa.Entity;
-import net.vpc.upa.ExpressionManager;
-import net.vpc.upa.Field;
-import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
@@ -11,6 +8,7 @@ import net.vpc.upa.impl.persistence.DefaultResultField;
 import net.vpc.upa.impl.persistence.DefaultResultMetaData;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.persistence.ResultMetaData;
 import net.vpc.upa.types.ManyToOneType;
@@ -174,8 +172,9 @@ public class ExpressionMetadataBuilder {
                             results.add(new DefaultResultField(v, alias, field.getDataType(), field, null));
                         }
                     }else if(p.getField()!=null){
-                        if(p.getField().getDataType() instanceof ManyToOneType){
-                            Entity entity = ((ManyToOneType) p.getField().getDataType()).getTargetEntity();
+                        Relationship manyToOneRelationship= p.getField().getManyToOneRelationship();
+                        if(manyToOneRelationship!=null){
+                            Entity entity = manyToOneRelationship.getTargetEntity();
                             if(v.getName().equals("*")){
                                 for (Field field : entity.getFields(fieldFilter)) {
                                     results.add(new DefaultResultField(v, alias, field.getDataType(), field, null));

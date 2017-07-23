@@ -38,7 +38,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 String key = entry.getKey();
                 Field field = entity.findField(key);
                 //should process specific entity fields
-                if ((field.getDataType() instanceof ManyToOneType)) {
+                if (field.isManyToOne()) {
                     ManyToOneType e = (ManyToOneType) field.getDataType();
                     if (e.isUpdatable()) {
                         Entity masterEntity = pu.getEntity(e.getTargetEntityName());
@@ -73,7 +73,7 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 String key = entry.getKey();
                 Field field = entity.findField(key);
                 //should process specific entity fields
-                if ((field.getDataType() instanceof ManyToOneType)) {
+                if (field.isManyToOne()) {
                     ManyToOneType e = (ManyToOneType) field.getDataType();
                     if (e.isUpdatable()) {
                         Entity masterEntity = pu.getEntity(e.getTargetEntityName());

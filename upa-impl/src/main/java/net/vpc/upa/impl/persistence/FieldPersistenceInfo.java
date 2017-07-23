@@ -43,13 +43,13 @@ public class FieldPersistenceInfo {
     }
 
     public void synchronize() {
-        if (field.getDataType() instanceof ManyToOneType) {
+        if (field.isManyToOne()) {
             ManyToOneType t = (ManyToOneType) field.getDataType();
-            Relationship relation = t.getRelationship();
-            if (relation == null) {
+            Relationship manyToOneRelationship = t.getRelationship();
+            if (manyToOneRelationship == null) {
                 throw new UPAException("MissingRelationForField", field);
             }
-            RelationshipRole detailRole = relation.getSourceRole();
+            RelationshipRole detailRole = manyToOneRelationship.getSourceRole();
             RelationshipUpdateType u = detailRole.getRelationshipUpdateType();
             if (u == RelationshipUpdateType.COMPOSED) {
                 persistFieldPersister = new ComposedToFlatFieldPersister(field);

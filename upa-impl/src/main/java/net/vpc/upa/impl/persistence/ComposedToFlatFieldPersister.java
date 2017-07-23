@@ -6,6 +6,8 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.util.PrimitiveIdImpl;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.types.ManyToOneType;
@@ -20,28 +22,37 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
     private Field field;
     private EntityBuilder relationshipTargetConverter;
     private List<Field> flatFields;
+    private Entity master;
+    private boolean arr;
 
     public ComposedToFlatFieldPersister(Field field) {
         this.field = field;
         ManyToOneType t = (ManyToOneType) field.getDataType();
-        Entity master = t.getRelationship().getTargetRole().getEntity();
+        master = t.getRelationship().getTargetRole().getEntity();
         RelationshipRole detailRole = t.getRelationship().getSourceRole();
         flatFields = detailRole.getFields();
         relationshipTargetConverter = master.getBuilder();
+        arr=flatFields.size()>1;
     }
 
     public void beforePersist(Document document, EntityExecutionContext context) throws UPAException {
         Object o = document.getObject(field.getName());
-        Key key = relationshipTargetConverter.objectToKey(o);
-        if (key == null) {
+        PrimitiveId primitiveIdImpl = master.getBuilder().idToPrimitiveId(o);
+        if (primitiveIdImpl == null) {
             for (Field ff : flatFields) {
                 document.setObject(ff.getName(), ff.getUnspecifiedValueDecoded());
             }
         } else {
-            int i = 0;
-            for (Field ff : flatFields) {
-                document.setObject(ff.getName(), key.getObjectAt(i));
-                i++;
+            if(arr){
+                Object[] value = (Object[]) primitiveIdImpl.getValue();
+                int i = 0;
+                for (Field ff : flatFields) {
+                    document.setObject(ff.getName(), value[i]);
+                    i++;
+                }
+            }else {
+                Object value = primitiveIdImpl.getValue();
+                document.setObject(flatFields.get(0).getName(), value);
             }
         }
     }

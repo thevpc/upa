@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import java.util.List;
 import net.vpc.upa.Field;
+import net.vpc.upa.Relationship;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
@@ -31,16 +32,16 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
         DataTypeTransform d=null;
         if (ei.getOldReferrer() != null) {
             Field oldField = (Field) ei.getOldReferrer();
-            if (oldField.getDataType() instanceof ManyToOneType) {
-                ManyToOneType et = (ManyToOneType) oldField.getDataType();
-                objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
+            Relationship manyToOneRelationship = oldField.getManyToOneRelationship();
+            if (manyToOneRelationship!=null) {
+                objectValue = manyToOneRelationship.getTargetEntity().getBuilder().objectToId(objectValue);
             }
         }else if (ei.getReferrer() != null && ei.getReferrer() instanceof Field) {
             Field field = (Field) ei.getReferrer();
-            if (field.getDataType() instanceof ManyToOneType) {
-                ManyToOneType et = (ManyToOneType) field.getDataType();
-                objectValue = et.getRelationship().getTargetEntity().getBuilder().objectToId(objectValue);
-                List<Field> tf = et.getRelationship().getTargetEntity().getIdFields();
+            Relationship manyToOneRelationship = field.getManyToOneRelationship();
+            if (manyToOneRelationship!=null) {
+                objectValue = manyToOneRelationship.getTargetEntity().getBuilder().objectToId(objectValue);
+                List<Field> tf = manyToOneRelationship.getTargetEntity().getIdFields();
                 if(tf.size()!=1){
                     throw new UPAIllegalArgumentException("Unsupported");
                 }

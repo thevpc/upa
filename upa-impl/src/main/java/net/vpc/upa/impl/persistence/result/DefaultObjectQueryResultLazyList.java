@@ -112,8 +112,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         throw new UPAIllegalArgumentException("Unsupported");
                     } else {
                         Field field = ancestor.entity.getField(parentBinding.getName());
-                        if (field.getDataType() instanceof ManyToOneType) {
-                            columnFamily = new ColumnFamily(parentBinding, ((ManyToOneType) field.getDataType()).getTargetEntity(), ofactory);
+                        Relationship manyToOneRelationship = field.getManyToOneRelationship();
+                        if (manyToOneRelationship!=null) {
+                            columnFamily = new ColumnFamily(parentBinding, manyToOneRelationship.getTargetEntity(), ofactory);
                             columnFamily.documentType = itemAsDocument;
                             bindingToTypeInfos0.put(parentBinding, columnFamily);
                         } else {

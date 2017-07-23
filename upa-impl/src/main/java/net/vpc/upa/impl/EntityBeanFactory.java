@@ -65,9 +65,9 @@ public class EntityBeanFactory extends AbstractEntityFactory {
             Object o= document.getObject(k);
             if(o instanceof Document){
                 Field f = entity.findField(k);
-                DataType dt = f.getDataType();
-                if(dt instanceof ManyToOneType){
-                    Entity oe = ((ManyToOneType)dt).getRelationship().getTargetEntity();
+                Relationship manyToOneRelationship = f.getManyToOneRelationship();
+                if(manyToOneRelationship!=null){
+                    Entity oe = manyToOneRelationship.getTargetEntity();
                     o = oe.getBuilder().documentToObject((Document)o);
                 }
             }

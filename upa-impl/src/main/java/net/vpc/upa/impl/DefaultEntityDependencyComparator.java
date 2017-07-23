@@ -3,6 +3,8 @@ package net.vpc.upa.impl;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.FieldModifier;
+import net.vpc.upa.Relationship;
+import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -34,9 +36,9 @@ class DefaultEntityDependencyComparator implements Comparator<Entity> {
         Set<String> all = new HashSet<String>();
         for (Field field : o1.getFields()) {
             if (!field.getModifiers().contains(FieldModifier.TRANSIENT)) {
-                DataType dt = field.getDataType();
-                if (dt instanceof ManyToOneType) {
-                    all.add(((ManyToOneType) dt).getRelationship().getTargetEntity().getName());
+                Relationship manyToOneRelationship= field.getManyToOneRelationship();
+                if (manyToOneRelationship!=null) {
+                    all.add(manyToOneRelationship.getTargetEntity().getName());
                 }
             }
         }

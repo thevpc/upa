@@ -798,4 +798,12 @@ public class UPAUtils {
         }
         return ((Long)value).longValue();
     }
+
+    public static boolean isManyToOne(DataType dataType) {
+        return dataType instanceof ManyToOneType;
+    }
+
+    public static boolean isEntityWithSimpleRelationId(Entity entity) {
+        return entity.getIdFields().size()==1 && entity.getIdFields().get(0).isManyToOne();
+    }
 }

@@ -13,6 +13,7 @@ import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.util.PrimitiveIdImpl;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -145,6 +146,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             return updateCompiledVar((CompiledVar) e, updateContext);
         } else if (e instanceof CompiledParam) {
             return updateCompiledParam((CompiledParam) e,updateContext);
+        } else if (e instanceof CompiledLiteral) {
+            return updateCompiledLiteral((CompiledLiteral) e,updateContext);
 //        } else if (e instanceof IsHierarchyDescendantCompiled) {
 //            return updateIsHierarchyDescendantCompiled((IsHierarchyDescendantCompiled) e);
         } else if (e instanceof CompiledQLFunctionExpression) {
@@ -166,33 +169,28 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         if(right instanceof CompiledVarOrMethod){
             right=((CompiledVarOrMethod) right).getDeepest();
         }
-        Field clientProperty = (Field) left.getClientProperty("UPA.Flattened.BaseField");
+        Field baseField = (Field) left.getClientProperty("UPA.Flattened.BaseField");
         if (right instanceof CompiledVar && !(left instanceof CompiledVar)) {
             CompiledExpressionExt temp = left;
             left = right;
             right = temp;
         }
-        if (left instanceof CompiledVar && clientProperty != null && clientProperty.getDataType() instanceof ManyToOneType) {
-            ManyToOneType dataType = (ManyToOneType) clientProperty.getDataType();
-            Class entityType = dataType.getTargetEntity().getEntityType();
+        Relationship manyToOneRelationship = baseField==null?null:baseField.getManyToOneRelationship();
+        if (left instanceof CompiledVar && manyToOneRelationship!=null) {
             if (right instanceof CompiledParam) {
                 CompiledParam p = (CompiledParam) right;
-                if (p.getValue() != null && ((p.getValue() instanceof Document) || entityType.isInstance(p.getValue()))) {
-                    Object id = dataType.getTargetEntity().getBuilder().objectToId(p.getValue());
-                    //the id is supposed simple (single value, not an array)
-                    //TODO : what to do if array?
-                    p.setValue(id);
+                PrimitiveId primitiveIdImpl = manyToOneRelationship.getTargetEntity().getBuilder().idToPrimitiveId(p.getValue());
+                if(primitiveIdImpl !=null && primitiveIdImpl.size()==1){
+                    p.setValue(primitiveIdImpl.getValue());
+//                    p.setType(UPAUtils.getTypeTransformOrIdentity(primitiveIdImpl.fields[0]));
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
             } else if (right instanceof CompiledLiteral) {
                 CompiledLiteral p = (CompiledLiteral) right;
-                if (p.getValue() != null && ((p.getValue() instanceof Document) || entityType.isInstance(p.getValue()))) {
-                    Object id = dataType.getTargetEntity().getBuilder().objectToId(p.getValue());
-                    //the id is supposed simple (single value, not an array)
-                    //TODO : what to do if array?
-                    p.setValue(id);
-                    Field field = dataType.getRelationship().getSourceRole().getField(0);
-                    p.setType(UPAUtils.getTypeTransformOrIdentity(field));
+                PrimitiveId primitiveIdImpl = manyToOneRelationship.getTargetEntity().getBuilder().idToPrimitiveId(p.getValue());
+                if(primitiveIdImpl !=null && primitiveIdImpl.size()==1){
+                    p.setValue(primitiveIdImpl.getValue());
+                    p.setType(UPAUtils.getTypeTransformOrIdentity(primitiveIdImpl.getField(0)));
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
             }
@@ -256,14 +254,12 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     oldReferrerEntity=((Field) referrer).getEntity();
 //                    throw new UPAIllegalArgumentException("Unexpected");
                 }
-                if (field.getDataType() instanceof ManyToOneType) {
-                    ManyToOneType manyToOneType = (ManyToOneType) field.getDataType();
-//                    if (depth <= 0 || (depth<navigationDepth && fetchStrategy == QueryFetchStrategy.SELECT)) {
-                    Relationship relationship = manyToOneType.getRelationship();
-                    List<Field> newFields = FieldFilters2.filter(relationship.getTargetEntity().getFields(), config.getExpandFieldFilter());
+                Relationship manyToOneRelationship=field.getManyToOneRelationship();
+                if (manyToOneRelationship!=null) {
+                    List<Field> newFields = FieldFilters2.filter(manyToOneRelationship.getTargetEntity().getFields(), config.getExpandFieldFilter());
                     if (currentJoins>=maxJoins || depth <= 0 || (fetchStrategy == QueryFetchStrategy.SELECT) || (currColumnsCount+newFields.size())>maxColumns) {
-                        List<Field> sfields = relationship.getSourceRole().getFields();
-                        List<Field> tfields = relationship.getTargetRole().getFields();
+                        List<Field> sfields = manyToOneRelationship.getSourceRole().getFields();
+                        List<Field> tfields = manyToOneRelationship.getTargetRole().getFields();
                         for (int i = 0; i < sfields.size(); i++) {
                             Field sfield = sfields.get(i);
                             Field tfield = tfields.get(i);
@@ -315,7 +311,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         );
                         fieldsToExpand.addAll(newFields);
                         updateContext.put("columnsCount",newFields.size()+currColumnsCount);
-                        if(relationship.getHierarchyExtension()!=null && depth>3){
+                        if(manyToOneRelationship.getHierarchyExtension()!=null && depth>3){
                             depth=3;
                             updateContext.put("depth",depth);
                         }
@@ -509,9 +505,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     throw new UPAIllegalArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
                 }
             } else {
-                DataType dataType = field.getDataType();
-                if (dataType instanceof ManyToOneType) {
-                    ManyToOneType manyToOneType = (ManyToOneType) dataType;
+                Relationship manyToOneRelationship=field.getManyToOneRelationship();
+                if (manyToOneRelationship !=null) {
                     if (o.getChild() == null) {
                         CompiledExpressionExt baseRoot = UQLCompiledUtils.findRootNonVar(o);
                         if (baseRoot instanceof CompiledQueryField) {
@@ -524,7 +519,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
                         }
                         if (flattenId) {
-                            List<Field> fields = manyToOneType.getRelationship().getSourceRole().getFields();
+                            List<Field> fields = manyToOneRelationship.getSourceRole().getFields();
                             if (fields.size() == 1) {
                                 Field field0 = fields.get(0);
                                 CompiledVar newVar = new CompiledVar(field0.getName(), field0, BindingId.createChild(o.getBinding(), field0.getName()));
@@ -533,7 +528,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 newVar.setClientProperty("UPA.Flattened.BaseField", field);
                                 return ReplaceResult.stopWithNewObj(newVar);
                             } else {
-                                throw new UPAIllegalArgumentException("Unsupported multi Id Entity " + manyToOneType.getRelationship().getSourceRole().getEntity());
+                                throw new UPAIllegalArgumentException("Unsupported multi Id Entity " + manyToOneRelationship.getSourceRole().getEntity());
                             }
                         } else {
                             return ReplaceResult.NO_UPDATES_STOP;
@@ -868,6 +863,80 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
+    private ReplaceResult updateCompiledLiteral(CompiledLiteral o, Map<String, Object> updateContext) {
+        DataTypeTransform d = getValidDataType(o);
+        if (d != null) {
+            return ReplaceResult.NO_UPDATES_STOP;
+        }
+        if (o.getValue() != null) {
+            o.setTypeTransform(IdentityDataTypeTransform.ofType(o.getValue().getClass()));
+            d = getValidDataType(o);
+            if (d != null) {
+                return ReplaceResult.NO_UPDATES_STOP;
+            }
+        }
+        CompiledExpressionExt pe = o.getParentExpression();
+        if (pe instanceof CompiledBinaryOperatorExpression) {
+            CompiledBinaryOperatorExpression c = (CompiledBinaryOperatorExpression) pe;
+            BinaryOperator operator = c.getOperator();
+            switch (operator) {
+                case EQ:
+                case DIFF:
+                case LE:
+                case LT:
+                case GE:
+                case GT:
+                case BIT_AND:
+                case BIT_OR:
+                case PLUS:
+                case MINUS:
+                case MUL:
+                case DIV:
+                case REM:
+                case LSHIFT:
+                case RSHIFT:
+                case XOR:
+                case URSHIFT: {
+                    CompiledExpressionExt a = c.getLeft();
+                    CompiledExpressionExt b = c.getRight();
+                    if (o == a) {
+                        DataTypeTransform d2 = getValidDataType(b);
+                        if (d2 != null) {
+                            o.setTypeTransform(d2);
+                            return ReplaceResult.UPDATE_AND_STOP;
+                        }
+                    } else if (o == b) {
+                        DataTypeTransform d2 = getValidDataType(a);
+                        if (d2 != null) {
+                            o.setTypeTransform(d2);
+                            return ReplaceResult.UPDATE_AND_STOP;
+                        }
+                    }
+                    return ReplaceResult.NO_UPDATES_STOP;
+                }
+                case LIKE: {
+                    CompiledExpressionExt a = c.getLeft();
+                    CompiledExpressionExt b = c.getRight();
+                    o.setTypeTransform(IdentityDataTypeTransform.STRING_UNLIMITED);
+                    return ReplaceResult.UPDATE_AND_STOP;
+                }
+                case OR:
+                case AND: {
+                    o.setTypeTransform(IdentityDataTypeTransform.BOOLEAN);
+                    return ReplaceResult.UPDATE_AND_STOP;
+                }
+            }
+        } else if (pe instanceof CompiledVarVal) {
+            CompiledVarVal cvv = (CompiledVarVal) pe;
+            if (cvv.getVal() == o) {
+                //it should be the case
+                o.setTypeTransform(cvv.getVar().getTypeTransform());
+                return ReplaceResult.UPDATE_AND_STOP;
+            }
+        }
+        return ReplaceResult.NO_UPDATES_STOP;
+    }
+
     private BindingJoinInfo addBindingJoin(CompiledEntityStatement qs, Field field, String entityAlias, BindingId binding) {
         if (entityAlias == null) {
             throw new UPAIllegalArgumentException("Null Join Alias");
@@ -992,7 +1061,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //
 //
 //            return true;
-//        } else if (field.getDataType() instanceof ManyToOneType) {
+//        } else if (field.isManyToOne()) {
 //            if (QueryFetchStrategy.JOIN == (fetchStrategy)) {
 //                expandManyToOneFieldJoinFetch(qs, expandAll,index, field, entityAlias, binding, aliasBinding, config.getExpandFieldFilter(), expansionVisitTracker);
 //            } else if (QueryFetchStrategy.SELECT == (fetchStrategy)) {
@@ -1032,7 +1101,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //            //should add only ids
 //            List<Field> otherFields = manyToOneType.getRelationship().getSourceRole().getFields();
 //            for (Field f : otherFields) {
-//                if (!(f.getDataType() instanceof ManyToOneType)) {
+//                if (!(f.isManyToOne())) {
 //                    CompiledVar vv = new CompiledVar(entityAlias, field.getEntity());
 //                    vv.setChild(new CompiledVar(f));
 //                    //binding = (binding == null ? "" : (binding + ".")) + field.getName();
@@ -1077,7 +1146,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 ////        }
 //        List<Field> otherFields = manyToOneType.getRelationship().getSourceRole().getFields();
 //        for (Field f : otherFields) {
-//            if (!(f.getDataType() instanceof ManyToOneType)) {
+//            if (!(f.isManyToOne())) {
 //                CompiledVar vv = new CompiledVar(entityAlias, field.getEntity());
 //                vv.setChild(new CompiledVar(f));
 //                //binding = (binding == null ? "" : (binding + ".")) + field.getName();
@@ -1320,10 +1389,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     }
                     throw new net.vpc.upa.exceptions.NoSuchFieldException(null, var.toString(), var.getName(), null);
                 } else if (ref instanceof Field) {
-                    DataType dataType = ((Field) ref).getDataType();
-                    if (dataType instanceof ManyToOneType) {
-                        ManyToOneType et = (ManyToOneType) dataType;
-                        Entity ee = et.getRelationship().getTargetRole().getEntity();
+                    Relationship manyToOneRelationship=((Field) ref).getManyToOneRelationship();
+                    if (manyToOneRelationship!=null) {
+                        Entity ee = manyToOneRelationship.getTargetRole().getEntity();
                         if (ee.containsField(var.getName())) {
                             var.setReferrer(ee.getField(var.getName()));
                             return var.getReferrer();
@@ -1331,7 +1399,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             return null;
                         }
                     } else {
-                        log.severe("Type Cast Exception " + ((Field) ref).getAbsoluteName() + " is not of type " + ManyToOneType.class.getName() + " but " + dataType);
+                        log.severe("Type Cast Exception " + ((Field) ref).getAbsoluteName() + " is not of type " + ManyToOneType.class.getName() + " but " + ((Field) ref).getDataType());
                         throw new net.vpc.upa.exceptions.NoSuchFieldException(null, var.toString(), var.getName(), null);
                     }
                 }
@@ -1480,7 +1548,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 //
 //                CompiledVar v = new CompiledVar(field.getName());
 //                ((CompiledVar) alias).getDeepest().setChild(v);
-//            } else if (referrer instanceof Field && ((Field) referrer).getDataType() instanceof ManyToOneType &&
+//            } else if (referrer instanceof Field && ((Field) referrer).isManyToOne() &&
 //                    ((ManyToOneType) ((Field) referrer).getDataType()).getTargetEntity().getName().equals(field.getEntity().getName())
 //                    ) {
 //                CompiledVar v = new CompiledVar(field.getName());

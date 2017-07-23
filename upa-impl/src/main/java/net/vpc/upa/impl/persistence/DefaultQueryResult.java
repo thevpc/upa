@@ -4,9 +4,10 @@
  */
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.types.I18NString;
 import net.vpc.upa.exceptions.FindException;
 import net.vpc.upa.persistence.QueryResult;
+import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.I18NString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.types.DataTypeTransform;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class DefaultQueryResult implements QueryResult {
 
+    private static final Logger log = Logger.getLogger(DefaultQueryResult.class.getName());
     private ResultSet resultSet;
     private Statement statement;
     private TypeMarshaller[] marshallers;
@@ -29,7 +30,6 @@ public class DefaultQueryResult implements QueryResult {
     private boolean closed;
     private int[] nativePos;
     private Map<Integer, Object> updates = new HashMap<Integer, Object>();
-    private static final Logger log=Logger.getLogger(DefaultQueryResult.class.getName());
 
     public DefaultQueryResult(ResultSet resultSet, Statement statement, TypeMarshaller[] marshallers, DataTypeTransform[] types) {
         this.resultSet = resultSet;
@@ -52,8 +52,26 @@ public class DefaultQueryResult implements QueryResult {
     }
 
     @Override
-    public int getFieldsCount() {
+    public int getColumnsCount() {
         return marshallers.length;
+    }
+
+    @Override
+    public String getColumnName(int index) {
+        try {
+            return resultSet.getMetaData().getColumnName(nativePos[index]);
+        } catch (SQLException e) {
+            throw new FindException(e, new I18NString("ReadQueryResultColumnFailed"), index, nativePos[index]);
+        }
+    }
+
+    @Override
+    public Class getColumnType(int index) {
+        try {
+            return Class.forName(resultSet.getMetaData().getColumnClassName(nativePos[index]));
+        } catch (Exception e) {
+            throw new FindException(e, new I18NString("ReadQueryResultColumnFailed"), index, nativePos[index]);
+        }
     }
 
     @Override
@@ -93,6 +111,7 @@ public class DefaultQueryResult implements QueryResult {
             throw new FindException(e, new I18NString("ReadQueryHasNextFailed"));
         }
     }
+
     public void close() {
         try {
             closed = true;
