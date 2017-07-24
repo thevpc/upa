@@ -80,9 +80,10 @@ public abstract class DefaultDataType implements DataType {
     public String name;
     protected boolean nullable;
     protected Properties properties;
-    protected Object defaultNonNullValue;
     protected Object defaultValue;
     protected Object defaultUnspecifiedValue;
+    protected boolean defaultValueUserDefined;
+    protected boolean defaultUnspecifiedValueUserDefined;
     protected Class platformType;
     protected int scale;
     protected int precision;
@@ -103,9 +104,16 @@ public abstract class DefaultDataType implements DataType {
         this.platformType = platformType;
         this.scale = scale;
         this.precision = precision;
-        this.defaultValue = nullable ? NULLABLE_DEFAULT_VALUES.get(platformType) : NON_NULLABLE_DEFAULT_VALUES.get(platformType);
-        this.defaultUnspecifiedValue = NULLABLE_DEFAULT_VALUES.get(platformType);
-        this.defaultNonNullValue = this.defaultValue;
+        reevaluateCachedValues();
+    }
+
+    protected void reevaluateCachedValues(){
+        if(!this.defaultValueUserDefined) {
+            this.defaultValue = nullable ? NULLABLE_DEFAULT_VALUES.get(platformType) : NON_NULLABLE_DEFAULT_VALUES.get(platformType);
+        }
+        if(!this.defaultUnspecifiedValueUserDefined) {
+            this.defaultUnspecifiedValue = nullable ? null : NULLABLE_DEFAULT_VALUES.get(platformType);
+        }
     }
 
     @Override
@@ -116,6 +124,7 @@ public abstract class DefaultDataType implements DataType {
     @Override
     public void setDefaultUnspecifiedValue(Object defaultUnspecifiedValue) {
         this.defaultUnspecifiedValue = defaultUnspecifiedValue;
+        this.defaultUnspecifiedValueUserDefined = true;
     }
 
     @Override
@@ -126,16 +135,7 @@ public abstract class DefaultDataType implements DataType {
     @Override
     public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    @Override
-    public Object getDefaultNonNullValue() {
-        return defaultNonNullValue;
-    }
-
-    @Override
-    public void setDefaultNonNullValue(Object defaultNonNullValue) {
-        this.defaultNonNullValue = defaultNonNullValue;
+        this.defaultValueUserDefined = true;
     }
 
     @Override
@@ -146,6 +146,7 @@ public abstract class DefaultDataType implements DataType {
     @Override
     public void setNullable(boolean enable) {
         nullable = enable;
+        reevaluateCachedValues();
     }
 
     @Override
@@ -175,7 +176,7 @@ public abstract class DefaultDataType implements DataType {
 //    @PortabilityHint(target = "C#", name = "virtual")
     public void check(Object value, String name, String description) throws ConstraintsException {
         if (value == null && !isNullable()) {
-            throw new ConstraintsException("IllegalNull", name, description, value);
+            throw new ConstraintsException("IllegalNull", name, description, null);
         }
         for (TypeValueValidator typeValueValidator : valueValidators) {
             typeValueValidator.validateValue(value, name, description, this);
@@ -293,13 +294,13 @@ public abstract class DefaultDataType implements DataType {
         DefaultDataType that = (DefaultDataType) o;
 
         if (nullable != that.nullable) return false;
+        if (defaultValueUserDefined != that.defaultValueUserDefined) return false;
+        if (defaultUnspecifiedValueUserDefined != that.defaultUnspecifiedValueUserDefined) return false;
         if (scale != that.scale) return false;
         if (precision != that.precision) return false;
         if (unitName != null ? !unitName.equals(that.unitName) : that.unitName != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (properties != null ? !properties.equals(that.properties) : that.properties != null) return false;
-        if (defaultNonNullValue != null ? !defaultNonNullValue.equals(that.defaultNonNullValue) : that.defaultNonNullValue != null)
-            return false;
         if (defaultValue != null ? !defaultValue.equals(that.defaultValue) : that.defaultValue != null) return false;
         if (defaultUnspecifiedValue != null ? !defaultUnspecifiedValue.equals(that.defaultUnspecifiedValue) : that.defaultUnspecifiedValue != null)
             return false;
@@ -315,9 +316,10 @@ public abstract class DefaultDataType implements DataType {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (nullable ? 1 : 0);
         result = 31 * result + (properties != null ? properties.hashCode() : 0);
-        result = 31 * result + (defaultNonNullValue != null ? defaultNonNullValue.hashCode() : 0);
         result = 31 * result + (defaultValue != null ? defaultValue.hashCode() : 0);
         result = 31 * result + (defaultUnspecifiedValue != null ? defaultUnspecifiedValue.hashCode() : 0);
+        result = 31 * result + (defaultValueUserDefined ? 1 : 0);
+        result = 31 * result + (defaultUnspecifiedValueUserDefined ? 1 : 0);
         result = 31 * result + (platformType != null ? platformType.hashCode() : 0);
         result = 31 * result + scale;
         result = 31 * result + precision;

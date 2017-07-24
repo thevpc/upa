@@ -63,7 +63,14 @@ public class BigDecimalType extends NumberType implements Cloneable {
         super(name, BigDecimal.class, before + after, after, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(BigDecimal.ZERO);
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(BigDecimal.ZERO);
+        }
     }
 
     public BigDecimal getMin() {

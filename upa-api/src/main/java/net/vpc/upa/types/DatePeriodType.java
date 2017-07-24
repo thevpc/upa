@@ -66,11 +66,20 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
         if (this.countName == null) {
             this.countName = "count";
         }
-        if (periodTypeName == null) {
-            periodTypeName = "type";
+        if (this.periodTypeName == null) {
+            this.periodTypeName = "type";
         }
-        Integer defaultNonNullValue = (Integer) countDataType.getDefaultNonNullValue();
-        setDefaultNonNullValue(new DatePeriod(defaultNonNullValue == null ? 0 : defaultNonNullValue.intValue(), PeriodOption.DAY));
+        reevaluateCachedValues();
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+//        Integer defaultNonNullValue = (Integer) countDataType.getDefaultValue();
+        if(!defaultValueUserDefined && !isNullable()) {
+//            defaultValue=(new DatePeriod(defaultNonNullValue == null ? 0 : defaultNonNullValue.intValue(), PeriodOption.DAY));
+            defaultValue=(new DatePeriod(0, PeriodOption.DAY));
+        }
     }
 
     public String getCountName() {

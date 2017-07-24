@@ -54,7 +54,14 @@ public class StringType extends DefaultDataType implements Cloneable {
         super(name, String.class, max, 0, nullable);
         this.max = max;
         this.min = min;
-        setDefaultNonNullValue("");
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=("");
+        }
     }
 
     @Override

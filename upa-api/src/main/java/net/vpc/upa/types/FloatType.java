@@ -59,7 +59,14 @@ public class FloatType extends NumberType implements Cloneable {
         super(name, primitiveType ? Float.TYPE : Float.class, before + after, after, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(0f);
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(0f);
+        }
     }
 
     public Float getMin() {

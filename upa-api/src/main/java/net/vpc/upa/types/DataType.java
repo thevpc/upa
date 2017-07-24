@@ -16,10 +16,6 @@ public interface DataType extends Cloneable {
 
     void setDefaultValue(Object defaultValue);
 
-    Object getDefaultNonNullValue();
-
-    void setDefaultNonNullValue(Object defaultNonNullValue);
-
     boolean isNullable();
 
     void setNullable(boolean enable);

@@ -36,6 +36,7 @@ package net.vpc.upa.types;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class YearType extends TemporalType implements Cloneable {
@@ -54,7 +55,17 @@ public class YearType extends TemporalType implements Cloneable {
         }
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(convert(new DateTime(0)));
+        if(!isNullable()) {
+            setDefaultValue(convert(new DateTime(0)));
+        }
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(BigDecimal.ZERO);
+        }
     }
 
     public Year getMin() {

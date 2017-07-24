@@ -31,14 +31,6 @@ public class DataTypeAdapter implements DataType, Cloneable {
         dataType.setDefaultValue(defaultValue);
     }
 
-    public Object getDefaultNonNullValue() {
-        return dataType.getDefaultNonNullValue();
-    }
-
-    public void setDefaultNonNullValue(Object defaultNonNullValue) {
-        dataType.setDefaultNonNullValue(defaultNonNullValue);
-    }
-
     public boolean isNullable() {
         return dataType.isNullable();
     }

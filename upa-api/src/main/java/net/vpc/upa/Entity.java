@@ -132,6 +132,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     //@Contract("null->false")
     boolean isInstance(Object object);
 
+    boolean isIdInstance(Object object);
+
     Class getEntityType();
 
     Class getIdType();
@@ -178,6 +180,13 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     Field findField(String fieldName);
 
     List<Field> getIdFields();
+
+    /**
+     * When and id field is ManyToOne Field, it will be flattened
+     *
+     * @return
+     */
+    List<PrimitiveField> getIdPrimitiveFields();
 
     List<String> getFieldNames(FieldFilter fieldFilter);
 

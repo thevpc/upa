@@ -59,7 +59,14 @@ public class DoubleType extends NumberType implements Cloneable {
         super(name, primitiveType ? Double.TYPE : Double.class, before + after, after, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(0.0);
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(0.0);
+        }
     }
 
     public Double getMin() {

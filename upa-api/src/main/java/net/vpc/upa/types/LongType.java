@@ -55,7 +55,14 @@ public class LongType extends NumberType implements Cloneable {
         super(name, primitiveType ? Long.TYPE : Long.class, (Math.max((min == null ? Integer.MAX_VALUE : String.valueOf(min).length()), (max == null ? Integer.MAX_VALUE : String.valueOf(max).length()))), 0, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(0L);
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(0L);
+        }
     }
 
     public Long getMin() {

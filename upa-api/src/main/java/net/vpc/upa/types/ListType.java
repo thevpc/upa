@@ -61,8 +61,20 @@ public class ListType extends SeriesType implements Cloneable {
         super(name, elementType.getPlatformType(), length, precision, nullable);
         this.elementType = elementType;
         setData(collection);
-        setDefaultNonNullValue(getValues().size() > 0 ? getValues().get(0) : null);
+        reevaluateCachedValues();
     }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(elementType==null){
+            return;
+        }
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=( getValues().size() > 0 ? getValues().get(0) : null);
+        }
+    }
+
 
     public ListType(String name, List<Object> collection, DataType modelClass, int length, int precision) {
         this(name, collection, modelClass, length, precision, false);

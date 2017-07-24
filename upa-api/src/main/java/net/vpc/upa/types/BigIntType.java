@@ -57,8 +57,16 @@ public class BigIntType extends NumberType implements Cloneable {
         super(name, BigInteger.class, (Math.max((min == null ? Integer.MAX_VALUE : String.valueOf(min).length()), (max == null ? Integer.MAX_VALUE : String.valueOf(max).length()))), 0, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(BigInteger.ZERO);
     }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(BigInteger.ZERO);
+        }
+    }
+
 
     public BigInteger getMin() {
         return min;

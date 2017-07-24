@@ -42,18 +42,21 @@ import java.util.List;
 @PortabilityHint(target = "C#", name = "partial")
 public class EnumType extends SeriesType implements Cloneable {
 
-    private Class enumClass;
-
     public EnumType(Class enumClass, boolean nullable) {
         super(enumClass.getName(), enumClass, nullable);
-        this.enumClass = enumClass;
-        setDefaultNonNullValue(getValues().get(0));
+    }
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(getValues().get(0));
+        }
     }
 
     @Override
     public void check(Object value, String name, String description) throws ConstraintsException {
         super.check(value, name, description);
-        if (value != null && !enumClass.isInstance(value)) {
+        if (value != null && !getPlatformType().isInstance(value)) {
             throw new ConstraintsException("InvalidCast", name, description, value);
         }
     }
@@ -61,19 +64,19 @@ public class EnumType extends SeriesType implements Cloneable {
     @PortabilityHint(target = "C#", name = "ignore")
     @Override
     public List<Object> getValues() {
-        return Arrays.asList(enumClass.getEnumConstants());
+        return Arrays.asList(getPlatformType().getEnumConstants());
     }
 
     @Override
     public String toString() {
-        return "EnumType{" + enumClass + '}';
+        return "EnumType{" + getPlatformType() + '}';
     }
 
     public Object parse(String value) {
         if (value == null || value.trim().isEmpty()) {
             return null;
         }
-        return Enum.valueOf(enumClass, value);
+        return Enum.valueOf(getPlatformType(), value);
     }
 
     @Override
@@ -81,16 +84,12 @@ public class EnumType extends SeriesType implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
-        EnumType enumType = (EnumType) o;
-
-        return enumClass != null ? enumClass.equals(enumType.enumClass) : enumType.enumClass == null;
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (enumClass != null ? enumClass.hashCode() : 0);
         return result;
     }
 }

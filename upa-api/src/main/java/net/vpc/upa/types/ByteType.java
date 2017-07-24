@@ -55,8 +55,16 @@ public class ByteType extends NumberType implements Cloneable {
         super(name, primitiveType ? Byte.TYPE : Byte.class, 10, 0, nullable);
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue((byte) 0);
     }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=((byte) 0);
+        }
+    }
+
 
     public Byte getMin() {
         return min;

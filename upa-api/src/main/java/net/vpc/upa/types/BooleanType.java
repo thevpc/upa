@@ -44,7 +44,14 @@ public class BooleanType extends SeriesType implements Cloneable {
 
     public BooleanType(String name, boolean nullable, boolean primitiveType) {
         super(name, primitiveType ? Boolean.TYPE : Boolean.class, nullable);
-        setDefaultNonNullValue(false);
+    }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(false);
+        }
     }
 
     @Override

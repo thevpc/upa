@@ -65,8 +65,16 @@ public class DateType extends TemporalType implements Cloneable {
         }
         this.min = min;
         this.max = max;
-        setDefaultNonNullValue(convert(new DateTime(0)));
     }
+
+    @Override
+    protected void reevaluateCachedValues() {
+        super.reevaluateCachedValues();
+        if(!defaultValueUserDefined && !isNullable()) {
+            defaultValue=(convert(new DateTime(0)));
+        }
+    }
+
 
     public Date getMin() {
         return min;

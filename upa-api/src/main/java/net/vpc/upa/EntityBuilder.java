@@ -119,6 +119,10 @@ public interface EntityBuilder {
      */
     PrimitiveId idToPrimitiveId(Object id);
 
+    Object primitiveIdToId(Object id);
+
+    PrimitiveId objectToPrimitiveId(Object object);
+
     /**
      * Document value representation of the given entity. updates to the Document
      * are reflected in the provided value
