@@ -59,6 +59,11 @@ public class SelectUC {
         bo.testQuery6();
     }
 
+    @Test
+    public void testQuery7() {
+        bo.testQuery7();
+    }
+
     public static class Business {
 
         public void init() {
@@ -161,6 +166,19 @@ public class SelectUC {
             List<String> expected = new ArrayList<>();
             expected.add("up");
             expected.add("left");
+            Assert.assertEquals(expected, r);
+        }
+        public void testQuery7() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a.id id, a.firstName name from SharedClient a order by Id");
+            List<NamedId> r = q.getTypeList(NamedId.class);
+            r.size();
+            Assert.assertEquals(2, r.size());
+            System.out.println(r);
+            List<NamedId> expected = new ArrayList<>();
+            expected.add(new NamedId(1,"emma"));
+            expected.add(new NamedId(2,"thomson"));
             Assert.assertEquals(expected, r);
         }
     }

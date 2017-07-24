@@ -18,7 +18,6 @@ import net.vpc.upa.impl.util.ConvertedList;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.Query;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -199,11 +198,10 @@ public class DefaultQuery extends AbstractQuery {
 //                fetchStrategy = QueryFetchStrategy.JOIN;
 //            }
             boolean itemAsDocument = builder instanceof DocumentQueryResultItemBuilder;
-            boolean relationAsDocument = itemAsDocument;//false;
             QueryResultLazyList<T> r = new DefaultObjectQueryResultLazyList<T>(
                     pu,
                     queryExecutor,
-                    relationAsDocument,
+                    itemAsDocument,
                     isUpdatable(),
                     builder
             );
@@ -226,27 +224,7 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public <T> List<T> getValueList(int index) throws UPAException {
-        if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
-            if (sessionAwareInstance == null) {
-                sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
-            }
-            return sessionAwareInstance.getValueList(index);
-        }
-        try {
-            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
-            if (index < 0 || index > queryExecutor.getMetaData().getResultFields().size()) {
-                throw new ArrayIndexOutOfBoundsException("Invalid index " + index);
-            }
-            ValueList<T> r = new ValueList<T>(queryExecutor, index);
-            allResults.add(r);
-            if (!isLazyListLoadingEnabled()) {
-                //force loading
-                r.loadAll();
-            }
-            return r;
-        } catch (Exception e) {
-            throw new FindException(e, new I18NString("FindFailed"));
-        }
+        return getResultList(new ValueByIndexListQueryResultItemBuilder(index));
     }
 
     @Override
@@ -271,56 +249,11 @@ public class DefaultQuery extends AbstractQuery {
 
     @Override
     public <T> List<T> getValueList(String name) throws UPAException {
-        if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
-            if (sessionAwareInstance == null) {
-                sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
-            }
-            return sessionAwareInstance.getValueList(name);
-        }
-        try {
-            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
-            List<ResultField> ne = queryExecutor.getMetaData().getResultFields();
-            int index = -1;
-            for (int i = 0; i < ne.size(); i++) {
-                if (name.equals(ne.get(i).getAlias())) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index < 0) {
-                throw new NoSuchElementException("Field " + name + " not found");
-            }
-            ValueList<T> r = new ValueList<T>(queryExecutor, index);
-            if (!isLazyListLoadingEnabled()) {
-                //force loading
-                r.loadAll();
-            }
-            allResults.add(r);
-            return r;
-        } catch (Exception e) {
-            throw new FindException(e, new I18NString("FindFailed"));
-        }
+        return getResultList(new ValueByNameListQueryResultItemBuilder(name));
     }
 
-    public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException {
-        if (!context.getPersistenceUnit().getPersistenceGroup().currentSessionExists()) {
-            if (sessionAwareInstance == null) {
-                sessionAwareInstance = context.getPersistenceUnit().getPersistenceGroup().getContext().makeSessionAware(this);
-            }
-            return sessionAwareInstance.getTypeList(type, fields);
-        }
-        try {
-            QueryExecutor queryExecutor = executeQuery(FieldFilters2.READ);
-            TypeList<T> r = new TypeList<T>(queryExecutor, type, fields);
-            allResults.add(r);
-            if (!isLazyListLoadingEnabled()) {
-                //force loading
-                r.loadAll();
-            }
-            return r;
-        } catch (SQLException e) {
-            throw new FindException(e, new I18NString("FindFailed"));
-        }
+    public <T> List<T> getTypeList(final Class<T> type, final String... fields) throws UPAException {
+        return getResultList(new TypeListQueryResultItemBuilder(type, fields));
     }
 
     @Override

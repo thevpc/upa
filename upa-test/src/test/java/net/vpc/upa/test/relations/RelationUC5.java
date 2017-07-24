@@ -1,8 +1,6 @@
 package net.vpc.upa.test.relations;
 
-import net.vpc.upa.EntityModifier;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.UPA;
+import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.util.PUUtils;
@@ -10,6 +8,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -52,6 +51,11 @@ public class RelationUC5 {
         bo.testQuery();
     }
 
+ @Test
+    public void testQuery2() {
+        bo.testQuery2();
+    }
+
 
     public static class Business {
 
@@ -83,7 +87,24 @@ public class RelationUC5 {
             List<Object> all = pu.findAll(A.class);
             Assert.assertEquals(1,all.size());
         }
+        public void testQuery2() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+//            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
+            Query q = pu.createQuery("Select a.b id, a.name from A a order by Id");
+            List<NamedId> r = q.getTypeList(NamedId.class);
+            r.size();
 
+            q = pu.createQuery("Select a.b id, a.name name from A a order by Id");
+            List r2 = q.getResultList();
+            r2.size();
+
+            //            junit.framework.Assert.assertEquals(2, r.size());
+//            System.out.println(r);
+//            List<NamedId> expected = new ArrayList<>();
+//            expected.add(new NamedId(1,"emma"));
+//            expected.add(new NamedId(2,"thomson"));
+//            junit.framework.Assert.assertEquals(expected, r);
+        }
 
     }
 

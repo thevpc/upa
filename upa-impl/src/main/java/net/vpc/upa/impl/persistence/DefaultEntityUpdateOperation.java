@@ -112,15 +112,10 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
                                 u.set(fk.getName(), evalue);
                             }
                         } else {
-                            Key k = null;
-                            if (value instanceof Document) {
-                                k = mbuilder.documentToKey((Document) value);
-                            } else {
-                                k = mbuilder.objectToKey(value);
-                            }
+                            PrimitiveId k = mbuilder.idToPrimitiveId(mbuilder.objectToId(value));
                             int x = 0;
                             for (Field fk : e.getRelationship().getSourceRole().getFields()) {
-                                u.set(fk.getName(), new Param(rname+fk.getName(), k == null ? null : k.getObjectAt(x)));
+                                u.set(fk.getName(), new Param(rname+fk.getName(), k == null ? null : k.getValue(x)));
                                 x++;
                             }
                         }

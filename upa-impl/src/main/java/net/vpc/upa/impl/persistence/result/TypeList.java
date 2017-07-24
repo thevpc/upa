@@ -42,8 +42,10 @@ public class TypeList<T> extends QueryResultLazyList<T> {
     public T loadNext() throws UPAException {
         QueryResult result = getQueryResult();
         T instance = (T) platformBeanType.newInstance();
+        System.out.println("---New Line");
         for (int i = 0; i < columns; i++) {
             Object v = result.read(i);
+            System.out.println("\t"+i+""+v);
             if(fieldsByExpression[i]!=null){
                 platformBeanType.setProperty(instance, fieldsByExpression[i], v);
             }

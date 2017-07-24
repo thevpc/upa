@@ -193,9 +193,9 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         } else {
             if (defaultObject == null && !cr.getTargetType().isNullable()) {
                 defaultObject = cr.getTargetType().getDefaultValue();
-                if (defaultObject == null) {
-                    defaultObject = cr.getTargetType().getDefaultNonNullValue();
-                }
+//                if (defaultObject == null) {
+//                    defaultObject = cr.getTargetType().getDefaultNonNullValue();
+//                }
             }
             if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
                 sb.append(" Default ").append(getSqlManager().getSQL(new CompiledLiteral(defaultObject, cr), context, new DefaultExpressionDeclarationList(null)));

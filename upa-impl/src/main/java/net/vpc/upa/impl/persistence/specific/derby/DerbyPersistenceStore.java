@@ -187,9 +187,9 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             DataType sourceType = cr.getSourceType();
             if (defaultObject == null && !sourceType.isNullable()) {
                 defaultObject = sourceType.getDefaultValue();
-                if (defaultObject == null) {
-                    defaultObject = sourceType.getDefaultNonNullValue();
-                }
+//                if (defaultObject == null) {
+//                    defaultObject = sourceType.getDefaultNonNullValue();
+//                }
             }
             if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
                 sb.append(" Default ").append(getSqlManager().getSQL(new CompiledLiteral(defaultObject, cr), context, new DefaultExpressionDeclarationList(null)));

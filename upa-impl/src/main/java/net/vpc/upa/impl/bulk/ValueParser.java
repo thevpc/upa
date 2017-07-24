@@ -7,6 +7,7 @@ package net.vpc.upa.impl.bulk;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.DateUtils;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 
 /**
@@ -17,7 +18,7 @@ import net.vpc.upa.types.*;
 public class ValueParser {
 
     public static Object parse(Object value, DataType type) {
-        if(type.getPlatformType().isInstance(value)){
+        if(PlatformUtils.isInstance(type.getPlatformType(),value)){
             type.check(value, null, null);
             return value;
         }

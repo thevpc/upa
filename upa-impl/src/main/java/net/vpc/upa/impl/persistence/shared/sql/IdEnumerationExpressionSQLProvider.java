@@ -63,7 +63,7 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
             CompiledExpressionExt a = null;
             boolean processed = false;
             if (entity.getPersistenceUnit().containsEntity(entity.getIdType())) {
-                if (!entity.getIdType().isInstance(key)) {
+                if (!entity.isIdInstance(key)) {
                     //primitive seen as entity?
                     // A's id is A.b where b is an entity
                     //TODO fix all cases!

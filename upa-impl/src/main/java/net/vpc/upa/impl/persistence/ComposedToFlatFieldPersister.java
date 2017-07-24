@@ -37,7 +37,8 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
 
     public void beforePersist(Document document, EntityExecutionContext context) throws UPAException {
         Object o = document.getObject(field.getName());
-        PrimitiveId primitiveIdImpl = master.getBuilder().idToPrimitiveId(o);
+        EntityBuilder builder = master.getBuilder();
+        PrimitiveId primitiveIdImpl = builder.objectToPrimitiveId(o);
         if (primitiveIdImpl == null) {
             for (Field ff : flatFields) {
                 document.setObject(ff.getName(), ff.getUnspecifiedValueDecoded());
