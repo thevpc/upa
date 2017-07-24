@@ -2,6 +2,7 @@ package net.vpc.upa.impl;
 
 import java.util.ArrayList;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Key;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.vpc.upa.impl.util.PlatformBeanTypeRepository;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -100,11 +102,13 @@ public class KeyBeanFactory implements KeyFactory {
 //            for (int i = 0; i < value.length; i++) {
 //                value[i] = entityFactory.getProperty(key, fieldNames[i]);
 //            }
-            if (!idType.isInstance(id)) {
+            if (!PlatformUtils.isInstance(idType,id)) {
                 Entity ee = entity.getPersistenceUnit().findEntity(idType);
                 if (ee != null) {
                     //check assume this is the id of the entity ee
-                    id=ee.getBuilder().idToObject(id);
+                    if(id instanceof Document) {
+                        id = ee.getBuilder().documentToObject((Document)id);
+                    }
                 }
             }
             return createKey(new Object[]{id});

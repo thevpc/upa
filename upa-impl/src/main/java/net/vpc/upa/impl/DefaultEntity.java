@@ -320,6 +320,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
+    public <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(EntityPart part) throws UPAException {
+        ArrayList<EntityPart> parts = new ArrayList<EntityPart>();
+        parts.add(part);
+        ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>();
+        fillPrimitiveFields(parts, v);
+        return v;
+    }
+
     public <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(List<T> parts) throws UPAException {
         ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>(parts.size());
         fillPrimitiveFields(parts, v);
@@ -1547,6 +1555,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (v == null) {
             return null;
         }
+        Relationship manyToOneRelationship = mf.getManyToOneRelationship();
+        if(manyToOneRelationship!=null){
+            return manyToOneRelationship.getTargetEntity().getMainFieldValue(v);
+        }
         return String.valueOf(v);
     }
 
@@ -1747,6 +1759,21 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public List<Field> getIdFields() throws UPAException {
         return getFields(FieldFilters.id());
+    }
+
+    @Override
+    public List<PrimitiveField> getIdPrimitiveFields() {
+        List<PrimitiveField> primitiveIdFields=new ArrayList<>();
+        for (Field field : getIdFields()) {
+            if(field.isManyToOne()){
+                for (Field rfield : field.getManyToOneRelationship().getSourceRole().getFields()) {
+                    primitiveIdFields.addAll(toPrimitiveFields(rfield));
+                }
+            }else{
+                primitiveIdFields.addAll(toPrimitiveFields(field));
+            }
+        }
+        return primitiveIdFields;
     }
 
     // public Field[] getViewFields() {
@@ -3399,6 +3426,26 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             return true;
         }
         return getEntityType().isInstance(object);
+    }
+
+    @Override
+    public boolean isIdInstance(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (object instanceof Key) {
+            return true;
+        }
+        if(PlatformUtils.isInstance(getIdType(),object)){
+            return true;
+        }
+        if (getIdFields().size()>1) {
+            return object instanceof Object[];
+        }
+        if(UPAUtils.isEntityWithSimpleRelationId(this) && object instanceof Document){
+            return true;
+        }
+        return false;
     }
 
     public DecorationRepository getDecorationRepository() {

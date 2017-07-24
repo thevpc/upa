@@ -321,7 +321,7 @@ public class PlatformUtils {
     }
 
     public static <T> T convert(Object value, Class<T> to) {
-        if (value == null || to.isInstance(value)) {
+        if (value == null || isInstance(to,value)) {
             return (T) value;
         }
 
@@ -986,9 +986,16 @@ public class PlatformUtils {
     }
 
     public static <T> T lcast(Object o,Class<T> type) {
-        if(type.isInstance(o)){
+        if(isInstance(type,o)){
             return (T) o;
         }
         return null;
+    }
+    public static boolean isInstance(Class type,Object obj){
+        if(type.isPrimitive()){
+            return toRefType(type).isInstance(obj);
+        }else{
+            return type.isInstance(obj);
+        }
     }
 }

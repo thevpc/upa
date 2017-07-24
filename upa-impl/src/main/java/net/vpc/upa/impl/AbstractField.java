@@ -228,7 +228,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     public void setDataType(DataType datatype) {
         this.dataType = datatype;
         if (!getDataType().isNullable()) {
-            _typeDefaultObject = getDataType().getDefaultNonNullValue();
+            _typeDefaultObject = getDataType().getDefaultValue();
         }else{
             _typeDefaultObject=null;
         }

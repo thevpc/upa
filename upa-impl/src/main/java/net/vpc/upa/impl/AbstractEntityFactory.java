@@ -59,7 +59,8 @@ public abstract class AbstractEntityFactory implements EntityFactory {
         } else {
             Object[] uk = entity.getBuilder().getKey(id).getValue();
             for (int i = 0; i < primaryFields.size(); i++) {
-                ur.setObject(primaryFields.get(i).getName(), uk[i]);
+                Object value = uk[i];
+                ur.setObject(primaryFields.get(i).getName(), value);
             }
         }
         return r;

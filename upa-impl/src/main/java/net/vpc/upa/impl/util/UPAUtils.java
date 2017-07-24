@@ -803,6 +803,12 @@ public class UPAUtils {
         return dataType instanceof ManyToOneType;
     }
 
+    public static boolean isSystemForManyToOne(Field field) {
+        return !(field.getDataType() instanceof ManyToOneType) &&
+                field.getManyToOneRelationships().size()>0 &&
+                field.getManyToOneRelationships().get(0).getSourceRole().getEntityField()!=null;
+    }
+
     public static boolean isEntityWithSimpleRelationId(Entity entity) {
         return entity.getIdFields().size()==1 && entity.getIdFields().get(0).isManyToOne();
     }

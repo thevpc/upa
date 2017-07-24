@@ -13,6 +13,7 @@ import net.vpc.upa.impl.util.PrimitiveIdImpl;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.ManyToOneType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -84,27 +85,69 @@ public class DefaultEntityBuilder implements EntityBuilder {
     }
 
     @Override
-    public PrimitiveId idToPrimitiveId(Object id) {
+    public PrimitiveId objectToPrimitiveId(Object object) {
+        return idToPrimitiveId(objectToId(object));
+    }
+
+    @Override
+    public Object primitiveIdToId(Object id) {
         if(id==null){
             return null;
         }
         List<Field> idFields = entity.getIdFields();
-        if(entity.isInstance(id)){
-            Object v=entity.getBuilder().objectToId(id);
-            if(UPAUtils.isEntityWithSimpleRelationId(entity)){
-                Field field = idFields.get(0);
-                Relationship relationship = ((ManyToOneType) (field.getDataType())).getRelationship();
-                PrimitiveId idAndType = relationship.getTargetEntity().getBuilder().idToPrimitiveId(v);
-                relationship.getSourceRole().getFields().toArray(new Field[idFields.size()]);
-                return new PrimitiveIdImpl(
-                        idAndType.getValue(),
-                        relationship.getSourceRole().getFields(),
-                        PrimitiveIdImpl.KIND_PKFK
-                );
-            }
-            return new PrimitiveIdImpl(v, idFields, PrimitiveIdImpl.KIND_DEFAULT);
+        List<PrimitiveField> idPrimitiveFields = entity.getIdPrimitiveFields();
+        if(idPrimitiveFields.size()==1 && !(id instanceof Object[])){
+            id=new Object[]{id};
         }
-        throw new UPAIllegalArgumentException("Not a valid Id");
+        Object[] arr=(Object[])id;
+        int index=0;
+        List<Object> newId=new ArrayList<>();
+        for (Field idField : idFields) {
+            if(idField.isManyToOne()){
+                Entity targetEntity = idField.getManyToOneRelationship().getTargetEntity();
+                int size = targetEntity.getIdPrimitiveFields().size();
+                Object[] subId=new Object[size];
+                for (int i = 0; i < size; i++) {
+                    subId[i]=arr[index];
+                    index++;
+                }
+                Object e = targetEntity.getBuilder().primitiveIdToId(subId);
+                e=targetEntity.getBuilder().idToObject(e);
+                newId.add(e);
+            }else{
+                newId.add(arr[index]);
+                index++;
+            }
+        }
+        if(newId.size()==1){
+            return newId.get(0);
+        }
+        return newId.toArray();
+    }
+
+    @Override
+    public PrimitiveId idToPrimitiveId(Object id) {
+        if(id==null){
+            return null;
+        }
+        if(!entity.isIdInstance(id)){
+            throw new UPAIllegalArgumentException("Invalid Id of type "+id.getClass().getName()+" for entity "+entity.getName()+". Exptected "+entity.getIdType().getName());
+        }
+        List<PrimitiveField> idFields = entity.getIdPrimitiveFields();
+        List<Field> idFields2 = new ArrayList<>();
+        idFields2.addAll(idFields);
+        if(UPAUtils.isEntityWithSimpleRelationId(entity)){
+            Field field = entity.getIdFields().get(0);
+            Relationship relationship = ((ManyToOneType) (field.getDataType())).getRelationship();
+            PrimitiveId idAndType = relationship.getTargetEntity().getBuilder().objectToPrimitiveId(id);
+            relationship.getSourceRole().getFields().toArray(new Field[idFields.size()]);
+            return new PrimitiveIdImpl(
+                    idAndType.getValue(),
+                    relationship.getSourceRole().getFields(),
+                    PrimitiveIdImpl.KIND_PKFK
+            );
+        }
+        return new PrimitiveIdImpl(id, idFields2, PrimitiveIdImpl.KIND_DEFAULT);
     }
 
     @Override
