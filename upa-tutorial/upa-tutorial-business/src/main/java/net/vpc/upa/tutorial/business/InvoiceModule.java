@@ -135,6 +135,6 @@ public class InvoiceModule {
      */
     public List<Header> findCustomerHeader() {
         return UPA.getPersistenceUnit().createQuery("Select customerId id, name name from Customer order by name asc")
-                .getTypeList(Header.class);
+                .getResultList(Header.class);
     }
 }

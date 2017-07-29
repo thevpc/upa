@@ -107,6 +107,10 @@ public interface Query extends Closeable {
 
     List<MultiDocument> getMultiDocumentList() throws UPAException;
 
+    <T> List<T> getResultList(Class<T> type, String... fields);
+
+    <T> Set<T> getResultSet(Class<T> type, String... fields);
+
     <T> List<T> getResultList();
 
     <T> Set<T> getResultSet();
@@ -120,10 +124,6 @@ public interface Query extends Closeable {
     <T> Set<T> getValueSet(String name) throws UPAException;
 
     <T> List<T> getValueList(String name) throws UPAException;
-
-    <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException;
-
-    <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException;
 
     ResultMetaData getMetaData() throws UPAException;
 

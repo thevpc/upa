@@ -91,7 +91,7 @@ public class RelationUC5 {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 //            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
             Query q = pu.createQuery("Select a.b id, a.name from A a order by Id");
-            List<NamedId> r = q.getTypeList(NamedId.class);
+            List<NamedId> r = q.getResultList(NamedId.class);
             r.size();
 
             q = pu.createQuery("Select a.b id, a.name name from A a order by Id");

@@ -173,6 +173,16 @@ public class DefaultQuery extends AbstractQuery {
         }
     }
 
+    @Override
+    public <T> List<T> getResultList(Class<T> type, String... fields) {
+        return getResultList(new TypeListQueryResultItemBuilder(type, fields));
+    }
+
+    @Override
+    public <T> Set<T> getResultSet(Class<T> type, String... fields) {
+        return new HashSet<>(getResultList(type,fields));
+    }
+
     public <T> List<T> getResultList() throws UPAException {
         return getResultList(new ObjectOrArrayQueryResultItemBuilder());
     }
@@ -250,17 +260,6 @@ public class DefaultQuery extends AbstractQuery {
     @Override
     public <T> List<T> getValueList(String name) throws UPAException {
         return getResultList(new ValueByNameListQueryResultItemBuilder(name));
-    }
-
-    public <T> List<T> getTypeList(final Class<T> type, final String... fields) throws UPAException {
-        return getResultList(new TypeListQueryResultItemBuilder(type, fields));
-    }
-
-    @Override
-    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
-        HashSet<T> set = new HashSet<T>();
-        set.addAll(getTypeList(type, fields));
-        return set;
     }
 
     @Override

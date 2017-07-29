@@ -279,6 +279,18 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
     }
 
     @Override
+    public <T> List<T> getResultList(Class<T> type, String... fields) {
+        Query q = build();
+        return q.getResultList(type,fields);
+    }
+
+    @Override
+    public <T> Set<T> getResultSet(Class<T> type, String... fields) {
+        Query q = build();
+        return q.getResultSet(type,fields);
+    }
+
+    @Override
     public <K> List<K> getIdList() throws UPAException {
         return build().getIdList();
     }
@@ -319,14 +331,6 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
 
     public <T> List<T> getValueList(String name) throws UPAException {
         return build().getValueList(name);
-    }
-
-    public <T> List<T> getTypeList(Class<T> type, String... fields) throws UPAException {
-        return build().getTypeList(type, fields);
-    }
-
-    public <T> Set<T> getTypeSet(Class<T> type, String... fields) throws UPAException {
-        return build().getTypeSet(type, fields);
     }
 
     public <R> R getSingleResult() throws UPAException {

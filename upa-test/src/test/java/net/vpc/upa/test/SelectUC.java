@@ -172,7 +172,7 @@ public class SelectUC {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 //            Query q = pu.createQuery("Select a from Client a where a.firstName like :v").setParameter("v", "%mm%");
             Query q = pu.createQuery("Select a.id id, a.firstName name from SharedClient a order by Id");
-            List<NamedId> r = q.getTypeList(NamedId.class);
+            List<NamedId> r = q.getResultList(NamedId.class);
             r.size();
             Assert.assertEquals(2, r.size());
             System.out.println(r);
