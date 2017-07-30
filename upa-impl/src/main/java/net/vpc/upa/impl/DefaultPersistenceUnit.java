@@ -123,7 +123,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public void init(String name, PersistenceGroup persistenceGroup) {
-        properties = new DefaultProperties(getSystemParameters());
+        properties = new DefaultProperties(persistenceGroup.getProperties());
         if (initCalled) {
             throw new UPAException("PersistenceUnitAlreadyInitialized");
         } else {
@@ -1806,21 +1806,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         return persistenceGroup;
     }
 
-    public net.vpc.upa.Properties getSystemParameters() {
-        if (systemParameters == null) {
-            net.vpc.upa.Properties p = new DefaultProperties();
-            Map<String, String> properties = PlatformUtils.getSystemProperties();
-            for (Map.Entry<String, String> entry : properties.entrySet()) {
-                String k = (String) entry.getKey();
-                String v = (String) entry.getValue();
-                if (k.startsWith("upa.")) {
-                    p.setString(k, v);
-                }
-            }
-            systemParameters = p;
-        }
-        return systemParameters;
-    }
+
 
     public ConnectionProfile getConnectionProfile() {
         return connectionProfile;

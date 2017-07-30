@@ -1,6 +1,7 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
+import net.vpc.upa.Properties;
 import net.vpc.upa.callbacks.PersistenceUnitDefinitionListener;
 import net.vpc.upa.callbacks.PersistenceUnitEvent;
 import net.vpc.upa.config.ScanFilter;
@@ -11,7 +12,9 @@ import net.vpc.upa.impl.config.URLAnnotationStrategySupport;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.event.PersistenceGroupListenerManager;
+import net.vpc.upa.impl.ext.PersistenceGroupExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -21,7 +24,7 @@ import java.util.logging.Logger;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/11/12 9:47 PM
  */
-public class DefaultPersistenceGroup implements PersistenceGroup {
+public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
     protected static final Logger log = Logger.getLogger(DefaultPersistenceGroup.class.getName());
     private UPAContext context;
@@ -39,11 +42,43 @@ public class DefaultPersistenceGroup implements PersistenceGroup {
     private UPASecurityManager securityManager;
     private PersistenceGroupSecurityManager persistenceGroupSecurityManager;
     private PersistenceGroupListenerManager listeners;
+    private net.vpc.upa.Properties properties;
+    private net.vpc.upa.Properties systemParameters;
 
     public DefaultPersistenceGroup() {
         listeners = new PersistenceGroupListenerManager(this);
     }
 
+    @Override
+    public void init(String name, UPAContext context, ObjectFactory contextFactory) {
+        properties = new DefaultProperties(getSystemParameters());
+        this.name=name;
+        this.context=context;
+        ObjectFactory persistenceGroupFactory = getFactory().createObject(ObjectFactory.class);
+        persistenceGroupFactory.setParentFactory(contextFactory);
+        this.factory=persistenceGroupFactory;
+    }
+
+    @Override
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public net.vpc.upa.Properties getSystemParameters() {
+        if (systemParameters == null) {
+            net.vpc.upa.Properties p = new DefaultProperties();
+            Map<String, String> properties = PlatformUtils.getSystemProperties();
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                String k = (String) entry.getKey();
+                String v = (String) entry.getValue();
+                if (k.startsWith("upa.")) {
+                    p.setString(k, v);
+                }
+            }
+            systemParameters = p;
+        }
+        return systemParameters;
+    }
     @Override
     public void scan(ScanSource strategy, ScanListener listener, boolean configure) throws UPAException {
         decorationRepository = new DefaultDecorationRepository(getName() + "-PGRepo", true);

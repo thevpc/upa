@@ -227,6 +227,9 @@ public class URLAnnotationStrategySupport {
                         for (ScanFilter a : pgc.getContextAnnotationStrategyFilters()) {
                             g.addContextAnnotationStrategyFilter(a);
                         }
+                        for (Map.Entry<String, Object> stringObjectEntry : pgc.getProperties().entrySet()) {
+                            g.getProperties().setObject(stringObjectEntry.getKey(),stringObjectEntry.getValue());
+                        }
                     }
                 }
                 if (listener != null) {
@@ -269,6 +272,9 @@ public class URLAnnotationStrategySupport {
                         }
                         for (ConnectionConfig connectionConfig : puc.getRootConnections()) {
                             pu.addRootConnectionConfig(connectionConfig);
+                        }
+                        for (Map.Entry<String, Object> stringObjectEntry : puc.getProperties().entrySet()) {
+                            pu.getProperties().setObject(stringObjectEntry.getKey(),stringObjectEntry.getValue());
                         }
                     }
                 }

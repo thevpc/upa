@@ -9,7 +9,9 @@ import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.impl.persistence.connection.CloseListenerSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPADeadLock;
 import net.vpc.upa.persistence.Parameter;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.UConnection;
@@ -70,8 +72,10 @@ public class DefaultUConnection implements UConnection {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Query,perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Query,0)+1);
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Statement,perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Statement,0)+1);
         }
+        String tableDebugString = "[" + UQLUtils.resolveMainTableFromSQLQuery(query) + "]";
         long startTime = System.currentTimeMillis();
         SQLException error = null;
+        log.log(Level.FINE, "{0} BEFORE executeQuery    {1} :: parameters = {2}", new Object[]{nameDebugString + tableDebugString, query, queryParameters});
         try {
             try {
 
@@ -97,9 +101,13 @@ public class DefaultUConnection implements UConnection {
                         mi++;
                     }
                 }
-
-                ResultSet resultSet = s.executeQuery();
-
+                final PreparedStatement finalS = s;
+                ResultSet resultSet = UPADeadLock.monitor("executeQuery "+tableDebugString,query,20,new Throwable(), new UPADeadLock.TAction<ResultSet, SQLException>() {
+                    @Override
+                    public ResultSet run() throws SQLException{
+                        return finalS.executeQuery();
+                    }
+                });
                 if (types == null) {
 
                     int columnCount;
@@ -137,16 +145,16 @@ public class DefaultUConnection implements UConnection {
                 }
 
 //        Log.log(PersistenceUnitManager.DB_PRE_NATIVE_QUERY_LOG,"[BEFORE] "+currentQueryInfo+" :=" + currentQuery);
-                return new DefaultQueryResult(resultSet, s, marshallers, types);
+                return new DefaultQueryResult(nameDebugString+tableDebugString,query,resultSet, s, marshallers, types);
             } catch (SQLException ee) {
                 error = ee;
                 throw ee;
             } finally {
                 if (log.isLoggable(Level.FINE)) {
                     if (error != null) {
-                        log.log(Level.SEVERE, nameDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
+                        log.log(Level.SEVERE, nameDebugString+tableDebugString + " [Error] executeQuery " + query + " :: parameters = " + queryParameters, error);
                     } else {
-                        log.log(Level.FINE, "{0} executeQuery    {1} :: parameters = {2} ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
+                        log.log(Level.FINE, "{0} executeQuery    {1} :: parameters = {2} ;; time = {3}", new Object[]{nameDebugString + tableDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                     }
                 }
 //                long endTime = System.currentTimeMillis();

@@ -23,6 +23,7 @@ import net.vpc.upa.impl.event.RemoveObjectEventCallback;
 import net.vpc.upa.impl.event.UPAContextListenerManager;
 import net.vpc.upa.impl.event.UpdateFormulaObjectEventCallback;
 import net.vpc.upa.impl.event.UpdateObjectEventCallback;
+import net.vpc.upa.impl.ext.PersistenceGroupExt;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -180,15 +181,8 @@ public class DefaultUPAContext implements UPAContext {
         if (!isContextProviderSet()) {
             setPersistenceGroupContextProvider(factory.createObject(PersistenceGroupContextProvider.class));
         }
-
-        ObjectFactory persistenceGroupFactory = getFactory().createObject(ObjectFactory.class);
-        persistenceGroupFactory.setParentFactory(factory);
-
-        PersistenceGroup persistenceGroup = factory.createObject(PersistenceGroup.class);
-        DefaultBeanAdapter a = new DefaultBeanAdapter(persistenceGroup);
-        a.setProperty("context", this);
-        a.setProperty("factory", objectFactory);
-        a.setProperty("name", name);
+        PersistenceGroupExt persistenceGroup = (PersistenceGroupExt)factory.createObject(PersistenceGroup.class);
+        persistenceGroup.init(name,this,factory);
         PersistenceGroupEvent evt = new PersistenceGroupEvent(persistenceGroup, this);
 
         listeners.fireOnCreatePersistenceGroup(evt, EventPhase.BEFORE);

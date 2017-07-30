@@ -5,6 +5,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.exceptions.FindException;
+import net.vpc.upa.impl.util.UPADeadLock;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
@@ -30,8 +31,13 @@ public class DefaultQueryResult implements QueryResult {
     private boolean closed;
     private int[] nativePos;
     private Map<Integer, Object> updates = new HashMap<Integer, Object>();
+    private String query;
+    private String nameDebugString;
+    private UPADeadLock.VrDeadLockInfo mon;
 
-    public DefaultQueryResult(ResultSet resultSet, Statement statement, TypeMarshaller[] marshallers, DataTypeTransform[] types) {
+    public DefaultQueryResult(String nameDebugString,String query, ResultSet resultSet, Statement statement, TypeMarshaller[] marshallers, DataTypeTransform[] types) {
+        this.nameDebugString = nameDebugString;
+        this.query = query;
         this.resultSet = resultSet;
         this.statement = statement;
         this.marshallers = marshallers;
@@ -44,6 +50,7 @@ public class DefaultQueryResult implements QueryResult {
             lastNativePos += marshaller.getSize();
             np++;
         }
+        mon = UPADeadLock.addMonitor("QueryResult",query,20, new Throwable());
 //        try {
 //            System.out.println("create ResultSet " + resultSet + " for connection " + resultSet.getStatement().getConnection());
 //        } catch (SQLException ex) {
@@ -94,7 +101,7 @@ public class DefaultQueryResult implements QueryResult {
     public boolean hasNext() {
         try {
             if (closed || resultSet.isClosed()) {
-                log.log(Level.WARNING, "ResultSet closed, unable to retrieve next document");
+                log.log(Level.WARNING, nameDebugString+" ResultSet closed, unable to retrieve next document : "+query);
             }
             updates.clear();
             return resultSet.next();
@@ -114,6 +121,13 @@ public class DefaultQueryResult implements QueryResult {
 
     public void close() {
         try {
+            if (!closed) {
+                mon.release();
+//                log.log(Level.FINE, nameDebugString+" executeQuery     : "+query);
+                log.log(Level.FINE, nameDebugString+" RS closed   "+query);
+            } else {
+                log.log(Level.WARNING, "       "+nameDebugString+" ResultSet re-closed: "+query);
+            }
             closed = true;
             if (!resultSet.isClosed()) {
 
