@@ -125,4 +125,6 @@ public interface PersistenceGroup extends Closeable {
     void invokePrivileged(VoidAction action, InvokeContext invokeContext);
 
     void invokePrivileged(VoidAction action);
+
+    Properties getProperties();
 }
