@@ -12,7 +12,6 @@ import net.vpc.upa.impl.uql.NativeFieldByBindingIdComparator;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.ResultMetaData;
-import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -63,10 +62,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             supportCacheSize=UPAImplDefaults.QueryHints_CACHE_SIZE;
         }
         if (supportCacheSize > 0) {
-            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(UPAImplKeys.QueryHints_QUERY_CACHE);
+            CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(UPAImplKeys.QueryHints_queryCache);
             if (sharedCache == null) {
                 sharedCache = new LRUCacheMap<NamedId, ResultObject>(supportCacheSize);
-                hints.put(UPAImplKeys.QueryHints_QUERY_CACHE, sharedCache);
+                hints.put(UPAImplKeys.QueryHints_queryCache, sharedCache);
             }
             referencesCache = sharedCache;
         } else {
@@ -324,6 +323,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     return true;
                 }
             } else {
+                result.close();
                 if (workspace_missingObjectsCount > 0) {
                     reduceWorkspace();
                     return true;

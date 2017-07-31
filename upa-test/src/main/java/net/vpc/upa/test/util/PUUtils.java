@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class PUUtils {
     public static final String getVersion(){
-        return "1.2.0.35";
+        return "1.2.0.36";
     }
 
     static{

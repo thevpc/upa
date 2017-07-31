@@ -17,17 +17,16 @@ import net.vpc.upa.PersistenceUnitProvider;
  */
 public class WebSessionPersistenceUnitProvider implements PersistenceUnitProvider, Serializable {
 
-    public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup) {
-        String r = getSessionMap().get(String.valueOf(System.identityHashCode(persistenceGroup)));
-        return r == null ? null : persistenceGroup.getPersistenceUnit(r);
+    public String getPersistenceUnitName(PersistenceGroup persistenceGroup) {
+        return getSessionMap().get(persistenceGroup.getName());
     }
 
-    public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit) {
-        String k = String.valueOf(System.identityHashCode(persistenceGroup));
+    public void setPersistenceUnitName(PersistenceGroup persistenceGroup, String persistenceUnit) {
+        String k = persistenceGroup.getName();
         if (persistenceUnit == null) {
             getSessionMap().remove(k);
         } else {
-            getSessionMap().put(k, persistenceUnit.getName());
+            getSessionMap().put(k, persistenceUnit);
         }
     }
 

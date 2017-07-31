@@ -10,11 +10,17 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * User: taha Date: 6 aout 2003 Time: 21:15:14
  */
 public final class StringUtils {
+
+    private static Pattern isWordChar_pattern = Pattern.compile("\\w");
+
+    private StringUtils() {
+    }
 
     public static Object valueOf(String s, Class c) {
         if (c == (String.class)) {
@@ -54,9 +60,6 @@ public final class StringUtils {
             return DateUtils.parseUniversalDateTime(s);
         }
         return null;
-    }
-
-    private StringUtils() {
     }
 
     public static String substring(String string, int start) {
@@ -734,7 +737,7 @@ public final class StringUtils {
     }
 
     public static String replaceDollarVars(String str, Converter<String, String> varConverter) {
-        if(str==null){
+        if (str == null) {
             return str;
         }
         StringBuffer sb = new StringBuffer();
@@ -750,7 +753,7 @@ public final class StringUtils {
     }
 
     public static String replaceNoDollarVars(String str, Converter<String, String> varConverter) {
-        if(str==null){
+        if (str == null) {
             return str;
         }
         StringBuffer sb = new StringBuffer();
@@ -801,5 +804,112 @@ public final class StringUtils {
 //        }
 //
 //        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(indexOfWord("toto", "totos est toto parti stoto", 0));
+    }
+
+    public static boolean isWordChar(char c) {
+        return isWordChar_pattern.matcher(String.valueOf(c)).matches();
+    }
+
+    public static String removeSQLParsAndStrings(String inStr) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = inStr.toCharArray();
+        boolean inQstr = false;
+        int pars = 0;
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            switch (c) {
+                case '(': {
+                    if (inQstr) {
+                        //ignore
+                    } else {
+                        sb.append(' ');// to avoid concat words
+                        pars++;
+                    }
+                    break;
+                }
+                case ')': {
+                    if (inQstr) {
+                        //ignore
+                    } else {
+                        pars--;
+                    }
+                    break;
+                }
+                case '\'': {
+                    if (inQstr) {
+                        if (i + 1 < chars.length && chars[i + 1] == '\'') {
+                            i++;
+                        } else {
+                            inQstr = false;
+                        }
+                    } else {
+                        sb.append(' ');// to avoid concat words
+                        inQstr = true;
+                    }
+                    break;
+                }
+                default: {
+                    if (pars > 0 || inQstr) {
+                        //ignore;
+                    } else {
+                        sb.append(c);
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String extractWordAfter(String predecessorWord, String inStr, int start, boolean ignoreCase) {
+        int t = 0;
+        if (ignoreCase) {
+            t = indexOfWord(predecessorWord.toLowerCase(), inStr.toLowerCase(), start);
+        } else {
+            t = indexOfWord(predecessorWord, inStr, start);
+        }
+        if (t >= 0) {
+            return extractWordAt(inStr, t + predecessorWord.length());
+        }
+        return null;
+    }
+
+    public static String extractWordAt(String inStr, int start) {
+        int i = start;
+        while (i < inStr.length() && !isWordChar(inStr.charAt(i))) {
+            i++;
+        }
+        if (i >= inStr.length()) {
+            return null;
+        }
+        int s = i;
+        while (i < inStr.length() && isWordChar(inStr.charAt(i))) {
+            i++;
+        }
+        return inStr.substring(s, i);
+    }
+
+    public static int indexOfWord(String word, String inStr) {
+        return indexOfWord(word, inStr, 0);
+    }
+
+    public static int indexOfWord(String word, String inStr, int start) {
+        while (start >= 0 && start < inStr.length()) {
+            int x = inStr.indexOf(word, start);
+            if (x < 0) {
+                return -1;
+            }
+            int y = x + word.length();
+            boolean gooStart = x == 0 || !isWordChar(inStr.charAt(x - 1));
+            boolean gooEnding = y >= inStr.length() || !isWordChar(inStr.charAt(y));
+            if (gooStart && gooEnding) {
+                return x;
+            }
+            start = start + word.length() + 1;
+        }
+        return -1;
     }
 }

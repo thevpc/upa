@@ -12,16 +12,16 @@ import java.util.Map;
  * @creationdate 9/12/12 12:14 AM
  */
 public class DefaultPersistenceUnitProvider implements PersistenceUnitProvider {
-    private static ThreadLocal<Map<String,PersistenceUnit>> current=new ThreadLocal<Map<String, PersistenceUnit>>();
+    private static ThreadLocal<Map<String,String>> current=new ThreadLocal<Map<String, String>>();
 
     @Override
-    public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup) {
-        return getMap().get(String.valueOf(System.identityHashCode(persistenceGroup)));
+    public String getPersistenceUnitName(PersistenceGroup persistenceGroup) {
+        return getMap().get(persistenceGroup.getName());
     }
 
     @Override
-    public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit) {
-        String k = String.valueOf(System.identityHashCode(persistenceGroup));
+    public void setPersistenceUnitName(PersistenceGroup persistenceGroup, String persistenceUnit) {
+        String k = String.valueOf(persistenceGroup.getName());
         if(persistenceUnit==null){
             getMap().remove(k);
         }else{
@@ -29,10 +29,10 @@ public class DefaultPersistenceUnitProvider implements PersistenceUnitProvider {
         }
     }
 
-    private static Map<String,PersistenceUnit> getMap(){
-        Map<String, PersistenceUnit> v = current.get();
+    private static Map<String,String> getMap(){
+        Map<String, String> v = current.get();
         if(v==null){
-            v=new HashMap<String, PersistenceUnit>(3);
+            v=new HashMap<String, String>(3);
             current.set(v);
         }
         return v;

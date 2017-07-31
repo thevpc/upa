@@ -57,6 +57,10 @@ public final class UPA {
     protected static final Logger log = Logger.getLogger(UPA.class.getName());
 
     private static final UPABootstrap bootstrap = new UPABootstrap();
+    private static final int CONTEXT_NOT_INITIALIZED=0;
+    private static final int CONTEXT_INITIALIZING=1;
+    private static final int CONTEXT_INITIALIZED=2;
+    private static int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
 
     private UPA() {
     }
@@ -72,6 +76,19 @@ public final class UPA {
      */
     public static PersistenceGroup getPersistenceGroup() throws UPAException {
         return getContext().getPersistenceGroup();
+    }
+
+    /**
+     * PersistenceGroup by name {@code name}. Equivalent to
+     * <pre>
+     *     UPA.getContext().getPersistenceGroup(name)
+     * </pre>
+     *
+     * @return current PersistenceGroup of the current context
+     * @throws UPAException
+     */
+    public static PersistenceGroup getPersistenceGroup(String name) throws UPAException {
+        return getContext().getPersistenceGroup(name);
     }
 
     /**
@@ -140,6 +157,9 @@ public final class UPA {
      * @return current UPAContext
      */
     public static UPAContext getContext() throws UPAException {
+        if(bootstrapStatus==CONTEXT_INITIALIZING){
+            throw new UPAException("UPAAlreadyInitializing");
+        }
         UPAContextProvider contextProvider = null;
         /**
          * @PortabilityHint(target="C#",name="suppress")
@@ -177,6 +197,7 @@ public final class UPA {
             synchronized (bootstrap) {
                 context = contextProvider.getContext();
                 if (context == null) {
+                    bootstrapStatus=CONTEXT_INITIALIZING;
                     long start = System.currentTimeMillis();
                     ObjectFactory bootstrapFactory = bootstrap.getFactory();
                     context = bootstrapFactory.createObject(UPAContext.class);
@@ -184,7 +205,12 @@ public final class UPA {
                     contextProvider.setContext(context);
                     long end = System.currentTimeMillis();
                     log.log(Level.FINE, "UPA Context Loaded in " + (end - start) + " ms");
+                    bootstrapStatus=CONTEXT_INITIALIZED;
                 }
+            }
+        }else{
+            if(bootstrapStatus!=CONTEXT_INITIALIZED){
+                throw new BootstrapException("UPAContextStatusInvalid");
             }
         }
         return context;

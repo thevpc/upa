@@ -16,17 +16,16 @@ import net.vpc.upa.PersistenceUnitProvider;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class WebServletContextPersistenceUnitProvider implements PersistenceUnitProvider {
-    public PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup) {
-        String p = getMap().get(String.valueOf(System.identityHashCode(persistenceGroup)));
-        return p==null?null:persistenceGroup.getPersistenceUnit(p);
+    public String getPersistenceUnitName(PersistenceGroup persistenceGroup) {
+        return getMap().get(persistenceGroup.getName());
     }
 
-    public void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit persistenceUnit) {
-        String k = String.valueOf(System.identityHashCode(persistenceGroup));
+    public void setPersistenceUnitName(PersistenceGroup persistenceGroup, String persistenceUnit) {
+        String k = persistenceGroup.getName();
         if(persistenceUnit==null){
             getMap().remove(k);
         }else{
-            getMap().put(k, persistenceUnit.getName());
+            getMap().put(k, persistenceUnit);
         }
     }
 

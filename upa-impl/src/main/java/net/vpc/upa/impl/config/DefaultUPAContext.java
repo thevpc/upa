@@ -24,7 +24,6 @@ import net.vpc.upa.impl.event.UPAContextListenerManager;
 import net.vpc.upa.impl.event.UpdateFormulaObjectEventCallback;
 import net.vpc.upa.impl.event.UpdateObjectEventCallback;
 import net.vpc.upa.impl.ext.PersistenceGroupExt;
-import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
@@ -44,18 +43,23 @@ import java.util.logging.Logger;
 public class DefaultUPAContext implements UPAContext {
 
     private final static Logger log = Logger.getLogger(DefaultUPAContext.class.getName());
-    private ObjectFactory bootstrapObjectFactory;
-    private UPAContextFactory objectFactory;
-    private PersistenceGroupContextProvider persistenceGroupContextProvider;
     private final LinkedHashMap<String, PersistenceGroup> persistenceGroups = new LinkedHashMap<String, PersistenceGroup>();
     private final List<ScanFilter> filters = new ArrayList<ScanFilter>();
     private final List<CloseListener> closeListeners = new ArrayList<CloseListener>();
-    private Map<String, Object> properties = new HashMap<String, Object>();
     private final DecorationRepository decorationRepository = new DefaultDecorationRepository("UPAContextRepo", true);
+    private ObjectFactory bootstrapObjectFactory;
+    private UPAContextFactory objectFactory;
+    private PersistenceGroupProvider persistenceGroupProvider;
+    private Map<String, Object> properties = new HashMap<String, Object>();
     private UPAContextConfig bootstratContextConfig;
     private InvokeContext emptyInvokeContext = new InvokeContext();
     private UPAContextListenerManager listeners;
     private ThreadLocal<Properties> threadProperties = new ThreadLocal<Properties>();
+
+    public DefaultUPAContext() {
+        listeners = new UPAContextListenerManager(this);
+    }
+
     @Override
     public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
         return (T) PlatformUtils.createObjectInterceptor(
@@ -66,10 +70,6 @@ public class DefaultUPAContext implements UPAContext {
     @Override
     public <T> T makeSessionAware(final T instance) throws UPAException {
         return makeSessionAware(instance, (MethodFilter) null);
-    }
-
-    public DefaultUPAContext() {
-        listeners = new UPAContextListenerManager(this);
     }
 
     public UPAContextConfig getBootstrapContextConfig() {
@@ -119,7 +119,7 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     public boolean isContextProviderSet() {
-        return persistenceGroupContextProvider != null;
+        return persistenceGroupProvider != null;
     }
 
     public PersistenceUnit getPersistenceUnit() throws UPAException {
@@ -131,22 +131,22 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     public PersistenceGroup getPersistenceGroup() throws UPAException {
-        return getPersistenceGroupContextProvider().getPersistenceGroup();
+        return getPersistenceGroup(getPersistenceGroupProvider().getPersistenceGroup());
     }
 
     public void setPersistenceGroup(String name) throws UPAException {
-        getPersistenceGroupContextProvider().setPersistenceGroup(getPersistenceGroup(name));
+        getPersistenceGroupProvider().setPersistenceGroup(name);
     }
 
-    private PersistenceGroupContextProvider getPersistenceGroupContextProvider() {
-        if (persistenceGroupContextProvider == null) {
-            throw new UPAIllegalArgumentException("PersistenceGroupContextProvider not found");
+    private PersistenceGroupProvider getPersistenceGroupProvider() {
+        if (persistenceGroupProvider == null) {
+            throw new UPAIllegalArgumentException("PersistenceGroupProvider not found");
         }
-        return persistenceGroupContextProvider;
+        return persistenceGroupProvider;
     }
 
-    public void setPersistenceGroupContextProvider(PersistenceGroupContextProvider contextProvider) {
-        this.persistenceGroupContextProvider = contextProvider;
+    public void setPersistenceGroupProvider(PersistenceGroupProvider contextProvider) {
+        this.persistenceGroupProvider = contextProvider;
     }
 
     public final UPAContextFactory getFactory() {
@@ -179,18 +179,18 @@ public class DefaultUPAContext implements UPAContext {
         }
         ObjectFactory factory = getFactory();
         if (!isContextProviderSet()) {
-            setPersistenceGroupContextProvider(factory.createObject(PersistenceGroupContextProvider.class));
+            setPersistenceGroupProvider(factory.createObject(PersistenceGroupProvider.class));
         }
-        PersistenceGroupExt persistenceGroup = (PersistenceGroupExt)factory.createObject(PersistenceGroup.class);
-        persistenceGroup.init(name,this,factory);
+        PersistenceGroupExt persistenceGroup = (PersistenceGroupExt) factory.createObject(PersistenceGroup.class);
+        persistenceGroup.init(name, this, factory);
         PersistenceGroupEvent evt = new PersistenceGroupEvent(persistenceGroup, this);
 
         listeners.fireOnCreatePersistenceGroup(evt, EventPhase.BEFORE);
 
         persistenceGroups.put(name, persistenceGroup);
 
-        if (getPersistenceGroupContextProvider().getPersistenceGroup() == null) {
-            getPersistenceGroupContextProvider().setPersistenceGroup(persistenceGroup);
+        if (getPersistenceGroupProvider().getPersistenceGroup() == null) {
+            getPersistenceGroupProvider().setPersistenceGroup(name);
         }
 
         listeners.fireOnCreatePersistenceGroup(evt, EventPhase.AFTER);
@@ -249,132 +249,106 @@ public class DefaultUPAContext implements UPAContext {
                 new MakeSessionAwareMethodInterceptor2<T>(methodFilter));
     }
 
-    @Override
-    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException {
-        if (invokeContext == null) {
-            invokeContext = emptyInvokeContext;
-        }
-        PersistenceGroup persistenceGroup = null;
-        if (invokeContext.getPersistenceGroup() != null) {
-            persistenceGroup = invokeContext.getPersistenceGroup();
-        } else if (invokeContext.getPersistenceUnit() != null) {
-            persistenceGroup = invokeContext.getPersistenceUnit().getPersistenceGroup();
-        }
-        if (persistenceGroup == null) {
-            persistenceGroup = UPA.getPersistenceGroup();
-        }
-        Session s = persistenceGroup.findCurrentSession();
-        boolean sessionCreated = false;
-        boolean loginCreated = false;
-        if (s == null) {
-            s = persistenceGroup.openSession();
-            sessionCreated = true;
-        }
-        PersistenceUnit pu = null;
-        if (invokeContext.getPersistenceUnit() != null) {
-            pu = invokeContext.getPersistenceUnit();
-        }
-        if (pu == null) {
-            pu = persistenceGroup.getPersistenceUnit();
-        }
-        if (invokeContext.getLogin() != null) {
-            pu.login(invokeContext.getLogin(), invokeContext.getCredentials());
-            loginCreated = true;
-        }
-        boolean transactionCreated = false;
-        if (invokeContext.getTransactionType() != null) {
-            if (pu.beginTransaction(invokeContext.getTransactionType())) {
-                transactionCreated = true;
-            }
-        }
-        T ret = null;
-        Throwable anyErr = null;
-        try {
-            ret = action.run();
-            if (transactionCreated) {
-                pu.commitTransaction();
-            }
-        } catch (Throwable e) {
-            anyErr = e;
-            if (transactionCreated) {
-                pu.rollbackTransaction();
-            }
-            if (e instanceof UPAException || e instanceof RuntimeException) {
-                throw e;
-            }
-            throw new InvocationException(e);
-        } finally {
-            if (loginCreated) {
-                pu.logout();
-            }
-            if (sessionCreated) {
-                s.close();
-            }
-        }
-        return ret;
-    }
+
 
     @Override
     public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return invoke(action, invokeContext, true);
+    }
+
+    @Override
+    public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException {
+        return invoke(action,invokeContext,false);
+    }
+
+    protected <T> T invoke(Action<T> action, InvokeContext invokeContext, boolean privileged) throws UPAException {
         if (invokeContext == null) {
             invokeContext = emptyInvokeContext;
         }
         PersistenceGroup persistenceGroup = null;
-        PersistenceGroup _persistenceGroup = invokeContext.getPersistenceGroup();
-        if (_persistenceGroup != null) {
-            persistenceGroup = _persistenceGroup;
-        } else if (invokeContext.getPersistenceUnit() != null) {
-            persistenceGroup = invokeContext.getPersistenceUnit().getPersistenceGroup();
-        }
-        if (persistenceGroup == null) {
-            persistenceGroup = UPA.getPersistenceGroup();
-        }
-        Session s = persistenceGroup.findCurrentSession();
-        boolean sessionCreated = false;
-        boolean loginCreated = false;
-        if (s == null) {
-            s = persistenceGroup.openSession();
-            sessionCreated = true;
-        }
-        PersistenceUnit pu = null;
-        if (invokeContext.getPersistenceUnit() != null) {
-            pu = invokeContext.getPersistenceUnit();
-        }
-        if (pu == null) {
-            pu = persistenceGroup.getPersistenceUnit();
-        }
-        pu.loginPrivileged(invokeContext.getLogin());
-
-        loginCreated = true;
-        boolean transactionCreated = false;
-        if (invokeContext.getTransactionType() != null) {
-            if (pu.beginTransaction(invokeContext.getTransactionType())) {
-                transactionCreated = true;
-            }
-        }
         T ret = null;
-        Throwable anyErr = null;
+        boolean customPersistenceGroup = false;
+        boolean customPersistenceUnit = false;
+        PersistenceUnit initialPersistenceUnit = UPA.getPersistenceUnit();
+        PersistenceGroup initialPersistenceGroup = UPA.getPersistenceGroup();
+        PersistenceGroup _persistenceGroup = invokeContext.getPersistenceGroup();
         try {
-            ret = action.run();
-            if (transactionCreated) {
-                pu.commitTransaction();
+            if (_persistenceGroup != null) {
+                persistenceGroup = _persistenceGroup;
+            } else if (invokeContext.getPersistenceUnit() != null) {
+                persistenceGroup = invokeContext.getPersistenceUnit().getPersistenceGroup();
             }
-        } catch (Throwable e) {
-            anyErr = e;
-            e.printStackTrace();
-            if (transactionCreated) {
-                pu.rollbackTransaction();
+            if (persistenceGroup == null) {
+                persistenceGroup = UPA.getPersistenceGroup();
             }
-            if (e instanceof UPAException || e instanceof RuntimeException) {
-                throw e;
+            Session s = persistenceGroup.findCurrentSession();
+            boolean sessionCreated = false;
+            boolean loginCreated = false;
+            if (s == null) {
+                s = persistenceGroup.openSession();
+                sessionCreated = true;
             }
-            throw new InvocationException(e);
+            PersistenceUnit pu = null;
+            if (invokeContext.getPersistenceUnit() != null) {
+                pu = invokeContext.getPersistenceUnit();
+            }
+            if (pu == null) {
+                pu = persistenceGroup.getPersistenceUnit();
+            }
+
+            if (privileged) {
+                pu.loginPrivileged(invokeContext.getLogin());
+                loginCreated = true;
+            } else {
+                if (invokeContext.getLogin() != null) {
+                    pu.login(invokeContext.getLogin(), invokeContext.getCredentials());
+                    loginCreated = true;
+                }
+            }
+            boolean transactionCreated = false;
+            if (invokeContext.getTransactionType() != null) {
+                if (pu.beginTransaction(invokeContext.getTransactionType())) {
+                    transactionCreated = true;
+                }
+            }
+            customPersistenceGroup = pu.getPersistenceGroup() != initialPersistenceGroup;
+            customPersistenceUnit = pu != initialPersistenceUnit;
+            if (customPersistenceGroup) {
+                UPA.getContext().setPersistenceGroup(pu.getPersistenceGroup().getName());
+            }
+            if (customPersistenceUnit) {
+                pu.getPersistenceGroup().setPersistenceUnit(pu.getName());
+            }
+            Throwable anyErr = null;
+            try {
+                ret = action.run();
+                if (transactionCreated) {
+                    pu.commitTransaction();
+                }
+            } catch (Throwable e) {
+                anyErr = e;
+                e.printStackTrace();
+                if (transactionCreated) {
+                    pu.rollbackTransaction();
+                }
+                if (e instanceof UPAException || e instanceof RuntimeException) {
+                    throw e;
+                }
+                throw new InvocationException(e);
+            } finally {
+                if (loginCreated) {
+                    pu.logout();
+                }
+                if (sessionCreated) {
+                    s.close();
+                }
+            }
         } finally {
-            if (loginCreated) {
-                pu.logout();
+            if (customPersistenceGroup) {
+                UPA.getContext().setPersistenceGroup(initialPersistenceGroup.getName());
             }
-            if (sessionCreated) {
-                s.close();
+            if (customPersistenceUnit) {
+                initialPersistenceGroup.setPersistenceUnit(initialPersistenceUnit.getName());
             }
         }
         return ret;
@@ -783,8 +757,7 @@ public class DefaultUPAContext implements UPAContext {
                     case ON_RESET:
                     case ON_CLEAR:
                     case ON_INIT:
-                    case ON_PREPARE:
-                        {
+                    case ON_PREPARE: {
                         InvokeArgument[] apiArguments = new InvokeArgument[]{
                                 new PosInvokeArgument("event", EntityEvent.class, 0, false)
                         };

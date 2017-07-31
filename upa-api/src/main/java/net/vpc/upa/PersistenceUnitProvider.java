@@ -39,7 +39,7 @@ package net.vpc.upa;
  * @creationdate 9/11/12 11:57 PM
  */
 public interface PersistenceUnitProvider {
-    PersistenceUnit getPersistenceUnit(PersistenceGroup persistenceGroup);
+    String getPersistenceUnitName(PersistenceGroup persistenceGroup);
 
-    void setPersistenceUnit(PersistenceGroup persistenceGroup, PersistenceUnit current);
+    void setPersistenceUnitName(PersistenceGroup persistenceGroup, String current);
 }

@@ -10,9 +10,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.ObjectFactory;
-import net.vpc.upa.PersistenceUnitProvider;
-import net.vpc.upa.UPAContextProvider;
+
+import net.vpc.upa.*;
 
 /**
  *
@@ -28,6 +27,7 @@ public class WebObjectFactory implements ObjectFactory {
     public WebObjectFactory() {
         register(UPAContextProvider.class, WebUPAContextProvider.class);
         register(PersistenceUnitProvider.class, WebSessionPersistenceUnitProvider.class);
+        register(PersistenceGroupProvider.class, WebPersistenceGroupProvider.class);
     }
 
     public int getContextSupportLevel() {

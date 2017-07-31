@@ -57,7 +57,7 @@ public class RootObjectFactory implements ObjectFactory {
         register(UPAContextProvider.class, DefaultUPAContextProvider.class);
         register(ObjectFactory.class, DefaultTypedFactory.class);
         register(PersistenceUnitProvider.class, DefaultPersistenceUnitProvider.class);
-        register(PersistenceGroupContextProvider.class, DefaultPersistenceGroupContextProvider.class);
+        register(PersistenceGroupProvider.class, DefaultPersistenceGroupProvider.class);
         register(PersistenceGroup.class, DefaultPersistenceGroup.class);
         register(PersistenceUnit.class, DefaultPersistenceUnit.class);
         register(I18NStringStrategy.class, DefaultI18NStringStrategy.class);

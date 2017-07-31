@@ -14,6 +14,7 @@ import net.vpc.upa.impl.uql.ExpressionDeclaration;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
 import net.vpc.upa.impl.uql.ExpressionTranslationManager;
 import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -223,5 +224,43 @@ public class UQLUtils {
             throw new UPAIllegalArgumentException("Unable to resolve Id from "+o);
         }
         return ret;
+    }
+
+    public static String resolveMainTableFromSQLQuery(String query){
+        if(query==null){
+            return "";
+        }
+        String s = StringUtils.extractWordAt(query, 0);
+        if(s==null){
+            return "";
+        }
+        String q2 = StringUtils.removeSQLParsAndStrings(query);
+        String slower = s.toLowerCase();
+        if(slower.equals("select")) {
+            String s2 = StringUtils.extractWordAfter("from", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }else if(slower.equals("update")) {
+            String s2 = StringUtils.extractWordAfter("table", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }else if(slower.equals("delete")) {
+            String s2 = StringUtils.extractWordAfter("from", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }else if(slower.equals("insert")) {
+            String s2 = StringUtils.extractWordAfter("into", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }
+        return "";
     }
 }

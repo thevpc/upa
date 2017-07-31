@@ -87,7 +87,7 @@ public class DefaultQuery extends AbstractQuery {
 
     public void setContext(EntityExecutionContext context){
         this.context=context;
-        boolean lazyListLoadingEnabled = context.getPersistenceUnit().getProperties().getBoolean("Query.LazyListLoadingEnabled", true);
+        boolean lazyListLoadingEnabled = context.getPersistenceUnit().getProperties().getBoolean("QueryHints.lazyListLoadingEnabled", true);
         this.setLazyListLoadingEnabled(lazyListLoadingEnabled);
 
     }

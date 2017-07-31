@@ -53,28 +53,28 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         this.config = config;
         navigationDepth = (Integer) config.getHint(QueryHints.MAX_NAVIGATION_DEPTH, -1);
         if (navigationDepth < 0) {
-            navigationDepth = persistenceUnit.getProperties().getInt("System.QueryHints." + QueryHints.MAX_NAVIGATION_DEPTH, UPAImplDefaults.QueryHints_MAX_NAVIGATION_DEPTH);
+            navigationDepth = persistenceUnit.getProperties().getInt("QueryHints." + QueryHints.MAX_NAVIGATION_DEPTH, UPAImplDefaults.QueryHints_MAX_NAVIGATION_DEPTH);
             if (navigationDepth < 0) {
                 navigationDepth = UPAImplDefaults.QueryHints_MAX_NAVIGATION_DEPTH;
             }
         }
         this.maxJoins = (Integer) config.getHint(QueryHints.MAX_JOINS, -1);
         if (maxJoins < 0) {
-            maxJoins = persistenceUnit.getProperties().getInt("System.QueryHints." + QueryHints.MAX_JOINS, UPAImplDefaults.QueryHints_MAX_JOINS);
+            maxJoins = persistenceUnit.getProperties().getInt("QueryHints." + QueryHints.MAX_JOINS, UPAImplDefaults.QueryHints_MAX_JOINS);
             if (maxJoins < 0) {
                 maxJoins = UPAImplDefaults.QueryHints_MAX_JOINS;
             }
         }
-        this.maxColumns = (Integer) config.getHint(UPAImplKeys.QueryHints_MAX_COLUMNS, -1);
+        this.maxColumns = (Integer) config.getHint(UPAImplKeys.QueryHints_maxColumns, -1);
         if (maxColumns < 0) {
-            maxColumns = persistenceUnit.getProperties().getInt("System.QueryHints." + UPAImplKeys.QueryHints_MAX_COLUMNS, UPAImplDefaults.QueryHints_MAX_COLUMNS);
+            maxColumns = persistenceUnit.getProperties().getInt("QueryHints." + UPAImplKeys.QueryHints_maxColumns, UPAImplDefaults.QueryHints_MAX_COLUMNS);
             if (maxColumns < 0) {
                 maxColumns = UPAImplDefaults.QueryHints_MAX_COLUMNS;
             }
         }
-        this.maxHierarchyDepth = (Integer) config.getHint(UPAImplKeys.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH, -1);
+        this.maxHierarchyDepth = (Integer) config.getHint(UPAImplKeys.QueryHints_maxHierarchyNavigationDepth, -1);
         if (maxHierarchyDepth < 0) {
-            maxHierarchyDepth = persistenceUnit.getProperties().getInt("System.QueryHints." + UPAImplKeys.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH, UPAImplDefaults.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH);
+            maxHierarchyDepth = persistenceUnit.getProperties().getInt("QueryHints." + UPAImplKeys.QueryHints_maxHierarchyNavigationDepth, UPAImplDefaults.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH);
             if (maxHierarchyDepth < 0) {
                 maxHierarchyDepth = UPAImplDefaults.QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH;
             }

@@ -2760,7 +2760,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public QueryBuilder createQueryBuilder() throws UPAException {
         DefaultQueryBuilder q = new DefaultQueryBuilder(this);
-        boolean lazyListLoadingEnabled = getPersistenceUnit().getProperties().getBoolean("Query.LazyListLoadingEnabled", true);
+        boolean lazyListLoadingEnabled = getPersistenceUnit().getProperties().getBoolean("QueryHints.lazyListLoadingEnabled", true);
         q.setLazyListLoadingEnabled(lazyListLoadingEnabled);
         return q;
     }

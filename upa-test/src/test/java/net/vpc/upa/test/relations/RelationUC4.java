@@ -110,6 +110,9 @@ public class RelationUC4 {
         public void testQuery2() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             reset();
+            pu.getProperties().setObject("QueryHints."+QueryHints.MAX_NAVIGATION_DEPTH,60);
+            pu.getProperties().setObject("QueryHints."+UPAImplKeys.QueryHints_maxHierarchyNavigationDepth,3);
+
             long beforeConnectionQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Query,0);
             long beforeConnectionNonQuery=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_NonQuery,0);
             long beforeConnectionStatement=pu.getProperties().getLong(UPAImplKeys.System_Perf_Connection_Statement,0);

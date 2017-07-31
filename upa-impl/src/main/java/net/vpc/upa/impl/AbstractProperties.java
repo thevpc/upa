@@ -41,12 +41,22 @@ public abstract class AbstractProperties implements Properties {
     //////////////////////////////////////
     @Override
     public int getInt(String key) {
-        return ((Number) getObject(key)).intValue();
+        return getNumber(key,null).intValue();
     }
 
     @Override
     public int getInt(String key, int defaultValue) {
-        return ((Number) getObject(key, defaultValue)).intValue();
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof Number){
+            return ((Number)value).intValue();
+        }
+        if(value instanceof String){
+            return Integer.parseInt(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type int");
     }
 
     @Override
@@ -56,19 +66,28 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public int getSingleInt() {
-        return getSingleObject();
+        return getInt(getSinglePropertyName());
     }
 
     //////////////////////////////////////
     @Override
     public long getLong(String key) {
-        return ((Number) getObject(key)).longValue();
+        return getNumber(key).longValue();
     }
 
     @Override
     public long getLong(String key, long defaultValue) {
-        Number object = getObject(key, defaultValue);
-        return object.longValue();
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof Number){
+            return ((Number)value).longValue();
+        }
+        if(value instanceof String){
+            return Long.parseLong(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type long");
     }
 
     @Override
@@ -78,18 +97,28 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public long getSingleLong() {
-        return getSingleObject();
+        return getLong(getSinglePropertyName());
     }
 
     //////////////////////////////////////
     @Override
     public double getDouble(String key) {
-        return ((Number) getObject(key)).doubleValue();
+        return getNumber(key,null).doubleValue();
     }
 
     @Override
     public double getDouble(String key, double defaultValue) {
-        return ((Number) getObject(key, defaultValue)).doubleValue();
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof Number){
+            return ((Number)value).doubleValue();
+        }
+        if(value instanceof String){
+            return Double.parseDouble(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type double");
     }
 
     @Override
@@ -99,18 +128,28 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public double getSingleDouble() {
-        return ((Number) getSingleObject()).doubleValue();
+        return getDouble(getSinglePropertyName());
     }
 
     //////////////////////////////////////
     @Override
     public float getFloat(String key) {
-        return ((Number) getObject(key)).floatValue();
+        return getNumber(key,null).floatValue();
     }
 
     @Override
     public float getFloat(String key, float defaultValue) {
-        return ((Number) getObject(key, defaultValue)).floatValue();
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof Number){
+            return ((Number)value).floatValue();
+        }
+        if(value instanceof String){
+            return Float.parseFloat(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type float");
     }
 
     @Override
@@ -120,20 +159,33 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public float getSingleFloat() {
-        return ((Number) getSingleObject()).floatValue();
+        return getFloat(getSinglePropertyName());
     }
 
     //////////////////////////////////////
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public BigDecimal getBigDecimal(String key) {
-        return ((BigDecimal) getObject(key));
+        return getBigDecimal(key,null);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
-        return getObject(key, defaultValue);
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof BigDecimal){
+            return (BigDecimal) value;
+        }
+        if(value instanceof BigInteger){
+            return new BigDecimal((BigInteger) value);
+        }
+        if(value instanceof String){
+            return new BigDecimal(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type big decimal");
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
@@ -145,18 +197,28 @@ public abstract class AbstractProperties implements Properties {
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public BigDecimal getSingleBigDecimal() {
-        return getSingleObject();
+        return getBigDecimal(getSinglePropertyName());
     }
     //////////////////////////////////////
 
     @Override
     public BigInteger getBigInteger(String key) {
-        return getObject(key);
+        return getBigInteger(key,null);
     }
 
     @Override
     public BigInteger getBigInteger(String key, BigInteger defaultValue) {
-        return getObject(key, defaultValue);
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof BigInteger){
+            return (BigInteger) value;
+        }
+        if(value instanceof String){
+            return new BigInteger(String.valueOf(value));
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type big intege");
     }
 
     @Override
@@ -166,7 +228,7 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public BigInteger getSingleBigInteger() {
-        return getSingleObject();
+        return getBigInteger(getSinglePropertyName());
     }
 
     //////////////////////////////////////
@@ -179,7 +241,32 @@ public abstract class AbstractProperties implements Properties {
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public Number getNumber(String key, Number defaultValue) {
-        return ((Number) getObject(key, defaultValue)).intValue();
+        Object value = getObject(key);
+        if(value==null){
+            return defaultValue;
+        }
+        if(value instanceof Number){
+            return (Number) value;
+        }
+        if(value instanceof String){
+            if(((String) value).contains(".")){
+                try{
+                    return Double.parseDouble(String.valueOf(value));
+                }catch(Exception ex){
+                    return new BigDecimal(String.valueOf(value));
+                }
+            }
+            try{
+                try {
+                    return Integer.parseInt(String.valueOf(value));
+                }catch (Exception ex) {
+                    return Double.parseDouble(String.valueOf(value));
+                }
+            }catch(Exception ex){
+                return new BigDecimal(String.valueOf(value));
+            }
+        }
+        throw new IllegalArgumentException("Property "+key+" was expected to be of type Number");
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
@@ -191,7 +278,7 @@ public abstract class AbstractProperties implements Properties {
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public Number getSingleNumber() {
-        return getSingleObject();
+        return getNumber(getSinglePropertyName());
     }
 
     //////////////////////////////////////
@@ -212,7 +299,7 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public boolean getSingleBoolean() {
-        return getSingleObject();
+        return getBoolean(getSinglePropertyName());
     }
 
     //////////////////////////////////////
@@ -233,7 +320,7 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public String getSingleString() {
-        return getSingleObject();
+        return getString(getSinglePropertyName());
     }
 
     //////////////////////////////////////
@@ -254,7 +341,7 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public Date getSingleDate() {
-        return getSingleObject();
+        return getDate(getSinglePropertyName());
     }
 
     //////////////////////////////////////
@@ -262,6 +349,8 @@ public abstract class AbstractProperties implements Properties {
     public void setAll(Properties other, String... keys) {
         setAll(other.toMap(), keys);
     }
+
+    public abstract String getSinglePropertyName() ;
 
 
 }

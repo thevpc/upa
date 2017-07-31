@@ -5,6 +5,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.exceptions.FindException;
+import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.util.UPADeadLock;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.types.DataTypeTransform;
@@ -50,7 +51,9 @@ public class DefaultQueryResult implements QueryResult {
             lastNativePos += marshaller.getSize();
             np++;
         }
-        mon = UPADeadLock.addMonitor("QueryResult",query,20, new Throwable());
+        if(!UPAImplDefaults.PRODUCTION_MODE) {
+            mon = UPADeadLock.addMonitor("QueryResult", query, 20, new Throwable());
+        }
 //        try {
 //            System.out.println("create ResultSet " + resultSet + " for connection " + resultSet.getStatement().getConnection());
 //        } catch (SQLException ex) {
@@ -121,12 +124,14 @@ public class DefaultQueryResult implements QueryResult {
 
     public void close() {
         try {
-            if (!closed) {
-                mon.release();
+            if(!UPAImplDefaults.PRODUCTION_MODE) {
+                if (!closed) {
+                    mon.release();
 //                log.log(Level.FINE, nameDebugString+" executeQuery     : "+query);
-                log.log(Level.FINE, nameDebugString+" RS closed   "+query);
-            } else {
-                log.log(Level.WARNING, "       "+nameDebugString+" ResultSet re-closed: "+query);
+                    log.log(Level.FINE, nameDebugString + " RS closed   " + query);
+                } else {
+                    log.log(Level.WARNING, "       " + nameDebugString + " ResultSet re-closed: " + query);
+                }
             }
             closed = true;
             if (!resultSet.isClosed()) {

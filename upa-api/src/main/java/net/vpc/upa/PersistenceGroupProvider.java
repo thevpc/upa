@@ -38,8 +38,8 @@ package net.vpc.upa;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/11/12 11:57 PM
  */
-public interface PersistenceGroupContextProvider {
-    PersistenceGroup getPersistenceGroup();
+public interface PersistenceGroupProvider {
+    String getPersistenceGroup();
 
-    void setPersistenceGroup(PersistenceGroup current);
+    void setPersistenceGroup(String current);
 }

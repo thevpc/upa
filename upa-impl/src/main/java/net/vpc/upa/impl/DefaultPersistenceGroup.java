@@ -15,6 +15,7 @@ import net.vpc.upa.impl.event.PersistenceGroupListenerManager;
 import net.vpc.upa.impl.ext.PersistenceGroupExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -33,7 +34,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     private final List<Session> sessions = new ArrayList<Session>();
     private SessionContextProvider sessionContextProvider;
     private PersistenceUnitProvider persistenceUnitProvider;
-    private String name;
+    private String name="";
     private boolean closed;
     private boolean autoScan = true;
 //    private List<PersistenceUnitDefinitionListener> persistenceUnitDefinitionListeners;
@@ -52,7 +53,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public void init(String name, UPAContext context, ObjectFactory contextFactory) {
         properties = new DefaultProperties(getSystemParameters());
-        this.name=name;
+        this.name=name==null?"":name;
         this.context=context;
         ObjectFactory persistenceGroupFactory = contextFactory.createObject(ObjectFactory.class);
         persistenceGroupFactory.setParentFactory(contextFactory);
@@ -111,7 +112,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name==null?"":name;
     }
 
     public UPAContext getContext() {
@@ -134,28 +135,32 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
     @Override
     public PersistenceUnit getPersistenceUnit() throws UPAException {
-        PersistenceUnit persistenceUnit = getPersistenceUnitProvider().getPersistenceUnit(this);
-        if (persistenceUnit == null) {
+        String persistenceUnitName = getPersistenceUnitProvider().getPersistenceUnitName(this);
+        PersistenceUnit persistenceUnit=null;
+        if (persistenceUnitName == null) {
             List<PersistenceUnit> persistenceUnitsCurr = getPersistenceUnits();
             if (persistenceUnitsCurr.size() > 0) {
                 for (PersistenceUnit s : persistenceUnitsCurr) {
                     persistenceUnit = s;
                     break;
                 }
-                getPersistenceUnitProvider().setPersistenceUnit(this, persistenceUnit);
+                getPersistenceUnitProvider().setPersistenceUnitName(this, persistenceUnit==null?null:persistenceUnit.getName());
             } else {
                 throw new MissingDefaultPersistenceUnitException();
             }
+        }else{
+            persistenceUnit=getPersistenceUnit(persistenceUnitName);
         }
         return persistenceUnit;
     }
 
     @Override
     public void setPersistenceUnit(String name) throws UPAException {
-        PersistenceUnit newPU = getPersistenceUnit(name);
-        PersistenceUnit oldPU = getPersistenceUnitProvider().getPersistenceUnit(this);
-        if (oldPU != newPU) {
-            getPersistenceUnitProvider().setPersistenceUnit(this, getPersistenceUnit(name));
+        //check if valid persistence unit!
+        getPersistenceUnit(name);
+        String oldPUName = getPersistenceUnitProvider().getPersistenceUnitName(this);
+        if (!UPAUtils.equals(oldPUName, name)) {
+            getPersistenceUnitProvider().setPersistenceUnitName(this, (name));
             //TODO fire event
         }
     }
@@ -210,7 +215,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
             persistenceUnits.put(name, persistenceUnit);
 
-            PersistenceUnit oldPersistenceUnit = getPersistenceUnitProvider().getPersistenceUnit(this);
+            String oldPersistenceUnit = getPersistenceUnitProvider().getPersistenceUnitName(this);
             if (oldPersistenceUnit == null) {
                 setPersistenceUnit(persistenceUnit.getName());
             }

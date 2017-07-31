@@ -68,6 +68,19 @@ public class DefaultProperties extends AbstractProperties {
         base.put(key, value);
     }
 
+    public String getSinglePropertyName() {
+        for (String k : keySet()) {
+            return k;
+        }
+        if (parent != null) {
+            Set<String> parentKeys = parent.keySet();
+            for (String v : parentKeys) {
+                return v;
+            }
+        }
+        return null;
+    }
+
     @Override
     public <T> T getSingleObject() {
         for (Object o : base.values()) {

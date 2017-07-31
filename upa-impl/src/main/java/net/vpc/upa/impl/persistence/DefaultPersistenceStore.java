@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
-import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
@@ -17,8 +16,6 @@ import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
-import net.vpc.upa.impl.persistence.shared.marshallers.ConstantDataMarshallerFactory;
-import net.vpc.upa.impl.persistence.shared.marshallers.DefaultSerializablePlatformObjectMarshaller;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.uql.BindingId;
 import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
@@ -920,11 +917,11 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         }
         hints.put(QueryHints.MAX_JOINS,maxJoins);
 
-        int maxColumns = UPAUtils.convertToInt(config.getHint(UPAImplKeys.QueryHints_MAX_COLUMNS),-1);
+        int maxColumns = UPAUtils.convertToInt(config.getHint(UPAImplKeys.QueryHints_maxColumns),-1);
         if(maxColumns<0 || maxColumns>maxQueryColumnsCount){
             maxColumns=maxQueryColumnsCount;
         }
-        hints.put(UPAImplKeys.QueryHints_MAX_COLUMNS,maxColumns);
+        hints.put(UPAImplKeys.QueryHints_maxColumns,maxColumns);
 
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) expressionManager.compileExpression(statement, config);
         boolean reeavluateWithLessJoin = false;
@@ -1388,7 +1385,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     protected void configureQuery(Query q, EntityExecutionContext executionContext) {
-        boolean lazyListLoadingEnabled = executionContext.getPersistenceUnit().getProperties().getBoolean("Query.LazyListLoadingEnabled", true);
+        boolean lazyListLoadingEnabled = executionContext.getPersistenceUnit().getProperties().getBoolean("QueryHints.lazyListLoadingEnabled", true);
         q.setLazyListLoadingEnabled(lazyListLoadingEnabled);
     }
 
