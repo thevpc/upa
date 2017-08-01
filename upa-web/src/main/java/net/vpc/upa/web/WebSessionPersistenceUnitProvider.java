@@ -4,31 +4,17 @@
  */
 package net.vpc.upa.web;
 
+import net.vpc.upa.PersistenceGroup;
+import net.vpc.upa.PersistenceUnitProvider;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import net.vpc.upa.PersistenceGroup;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.PersistenceUnitProvider;
 
 /**
- *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class WebSessionPersistenceUnitProvider implements PersistenceUnitProvider, Serializable {
-
-    public String getPersistenceUnitName(PersistenceGroup persistenceGroup) {
-        return getSessionMap().get(persistenceGroup.getName());
-    }
-
-    public void setPersistenceUnitName(PersistenceGroup persistenceGroup, String persistenceUnit) {
-        String k = persistenceGroup.getName();
-        if (persistenceUnit == null) {
-            getSessionMap().remove(k);
-        } else {
-            getSessionMap().put(k, persistenceUnit);
-        }
-    }
 
     private static Map<String, String> getSessionMap() {
         Map<String, String> v = (Map<String, String>) WebUPAContext.getSessionAttribute(WebSessionPersistenceUnitProvider.class.getName());
@@ -37,5 +23,28 @@ public class WebSessionPersistenceUnitProvider implements PersistenceUnitProvide
             WebUPAContext.setSessionAttribute(WebSessionPersistenceUnitProvider.class.getName(), v);
         }
         return v;
+    }
+
+    public String getPersistenceUnitName(PersistenceGroup persistenceGroup) {
+        try {
+            return getSessionMap().get(persistenceGroup.getName());
+        } catch (Exception ex) {
+            //Session May be inaccessible
+            return null;
+        }
+    }
+
+    public void setPersistenceUnitName(PersistenceGroup persistenceGroup, String persistenceUnit) {
+        try {
+            String k = persistenceGroup.getName();
+
+            if (persistenceUnit == null) {
+                getSessionMap().remove(k);
+            } else {
+                getSessionMap().put(k, persistenceUnit);
+            }
+        } catch (Exception ex) {
+            //Session May be inaccessible
+        }
     }
 }
