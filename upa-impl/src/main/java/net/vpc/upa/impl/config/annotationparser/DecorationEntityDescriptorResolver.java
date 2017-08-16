@@ -2,24 +2,23 @@ package net.vpc.upa.impl.config.annotationparser;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Property;
-import net.vpc.upa.UserFieldModifier;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.extensions.*;
+import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
+import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.CompareUtils;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 
 import java.beans.Transient;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
-
-import net.vpc.upa.config.Decoration;
-import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
-import net.vpc.upa.impl.config.decorations.DecorationRepository;
-import net.vpc.upa.config.DecorationValue;
-import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -103,28 +102,36 @@ public class DecorationEntityDescriptorResolver {
         try {
 
             HashMap<String, Object> ctx = new HashMap<String, Object>();
-            for (FieldInfo fieldInfo : new ArrayList<FieldInfo>(entityInfo.fieldsMap.values())) {
+            for (DecorationFieldDescriptor fieldInfo : new ArrayList<DecorationFieldDescriptor>(entityInfo.fieldsMap.values())) {
                 if (fieldInfo.valid) {
-                    fieldInfo.prepare(ctx, entityInfo.name);
+                    try {
+                        fieldInfo.prepare(ctx, entityInfo.name);
+                    } catch (UPAException ex) {
+                        throw new UPAIllegalArgumentException("UnableToPrepareField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
+                    }
                 }
             }
             //build after all fields has been prepared
-            for (FieldInfo fieldInfo : new ArrayList<FieldInfo>(entityInfo.fieldsMap.values())) {
+            for (DecorationFieldDescriptor fieldInfo : new ArrayList<DecorationFieldDescriptor>(entityInfo.fieldsMap.values())) {
                 if (fieldInfo.valid) {
-                    fieldInfo.build(ctx, entityInfo.name);
+                    try {
+                        fieldInfo.build(ctx, entityInfo.name);
+                    } catch (UPAException ex) {
+                        throw new UPAIllegalArgumentException("UnableToBuildField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
+                    }
                 }
             }
             //remove invalid
-            for (FieldInfo fieldInfo : new ArrayList<FieldInfo>(entityInfo.fieldsMap.values())) {
+            for (DecorationFieldDescriptor fieldInfo : new ArrayList<DecorationFieldDescriptor>(entityInfo.fieldsMap.values())) {
                 if (!fieldInfo.valid) {
                     entityInfo.fieldsMap.remove(fieldInfo.name);
                 }
             }
             //handle cross depende
             if (entityInfo.idType == null) {
-                FieldInfo pk = null;
+                DecorationFieldDescriptor pk = null;
                 int pkCount = 0;
-                for (FieldInfo fieldInfo : entityInfo.fieldsMap.values()) {
+                for (DecorationFieldDescriptor fieldInfo : entityInfo.fieldsMap.values()) {
                     if (fieldInfo.modifiers.contains(UserFieldModifier.ID)) {
                         if (pk == null) {
                             pk = fieldInfo;
@@ -138,8 +145,8 @@ public class DecorationEntityDescriptorResolver {
                     entityInfo.idType = Key.class;
                 }
             }
-            entityInfo.fieldsList = new ArrayList<FieldInfo>();
-            for (FieldInfo allField : entityInfo.fieldsMap.values()) {
+            entityInfo.fieldsList = new ArrayList<DecorationFieldDescriptor>();
+            for (DecorationFieldDescriptor allField : entityInfo.fieldsMap.values()) {
                 entityInfo.fieldsList.add(allField);
             }
 //            SequenceInfo generatedId = entityInfo.generatedIdInfo;
@@ -153,7 +160,7 @@ public class DecorationEntityDescriptorResolver {
 //            }
             return entityInfo;
         } catch (Exception e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new UPAIllegalArgumentException("UnableToBuildEntity "+entityInfo.getName(),e);
         }
     }
 
@@ -246,25 +253,25 @@ public class DecorationEntityDescriptorResolver {
 //            privateInfo.generatedIdInfo.merge(gue);
 //        }
         if (parseFields) {
-            List<FieldInfo> fieldInfos = new ArrayList<FieldInfo>();
+            List<DecorationFieldDescriptor> fieldInfos = new ArrayList<DecorationFieldDescriptor>();
             if (!Document.class.isAssignableFrom(type)) {
                 Class c = type;
                 while (c != null) {
-                    List<FieldInfo> cfields = new ArrayList<FieldInfo>();
+                    List<DecorationFieldDescriptor> cfields = new ArrayList<DecorationFieldDescriptor>();
                     for (java.lang.reflect.Field field : c.getDeclaredFields()) {
                         if (acceptField(field)) {
                             String fieldName = getFieldName(field);
 
                             Decoration ignored = repo.getFieldDecoration(field, Ignore.class);
                             if (ignored != null) {
-                                FieldInfo oldValue = entityInfo.fieldsMap.get(fieldName);
+                                DecorationFieldDescriptor oldValue = entityInfo.fieldsMap.get(fieldName);
                                 if (oldValue != null) {
                                     oldValue.valid = false;
                                 }
                             } else {
-                                FieldInfo oldValue = entityInfo.fieldsMap.get(fieldName);
+                                DecorationFieldDescriptor oldValue = entityInfo.fieldsMap.get(fieldName);
                                 if (oldValue == null) {
-                                    oldValue = new FieldInfo(fieldName, entityInfo, repo);
+                                    oldValue = new DecorationFieldDescriptor(fieldName, entityInfo, repo);
                                     cfields.add(oldValue);
                                 }
                                 oldValue.registerField(field);
@@ -276,9 +283,9 @@ public class DecorationEntityDescriptorResolver {
                 }
             }
 
-            for (FieldInfo fieldInfo : fieldInfos) {
+            for (DecorationFieldDescriptor fieldInfo : fieldInfos) {
                 String name = fieldInfo.name;
-                FieldInfo old = entityInfo.fieldsMap.get(name);
+                DecorationFieldDescriptor old = entityInfo.fieldsMap.get(name);
                 if (old != null) {
                     throw new UPAIllegalArgumentException("Should never happen");
                 }

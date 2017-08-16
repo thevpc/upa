@@ -21,15 +21,14 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.reflect.Field;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/15/12 11:50 AM
  */
-class FieldInfo implements FieldDescriptor {
+class DecorationFieldDescriptor implements FieldDescriptor {
 
-    protected static Logger log = Logger.getLogger(FieldInfo.class.getName());
+    protected static Logger log = Logger.getLogger(DecorationFieldDescriptor.class.getName());
     private Comparator<Field> FIELD_COMPARATOR;
     String name;
     List<Field> fields = new ArrayList<Field>();
@@ -92,7 +91,7 @@ class FieldInfo implements FieldDescriptor {
     DecorationRepository repo;
     private Map<String, Object> fieldParams = new LinkedHashMap<String, Object>();
 
-    FieldInfo(String name, EntityInfo entityInfo, DecorationRepository repo) {
+    DecorationFieldDescriptor(String name, EntityInfo entityInfo, DecorationRepository repo) {
         this.name = name;
         this.entityInfo = entityInfo;
         this.repo = repo;
@@ -309,6 +308,16 @@ class FieldInfo implements FieldDescriptor {
                             nativeClass,
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMinValue, overriddenFormat),
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMaxValue, overriddenFormat),
+                            nullableOk));
+                } catch (ParseException e) {
+                    throw new UPAIllegalArgumentException(e);
+                }
+            } else if (java.sql.Time.class.isAssignableFrom(asType)) {
+                try {
+                    overriddenDataType.setValue(new TimeType(absoluteName,
+                            nativeClass,
+                            (net.vpc.upa.types.Time) AnnotationParserUtils.parseDate(net.vpc.upa.types.Time.class, overriddenMinValue, overriddenFormat),
+                            (net.vpc.upa.types.Time) AnnotationParserUtils.parseDate(net.vpc.upa.types.Time.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
                     throw new UPAIllegalArgumentException(e);
@@ -600,7 +609,7 @@ class FieldInfo implements FieldDescriptor {
             if (UPAUtils.isSimpleFieldType(nativeClass)) {
                 int length = foreignInfo.getMappedTo() == null ? 0 : foreignInfo.getMappedTo().length;
                 if (length == 1) {
-                    FieldInfo f = entityInfo.fieldsMap.get(foreignInfo.getMappedTo()[0]);
+                    DecorationFieldDescriptor f = entityInfo.fieldsMap.get(foreignInfo.getMappedTo()[0]);
                     if (f == null) {
                         throw new UPAIllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
@@ -805,7 +814,7 @@ class FieldInfo implements FieldDescriptor {
 
     @Override
     public String toString() {
-        return "FieldInfo{" + "name=" + name + ", fields=" + fields + ", type=" + type + '}';
+        return "DecorationFieldDescriptor{" + "name=" + name + ", fields=" + fields + ", type=" + type + '}';
     }
 
     private void prepareFormula(Map<String, Object> ctx, String entityName, FormulaType t, Object o) {

@@ -25,10 +25,10 @@ class EntityInfo implements EntityDescriptor {
     public OverriddenValue<String> archivingOrder = new OverriddenValue<String>();
     public String name = null;
     public String shortName = null;
-    public LinkedHashMap<String, FieldInfo> fieldsMap = new LinkedHashMap<String, FieldInfo>();
+    public LinkedHashMap<String, DecorationFieldDescriptor> fieldsMap = new LinkedHashMap<String, DecorationFieldDescriptor>();
     public List<EntityExtensionDefinition> specs = new ArrayList<EntityExtensionDefinition>();
     public List<RelationshipInfo> relations = new ArrayList<RelationshipInfo>();
-    public List<FieldInfo> fieldsList;
+    public List<DecorationFieldDescriptor> fieldsList;
     public OverriddenValue<String> path = new OverriddenValue<String>();
     public OverriddenValue<Integer> pathPosition = new OverriddenValue<Integer>();
     public LinkedHashMap<String, Object> entityParams = new LinkedHashMap<String, Object>();
@@ -69,7 +69,7 @@ class EntityInfo implements EntityDescriptor {
 
     public List<FieldDescriptor> getFieldDescriptors() {
         List<FieldDescriptor> all = new ArrayList<FieldDescriptor>();
-        for (FieldInfo fieldInfo : fieldsList) {
+        for (DecorationFieldDescriptor fieldInfo : fieldsList) {
             all.add(fieldInfo);
         }
         return all;

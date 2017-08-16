@@ -97,9 +97,9 @@ public final class DefaultMethodArgumentsConverter implements MethodArgumentsCon
                         }
                     }
                     if (possible.size() == 0) {
-                        throw new UPAIllegalArgumentException(m.toString()+" : Missing argument " + ut + " " + un + " at position " + up);
+                        throw new UPAIllegalArgumentException(m.toString()+" : Missing argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
                     } else if (possible.size() > 1) {
-                        throw new UPAIllegalArgumentException(m.toString()+" : Ambiguous argument " + ut + " " + un + " at position " + up);
+                        throw new UPAIllegalArgumentException(m.toString()+" : Ambiguous argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
                     } else {
                         eval[i] = possible.get(0);
                     }

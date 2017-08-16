@@ -27,7 +27,7 @@ import net.vpc.upa.types.DataType;
  */
 class RelationshipInfo implements RelationshipDescriptor {
 
-    private FieldInfo baseFieldInfo;
+    private DecorationFieldDescriptor baseFieldInfo;
     private String name;
     private String entityField;
     private String[] mappedTo = new String[0];
@@ -48,7 +48,7 @@ class RelationshipInfo implements RelationshipDescriptor {
     private DecorationRepository repo;
     private DataType preferredDataType;
 
-    public RelationshipInfo(FieldInfo baseFieldInfo, DecorationRepository repo) {
+    public RelationshipInfo(DecorationFieldDescriptor baseFieldInfo, DecorationRepository repo) {
         this.baseFieldInfo = baseFieldInfo;
         this.repo = repo;
     }
@@ -253,7 +253,7 @@ class RelationshipInfo implements RelationshipDescriptor {
         return baseFieldInfo.name;
     }
 
-    public void setBaseFieldInfo(FieldInfo baseFieldInfo) {
+    public void setBaseFieldInfo(DecorationFieldDescriptor baseFieldInfo) {
         this.baseFieldInfo = baseFieldInfo;
     }
 
