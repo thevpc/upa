@@ -213,7 +213,6 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
 
     public void addWorkspaceMissingObject(String entity, Object id) {
-        System.out.println(rowIndex+" : Missing "+entity+" : "+id);
         Set<Object> list = workspace_missingObjects.get(entity);
         if (list == null) {
             list = new HashSet<Object>();
@@ -245,7 +244,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     if (!referencesCache.containsKey(id)) {
                         itemsToReduce2.add(o);
                     }else{
-                        System.out.println(">>  Already reduced "+id);
+//                        System.out.println(">>  Already reduced "+id);
                     }
                 }
                 if(itemsToReduce2.size()>0) {
@@ -256,9 +255,6 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                             oldMaxReduceSize = itemsToReduce2.size();
                             properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, oldMaxReduceSize);
                         }
-                    }
-                    if(entityName.equals("AcademicCourseLevel")){
-                        System.out.println("Here");
                     }
                     Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
                     int count = 0;

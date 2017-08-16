@@ -75,7 +75,7 @@ public class DefaultUConnection implements UConnection {
         String tableDebugString = "[" + UQLUtils.resolveMainTableFromSQLQuery(query) + "]";
         long startTime = System.currentTimeMillis();
         SQLException error = null;
-        log.log(Level.FINE, "{0} BEFORE executeQuery    {1} :: parameters = {2}", new Object[]{nameDebugString + tableDebugString, query, queryParameters});
+//        log.log(Level.FINE, "{0} BEFORE executeQuery    {1} :: parameters = {2}", new Object[]{nameDebugString + tableDebugString, query, queryParameters});
         try {
             try {
 
