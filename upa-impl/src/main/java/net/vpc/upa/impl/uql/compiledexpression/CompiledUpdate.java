@@ -84,11 +84,19 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         if (other.entityName != null) {
             this.entity(((CompiledEntityName) other.entityName).getName(), other.entityAlias);
         }
+        if(other.getEntityAlias()!=null){
+            entityAlias=other.getEntityAlias();
+        }
         for (int i = 0; i < other.fields.size(); i++) {
             CompiledVar fvar = other.getField(i);
             Field field = (Field) fvar.getReferrer();
             CompiledExpressionExt fieldValue = other.getFieldValue(i);
             set(field, fieldValue == null ? null : fieldValue.copy());
+        }
+        if(!other.joinsTables.isEmpty()){
+            for (CompiledJoinCriteria joinsTable : other.joinsTables) {
+                join((CompiledJoinCriteria) joinsTable.copy());
+            }
         }
 
         if (other.condition != null) {

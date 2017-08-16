@@ -542,7 +542,11 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     } else {
                         String parentAlias = null;
                         String oldEntityAlias = null;
-                        if (o.getParentExpression() instanceof CompiledVar && !entityAlias.equals(((CompiledVar) o.getParentExpression()).getName())) {
+                        if (o.getParentExpression() instanceof CompiledVar &&
+                                (entityAlias==null ||
+                                !entityAlias.equals(((CompiledVar) o.getParentExpression()).getName())
+                                )
+                                ) {
                             parentAlias = ((CompiledVar) o.getParentExpression()).getName();
                             oldEntityAlias = entityAlias;
                             entityAlias = parentAlias;
@@ -964,8 +968,14 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             CompiledExpressionExt cond = null;
             Entity detailEntity = field.getEntity();
             for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
-
-                CompiledVar detailAlias = new CompiledVar(entityAlias, detailEntity, null);
+                String entityAlias2=entityAlias;
+                if(UQLUtils.THIS.equals(entityAlias2) && qs instanceof CompiledUpdate){
+                    entityAlias2=qs.getEntityAlias();
+                    if(entityAlias2==null){
+                        entityAlias2=detailEntity.getName();
+                    }
+                }
+                CompiledVar detailAlias = new CompiledVar(entityAlias2, detailEntity, null);
                 CompiledVar masterAlias = new CompiledVar(generatedAlias, masterEntity, null);
                 detailAlias.setChild(new CompiledVar(detailEntity.getField(entry.getValue())));
                 masterAlias.setChild(new CompiledVar(masterEntity.getField(entry.getKey())));
