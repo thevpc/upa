@@ -173,85 +173,105 @@ public class ConfigureScanListener implements ScanListener {
         EventPhase callbackPhase = PlatformUtils.getUndefinedValue(EventPhase.class);
         Map<String, Object> conf = new HashMap<String, Object>();
         if (methodDecoration.isName(OnPreAlter.class)) {
-        callbackType = CallbackType.ON_ALTER;
-        callbackPhase=EventPhase.BEFORE;
-        conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            callbackType = CallbackType.ON_ALTER;
+            callbackPhase=EventPhase.BEFORE;
+            conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnAlter.class)) {
             callbackType = CallbackType.ON_ALTER;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreCreate.class)) {
             callbackType = CallbackType.ON_CREATE;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnCreate.class)) {
             callbackType = CallbackType.ON_CREATE;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreDrop.class)) {
             callbackType = CallbackType.ON_DROP;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnDrop.class)) {
             callbackType = CallbackType.ON_DROP;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPrePersist.class)) {
             callbackType = CallbackType.ON_PERSIST;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPersist.class)) {
             callbackType = CallbackType.ON_PERSIST;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreUpdate.class)) {
             callbackType = CallbackType.ON_UPDATE;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnUpdate.class)) {
             callbackType = CallbackType.ON_UPDATE;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreRemove.class)) {
             callbackType = CallbackType.ON_REMOVE;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnRemove.class)) {
             callbackType = CallbackType.ON_REMOVE;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreReset.class)) {
             callbackType = CallbackType.ON_RESET;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnReset.class)) {
             callbackType = CallbackType.ON_RESET;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreInit.class)) {
             callbackType = CallbackType.ON_INIT;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnInit.class)) {
             callbackType = CallbackType.ON_INIT;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPrePrepare.class)) {
             callbackType = CallbackType.ON_PREPARE;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPrepare.class)) {
             callbackType = CallbackType.ON_PREPARE;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnPreUpdateFormula.class)) {
             callbackType = CallbackType.ON_UPDATE_FORMULAS;
             callbackPhase=EventPhase.BEFORE;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(OnUpdateFormula.class)) {
             callbackType = CallbackType.ON_UPDATE_FORMULAS;
             callbackPhase=EventPhase.AFTER;
             conf.put("trackSystemObjects", methodDecoration.getBoolean("trackSystemObjects"));
+            conf.put("nameFilter",methodDecoration.getString("name"));
         } else if (methodDecoration.isName(net.vpc.upa.config.Function.class)) {
             callbackType = CallbackType.ON_EVAL;
             callbackPhase=EventPhase.AFTER;
