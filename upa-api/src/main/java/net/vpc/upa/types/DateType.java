@@ -68,6 +68,12 @@ public class DateType extends TemporalType implements Cloneable {
     }
 
     @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.DATE;
+    }
+
+
+    @Override
     protected void reevaluateCachedValues() {
         super.reevaluateCachedValues();
         if(!defaultValueUserDefined && !isNullable()) {

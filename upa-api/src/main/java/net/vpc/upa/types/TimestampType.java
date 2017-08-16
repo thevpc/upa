@@ -79,6 +79,12 @@ public class TimestampType extends TemporalType implements Cloneable {
     }
 
     @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.TIMESTAMP;
+    }
+
+
+    @Override
     protected void reevaluateCachedValues() {
         super.reevaluateCachedValues();
         if(!defaultValueUserDefined && !isNullable()) {

@@ -38,6 +38,8 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class YearType extends TemporalType implements Cloneable {
     public static final YearType DEFAULT = new YearType("YEAR", null, true);
@@ -151,4 +153,29 @@ public class YearType extends TemporalType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.YEAR;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("YearType[" + getPlatformType().getName() + "]");
+        Map<String, Object> v = new LinkedHashMap<String, Object>();
+//        if(name!=null){
+//            v.put("name",name);
+//        }
+        if (min != null) {
+            v.put("min", min);
+        }
+        if (min != null) {
+            v.put("max", max);
+        }
+        if (v.size() > 0) {
+            sb.append(v);
+        }
+        return sb.toString();
+    }
+
 }

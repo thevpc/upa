@@ -58,10 +58,14 @@ public class DateTimeType extends TemporalType implements Cloneable {
     public DateTimeType(String name, Class<? extends java.util.Date> type, DateTime min, DateTime max, boolean nullable) {
         super(name, type == null ? DateTime.class : type, 0, 0, nullable);
         if (type != null && !type.equals(DateTime.class) && !type.equals(java.util.Date.class) && !type.equals(java.sql.Timestamp.class)) {
-            throw new UPAIllegalArgumentException("Invalid Temporal Type " + type);
+            throw new UPAIllegalArgumentException("Invalid Temporal for DateTime : " + type);
         }
         this.min = min;
         this.max = max;
+    }
+    @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.DATETIME;
     }
 
     @Override

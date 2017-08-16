@@ -126,12 +126,12 @@ public class Year extends Temporal {
     public String toString() {
         Calendar c = Calendar.getInstance();
         c.setTime(this);
-        int year = c.get(Calendar.YEAR) + 1900;
+        int year = c.get(Calendar.YEAR);// + 1900;
         char[] buf = "2000".toCharArray();
         buf[0] = (char) ('0' + (year / 1000));
-        buf[1] = (char) (((year / 100) % 10));
-        buf[2] = (char) (((year / 10) % 10));
-        buf[3] = (char) ((year % 10));
+        buf[1] = (char) ('0' + ((year / 100) % 10));
+        buf[2] = (char) ('0' + ((year / 10) % 10));
+        buf[3] = (char) ('0' + (year % 10));
         return new String(buf);
     }
 }

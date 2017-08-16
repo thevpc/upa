@@ -39,6 +39,8 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TimeType extends TemporalType implements Cloneable {
     public static final TimeType DEFAULT = new TimeType("DATE", Time.class, null, null, true);
@@ -178,4 +180,29 @@ public class TimeType extends TemporalType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.TIME;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("TimeType[" + getPlatformType().getName() + "]");
+        Map<String, Object> v = new LinkedHashMap<String, Object>();
+//        if(name!=null){
+//            v.put("name",name);
+//        }
+        if (min != null) {
+            v.put("min", min);
+        }
+        if (min != null) {
+            v.put("max", max);
+        }
+        if (v.size() > 0) {
+            sb.append(v);
+        }
+        return sb.toString();
+    }
+
 }

@@ -59,6 +59,11 @@ public class MonthType extends TemporalType implements Cloneable {
     }
 
     @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.MONTH;
+    }
+
+    @Override
     protected void reevaluateCachedValues() {
         super.reevaluateCachedValues();
         if(!defaultValueUserDefined && !isNullable()) {

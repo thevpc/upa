@@ -156,6 +156,11 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
     }
 
     @Override
+    public TemporalOption getTemporalOption() {
+        return TemporalOption.DEFAULT;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

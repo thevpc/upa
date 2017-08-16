@@ -47,5 +47,7 @@ public abstract class TemporalType extends DefaultDataType implements Cloneable 
         super(name, platformType, scale, precision, nullable);
     }
 
+    public abstract TemporalOption getTemporalOption();
+
     public abstract java.util.Date validateDate(java.util.Date date);
 }

@@ -105,7 +105,7 @@ public class Month extends Temporal {
     public String toString() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getTime());
-        int year = calendar.get(Calendar.YEAR) + 1900;
+        int year = calendar.get(Calendar.YEAR) ;//+ 1900;
         int month = calendar.get(Calendar.MONTH) + 1;
         char[] buf = "2000-00".toCharArray();
         buf[0] = (char) ('0' + (year / 1000));

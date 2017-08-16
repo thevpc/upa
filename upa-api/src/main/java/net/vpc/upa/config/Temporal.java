@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 12/21/12 10:28 PM
  */
-@Target(value = {ElementType.TYPE})
+@Target(value = {ElementType.FIELD,ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Temporal {
     /**
