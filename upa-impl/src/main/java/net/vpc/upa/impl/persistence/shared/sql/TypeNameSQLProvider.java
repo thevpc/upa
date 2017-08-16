@@ -7,6 +7,9 @@ import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DatePeriodType;
+import net.vpc.upa.types.TemporalOption;
+import net.vpc.upa.types.TemporalType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -59,17 +62,21 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
             return "INT";
         }
 
-        if (PlatformUtils.isAnyDate(platformType)) {
-            if (PlatformUtils.isTime(platformType)) {
-                return "TIME";
-            } else if (PlatformUtils.isTimestamp(platformType)) {
-                return "TIMESTAMP";
-            } else if (PlatformUtils.isDateTime(platformType)) {
-                return "DATETIME";
-            } else if (PlatformUtils.isDateOnly(platformType)) {
-                return "DATE";
-            } else {
-                return "DATE";
+        if(datatype instanceof TemporalType){
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if(temporalOption==null){
+                temporalOption=TemporalOption.DEFAULT;
+            }
+            switch (temporalOption){
+                case DATE: return "DATE";
+                case DATETIME: return "DATETIME";
+                case TIMESTAMP: return "TIMESTAMP";
+                case TIME: return "TIME";
+                case MONTH: return "DATE";
+                case YEAR: return "DATE";
+                default:{
+                    throw new IllegalArgumentException("Unsupported "+datatype);
+                }
             }
         }
         if (Object.class
