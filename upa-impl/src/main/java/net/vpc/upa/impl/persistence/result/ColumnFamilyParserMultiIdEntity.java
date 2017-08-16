@@ -24,7 +24,7 @@ class ColumnFamilyParserMultiIdEntity implements ColumnFamilyParser {
         if (idarr == null) {
             resultObject = ResultObject.forNull();
         } else {
-            NamedId key = new NamedId(idarr, columnFamily.entity);
+            NamedId key = new NamedId(idarr, columnFamily.entity.getName());
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {

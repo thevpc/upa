@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.persistence.result;
 
-import net.vpc.upa.Document;
 import net.vpc.upa.NamedId;
 import net.vpc.upa.Query;
 import net.vpc.upa.exceptions.UPAException;
@@ -38,7 +37,7 @@ public class TypeInfoSupParserHelper {
         if (idarr == null) {
             resultObject = ResultObject.forNull();
         } else {
-            NamedId key = new NamedId(idarr, columnFamily.entity);
+            NamedId key = new NamedId(idarr, columnFamily.entity.getName());
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
@@ -62,7 +61,7 @@ public class TypeInfoSupParserHelper {
             lazyResult.values.put(columnFamily.binding, null);
             columnFamily.currentResult=null;
         } else {
-            NamedId key = new NamedId(idarr, columnFamily.entity);
+            NamedId key = new NamedId(idarr, columnFamily.entity.getName());
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
