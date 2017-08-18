@@ -21,11 +21,11 @@ import java.util.logging.Logger;
  * Created by vpc on 6/18/16.
  */
 public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> implements QueryResultParserHelper {
-    private static final Logger log=Logger.getLogger(DefaultObjectQueryResultLazyList.class.getName());
     public static final CacheMap<NamedId, ResultObject> NO_RESULT_CACHE = new NoCacheMap<NamedId, ResultObject>();
-    boolean workspace_hasNext=true;
+    private static final Logger log = Logger.getLogger(DefaultObjectQueryResultLazyList.class.getName());
+    boolean workspace_hasNext = true;
     Map<String, Set<Object>> workspace_missingObjects = new HashMap<String, Set<Object>>();
-    List<LazyResult> workspace_todos = new ArrayList<LazyResult>();
+    List<LazyResult> workspace_todos = new LinkedList<>();
     LinkedList<T> workspace_available = new LinkedList<T>();
     int workspace_missingObjectsCount = 0;
     int workspace_bulkSize = UPAImplDefaults.QueryHints_REDUCE_BUFFER_SIZE;
@@ -39,7 +39,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private ObjectFactory ofactory;
     private ColumnFamily[] columnFamilies;
     private QueryResultItemBuilder resultBuilder;
-    private long rowIndex=-1;
+    private long rowIndex = -1;
+
     public DefaultObjectQueryResultLazyList(
             PersistenceUnit pu,
             QueryExecutor queryExecutor,
@@ -57,9 +58,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         } else {
             hints = new HashMap<String, Object>(hints);
         }
-        int supportCacheSize=UPAUtils.convertToInt(hints.get(QueryHints.QUERY_CACHE_SIZE),UPAImplDefaults.QueryHints_CACHE_SIZE);
+        int supportCacheSize = UPAUtils.convertToInt(hints.get(QueryHints.QUERY_CACHE_SIZE), UPAImplDefaults.QueryHints_CACHE_SIZE);
         if (supportCacheSize < 0) {
-            supportCacheSize=UPAImplDefaults.QueryHints_CACHE_SIZE;
+            supportCacheSize = UPAImplDefaults.QueryHints_CACHE_SIZE;
         }
         if (supportCacheSize > 0) {
             CacheMap<NamedId, ResultObject> sharedCache = (CacheMap<NamedId, ResultObject>) hints.get(UPAImplKeys.QueryHints_queryCache);
@@ -112,7 +113,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     } else {
                         Field field = ancestor.entity.getField(parentBinding.getName());
                         Relationship manyToOneRelationship = field.getManyToOneRelationship();
-                        if (manyToOneRelationship!=null) {
+                        if (manyToOneRelationship != null) {
                             columnFamily = new ColumnFamily(parentBinding, manyToOneRelationship.getTargetEntity(), ofactory);
                             columnFamily.documentType = itemAsDocument;
                             bindingToTypeInfos0.put(parentBinding, columnFamily);
@@ -216,7 +217,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         Set<Object> list = workspace_missingObjects.get(entity);
         if (list == null) {
             list = new HashSet<Object>();
-            workspace_missingObjects.put(entity,list);
+            workspace_missingObjects.put(entity, list);
         }
         if (list.add(id)) {
             workspace_missingObjectsCount++;
@@ -229,74 +230,100 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     }
 
     private void reduceWorkspace() {
-        if(workspace_missingObjectsCount>0) {
+        if (workspace_missingObjectsCount > 0) {
             CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
-            for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
-                String entityName = e.getKey();
-                Entity entity = persistenceUnit.getEntity(entityName);
-                EntityBuilder builder = entity.getBuilder();
-                Set<Object> itemsToReduce = e.getValue();
-                Set<Object> itemsToReduce2 = new HashSet<Object>(itemsToReduce.size());
+            while (!workspace_missingObjects.isEmpty()) {
+                for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
+                    String entityName = e.getKey();
+                    Entity entity = persistenceUnit.getEntity(entityName);
+                    EntityBuilder builder = entity.getBuilder();
+                    Set<Object> itemsToReduce = e.getValue();
+                    Set<Object> itemsToReduce2 = new HashSet<Object>(itemsToReduce.size());
 
-                //should remove already loaded objects
-                for (Object o : itemsToReduce) {
-                    NamedId id=new NamedId(o,entityName);
-                    if (!referencesCache.containsKey(id)) {
-                        itemsToReduce2.add(o);
-                    }else{
+                    //should remove already loaded objects
+                    for (Object o : itemsToReduce) {
+                        NamedId id = new NamedId(o, entityName);
+                        if (!referencesCache.containsKey(id)) {
+                            itemsToReduce2.add(o);
+                        } else {
 //                        System.out.println(">>  Already reduced "+id);
-                    }
-                }
-                if(itemsToReduce2.size()>0) {
-                    if (!UPAImplDefaults.PRODUCTION_MODE) {
-                        net.vpc.upa.Properties properties = persistenceUnit.getProperties();
-                        long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
-                        if (oldMaxReduceSize < itemsToReduce2.size()) {
-                            oldMaxReduceSize = itemsToReduce2.size();
-                            properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, oldMaxReduceSize);
                         }
                     }
-                    Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
-                    int count = 0;
-                    if (itemAsDocument) {
-                        for (Document o : query.getDocumentList()) {
-                            ResultObject resultObject = ResultObject.forDocument(null,o);
-                            NamedId id = new NamedId(builder.objectToId(o), entityName);
-                            if (!referencesCache.containsKey(id)) {
-                                referencesCache.put(id, resultObject);
+                    if (itemsToReduce2.size() > 0) {
+                        if (!UPAImplDefaults.PRODUCTION_MODE) {
+                            net.vpc.upa.Properties properties = persistenceUnit.getProperties();
+                            long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
+                            if (oldMaxReduceSize < itemsToReduce2.size()) {
+                                oldMaxReduceSize = itemsToReduce2.size();
+                                properties.setLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, oldMaxReduceSize);
                             }
-                            count++;
                         }
-                    } else {
-                        for (Object o : query.getResultList()) {
-                            ResultObject resultObject = ResultObject.forObject(o,builder.objectToDocument(o, true));
-                            NamedId id = new NamedId(builder.objectToId(o), entityName);
-                            if (!referencesCache.containsKey(id)) {
-                                referencesCache.put(id, resultObject);
-                            }
-                            count++;
+                        int count = loadElementsToCache(referencesCache, entity, itemsToReduce2);
+                        if (count != itemsToReduce2.size()) {
+                            throw new UPAIllegalArgumentException("Problem");
                         }
                     }
-                    if (count != itemsToReduce2.size()) {
-                        throw new UPAIllegalArgumentException("Problem");
+                }
+                workspace_missingObjects.clear();
+                workspace_missingObjectsCount=0;
+                for (Iterator<LazyResult> iterator = workspace_todos.iterator(); iterator.hasNext(); ) {
+                    LazyResult lazyResult = iterator.next();
+                    for (Iterator<Map.Entry<BindingId, NamedId>> itemTodosIterator = lazyResult.todos.entrySet().iterator(); itemTodosIterator.hasNext(); ) {
+                        Map.Entry<BindingId, NamedId> t = itemTodosIterator.next();
+                        NamedId value = t.getValue();
+                        ResultObject ro = referencesCache.get(value);
+                        if (ro == null) {
+                            //this would happen if cache is overloaded
+                            //so let me reload this object
+                            addWorkspaceMissingObject((String) value.getName(), value.getId());
+                        } else {
+                            lazyResult.values.put(t.getKey(), ro.entityResult);
+                            itemTodosIterator.remove();
+                        }
                     }
                 }
-            }
-            workspace_missingObjects.clear();
-            for (LazyResult lazyResult : workspace_todos) {
-                for (Map.Entry<BindingId, NamedId> t : lazyResult.todos.entrySet()) {
-                    ResultObject ro = referencesCache.get(t.getValue());
-                    if (ro == null) {
-                        throw new UPAIllegalArgumentException("Problem");
+                for (Iterator<LazyResult> iterator = workspace_todos.iterator(); iterator.hasNext(); ) {
+                    LazyResult lazyResult = iterator.next();
+                    if(lazyResult.todos.isEmpty()){
+                        workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
+                        iterator.remove();
+                    }else{
+                        break;
                     }
-                    lazyResult.values.put(t.getKey(), ro.entityResult);
                 }
-                workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
+                workspace_hasTodos = !workspace_todos.isEmpty();
             }
-            workspace_todos.clear();
-            workspace_hasTodos = false;
-            workspace_missingObjectsCount = 0;
+            if(workspace_hasTodos){
+                throw new IllegalArgumentException("Should not have remaining Todos. This is a bug.");
+            }
         }
+    }
+
+    private int loadElementsToCache(CacheMap<NamedId, ResultObject> referencesCache, Entity entity, Collection<Object> itemsToReduce2) {
+        String entityName = entity.getName();
+        EntityBuilder builder = entity.getBuilder();
+        Query query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
+        int count = 0;
+        if (itemAsDocument) {
+            for (Document o : query.getDocumentList()) {
+                ResultObject resultObject = ResultObject.forDocument(null, o);
+                NamedId id = new NamedId(builder.objectToId(o), entityName);
+                if (!referencesCache.containsKey(id)) {
+                    referencesCache.put(id, resultObject);
+                }
+                count++;
+            }
+        } else {
+            for (Object o : query.getResultList()) {
+                ResultObject resultObject = ResultObject.forObject(o, builder.objectToDocument(o, true));
+                NamedId id = new NamedId(builder.objectToId(o), entityName);
+                if (!referencesCache.containsKey(id)) {
+                    referencesCache.put(id, resultObject);
+                }
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
@@ -305,7 +332,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             return true;
         }
         while (workspace_hasNext) {
-            QueryResult result=getQueryResult();
+            QueryResult result = getQueryResult();
             workspace_hasNext = result.hasNext();
             if (workspace_hasNext) {
                 rowIndex++;
