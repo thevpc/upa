@@ -470,6 +470,14 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 ReplaceResult replaceChild = null;
                 replaceChild = UQLCompiledUtils.replaceExpressions(child, this, updateContext);
                 CompiledExpressionExt e2 = replaceChild.getExpression(child);
+                if(replaceChild.isNewInstance()){
+                    return ReplaceResult.continueWithNewCleanObj(e2);
+                }
+                //no alias should replace this with Table Name
+                if(o.getReferrer() instanceof Entity) {
+                    o.setName("$(" + ((Entity) o.getReferrer()).getName()+")");
+                    return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;//continueWithNewCleanObj(e2);
+                }
                 e2.unsetParent();
                 return ReplaceResult.continueWithNewCleanObj(e2);
             }
