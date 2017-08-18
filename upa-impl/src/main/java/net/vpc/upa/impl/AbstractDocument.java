@@ -492,10 +492,38 @@ public abstract class AbstractDocument implements Document {
         if (o == null) {
             return false;
         }
+        if (o == this) {
+            return true;
+        }
         if (!(o instanceof Document)) {
             return false;
         }
-        return toMap().equals(((Document) o).toMap());
+        Document m = (Document) o;
+        if (m.size() != size())
+            return false;
+
+        try {
+            Iterator<Map.Entry<String,Object>> i = entrySet().iterator();
+            while (i.hasNext()) {
+                Map.Entry<String,Object> e = i.next();
+                String key = e.getKey();
+                Object value = e.getValue();
+                if (value == null) {
+                    if (!(m.get(key)==null && m.isSet(key))) {
+                        return false;
+                    }
+                } else {
+                    if (!value.equals(m.get(key))) {
+                        return false;
+                    }
+                }
+            }
+        } catch (ClassCastException unused) {
+            return false;
+        } catch (NullPointerException unused) {
+            return false;
+        }
+        return true;
     }
 
     /**

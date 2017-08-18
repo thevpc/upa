@@ -82,6 +82,10 @@ public class DefaultDocument extends AbstractDocument {
         return new HashMap<String, Object>(base);
     }
 
+    @Override
+    public Set<Map.Entry<String, Object>> entrySet() {
+        return base.entrySet();
+    }
 
     @Override
     public void addPropertyChangeListener(String key, PropertyChangeListener listener) {

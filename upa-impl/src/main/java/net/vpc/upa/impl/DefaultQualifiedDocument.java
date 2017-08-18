@@ -90,6 +90,11 @@ public class DefaultQualifiedDocument extends AbstractDocument implements Qualif
     }
 
     @Override
+    public Set<Map.Entry<String, Object>> entrySet() {
+        return getDocument().entrySet();
+    }
+
+    @Override
     public boolean isSet(String key) {
         return getDocument().isSet(key);
     }
