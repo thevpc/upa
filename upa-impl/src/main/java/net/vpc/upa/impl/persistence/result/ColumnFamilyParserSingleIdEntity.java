@@ -37,6 +37,12 @@ class ColumnFamilyParserSingleIdEntity implements ColumnFamilyParser {
                     Object fieldValue = result.read(f.dbIndex);
                     o.entityDocument.setObject(f.name, fieldValue);
                 }
+//            }else{
+//                List<FieldInfo> fields = columnFamily.nonIdFields;
+//                for (FieldInfo f : fields) {
+//                    Object fieldValue = result.read(f.dbIndex);
+//                    o.entityDocument.setObject(f.name, fieldValue);
+//                }
             }
             resultObject = o;
         }

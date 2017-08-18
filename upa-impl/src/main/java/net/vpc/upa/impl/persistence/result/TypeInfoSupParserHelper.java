@@ -65,9 +65,11 @@ public class TypeInfoSupParserHelper {
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
-                lazyResult.incomplete=true;
+                lazyResult.incomplete = true;
                 lazyResult.todos.put(columnFamily.binding, key);
-                parser.addWorkspaceMissingObject(columnFamily.entity.getName(),idarr);
+                parser.addWorkspaceMissingObject(columnFamily.entity.getName(), idarr);
+            }else{
+                lazyResult.values.put(columnFamily.binding, o.entityResult);
             }
         }
     }
