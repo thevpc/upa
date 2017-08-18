@@ -97,7 +97,7 @@ public final class InSelection extends OperatorExpression
     public Expression copy() {
         Expression[] left2 = new Expression[left.length];
         for (int i = 0; i < left2.length; i++) {
-            left2[i] = left2[i].copy();
+            left2[i] = left[i].copy();
         }
         return new InSelection(left2, (Select) query.copy());
     }
