@@ -1992,7 +1992,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         // remove(toExpression(oldId, null),
         // getPersistenceUnit().isRecurseDelete(), false, new RemoveTrace());
-        removeCore(getBuilder().idToExpression(oldId, null), getPersistenceUnit().isRecurseDelete(), new DefaultRemoveTrace(), context);
+        removeCore(getBuilder().idToExpression(oldId, UQLUtils.THIS), getPersistenceUnit().isRecurseDelete(), new DefaultRemoveTrace(), context);
 //        transactionSucceeded = true;
 //        return o;
 //    }
@@ -2120,7 +2120,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (object == null) {
                 return null;
             }
-            return tb.idToExpression(tb.objectToId(object), null);
+            return tb.idToExpression(tb.objectToId(object), UQLUtils.THIS);
         } else if (df.size() == 1) {
             return new Equals(new Var(mf.get(0).getName()), child.getObject(df.get(0).getName()));
         } else {
@@ -2311,7 +2311,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         EntityBuilder builder = getBuilder();
         Document rec = builder.objectToDocument(objectOrDocument);
         Object entityToId = builder.documentToId(rec);
-        if (entityToId == null || getEntityCount(builder.idToExpression(entityToId, null)) == 0) {
+        if (entityToId == null || getEntityCount(builder.idToExpression(entityToId, UQLUtils.THIS)) == 0) {
             persist(objectOrDocument, hints);
             return true;
         } else {
@@ -2336,7 +2336,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         persistCore(document, context);
         Object postPersistId = getBuilder().documentToId(document);
         if (getShield().isUpdateFormulaOnPersistSupported()) {
-            Expression expr = getBuilder().idToExpression(postPersistId, null);
+            Expression expr = getBuilder().idToExpression(postPersistId, UQLUtils.THIS);
 //            expr.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
             List<Field> fields = getFields(FieldFilters2.PERSIST_FORMULA);
             if (fields.size() > 0) {
@@ -2407,9 +2407,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         Document uDocument = getBuilder().objectToDocument(entity, false);
         List<Index> uniqueIndexes = getIndexes(true);
         if (uniqueIndexes.isEmpty()) {
-            return getBuilder().idToExpression(key, null);
+            return getBuilder().idToExpression(key, UQLUtils.THIS);
         }
-        Expression or = getBuilder().idToExpression(key, null);
+        Expression or = getBuilder().idToExpression(key, UQLUtils.THIS);
         for (Index index : uniqueIndexes) {
             Field[] f = index.getFields();
             Expression e1 = null;
@@ -2708,7 +2708,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public boolean contains(Object key) throws UPAException {
-        return key != null && getEntityCount(getBuilder().idToExpression(key, getName())) > 0;
+        return key != null && getEntityCount(getBuilder().idToExpression(key, UQLUtils.THIS)) > 0;
     }
 
     public int updateDocuments(Document updates, Expression condition) throws UPAException {
@@ -2905,7 +2905,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         Object idToUpdate = getBuilder().objectToId(updatesValue);
         Expression idExpression = null;
         if (idToUpdate != null) {
-            idExpression = getBuilder().idToExpression(idToUpdate, null);
+            idExpression = getBuilder().idToExpression(idToUpdate, UQLUtils.THIS);
             updateSingleObject = true;
         }
         if (updateQuery.getUpdateConditionType() == null /*|| options.getUpdateConditionType()==ConditionType.DEFAULT*/) {
@@ -3088,7 +3088,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         if (extraConditions.size() == primaryFields.size()) {
             //all primary are defined
-            Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), getName());
+            Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), UQLUtils.THIS);
             if (updateCondition == null || !updateCondition.isValid()) {
                 updateCondition = expression;
             } else if (!expression.equals(updateCondition)) {

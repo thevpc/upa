@@ -1,10 +1,6 @@
 package net.vpc.upa.impl.navigator;
 
 import net.vpc.upa.Document;
-import net.vpc.upa.types.ConstraintsException;
-import net.vpc.upa.types.StringType;
-import net.vpc.upa.types.StringTypeCharValidator;
-import net.vpc.upa.types.TypeValueValidator;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
@@ -12,7 +8,12 @@ import net.vpc.upa.expressions.InCollection;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.IdentifierUtils;
+import net.vpc.upa.types.ConstraintsException;
+import net.vpc.upa.types.StringType;
+import net.vpc.upa.types.StringTypeCharValidator;
+import net.vpc.upa.types.TypeValueValidator;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -27,8 +28,7 @@ public class StringKeyEntityNavigator extends DefaultEntityNavigator {
     }
 
     @Override
-    public Object getNewKey()
-            throws UPAException {
+    public Object getNewKey() throws UPAException {
 
         List<Field> primaryFields = entity.getIdFields();
         if (primaryFields.size() == 1) {
@@ -44,14 +44,16 @@ public class StringKeyEntityNavigator extends DefaultEntityNavigator {
         String goodId = null;
         for (int i = 0; i < asynchNbrTry; i++) {
             TreeSet<String> requestedIds = new TreeSet<String>();
-            InCollection idsSet = new InCollection(new Var(idName));
+            InCollection idsSet = new InCollection(new Var(new Var(UQLUtils.THIS),idName));
             for (int j = 0; j < synchNbrTry; j++) {
                 String id = (String) generateValue(field);
                 idsSet.add(new Literal(id));
                 requestedIds.add(id);
             }
 
-            List<Document> documentList = entity.createQuery((new Select()).from(entity.getName()).field(new Var(idName)).where(idsSet)).getDocumentList();
+            List<Document> documentList = entity.createQuery((new Select())
+                    .from(entity.getName(), UQLUtils.THIS)
+                    .field(new Var(new Var(UQLUtils.THIS),idName)).where(idsSet)).getDocumentList();
             TreeSet<String> foundIds = new TreeSet<String>();
             for (Document document : documentList) {
                 foundIds.add(document.getString());

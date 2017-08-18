@@ -6,6 +6,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 
 public class LongKeyEntityNavigator extends DefaultEntityNavigator {
 
@@ -13,22 +14,25 @@ public class LongKeyEntityNavigator extends DefaultEntityNavigator {
         super(entity);
     }
 
-    public long getNewValue(Field field)
-            throws UPAException {
-        Entity entity=field.getEntity();
-        Select s=new Select().from(entity.getName());
-        s.field(new Plus(new Coalesce(new Max(new Var(field.getName())),new Literal(0)),new Literal(1)),"next");
+    public long getNewValue(Field field) throws UPAException {
+        Entity entity = field.getEntity();
+        Select s = new Select().from(entity.getName(), UQLUtils.THIS);
+        s.field(new Plus(
+                        new Coalesce(
+                                new Max(new Var(new Var(UQLUtils.THIS), field.getName())),
+                                new Literal(0L)
+                        ),
+                        new Literal(1L)),
+                "nextValue");
         Document next = field.getPersistenceUnit().createQuery(s).getDocument();
-        if(next!=null){
-            return next.getLong("next");
-        }else{
+        if (next != null) {
+            return next.getLong("nextValue");
+        } else {
             return 0;
         }
     }
 
-    public Object getNewKey()
-            throws UPAException {
+    public Object getNewKey() throws UPAException {
         return entity.createId(getNewValue(entity.getIdFields().get(0)));
     }
-
 }

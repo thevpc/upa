@@ -2,6 +2,7 @@ package net.vpc.upa.test;
 
 import net.vpc.upa.*;
 import net.vpc.upa.expressions.UserExpression;
+import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
@@ -20,6 +21,7 @@ public class CrudUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
+        UPAImplDefaults.PRODUCTION_MODE=false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(CrudUC.class);
         pu.addEntity(SharedClient.class);
         pu.start();

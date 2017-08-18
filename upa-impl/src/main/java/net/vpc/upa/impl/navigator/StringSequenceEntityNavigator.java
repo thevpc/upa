@@ -71,59 +71,7 @@ public class StringSequenceEntityNavigator extends DefaultEntityNavigator {
         return StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement,null));
     }
 
-//    public String getNewValue(Field field)
-//            throws UPAException {
-//        Entity table = field.getEntity();
-//        String idName = field.getName();
-//        Entity<Key, PrivateSequence> seq = table.getPersistenceUnit().getEntity(sequenceTable);
-//
-//        SequenceManager sm = new EntitySequenceManager(seq);
-//        final String sequenceName = getSequenceName();
-//        sm.getOrCreateSequence(name, sequenceName, initialValue, allocationSize);
-//        int i = sm.getCurrentValue(name, sequenceName);
-//        while (true) {
-//            final String nextIdString = getValue(i);
-//            List<Document> list = table.createQueryBuilder().setExpression(new Equals(new Var(idName), nextIdString)).setFieldFilter(new FieldNameFilter(idName)).getDocumentList();
-//            if (list.isEmpty()) {
-//                return nextIdString;
-//            }
-//            i = sm.nextValue(name, sequenceName);
-//        }
-//    }
-//
-//    public String getValue(int v) {
-//        Pattern p = Pattern.compile("\\{[^\\{\\}]*\\}");
-//        final Matcher m = p.matcher(format);
-//        StringBuffer sb = new StringBuffer();
-//        boolean result;
-//        while (result = m.find()) {
-//            final String g = m.group();
-//            if (g.equals("{#}")) {
-//                m.appendReplacement(sb, String.valueOf(v));
-//            } else {
-//                SimpleDateFormat d = new SimpleDateFormat(g.substring(1, g.length() - 1));
-//                m.appendReplacement(sb, d.format(new Date()));
-//            }
-//        }
-//        return sb.toString();
-//    }
-//
-//    public String getSequenceName() {
-//        Pattern p = Pattern.compile("\\{[^\\{\\}]*\\}");
-//        final Matcher m = p.matcher(format);
-//        StringBuffer sb = new StringBuffer(name == null ? "" : name);
-//        boolean result;
-//        while (result = m.find()) {
-//            final String g = m.group();
-//            if (g.equals("{#}")) {
-//                //m.appendReplacement(sb, g);
-//            } else {
-//                SimpleDateFormat d = new SimpleDateFormat(g.substring(1, g.length() - 1));
-//                m.appendReplacement(sb, d.format(new Date()));
-//            }
-//        }
-//        return sb.toString();
-//    }
+
 
     protected void setPattern(String pattern) {
         this.format = pattern;

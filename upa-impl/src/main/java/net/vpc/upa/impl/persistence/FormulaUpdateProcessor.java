@@ -10,6 +10,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -258,7 +259,7 @@ public class FormulaUpdateProcessor {
                 Object v = cf.getValue(field, aKeysToUpdate, context);
                 u.setObject(field.getName(), new Cast(new Param(null, v), field.getDataType()));
             }
-            x += entity.updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, entity.getName()), context);
+            x += entity.updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS), context);
         }
 //                        if (monitor != null) {
 //                            monitor.stepOut();
@@ -295,7 +296,7 @@ public class FormulaUpdateProcessor {
             // System.out.println("ITERATIVE_VALIDATION = " +
             // validationPass.pass+" : "+validationPass.fields+" :
             // "+keysToUpdate[r]);
-            x += validateDefault(fields, entity.getBuilder().idToExpression(aKeysToUpdate, entity.getName()));
+            x += validateDefault(fields, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS));
         }
 //                        if (monitor != null) {
 //                            monitor.stepOut();

@@ -164,19 +164,19 @@ public final class DefaultQueryBuilder extends AbstractQuery implements QueryBui
         }
         Expression criteria = null;
         if (getId() != null) {
-            Expression e = entity.getBuilder().idToExpression(getId(), entityName);
+            Expression e = entity.getBuilder().idToExpression(getId(), UQLUtils.THIS);
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getKey() != null) {
-            Expression e = (entity.getBuilder().idToExpression(entity.getBuilder().keyToId(getKey()), entityName));
+            Expression e = (entity.getBuilder().idToExpression(entity.getBuilder().keyToId(getKey()), UQLUtils.THIS));
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getPrototype() != null) {
-            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, entityName);
+            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, UQLUtils.THIS);
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getDocumentPrototype() != null) {
-            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), entityName));
+            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), UQLUtils.THIS));
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getExpression() != null) {

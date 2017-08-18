@@ -55,7 +55,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         String pathFieldName = support.getHierarchyPathField();
         Entity entity = relation.getSourceRole().getEntity();
         if (parent_id != null) {
-            Document r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, null)).setFieldFilter(FieldFilters.byName(pathFieldName)).getDocument();
+            Document r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, UQLUtils.THIS)).setFieldFilter(FieldFilters.byName(pathFieldName)).getDocument();
             if (r != null) {
                 path = r.getString(pathFieldName) + path;
             }

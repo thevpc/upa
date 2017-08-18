@@ -3,6 +3,7 @@ package net.vpc.upa.impl.extension;
 import java.util.ArrayList;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
@@ -58,7 +59,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
                 new Or(
                         new Like(new Var(getHierarchyPathField()), new Param("isParentParam", "%/" + p + "/%/" + c)),
                         new Like(new Var(getHierarchyPathField()), new Param("isParentParam", "%/" + p + "/" + c))),
-                getEntity().getBuilder().idToExpression(childId, null))) > 0;
+                getEntity().getBuilder().idToExpression(childId, UQLUtils.THIS))) > 0;
     }
 
     public boolean isEqualOrIsParent(Object parentId, Object childId) throws UPAException {
@@ -69,7 +70,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
                         //TODO incorrect
                         new Like(new Var(getHierarchyPathField()), new Param("isEqualOrIsParentParam1", "%/" + p + "/%")),
                         new Like(new Var(getHierarchyPathField()), new Param("isEqualOrIsParentParam2", "%/" + p))),
-                getEntity().getBuilder().idToExpression(childId, null))) > 0;
+                getEntity().getBuilder().idToExpression(childId, UQLUtils.THIS))) > 0;
     }
 
     public static Relationship getTreeRelation(Entity e) throws UPAException {
@@ -188,7 +189,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
         Object[] parent_id = new Object[lfs.size()];
         Document values = getEntity()
                 .createQueryBuilder()
-                .byExpression(getEntity().getBuilder().idToExpression(id, null))
+                .byExpression(getEntity().getBuilder().idToExpression(id, UQLUtils.THIS))
                 .setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(lfs)))
                 .getDocument();
         if (values == null) {
@@ -207,19 +208,19 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
 
         String path = toStringId(id);
         if (parent_id != null) {
-            Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
+            Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), UQLUtils.THIS)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
             if (r != null) {
                 path = r.getString(getHierarchyPathField()) + getHierarchyPathSeparator() + path;
             }
         }
         Document r2 = getEntity().getBuilder().createDocument();
         r2.setString(getHierarchyPathField(), path);
-        getEntity().updateCore(r2, getEntity().getBuilder().idToExpression(id, getEntity().getName()), executionContext);
+        getEntity().updateCore(r2, getEntity().getBuilder().idToExpression(id, UQLUtils.THIS), executionContext);
     }
 
     protected void validateChildren(Object key, EntityExecutionContext executionContext)
             throws UPAException {
-        Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(key, null)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
+        Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(key, UQLUtils.THIS)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
 
         List<Field> lfs = getTreeRelationship().getSourceRole().getFields();
         Concat concat = new Concat();

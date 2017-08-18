@@ -7,6 +7,7 @@ import net.vpc.upa.expressions.*;
 import java.util.*;
 import java.util.logging.Logger;
 
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 
@@ -281,7 +282,7 @@ public class DefaultEntityShield implements EntityShield {
         if (oldId != null) {
             Expression e = getFullNonCloneableDocumentsExpression();
             if (e != null && e.isValid()) {
-                And a = new And(entity.getBuilder().idToExpression(oldId, null), e);
+                And a = new And(entity.getBuilder().idToExpression(oldId, UQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     throw new CloneDocumentNotAllowedException(entity);
                 }
@@ -321,7 +322,7 @@ public class DefaultEntityShield implements EntityShield {
         if (oldId != null) {
             Expression e = getFullNonRenamableDocumentsExpression();
             if (e != null && e.isValid()) {
-                And a = new And(entity.getBuilder().idToExpression(oldId, null), e);
+                And a = new And(entity.getBuilder().idToExpression(oldId, UQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     throw new UnrenamableDocumentException(entity);
                 }
@@ -466,7 +467,7 @@ public class DefaultEntityShield implements EntityShield {
                         pko[i] = document.getObject(df.get(i).getName());
                     }
                     Object pk = entity.createId(pko);
-                    long c = entity.getParentEntity().getEntityCount(new And(parentUnupdatable, entity.getParentEntity().getBuilder().idToExpression(pk, null)));
+                    long c = entity.getParentEntity().getEntityCount(new And(parentUnupdatable, entity.getParentEntity().getBuilder().idToExpression(pk, UQLUtils.THIS)));
                     if (c > 0) {
                         throw new UnupdatableDocumentException(entity.getParentEntity());
                     }
@@ -477,7 +478,7 @@ public class DefaultEntityShield implements EntityShield {
             Expression keyExpresson = null;
             if (!keyGenerated) {
                 Object key = entity.getBuilder().documentToId(document);
-                keyExpresson = entity.getBuilder().idToExpression(key, null);
+                keyExpresson = entity.getBuilder().idToExpression(key, UQLUtils.THIS);
             }
             Entity p = entity.getParentEntity();
             if (p != null) {
@@ -571,7 +572,7 @@ public class DefaultEntityShield implements EntityShield {
             }
             Expression e = getFullNonDeletableDocumentsExpression();
             if (e != null && e.isValid()) {
-                Expression a = new And(entity.getBuilder().idToExpression(k, null), e);
+                Expression a = new And(entity.getBuilder().idToExpression(k, UQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     return false;
                 }
@@ -592,7 +593,7 @@ public class DefaultEntityShield implements EntityShield {
             }
             Expression e = getFullNonUpdatableDocumentsExpression();
             if (e != null && e.isValid()) {
-                Expression a = new And(entity.getBuilder().idToExpression(id, null), e);
+                Expression a = new And(entity.getBuilder().idToExpression(id, UQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     return false;
                 }

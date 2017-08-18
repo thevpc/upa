@@ -42,7 +42,7 @@ public class VarSQLProvider extends AbstractSQLProvider {
 //                ExpressionDeclarationList declarationList = o.getDeclarationList();
 //                name = persistenceManager.getPersistenceName(declarationList.getValue(null).getName(), PersistenceNameStrategyNames.ALIAS);
 //            } else {
-                if(o.getName().equals(entity.getName())){
+                if(o.getName().equals("$("+entity.getName()+")")){
                     //it is intended to be the very table name
                     String name = persistenceStore.getValidIdentifier(persistenceStore.getPersistenceName(entity));
                     sb.append(persistenceStore.getValidIdentifier(name));

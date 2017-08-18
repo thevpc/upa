@@ -31,6 +31,7 @@ import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
 import net.vpc.upa.impl.uql.DefaultExpressionManager;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
@@ -1584,7 +1585,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             Document r = entity.getBuilder().createDocument();
             r.setObject("lockId", id);
             long i = entity.createUpdateQuery().setValues(r)
-                    .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), null)))
+                    .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), UQLUtils.THIS)))
                     .execute();
             if (i != 1) {
                 throw new AlreadyLockedPersistenceUnitException("Already Locked Document");
@@ -1675,7 +1676,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     private void ensureLockDef(String entityName) throws UPAException {
         Entity lockInfoEntity = getLockInfoEntity();
-        if (lockInfoEntity.getEntityCount(lockInfoEntity.getBuilder().idToExpression(lockInfoEntity.createId(entityName), null)) == 0) {
+        if (lockInfoEntity.getEntityCount(lockInfoEntity.getBuilder().idToExpression(lockInfoEntity.createId(entityName), UQLUtils.THIS)) == 0) {
             Document r = lockInfoEntity.getBuilder().createDocument();
             r.setString("lockedEntity", entityName);
             lockInfoEntity.persist(r);

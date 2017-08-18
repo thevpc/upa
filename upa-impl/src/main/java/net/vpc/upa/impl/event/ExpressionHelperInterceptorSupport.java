@@ -14,6 +14,7 @@ import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.expressions.IdCollectionExpression;
+import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.Collection;
@@ -167,7 +168,7 @@ public abstract class ExpressionHelperInterceptorSupport extends EntityListenerA
     public final void onPersist(PersistEvent event)
             throws UPAException {
         if (acceptPersistDocumentHelper(event)) {
-            afterPersistHelper(event, translateExpression(event.getEntity().getBuilder().idToExpression(event.getPersistedId(), null)));
+            afterPersistHelper(event, translateExpression(event.getEntity().getBuilder().idToExpression(event.getPersistedId(), UQLUtils.THIS)));
         }
     }
 
