@@ -521,6 +521,9 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         if (other == null) {
             return this;
         }
+        if(other.isDistinct()){
+            distinct();
+        }
 
         if (other.queryEntity != null) {
             from((CompiledNameOrSelect) (other.queryEntity.copy()), other.queryEntityAlias);

@@ -1,6 +1,8 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.ext.EntityExt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,10 @@ class DefaultEntityPrivateChecker {
 
     private List<String> errors = new ArrayList<String>();
     private List<String> warnings = new ArrayList<String>();
-    private DefaultEntity defaultEntity;
+    private Entity defaultEntity;
     protected final Logger log = Logger.getLogger(DefaultEntityPrivateChecker.class.getName());
 
-    public DefaultEntityPrivateChecker(DefaultEntity defaultEntity) {
+    public DefaultEntityPrivateChecker(Entity defaultEntity) {
         this.defaultEntity = defaultEntity;
     }
 

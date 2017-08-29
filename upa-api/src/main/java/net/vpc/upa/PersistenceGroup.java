@@ -79,9 +79,9 @@ public interface PersistenceGroup extends Closeable {
 
     Session getCurrentSession() throws UPAException;
 
-    Session findCurrentSession() throws UPAException;
-
     void setCurrentSession(Session session) throws UPAException;
+
+    Session findCurrentSession() throws UPAException;
 
     Session openSession();
 
@@ -103,6 +103,8 @@ public interface PersistenceGroup extends Closeable {
     PersistenceGroupSecurityManager getPersistenceGroupSecurityManager();
 
     void setPersistenceGroupSecurityManager(PersistenceGroupSecurityManager securityManager);
+
+    Callback addCallback(MethodCallback callback);
 
     void addCallback(Callback callback);
 

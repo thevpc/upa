@@ -515,7 +515,7 @@ public interface PersistenceUnit extends Closeable {
 
     Key createKey(Object... keyValues);
 
-    Callback addCallback(CallbackConfig callbackConfig);
+    Callback addCallback(MethodCallback methodCallback);
 
     void addCallback(Callback callback);
 

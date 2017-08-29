@@ -1406,7 +1406,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                 unions.add(entity);
             } else {
                 script.addStatement(getCreateTableStatement(entity, executionContext));
-                if (entity.needsView()) {
+                if (entity.hasAssociatedView()) {
                     viewForEntities.add(entity);
                 }
                 List<Index> indexes = entity.getIndexes(null);

@@ -38,7 +38,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
  * Custom Formula is a general purpose Formula definition
- * @see {@link net.vpc.upa.Formula}
+ * @see Formula
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface CustomFormula extends Formula {

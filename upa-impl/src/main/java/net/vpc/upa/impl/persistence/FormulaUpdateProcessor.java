@@ -8,6 +8,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.DefaultEntity;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.uql.util.UQLUtils;
@@ -259,7 +260,7 @@ public class FormulaUpdateProcessor {
                 Object v = cf.getValue(field, aKeysToUpdate, context);
                 u.setObject(field.getName(), new Cast(new Param(null, v), field.getDataType()));
             }
-            x += entity.updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS), context);
+            x += ((EntityExt)entity).updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS), context);
         }
 //                        if (monitor != null) {
 //                            monitor.stepOut();
@@ -317,7 +318,7 @@ public class FormulaUpdateProcessor {
             u.setObject(field.getName(), validExpression);
         }
         try {
-            return entity.updateCore(u, expression, context);
+            return ((EntityExt)entity).updateCore(u, expression, context);
         } catch (UPAException ex) {
 //            Log.bug(ex);
 //            Select sb0 = new Select();

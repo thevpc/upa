@@ -408,7 +408,7 @@ public class DefaultEntityShield implements EntityShield {
             }
         }
         Entity p = entity.getParentEntity();
-        if (p != null) {
+        if (p != null && !p.equals(entity)) {
             Expression ss = entity.childToParentExpression(condition);
             try{
                 p.getShield().checkUpdate(null, ss);

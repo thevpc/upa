@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
@@ -29,7 +28,7 @@ public class EntityNameSQLProvider extends AbstractSQLProvider {
         String entityName = o.getName();
 
         Entity e = context.getPersistenceUnit().getEntity(entityName);
-        if (o.isUseView() && e.needsView() && persistenceStore.isViewSupported()) {
+        if (o.isUseView() && e.hasAssociatedView() && persistenceStore.isViewSupported()) {
             return persistenceStore.getValidIdentifier(persistenceStore.getPersistenceName(e, PersistenceNameType.IMPLICIT_VIEW));
         } else {
             return persistenceStore.getValidIdentifier(persistenceStore.getPersistenceName(e));

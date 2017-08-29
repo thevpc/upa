@@ -289,7 +289,7 @@ public class ConfigureScanListener implements ScanListener {
             if (!PlatformUtils.isStatic(method)) {
                 instance = persistenceUnit.getFactory().getSingleton(type);
             }
-            persistenceUnit.addCallback(new CallbackConfig(instance,
+            persistenceUnit.addCallback(new MethodCallback(instance,
                     method,
                     callbackType,
                     callbackPhase,

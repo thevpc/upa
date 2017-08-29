@@ -52,7 +52,7 @@ public class SelectSQLProvider extends AbstractSQLProvider {
                 PersistenceStore persistenceStore = context.getPersistenceStore();
                 CompiledEntityName entityName = (CompiledEntityName) entity;
                 Entity e = context.getPersistenceUnit().getEntity(entityName.getName());
-                if (entityName.isUseView() && e.needsView() && persistenceStore.isViewSupported()) {
+                if (entityName.isUseView() && e.hasAssociatedView() && persistenceStore.isViewSupported()) {
                     CompiledEntityName v = new CompiledEntityName(e.getName(),true);
                     sb.append(sqlManager.getSQL(v, context, declarations));
                 } else {

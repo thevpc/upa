@@ -4,6 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
 import net.vpc.upa.impl.uql.util.UQLUtils;
@@ -11,6 +12,7 @@ import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.vpc.upa.callbacks.EntityListenerAdapter;
 import net.vpc.upa.callbacks.PersistEvent;
@@ -68,7 +70,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 
         Document u2 = entity.getBuilder().createDocument();
         u2.setString(pathFieldName, path);
-        entity.updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), UQLUtils.THIS), updateContext);
+        ((EntityExt)entity).updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), UQLUtils.THIS), updateContext);
 
         //context.getExecutionContext().getPersistenceStore().executeUpdate(new Update().entity(entity.getName()).set(pathFieldName, path).where(new KeyExpression(entity, insertedId, null)), executionContext2);
     }
@@ -107,23 +109,17 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         if (!updates.isSet(updateTreeFields.get(0).getName())) {
             return;
         }
-        Object val = updates.getObject(updateTreeFields.get(0).getName());
-        if (val instanceof Literal) {
-            val = ((Literal) val).getValue();
-        } else if (val instanceof Expression) {
-//                    Log.bug("1232123");
-            return;
-        }
-        if (val != null) {
+        boolean valSet=updates.isSet(updateTreeFields.get(0).getName());
+        if (valSet) {
             Object parentId = relation.extractId(updates);
+            Entity entity = event.getEntity();
+            String k = "recurse";
+            if (!executionContext.isSet(k)) {
+                List<Object> idList = entity.createQueryBuilder().byExpression(event.getFilterExpression()).orderBy(entity.getUpdateFormulasOrder()).getIdList();
+                executionContext.setObject(k, idList);
+            }
+            List<Object> r = (List<Object>) executionContext.getObject("recurse");
             if(parentId!=null) {
-                Entity entity = event.getEntity();
-                String k = "recurse";
-                if (!executionContext.isSet(k)) {
-                    List<Object> idList = entity.createQueryBuilder().byExpression(event.getFilterExpression()).orderBy(entity.getUpdateFormulasOrder()).getIdList();
-                    executionContext.setObject(k, idList);
-                }
-                List<Object> r = (List<Object>) executionContext.getObject("recurse");
                 for (Object aR : r) {
                     if (support.isEqualOrIsParent(aR, parentId)) {
                         throw new UPAException("RedundancyProblem");

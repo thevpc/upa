@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author taha.bensalah@gmail.com
  */
-public class CallbackConfig {
+public class MethodCallback {
 
     private Object instance;
     private Method method;
@@ -20,17 +20,17 @@ public class CallbackConfig {
     private EventPhase phase;
     private Map<String, Object> configuration;
 
-    public CallbackConfig() {
+    public MethodCallback() {
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase) {
+    public MethodCallback(Object instance, Method method, CallbackType callbackType, EventPhase phase) {
         this.instance = instance;
         this.method = method;
         this.phase = phase;
         this.callbackType = callbackType;
     }
 
-    public CallbackConfig(Object instance, Method method, CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
+    public MethodCallback(Object instance, Method method, CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
         this.instance = instance;
         this.method = method;
         this.callbackType = callbackType;
@@ -46,7 +46,7 @@ public class CallbackConfig {
         return instance;
     }
 
-    public CallbackConfig setInstance(Object instance) {
+    public MethodCallback setInstance(Object instance) {
         this.instance = instance;
         return this;
     }
@@ -55,7 +55,7 @@ public class CallbackConfig {
         return method;
     }
 
-    public CallbackConfig setMethod(Method method) {
+    public MethodCallback setMethod(Method method) {
         this.method = method;
         return this;
     }
@@ -64,7 +64,7 @@ public class CallbackConfig {
         return callbackType;
     }
 
-    public CallbackConfig setCallbackType(CallbackType callbackType) {
+    public MethodCallback setCallbackType(CallbackType callbackType) {
         this.callbackType = callbackType;
         return this;
     }
@@ -73,12 +73,12 @@ public class CallbackConfig {
         return configuration;
     }
 
-    public CallbackConfig setConfiguration(Map<String, Object> configuration) {
+    public MethodCallback setConfiguration(Map<String, Object> configuration) {
         this.configuration = configuration;
         return this;
     }
 
-    public CallbackConfig putConfig(String name, Object value) {
+    public MethodCallback putConfig(String name, Object value) {
         if (configuration == null) {
             configuration = new HashMap<String, Object>();
         }

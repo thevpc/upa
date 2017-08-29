@@ -367,6 +367,13 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
         this.persistenceGroupSecurityManager = persistenceGroupSecurityManager;
     }
 
+    @Override
+    public Callback addCallback(MethodCallback methodCallback) {
+        Callback c = getContext().createCallback(methodCallback);
+        addCallback(c);
+        return c;
+    }
+
     public void addCallback(Callback callback) {
         if (callback.getCallbackType() == CallbackType.ON_EVAL) {
             throw new UPAException("Unsupported", callback.getCallbackType());

@@ -39,7 +39,6 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Order;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.EntityExtension;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.PersistenceStore;
@@ -64,9 +63,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     void setUserExcludeModifiers(FlagSet<EntityModifier> modifiers);
 
     FlagSet<EntityModifier> getModifiers();
-
-    // Framework Friend Methods
-    void setModifiers(FlagSet<EntityModifier> modifiers);
 
     boolean exists();
 
@@ -121,13 +117,13 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     Section getSection(String path, MissingStrategy missingStrategy);
 
-    Section addSection(String name, String parentPath);
+//    Section addSection(String name, String parentPath);
 
-    Section addSection(String name, String parentPath, int index);
+//    Section addSection(String name, String parentPath, int index);
 
-    Section addSection(String name, int index);
+    Section addSection(String path, int index);
 
-    Section addSection(String name);
+    Section addSection(String path);
 
     //@Contract("null->false")
     boolean isInstance(Object object);
@@ -138,11 +134,11 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     Class getIdType();
 
-    boolean needsView();
+    boolean hasAssociatedView();
 
     DataType getDataType();
 
-    void setDataType(DataType newDataType);
+//    void setDataType(DataType newDataType);
 
     boolean isDependentOnEntity(String entityName);
 
@@ -408,22 +404,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     void removeDefinitionListener(DefinitionListener definitionListener);
 
-    //////////////////////////////////////////////////////////
-    //
-    //    CORE
-    //
-    //////////////////////////////////////////////////////////
-    int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext);
-
-    void persistCore(Document values, EntityExecutionContext executionContext);
-
-    int removeCore(Expression condition, boolean recurse, RemoveTrace deleteInfo, EntityExecutionContext executionContext);
-
-    int clearCore(EntityExecutionContext executionContext);
-
-//    long updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) ;
-
-    int initializeCore(EntityExecutionContext executionContext);
 
     Object compile(Expression expression, String alias);
 

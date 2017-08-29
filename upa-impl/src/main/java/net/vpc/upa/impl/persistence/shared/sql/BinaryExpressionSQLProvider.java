@@ -115,7 +115,7 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             case DIV: {
-                s = leftValue + " - " + rightValue;
+                s = leftValue + " / " + rightValue;
                 break;
             }
             case REM: {

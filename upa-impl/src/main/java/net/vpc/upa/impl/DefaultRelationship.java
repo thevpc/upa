@@ -3,6 +3,7 @@ package net.vpc.upa.impl;
 import java.util.ArrayList;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.uql.util.ThatExpressionReplacer;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
@@ -165,7 +166,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         }
         setPersistenceName(preferredPersistenceName.toString());
         if (getRelationshipType() == RelationshipType.COMPOSITION) {
-            ((DefaultEntity) sourceEntity).setCompositionRelationship(this);
+            ((EntityExt) sourceEntity).setCompositionRelationship(this);
         }
 
         targetRole.setFields(targetFields);

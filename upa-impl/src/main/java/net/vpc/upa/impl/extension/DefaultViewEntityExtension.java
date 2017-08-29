@@ -8,6 +8,7 @@ import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
 import net.vpc.upa.impl.DefaultEntity;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.ViewEntityExtension;
 
@@ -41,7 +42,7 @@ public class DefaultViewEntityExtension extends AbstractEntityExtension implemen
 //        if(!modifiers.contains(EntityModifier.GENERATED_ID)){
 //            effectiveModifiers=effectiveModifiers.remove(EntityModifier.GENERATED_ID);
 //        }
-        ((DefaultEntity)entity).setModifiers(effectiveModifiers);
+        ((EntityExt)entity).setModifiers(effectiveModifiers);
     }
 
     @Override

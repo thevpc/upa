@@ -13,6 +13,7 @@ import net.vpc.upa.impl.event.FormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.RelationshipSourceFormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.RelationshipTargetFormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.SingleDataInterceptorSupport;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
@@ -39,7 +40,7 @@ import java.util.logging.Logger;
 
 public class DefaultEntity extends AbstractUPAObject implements // for simple
         // use
-        Entity {
+        EntityExt {
 
     //    public static final String EXPRESSION_SURELY_EXISTS = "EXPRESSION_SURELY_EXISTS";
     public static final String PERSIST_USED_FIELDS = "PERSIST_USED_FIELDS";
@@ -159,7 +160,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        }
 //    }
 //
-    public static String[] getTableNames(DefaultEntity[] tables) {
+    public static String[] getTableNames(Entity[] tables) {
         String[] names = new String[tables.length];
         for (int i = 0; i < tables.length; i++) {
             names[i] = tables[i].getName();
@@ -391,6 +392,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
+    public void registerField(Field field) throws UPAException {
+        fieldsMap.put(getPersistenceUnit().getNamingStrategy().getUniformValue(field.getName()), (Field) field);
+    }
+
+    @Override
     public int indexOfField(String field) throws UPAException {
         List<String> strings = new ArrayList<String>(fieldsMap.keySet());
         return strings.indexOf(field);
@@ -479,16 +485,17 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
-    public Section addSection(String name, String parentPath, int index) throws UPAException {
-        if (name == null) {
+    public Section addSection(String path, int index) throws UPAException {
+        if (path == null) {
             throw new NullPointerException();
         }
-        if (name.contains("/")) {
-            throw new UPAIllegalArgumentException("Name cannot contain '/'");
+        String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
+        if (canonicalPathArray.length==0) {
+            throw new UPAIllegalArgumentException("Emty Name");
         }
-        String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(parentPath);
         Section parentModule = null;
-        for (String n : canonicalPathArray) {
+        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength-1; i++) {
+            String n = canonicalPathArray[i];
             Section next = null;
             if (parentModule == null) {
                 next = getSection(n);
@@ -499,7 +506,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, name);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length-1]);
 
         if (parentModule == null) {
             addPart(currentModule, index);
@@ -632,7 +639,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             throw new NoSuchSectionException(path);
                         }
                         case CREATE: {
-                            next = addSection(n, null);
+                            next = addSection(n);
                             break;
                         }
                         case NULL: {
@@ -652,7 +659,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             throw new NoSuchSectionException(path);
                         }
                         case CREATE: {
-                            next = addSection(n, module.getPath());
+                            next = addSection(module.getPath()+"/"+n);
                             break;
                         }
                         case NULL: {
@@ -669,17 +676,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return module;
     }
 
-    @Override
-    public Section addSection(String name, String parentPath) throws UPAException {
-        return addSection(name, parentPath, -1);
-    }
+//    @Override
+//    public Section addSection(String name, String parentPath) throws UPAException {
+//        return addSection(name, parentPath, -1);
+//    }
 
-    public Section addSection(String name) throws UPAException {
-        return addSection(name, null, -1);
-    }
-
-    public Section addSection(String name, int index) throws UPAException {
-        return addSection(name, null, index);
+    public Section addSection(String path) throws UPAException {
+        return addSection(path, -1);
     }
 
     public void invalidateStructureCache() {
@@ -717,7 +720,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    public boolean needsView() throws UPAException {
+    public boolean hasAssociatedView() throws UPAException {
         return !getFields(FieldFilters2.VIEW).isEmpty();
     }
 
@@ -1451,7 +1454,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return field;
     }
 
-    protected void beforePartAdded(EntityPart parent, EntityPart part, int index) throws UPAException {
+    public void beforePartAdded(EntityPart parent, EntityPart part, int index) throws UPAException {
         if (part instanceof Field) {
             if (part.getName() == null || part.getName().length() == 0) {
                 throw new UPAException(new I18NString("InvalidNameException"), "Field with no name for " + getName());
@@ -1983,7 +1986,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 try {
                     // r.getDetailsTable().updateAllDocuments(updates,
                     // condition, check);
-                    r.getSourceRole().getEntity().updateCore(updates, condition, context);
+                    ((EntityExt)r.getSourceRole().getEntity()).updateCore(updates, condition, context);
                 } catch (UpdateDocumentKeyNotFoundException e) {
                     // if no updates no matter
                 }

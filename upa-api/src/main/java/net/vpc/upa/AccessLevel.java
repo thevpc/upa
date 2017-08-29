@@ -44,7 +44,7 @@ package net.vpc.upa;
  * </p>
  * <p>
  * Protected access level means that only application should have the ability to modify/query the field (for insertion, for update or for retrieval)
- * This is most likely when the field is created by developer wut should net be "used" by end users
+ * This is most likely when the field is created by developer but should not be "used" by end users
  * </p>
  * <p>
  * Private access level means that only ORM (UPA Framework or one of its extensions) should have the ability to modify/query the field (for insertion, for update or for retrieval).

@@ -547,16 +547,16 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     @Override
-    public Callback createCallback(CallbackConfig callbackConfig) {
-        Object instance = callbackConfig.getInstance();
-        Method method = callbackConfig.getMethod();
-        CallbackType callbackType = callbackConfig.getCallbackType();
-        Map<String, Object> configuration = callbackConfig.getConfiguration();
+    public Callback createCallback(MethodCallback methodCallback) {
+        Object instance = methodCallback.getInstance();
+        Method method = methodCallback.getMethod();
+        CallbackType callbackType = methodCallback.getCallbackType();
+        Map<String, Object> configuration = methodCallback.getConfiguration();
 //        if (configuration == null) {
 //            configuration = new HashMap<String, Object>();
 //        }
         ObjectType objectType = PlatformUtils.getUndefinedValue(ObjectType.class);
-        EventPhase phase = callbackConfig.getPhase();
+        EventPhase phase = methodCallback.getPhase();
         if (PlatformUtils.isUndefinedValue(ObjectType.class, objectType)) {
             for (Class<?> parameterType : method.getParameterTypes()) {
                 if (parameterType.equals(ContextEvent.class)) {
@@ -1239,8 +1239,8 @@ public class DefaultUPAContext implements UPAContext {
     }
 
     @Override
-    public Callback addCallback(CallbackConfig callbackConfig) {
-        Callback c = createCallback(callbackConfig);
+    public Callback addCallback(MethodCallback methodCallback) {
+        Callback c = createCallback(methodCallback);
         addCallback(c);
         return c;
     }

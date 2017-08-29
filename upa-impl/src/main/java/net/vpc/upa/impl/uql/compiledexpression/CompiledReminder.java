@@ -14,27 +14,9 @@ public final class CompiledReminder extends CompiledBinaryOperatorExpression
 
     public CompiledReminder(CompiledExpressionExt left, Object right) {
         super(BinaryOperator.REM, left, right);
-        Class t = left.getTypeTransform().getTargetType().getPlatformType();
-        Class r = left.getTypeTransform().getTargetType().getPlatformType();
-        if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.BIGINT);
-        }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.LONG);
-        }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.INT);
-        }
     }
 
     public CompiledReminder(CompiledExpressionExt left, CompiledExpressionExt right) {
         super(BinaryOperator.REM, left, right);
-        Class t = left.getTypeTransform().getTargetType().getPlatformType();
-        Class r = left.getTypeTransform().getTargetType().getPlatformType();
-        if(BigInteger.class.equals(t) || BigInteger.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.BIGINT);
-        }else if(Long.class.equals(t) || Long.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.LONG);
-        }else if(Integer.class.equals(t) || Integer.class.equals(r)){
-            setTypeTransform(IdentityDataTypeTransform.INT);
-        }
     }
 }

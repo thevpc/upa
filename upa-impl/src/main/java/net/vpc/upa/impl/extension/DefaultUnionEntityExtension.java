@@ -8,6 +8,7 @@ import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionQueryInfo;
 import net.vpc.upa.impl.DefaultEntity;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.UnionEntityExtension;
@@ -71,7 +72,7 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
 //        if (!modifiers.contains(EntityModifier.GENERATED_ID)) {
 //            effectiveModifiers=effectiveModifiers.remove(EntityModifier.GENERATED_ID);
 //        }
-        ((DefaultEntity) entity).setModifiers(effectiveModifiers);
+        ((EntityExt) entity).setModifiers(effectiveModifiers);
     }
 
     protected QueryStatement createViewQuery() throws UPAException {

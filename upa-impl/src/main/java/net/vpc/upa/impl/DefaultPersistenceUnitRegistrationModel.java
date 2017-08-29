@@ -15,6 +15,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.NamingStrategy;
 import net.vpc.upa.Package;
 import net.vpc.upa.exceptions.*;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 
@@ -139,11 +140,11 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public void registerField(Field item) {
-        DefaultEntity entity = (DefaultEntity)item.getEntity();
+        EntityExt entity = (EntityExt) item.getEntity();
         Package module = entity.getParent();
         String s = (module == null ? "/" : module.getPath() + "/") + entity.getName() + "/" + item.getName();
         fields.put(s, item);
-        entity.fieldsMap.put(entity.getPersistenceUnit().getNamingStrategy().getUniformValue(item.getName()), (Field) item);
+        entity.registerField((Field) item);
     }
 
     public void unregisterField(Field item) {

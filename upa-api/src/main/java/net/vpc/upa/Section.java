@@ -89,15 +89,11 @@ public interface Section extends EntityPart {
     int getPartsCount() throws UPAException;
 
 
-    Section findSection(String name) throws UPAException;
+    Section findSection(String path) throws UPAException;
 
     Section getSection(String path, MissingStrategy missingStrategy) throws UPAException;
 
-    Section addSection(String name, String parentPath) throws UPAException;
+    Section addSection(String path, int index) throws UPAException;
 
-    Section addSection(String name, String parentPath, int index) throws UPAException;
-
-    Section addSection(String name, int index) throws UPAException;
-
-    Section addSection(String name) throws UPAException;
+    Section addSection(String path) throws UPAException;
 }

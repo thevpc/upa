@@ -1,13 +1,11 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.ConditionType;
-import net.vpc.upa.Key;
-import net.vpc.upa.Document;
-import net.vpc.upa.UpdateQuery;
+import net.vpc.upa.*;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldOrFilter;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 
 import java.util.*;
@@ -16,7 +14,7 @@ import java.util.*;
  * Created by vpc on 6/12/16.
  */
 public class DefaultUpdateQuery implements UpdateQuery{
-    private DefaultEntity entity;
+    private EntityExt entity;
     private ConditionType updateConditionType = ConditionType.EXPRESSION;
     private Object updateCondition;
     private Object updatesValue;
@@ -25,7 +23,7 @@ public class DefaultUpdateQuery implements UpdateQuery{
     private FieldFilter formulaFieldsFilter;
     private Map<String,Object> hints;
 
-    public DefaultUpdateQuery(DefaultEntity entity) {
+    public DefaultUpdateQuery(EntityExt entity) {
         this.entity = entity;
     }
 

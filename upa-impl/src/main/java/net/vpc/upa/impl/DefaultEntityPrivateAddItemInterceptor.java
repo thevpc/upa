@@ -5,6 +5,7 @@ import net.vpc.upa.EntityPart;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.Section;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
 
@@ -13,9 +14,9 @@ import net.vpc.upa.impl.util.ItemInterceptor;
 * @creationdate 1/8/13 2:25 PM
 */
 class DefaultEntityPrivateAddItemInterceptor implements ItemInterceptor<EntityPart> {
-    private DefaultEntity defaultEntity;
+    private EntityExt defaultEntity;
 
-    public DefaultEntityPrivateAddItemInterceptor(DefaultEntity defaultEntity) {
+    public DefaultEntityPrivateAddItemInterceptor(EntityExt defaultEntity) {
         this.defaultEntity = defaultEntity;
     }
 

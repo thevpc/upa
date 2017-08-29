@@ -170,6 +170,7 @@ public abstract class CompiledBinaryOperatorExpression extends DefaultCompiledEx
 
     public CompiledExpressionExt copy() {
         CompiledBinaryOperatorExpression o = create(getOperator(), getLeft().copy(), getRight().copy());
+        o.setTypeTransform(getTypeTransform());
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;

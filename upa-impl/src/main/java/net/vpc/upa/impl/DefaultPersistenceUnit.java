@@ -22,6 +22,7 @@ import net.vpc.upa.impl.config.decorations.DefaultDecorationRepository;
 import net.vpc.upa.impl.eval.functions.FunctionCallback;
 import net.vpc.upa.impl.eval.functions.PasswordQLFunction;
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
@@ -421,9 +422,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             }
         }
         for (Entity entity : getEntities()) {
-            if (entity instanceof DefaultEntity) {
-                ((DefaultEntity) entity).commitExpressionModelChanges();
-            }
+            ((EntityExt) entity).commitExpressionModelChanges();
         }
 
         List<OnHoldCommitAction> model = commitModelActions;
@@ -955,7 +954,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
 
         for (Entity entity : ops) {
-            entity.clearCore(context);
+            ((EntityExt)entity).clearCore(context);
         }
         getPersistenceStore().setNativeConstraintsEnabled(this, true);
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
@@ -2664,8 +2663,8 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     @Override
-    public Callback addCallback(CallbackConfig callbackConfig) {
-        Callback c = getPersistenceGroup().getContext().createCallback(callbackConfig);
+    public Callback addCallback(MethodCallback methodCallback) {
+        Callback c = getPersistenceGroup().getContext().createCallback(methodCallback);
         addCallback(c);
         return c;
     }

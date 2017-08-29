@@ -5,6 +5,7 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
+import net.vpc.upa.impl.ext.EntityExt;
 
 /**
  *
@@ -12,9 +13,9 @@ import net.vpc.upa.*;
  */
 public class DefaultEntityPrivateListener implements UPAObjectListener {
 
-    private DefaultEntity entity;
+    private EntityExt entity;
 
-    public DefaultEntityPrivateListener(DefaultEntity entity) {
+    public DefaultEntityPrivateListener(EntityExt entity) {
         this.entity = entity;
     }
 

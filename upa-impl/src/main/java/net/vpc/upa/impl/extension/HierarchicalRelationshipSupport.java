@@ -3,6 +3,7 @@ package net.vpc.upa.impl.extension;
 import java.util.ArrayList;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
@@ -206,16 +207,16 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             }
         }
 
-        String path = toStringId(id);
+        String path = getHierarchyPathSeparator()+toStringId(id);
         if (parent_id != null) {
             Document r = getEntity().createQueryBuilder().byExpression(getEntity().getBuilder().idToExpression(getEntity().createId(parent_id), UQLUtils.THIS)).setFieldFilter(FieldFilters.byName(getHierarchyPathField())).getDocument();
             if (r != null) {
-                path = r.getString(getHierarchyPathField()) + getHierarchyPathSeparator() + path;
+                path = r.getString(getHierarchyPathField()) + path;
             }
         }
         Document r2 = getEntity().getBuilder().createDocument();
         r2.setString(getHierarchyPathField(), path);
-        getEntity().updateCore(r2, getEntity().getBuilder().idToExpression(id, UQLUtils.THIS), executionContext);
+        ((EntityExt)getEntity()).updateCore(r2, getEntity().getBuilder().idToExpression(id, UQLUtils.THIS), executionContext);
     }
 
     protected void validateChildren(Object key, EntityExecutionContext executionContext)
@@ -258,7 +259,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
             Expression e = (new Equals(new Var(field.getName()), new Literal(kvalue[i], field.getDataType())));
             p = p == null ? e : new And(p, e);
         }
-        getEntity().updateCore(s, p, executionContext);
+        ((EntityExt)getEntity()).updateCore(s, p, executionContext);
         List<Object> children = getEntity().createQueryBuilder().byExpression(p).getIdList();
         for (Object aChildren : children) {
             validateChildren(aChildren, executionContext);

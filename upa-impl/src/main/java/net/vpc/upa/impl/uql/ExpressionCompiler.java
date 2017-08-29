@@ -22,6 +22,8 @@ import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.SerializableType;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,6 +166,20 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         //process children first !!
         CompiledExpressionExt left = tt.getLeft();
         CompiledExpressionExt right = tt.getRight();
+        if (tt instanceof CompiledMul || tt instanceof CompiledDiv || tt instanceof CompiledPlus || tt instanceof CompiledMinus
+                || tt instanceof CompiledLShift || tt instanceof CompiledRShift || tt instanceof CompiledURShift || tt instanceof CompiledXOr
+                || tt instanceof CompiledReminder || tt instanceof CompiledBitAnd || tt instanceof CompiledBitOr
+                ) {
+            CompiledExpressionExt left0=left;
+            CompiledExpressionExt right0=right;
+            if(left0 instanceof CompiledVarOrMethod){
+                left0=((CompiledVarOrMethod) left0).getDeepest();
+            }
+            if(right0 instanceof CompiledVarOrMethod){
+                right0=((CompiledVarOrMethod) right0).getDeepest();
+            }
+            tt.setTypeTransform(PlatformUtils.getDataTypeTransformAfterImplicitConversion(left0.getTypeTransform(),right0.getTypeTransform()));
+        }
         if (left instanceof CompiledVarOrMethod) {
             left = ((CompiledVarOrMethod) left).getDeepest();
         }
@@ -470,12 +486,12 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 ReplaceResult replaceChild = null;
                 replaceChild = UQLCompiledUtils.replaceExpressions(child, this, updateContext);
                 CompiledExpressionExt e2 = replaceChild.getExpression(child);
-                if(replaceChild.isNewInstance()){
+                if (replaceChild.isNewInstance()) {
                     return ReplaceResult.continueWithNewCleanObj(e2);
                 }
                 //no alias should replace this with Table Name
-                if(o.getReferrer() instanceof Entity) {
-                    o.setName("$(" + ((Entity) o.getReferrer()).getName()+")");
+                if (o.getReferrer() instanceof Entity) {
+                    o.setName("$(" + ((Entity) o.getReferrer()).getName() + ")");
                     return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;//continueWithNewCleanObj(e2);
                 }
                 e2.unsetParent();
@@ -551,8 +567,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         String parentAlias = null;
                         String oldEntityAlias = null;
                         if (o.getParentExpression() instanceof CompiledVar &&
-                                (entityAlias==null ||
-                                !entityAlias.equals(((CompiledVar) o.getParentExpression()).getName())
+                                (entityAlias == null ||
+                                        !entityAlias.equals(((CompiledVar) o.getParentExpression()).getName())
                                 )
                                 ) {
                             parentAlias = ((CompiledVar) o.getParentExpression()).getName();
@@ -976,11 +992,11 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             CompiledExpressionExt cond = null;
             Entity detailEntity = field.getEntity();
             for (Map.Entry<String, String> entry : rel.getTargetToSourceFieldNamesMap(false).entrySet()) {
-                String entityAlias2=entityAlias;
-                if(UQLUtils.THIS.equals(entityAlias2) && qs instanceof CompiledUpdate){
-                    entityAlias2=qs.getEntityAlias();
-                    if(entityAlias2==null){
-                        entityAlias2=detailEntity.getName();
+                String entityAlias2 = entityAlias;
+                if (UQLUtils.THIS.equals(entityAlias2) && qs instanceof CompiledUpdate) {
+                    entityAlias2 = qs.getEntityAlias();
+                    if (entityAlias2 == null) {
+                        entityAlias2 = detailEntity.getName();
                     }
                 }
                 CompiledVar detailAlias = new CompiledVar(entityAlias2, detailEntity, null);

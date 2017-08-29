@@ -124,7 +124,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                             throw new NoSuchSectionException(path);
                         }
                         case CREATE: {
-                            next = addSection(n, null);
+                            next = addSection(n);
                             break;
                         }
                         case NULL: {
@@ -144,7 +144,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                             throw new NoSuchSectionException(path);
                         }
                         case CREATE: {
-                            next = addSection(n, module.getPath());
+                            next = addSection(module.getPath()+"/"+n);
                             break;
                         }
                         case NULL: {
@@ -165,8 +165,8 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return getSection(name, MissingStrategy.ERROR);
     }
 
-    public Section findSection(String name) throws UPAException {
-        return getSection(name, MissingStrategy.NULL);
+    public Section findSection(String path) throws UPAException {
+        return getSection(path, MissingStrategy.NULL);
     }
 
     public List<EntityPart> getParts() {
@@ -341,16 +341,17 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     }
 
     @Override
-    public Section addSection(String name, String parentPath, int index) throws UPAException {
-        if (name == null) {
+    public Section addSection(String path, int index) throws UPAException {
+        if (path == null) {
             throw new NullPointerException();
         }
-        if (name.contains("/")) {
-            throw new UPAIllegalArgumentException("Name cannot contain '/'");
+        String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
+        if(canonicalPathArray.length==0){
+            throw new UPAIllegalArgumentException("Empty Name");
         }
-        String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(parentPath);
         Section parentModule = null;
-        for (String n : canonicalPathArray) {
+        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength-1; i++) {
+            String n = canonicalPathArray[i];
             Section next = null;
             if (parentModule == null) {
                 next = getSection(n);
@@ -361,7 +362,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, name);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length-1]);
 
         if (parentModule == null) {
             addPart(currentModule, index);
@@ -372,17 +373,8 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return currentModule;
     }
 
-    @Override
-    public Section addSection(String name, String parentPath) throws UPAException {
-        return addSection(name, parentPath, -1);
-    }
-
-    public Section addSection(String name) throws UPAException {
-        return addSection(name, null, -1);
-    }
-
-    public Section addSection(String name, int index) throws UPAException {
-        return addSection(name, null, index);
+    public Section addSection(String path) throws UPAException {
+        return addSection(path, -1);
     }
 
 }

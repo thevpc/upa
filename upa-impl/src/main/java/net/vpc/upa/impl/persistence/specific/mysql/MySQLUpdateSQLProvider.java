@@ -93,7 +93,7 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
             sb.append(" Where ").append(sqlManager.getSQL(o.getCondition(), context, declarations));
         }
 
-        if (persistenceStore.isViewSupported() && entity.needsView() && o.getEntity().isUseView()) {
+        if (persistenceStore.isViewSupported() && entity.hasAssociatedView() && o.getEntity().isUseView()) {
             String implicitTableAlias = persistenceStore.getPersistenceName("IT_" + entity.getName(), PersistenceNameType.ALIAS);
             sb.append(" ");
             sb.append(tableNamePersisted).append(" ")
