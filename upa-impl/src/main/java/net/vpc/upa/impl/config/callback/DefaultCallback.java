@@ -27,6 +27,7 @@ public class DefaultCallback implements Callback {
         this.converter = converter;
         this.instance = o;
         this.method = m;
+        this.method.setAccessible(true);
         this.objectType = objectType;
         this.callbackType = callbackType;
         this.configuration = configuration;
