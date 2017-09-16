@@ -23,8 +23,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="upa-api" />
-    <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
+    <orderEntry type="library" name="Maven: com.sun.faces:jsf-api:2.1.1-b04" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.faces:jsf-impl:2.1.1-b04" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.primefaces:primefaces:3.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-web-api:6.0" level="project" />
+    <orderEntry type="library" name="Maven: net.vpc.upa:upa-api:1.2.0.35" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-impl:1.2.0.35.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cglib:cglib:3.2.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm:5.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
@@ -37,7 +43,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: stax:stax-api:1.0.1" level="project" />
-    <orderEntry type="module" module-name="upa-web" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-web:1.1.0.0.0" level="project" />
     <orderEntry type="module" module-name="upa-tutorial-business" />
     <orderEntry type="module" module-name="upa-tutorial-dal" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derby:10.9.1.0" level="project" />

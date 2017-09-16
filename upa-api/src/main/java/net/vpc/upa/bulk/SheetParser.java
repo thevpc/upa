@@ -55,6 +55,16 @@ public abstract class SheetParser extends AbstractDataParser {
         return columns;
     }
 
+    public List<String> getColumnNames() {
+        List<SheetColumn> columns = getColumns();
+        List<String> names=new ArrayList<>(columns.size());
+        for (SheetColumn column : columns) {
+            names.add(column.getName());
+        }
+        return names;
+    }
+
+
     public boolean isContainsHeader() {
         return containsHeader;
     }

@@ -122,7 +122,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
             if(parentId!=null) {
                 for (Object aR : r) {
                     if (support.isEqualOrIsParent(aR, parentId)) {
-                        throw new UPAException("RedundancyProblem");
+                        throw new UPAException("RedundancyProblem with id "+aR+" for Entity "+entity.getName());
                     }
                 }
             }
