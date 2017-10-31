@@ -221,7 +221,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             }
             listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
         }
-        log.log(Level.FINE, "Create PersistenceUnit {0}/{1}", new Object[]{getName(), persistenceUnit.getName()});
+        log.log(Level.FINE, "Create PersistenceUnit {0}", new Object[]{persistenceUnit.getAbsoluteName()});
         return persistenceUnit;
     }
 

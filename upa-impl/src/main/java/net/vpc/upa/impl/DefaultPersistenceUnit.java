@@ -377,6 +377,12 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         return name;
     }
 
+    @Override
+    public String getAbsoluteName() {
+        PersistenceGroup g = getPersistenceGroup();
+        return StringUtils.trim(g==null?null:g.getName())+"/"+StringUtils.trim(name);
+    }
+
     //    public boolean isSynchroneMode() {
 //        return synchMode;
 //    }
@@ -542,7 +548,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //    }
     @Override
     public void scan(ScanSource source, ScanListener listener, boolean configure) throws UPAException {
-        log.log(Level.FINE, "{0}/{1} : Configuring with strategy {2}", new Object[]{getPersistenceGroup().getName(), getPersistenceGroup().getName(), source});
+        log.log(Level.FINE, "{0} : Configuring with strategy {1}", new Object[]{getAbsoluteName(), source});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
         s.scan(this, source, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
     }
@@ -558,7 +564,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             } else {
                 sourceLog = source.toString();
             }
-            log.log(Level.FINE, "{0}/{1} : Define Entity {2}", new Object[]{getPersistenceGroup().getName(), getPersistenceGroup().getName(), sourceLog});
+            log.log(Level.FINE, "{0} : Define Entity {1}", new Object[]{getAbsoluteName(), sourceLog});
         }
         EntityDescriptor desc = entityDescriptorResolver.resolve(source);
 
@@ -1134,10 +1140,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void start() throws UPAException {
         if (started || starting) {
-            throw new PersistenceUnitException(new I18NString("PersistenceUnitAlreadyStartedException"),getName());
+            throw new PersistenceUnitException(new I18NString("PersistenceUnitAlreadyStartedException"),getAbsoluteName());
         }
         starting = true;
-        log.log(Level.FINE, "{0}/{1} : Start", new Object[]{getPersistenceGroup().getName(), getName()});
+        log.log(Level.FINE, "{0} : Start", new Object[]{getAbsoluteName()});
         setLastStartSucceeded(false);
         Session session = null;
         session = openSystemSession();

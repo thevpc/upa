@@ -119,6 +119,7 @@ public interface PersistenceUnit extends Closeable {
 //
 //    void setDefaultConnectionString(String defaultAdapterString);
     String getName();
+    String getAbsoluteName();
 
     //    void setName(String name) ;
     boolean isLastStartSucceeded();
