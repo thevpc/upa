@@ -85,101 +85,99 @@ public interface UQLParserConstants {
   /** RegularExpression Id. */
   int TOP = 42;
   /** RegularExpression Id. */
-  int EXISTS = 43;
+  int INTEGER_LITERAL = 43;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 44;
+  int DECIMAL_LITERAL = 44;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 45;
+  int HEX_LITERAL = 45;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 46;
+  int OCTAL_LITERAL = 46;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 47;
+  int FLOATING_POINT_LITERAL = 47;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 48;
+  int EXPONENT = 48;
   /** RegularExpression Id. */
-  int EXPONENT = 49;
+  int CHARACTER_LITERAL = 49;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 50;
+  int STRING_LITERAL = 50;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 51;
+  int IDENTIFIER = 51;
   /** RegularExpression Id. */
-  int IDENTIFIER = 52;
+  int LETTER = 52;
   /** RegularExpression Id. */
-  int LETTER = 53;
+  int PART_LETTER = 53;
   /** RegularExpression Id. */
-  int PART_LETTER = 54;
+  int LPAREN = 54;
   /** RegularExpression Id. */
-  int LPAREN = 55;
+  int RPAREN = 55;
   /** RegularExpression Id. */
-  int RPAREN = 56;
+  int LBRACE = 56;
   /** RegularExpression Id. */
-  int LBRACE = 57;
+  int RBRACE = 57;
   /** RegularExpression Id. */
-  int RBRACE = 58;
+  int LBRACKET = 58;
   /** RegularExpression Id. */
-  int LBRACKET = 59;
+  int RBRACKET = 59;
   /** RegularExpression Id. */
-  int RBRACKET = 60;
+  int SEMICOLON = 60;
   /** RegularExpression Id. */
-  int SEMICOLON = 61;
+  int COMMA = 61;
   /** RegularExpression Id. */
-  int COMMA = 62;
+  int DOT = 62;
   /** RegularExpression Id. */
-  int DOT = 63;
+  int EQ2 = 63;
   /** RegularExpression Id. */
-  int EQ2 = 64;
+  int GT = 64;
   /** RegularExpression Id. */
-  int GT = 65;
+  int LT = 65;
   /** RegularExpression Id. */
-  int LT = 66;
+  int BANG = 66;
   /** RegularExpression Id. */
-  int BANG = 67;
+  int TILDE = 67;
   /** RegularExpression Id. */
-  int TILDE = 68;
+  int HOOK = 68;
   /** RegularExpression Id. */
-  int HOOK = 69;
+  int COLON = 69;
   /** RegularExpression Id. */
-  int COLON = 70;
+  int EQ = 70;
   /** RegularExpression Id. */
-  int EQ = 71;
+  int LE = 71;
   /** RegularExpression Id. */
-  int LE = 72;
+  int GE = 72;
   /** RegularExpression Id. */
-  int GE = 73;
+  int NE = 73;
   /** RegularExpression Id. */
-  int NE = 74;
+  int NE2 = 74;
   /** RegularExpression Id. */
-  int NE2 = 75;
+  int SC_OR = 75;
   /** RegularExpression Id. */
-  int SC_OR = 76;
+  int SC_AND = 76;
   /** RegularExpression Id. */
-  int SC_AND = 77;
+  int INCR = 77;
   /** RegularExpression Id. */
-  int INCR = 78;
+  int DECR = 78;
   /** RegularExpression Id. */
-  int DECR = 79;
+  int PLUS = 79;
   /** RegularExpression Id. */
-  int PLUS = 80;
+  int MINUS = 80;
   /** RegularExpression Id. */
-  int MINUS = 81;
+  int STAR = 81;
   /** RegularExpression Id. */
-  int STAR = 82;
+  int SLASH = 82;
   /** RegularExpression Id. */
-  int SLASH = 83;
+  int BIT_AND = 83;
   /** RegularExpression Id. */
-  int BIT_AND = 84;
+  int BIT_OR = 84;
   /** RegularExpression Id. */
-  int BIT_OR = 85;
+  int XOR = 85;
   /** RegularExpression Id. */
-  int XOR = 86;
+  int REM = 86;
   /** RegularExpression Id. */
-  int REM = 87;
+  int LSHIFT = 87;
   /** RegularExpression Id. */
-  int LSHIFT = 88;
+  int RSIGNEDSHIFT = 88;
   /** RegularExpression Id. */
-  int RSIGNEDSHIFT = 89;
-  /** RegularExpression Id. */
-  int RUNSIGNEDSHIFT = 90;
+  int RUNSIGNEDSHIFT = 89;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -229,7 +227,6 @@ public interface UQLParserConstants {
     "\"in\"",
     "\"distinct\"",
     "\"top\"",
-    "\"exists\"",
     "<INTEGER_LITERAL>",
     "<DECIMAL_LITERAL>",
     "<HEX_LITERAL>",

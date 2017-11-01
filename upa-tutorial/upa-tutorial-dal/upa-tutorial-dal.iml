@@ -11,6 +11,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: net.vpc.upa:upa-api:1.2.0.35" level="project" />
+    <orderEntry type="module" module-name="upa-api" />
   </component>
 </module>

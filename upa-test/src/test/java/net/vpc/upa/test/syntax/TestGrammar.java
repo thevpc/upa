@@ -44,9 +44,15 @@ public class TestGrammar {
         testUQL("Select r.`right` x from ProfileRight r inner join UserProfile p on r.profileId=p.id where p.profileId=:userId and p.meetingId=:meetingId");
         testUQL("Select distinct r.`right` x from ProfileRight r inner join UserProfile p on r.profileId=p.id where p.profileId=:userId and p.meetingId=:meetingId");
         testUQL("\"Select x from AcademicCourseType x where exists((Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in ((Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false)) and u.enableCourseFeedback=true))\"");
+        testUQL("Select x from AcademicCourseType x where exists(Select u from AcademicCourseAssignment)");
         testUQL("Select x from AcademicCourseType x where exists((Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in ((Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false)) and u.enableCourseFeedback=true))");
         testUQL("Select x from AcademicCourseType x where exists((Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in (Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false) and u.enableCourseFeedback=true))");
         testUQL("Select x from AcademicCourseType x where exists(Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in (Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false) and u.enableCourseFeedback=true)");
+
+        testUQL("Select u from ApblTeam u where " +
+                "1=2 or existss ((Select m from ApblTeamMember m where m.teamId=u.id and m.student.userId=:userId)) "
+                );
+
     }
 
     private void testUQL(String uql) {

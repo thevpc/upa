@@ -135,8 +135,8 @@ TOKEN :
    < DISTINCT: "distinct" >
  |
    < TOP: "top" >
- |
-   < EXISTS: "exists" >
+// |
+//   < EXISTS: "exists" >
 }
 
 TOKEN :
@@ -382,20 +382,20 @@ Select Select() :
     }
 }
 
-Exists Exists() :
-{
-    Expression expr=null;
-}
-{
-    <EXISTS>
-    <LPAREN>{
-        expr=Expression();
-    }
-    <RPAREN>
-    {
-        return new Exists(expr);
-    }
-}
+//Exists Exists() :
+//{
+//    Expression expr=null;
+//}
+//{
+//    <EXISTS>
+//    <LPAREN>{
+//        expr=Expression();
+//    }
+//    <RPAREN>
+//    {
+//        return new Exists(expr);
+//    }
+//}
 
 Update Update() :
 {
@@ -627,12 +627,12 @@ List<Expression> ExpressionList() :
     Expression ri;
 }
 {
-    r0=Expression()
+    r0=ExpressionOrSelect()
     {
         r.add(r0);
     }
     (","
-        ri=Expression()
+        ri=ExpressionOrSelect()
         {
             r.add(ri);
         }
@@ -642,8 +642,7 @@ List<Expression> ExpressionList() :
     }
 }
 
-
-Expression Expression() :
+Expression ExpressionOrSelect() :
 {
     Expression r;
 }
@@ -654,11 +653,30 @@ Expression Expression() :
             r=Select()
         )
         |
-        LOOKAHEAD(<EXISTS>)
-        (
-            r=Exists()
+        r=Expression()
         )
-        |
+        {
+            return r;
+        }
+}
+
+
+Expression Expression() :
+{
+    Expression r;
+}
+{
+        (
+//        LOOKAHEAD(<SELECT>)
+//        (
+//            r=Select()
+//        )
+//        |
+//        LOOKAHEAD(<EXISTS>)
+//        (
+//            r=Exists()
+//        )
+//        |
         r=OrExpression()
         )
         {
@@ -958,8 +976,8 @@ Expression PrimaryExpression() :
     (
       <LPAREN> (
             LOOKAHEAD(<SELECT>) 
-                r=Select()
-                | r=Expression()
+                r=Select() |
+                r=Expression()
         ) <RPAREN>
     | <MINUS> {isMinus=true;} r=PrimaryExpression() 
     | <PLUS>  r=Expression() 
