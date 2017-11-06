@@ -72,14 +72,36 @@ public class UPAException extends RuntimeException {
 
     private static String buildMessage(I18NString messageId, Object... parameters) {
         StringBuilder b = new StringBuilder();
-        b.append(messageId == null ? "UPAException" : messageId.toString());
+        String m0=null;
+        if(messageId!=null) {
+            if (messageId.getKeys().size() > 0) {
+                m0 = messageId.getKey(0);
+            } else {
+                m0 =messageId.toString();
+            }
+        }else {
+            m0="UPAException";
+        }
+        b.append(m0);
         if (parameters.length > 0) {
             b.append("(");
             for (int i = 0; i < parameters.length; i++) {
                 if (i > 0) {
                     b.append(",");
                 }
-                b.append(parameters[i]);
+                m0=null;
+                if(parameters[i]!=null && parameters[i] instanceof I18NString) {
+                    I18NString messageId2=(I18NString) parameters[i];
+                    if (messageId2.getKeys().size() > 0) {
+                        m0 = messageId2.getKey(0);
+                    } else {
+                        m0 =messageId2.toString();
+                    }
+                }else {
+                    m0=String.valueOf(parameters[i]);
+                }
+
+                b.append(m0);
             }
             b.append(")");
         }
