@@ -10,16 +10,16 @@ import java.util.List;
 /**
  * Created by vpc on 7/2/17.
  */
-class ColumnFamilyParserSingleIdEntity implements ColumnFamilyParser {
-    public static final ColumnFamilyParser INSTANCE = new ColumnFamilyParserSingleIdEntity();
+class ColumnFamilyParserSingleIdEntityResult implements ResultFieldFamilyParser {
+    public static final ResultFieldFamilyParser INSTANCE = new ColumnFamilyParserSingleIdEntityResult();
 
-    private ColumnFamilyParserSingleIdEntity() {
+    private ColumnFamilyParserSingleIdEntityResult() {
 
     }
 
     @Override
-    public void parse(QueryResult result, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
-        FieldInfo idField = columnFamily.idFields.get(0);
+    public void parse(QueryResult result, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+        ResultFieldParseData idField = columnFamily.idFields.get(0);
         Object id = result.read(idField.dbIndex);
         ResultObject resultObject;
         if (id == null) {
@@ -32,14 +32,14 @@ class ColumnFamilyParserSingleIdEntity implements ColumnFamilyParser {
                 o = columnFamily.createResultObject();
                 referencesCache.put(key, o);
                 o.entityDocument.setObject(idField.field.getName(), id);
-                List<FieldInfo> fields = columnFamily.nonIdFields;
-                for (FieldInfo f : fields) {
+                List<ResultFieldParseData> fields = columnFamily.nonIdFields;
+                for (ResultFieldParseData f : fields) {
                     Object fieldValue = result.read(f.dbIndex);
                     o.entityDocument.setObject(f.name, fieldValue);
                 }
 //            }else{
-//                List<FieldInfo> fields = columnFamily.nonIdFields;
-//                for (FieldInfo f : fields) {
+//                List<ResultFieldParseData> fields = columnFamily.nonIdFields;
+//                for (ResultFieldParseData f : fields) {
 //                    Object fieldValue = result.read(f.dbIndex);
 //                    o.entityDocument.setObject(f.name, fieldValue);
 //                }

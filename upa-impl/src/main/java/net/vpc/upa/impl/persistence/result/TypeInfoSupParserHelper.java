@@ -15,12 +15,12 @@ public class TypeInfoSupParserHelper {
     private TypeInfoSupParserHelper() {
     }
 
-    public static Object[] extractArrayId(QueryResult result, ColumnFamily columnFamily) throws UPAException {
+    public static Object[] extractArrayId(QueryResult result, ResultFieldFamily columnFamily) throws UPAException {
         int size = columnFamily.idFields.size();
         Object[] idarr = new Object[size];
-        List<FieldInfo> idFields = columnFamily.idFields;
+        List<ResultFieldParseData> idFields = columnFamily.idFields;
         for (int i = 0; i < idFields.size(); i++) {
-            FieldInfo f = idFields.get(i);
+            ResultFieldParseData f = idFields.get(i);
             Object fieldValue = result.read(f.dbIndex);
             if (fieldValue == null) {
                 idarr = null;
@@ -32,7 +32,7 @@ public class TypeInfoSupParserHelper {
         return idarr;
     }
 
-    public static void loadExternalObject(Object idarr, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+    public static void loadExternalObject(Object idarr, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
         ResultObject resultObject;
         if (idarr == null) {
             resultObject = ResultObject.forNull();
@@ -56,7 +56,7 @@ public class TypeInfoSupParserHelper {
         columnFamily.currentResult=resultObject;
     }
 
-    public static void todoExternalObject(Object idarr, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+    public static void todoExternalObject(Object idarr, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
         if (idarr == null) {
             lazyResult.values.put(columnFamily.binding, null);
             columnFamily.currentResult=null;

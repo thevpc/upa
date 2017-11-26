@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.persistence;
 
+import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -71,7 +72,7 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface PersistenceNameStrategy {
 
-    void init(PersistenceStore persistenceStore, PersistenceNameConfig model);
+    void init(PersistenceStore persistenceStore, PersistenceNameConfig model, Properties properties);
 
     void close();
 

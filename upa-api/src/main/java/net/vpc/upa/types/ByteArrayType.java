@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 
 /**
@@ -46,7 +47,7 @@ public class ByteArrayType extends LOBType {
     @PortabilityHint(target = "C#", name = "new")
     public static final ByteArrayType BYTES = new ByteArrayType("FILE", false, null, true);
     public static final ByteArrayType BYTE_REFS = new ByteArrayType("FILE", true, null, true);
-    private Integer maxSize;
+    private Integer max;
 
     public ByteArrayType(String name, Integer maxSize, boolean nullable) {
         this(name, false, maxSize, nullable);
@@ -54,7 +55,7 @@ public class ByteArrayType extends LOBType {
 
     public ByteArrayType(String name, boolean refs, Integer maxSize, boolean nullable) {
         super(name, refs ? Byte[].class : byte[].class, nullable);
-        this.maxSize = maxSize;
+        this.max = maxSize;
     }
 
     @Override
@@ -65,35 +66,43 @@ public class ByteArrayType extends LOBType {
             return;
         }
         if (value instanceof byte[]) {
-            if (getMaxSize() > 0 && getMaxSize() < ((byte[]) value).length) {
-                throw new ConstraintsException("FileSizeTooBig", name, description, value, maxSize);
+            if (getMax() > 0 && getMax() < ((byte[]) value).length) {
+                throw new ConstraintsException("FileSizeTooBig", name, description, value, max);
             }
         } else if (value instanceof Byte[]) {
-            if (getMaxSize() > 0 && getMaxSize() < ((Byte[]) value).length) {
-                throw new ConstraintsException("FileSizeTooSmall", name, description, value, maxSize);
+            if (getMax() > 0 && getMax() < ((Byte[]) value).length) {
+                throw new ConstraintsException("FileSizeTooSmall", name, description, value, max);
             }
         } else {
-            throw new ConstraintsException("InvalidCast", name, description, value, maxSize);
+            throw new ConstraintsException("InvalidCast", name, description, value, max);
         }
     }
 
-    public Integer getMaxSize() {
-        return maxSize;
+    public Integer getMax() {
+        return max;
     }
 
-    public void setMaxSize(Integer maxSize) {
-        this.maxSize = maxSize;
+    public void setMax(Integer max) {
+        this.max = max;
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("ByteArrayType");
-        if (maxSize != null) {
+        if (max != null) {
             s.append("[");
-            s.append(maxSize);
+            s.append(max);
             s.append("]");
         }
         return s.toString();
     }
 
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
 }

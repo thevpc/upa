@@ -52,4 +52,6 @@ public interface I18NStringStrategy {
 
     I18NString getFieldString(Field field);
 
+    I18NString getIndexString(Index index);
+
 }

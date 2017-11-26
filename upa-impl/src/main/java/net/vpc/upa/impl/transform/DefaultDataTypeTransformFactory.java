@@ -519,7 +519,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
             baseSize = 255;
         } else if (source instanceof ByteArrayType) {
             toStringEncoder = IdentityByteArrayEncoder.INSTANCE;
-            baseSize = ((ByteArrayType) source).getMaxSize() == null ? 0 : ((ByteArrayType) source).getMaxSize();
+            baseSize = ((ByteArrayType) source).getMax() == null ? 0 : ((ByteArrayType) source).getMax();
             if (encoderObject == StringEncoderType.DEFAULT) {
                 encoderObject = StringEncoderType.HEXADECIMAL;
             }

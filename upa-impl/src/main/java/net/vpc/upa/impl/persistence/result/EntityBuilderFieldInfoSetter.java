@@ -5,7 +5,7 @@ import net.vpc.upa.EntityBuilder;
 /**
  * Created by vpc on 7/2/17.
  */
-class EntityBuilderFieldInfoSetter implements FieldInfoSetter {
+class EntityBuilderFieldInfoSetter implements ResultFieldParseDataSetter {
     private final EntityBuilder builder;
     private final String fieldName;
 

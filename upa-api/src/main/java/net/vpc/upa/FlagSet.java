@@ -36,6 +36,7 @@ package net.vpc.upa;
 
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -52,6 +53,11 @@ public final class FlagSet<E extends Enum<E>> implements Cloneable, Serializable
     FlagSet(Class<E> elementType, EnumSet<E> enumSet) {
         this.elementType = elementType;
         this.enumSet = enumSet;
+    }
+
+    public E[] toArray(){
+        E[] o = (E[]) Array.newInstance(elementType, enumSet.size());
+        return enumSet.toArray(o);
     }
 
     public Set<E> asSet() {

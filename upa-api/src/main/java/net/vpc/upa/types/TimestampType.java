@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
@@ -199,4 +200,17 @@ public class TimestampType extends TemporalType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(PlatformUtils.formatUniversalTimestamp(min)));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(PlatformUtils.formatUniversalTimestamp(max)));
+        }
+        return d;
+    }
+
 }

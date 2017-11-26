@@ -96,4 +96,6 @@ public interface Section extends EntityPart {
     Section addSection(String path, int index) throws UPAException;
 
     Section addSection(String path) throws UPAException;
+
+    SectionInfo getInfo();
 }

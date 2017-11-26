@@ -247,7 +247,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                             sourceEntity.addField(
                                     new DefaultFieldBuilder().setName(extraName+ (ii==0?"":(ii+1))).setPath("system").addModifier(UserFieldModifier.SYSTEM)
                                             .addExcludeModifier(UserFieldModifier.UPDATE)
-                                            .setDataType(dt).setAccessLevel(AccessLevel.PRIVATE)
+                                            .setDataType(dt).setProtectionLevel(ProtectionLevel.PRIVATE)
                             );
                             ii++;
                         }

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.math.BigDecimal;
@@ -177,5 +178,18 @@ public class YearType extends TemporalType implements Cloneable {
         }
         return sb.toString();
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(PlatformUtils.formatUniversalYear(min)));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(PlatformUtils.formatUniversalYear(max)));
+        }
+        return d;
+    }
+
 
 }

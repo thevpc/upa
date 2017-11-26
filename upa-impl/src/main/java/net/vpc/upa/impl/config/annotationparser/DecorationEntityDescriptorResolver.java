@@ -43,7 +43,7 @@ public class DecorationEntityDescriptorResolver {
                 CompareUtils.sort(classes, new ClassIndexedComparator(repo));
             }
 
-            EntityInfo entityInfo = new EntityInfo(repo, factory);
+            DecorationEntityDescriptor entityInfo = new DecorationEntityDescriptor(repo, factory);
 
             entityInfo.source = classes;
             List<Property> parameterInfos = new ArrayList<Property>();
@@ -98,7 +98,7 @@ public class DecorationEntityDescriptorResolver {
         }
     }
 
-    private EntityDescriptor build(EntityInfo entityInfo) throws UPAException {
+    private EntityDescriptor build(DecorationEntityDescriptor entityInfo) throws UPAException {
         try {
 
             HashMap<String, Object> ctx = new HashMap<String, Object>();
@@ -195,7 +195,7 @@ public class DecorationEntityDescriptorResolver {
         return list;
     }
 
-    void parseEntityType(EntityInfo entityInfo, Class type, boolean parseFields, boolean parseModifiers, boolean parseExtensions, ObjectFactory factory) {
+    void parseEntityType(DecorationEntityDescriptor entityInfo, Class type, boolean parseFields, boolean parseModifiers, boolean parseExtensions, ObjectFactory factory) {
         Decoration ue = repo.getTypeDecoration(type, Entity.class);
         entityInfo.idType = AnnotationParserUtils.validClass(ue == null ? null : ue.getType("idType"), entityInfo.idType, Object.class);
         if (ue != null && !ue.getType("entityType").equals(void.class)) {

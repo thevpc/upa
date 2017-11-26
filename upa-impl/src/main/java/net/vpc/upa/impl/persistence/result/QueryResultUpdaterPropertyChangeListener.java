@@ -12,9 +12,9 @@ import java.beans.PropertyChangeListener;
 class QueryResultUpdaterPropertyChangeListener implements PropertyChangeListener {
 
     private final QueryResult result;
-    private final ColumnFamily columnFamily;
+    private final ResultFieldFamily columnFamily;
 
-    public QueryResultUpdaterPropertyChangeListener(ColumnFamily columnFamily, QueryResult result) {
+    public QueryResultUpdaterPropertyChangeListener(ResultFieldFamily columnFamily, QueryResult result) {
         this.result = result;
         this.columnFamily = columnFamily;
     }

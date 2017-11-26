@@ -9,37 +9,37 @@ import java.util.*;
 /**
  * Created by vpc on 1/4/14.
  */
-class ColumnFamily {
+class ResultFieldFamily {
     boolean documentType;
     BindingId binding;
     boolean read;
     boolean identifiable;
-    List<FieldInfo> nonIdFields = new ArrayList<FieldInfo>();
-    List<FieldInfo> idFields = new ArrayList<FieldInfo>();
-    FieldInfo[] fieldsArray;
+    List<ResultFieldParseData> nonIdFields = new ArrayList<ResultFieldParseData>();
+    List<ResultFieldParseData> idFields = new ArrayList<ResultFieldParseData>();
+    ResultFieldParseData[] fieldsArray;
     Entity entity;
     Class resultType;
     EntityBuilder builder;
-    Map<String, FieldInfo> fieldsMap = new HashMap<String, FieldInfo>();
-    Map<String, FieldInfoSetter> setters = new HashMap<String, FieldInfoSetter>();
-    ColumnFamilyParser parser;
+    Map<String, ResultFieldParseData> fieldsMap = new HashMap<String, ResultFieldParseData>();
+    Map<String, ResultFieldParseDataSetter> setters = new HashMap<String, ResultFieldParseDataSetter>();
+    ResultFieldFamilyParser parser;
     boolean partialObject;
     ObjectFactory ofactory;
     ResultObject currentResult;
 
-    public ColumnFamily(BindingId binding, ObjectFactory ofactory) {
+    public ResultFieldFamily(BindingId binding, ObjectFactory ofactory) {
         this(binding,(Entity) null,null,ofactory);
     }
 
-    public ColumnFamily(BindingId binding, Entity entity, ObjectFactory ofactory) {
+    public ResultFieldFamily(BindingId binding, Entity entity, ObjectFactory ofactory) {
         this(binding,entity,null,ofactory);
     }
 
-    public ColumnFamily(BindingId binding, Class resultType, ObjectFactory ofactory) {
+    public ResultFieldFamily(BindingId binding, Class resultType, ObjectFactory ofactory) {
         this(binding,null,resultType,ofactory);
     }
 
-    private ColumnFamily(BindingId binding, Entity entity, Class resultType, ObjectFactory ofactory) {
+    private ResultFieldFamily(BindingId binding, Entity entity, Class resultType, ObjectFactory ofactory) {
         this.binding = binding;
         this.ofactory = ofactory;
         this.entity = entity;
@@ -52,8 +52,8 @@ class ColumnFamily {
         }
     }
 
-    public FieldInfoSetter setterFor(String name){
-        FieldInfoSetter setter = setters.get(name);
+    public ResultFieldParseDataSetter setterFor(String name){
+        ResultFieldParseDataSetter setter = setters.get(name);
         if(setter!=null){
             return setter;
         }
@@ -72,14 +72,14 @@ class ColumnFamily {
 
     @Override
     public String toString() {
-        return "ColumnFamily{" +
+        return "ResultFieldFamily{" +
                 "binding="+(binding==null?"''":("'" + binding + '\'')) +
                 ", entity=" + entity +
                 '}';
     }
 
     public ResultObject createResultObject(){
-        ColumnFamily columnFamily =this;
+        ResultFieldFamily columnFamily =this;
         if (columnFamily.documentType) {
             return ResultObject.forDocument(null,columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument());
         } else {

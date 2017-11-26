@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 
 /**
@@ -114,4 +115,25 @@ public class FileType extends LOBType {
             return "";
         }
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(maxSize!=null) {
+            d.getProperties().put("maxSize", String.valueOf(maxSize));
+        }
+        if(extensions!=null){
+            StringBuilder s=new StringBuilder();
+            for (int i = 0; i < extensions.length; i++) {
+                if(i>0){
+                    s.append(",");
+                }
+                String extension = extensions[i];
+                s.append(extension);
+            }
+            d.getProperties().put("extensions", String.valueOf(s));
+        }
+        return d;
+    }
+
 }

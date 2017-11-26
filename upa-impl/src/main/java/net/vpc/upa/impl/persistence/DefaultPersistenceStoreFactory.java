@@ -97,6 +97,8 @@ public class DefaultPersistenceStoreFactory implements PersistenceStoreFactory {
     }
 
     public PersistenceStore createPersistenceStore(ConnectionProfile connectionProfile, ObjectFactory factory, Properties parameters) {
-        return factory.createObject(getDialectPersistenceUnitManager(connectionProfile.getDatabaseProduct()));
+        PersistenceStore object = factory.createObject(getDialectPersistenceUnitManager(connectionProfile.getDatabaseProduct()));
+        object.setProperties(parameters);
+        return object;
     }
 }

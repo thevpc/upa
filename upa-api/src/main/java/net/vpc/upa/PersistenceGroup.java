@@ -129,4 +129,12 @@ public interface PersistenceGroup extends Closeable {
     void invokePrivileged(VoidAction action);
 
     Properties getProperties();
+
+    PersistenceGroupInfo getInfo();
+
+    UPAI18n getI18n();
+
+    void setI18n(UPAI18n i18n);
+
+    UPAI18n getI18nOrDefault();
 }

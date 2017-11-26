@@ -8,9 +8,9 @@ import net.vpc.upa.impl.uql.BindingId;
 /**
 * Created by vpc on 1/4/14.
 */
-class FieldInfo {
+class ResultFieldParseData {
 
-    public ColumnFamily columnFamily;
+    public ResultFieldFamily columnFamily;
     public int dbIndex;
     public BindingId binding;
     public boolean read;
@@ -18,7 +18,7 @@ class FieldInfo {
     public NativeField nativeField;
     public Field field;
     public Entity parentBindingReferrer;
-//    public FieldInfoSetter setter;
+//    public ResultFieldParseDataSetter setter;
 
     @Override
     public String toString() {

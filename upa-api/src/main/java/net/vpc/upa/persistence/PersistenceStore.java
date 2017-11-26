@@ -57,6 +57,8 @@ public interface PersistenceStore {
 //    static String DB_PRE_NATIVE_QUERY_LOG = "DB_PRE_NATIVE_QUERY_LOG";
 //    static String DB_NATIVE_QUERY_LOG = "DB_NATIVE_QUERY";
 //    static String DB_NATIVE_UPDATE_LOG = "DB_NATIVE_UPDATE";
+    void setProperties(Properties parameters);
+
     boolean isAccessible(ConnectionProfile connectionProfile);
 
     String getValidIdentifier(String s);
@@ -76,6 +78,8 @@ public interface PersistenceStore {
     void dropStorage(EntityExecutionContext context) throws UPAException;
 
     Properties getProperties();
+
+    Properties getStoreParameters();
 
     ConnectionProfile getConnectionProfile() throws UPAException;
 
@@ -97,13 +101,13 @@ public interface PersistenceStore {
 
     Query createQuery(EntityStatement query, EntityExecutionContext qlContext) throws UPAException;
 
-    void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException;
+    void createStructure(EntityExecutionContext executionContext) throws UPAException;
 
 //    int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
 
     boolean isReservedKeyword(String name);
 
-    void setNativeConstraintsEnabled(PersistenceUnit persistenceUnit, boolean enable) throws UPAException;
+    void setNativeConstraintsEnabled(boolean enable) throws UPAException;
 
     boolean isComplexSelectSupported();
 

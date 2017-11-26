@@ -13,11 +13,9 @@ import net.vpc.upa.exceptions.NoSuchEntityItemException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.event.AddPrimitiveFieldItemInterceptor;
 import net.vpc.upa.impl.util.ListUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultCompoundField extends AbstractField implements CompoundField {
 
@@ -126,4 +124,17 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     public Object getCompoundValue(Object[] values) {
         return ((CompoundDataType) getDataType()).getCompoundValue(values);
     }
+
+    @Override
+    public FieldInfo getInfo() {
+        CompoundFieldInfo i = new CompoundFieldInfo();
+        fillFieldInfo(i);
+        List<PrimitiveFieldInfo> list=new ArrayList<>();
+        for (PrimitiveField field : fields) {
+            list.add((PrimitiveFieldInfo) field.getInfo());
+        }
+        i.setChildren(list);
+        return i;
+    }
+
 }

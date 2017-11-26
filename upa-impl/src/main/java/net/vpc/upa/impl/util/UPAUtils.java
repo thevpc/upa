@@ -26,6 +26,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -459,6 +460,10 @@ public class UPAUtils {
             s = strategy.getFieldString((Field) item);
             t = s.append("title");
             d = s.append("desc");
+        } else if (item instanceof Index) {
+            s = strategy.getIndexString((Index) item);
+            t = s.append("title");
+            d = s.append("desc");
         } else if (item instanceof RelationshipRole) {
             RelationshipRole r = (RelationshipRole) item;
             s = strategy.getRelationshipRoleString(r);
@@ -812,4 +817,8 @@ public class UPAUtils {
     public static boolean isEntityWithSimpleRelationId(Entity entity) {
         return entity.getIdFields().size()==1 && entity.getIdFields().get(0).isManyToOne();
     }
+
+
+
+
 }

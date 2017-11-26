@@ -31,6 +31,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
+
 public class StringType extends DefaultDataType implements Cloneable {
 
     public static final StringType DEFAULT = new StringType("String", 0, 255, true);
@@ -119,4 +121,13 @@ public class StringType extends DefaultDataType implements Cloneable {
         result = 31 * result + max;
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        d.getProperties().put("min", String.valueOf(min));
+        d.getProperties().put("max", String.valueOf(max));
+        return d;
+    }
+
 }

@@ -21,7 +21,7 @@ public class LazyResult {
     ResultMetaData metaData;
     Map<BindingId, Object> values = new HashMap<BindingId, Object>();
     Map<BindingId, NamedId> todos = new HashMap<BindingId, NamedId>();
-    Map<BindingId, ColumnFamily> types = new HashMap<BindingId, ColumnFamily>();
+    Map<BindingId, ResultFieldFamily> types = new HashMap<BindingId, ResultFieldFamily>();
 
     public LazyResult(QueryResult result, boolean updatable, ResultMetaData metaData) {
         this.result = result;
@@ -35,7 +35,7 @@ public class LazyResult {
             Object currValue = e.getValue();
             BindingId parentBinding = currBinding.getParent();
             if (parentBinding != null) {
-                ColumnFamily parentType = types.get(parentBinding);
+                ResultFieldFamily parentType = types.get(parentBinding);
                 Object parent = values.get(parentBinding);
                 if (parent != null) {
                     parentType.setterFor(currBinding.getName()).set(parent, currValue);
@@ -45,7 +45,7 @@ public class LazyResult {
         List<ResultField> resultFields = metaData.getResultFields();
         ResultColumn[] columns = new ResultColumn[resultFields.size()];
         if (updatable) {
-            for (ColumnFamily columnFamily : types.values()) {
+            for (ResultFieldFamily columnFamily : types.values()) {
                 if (!columnFamily.currentResult.isNull()) {
                     if (columnFamily.documentType) {
                         QueryResultUpdaterPropertyChangeListener li = new QueryResultUpdaterPropertyChangeListener(columnFamily, result);

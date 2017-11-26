@@ -35,6 +35,8 @@ import java.util.List;
 
 public interface Package extends PersistenceUnitPart {
 
+    PackageInfo getInfo();
+
     String getPath();
 
     void addPart(PersistenceUnitPart child);

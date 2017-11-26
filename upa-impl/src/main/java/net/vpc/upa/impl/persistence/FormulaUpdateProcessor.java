@@ -48,8 +48,8 @@ public class FormulaUpdateProcessor {
         for (Field field : fields) {
             addField(field);
         }
-        isUpdateComplexValuesStatementSupported = persistenceUnit.getPersistenceStore().getProperties().getBoolean("isUpdateComplexValuesStatementSupported", false);
-        isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.getPersistenceStore().getProperties().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+        isUpdateComplexValuesStatementSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean("isUpdateComplexValuesStatementSupported", false);
+        isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
     }
 
     private static Expression getFieldExpression(Field field, boolean forPersist) {

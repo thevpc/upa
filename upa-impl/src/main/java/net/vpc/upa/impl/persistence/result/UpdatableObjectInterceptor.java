@@ -12,9 +12,9 @@ import net.vpc.upa.persistence.QueryResult;
 class UpdatableObjectInterceptor implements PlatformMethodProxy<Object> {
     private final Object object;
     private final QueryResult result;
-    private ColumnFamily singleEntityQueryResult;
+    private ResultFieldFamily singleEntityQueryResult;
 
-    public UpdatableObjectInterceptor(ColumnFamily singleEntityQueryResult, Object object, QueryResult result) {
+    public UpdatableObjectInterceptor(ResultFieldFamily singleEntityQueryResult, Object object, QueryResult result) {
         this.singleEntityQueryResult = singleEntityQueryResult;
         this.object = object;
         this.result = result;
@@ -23,7 +23,7 @@ class UpdatableObjectInterceptor implements PlatformMethodProxy<Object> {
     @Override
     public Object intercept(PlatformMethodProxyEvent<Object> event) throws Throwable {
         String name = event.getMethodName();
-        FieldInfo prop = singleEntityQueryResult.fieldsMap.get(name);
+        ResultFieldParseData prop = singleEntityQueryResult.fieldsMap.get(name);
         if (prop == null) {
             return event.invokeBase(object, event.getArguments());
         } else {

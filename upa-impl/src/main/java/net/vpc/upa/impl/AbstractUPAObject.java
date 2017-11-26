@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.I18NString;
@@ -8,8 +9,8 @@ import net.vpc.upa.exceptions.UPAException;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import net.vpc.upa.expressions.ExpressionHelper;
 
 /**
@@ -282,5 +283,21 @@ public abstract class AbstractUPAObject implements UPAObject {
                 throw new UPAIllegalArgumentException("Invalid name char '" + c[i] + "' in name " + s);
             }
         }
+    }
+
+
+    protected void fillObjectInfo(UPAObjectInfo i){
+        UPAObject f=this;
+        i.setName(f.getName());
+        i.setTitle(f.getPersistenceGroup().getI18nOrDefault().get(f));
+        Map<String,Object> sp=new HashMap<>();
+        for (Map.Entry<String, Object> e : f.getProperties().toMap().entrySet()) {
+            String k = e.getKey();
+            Object v = e.getValue();
+            if(v instanceof Number || v instanceof String || v instanceof Date){
+                sp.put(k,v);
+            }
+        }
+        i.setSimpleProperties(sp);
     }
 }

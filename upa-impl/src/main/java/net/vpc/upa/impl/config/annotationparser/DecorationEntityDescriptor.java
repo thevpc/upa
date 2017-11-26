@@ -12,7 +12,7 @@ import net.vpc.upa.impl.util.StringUtils;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/15/12 11:46 AM
  */
-class EntityInfo implements EntityDescriptor {
+class DecorationEntityDescriptor implements EntityDescriptor {
 
     public Object source = null;
 //        public SequenceInfo generatedIdInfo = null;
@@ -36,7 +36,7 @@ class EntityInfo implements EntityDescriptor {
     public ObjectFactory factory;
 
     //        public Sequence generatedId;
-    public EntityInfo(DecorationRepository repo, ObjectFactory factory) {
+    public DecorationEntityDescriptor(DecorationRepository repo, ObjectFactory factory) {
         this.repo = repo;
         this.factory = factory;
     }
@@ -177,7 +177,7 @@ class EntityInfo implements EntityDescriptor {
 
     @Override
     public String toString() {
-        return "EntityInfo{" + "source=" + ((source instanceof Object[]) ? Arrays.toString((Object[]) source) : String.valueOf(source)) + '}';
+        return "DecorationEntityDescriptor{" + "source=" + ((source instanceof Object[]) ? Arrays.toString((Object[]) source) : String.valueOf(source)) + '}';
     }
 
 }

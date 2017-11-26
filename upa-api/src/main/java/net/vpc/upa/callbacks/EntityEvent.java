@@ -34,10 +34,8 @@
  */
 package net.vpc.upa.callbacks;
 
-import net.vpc.upa.Entity;
-import net.vpc.upa.EventPhase;
+import net.vpc.upa.*;
 import net.vpc.upa.Package;
-import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -93,6 +91,10 @@ public class EntityEvent extends UPAEvent {
 
     public Entity getEntity() {
         return entity;
+    }
+
+    public PersistenceGroup getPersistenceGroup() {
+        return persistenceUnit.getPersistenceGroup();
     }
 
     public PersistenceUnit getPersistenceUnit() {

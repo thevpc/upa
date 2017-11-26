@@ -9,7 +9,7 @@ import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 @PortabilityHint(target = "C#", name = "suppress")
 public class McKoiPersistenceStore extends DefaultPersistenceStore {
     public McKoiPersistenceStore() {
-        Properties map = getProperties();
+        Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", Boolean.FALSE);
         map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
         map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);

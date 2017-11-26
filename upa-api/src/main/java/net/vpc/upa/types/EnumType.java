@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 
 import java.util.Arrays;
@@ -91,5 +92,19 @@ public class EnumType extends SeriesType implements Cloneable {
     public int hashCode() {
         int result = super.hashCode();
         return result;
+    }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        StringBuilder v=new StringBuilder();
+        for (Object o : getPlatformType().getEnumConstants()) {
+            if(v.length()>0){
+                v.append(",");
+            }
+            v.append(o.toString());
+        }
+        d.getProperties().put("values", String.valueOf(v));
+        return d;
     }
 }

@@ -32,7 +32,7 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
     }
 
     public String getSqlTypeName(DataType datatype,EntityExecutionContext qlContext) {
-        String databaseProductVersion = qlContext.getPersistenceStore().getProperties().getString("databaseProductVersion");
+        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
         if(databaseProductVersion==null){
             databaseProductVersion="";
         }

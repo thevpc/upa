@@ -25,6 +25,9 @@ public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     private AccessLevel persistAccessLevel = AccessLevel.DEFAULT;
     private AccessLevel updateAccessLevel = AccessLevel.DEFAULT;
     private AccessLevel readAccessLevel = AccessLevel.DEFAULT;
+    private ProtectionLevel persistProtectionLevel = ProtectionLevel.DEFAULT;
+    private ProtectionLevel updateProtectionLevel = ProtectionLevel.DEFAULT;
+    private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
     private int index = -1;
@@ -307,6 +310,48 @@ public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     @Override
     public FieldBuilder setReadAccessLevel(AccessLevel readAccessLevel) {
         this.readAccessLevel = readAccessLevel;
+        return this;
+    }
+
+
+    @Override
+    public FieldBuilder setProtectionLevel(ProtectionLevel protectionLevel) {
+        setPersistProtectionLevel(protectionLevel);
+        setUpdateProtectionLevel(protectionLevel);
+        setReadProtectionLevel(protectionLevel);
+        return this;
+    }
+
+    @Override
+    public ProtectionLevel getPersistProtectionLevel() {
+        return persistProtectionLevel;
+    }
+
+    @Override
+    public FieldBuilder setPersistProtectionLevel(ProtectionLevel persistProtectionLevel) {
+        this.persistProtectionLevel = persistProtectionLevel;
+        return this;
+    }
+
+    @Override
+    public ProtectionLevel getUpdateProtectionLevel() {
+        return updateProtectionLevel;
+    }
+
+    @Override
+    public FieldBuilder setUpdateProtectionLevel(ProtectionLevel updateProtectionLevel) {
+        this.updateProtectionLevel = updateProtectionLevel;
+        return this;
+    }
+
+    @Override
+    public ProtectionLevel getReadProtectionLevel() {
+        return readProtectionLevel;
+    }
+
+    @Override
+    public FieldBuilder setReadProtectionLevel(ProtectionLevel readProtectionLevel) {
+        this.readProtectionLevel = readProtectionLevel;
         return this;
     }
 

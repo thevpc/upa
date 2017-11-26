@@ -5,7 +5,7 @@ import net.vpc.upa.impl.util.PlatformBeanProperty;
 /**
  * Created by vpc on 7/2/17.
  */
-class PlatformBeanFieldInfoSetter implements FieldInfoSetter {
+class PlatformBeanFieldInfoSetter implements ResultFieldParseDataSetter {
     private final PlatformBeanProperty prop;
 
     public PlatformBeanFieldInfoSetter(PlatformBeanProperty prop) {

@@ -110,4 +110,6 @@ public interface Relationship extends UPAObject {
     void setHierarchyExtension(HierarchyExtension extension);
 
     Expression createTargetListExpression(Object currentInstance, String alias);
+
+    RelationshipInfo getInfo();
 }

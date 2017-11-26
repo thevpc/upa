@@ -126,7 +126,7 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
         Object[] uns = getPrimitiveValues(fieldDescriptor.getUnspecifiedObject());
         for (int i = 0; i < fieldDescriptors.length; i++) {
             DefaultFieldDescriptor d = new DefaultFieldDescriptor();
-            d.setReadAccessLevel(AccessLevel.PRIVATE);
+            d.setReadProtectionLevel(ProtectionLevel.PRIVATE);
             d.setDataType(i == 0 ? TypesFactory.INT : TypesFactory.INT);
             d.setDefaultObject(def == null ? null : def[i]);
             d.setUnspecifiedObject(uns == null ? null : uns[i]);

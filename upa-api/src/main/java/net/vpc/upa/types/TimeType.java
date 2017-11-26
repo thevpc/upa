@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
@@ -204,5 +205,18 @@ public class TimeType extends TemporalType implements Cloneable {
         }
         return sb.toString();
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(PlatformUtils.formatUniversalTime(min)));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(PlatformUtils.formatUniversalTime(max)));
+        }
+        return d;
+    }
+
 
 }

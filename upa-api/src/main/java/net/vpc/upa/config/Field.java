@@ -32,6 +32,7 @@
 package net.vpc.upa.config;
 
 import net.vpc.upa.AccessLevel;
+import net.vpc.upa.ProtectionLevel;
 import net.vpc.upa.UserFieldModifier;
 
 import java.lang.annotation.ElementType;
@@ -92,13 +93,21 @@ public @interface Field {
 
     String unspecifiedValue() default "";
 
+    AccessLevel accessLevel() default AccessLevel.DEFAULT;
+
     AccessLevel persistAccessLevel() default AccessLevel.DEFAULT;
 
     AccessLevel updateAccessLevel() default AccessLevel.DEFAULT;
 
-    AccessLevel removeAccessLevel() default AccessLevel.DEFAULT;
-
     AccessLevel readAccessLevel() default AccessLevel.DEFAULT;
+
+    ProtectionLevel protectionLevel() default ProtectionLevel.DEFAULT;
+
+    ProtectionLevel persistProtectionLevel() default ProtectionLevel.DEFAULT;
+
+    ProtectionLevel updateProtectionLevel() default ProtectionLevel.DEFAULT;
+
+    ProtectionLevel readProtectionLevel() default ProtectionLevel.DEFAULT;
 
     /**
      * annotation config defines how this annotation must be handled

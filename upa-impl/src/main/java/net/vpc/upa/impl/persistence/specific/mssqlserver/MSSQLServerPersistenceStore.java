@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
+import net.vpc.upa.Properties;
 import net.vpc.upa.types.Date;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.DriverNotFoundException;
@@ -40,7 +41,7 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         
         keywords = UPAUtils.loadLinesSet(resourcePath);
 
-        net.vpc.upa.Properties map = getProperties();
+        net.vpc.upa.Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
         map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.TRUE);
         map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.TRUE);

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 
 /**
@@ -43,15 +44,15 @@ public class CharArrayType extends LOBType {
     @PortabilityHint(target = "C#", name = "new")
     public static final CharArrayType CHARS = new CharArrayType("FILE", false, null, true);
     public static final CharArrayType CHAR_REFS = new CharArrayType("FILE", true, null, true);
-    private Integer maxSize;
+    private Integer max;
 
-    public CharArrayType(String name, Integer maxSize, boolean nullable) {
-        this(name, false, maxSize, nullable);
+    public CharArrayType(String name, Integer max, boolean nullable) {
+        this(name, false, max, nullable);
     }
 
-    public CharArrayType(String name, boolean ref, Integer maxSize, boolean nullable) {
+    public CharArrayType(String name, boolean ref, Integer max, boolean nullable) {
         super(name, ref ? Character[].class : char[].class, nullable);
-        this.maxSize = maxSize;
+        this.max = max;
     }
 
     @Override
@@ -62,23 +63,33 @@ public class CharArrayType extends LOBType {
             return;
         }
         if (value instanceof char[]) {
-            if (getMaxSize() > 0 && getMaxSize() < ((char[]) value).length) {
-                throw new ConstraintsException("ArraySizeTooLong", name, description, value, maxSize);
+            if (getMax() > 0 && getMax() < ((char[]) value).length) {
+                throw new ConstraintsException("ArraySizeTooLong", name, description, value, max);
             }
         } else if (value instanceof Character[]) {
-            if (getMaxSize() > 0 && getMaxSize() < ((Character[]) value).length) {
-                throw new ConstraintsException("ArraySizeTooShort", name, description, value, maxSize);
+            if (getMax() > 0 && getMax() < ((Character[]) value).length) {
+                throw new ConstraintsException("ArraySizeTooShort", name, description, value, max);
             }
         } else {
-            throw new ConstraintsException("InvalidCast", name, description, value, maxSize);
+            throw new ConstraintsException("InvalidCast", name, description, value, max);
         }
     }
 
-    public Integer getMaxSize() {
-        return maxSize;
+    public Integer getMax() {
+        return max;
     }
 
-    public void setMaxSize(Integer maxSize) {
-        this.maxSize = maxSize;
+    public void setMax(Integer max) {
+        this.max = max;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

@@ -8,18 +8,18 @@ import java.util.List;
 /**
  * Created by vpc on 7/2/17.
  */
-class ColumnFamilyParserNoIdEntity implements ColumnFamilyParser {
-    public static final ColumnFamilyParser INSTANCE = new ColumnFamilyParserNoIdEntity();
+class ColumnFamilyParserNoIdEntityResult implements ResultFieldFamilyParser {
+    public static final ResultFieldFamilyParser INSTANCE = new ColumnFamilyParserNoIdEntityResult();
 
-    public ColumnFamilyParserNoIdEntity() {
+    public ColumnFamilyParserNoIdEntityResult() {
 
     }
 
     @Override
-    public void parse(QueryResult result, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+    public void parse(QueryResult result, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
         ResultObject resultObject = columnFamily.createResultObject();
-        List<FieldInfo> idFields = columnFamily.nonIdFields;
-        for (FieldInfo f : idFields) {
+        List<ResultFieldParseData> idFields = columnFamily.nonIdFields;
+        for (ResultFieldParseData f : idFields) {
             Object fieldValue = result.read(f.dbIndex);
             resultObject.entityDocument.setObject(f.name, fieldValue);
         }

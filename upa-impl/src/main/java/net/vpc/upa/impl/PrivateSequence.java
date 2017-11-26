@@ -20,7 +20,7 @@ public class PrivateSequence {
     public static final String ENTITY_NAME = "PrivateSequence";
 
     @Id
-    @Field(max = "4000")
+    @Field(max = "512")
     private String name;
 
     @Id

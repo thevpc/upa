@@ -28,7 +28,7 @@ public class DefaultSingletonExtension extends AbstractEntityExtension implement
                     .addModifier(UserFieldModifier.ID)
                     .setDefaultObject(0)
                     .setDataType(new IntType(0, 0, false, false))
-                    .setAccessLevel(AccessLevel.PRIVATE)
+                    .setProtectionLevel(ProtectionLevel.PRIVATE)
                     .setPersistFormula(new Sequence(SequenceStrategy.AUTO)));
         }
         if (!entity.getUserExcludeModifiers().contains(EntityModifier.NAVIGATE)) {

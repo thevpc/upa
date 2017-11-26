@@ -45,4 +45,6 @@ public interface Index extends UPAObject {
     Entity getEntity();
 
     boolean isUnique();
+
+    IndexInfo getInfo();
 }

@@ -1,5 +1,6 @@
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.Properties;
 
 import java.util.List;
@@ -63,4 +64,6 @@ public interface DataType extends Cloneable {
     Properties getProperties();
 
     void setProperties(Properties properties);
+
+    DataTypeInfo getInfo();
 }

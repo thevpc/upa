@@ -19,9 +19,8 @@ import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
 import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
-import net.vpc.upa.impl.util.IOUtils;
+import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
@@ -42,7 +41,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
     public DerbyPersistenceStore() {
         super();
 
-        Properties map = getProperties();
+        Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
         map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
         map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
@@ -220,6 +219,9 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             if (DRIVER_TYPE_EMBEDDED.equalsIgnoreCase(connectionDriver)) {
                 String url = "jdbc:derby:";
                 String path = concatPath(properties.get(ConnectionOption.SERVER_ADDRESS), properties.get(ConnectionOption.DATABASE_PATH), properties.get(ConnectionOption.DATABASE_NAME));
+                PropertiesDollarConverter varConverter = new PropertiesDollarConverter(getProperties());
+                path=StringUtils.replaceDollarVars(path, varConverter);
+
                 File file = (path == null || path.length() == 0) ? IOUtils.createFile("."):IOUtils.createFile(path);
                 File parentFile = file.getParentFile();
                 if (parentFile != null) {
@@ -238,8 +240,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 String driverClass = "org.apache.derby.jdbc.EmbeddedDriver";
                 log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
                 return createPlatformConnection(driverClass, url, userName, password, properties);
-            }
-            if (DRIVER_TYPE_DEFAULT.equalsIgnoreCase(connectionDriver)) {
+            }else  if (DRIVER_TYPE_DEFAULT.equalsIgnoreCase(connectionDriver)) {
                 String url = "jdbc:derby://";
 
                 String server = properties.get(ConnectionOption.SERVER_ADDRESS);
@@ -423,4 +424,5 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         }
         return b.toString();
     }
+
 }

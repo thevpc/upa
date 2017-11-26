@@ -73,6 +73,12 @@ public interface FieldDescriptor {
 
     AccessLevel getReadAccessLevel();
 
+    ProtectionLevel getPersistProtectionLevel();
+
+    ProtectionLevel getUpdateProtectionLevel();
+
+    ProtectionLevel getReadProtectionLevel();
+
     Map<String, Object> getFieldParams();
 
     PropertyAccessType getPropertyAccessType();

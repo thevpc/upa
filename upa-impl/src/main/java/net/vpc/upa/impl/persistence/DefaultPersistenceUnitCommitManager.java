@@ -24,13 +24,11 @@ public class DefaultPersistenceUnitCommitManager {
 
     protected static Logger log = Logger.getLogger(DefaultPersistenceUnitCommitManager.class.getName());
     List<StructureCommit> storage = new ArrayList<StructureCommit>();
-    private PersistenceUnitExt persistenceUnit;
     DefaultPersistenceStore persistenceStore;
     static StructureCommitComparator structureCommitComparator = new StructureCommitComparator();
     private Map<UPAObject, UPAPersistenceInfo> persistenceInfoMap = new HashMap<UPAObject, UPAPersistenceInfo>();
 
-    public void init(PersistenceUnitExt persistenceUnit, DefaultPersistenceStore persistenceStore) {
-        this.persistenceUnit = persistenceUnit;
+    public void init(DefaultPersistenceStore persistenceStore) {
         this.persistenceStore = persistenceStore;
     }
 
@@ -97,8 +95,8 @@ public class DefaultPersistenceUnitCommitManager {
         }
     }
 
-    public boolean commitStructure() throws UPAException {
-        EntityExecutionContext context = persistenceUnit.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
+    public boolean commitStructure(PersistenceUnit persistenceUnit) throws UPAException {
+        EntityExecutionContext context = ((PersistenceUnitExt)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
         Collections.sort(storage, structureCommitComparator);
         boolean someCommit = false;
         for (StructureCommit next : storage) {

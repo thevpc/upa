@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Relationship;
 
@@ -113,5 +114,20 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
         result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
         result = 31 * result + (updatable ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        d.getProperties().put("updatable", String.valueOf(updatable));
+        if(targetEntityName!=null) {
+            d.getProperties().put("targetEntityName", String.valueOf(targetEntityName));
+        }
+        if(relationship!=null) {
+            d.getProperties().put("relationship", String.valueOf(relationship.getName()));
+        }
+        if(relationship!=null) {
+        }
+        return d;
     }
 }

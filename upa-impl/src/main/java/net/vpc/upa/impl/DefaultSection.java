@@ -377,4 +377,23 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return addSection(path, -1);
     }
 
+    @Override
+    public SectionInfo getInfo() {
+        SectionInfo i = new SectionInfo();
+        fillObjectInfo(i);
+        List<EntityPartInfo> list=new ArrayList<>();
+        for (EntityPart entityPart : parts) {
+            if(entityPart instanceof Section){
+                list.add(((Section)entityPart).getInfo());
+            }else if(entityPart instanceof CompoundField){
+                list.add(((CompoundField)entityPart).getInfo());
+            }else if(entityPart instanceof DynamicField){
+                list.add(((DynamicField)entityPart).getInfo());
+            }else if(entityPart instanceof PrimitiveField){
+                list.add(((PrimitiveField)entityPart).getInfo());
+            }
+        }
+        i.setChildren(list);
+        return i;
+    }
 }

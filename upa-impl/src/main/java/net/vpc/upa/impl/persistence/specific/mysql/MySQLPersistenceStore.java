@@ -46,7 +46,7 @@ import net.vpc.upa.types.DataType;
 public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
     public MySQLPersistenceStore() {
-        Properties map = getProperties();
+        Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", true);
         map.setBoolean("isUpdateComplexValuesStatementSupported", true);
         map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
@@ -247,7 +247,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 if (dbName != null && dbName.length() > 0) {
                     url += "/" + dbName;
                 }
-                url += "?zeroDateTimeBehavior=convertToNull";
+                url += "?zeroDateTimeBehavior=convertToNull&useUnicode=yes&characterEncoding=UTF-8";
                 String driverClass = "com.mysql.jdbc.Driver";
                 log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
                 return createPlatformConnection(driverClass, url, userName, password, properties);

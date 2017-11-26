@@ -31,6 +31,9 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private AccessLevel persistAccessLevel = AccessLevel.DEFAULT;
     private AccessLevel updateAccessLevel = AccessLevel.DEFAULT;
     private AccessLevel readAccessLevel = AccessLevel.DEFAULT;
+    private ProtectionLevel persistProtectionLevel = ProtectionLevel.DEFAULT;
+    private ProtectionLevel updateProtectionLevel = ProtectionLevel.DEFAULT;
+    private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
     private int position = -1;
@@ -181,6 +184,48 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         return this;
     }
 
+    public DefaultFieldDescriptor setAccessLevel(AccessLevel accessLevel) {
+        setPersistAccessLevel(accessLevel);
+        setUpdateAccessLevel(accessLevel);
+        setReadAccessLevel(accessLevel);
+        return this;
+    }
+
+
+    public ProtectionLevel getPersistProtectionLevel() {
+        return persistProtectionLevel;
+    }
+
+    public DefaultFieldDescriptor setPersistProtectionLevel(ProtectionLevel persistProtectionLevel) {
+        this.persistProtectionLevel = persistProtectionLevel;
+        return this;
+    }
+
+    public ProtectionLevel getUpdateProtectionLevel() {
+        return updateProtectionLevel;
+    }
+
+    public DefaultFieldDescriptor setUpdateProtectionLevel(ProtectionLevel updateProtectionLevel) {
+        this.updateProtectionLevel = updateProtectionLevel;
+        return this;
+    }
+
+    public ProtectionLevel getReadProtectionLevel() {
+        return readProtectionLevel;
+    }
+
+    public DefaultFieldDescriptor setReadProtectionLevel(ProtectionLevel readProtectionLevel) {
+        this.readProtectionLevel = readProtectionLevel;
+        return this;
+    }
+
+    public DefaultFieldDescriptor setProtectionLevel(ProtectionLevel protectionLevel) {
+        setPersistProtectionLevel(protectionLevel);
+        setUpdateProtectionLevel(protectionLevel);
+        setReadProtectionLevel(protectionLevel);
+        return this;
+    }
+
     public Map<String, Object> getFieldParams() {
         return fieldParams;
     }
@@ -196,13 +241,6 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
 
     public DefaultFieldDescriptor setPropertyAccessType(PropertyAccessType propertyAccessType) {
         this.propertyAccessType = propertyAccessType;
-        return this;
-    }
-
-    public DefaultFieldDescriptor setAccessLevel(AccessLevel accessLevel) {
-        setPersistAccessLevel(accessLevel);
-        setUpdateAccessLevel(accessLevel);
-        setReadAccessLevel(accessLevel);
         return this;
     }
 
@@ -235,6 +273,9 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         setPersistAccessLevel(other.getPersistAccessLevel());
         setUpdateAccessLevel(other.getUpdateAccessLevel());
         setReadAccessLevel(other.getReadAccessLevel());
+        setPersistProtectionLevel(other.getPersistProtectionLevel());
+        setUpdateProtectionLevel(other.getUpdateProtectionLevel());
+        setReadProtectionLevel(other.getReadProtectionLevel());
         setFieldParams(other.getFieldParams());
         setPropertyAccessType(other.getPropertyAccessType());
         setPosition(other.getIndex());
@@ -292,6 +333,15 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         }
         if (other.getReadAccessLevel() != null) {
             setReadAccessLevel(other.getReadAccessLevel());
+        }
+        if (other.getPersistProtectionLevel() != null) {
+            setPersistProtectionLevel(other.getPersistProtectionLevel());
+        }
+        if (other.getUpdateProtectionLevel() != null) {
+            setUpdateProtectionLevel(other.getUpdateProtectionLevel());
+        }
+        if (other.getReadProtectionLevel() != null) {
+            setReadProtectionLevel(other.getReadProtectionLevel());
         }
         if (other.getFieldParams() != null) {
             setFieldParams(other.getFieldParams());

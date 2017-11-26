@@ -37,6 +37,7 @@ package net.vpc.upa.filters;
 import net.vpc.upa.AccessLevel;
 import net.vpc.upa.Field;
 import net.vpc.upa.FieldModifier;
+import net.vpc.upa.ProtectionLevel;
 import net.vpc.upa.types.ManyToOneType;
 
 import java.util.Collection;
@@ -102,6 +103,10 @@ public class FieldFilters {
 
     public static RichFieldFilter byAllAccessLevel(AccessLevel... accepted) {
         return new CustomFieldFilter(FieldAccessLevelFilter.forAll(accepted));
+    }
+
+    public static RichFieldFilter byAllProtectionLevel(ProtectionLevel... accepted) {
+        return new CustomFieldFilter(FieldProtectionLevelFilter.forAll(accepted));
     }
 
     public static RichFieldFilter byModifiersAllOf(FieldModifier... accepted) {

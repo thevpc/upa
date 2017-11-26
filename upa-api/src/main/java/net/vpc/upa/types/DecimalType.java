@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 
 import java.math.BigDecimal;
@@ -169,4 +170,18 @@ public class DecimalType extends NumberType implements Cloneable {
         result = 31 * result + (fixedDigits ? 1 : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        d.getProperties().put("fixedDigits", String.valueOf(fixedDigits));
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(min));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UnexpectedException;
@@ -326,5 +327,17 @@ public abstract class DefaultDataType implements DataType {
         result = 31 * result + (valueValidators != null ? valueValidators.hashCode() : 0);
         result = 31 * result + (valueRewriters != null ? valueRewriters.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = new DataTypeInfo();
+        d.setName(getName());
+        d.setType(getClass().getName());
+        d.setType(getPlatformType().getName());
+        d.setUnitName(getUnitName());
+        Map<String,String> p=new HashMap<>();
+        d.setProperties(p);
+        return d;
     }
 }

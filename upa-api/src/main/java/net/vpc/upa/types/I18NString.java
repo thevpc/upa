@@ -36,10 +36,7 @@ package net.vpc.upa.types;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -72,11 +69,14 @@ public class I18NString {
     }
 
     public String getKey(int index) {
+        if(keys==null){
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
         return keys.get(index);
     }
 
     public List<String> getKeys() {
-        return keys;
+        return keys==null? Collections.EMPTY_LIST:keys;
     }
 
     public I18NString append(I18NString path) {

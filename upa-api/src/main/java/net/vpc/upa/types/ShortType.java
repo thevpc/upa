@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
+
 public class ShortType extends NumberType implements Cloneable {
 
     public static final ShortType DEFAULT = new ShortType("DEFAULT", null, null, true, false);
@@ -142,4 +144,17 @@ public class ShortType extends NumberType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(min));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

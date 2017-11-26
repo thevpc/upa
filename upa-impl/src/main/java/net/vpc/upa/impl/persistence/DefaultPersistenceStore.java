@@ -23,6 +23,7 @@ import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
 import net.vpc.upa.impl.util.*;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
@@ -54,29 +55,24 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     private final Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
     boolean isUpdateComplexValuesStatementSupported;
     boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
-    //    String verrou;
-//    private boolean isOpen;
+
     private boolean readOnly;
-    private String persistenceUnitName;
     private ObjectFactory factory;
     private IdentifierStoreTranslator identifierStoreTranslator;
-    private net.vpc.upa.Properties perfProperties;
-    //    private StatementDelegate statement;
-//    private ConnectionProfile profile;
-//    private String dbName;
-//    private String dbVersion;
-//    private SQLParser parser;
+
     private PersistenceNameStrategy persistenceNameStrategy;
     private Map<UPAObjectAndSpec, String> persistenceNamesMap = new HashMap<UPAObjectAndSpec, String>();
     //    private DefaultPersistenceNameStrategyManager defaultPersistenceNameStrategyManager;
     //    private String name;
     private net.vpc.upa.Properties parameters = new DefaultProperties();
+    private net.vpc.upa.Properties properties = new DefaultProperties();
     private DefaultPersistenceUnitCommitManager commitManager = new DefaultPersistenceUnitCommitManager();
     //    public static final DataWrapperFactory F_LIST = new ListDataMarshallerFactory();
     private MarshallManager marshallManager;
     private SQLManager sqlManager;
     private String identifierQuoteString;
     private PersistenceNameConfig nameConfig;
+    private PersistenceUnit persistenceUnit;
     private HashSet<String> reservedWords;
     private ConnectionProfile connectionProfile;
     @PortabilityHint(target = "C#", name = "suppress")
@@ -134,11 +130,10 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile, PersistenceNameConfig nameConfig) throws UPAException {
-        this.persistenceUnitName = persistenceUnit.toString();
+        this.persistenceUnit = persistenceUnit;
         this.nameConfig = nameConfig;
         this.readOnly = readOnly;
         this.connectionProfile = connectionProfile;
-        this.perfProperties = persistenceUnit.getProperties();
 
         embeddedDataSourceSupported = null;
         /**
@@ -154,8 +149,8 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         setPersistenceNameStrategy(c);
         PlatformBeanType b = PlatformBeanTypeRepository.getInstance().getBeanType(persistenceNameStrategy.getClass());
         b.inject(persistenceNameStrategy, "persistenceStore", this);
-        b.inject(persistenceNameStrategy, "persistenceUnit", persistenceUnit);
-        commitManager.init((PersistenceUnitExt) persistenceUnit, this);
+        b.inject(persistenceNameStrategy, "properties", persistenceUnit.getProperties());
+        commitManager.init(this);
     }
 
     public final MarshallManager getMarshallManager() {
@@ -193,27 +188,27 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     public boolean isComplexSelectSupported() {
-        return getProperties().getBoolean("isComplexSelectSupported", false);
+        return getStoreParameters().getBoolean("isComplexSelectSupported", false);
     }
 
     public boolean isFromClauseInUpdateStatementSupported() {
-        return getProperties().getBoolean("isFromClauseInUpdateStatementSupported", false);
+        return getStoreParameters().getBoolean("isFromClauseInUpdateStatementSupported", false);
     }
 
     public boolean isFromClauseInDeleteStatementSupported() {
-        return getProperties().getBoolean("isFromClauseInDeleteStatementSupported", false);
+        return getStoreParameters().getBoolean("isFromClauseInDeleteStatementSupported", false);
     }
 
     public boolean isReferencingSupported() {
-        return getProperties().getBoolean("isReferencingSupported", false);
+        return getStoreParameters().getBoolean("isReferencingSupported", false);
     }
 
     public boolean isViewSupported() {
-        return getProperties().getBoolean("isViewSupported", false);
+        return getStoreParameters().getBoolean("isViewSupported", false);
     }
 
     public boolean isTopSupported() {
-        return getProperties().getBoolean("isTopSupported", false);
+        return getStoreParameters().getBoolean("isTopSupported", false);
     }
 
     //    @Override
@@ -370,8 +365,18 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 //        return dbVersion;
 //    }
     @Override
-    public net.vpc.upa.Properties getProperties() {
+    public net.vpc.upa.Properties getStoreParameters() {
         return parameters;
+    }
+
+    @Override
+    public net.vpc.upa.Properties getProperties() {
+        return properties;
+    }
+
+    @Override
+    public void setProperties(net.vpc.upa.Properties properties) {
+        this.properties = properties;
     }
 
     //    @Override
@@ -424,7 +429,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     public UConnection wrapConnection(Connection connection) throws UPAException {
-        return new DefaultUConnection(persistenceUnitName, connection, getMarshallManager(),perfProperties);
+        return new DefaultUConnection(persistenceUnit.toString(), connection, getMarshallManager(), persistenceUnit.getProperties());
     }
 
     public UConnection createRootUConnection(EntityExecutionContext context) throws UPAException {
@@ -475,24 +480,24 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     protected void reconfigureStore(UConnection connection) {
-        if (!getProperties().containsKey("configured")) {
+        if (!getStoreParameters().containsKey("configured")) {
             /**
              * @PortabilityHint(target = "C#",name = "todo")
              */
             try {
                 DatabaseMetaData metaData = connection.getMetadataAccessibleConnection().getMetaData();
-                getProperties().setString("configured", String.valueOf(true));
-                getProperties().setString("databaseMajorVersion", String.valueOf(metaData.getDatabaseMajorVersion()));
-                getProperties().setString("databaseMinorVersion", String.valueOf(metaData.getDatabaseMinorVersion()));
-                getProperties().setString("databaseProductVersion", String.valueOf(metaData.getDatabaseProductVersion()));
-                getProperties().setString("databaseProductName", String.valueOf(metaData.getDatabaseProductName()));
-                getProperties().setString("driverName", String.valueOf(metaData.getDriverName()));
-                getProperties().setString("driverName", String.valueOf(metaData.getDriverName()));
-                getProperties().setString("driverVersion", String.valueOf(metaData.getDriverVersion()));
-                getProperties().setString("driverVersion", String.valueOf(metaData.getDriverVersion()));
-                getProperties().setString("driverMajorVersion", String.valueOf(metaData.getDriverMajorVersion()));
-                getProperties().setString("driverMinorVersion", String.valueOf(metaData.getDriverMinorVersion()));
-                getProperties().setString("identifierQuoteString", identifierQuoteString = (metaData.getIdentifierQuoteString()));
+                getStoreParameters().setString("configured", String.valueOf(true));
+                getStoreParameters().setString("databaseMajorVersion", String.valueOf(metaData.getDatabaseMajorVersion()));
+                getStoreParameters().setString("databaseMinorVersion", String.valueOf(metaData.getDatabaseMinorVersion()));
+                getStoreParameters().setString("databaseProductVersion", String.valueOf(metaData.getDatabaseProductVersion()));
+                getStoreParameters().setString("databaseProductName", String.valueOf(metaData.getDatabaseProductName()));
+                getStoreParameters().setString("driverName", String.valueOf(metaData.getDriverName()));
+                getStoreParameters().setString("driverName", String.valueOf(metaData.getDriverName()));
+                getStoreParameters().setString("driverVersion", String.valueOf(metaData.getDriverVersion()));
+                getStoreParameters().setString("driverVersion", String.valueOf(metaData.getDriverVersion()));
+                getStoreParameters().setString("driverMajorVersion", String.valueOf(metaData.getDriverMajorVersion()));
+                getStoreParameters().setString("driverMinorVersion", String.valueOf(metaData.getDriverMinorVersion()));
+                getStoreParameters().setString("identifierQuoteString", identifierQuoteString = (metaData.getIdentifierQuoteString()));
                 identifierStoreTranslator = createIdentifierStoreTranslator(connection);
 
                 HashSet<String> r = new HashSet<String>();
@@ -519,8 +524,8 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
             } catch (Exception ee) {
                 ee.printStackTrace();
             }
-            isUpdateComplexValuesStatementSupported = getProperties().getBoolean("isUpdateComplexValuesStatementSupported", false);
-            isUpdateComplexValuesIncludingUpdatedTableSupported = getProperties().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+            isUpdateComplexValuesStatementSupported = getStoreParameters().getBoolean("isUpdateComplexValuesStatementSupported", false);
+            isUpdateComplexValuesIncludingUpdatedTableSupported = getStoreParameters().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
         }
 
     }
@@ -644,9 +649,20 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
                                                   String password,
                                                   Map<String, String> properties) throws UPAException {
         try {
+            net.vpc.upa.Properties uproperties=this.properties;
+            PropertiesDollarConverter varConverter = new PropertiesDollarConverter(uproperties);
+            driver=StringUtils.replaceDollarVars(driver, varConverter);
+            url=StringUtils.replaceDollarVars(url, varConverter);
+            user=StringUtils.replaceDollarVars(user, varConverter);
+            password=StringUtils.replaceSingleDollarVars(password, varConverter);
+
             Map<String, String> jdbcProperties = new HashMap<String, String>();
             if (properties != null) {
-                jdbcProperties.putAll(properties);
+                for (Map.Entry<String, String> e : properties.entrySet()) {
+                    String value = e.getValue();
+                    value=StringUtils.replaceDollarVars(value, varConverter);
+                    jdbcProperties.put(e.getKey(), value);
+                }
             }
             if (user != null) {
                 jdbcProperties.put("user", user);
@@ -780,11 +796,11 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     protected int getMaxQueryJoinCount() {
-        return getProperties().getInt("maxQueryJoinCount", -1);
+        return getStoreParameters().getInt("maxQueryJoinCount", -1);
     }
 
     protected int getMaxQueryColumnsCount() {
-        return getProperties().getInt("maxQueryColumnsCount", -1);
+        return getStoreParameters().getInt("maxQueryColumnsCount", -1);
     }
 
     public QueryExecutor createExecutor(
@@ -1390,7 +1406,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     @Override
-    public void createStructure(PersistenceUnit persistenceUnit, EntityExecutionContext executionContext) throws UPAException {
+    public void createStructure(EntityExecutionContext executionContext) throws UPAException {
         QueryScript script = new QueryScript();
         List<Entity> entities = persistenceUnit.getEntities();
         List<Entity> queries = new ArrayList<Entity>();
@@ -1528,7 +1544,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
     }
 
     @Override
-    public void setNativeConstraintsEnabled(PersistenceUnit persistenceUnit, boolean enable) throws UPAException {
+    public void setNativeConstraintsEnabled(boolean enable) throws UPAException {
         if (enable) {
             persistenceUnit.getConnection().executeScript(getEnableConstraintsScript(persistenceUnit), false);
         } else {
@@ -1579,7 +1595,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
         }
         this.persistenceNameStrategy = persistenceNameStrategy;
         if (this.persistenceNameStrategy != null) {
-            this.persistenceNameStrategy.init(this, nameConfig);
+            this.persistenceNameStrategy.init(this, nameConfig,persistenceUnit.getProperties());
         }
     }
 
@@ -1723,7 +1739,7 @@ public class DefaultPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public boolean commitStorage() throws UPAException {
-        return commitManager.commitStructure();
+        return commitManager.commitStructure(persistenceUnit);
     }
 
     @Override

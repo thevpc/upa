@@ -73,7 +73,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
         Update u = new Update().entity(entity.getName());
         for (String fieldName : updates.keySet()) {
             Field f = entity.findField(fieldName);
-            if (f != null && FieldFilters2.UPDATE.accept(f)) {
+            if (f != null /*&& FieldFilters2.UPDATE.accept(f)*/) {
                 Object value = updates.getObject(fieldName);
                 if (f.isManyToOne()) {
                     ManyToOneType e = (ManyToOneType) f.getDataType();
@@ -130,6 +130,8 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
                         u.set(fieldName, (Expression) value);
                     }
                 }
+            }else{
+                System.out.println("<<CHECK ME>> Ignored "+(f==null?("unknown field "+fieldName):f.getAbsoluteName()));
             }
         }
         if (condition instanceof IdExpression) {

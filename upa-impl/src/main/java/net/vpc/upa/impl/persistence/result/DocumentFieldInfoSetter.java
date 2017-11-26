@@ -5,7 +5,7 @@ import net.vpc.upa.Document;
 /**
  * Created by vpc on 7/2/17.
  */
-class DocumentFieldInfoSetter implements FieldInfoSetter {
+class DocumentFieldInfoSetter implements ResultFieldParseDataSetter {
     private final String fieldName;
 
     public DocumentFieldInfoSetter(String fieldName) {

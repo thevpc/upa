@@ -25,6 +25,18 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="upa-api" />
     <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: cglib:cglib:3.2.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm:5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant-launcher:1.9.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi:3.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: commons-codec:commons-codec:1.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml:3.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: dom4j:dom4j:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: xml-apis:xml-apis:1.0.b2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-web:1.1.0.0.0" level="project" />
     <orderEntry type="module" module-name="upa-tutorial-business" />
     <orderEntry type="module" module-name="upa-tutorial-dal" />

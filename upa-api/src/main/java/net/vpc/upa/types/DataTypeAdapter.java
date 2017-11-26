@@ -1,5 +1,6 @@
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UnexpectedException;
 
@@ -144,5 +145,10 @@ public class DataTypeAdapter implements DataType, Cloneable {
     @Override
     public int hashCode() {
         return dataType != null ? dataType.hashCode() : 0;
+    }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        return dataType.getInfo();
     }
 }

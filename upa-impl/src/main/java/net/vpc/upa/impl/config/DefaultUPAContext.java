@@ -1271,4 +1271,15 @@ public class DefaultUPAContext implements UPAContext {
         }
         return properties;
     }
+
+    @Override
+    public PersistenceContextInfo getInfo() {
+        PersistenceContextInfo i=new PersistenceContextInfo();
+        List<PersistenceGroupInfo> list=new ArrayList<>();
+        for (PersistenceGroup persistenceGroup : getPersistenceGroups()) {
+            list.add(persistenceGroup.getInfo());
+        }
+        i.setGroups(list);
+        return i;
+    }
 }

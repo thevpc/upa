@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.EntityExt;
@@ -16,9 +16,6 @@ import net.vpc.upa.expressions.IdCollectionExpression;
 import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.UPAUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.util.PlatformUtils;
 
@@ -469,6 +466,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return targetRole;
     }
 
+
     public RelationshipRole getSourceRole() {
         return sourceRole;
     }
@@ -615,4 +613,33 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 
     }
 
+    @Override
+    public RelationshipInfo getInfo() {
+        RelationshipInfo i = new RelationshipInfo("many2one");
+        fillObjectInfo(i);
+        i.setAskForConfirm(isAskForConfirm());
+        i.setFollowLinks(isFollowLinks());
+        i.setFiltered(getFilter()!=null);
+        i.setLive(isTransient());
+        i.setRelationshipType(getRelationshipType());
+        i.setNullable(nullable);
+        i.setSource(getSourceEntity()==null?null:getSourceEntity().getName());
+        i.setTarget(getTargetEntity()==null?null:getTargetEntity().getName());
+        i.setSourceField(getTargetEntity()==null||getSourceRole().getEntityField()==null?null:getSourceRole().getEntityField().getName());
+        i.setTargetField(getTargetEntity()==null||getTargetRole().getEntityField()==null?null:getTargetRole().getEntityField().getName());
+        i.setSourceFields(getTargetEntity()==null?new String[0]:toString(getSourceRole().getFields()));
+        i.setTargetFields(getTargetEntity()==null?new String[0]:toString(getTargetRole().getFields()));
+        return i;
+    }
+
+    private String[] toString(List<Field> f){
+        if(f==null){
+            f= Collections.EMPTY_LIST;
+        }
+        String[] all=new String[f.size()];
+        for (int i = 0; i < all.length; i++) {
+            all[i]=f.get(i).getName();
+        }
+        return all;
+    }
 }

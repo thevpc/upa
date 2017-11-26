@@ -101,6 +101,20 @@ public interface FieldBuilder {
 
     FieldBuilder setReadAccessLevel(AccessLevel readAccessLevel);
 
+    FieldBuilder setProtectionLevel(ProtectionLevel protectionLevel);
+
+    ProtectionLevel getPersistProtectionLevel();
+
+    FieldBuilder setPersistProtectionLevel(ProtectionLevel persistProtectionLevel);
+
+    ProtectionLevel getUpdateProtectionLevel();
+
+    FieldBuilder setUpdateProtectionLevel(ProtectionLevel updateProtectionLevel);
+
+    ProtectionLevel getReadProtectionLevel();
+
+    FieldBuilder setReadProtectionLevel(ProtectionLevel readProtectionLevel);
+
     Map<String, Object> getFieldParams();
 
     FieldBuilder setFieldParams(Map<String, Object> fieldParams);

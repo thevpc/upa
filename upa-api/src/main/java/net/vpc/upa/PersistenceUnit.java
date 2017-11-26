@@ -561,4 +561,5 @@ public interface PersistenceUnit extends Closeable {
 
     long getEntityCount(Class entityType);
 
+    PersistenceUnitInfo getInfo();
 }

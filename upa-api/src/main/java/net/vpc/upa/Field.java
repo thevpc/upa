@@ -91,19 +91,19 @@ public interface Field extends EntityPart {
 
     Formula getUpdateFormula();
 
+    void setUpdateFormula(String formula);
+
     void setUpdateFormula(Formula formula);
 
     int getUpdateFormulaOrder();
 
     void setUpdateFormulaOrder(int order);
 
-    void setUpdateFormula(String formula);
-
     Formula getSelectFormula();
 
-    void setSelectFormula(Formula formula);
-
     void setSelectFormula(String formula);
+
+    void setSelectFormula(Formula formula);
 
     //    boolean isRequired() throws UPAException;
     DataType getDataType();
@@ -124,6 +124,20 @@ public interface Field extends EntityPart {
     void setReadAccessLevel(AccessLevel accessLevel);
 
     void setAccessLevel(AccessLevel accessLevel);
+
+    ProtectionLevel getPersistProtectionLevel();
+
+    void setPersistProtectionLevel(ProtectionLevel protectionLevel);
+
+    ProtectionLevel getUpdateProtectionLevel();
+
+    void setUpdateProtectionLevel(ProtectionLevel protectionLevel);
+
+    ProtectionLevel getReadProtectionLevel();
+
+    void setReadProtectionLevel(ProtectionLevel protectionLevel);
+
+    void setProtectionLevel(ProtectionLevel protectionLevel);
 
     FlagSet<UserFieldModifier> getUserModifiers();
 
@@ -182,4 +196,18 @@ public interface Field extends EntityPart {
 
 
     Relationship getManyToOneRelationship();
+
+    ProtectionLevel getProtectionLevel(AccessMode mode);
+
+    AccessLevel getAccessLevel(AccessMode mode);
+
+    AccessLevel getEffectiveAccessLevel(AccessMode mode);
+
+    AccessLevel getEffectivePersistAccessLevel();
+
+    AccessLevel getEffectiveUpdateAccessLevel();
+
+    AccessLevel getEffectiveReadAccessLevel();
+
+    FieldInfo getInfo();
 }

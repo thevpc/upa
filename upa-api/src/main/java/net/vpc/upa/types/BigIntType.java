@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
+
 import java.math.BigInteger;
 
 public class BigIntType extends NumberType implements Cloneable {
@@ -134,4 +136,17 @@ public class BigIntType extends NumberType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(min));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

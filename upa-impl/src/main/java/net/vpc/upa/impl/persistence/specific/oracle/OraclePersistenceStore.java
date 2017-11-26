@@ -20,7 +20,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
 
 
     public OraclePersistenceStore() {
-        Properties map = getProperties();
+        Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
         map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
         map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);

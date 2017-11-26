@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.exceptions.UnexpectedException;
 
 import java.util.ArrayList;
@@ -212,4 +213,20 @@ public class ListType extends SeriesType implements Cloneable {
         result = 31 * result + (elements != null ? elements.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        StringBuilder s=new StringBuilder();
+        d.getProperties().put("elementType", String.valueOf(elementType));
+        for (Object o : elements) {
+            if(s.length()>0){
+                s.append(",");
+            }
+            s.append(o.toString());
+        }
+        d.getProperties().put("values", String.valueOf(s));
+        return d;
+    }
+
 }

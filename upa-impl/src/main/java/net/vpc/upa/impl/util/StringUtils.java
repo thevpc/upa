@@ -736,6 +736,18 @@ public final class StringUtils {
         return ((st > 0) || (len < value.length)) ? str.substring(st, len) : str;
     }
 
+    public static String replaceSingleDollarVars(String str, Converter<String, String> varConverter) {
+        if (str != null) {
+            if (str.startsWith("${") && str.endsWith("}")) {
+                String str2 = str.substring(2, str.length() - 1);
+                if (str2.indexOf('$') < 0) {
+                    return varConverter.convert(str2);
+                }
+            }
+        }
+        return str;
+    }
+
     public static String replaceDollarVars(String str, Converter<String, String> varConverter) {
         if (str == null) {
             return str;

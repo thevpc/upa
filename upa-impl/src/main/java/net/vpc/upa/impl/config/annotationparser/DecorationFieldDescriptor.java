@@ -34,7 +34,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     List<Field> fields = new ArrayList<Field>();
     //    net.vpc.upa.Field entityField;
     RelationshipInfo foreignInfo;
-    EntityInfo entityInfo = null;
+    DecorationEntityDescriptor entityInfo = null;
     String fieldPath = null;
     Object defaultObject = null;
     Object unspecifiedObject = null;
@@ -53,6 +53,9 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     AccessLevel persistAccessLevel;
     AccessLevel updateAccessLevel;
     AccessLevel readAccessLevel;
+    ProtectionLevel persistProtectionLevel;
+    ProtectionLevel updateProtectionLevel;
+    ProtectionLevel readProtectionLevel;
     boolean valid = true;
     boolean buildForeign = false;
     OverriddenValue<DataType> overriddenDataType = new OverriddenValue<DataType>();
@@ -83,15 +86,17 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     OverriddenValue<TemporalOption> overriddenTemporal = new OverriddenValue<TemporalOption>();
     OverriddenValue<AccessLevel> overriddenPersistAccessLevel = new OverriddenValue<AccessLevel>();
     OverriddenValue<AccessLevel> overriddenUpdateAccessLevel = new OverriddenValue<AccessLevel>();
-    OverriddenValue<AccessLevel> overriddenRemoveAccessLevel = new OverriddenValue<AccessLevel>();
     OverriddenValue<AccessLevel> overriddenReadAccessLevel = new OverriddenValue<AccessLevel>();
+    OverriddenValue<ProtectionLevel> overriddenPersistProtectionLevel = new OverriddenValue<ProtectionLevel>();
+    OverriddenValue<ProtectionLevel> overriddenUpdateProtectionLevel = new OverriddenValue<ProtectionLevel>();
+    OverriddenValue<ProtectionLevel> overriddenReadProtectionLevel = new OverriddenValue<ProtectionLevel>();
     List<Property> parameterInfos = new ArrayList<Property>();
     private Class nativeClass;
     boolean nullableOk = true;
     DecorationRepository repo;
     private Map<String, Object> fieldParams = new LinkedHashMap<String, Object>();
 
-    DecorationFieldDescriptor(String name, EntityInfo entityInfo, DecorationRepository repo) {
+    DecorationFieldDescriptor(String name, DecorationEntityDescriptor entityInfo, DecorationRepository repo) {
         this.name = name;
         this.entityInfo = entityInfo;
         this.repo = repo;
@@ -496,17 +501,35 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 //                if (fieldDeco.getEnum("end", BoolEnum.class) != BoolEnum.UNDEFINED) {
 //                    overriddenEnd.setBetterValue(fieldDeco.getEnum("nullable", BoolEnum.class), processOrder);
 //                }
+                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("accessLevel", AccessLevel.class))) {
+                    AccessLevel accessLevel = fieldDeco.getEnum("accessLevel", AccessLevel.class);
+                    overriddenPersistAccessLevel.setBetterValue(accessLevel, processOrder);
+                    overriddenUpdateAccessLevel.setBetterValue(accessLevel, processOrder);
+                    overriddenReadAccessLevel.setBetterValue(accessLevel, processOrder);
+                }
                 if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("persistAccessLevel", AccessLevel.class))) {
                     overriddenPersistAccessLevel.setBetterValue(fieldDeco.getEnum("persistAccessLevel", AccessLevel.class), processOrder);
                 }
                 if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("updateAccessLevel", AccessLevel.class))) {
                     overriddenUpdateAccessLevel.setBetterValue(fieldDeco.getEnum("updateAccessLevel", AccessLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("removeAccessLevel", AccessLevel.class))) {
-                    overriddenRemoveAccessLevel.setBetterValue(fieldDeco.getEnum("removeAccessLevel", AccessLevel.class), processOrder);
-                }
                 if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("readAccessLevel", AccessLevel.class))) {
                     overriddenReadAccessLevel.setBetterValue(fieldDeco.getEnum("readAccessLevel", AccessLevel.class), processOrder);
+                }
+                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("protectionLevel", ProtectionLevel.class))) {
+                    ProtectionLevel protectionLevel = fieldDeco.getEnum("protectionLevel", ProtectionLevel.class);
+                    overriddenReadProtectionLevel.setBetterValue(protectionLevel, processOrder);
+                    overriddenPersistProtectionLevel.setBetterValue(protectionLevel, processOrder);
+                    overriddenUpdateProtectionLevel.setBetterValue(protectionLevel, processOrder);
+                }
+                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("persistProtectionLevel", ProtectionLevel.class))) {
+                    overriddenPersistProtectionLevel.setBetterValue(fieldDeco.getEnum("persistProtectionLevel", ProtectionLevel.class), processOrder);
+                }
+                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("updateProtectionLevel", ProtectionLevel.class))) {
+                    overriddenUpdateProtectionLevel.setBetterValue(fieldDeco.getEnum("updateProtectionLevel", ProtectionLevel.class), processOrder);
+                }
+                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("readProtectionLevel", ProtectionLevel.class))) {
+                    overriddenReadProtectionLevel.setBetterValue(fieldDeco.getEnum("readProtectionLevel", ProtectionLevel.class), processOrder);
                 }
                 AnnotationParserUtils.validStr(fieldDeco.getString("charsAccepted"), overriddenCharsAccepted, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("charsRejected"), overriddenCharsRejected, processOrder);
@@ -601,6 +624,15 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         if (overriddenReadAccessLevel.specified && !PlatformUtils.isUndefinedValue(AccessLevel.class, overriddenReadAccessLevel.value)) {
             this.readAccessLevel = overriddenReadAccessLevel.value;
         }
+        if (overriddenPersistProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenPersistProtectionLevel.value)) {
+            this.persistProtectionLevel = overriddenPersistProtectionLevel.value;
+        }
+        if (overriddenUpdateProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenUpdateProtectionLevel.value)) {
+            this.updateProtectionLevel = overriddenUpdateProtectionLevel.value;
+        }
+        if (overriddenReadProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenReadProtectionLevel.value)) {
+            this.readProtectionLevel = overriddenReadProtectionLevel.value;
+        }
 //        this.entityField = upaField;
     }
 
@@ -673,7 +705,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         return foreignInfo;
     }
 
-    public EntityInfo getEntityInfo() {
+    public DecorationEntityDescriptor getEntityInfo() {
         return entityInfo;
     }
 
@@ -747,6 +779,18 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 
     public AccessLevel getReadAccessLevel() {
         return readAccessLevel;
+    }
+
+    public ProtectionLevel getPersistProtectionLevel() {
+        return persistProtectionLevel;
+    }
+
+    public ProtectionLevel getUpdateProtectionLevel() {
+        return updateProtectionLevel;
+    }
+
+    public ProtectionLevel getReadProtectionLevel() {
+        return readProtectionLevel;
     }
 
     public boolean isValid() {

@@ -10,15 +10,15 @@ import java.util.List;
 /**
  * Created by vpc on 7/2/17.
  */
-class ColumnFamilyParserMultiIdEntity implements ColumnFamilyParser {
-    public static final ColumnFamilyParser INSTANCE = new ColumnFamilyParserMultiIdEntity();
+class ColumnFamilyParserMultiIdEntityResult implements ResultFieldFamilyParser {
+    public static final ResultFieldFamilyParser INSTANCE = new ColumnFamilyParserMultiIdEntityResult();
 
-    private ColumnFamilyParserMultiIdEntity() {
+    private ColumnFamilyParserMultiIdEntityResult() {
 
     }
 
     @Override
-    public void parse(QueryResult result, ColumnFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+    public void parse(QueryResult result, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
         ResultObject resultObject;
         Object[] idarr = TypeInfoSupParserHelper.extractArrayId(result, columnFamily);
         if (idarr == null) {
@@ -30,14 +30,14 @@ class ColumnFamilyParserMultiIdEntity implements ColumnFamilyParser {
             if (o == null) {
                 o = columnFamily.createResultObject();
                 referencesCache.put(key, o);
-                List<FieldInfo> entityFields = columnFamily.idFields;
+                List<ResultFieldParseData> entityFields = columnFamily.idFields;
                 int length = idarr.length;
                 for (int i = 0; i < length; i++) {
-                    FieldInfo idField = entityFields.get(i);
+                    ResultFieldParseData idField = entityFields.get(i);
                     o.entityDocument.setObject(idField.field.getName(), idarr[i]);
                 }
                 entityFields = columnFamily.nonIdFields;
-                for (FieldInfo f : entityFields) {
+                for (ResultFieldParseData f : entityFields) {
                     Object fieldValue = result.read(f.dbIndex);
                     o.entityDocument.setObject(f.name, fieldValue);
                 }

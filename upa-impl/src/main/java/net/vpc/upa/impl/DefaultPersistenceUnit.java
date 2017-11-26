@@ -34,6 +34,7 @@ import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
 import net.vpc.upa.impl.uql.DefaultExpressionManager;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.impl.util.*;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
@@ -954,7 +955,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             entityFilter = new DefaultEntityFilter().setAcceptClear(true);
         }
         List<Entity> ops = getEntities(entityFilter);
-        getPersistenceStore().setNativeConstraintsEnabled(this, false);
+        getPersistenceStore().setNativeConstraintsEnabled(false);
         EntityExecutionContext context = createContext(ContextOperation.CLEAR, hints);
 
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.BEFORE));
@@ -962,7 +963,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         for (Entity entity : ops) {
             ((EntityExt)entity).clearCore(context);
         }
-        getPersistenceStore().setNativeConstraintsEnabled(this, true);
+        getPersistenceStore().setNativeConstraintsEnabled(true);
         persistenceUnitListenerManager.fireOnClear(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
 
@@ -1568,7 +1569,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                         .setModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
                         .setExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
                         .setDataType(new StringType("lockId", 0, 64, true))
-                        .setAccessLevel(AccessLevel.PRIVATE));
+                        .setProtectionLevel(ProtectionLevel.PRIVATE));
 
         entity.addField(
                 new DefaultFieldDescriptor()
@@ -1577,7 +1578,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                         .setModifiers(FlagSets.of(UserFieldModifier.SYSTEM))
                         .setExcludeModifiers(FlagSets.of(UserFieldModifier.UPDATE))
                         .setDataType(new DateType("lockTime", Timestamp.class, true))
-                        .setAccessLevel(AccessLevel.PRIVATE)
+                        .setProtectionLevel(ProtectionLevel.PRIVATE)
         );
     }
 
@@ -2873,4 +2874,16 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         return getEntity(entityType).getEntityCount();
     }
 
+    @Override
+    public PersistenceUnitInfo getInfo() {
+        PersistenceUnitInfo i = new PersistenceUnitInfo();
+        i.setName(getName());
+        i.setRoot(getDefaultPackage().getInfo());
+        List<RelationshipInfo> r=new ArrayList<>();
+        for (Relationship relationship : getRelationships()) {
+            r.add(relationship.getInfo());
+        }
+        i.setRelationships(r);
+        return i;
+    }
 }

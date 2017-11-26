@@ -448,4 +448,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     List<Document> findAllDocuments();
 
     PlatformBeanType getPlatformBeanType();
+
+    EntityInfo getInfo();
 }

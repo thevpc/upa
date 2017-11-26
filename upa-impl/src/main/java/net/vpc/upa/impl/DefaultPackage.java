@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.*;
 import net.vpc.upa.Package;
-import net.vpc.upa.PersistenceUnitPart;
 import net.vpc.upa.exceptions.NoSuchPackageException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
@@ -9,8 +9,6 @@ import net.vpc.upa.impl.util.ListUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.vpc.upa.Entity;
-import net.vpc.upa.impl.util.UPAUtils;
 
 public class DefaultPackage extends AbstractUPAObject implements Package {
 
@@ -184,5 +182,21 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
                 throw new UPAIllegalArgumentException("Invalid name char '" + c[i] + "' in name " + s);
             }
         }
+    }
+
+    @Override
+    public PackageInfo getInfo() {
+        PackageInfo i=new PackageInfo();
+        fillObjectInfo(i);
+        List<PersistenceUnitPartInfo> parts=new ArrayList<>();
+        for (PersistenceUnitPart part : this.parts) {
+            if(part instanceof Entity){
+                parts.add(((Entity) part).getInfo());
+            }else if(part instanceof Package){
+                parts.add(((Package) part).getInfo());
+            }
+        }
+        i.setChildren(parts);
+        return i;
     }
 }

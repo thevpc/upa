@@ -20,6 +20,11 @@ public class DefaultI18NStringStrategy implements I18NStringStrategy {
         return new I18NString("Package").append(key(module==null?null:module.getPath()));
     }
 
+    @Override
+    public I18NString getIndexString(Index index) {
+        return new I18NString("Index").append(key(index==null?null:index.getName()));
+    }
+
     public I18NString getSectionString(Entity entity, String section) {
         return getEntityString(entity).append("Section").append(key(section));
     }

@@ -32,7 +32,6 @@ import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
-import net.vpc.upa.types.ManyToOneType;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -490,11 +489,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             throw new NullPointerException();
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
-        if (canonicalPathArray.length==0) {
+        if (canonicalPathArray.length == 0) {
             throw new UPAIllegalArgumentException("Emty Name");
         }
         Section parentModule = null;
-        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength-1; i++) {
+        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength - 1; i++) {
             String n = canonicalPathArray[i];
             Section next = null;
             if (parentModule == null) {
@@ -506,7 +505,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length-1]);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length - 1]);
 
         if (parentModule == null) {
             addPart(currentModule, index);
@@ -659,7 +658,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             throw new NoSuchSectionException(path);
                         }
                         case CREATE: {
-                            next = addSection(module.getPath()+"/"+n);
+                            next = addSection(module.getPath() + "/" + n);
                             break;
                         }
                         case NULL: {
@@ -872,9 +871,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (selectFormula instanceof Sequence) {
                 throw new UPAIllegalArgumentException("Select Formula could not be a sequence");
             }
-            if (((f.getPersistAccessLevel() == AccessLevel.PRIVATE)
-                    || (f.getPersistAccessLevel() == AccessLevel.PRIVATE)
-                    || (f.getPersistAccessLevel() == AccessLevel.PRIVATE)) && fmc.getEffective().contains(FieldModifier.MAIN)) {
+            if (((f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)
+                    || (f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)
+                    || (f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)) && fmc.getEffective().contains(FieldModifier.MAIN)) {
                 throw new UPAIllegalArgumentException("Field " + getAbsoluteName() + " could not be define Main and PRIVATE");
             }
 
@@ -1050,9 +1049,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             for (Field field : test) {
                 FlagSet<FieldModifier> efm = field.getModifiers();
                 if (efm.contains(FieldModifier.MAIN)
-                        && field.getPersistAccessLevel() != AccessLevel.PRIVATE
-                        && field.getUpdateAccessLevel() != AccessLevel.PRIVATE
-                        && field.getReadAccessLevel() != AccessLevel.PRIVATE
+                        && field.getPersistProtectionLevel() != ProtectionLevel.PRIVATE
+                        && field.getUpdateProtectionLevel() != ProtectionLevel.PRIVATE
+                        && field.getReadProtectionLevel() != ProtectionLevel.PRIVATE
                         && !efm.contains(FieldModifier.SYSTEM)) {
                     mainRendererField = field;
                     break;
@@ -1061,9 +1060,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (mainRendererField == null) {
                 for (Field field : test) {
                     FlagSet<FieldModifier> efm = field.getModifiers();
-                    if (field.getPersistAccessLevel() != AccessLevel.PRIVATE
-                            && field.getUpdateAccessLevel() != AccessLevel.PRIVATE
-                            && field.getReadAccessLevel() != AccessLevel.PRIVATE
+                    if (field.getPersistProtectionLevel() != ProtectionLevel.PRIVATE
+                            && field.getUpdateProtectionLevel() != ProtectionLevel.PRIVATE
+                            && field.getReadProtectionLevel() != ProtectionLevel.PRIVATE
                             && !efm.contains(FieldModifier.SYSTEM)) {
                         efm.add(FieldModifier.MAIN);
                         mainRendererField = field;
@@ -1559,7 +1558,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             return null;
         }
         Relationship manyToOneRelationship = mf.getManyToOneRelationship();
-        if(manyToOneRelationship!=null){
+        if (manyToOneRelationship != null) {
             return manyToOneRelationship.getTargetEntity().getMainFieldValue(v);
         }
         return String.valueOf(v);
@@ -1766,13 +1765,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public List<PrimitiveField> getIdPrimitiveFields() {
-        List<PrimitiveField> primitiveIdFields=new ArrayList<>();
+        List<PrimitiveField> primitiveIdFields = new ArrayList<>();
         for (Field field : getIdFields()) {
-            if(field.isManyToOne()){
+            if (field.isManyToOne()) {
                 for (Field rfield : field.getManyToOneRelationship().getSourceRole().getFields()) {
                     primitiveIdFields.addAll(toPrimitiveFields(rfield));
                 }
-            }else{
+            } else {
                 primitiveIdFields.addAll(toPrimitiveFields(field));
             }
         }
@@ -1986,7 +1985,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 try {
                     // r.getDetailsTable().updateAllDocuments(updates,
                     // condition, check);
-                    ((EntityExt)r.getSourceRole().getEntity()).updateCore(updates, condition, context);
+                    ((EntityExt) r.getSourceRole().getEntity()).updateCore(updates, condition, context);
                 } catch (UpdateDocumentKeyNotFoundException e) {
                     // if no updates no matter
                 }
@@ -3007,7 +3006,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (!primaryFieldNames.contains(fieldName)) {
                         Object value = ee.getValue();
                         Field field = getField(fieldName);
-                        ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                        if(FieldFilters2.UPDATE.accept(field)) {
+                            ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                        }
                     }
                 }
                 List<Field> storedFieldsToValidate = getFields(formulaFields);
@@ -3044,7 +3045,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (!primaryFieldNames.contains(fieldName)) {
                         Object value = ee.getValue();
                         Field field = getField(fieldName);
-                        ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                        if(FieldFilters2.UPDATE.accept(field)) {
+                            ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                        }
                     }
                 }
                 if (!fieldNamesToUpdateMap.isEmpty()) {
@@ -3117,7 +3120,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
                     Field field = getField(fieldName);
-                    ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                    if(FieldFilters2.UPDATE.accept(field)) {
+                        ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                    }
                 }
             }
             for (String f : cancelUpdates) {
@@ -3143,7 +3148,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
                     Field field = getField(fieldName);
-                    ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                    if(FieldFilters2.UPDATE.accept(field)) {
+                        ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
+                    }
                 }
             }
             if (!fieldNamesToUpdateMap.isEmpty()) {
@@ -3439,13 +3446,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (object instanceof Key) {
             return true;
         }
-        if(PlatformUtils.isInstance(getIdType(),object)){
+        if (PlatformUtils.isInstance(getIdType(), object)) {
             return true;
         }
-        if (getIdFields().size()>1) {
+        if (getIdFields().size() > 1) {
             return object instanceof Object[];
         }
-        if(UPAUtils.isEntityWithSimpleRelationId(this) && object instanceof Document){
+        if (UPAUtils.isEntityWithSimpleRelationId(this) && object instanceof Document) {
             return true;
         }
         return false;
@@ -3822,4 +3829,55 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return platformBeanType;
     }
 
+    @Override
+    public EntityInfo getInfo() {
+        EntityInfo i = new EntityInfo();
+        fillObjectInfo(i);
+        i.setCompositionRelationship(getCompositionRelation() == null ? null : getCompositionRelation().getName());
+        i.setModifiers(getModifiers().toArray());
+        i.setHasAssociatedView(hasAssociatedView());
+        i.setHierarchical(isHierarchical());
+        i.setParentEntity(getParentEntity() == null ? null : getParentEntity().getName());
+
+        List<Index> indexes0 = getIndexes(null);
+        List<IndexInfo> indexes = new ArrayList<>(indexes0.size());
+        for (Index index : indexes0) {
+            indexes.add(index.getInfo());
+        }
+        i.setIndexes(indexes);
+
+        List<Relationship> relationships0 = getRelationshipsBySource();
+        String[] relationships = new String[relationships0.size()];
+        for (int j = 0; j < relationships.length; j++) {
+            relationships[j]=relationships0.get(j).getName();
+        }
+        i.setManyToOneRelationships(relationships);
+
+        relationships0 = getRelationshipsBySource();
+        relationships = new String[relationships0.size()];
+        for (int j = 0; j < relationships.length; j++) {
+            relationships[j]=relationships0.get(j).getName();
+        }
+        i.setOneToManyRelationships(relationships);
+
+        i.setSystem(isSystem());
+        i.setSingleton(isSystem());
+        i.setUnion(isSystem());
+        i.setView(isSystem());
+
+        List<EntityPartInfo> list = new ArrayList<>();
+        for (EntityPart entityPart : getParts()) {
+            if (entityPart instanceof Section) {
+                list.add(((Section) entityPart).getInfo());
+            } else if (entityPart instanceof CompoundField) {
+                list.add(((CompoundField) entityPart).getInfo());
+            } else if (entityPart instanceof DynamicField) {
+                list.add(((DynamicField) entityPart).getInfo());
+            } else if (entityPart instanceof PrimitiveField) {
+                list.add(((PrimitiveField) entityPart).getInfo());
+            }
+        }
+        i.setChildren(list);
+        return i;
+    }
 }

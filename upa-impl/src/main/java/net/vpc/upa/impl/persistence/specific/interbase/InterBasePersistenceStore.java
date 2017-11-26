@@ -11,7 +11,7 @@ import java.util.Set;
 public class InterBasePersistenceStore extends DefaultPersistenceStore {
 
     public InterBasePersistenceStore() {
-        Properties map = getProperties();
+        Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", Boolean.FALSE);
         map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
         map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);

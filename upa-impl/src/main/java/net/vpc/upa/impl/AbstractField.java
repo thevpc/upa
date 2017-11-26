@@ -4,8 +4,10 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.*;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransform;
+import net.vpc.upa.types.EnumType;
+import net.vpc.upa.types.ManyToOneType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,15 +34,18 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     protected Object unspecifiedValue = UnspecifiedValue.DEFAULT;
     //    protected PasswordStrategy passwordStrategy;
 //    private Relationship[] manyToOneRelations = new Relationship[0];
-    private AccessLevel persistAccessLevel = AccessLevel.PUBLIC;
-    private AccessLevel updateAccessLevel = AccessLevel.PUBLIC;
-    private AccessLevel readAccessLevel = AccessLevel.PUBLIC;
+    private AccessLevel persistAccessLevel = AccessLevel.READ_WRITE;
+    private AccessLevel updateAccessLevel = AccessLevel.READ_WRITE;
+    private AccessLevel readAccessLevel = AccessLevel.READ_WRITE;
+    private ProtectionLevel persistProtectionLevel = ProtectionLevel.PUBLIC;
+    private ProtectionLevel updateProtectionLevel = ProtectionLevel.PUBLIC;
+    private ProtectionLevel readProtectionLevel = ProtectionLevel.PUBLIC;
     private FieldPersister fieldPersister;
     private PropertyAccessType accessType;
     private List<Relationship> relationships;
-    private int preferredIndex=-1;
-    private boolean _customDefaultObject=false;
-    private Object _typeDefaultObject=false;
+    private int preferredIndex = -1;
+    private boolean _customDefaultObject = false;
+    private Object _typeDefaultObject = false;
 
     protected AbstractField() {
     }
@@ -67,9 +72,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 //        if(getDataType() instanceof SerializableOrManyToOneType){
 //            System.out.println("Why");
 //        }
-        relationships=getManyToOneRelationshipsImpl();
+        relationships = getManyToOneRelationshipsImpl();
         //do nothing
     }
+
     //    public boolean is(long modifier) {
 //        return modifier == (modifiers & modifier);
 //    }
@@ -91,11 +97,11 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public boolean isGeneratedId() throws UPAException {
-        if(!isId()){
+        if (!isId()) {
             return false;
         }
         Formula persistFormula = getPersistFormula();
-        return (persistFormula!=null);
+        return (persistFormula != null);
     }
 
     public boolean isMain() throws UPAException {
@@ -143,18 +149,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         this.persistFormula = formula;
     }
 
-    @Override
-    public void setPersistFormula(String formula) {
-        setPersistFormula(formula == null ? null : new ExpressionFormula(formula));
-    }
-
     public void setUpdateFormula(Formula formula) {
         this.updateFormula = formula;
-    }
-
-    @Override
-    public void setUpdateFormula(String formula) {
-        setUpdateFormula(formula == null ? null : new ExpressionFormula(formula));
     }
 
     @Override
@@ -163,9 +159,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         setUpdateFormulaOrder(order);
     }
 
-    @Override
-    public void setPersistFormulaOrder(int order) {
-        this.persistFormulaOrder = order;
+    public int getUpdateFormulaOrder() {
+        return updateFormulaOrder;
     }
 
     @Override
@@ -173,29 +168,35 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         this.updateFormulaOrder = order;
     }
 
-    public int getUpdateFormulaOrder() {
-        return updateFormulaOrder;
-    }
-
     public int getPersistFormulaOrder() {
         return persistFormulaOrder;
+    }
+
+    @Override
+    public void setPersistFormulaOrder(int order) {
+        this.persistFormulaOrder = order;
     }
 
     public Formula getUpdateFormula() {
         return updateFormula;
     }
 
+    @Override
+    public void setUpdateFormula(String formula) {
+        setUpdateFormula(formula == null ? null : new ExpressionFormula(formula));
+    }
+
     public Formula getSelectFormula() {
         return queryFormula;
+    }
+
+    public void setSelectFormula(Formula queryFormula) {
+        this.queryFormula = queryFormula;
     }
 
     @Override
     public void setSelectFormula(String formula) {
         setSelectFormula(formula == null ? null : new ExpressionFormula(formula));
-    }
-
-    public void setSelectFormula(Formula queryFormula) {
-        this.queryFormula = queryFormula;
     }
 
     //    public boolean isRequired() throws UPAException {
@@ -215,8 +216,21 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return persistFormula;
     }
 
+    @Override
+    public void setPersistFormula(String formula) {
+        setPersistFormula(formula == null ? null : new ExpressionFormula(formula));
+    }
+
     public Entity getEntity() {
         return entity;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    public DataType getDataType() {
+        return dataType;
     }
 
     /**
@@ -229,38 +243,22 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         this.dataType = datatype;
         if (!getDataType().isNullable()) {
             _typeDefaultObject = getDataType().getDefaultValue();
-        }else{
-            _typeDefaultObject=null;
-        }
-    }
-
-    public DataType getDataType() {
-        return dataType;
-    }
-
-    /**
-     * called by PersistenceUnitFilter / Table You should not use it
-     *
-     * @param o default value witch may be san ObjectHandler
-     */
-    public void setDefaultObject(Object o) {
-        defaultObject = o;
-        if(o instanceof CustomDefaultObject){
-            _customDefaultObject=true;
+        } else {
+            _typeDefaultObject = null;
         }
     }
 
     public Object getDefaultValue() {
-        if(_customDefaultObject){
-            Object o=((CustomDefaultObject) defaultObject).getObject();
+        if (_customDefaultObject) {
+            Object o = ((CustomDefaultObject) defaultObject).getObject();
             if (o == null) {
-                o=_typeDefaultObject;
+                o = _typeDefaultObject;
             }
             return o;
-        }else{
-            Object o=defaultObject;
+        } else {
+            Object o = defaultObject;
             if (o == null) {
-                o=_typeDefaultObject;
+                o = _typeDefaultObject;
             }
             return o;
         }
@@ -270,15 +268,16 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return defaultObject;
     }
 
-    //    public void resetModifiers() {
-//        modifiers = 0;
-//    }
-    public void setUserModifiers(FlagSet<UserFieldModifier> modifiers) {
-        this.userModifiers = modifiers == null ? FlagSets.noneOf(UserFieldModifier.class) : modifiers;
-    }
-
-    public void setUserExcludeModifiers(FlagSet<UserFieldModifier> modifiers) {
-        this.userExcludeModifiers = modifiers == null ? FlagSets.noneOf(UserFieldModifier.class) : modifiers;
+    /**
+     * called by PersistenceUnitFilter / Table You should not use it
+     *
+     * @param o default value witch may be san ObjectHandler
+     */
+    public void setDefaultObject(Object o) {
+        defaultObject = o;
+        if (o instanceof CustomDefaultObject) {
+            _customDefaultObject = true;
+        }
     }
 
     public FlagSet<FieldModifier> getModifiers() {
@@ -327,18 +326,25 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         }
     }
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-
     @Override
     public FlagSet<UserFieldModifier> getUserModifiers() {
         return userModifiers;
     }
 
+    //    public void resetModifiers() {
+//        modifiers = 0;
+//    }
+    public void setUserModifiers(FlagSet<UserFieldModifier> modifiers) {
+        this.userModifiers = modifiers == null ? FlagSets.noneOf(UserFieldModifier.class) : modifiers;
+    }
+
     @Override
     public FlagSet<UserFieldModifier> getUserExcludeModifiers() {
         return userExcludeModifiers;
+    }
+
+    public void setUserExcludeModifiers(FlagSet<UserFieldModifier> modifiers) {
+        this.userExcludeModifiers = modifiers == null ? FlagSets.noneOf(UserFieldModifier.class) : modifiers;
     }
 
     @Override
@@ -356,13 +362,13 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     @Override
-    public void setUnspecifiedValue(Object o) {
-        this.unspecifiedValue = o;
+    public Object getUnspecifiedValue() {
+        return unspecifiedValue;
     }
 
     @Override
-    public Object getUnspecifiedValue() {
-        return unspecifiedValue;
+    public void setUnspecifiedValue(Object o) {
+        this.unspecifiedValue = o;
     }
 
     public Object getUnspecifiedValueDecoded() {
@@ -385,7 +391,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     public void setPersistAccessLevel(AccessLevel persistAccessLevel) {
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, persistAccessLevel)) {
-            persistAccessLevel = AccessLevel.PUBLIC;
+            persistAccessLevel = AccessLevel.READ_WRITE;
         }
         this.persistAccessLevel = persistAccessLevel;
     }
@@ -396,7 +402,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     public void setUpdateAccessLevel(AccessLevel updateAccessLevel) {
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, updateAccessLevel)) {
-            updateAccessLevel = AccessLevel.PUBLIC;
+            updateAccessLevel = AccessLevel.READ_WRITE;
         }
         this.updateAccessLevel = updateAccessLevel;
     }
@@ -407,7 +413,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     public void setReadAccessLevel(AccessLevel readAccessLevel) {
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, readAccessLevel)) {
-            readAccessLevel = AccessLevel.PUBLIC;
+            readAccessLevel = AccessLevel.READ_ONLY;
+        }
+        if(readAccessLevel==AccessLevel.READ_WRITE){
+            readAccessLevel = AccessLevel.READ_ONLY;
         }
         this.readAccessLevel = readAccessLevel;
     }
@@ -417,6 +426,46 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         setUpdateAccessLevel(accessLevel);
         setReadAccessLevel(accessLevel);
     }
+
+    public ProtectionLevel getPersistProtectionLevel() {
+        return persistProtectionLevel;
+    }
+
+    public void setPersistProtectionLevel(ProtectionLevel persistProtectionLevel) {
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, persistProtectionLevel)) {
+            persistProtectionLevel = ProtectionLevel.PUBLIC;
+        }
+        this.persistProtectionLevel = persistProtectionLevel;
+    }
+
+    public ProtectionLevel getUpdateProtectionLevel() {
+        return updateProtectionLevel;
+    }
+
+    public void setUpdateProtectionLevel(ProtectionLevel updateProtectionLevel) {
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, updateProtectionLevel)) {
+            updateProtectionLevel = ProtectionLevel.PUBLIC;
+        }
+        this.updateProtectionLevel = updateProtectionLevel;
+    }
+
+    public ProtectionLevel getReadProtectionLevel() {
+        return readProtectionLevel;
+    }
+
+    public void setReadProtectionLevel(ProtectionLevel readProtectionLevel) {
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, readProtectionLevel)) {
+            readProtectionLevel = ProtectionLevel.PUBLIC;
+        }
+        this.readProtectionLevel = readProtectionLevel;
+    }
+
+    public void setProtectionLevel(ProtectionLevel persistLevel) {
+        setPersistProtectionLevel(persistLevel);
+        setUpdateProtectionLevel(persistLevel);
+        setReadProtectionLevel(persistLevel);
+    }
+
 
     public SearchOperator getSearchOperator() {
         return searchOperator;
@@ -509,8 +558,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     public Object getMainValue(Object instance) {
         Object v = getValue(instance);
         if (v != null) {
-            Relationship manyToOneRelationship= getManyToOneRelationship();
-            if (manyToOneRelationship!=null) {
+            Relationship manyToOneRelationship = getManyToOneRelationship();
+            if (manyToOneRelationship != null) {
                 v = manyToOneRelationship.getTargetEntity().getBuilder().getMainValue(v);
             }
         }
@@ -532,7 +581,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public void check(Object value) {
-        getDataType().check(value,getName(),null);
+        getDataType().check(value, getName(), null);
     }
 
     @Override
@@ -543,9 +592,267 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     @Override
     public Relationship getManyToOneRelationship() {
         DataType dataType = getDataType();
-        if(dataType instanceof ManyToOneType){
+        if (dataType instanceof ManyToOneType) {
             return ((ManyToOneType) dataType).getRelationship();
         }
         return null;
+    }
+
+    protected void fillFieldInfo(FieldInfo i) {
+        Field f = this;
+        fillObjectInfo(i);
+        DataTypeInfo dataType = f.getDataType() == null ? null : f.getDataType().getInfo();
+        if(dataType!=null){
+            UPAI18n d = getPersistenceGroup().getI18nOrDefault();
+            if(f.getDataType() instanceof EnumType){
+                List<Object> values = ((EnumType) f.getDataType()).getValues();
+                StringBuilder v=new StringBuilder();
+                for (Object o : values) {
+                    if(v.length()>0){
+                        v.append(",");
+                    }
+                    v.append(d.getEnum(o));
+                }
+                dataType.getProperties().put("titles", String.valueOf(v));
+            }
+        }
+        i.setDataType(dataType);
+        i.setId(f.isId());
+        i.setGeneratedId(f.isGeneratedId());
+        i.setModifiers(f.getModifiers().toArray());
+        i.setPersistAccessLevel(f.getPersistAccessLevel());
+        i.setUpdateAccessLevel(f.getUpdateAccessLevel());
+        i.setReadAccessLevel(f.getReadAccessLevel());
+        i.setPersistProtectionLevel(f.getPersistProtectionLevel());
+        i.setUpdateProtectionLevel(f.getUpdateProtectionLevel());
+        i.setReadProtectionLevel(f.getReadProtectionLevel());
+        i.setEffectivePersistAccessLevel(f.getEffectivePersistAccessLevel());
+        i.setEffectiveUpdateAccessLevel(f.getEffectiveUpdateAccessLevel());
+        i.setEffectiveReadAccessLevel(f.getEffectiveReadAccessLevel());
+        i.setMain(f.isMain());
+        i.setSummary(f.isSummary());
+        i.setManyToOne(f.isManyToOne());
+        i.setPropertyAccessType(f.getPropertyAccessType());
+        Relationship r = f.getManyToOneRelationship();
+        i.setManyToOneRelationship(r == null ? null : r.getName());
+    }
+
+    @Override
+    public AccessLevel getEffectiveAccessLevel(AccessMode mode) {
+        if (mode != null) {
+            switch (mode) {
+                case READ:
+                    return getEffectiveReadAccessLevel();
+                case PERSIST:
+                    return getEffectivePersistAccessLevel();
+                case UPDATE:
+                    return getEffectiveUpdateAccessLevel();
+            }
+        }
+        return AccessLevel.INACCESSIBLE;
+    }
+
+    @Override
+    public AccessLevel getAccessLevel(AccessMode mode) {
+        if (mode != null) {
+            switch (mode) {
+                case READ:
+                    return getReadAccessLevel();
+                case PERSIST:
+                    return getPersistAccessLevel();
+                case UPDATE:
+                    return getUpdateAccessLevel();
+            }
+        }
+        return AccessLevel.INACCESSIBLE;
+    }
+
+    @Override
+    public ProtectionLevel getProtectionLevel(AccessMode mode) {
+        if (mode != null) {
+            switch (mode) {
+                case READ:
+                    return getReadProtectionLevel();
+                case PERSIST:
+                    return getPersistProtectionLevel();
+                case UPDATE:
+                    return getUpdateProtectionLevel();
+            }
+        }
+        return ProtectionLevel.PRIVATE;
+    }
+
+    public AccessLevel getEffectivePersistAccessLevel() {
+        AccessLevel al = getPersistAccessLevel();
+        ProtectionLevel pl = getPersistProtectionLevel();
+        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+            al = AccessLevel.READ_WRITE;
+        }
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+            pl = ProtectionLevel.PUBLIC;
+        }
+        switch (al) {
+            case INACCESSIBLE: {
+                break;
+            }
+            case READ_ONLY: {
+                switch (pl) {
+                    case PRIVATE: {
+                        al = AccessLevel.INACCESSIBLE;
+                        break;
+                    }
+                    case PROTECTED: {
+                        break;
+                    }
+                    case PUBLIC: {
+                        break;
+                    }
+                }
+                break;
+            }
+            case READ_WRITE: {
+                switch (pl) {
+                    case PRIVATE: {
+                        al = AccessLevel.READ_ONLY;
+                        break;
+                    }
+                    case PROTECTED: {
+                        if (!getPersistenceUnit().getSecurityManager().isAllowedWrite(this)) {
+                            al = AccessLevel.READ_ONLY;
+                        }
+                        break;
+                    }
+                    case PUBLIC: {
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if (al != AccessLevel.INACCESSIBLE) {
+            if (isGeneratedId()) {
+                al = AccessLevel.INACCESSIBLE;
+            }
+            if (!getModifiers().contains(FieldModifier.PERSIST_DEFAULT)) {
+                al = AccessLevel.INACCESSIBLE;
+            }
+        }
+        return al;
+    }
+
+    public AccessLevel getEffectiveUpdateAccessLevel() {
+        AccessLevel al = getUpdateAccessLevel();
+        ProtectionLevel pl = getUpdateProtectionLevel();
+
+        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+            al = AccessLevel.READ_WRITE;
+        }
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+            pl = ProtectionLevel.PUBLIC;
+        }
+        switch (al) {
+            case INACCESSIBLE: {
+                break;
+            }
+            case READ_ONLY: {
+                switch (pl) {
+                    case PRIVATE: {
+                        al = AccessLevel.INACCESSIBLE;
+                        break;
+                    }
+                    case PROTECTED: {
+                        if (!getPersistenceUnit().getSecurityManager().isAllowedRead(this)) {
+                            al = AccessLevel.INACCESSIBLE;
+                        }
+                        break;
+                    }
+                    case PUBLIC: {
+                        break;
+                    }
+                }
+                break;
+            }
+            case READ_WRITE: {
+                switch (pl) {
+                    case PRIVATE: {
+                        al = AccessLevel.READ_ONLY;
+                        break;
+                    }
+                    case PROTECTED: {
+                        if (!getPersistenceUnit().getSecurityManager().isAllowedWrite(this)) {
+                            al = AccessLevel.READ_ONLY;
+                        }
+                        if (!getPersistenceUnit().getSecurityManager().isAllowedRead(this)) {
+                            al = AccessLevel.INACCESSIBLE;
+                        }
+                        break;
+                    }
+                    case PUBLIC: {
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        if (isId() && al == AccessLevel.READ_WRITE) {
+            al = AccessLevel.READ_ONLY;
+        }
+        if (getModifiers().contains(FieldModifier.UPDATE_DEFAULT)) {
+            //
+        } else if (getModifiers().contains(FieldModifier.PERSIST_FORMULA) || getModifiers().contains(FieldModifier.PERSIST_SEQUENCE)) {
+            if (al == AccessLevel.READ_WRITE) {
+                al = AccessLevel.READ_ONLY;
+            }
+        } else if (getModifiers().contains(FieldModifier.PERSIST_FORMULA) || getModifiers().contains(FieldModifier.PERSIST_SEQUENCE)) {
+            if (al == AccessLevel.READ_WRITE) {
+                al = AccessLevel.READ_ONLY;
+            }
+        }
+        return al;
+    }
+
+    public AccessLevel getEffectiveReadAccessLevel() {
+        AccessLevel al = getReadAccessLevel();
+        ProtectionLevel pl = getReadProtectionLevel();
+        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+            al = AccessLevel.READ_WRITE;
+        }
+        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+            pl = ProtectionLevel.PUBLIC;
+        }
+        if (al == AccessLevel.READ_WRITE) {
+            al = AccessLevel.READ_ONLY;
+        }
+        if (al == AccessLevel.READ_ONLY) {
+            if(!getModifiers().contains(FieldModifier.SELECT)){
+                al=AccessLevel.INACCESSIBLE;
+            }
+        }
+
+        switch (al) {
+            case INACCESSIBLE: {
+                break;
+            }
+            case READ_ONLY: {
+                switch (pl) {
+                    case PRIVATE: {
+                        al = AccessLevel.INACCESSIBLE;
+                        break;
+                    }
+                    case PROTECTED: {
+                        if (!getPersistenceUnit().getSecurityManager().isAllowedRead(this)) {
+                            al = AccessLevel.INACCESSIBLE;
+                        }
+                        break;
+                    }
+                    case PUBLIC: {
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return al;
     }
 }

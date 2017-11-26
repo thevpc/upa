@@ -45,6 +45,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     private PersistenceGroupListenerManager listeners;
     private net.vpc.upa.Properties properties;
     private net.vpc.upa.Properties systemParameters;
+    private UPAI18n i18n;
 
     public DefaultPersistenceGroup() {
         listeners = new PersistenceGroupListenerManager(this);
@@ -63,6 +64,18 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public Properties getProperties() {
         return properties;
+    }
+
+    @Override
+    public PersistenceGroupInfo getInfo() {
+        PersistenceGroupInfo i=new PersistenceGroupInfo();
+        i.setName(getName());
+        List<PersistenceUnitInfo> list=new ArrayList<>();
+        for (PersistenceUnit persistenceUnit : getPersistenceUnits()) {
+            list.add(persistenceUnit.getInfo());
+        }
+        i.setPersistenceUnits(list);
+        return i;
     }
 
     public net.vpc.upa.Properties getSystemParameters() {
@@ -441,5 +454,23 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public void invokePrivileged(VoidAction action) throws UPAException {
         getContext().invokePrivileged(action, prepareInvokeContext(null));
+    }
+
+    @Override
+    public UPAI18n getI18n() {
+        return i18n;
+    }
+
+    public void setI18n(UPAI18n i18n) {
+        this.i18n = i18n;
+    }
+
+    @Override
+    public UPAI18n getI18nOrDefault() {
+        UPAI18n i = getI18n();
+        if(i==null){
+            i=ErrI18N.INSTANCE;
+        }
+        return i;
     }
 }

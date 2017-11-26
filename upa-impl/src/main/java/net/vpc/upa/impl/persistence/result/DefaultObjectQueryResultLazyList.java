@@ -37,7 +37,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private CacheMap<NamedId, ResultObject> referencesCache;
     private Map<String, Object> hints;
     private ObjectFactory ofactory;
-    private ColumnFamily[] columnFamilies;
+    private ResultFieldFamily[] columnFamilies;
     private QueryResultItemBuilder resultBuilder;
     private long rowIndex = -1;
 
@@ -72,7 +72,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         } else {
             referencesCache = NO_RESULT_CACHE;
         }
-        LinkedHashMap<BindingId, ColumnFamily> bindingToTypeInfos0 = new LinkedHashMap<BindingId, ColumnFamily>();
+        LinkedHashMap<BindingId, ResultFieldFamily> bindingToTypeInfos0 = new LinkedHashMap<BindingId, ResultFieldFamily>();
         ofactory = pu.getFactory();
         persistenceUnit = pu;
         NativeField[] fields = queryExecutor.getFields();
@@ -82,7 +82,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
         for (int i = 0; i < indexed.length; i++) {
             NativeField nativeField = (NativeField) indexed[i].getItem();
-            FieldInfo f = new FieldInfo();
+            ResultFieldParseData f = new ResultFieldParseData();
             f.dbIndex = indexed[i].getIndex();
             f.nativeField = nativeField;
             f.name = nativeField.getName();
@@ -96,9 +96,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }
 
             BindingId parentBinding = f.binding.getParent();
-            ColumnFamily columnFamily = bindingToTypeInfos0.get(parentBinding);
+            ResultFieldFamily columnFamily = bindingToTypeInfos0.get(parentBinding);
             if (columnFamily == null) {
-                ColumnFamily ancestor = null;
+                ResultFieldFamily ancestor = null;
                 if ((parentBinding == null || parentBinding.getParent() == null)) {
                     //do nothing
                 } else {
@@ -114,7 +114,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         Field field = ancestor.entity.getField(parentBinding.getName());
                         Relationship manyToOneRelationship = field.getManyToOneRelationship();
                         if (manyToOneRelationship != null) {
-                            columnFamily = new ColumnFamily(parentBinding, manyToOneRelationship.getTargetEntity(), ofactory);
+                            columnFamily = new ResultFieldFamily(parentBinding, manyToOneRelationship.getTargetEntity(), ofactory);
                             columnFamily.documentType = itemAsDocument;
                             bindingToTypeInfos0.put(parentBinding, columnFamily);
                         } else {
@@ -123,11 +123,11 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     }
                 } else {
                     if (f.parentBindingReferrer != null && parentBinding != null) {
-                        columnFamily = new ColumnFamily(parentBinding, f.parentBindingReferrer, ofactory);
+                        columnFamily = new ResultFieldFamily(parentBinding, f.parentBindingReferrer, ofactory);
                         columnFamily.documentType = itemAsDocument;
                         bindingToTypeInfos0.put(parentBinding, columnFamily);
                     } else {
-                        columnFamily = new ColumnFamily(parentBinding, ofactory);
+                        columnFamily = new ResultFieldFamily(parentBinding, ofactory);
                         columnFamily.documentType = itemAsDocument;//n.contains(".") ? relationAsDocument : defaultsToDocument;
                         bindingToTypeInfos0.put(parentBinding, columnFamily);
                     }
@@ -142,8 +142,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }
             columnFamily.fieldsMap.put(f.binding.getName(), f);
         }
-        columnFamilies = bindingToTypeInfos0.values().toArray(new ColumnFamily[bindingToTypeInfos0.size()]);
-        for (ColumnFamily columnFamily : columnFamilies) {
+        columnFamilies = bindingToTypeInfos0.values().toArray(new ResultFieldFamily[bindingToTypeInfos0.size()]);
+        for (ResultFieldFamily columnFamily : columnFamilies) {
             if (columnFamily.entity != null) {
                 Set<String> visitedIds = new HashSet<String>();
                 Set<String> expectedIds = new HashSet<String>();
@@ -151,8 +151,8 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 for (Field field : idFields) {
                     expectedIds.add(field.getName());
                 }
-                for (Iterator<FieldInfo> iterator = columnFamily.idFields.iterator(); iterator.hasNext(); ) {
-                    FieldInfo field = iterator.next();
+                for (Iterator<ResultFieldParseData> iterator = columnFamily.idFields.iterator(); iterator.hasNext(); ) {
+                    ResultFieldParseData field = iterator.next();
                     //id field defined twice, not so reasonable, but may happen
                     //if user defines by him self columns
                     String fieldName = field.field.getName();
@@ -167,7 +167,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         throw new UPAIllegalArgumentException("Should never Happen");
                     }
                 }
-                FieldInfo[] nonOrderedIdFields = columnFamily.idFields.toArray(new FieldInfo[columnFamily.idFields.size()]);
+                ResultFieldParseData[] nonOrderedIdFields = columnFamily.idFields.toArray(new ResultFieldParseData[columnFamily.idFields.size()]);
 
                 //now re-order id fields
                 for (int i = 0; i < idFields.size(); i++) {
@@ -184,29 +184,29 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 }
             }
             if (columnFamily.binding == null) {
-                columnFamily.parser = ColumnFamilyParserNoBinding.INSTANCE;
+                columnFamily.parser = ColumnFamilyParserNoBindingResult.INSTANCE;
             } else if (columnFamily.entity != null && columnFamily.identifiable) {
                 if (columnFamily.partialObject) {
                     if (columnFamily.idFields.size() == 1) {
-                        columnFamily.parser = ColumnFamilyParserSingleIdExternalTodoEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserSingleIdExternalTodoEntityResult.INSTANCE;
                     } else {
-                        columnFamily.parser = ColumnFamilyParserMultiIdExternalTodoEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserMultiIdExternalTodoEntityResult.INSTANCE;
                     }
                 } else {
                     if (columnFamily.idFields.size() == 1) {
-                        columnFamily.parser = ColumnFamilyParserSingleIdEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserSingleIdEntityResult.INSTANCE;
                     } else {
-                        columnFamily.parser = ColumnFamilyParserMultiIdEntity.INSTANCE;
+                        columnFamily.parser = ColumnFamilyParserMultiIdEntityResult.INSTANCE;
                     }
                 }
             } else if (columnFamily.entity != null && !columnFamily.identifiable) {
-                columnFamily.parser = ColumnFamilyParserNoIdEntity.INSTANCE;
+                columnFamily.parser = ColumnFamilyParserNoIdEntityResult.INSTANCE;
             } else {
                 throw new UPAIllegalArgumentException("Unsupported binding " + columnFamily.binding);
             }
         }
-        for (ColumnFamily columnFamily : columnFamilies) {
-            columnFamily.fieldsArray = columnFamily.nonIdFields.toArray(new FieldInfo[columnFamily.nonIdFields.size()]);
+        for (ResultFieldFamily columnFamily : columnFamilies) {
+            columnFamily.fieldsArray = columnFamily.nonIdFields.toArray(new ResultFieldParseData[columnFamily.nonIdFields.size()]);
         }
 
         this.updatable = updatable;
@@ -337,7 +337,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if (workspace_hasNext) {
                 rowIndex++;
                 LazyResult lazyResult = new LazyResult(result, updatable, metaData);
-                for (ColumnFamily columnFamily : columnFamilies) {
+                for (ResultFieldFamily columnFamily : columnFamilies) {
                     lazyResult.types.put(columnFamily.binding, columnFamily);
                     columnFamily.parser.parse(result, columnFamily, lazyResult, this);
                 }

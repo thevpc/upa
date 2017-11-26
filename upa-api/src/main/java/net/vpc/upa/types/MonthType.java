@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 
 import java.util.Calendar;
@@ -167,6 +168,18 @@ public class MonthType extends TemporalType implements Cloneable {
             sb.append(v);
         }
         return sb.toString();
+    }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(PlatformUtils.formatUniversalMonthYear(min)));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(PlatformUtils.formatUniversalMonthYear(max)));
+        }
+        return d;
     }
 
 }

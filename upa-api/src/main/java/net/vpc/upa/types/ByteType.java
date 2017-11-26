@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
+
 public class ByteType extends NumberType implements Cloneable {
 
     public static final ByteType DEFAULT = new ByteType(null, null, true, false);
@@ -45,10 +47,10 @@ public class ByteType extends NumberType implements Cloneable {
     }
 
     /**
-     * @param min minimum value (compared to value * multiplier). if null, no
-     * constraints
-     * @param max maximum value (compared to value * multiplier). if null, no
-     * constraints
+     * @param min      minimum value (compared to value * multiplier). if null, no
+     *                 constraints
+     * @param max      maximum value (compared to value * multiplier). if null, no
+     *                 constraints
      * @param nullable null accept if true
      */
     public ByteType(String name, Byte min, Byte max, boolean nullable, boolean primitiveType) {
@@ -60,8 +62,8 @@ public class ByteType extends NumberType implements Cloneable {
     @Override
     protected void reevaluateCachedValues() {
         super.reevaluateCachedValues();
-        if(!defaultValueUserDefined && !isNullable()) {
-            defaultValue=((byte) 0);
+        if (!defaultValueUserDefined && !isNullable()) {
+            defaultValue = ((byte) 0);
         }
     }
 
@@ -145,4 +147,17 @@ public class ByteType extends NumberType implements Cloneable {
         result = 31 * result + (max != null ? max.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        if (min != null) {
+            d.getProperties().put("min", String.valueOf(min));
+        }
+        if (max != null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

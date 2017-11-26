@@ -1,6 +1,9 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.FieldInfo;
 import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.PrimitiveFieldInfo;
+import net.vpc.upa.impl.util.UPAUtils;
 
 public class DefaultPrimitiveField extends AbstractField implements PrimitiveField {
 
@@ -19,7 +22,13 @@ public class DefaultPrimitiveField extends AbstractField implements PrimitiveFie
         }
     }
 
-//    public DefaultPrimitiveField(Entity entity, String name, String title) {
+    @Override
+    public FieldInfo getInfo() {
+        PrimitiveFieldInfo i = new PrimitiveFieldInfo();
+        fillFieldInfo(i);
+        return i;
+    }
+    //    public DefaultPrimitiveField(Entity entity, String name, String title) {
 //        this(entity, name, title, null, false);
 //    }
 

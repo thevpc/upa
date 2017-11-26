@@ -28,14 +28,16 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
 
     private String escapedNamePattern;
     private PersistenceStore persistenceStore;
-    private PersistenceUnit persistenceUnit;
+    private Properties properties;
+//    private PersistenceUnit persistenceUnit;
     private PersistenceNameConfig model;
     private Map<String, String> modelMap = new HashMap<String, String>();
 //    private Map<String, String> modelMapPatterns = new HashMap<String, String>();
 
-    public void init(PersistenceStore persistenceStore, PersistenceNameConfig model) {
+    public void init(PersistenceStore persistenceStore, PersistenceNameConfig model, Properties properties) {
         this.model = model;
         this.persistenceStore = persistenceStore;
+        this.properties = properties;
 //        modelMapPatterns.put("GLOBAL_PERSISTENCE_NAME", "{OBJECT_NAME}");
 //        modelMapPatterns.put("LOCAL_PERSISTENCE_NAME", "{OBJECT_NAME}");
 //        modelMapPatterns.put("PERSISTENCE_NAME_ESCAPE", null);
@@ -151,6 +153,10 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         throw new UPAIllegalArgumentException("No Supported");
     }
 
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
     private String getParamValue(String confPrefix, PersistenceNameType type, String name, Properties parameters) {
         String v = getParamValue(confPrefix, type.name() + ":" + name, parameters);
         if (v == null) {
@@ -174,7 +180,7 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
 //        String varName = "*";
         String confPrefix = "";//UPA.CONNECTION_STRING+".";
         String persistenceNamePattern = null;
-        Properties parameters = getPersistenceUnit().getProperties();
+        Properties parameters = getProperties();
         if (absoluteName != null) {
             persistenceNamePattern = getParamValue(confPrefix, defaultType, absoluteName, parameters);
         }
@@ -426,12 +432,7 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         this.persistenceStore = persistenceStore;
     }
 
-    public PersistenceUnit getPersistenceUnit() {
-        return persistenceUnit;
+    public Properties getProperties() {
+        return properties;
     }
-
-    public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
-        this.persistenceUnit = persistenceUnit;
-    }
-
 }

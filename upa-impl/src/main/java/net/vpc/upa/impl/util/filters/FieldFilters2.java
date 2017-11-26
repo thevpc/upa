@@ -3,6 +3,7 @@ package net.vpc.upa.impl.util.filters;
 import net.vpc.upa.AccessLevel;
 import net.vpc.upa.Field;
 import net.vpc.upa.FieldModifier;
+import net.vpc.upa.ProtectionLevel;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 
@@ -28,7 +29,7 @@ public class FieldFilters2 {
             FieldFilters.byModifiersAnyOf(FieldModifier.SELECT_DEFAULT,
                     FieldModifier.SELECT_COMPILED,
                     FieldModifier.SELECT_LIVE))
-                    .andNot(FieldFilters.byAllAccessLevel(AccessLevel.PRIVATE));
+                    .andNot(FieldFilters.byAllProtectionLevel(ProtectionLevel.PRIVATE));
     public static final FieldFilter ID = FieldFilters.regular().and(FieldFilters.byModifiersAnyOf(FieldModifier.ID));
 
     public static List<Field> filter(List<Field> list,FieldFilter filter){

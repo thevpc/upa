@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.types;
 
+import net.vpc.upa.DataTypeInfo;
+
 public class FloatType extends NumberType implements Cloneable {
 
     public static final FloatType DEFAULT = new FloatType(null, null, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
@@ -181,4 +183,19 @@ public class FloatType extends NumberType implements Cloneable {
         result = 31 * result + (userFormatName != null ? userFormatName.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public DataTypeInfo getInfo() {
+        DataTypeInfo d = super.getInfo();
+        d.getProperties().put("userFormatName", String.valueOf(userFormatName));
+        d.getProperties().put("fixedDigits", String.valueOf(fixedDigits));
+        if(min!=null) {
+            d.getProperties().put("min", String.valueOf(min));
+        }
+        if(max!=null) {
+            d.getProperties().put("max", String.valueOf(max));
+        }
+        return d;
+    }
+
 }

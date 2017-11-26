@@ -3,6 +3,7 @@ package net.vpc.upa.impl;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Index;
+import net.vpc.upa.IndexInfo;
 import net.vpc.upa.exceptions.UPAException;
 
 import java.util.ArrayList;
@@ -70,5 +71,15 @@ public class DefaultIndex extends AbstractUPAObject implements Index {
 
     @Override
     public void close() throws UPAException {
+    }
+
+    @Override
+    public IndexInfo getInfo() {
+        IndexInfo i = new IndexInfo();
+        fillObjectInfo(i);
+        i.setEntity(getEntity().getName());
+        i.setFields(getFieldNames());
+        i.setUnique(isUnique());
+        return i;
     }
 }

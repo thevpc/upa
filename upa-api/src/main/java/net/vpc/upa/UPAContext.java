@@ -142,4 +142,6 @@ public interface UPAContext {
     Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
 
     Properties getThreadProperties();
+
+    PersistenceContextInfo getInfo();
 }
