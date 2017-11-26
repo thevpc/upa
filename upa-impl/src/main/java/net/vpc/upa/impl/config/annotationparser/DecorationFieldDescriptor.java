@@ -439,6 +439,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         if (fields.size() > 1) {
             Collections.sort(fields, FIELD_COMPARATOR);
         }
+        Decoration lastPathDeco=(Decoration) ctx.get("Entity.lastPathDeco");
         for (Field someField : fields) {
             Decoration searchDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Search.class);
             if (searchDeco != null) {
@@ -474,6 +475,10 @@ class DecorationFieldDescriptor implements FieldDescriptor {
             Decoration pathDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Path.class);
             if (pathDeco != null) {
                 AnnotationParserUtils.validStr(pathDeco.getString("value"), overriddenPath, pathDeco.getConfig().getOrder());
+                lastPathDeco=pathDeco;
+                ctx.put("Entity.lastPathDeco",lastPathDeco);
+            }else if(lastPathDeco!=null){ // path is transitive on successive fields in the same class!
+                AnnotationParserUtils.validStr(lastPathDeco.getString("value"), overriddenPath, lastPathDeco.getConfig().getOrder());
             }
             if (someField.getType().equals(FieldDesc.class)) {
                 prepareFieldDesc(ctx, entityName, someField);
