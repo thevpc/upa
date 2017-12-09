@@ -334,7 +334,7 @@ public abstract class DefaultDataType implements DataType {
         DataTypeInfo d = new DataTypeInfo();
         d.setName(getName());
         d.setType(getClass().getName());
-        d.setType(getPlatformType().getName());
+        d.setPlatformType(getPlatformType().getName());
         d.setUnitName(getUnitName());
         Map<String,String> p=new HashMap<>();
         d.setProperties(p);

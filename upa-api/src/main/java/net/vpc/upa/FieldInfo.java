@@ -17,6 +17,7 @@ public abstract class FieldInfo extends EntityPartInfo {
     private FieldModifier[] modifiers;
     private boolean id;
     private boolean main;
+    private boolean system;
     private boolean summary;
     private boolean manyToOne;
     private boolean generatedId;
@@ -176,5 +177,13 @@ public abstract class FieldInfo extends EntityPartInfo {
 
     public void setEffectiveReadAccessLevel(AccessLevel effectiveReadAccessLevel) {
         this.effectiveReadAccessLevel = effectiveReadAccessLevel;
+    }
+
+    public boolean isSystem() {
+        return system;
+    }
+
+    public void setSystem(boolean system) {
+        this.system = system;
     }
 }

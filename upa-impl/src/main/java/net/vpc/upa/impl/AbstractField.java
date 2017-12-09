@@ -630,6 +630,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         i.setEffectiveUpdateAccessLevel(f.getEffectiveUpdateAccessLevel());
         i.setEffectiveReadAccessLevel(f.getEffectiveReadAccessLevel());
         i.setMain(f.isMain());
+        i.setSystem(f.getModifiers().contains(FieldModifier.SYSTEM));
         i.setSummary(f.isSummary());
         i.setManyToOne(f.isManyToOne());
         i.setPropertyAccessType(f.getPropertyAccessType());
