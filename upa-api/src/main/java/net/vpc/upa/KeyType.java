@@ -46,7 +46,6 @@ import java.util.List;
 public class KeyType extends StructType {
     //    private KeyInputType keyInputType;
     private Expression filter;
-    private Relationship relationship;
     private Entity entity;
 
     public KeyType(Entity entity) throws UPAException {
@@ -78,14 +77,6 @@ public class KeyType extends StructType {
 
     public Entity getEntity() {
         return entity;
-    }
-
-    public Relationship getRelationship() {
-        return relationship;
-    }
-
-    public void setRelationship(Relationship r) {
-        relationship = r;
     }
 
     private static String[] constructorFieldNames(Entity entity) throws UPAException {
@@ -131,8 +122,6 @@ public class KeyType extends StructType {
         KeyType keyType = (KeyType) o;
 
         if (filter != null ? !filter.equals(keyType.filter) : keyType.filter != null) return false;
-        if (relationship != null ? !relationship.equals(keyType.relationship) : keyType.relationship != null)
-            return false;
         return entity != null ? entity.equals(keyType.entity) : keyType.entity == null;
     }
 
@@ -140,7 +129,6 @@ public class KeyType extends StructType {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (filter != null ? filter.hashCode() : 0);
-        result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
         result = 31 * result + (entity != null ? entity.hashCode() : 0);
         return result;
     }

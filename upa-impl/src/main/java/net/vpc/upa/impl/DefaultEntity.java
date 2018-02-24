@@ -290,7 +290,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             indexName = b.toString();
         }
         index.setName(indexName);
-        DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), index, indexName);
+        DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, index, indexName);
         adapter.inject("unique", unique);
         adapter.inject("entity", this);
         adapter.inject("fieldNames", fieldList.toArray(new String[fieldList.size()]));
@@ -492,28 +492,28 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (canonicalPathArray.length == 0) {
             throw new UPAIllegalArgumentException("Emty Name");
         }
-        Section parentModule = null;
+        Section parentSection = null;
         for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength - 1; i++) {
             String n = canonicalPathArray[i];
             Section next = null;
-            if (parentModule == null) {
+            if (parentSection == null) {
                 next = getSection(n);
             } else {
-                next = parentModule.getSection(n);
+                next = parentSection.getSection(n);
             }
-            parentModule = next;
+            parentSection = next;
         }
 
-        Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length - 1]);
+        Section currentSection = getPersistenceUnit().getFactory().createObject(Section.class);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), parentSection == null ? this : parentSection, currentSection, canonicalPathArray[canonicalPathArray.length - 1]);
 
-        if (parentModule == null) {
-            addPart(currentModule, index);
+        if (parentSection == null) {
+            addPart(currentSection, index);
         } else {
-            parentModule.addPart(currentModule, index);
+            parentSection.addPart(currentSection, index);
         }
         invalidateStructureCache();
-        return currentModule;
+        return currentSection;
     }
 
     public Section getSection(String path) {
@@ -1446,8 +1446,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
             addPart(field, field.getPreferredIndex());
         } else {
-            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            getSection(sectionPath, MissingStrategy.CREATE).addPart(field, field.getPreferredIndex());
+            Section section = getSection(sectionPath, MissingStrategy.CREATE);
+            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), section, field, field.getName());
+            section.addPart(field, field.getPreferredIndex());
         }
         invalidateStructureCache();
         return field;
@@ -3006,7 +3007,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (!primaryFieldNames.contains(fieldName)) {
                         Object value = ee.getValue();
                         Field field = getField(fieldName);
-                        if(FieldFilters2.UPDATE.accept(field)) {
+                        if (FieldFilters2.UPDATE.accept(field)) {
                             ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
                         }
                     }
@@ -3045,7 +3046,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (!primaryFieldNames.contains(fieldName)) {
                         Object value = ee.getValue();
                         Field field = getField(fieldName);
-                        if(FieldFilters2.UPDATE.accept(field)) {
+                        if (FieldFilters2.UPDATE.accept(field)) {
                             ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
                         }
                     }
@@ -3120,7 +3121,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
                     Field field = getField(fieldName);
-                    if(FieldFilters2.UPDATE.accept(field)) {
+                    if (FieldFilters2.UPDATE.accept(field)) {
                         ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
                     }
                 }
@@ -3148,7 +3149,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (!primaryFieldNames.contains(fieldName)) {
                     Object value = ee.getValue();
                     Field field = getField(fieldName);
-                    if(FieldFilters2.UPDATE.accept(field)) {
+                    if (FieldFilters2.UPDATE.accept(field)) {
                         ((AbstractField) field).getFieldPersister().prepareFieldForUpdate(field, value, updates, fieldNamesToUpdateMap, executionContext);
                     }
                 }
@@ -3849,14 +3850,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         List<Relationship> relationships0 = getRelationshipsBySource();
         String[] relationships = new String[relationships0.size()];
         for (int j = 0; j < relationships.length; j++) {
-            relationships[j]=relationships0.get(j).getName();
+            relationships[j] = relationships0.get(j).getName();
         }
         i.setManyToOneRelationships(relationships);
 
         relationships0 = getRelationshipsBySource();
         relationships = new String[relationships0.size()];
         for (int j = 0; j < relationships.length; j++) {
-            relationships[j]=relationships0.get(j).getName();
+            relationships[j] = relationships0.get(j).getName();
         }
         i.setOneToManyRelationships(relationships);
 

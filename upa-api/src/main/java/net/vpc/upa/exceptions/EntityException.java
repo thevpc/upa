@@ -46,15 +46,15 @@ public class EntityException extends UPAException {
     }
 
     public EntityException(Entity entity, String operationName) {
-        super(entity.getI18NString().append(operationName), entity.getI18NString());
+        super(entity.getI18NTitle().append(operationName), entity.getI18NTitle());
     }
 
     public EntityException(Entity entity, String operationName, Object... params) {
-        super(entity.getI18NString().append(operationName), combineParams(entity.getI18NString(), params));
+        super(entity.getI18NTitle().append(operationName), combineParams(entity.getI18NTitle(), params));
     }
 
     public EntityException(Throwable cause, Entity entity, String operationName, Object... params) {
-        super(cause, entity.getI18NString().append(operationName), combineParams(entity.getI18NString(), params));
+        super(cause, entity.getI18NTitle().append(operationName), combineParams(entity.getI18NTitle(), params));
     }
 
     public EntityException() {

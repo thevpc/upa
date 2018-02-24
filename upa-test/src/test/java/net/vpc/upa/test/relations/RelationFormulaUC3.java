@@ -36,7 +36,7 @@ public class RelationFormulaUC3 {
                             new DefaultFieldBuilder()
                                     .setName("contactEmail")
                                     .addModifier(UserFieldModifier.SUMMARY)
-                                    .setLiveSelectFormula("this.contact.email")
+                                    .setLiveSelectFormula("this.user.contact.email")
                                     .setDataType(TypesFactory.STRING)
                     );
                 }

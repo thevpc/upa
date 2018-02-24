@@ -82,10 +82,10 @@ public class InsertDocumentDuplicateUniqueFieldsException extends EntityExceptio
     private static String fieldTitles(List<Field> fields) {
         StringBuilder sb = new StringBuilder();
         if (fields != null) {
-            sb.append(fields.get(0).getI18NString());
+            sb.append(fields.get(0).getI18NTitle());
             for (int i = 1; i < fields.size(); i++) {
                 sb.append(", ");
-                sb.append(fields.get(i).getI18NString());
+                sb.append(fields.get(i).getI18NTitle());
             }
         }
         return sb.toString();

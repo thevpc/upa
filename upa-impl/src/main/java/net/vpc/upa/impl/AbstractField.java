@@ -108,6 +108,11 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return getModifiers().contains(FieldModifier.MAIN);
     }
 
+    @Override
+    public boolean isSystem() {
+        return getModifiers().contains(FieldModifier.SYSTEM);
+    }
+
     public boolean isSummary() throws UPAException {
         return getModifiers().contains(FieldModifier.SUMMARY);
     }
@@ -190,13 +195,13 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return queryFormula;
     }
 
-    public void setSelectFormula(Formula queryFormula) {
-        this.queryFormula = queryFormula;
-    }
-
     @Override
     public void setSelectFormula(String formula) {
         setSelectFormula(formula == null ? null : new ExpressionFormula(formula));
+    }
+
+    public void setSelectFormula(Formula queryFormula) {
+        this.queryFormula = queryFormula;
     }
 
     //    public boolean isRequired() throws UPAException {
@@ -415,7 +420,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, readAccessLevel)) {
             readAccessLevel = AccessLevel.READ_ONLY;
         }
-        if(readAccessLevel==AccessLevel.READ_WRITE){
+        if (readAccessLevel == AccessLevel.READ_WRITE) {
             readAccessLevel = AccessLevel.READ_ONLY;
         }
         this.readAccessLevel = readAccessLevel;
@@ -602,13 +607,13 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         Field f = this;
         fillObjectInfo(i);
         DataTypeInfo dataType = f.getDataType() == null ? null : f.getDataType().getInfo();
-        if(dataType!=null){
+        if (dataType != null) {
             UPAI18n d = getPersistenceGroup().getI18nOrDefault();
-            if(f.getDataType() instanceof EnumType){
+            if (f.getDataType() instanceof EnumType) {
                 List<Object> values = ((EnumType) f.getDataType()).getValues();
-                StringBuilder v=new StringBuilder();
+                StringBuilder v = new StringBuilder();
                 for (Object o : values) {
-                    if(v.length()>0){
+                    if (v.length() > 0) {
                         v.append(",");
                     }
                     v.append(d.getEnum(o));
@@ -684,6 +689,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectivePersistAccessLevel() {
+        if(isSystem()){
+            return AccessLevel.INACCESSIBLE;
+        }
         AccessLevel al = getPersistAccessLevel();
         ProtectionLevel pl = getPersistProtectionLevel();
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
@@ -742,6 +750,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectiveUpdateAccessLevel() {
+        if(isSystem()){
+            return AccessLevel.INACCESSIBLE;
+        }
         AccessLevel al = getUpdateAccessLevel();
         ProtectionLevel pl = getUpdateProtectionLevel();
 
@@ -814,6 +825,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectiveReadAccessLevel() {
+        if(isSystem()){
+            return AccessLevel.INACCESSIBLE;
+        }
         AccessLevel al = getReadAccessLevel();
         ProtectionLevel pl = getReadProtectionLevel();
         if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
@@ -826,8 +840,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
             al = AccessLevel.READ_ONLY;
         }
         if (al == AccessLevel.READ_ONLY) {
-            if(!getModifiers().contains(FieldModifier.SELECT)){
-                al=AccessLevel.INACCESSIBLE;
+            if (!getModifiers().contains(FieldModifier.SELECT)) {
+                al = AccessLevel.INACCESSIBLE;
             }
         }
 

@@ -5,7 +5,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-api</artifactId>
     <name>net.vpc.upa.upa-api</name>
-    <version>1.2.0.41</version>
+    <version>1.2.0.43</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 
@@ -104,6 +104,7 @@
 
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
                 <executions>
                     <execution>
                         <phase>process-sources</phase>

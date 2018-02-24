@@ -58,17 +58,29 @@ public interface UPAObject {
 
     PersistenceGroup getPersistenceGroup();
 
-    I18NString getTitle();
+    /**
+     * localized title
+     * @return localized title
+     * @see #getI18NTitle()
+     * @see net.vpc.upa.UPAI18n
+     */
+    String getTitle();
 
-    void setTitle(I18NString title);
+    /**
+     * localized description
+     * @return localized description
+     * @see #getI18NTitle()
+     * @see net.vpc.upa.UPAI18n
+     */
+    String getDescription();
 
-    I18NString getDescription();
+    I18NString getI18NTitle();
 
-    void setDescription(I18NString description);
+    void setI18NTitle(I18NString title);
 
-    I18NString getI18NString();
+    I18NString getI18NDescription();
 
-    void setI18NString(I18NString i18NString);
+    void setI18NDescription(I18NString description);
 
     //--------------------------- PROPERTIES SUPPORT
     Properties getProperties();

@@ -34,10 +34,14 @@
  */
 package net.vpc.upa.callbacks;
 
-import net.vpc.upa.Document;
-import net.vpc.upa.EventPhase;
+import net.vpc.upa.*;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.IdEnumerationExpression;
+import net.vpc.upa.expressions.IdExpression;
+import net.vpc.upa.expressions.Var;
 import net.vpc.upa.persistence.EntityExecutionContext;
+
+import java.util.List;
 
 /**
  * @author taha.bensalah@gmail.com
@@ -60,13 +64,45 @@ public class UpdateEvent extends EntityEvent {
 
     public Object getUpdatesObject() {
         if (updatesObject == null && updatesDocument != null) {
-            updatesObject = getContext().getEntity().getBuilder().documentToObject(updatesDocument);
+            EntityBuilder builder = getContext().getEntity().getBuilder();
+            updatesObject = builder.documentToObject(updatesDocument);
+            if(getFilterExpression() instanceof IdExpression){
+                Object id = ((IdExpression) getFilterExpression()).getId();
+                builder.setObjectId(updatesObject,id);
+            }
         }
         return updatesObject;
     }
 
     public Expression getFilterExpression() {
         return filterExpression;
+    }
+
+
+    public void storeUpdatedIds() {
+        List object = (List) this.getContext().getObject("updated_ids_" + this.getEntity().getName());
+        if (object != null) {
+            //already loaded
+            return;
+        }
+        Expression expr = this.getFilterExpression();
+        Entity entity = this.getEntity();
+        if (expr instanceof IdEnumerationExpression) {
+            IdEnumerationExpression k = (IdEnumerationExpression) expr;
+            expr = new IdEnumerationExpression(k.getIds(), new Var("this"));
+        }
+        PersistenceUnit pu = this.getPersistenceUnit();
+        List old = pu.createQueryBuilder(entity.getName()).byExpression(expr).getIdList();
+        old.size();//force load!
+        this.getContext().setObject("updated_ids_" + entity.getName(), old);
+    }
+
+    public <T> List<T> loadUpdatedIds() {
+        List object = (List) this.getContext().getObject("updated_ids_" + this.getEntity().getName());
+        if (object == null) {
+            throw new IllegalArgumentException("storeUpdatedIds shoud be called in preUpdate");
+        }
+        return object;
     }
 
 }

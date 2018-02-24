@@ -1705,7 +1705,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                     .setValues(r).byExpression(notLocked)
                     .execute();
         } catch (UPAException e) {
-            throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NString());
+            throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NTitle());
         }
         if (ret == 1) {
             // oll is Ok
@@ -1716,9 +1716,9 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                         .byExpression(new Equals(new Var("lockedEntity"), new Literal(entityName)))
                         .setFieldFilter(FieldFilters.byName("lockId", "lockTime")).getDocument();
             } catch (UPAException e) {
-                throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NString());
+                throw new AlreadyLockedPersistenceUnitException("entity.lockingException", getEntity(entityName).getI18NTitle());
             }
-            throw new AlreadyLockedPersistenceUnitException("entity.alreadyLocked", getEntity(entityName).getI18NString(), locked.getString("lockId"), locked.getDate("lockTime"));
+            throw new AlreadyLockedPersistenceUnitException("entity.alreadyLocked", getEntity(entityName).getI18NTitle(), locked.getString("lockId"), locked.getDate("lockTime"));
         }
     }
 
@@ -1765,7 +1765,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             if (rlocked == null) {
                 rlocked = entity.getBuilder().createDocument();
             }
-            throw new AlreadyLockedPersistenceUnitException("entity.neverLocked", getEntity(entityName).getI18NString(), rlocked.getString("lockId"), rlocked.getDate("lockTime"));
+            throw new AlreadyLockedPersistenceUnitException("entity.neverLocked", getEntity(entityName).getI18NTitle(), rlocked.getString("lockId"), rlocked.getDate("lockTime"));
         }
     }
 

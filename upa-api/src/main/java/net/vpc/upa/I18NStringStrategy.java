@@ -40,7 +40,7 @@ public interface I18NStringStrategy {
 
     I18NString getPackageString(Package module);
 
-    I18NString getSectionString(Entity entity, String section);
+    I18NString getSectionString(Section section);
 
     I18NString getRelationshipRoleString(RelationshipRole role);
 

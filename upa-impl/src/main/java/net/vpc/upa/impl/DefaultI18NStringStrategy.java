@@ -16,17 +16,40 @@ public class DefaultI18NStringStrategy implements I18NStringStrategy {
         return s == null ? new I18NString("*") : new I18NString(s, "*");
     }
 
-    public I18NString getPackageString(net.vpc.upa.Package module) {
-        return new I18NString("Package").append(key(module==null?null:module.getPath()));
+    public I18NString getPackageString(net.vpc.upa.Package packageItem) {
+        if(packageItem==null){
+            return new I18NString("Package").append(key(null));
+        }
+        net.vpc.upa.Package parentPackage = (net.vpc.upa.Package) packageItem.getParent();
+        if(parentPackage!=null){
+            return getPackageString(parentPackage).append(key(packageItem.getName()));
+        }
+        if(packageItem.getName().equals("")){
+            //root package;
+            return new I18NString("Package");
+        }
+        return new I18NString("Package").append(key(packageItem.getName()));
     }
 
     @Override
     public I18NString getIndexString(Index index) {
-        return new I18NString("Index").append(key(index==null?null:index.getName()));
+        if(index==null){
+            return new I18NString("Index").append(key(null));
+        }
+        return getEntityString(index.getEntity()).append("Index").append(key(index.getName()));
     }
 
-    public I18NString getSectionString(Entity entity, String section) {
-        return getEntityString(entity).append("Section").append(key(section));
+    @Override
+    public I18NString getSectionString(Section section) {
+        if(section==null){
+            return getEntityString(null).append("Section").append(key(null));
+        }
+        Section parentSection = (Section) section.getParent();
+        if(parentSection!=null){
+            return getSectionString(parentSection).append(key(section.getName()));
+        }
+        Entity entity = section.getEntity();
+        return getEntityString(entity).append("Section").append(key(section.getName()));
     }
 
     public I18NString getRelationshipRoleString(RelationshipRole role) {

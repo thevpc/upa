@@ -149,9 +149,8 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 
         this.sourceToTargetKeyMap = PlatformUtils.unmodifiableMap(sourceToTargetKeyMap);
         this.targetToSourceKeyMap = PlatformUtils.unmodifiableMap(targetToSourceKeyMap);
-        setI18NString(new I18NString("Relationship").append(getName()));
-        setTitle(getI18NString().append(".title"));
-        setDescription(getI18NString().append(".desc"));
+        setI18NTitle(new I18NString("Relationship").append(getName()));
+        setI18NDescription(getI18NTitle().append(".desc"));
 
         StringBuilder preferredPersistenceName = new StringBuilder(getName().length());
         for (int i = 0; i < getName().length(); i++) {

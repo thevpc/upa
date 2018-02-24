@@ -23,7 +23,7 @@ public abstract class AbstractUPAObject implements UPAObject {
     private String persistenceName;
     private I18NString title;
     private I18NString description;
-    private I18NString i18NString;
+//    private I18NString i18NString;
     private PersistenceUnit persistenceUnit;
     private final Properties parameters = new DefaultProperties();
     private PersistenceState persistenceState = PersistenceState.UNKNOWN;
@@ -61,11 +61,11 @@ public abstract class AbstractUPAObject implements UPAObject {
         afterPropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
     }
 
-    public I18NString getTitle() {
+    public I18NString getI18NTitle() {
         return title;
     }
 
-    public void setTitle(I18NString title) {
+    public void setI18NTitle(I18NString title) {
         I18NString old = this.title;
         I18NString recent = title;
         beforePropertyChangeSupport.firePropertyChange("title", old, recent);
@@ -73,28 +73,16 @@ public abstract class AbstractUPAObject implements UPAObject {
         afterPropertyChangeSupport.firePropertyChange("title", old, recent);
     }
 
-    public I18NString getDescription() {
+    public I18NString getI18NDescription() {
         return description;
     }
 
-    public void setDescription(I18NString description) {
+    public void setI18NDescription(I18NString description) {
         I18NString old = this.description;
         I18NString recent = description;
         beforePropertyChangeSupport.firePropertyChange("description", old, recent);
         this.description = description;
         afterPropertyChangeSupport.firePropertyChange("description", old, recent);
-    }
-
-    public I18NString getI18NString() {
-        return i18NString;
-    }
-
-    public void setI18NString(I18NString i18NString) {
-        I18NString old = this.i18NString;
-        I18NString recent = i18NString;
-        beforePropertyChangeSupport.firePropertyChange("i18NString", old, recent);
-        this.i18NString = i18NString;
-        afterPropertyChangeSupport.firePropertyChange("i18NString", old, recent);
     }
 
     public PersistenceUnit getPersistenceUnit() {
@@ -285,11 +273,18 @@ public abstract class AbstractUPAObject implements UPAObject {
         }
     }
 
+    public String getTitle(){
+        return getPersistenceGroup().getI18nOrDefault().get(getI18NTitle(),this);
+    }
+
+    public String getDescription(){
+        return getPersistenceGroup().getI18nOrDefault().get(getI18NDescription(),this);
+    }
 
     protected void fillObjectInfo(UPAObjectInfo i){
         UPAObject f=this;
         i.setName(f.getName());
-        i.setTitle(f.getPersistenceGroup().getI18nOrDefault().get(f));
+        i.setTitle(getTitle());
         Map<String,Object> sp=new HashMap<>();
         for (Map.Entry<String, Object> e : f.getProperties().toMap().entrySet()) {
             String k = e.getKey();

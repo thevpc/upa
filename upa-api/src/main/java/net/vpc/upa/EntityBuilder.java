@@ -134,6 +134,10 @@ public interface EntityBuilder {
      */
     Document objectToDocument(Object objectValue, boolean ignoreUnspecified);
 
+    String objectToName(Object objectValue);
+
+    NamedId objectToNamedId(Object objectValue);
+
     Object getMainValue(Object objectValue);
 
     <R> R documentToObject(Document document);

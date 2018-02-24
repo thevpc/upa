@@ -67,10 +67,10 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
                         descsb.append(" ");
                     }
                     if (values[i] == null) {
-                        descsb.append(f.get(i).getI18NString()).append(
+                        descsb.append(f.get(i).getI18NTitle()).append(
                                 " undefined operator ");
                     } else {
-                        descsb.append(f.get(i).getI18NString()).append(" = ").append(new CompiledLiteral(values[i], UPAUtils.getTypeTransformOrIdentity(f.get(i))).toString());
+                        descsb.append(f.get(i).getI18NTitle()).append(" = ").append(new CompiledLiteral(values[i], UPAUtils.getTypeTransformOrIdentity(f.get(i))).toString());
                     }
                 }
                 desc = descsb.toString();

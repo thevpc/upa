@@ -27,6 +27,14 @@ public class NamedId {
         return name;
     }
 
+    public String getStringName() {
+        return name==null?"":String.valueOf(name);
+    }
+
+    public String getStringId() {
+        return id==null?"":String.valueOf(id);
+    }
+
     public void setId(Object id) {
         this.id = id;
     }

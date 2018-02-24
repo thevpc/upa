@@ -415,20 +415,24 @@ public class UPAUtils {
         return prepare(persistenceUnit, null, item, name);
     }
 
-    public static DefaultBeanAdapter prepare(PersistenceUnit persistenceUnit, Entity entity, UPAObject item, String name) {
+    public static DefaultBeanAdapter prepare(PersistenceUnit persistenceUnit, UPAObject entity, UPAObject item, String name) {
         DefaultBeanAdapter adapter = preparePreAdd(persistenceUnit, entity, item, name);
         preparePostAdd(persistenceUnit, item);
         return adapter;
     }
 
-    public static DefaultBeanAdapter preparePreAdd(PersistenceUnit persistenceUnit, Entity entity, UPAObject item, String name) {
+    public static DefaultBeanAdapter preparePreAdd(PersistenceUnit persistenceUnit, UPAObject parent, UPAObject item, String name) {
         DefaultBeanAdapter adapter = new DefaultBeanAdapter(item);
         adapter.setProperty("persistenceUnit", persistenceUnit);
         item.setName(name);
         adapter.setProperty("persistenceState", PersistenceState.DIRTY);
 
-        if (item instanceof EntityPart) {
-            adapter.setProperty("entity", entity);
+        if (parent!=null && (item instanceof EntityPart || item instanceof Index)) {
+            if(parent instanceof Entity) {
+                adapter.setProperty("entity", parent);
+            }else if(parent instanceof EntityPart) {
+                adapter.setProperty("entity", ((EntityPart) parent).getEntity());
+            }
         }
 
         return adapter;
@@ -442,37 +446,30 @@ public class UPAUtils {
         I18NString d = null;
         if (item instanceof Package) {
             s = strategy.getPackageString(((Package) item));
-            t = s.append("title");
             d = s.append("desc");
         } else if (item instanceof Relationship) {
             s = strategy.getRelationshipString((Relationship) item);
-            t = s.append("title");
             d = s.append("desc");
         } else if (item instanceof Entity) {
             s = strategy.getEntityString((Entity) item);
-            t = s.append("title");
             d = s.append("desc");
         } else if (item instanceof Section) {
-            s = strategy.getSectionString(((Section) item).getEntity(), item.getName());
-            t = s.append("title");
+            Section section = (Section) item;
+            s = strategy.getSectionString(section);
             d = s.append("desc");
         } else if (item instanceof Field) {
             s = strategy.getFieldString((Field) item);
-            t = s.append("title");
             d = s.append("desc");
         } else if (item instanceof Index) {
             s = strategy.getIndexString((Index) item);
-            t = s.append("title");
             d = s.append("desc");
         } else if (item instanceof RelationshipRole) {
             RelationshipRole r = (RelationshipRole) item;
             s = strategy.getRelationshipRoleString(r);
-            t = s.append("title");
-            d = (s.append("desc").union(r.getEntity().getDescription()));
+            d = (s.append("desc").union(r.getEntity().getI18NDescription()));
         }
-        item.setI18NString(s);
-        item.setTitle(t);
-        item.setDescription(d);
+        item.setI18NTitle(s);
+        item.setI18NDescription(d);
     }
 
     public static Set<String> loadLinesSet(String name) {

@@ -11,7 +11,7 @@ public class ErrI18N implements UPAI18n{
     }
     @Override
     public String get(UPAObject s, Object... params) {
-        return get(s.getI18NString());
+        return get(s.getI18NTitle(),s);
     }
 
     @Override

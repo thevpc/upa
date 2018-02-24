@@ -24,7 +24,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     private EntityFactory entityFactory;
     private KeyFactory keyFactory;
-//    private EntityConverter entityConverter;
+    //    private EntityConverter entityConverter;
     private Entity entity;
 
     public DefaultEntityBuilder(Entity entity) {
@@ -56,7 +56,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
     public <R> R copyObject(R r) {
         return documentToObject(copyDocument(objectToDocument(r)));
     }
-    
+
     @Override
     public Document copyDocument(Document rec) {
         Document r = createDocument();
@@ -72,6 +72,35 @@ public class DefaultEntityBuilder implements EntityBuilder {
     @Override
     public Document objectToDocument(Object entity, boolean ignoreUnspecified) {
         return entityFactory.objectToDocument(entity, ignoreUnspecified);
+    }
+
+    @Override
+    public String objectToName(Object objectValue) {
+        if (objectValue == null) {
+            return null;
+        }
+        Field mf = entity.getMainField();
+        if (mf == null) {
+            return objectValue.toString();
+        }
+        return String.valueOf(objectToDocument(objectValue, true).getObject(mf.getName()));
+    }
+
+    @Override
+    public NamedId objectToNamedId(Object objectValue) {
+        if (objectValue == null) {
+            return null;
+        }
+        Field mf = entity.getMainField();
+        Object name = null;
+        Document document = objectToDocument(objectValue, true);
+        if (mf == null) {
+            name = objectValue.toString();
+        } else {
+            name = document.get(mf.getName());
+        }
+        Object id = documentToId(document);
+        return new NamedId(id, name);
     }
 
     @Override
@@ -91,35 +120,35 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Object primitiveIdToId(Object id) {
-        if(id==null){
+        if (id == null) {
             return null;
         }
         List<Field> idFields = entity.getIdFields();
         List<PrimitiveField> idPrimitiveFields = entity.getIdPrimitiveFields();
-        if(idPrimitiveFields.size()==1 && !(id instanceof Object[])){
-            id=new Object[]{id};
+        if (idPrimitiveFields.size() == 1 && !(id instanceof Object[])) {
+            id = new Object[]{id};
         }
-        Object[] arr=(Object[])id;
-        int index=0;
-        List<Object> newId=new ArrayList<>();
+        Object[] arr = (Object[]) id;
+        int index = 0;
+        List<Object> newId = new ArrayList<>();
         for (Field idField : idFields) {
-            if(idField.isManyToOne()){
+            if (idField.isManyToOne()) {
                 Entity targetEntity = idField.getManyToOneRelationship().getTargetEntity();
                 int size = targetEntity.getIdPrimitiveFields().size();
-                Object[] subId=new Object[size];
+                Object[] subId = new Object[size];
                 for (int i = 0; i < size; i++) {
-                    subId[i]=arr[index];
+                    subId[i] = arr[index];
                     index++;
                 }
                 Object e = targetEntity.getBuilder().primitiveIdToId(subId);
-                e=targetEntity.getBuilder().idToObject(e);
+                e = targetEntity.getBuilder().idToObject(e);
                 newId.add(e);
-            }else{
+            } else {
                 newId.add(arr[index]);
                 index++;
             }
         }
-        if(newId.size()==1){
+        if (newId.size() == 1) {
             return newId.get(0);
         }
         return newId.toArray();
@@ -127,16 +156,16 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public PrimitiveId idToPrimitiveId(Object id) {
-        if(id==null){
+        if (id == null) {
             return null;
         }
-        if(!entity.isIdInstance(id)){
-            throw new UPAIllegalArgumentException("Invalid Id of type "+id.getClass().getName()+" for entity "+entity.getName()+". Exptected "+entity.getIdType().getName());
+        if (!entity.isIdInstance(id)) {
+            throw new UPAIllegalArgumentException("Invalid Id of type " + id.getClass().getName() + " for entity " + entity.getName() + ". Exptected " + entity.getIdType().getName());
         }
         List<PrimitiveField> idFields = entity.getIdPrimitiveFields();
         List<Field> idFields2 = new ArrayList<>();
         idFields2.addAll(idFields);
-        if(UPAUtils.isEntityWithSimpleRelationId(entity)){
+        if (UPAUtils.isEntityWithSimpleRelationId(entity)) {
             Field field = entity.getIdFields().get(0);
             Relationship relationship = ((ManyToOneType) (field.getDataType())).getRelationship();
             PrimitiveId idAndType = relationship.getTargetEntity().getBuilder().objectToPrimitiveId(id);
@@ -157,9 +186,9 @@ public class DefaultEntityBuilder implements EntityBuilder {
 
     @Override
     public Object getObject(Object objectOrDocument) {
-        if(entity.getEntityType().isInstance(objectOrDocument)){
+        if (entity.getEntityType().isInstance(objectOrDocument)) {
             return objectOrDocument;
-        }else{
+        } else {
             return documentToObject(objectToDocument(objectOrDocument));
         }
     }
@@ -211,7 +240,6 @@ public class DefaultEntityBuilder implements EntityBuilder {
     public Object keyToId(Key documentKey) throws UPAException {
         return entityFactory.keyToId(documentKey);
     }
-
 
 
     @Override

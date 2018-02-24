@@ -34,7 +34,6 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransform;
@@ -91,9 +90,9 @@ public interface Field extends EntityPart {
 
     Formula getUpdateFormula();
 
-    void setUpdateFormula(String formula);
-
     void setUpdateFormula(Formula formula);
+
+    void setUpdateFormula(String formula);
 
     int getUpdateFormulaOrder();
 
@@ -101,11 +100,11 @@ public interface Field extends EntityPart {
 
     Formula getSelectFormula();
 
-    void setSelectFormula(String formula);
-
     void setSelectFormula(Formula formula);
 
-    //    boolean isRequired() throws UPAException;
+    void setSelectFormula(String formula);
+
+    //    boolean isRequired() ;
     DataType getDataType();
 
     //    boolean is(long modifier);
@@ -150,15 +149,17 @@ public interface Field extends EntityPart {
     FlagSet<FieldModifier> getModifiers();
 
     //    void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
-    boolean isId() throws UPAException;
+    boolean isId();
 
-    boolean isGeneratedId() throws UPAException;
+    boolean isGeneratedId();
 
-    boolean isMain() throws UPAException;
+    boolean isSystem();
 
-    boolean isSummary() throws UPAException;
+    boolean isMain();
 
-    boolean is(FieldFilter filter) throws UPAException;
+    boolean isSummary();
+
+    boolean is(FieldFilter filter);
 
     SearchOperator getSearchOperator();
 

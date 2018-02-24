@@ -254,7 +254,6 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                 child.close();
             }
             boolean recent=true;
-            afterPropertyChangeSupport.firePropertyChange("closed", old, recent);
             this.closed = true;
             afterPropertyChangeSupport.firePropertyChange("closed", old, recent);
         }
@@ -362,7 +361,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), currentModule, canonicalPathArray[canonicalPathArray.length-1]);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), this,currentModule, canonicalPathArray[canonicalPathArray.length-1]);
 
         if (parentModule == null) {
             addPart(currentModule, index);
