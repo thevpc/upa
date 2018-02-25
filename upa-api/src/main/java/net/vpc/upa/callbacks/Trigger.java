@@ -42,16 +42,11 @@ import net.vpc.upa.UPAObject;
  * @creationdate 9/9/12 4:09 PM
  */
 public interface Trigger extends UPAObject {
-//    DataInterceptor getInterceptor();
 
     Entity getEntity();
 
     EntityInterceptor getInterceptor();
 
-//    void setInterceptor(EntityInterceptor interceptor);
-
     EntityListener getListener();
 
-//    void setEntityName(String entityName) ;
-//    void setInterceptor(DataInterceptor interceptor) ;
 }

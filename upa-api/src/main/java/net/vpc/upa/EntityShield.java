@@ -65,7 +65,6 @@ public interface EntityShield {
 
     boolean isRenameSupported() throws UPAException;
 
-    //    boolean isPrintSupported();
     boolean isKeyEditionSupported() throws UPAException;
 
     boolean isNavigateSupported() throws UPAException;
@@ -115,9 +114,9 @@ public interface EntityShield {
     void checkClone(Object oldId, Object newId) throws UPAException;
 
     /**
-     * Check for the faisabilty of the rename operation. When oldId is null, the
-     * verification is done for ALL keys (rname should be supported+enabled for
-     * the curent user) When newId is null, the verification is done only on
+     * Check for the feasibility of the rename operation. When oldId is null, the
+     * verification is done for ALL keys (name should be supported+enabled for
+     * the current user) When newId is null, the verification is done only on
      * oldId
      *
      * @param oldId old id
@@ -134,13 +133,6 @@ public interface EntityShield {
 
     void checkRemove(Expression condition, boolean recurse, long toRemoveCount) throws UPAException;
 
-    // boolean isDeletableDocument(Key instanceID) {
-    // return true;
-    // }
-    //
-    // boolean isUpdatableDocument(Key instanceID) {
-    // return true;
-    // }
     boolean isDeletableDocument(Object k, boolean recurse) throws UPAException;
 
     boolean isUpdatableDocument(Object k) throws UPAException;
@@ -163,28 +155,6 @@ public interface EntityShield {
 
     boolean isTransient() throws UPAException;
 
-    //    boolean isFieldEditable(Field field, K instanceID) throws UPAException;
-//
-//    boolean isFieldVisible(Field field, K instanceID) throws UPAException;
-//    boolean isAllowed(EntitySecurityAction a) throws UPAException;
-//    boolean isAllowed(Field field, FieldSecurityAction a) throws UPAException;
-    //    void setRenameSupported(boolean renameSupported);
-//
-//    void setCloneSupported(boolean cloneSupported);
-//
-//    void setDeleteSupported(boolean deleteSupported);
-//
-//    void setUpdateSupported(boolean updateSupported);
-//
-//    void setInsertSupported(boolean insertSupported);
-//
-////    void setPrintSupported(boolean printSupported);
-//
-//    void setClearSupported(boolean clearSupported);
-//
-//    void setValidateOnInsertSupported(boolean enable) ;
-//
-//    void setValidateOnUpdateSupported(boolean enable) ;
     void addVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
 
     void removeVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;

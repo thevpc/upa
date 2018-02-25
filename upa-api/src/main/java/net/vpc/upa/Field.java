@@ -148,7 +148,6 @@ public interface Field extends EntityPart {
 
     FlagSet<FieldModifier> getModifiers();
 
-    //    void setEffectiveModifiers(FlagSet<FieldModifier> modifiers);
     boolean isId();
 
     boolean isGeneratedId();

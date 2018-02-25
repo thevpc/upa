@@ -41,7 +41,6 @@ import net.vpc.upa.types.DataType;
 
 import java.util.Map;
 
-//Comparable,
 public interface Relationship extends UPAObject {
 
     void commitModelChanged() throws UPAException;
@@ -52,21 +51,12 @@ public interface Relationship extends UPAObject {
 
     void setNullable(boolean nullable) throws UPAException;
 
-    //    void setSourceEntity(Entity sourceEntity);
-//
-//    void setMasterEntity(Entity masterEntity);
-//
-//    void setSourceFields(Field[] sourceFields);
     RelationshipType getRelationshipType() throws UPAException;
 
     int size() throws UPAException;
 
     DataType getDataType() throws UPAException;
 
-    //    Entity getSourceEntity();
-//
-//    Entity getTargetRole().getEntity();
-//
     Map<String, String> getSourceToTargetFieldNamesMap(boolean absolute) throws UPAException;
 
     Map<String, String> getTargetToSourceFieldNamesMap(boolean absolute) throws UPAException;

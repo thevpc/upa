@@ -36,8 +36,4 @@ package net.vpc.upa;
 
 public interface PrimitiveField extends Field {
 
-
-//    String[] getFieldParts();
-
-
 }
