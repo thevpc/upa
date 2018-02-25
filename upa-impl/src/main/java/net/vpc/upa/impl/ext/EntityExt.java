@@ -19,11 +19,7 @@ public interface EntityExt extends Entity {
     void commitExpressionModelChanges() throws UPAException;
 
     void registerField(Field field) throws UPAException;
-    //////////////////////////////////////////////////////////
-    //
-    //    CORE
-    //
-    //////////////////////////////////////////////////////////
+
     int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext);
 
     void persistCore(Document values, EntityExecutionContext executionContext);
@@ -31,8 +27,6 @@ public interface EntityExt extends Entity {
     int removeCore(Expression condition, boolean recurse, RemoveTrace deleteInfo, EntityExecutionContext executionContext);
 
     int clearCore(EntityExecutionContext executionContext);
-
-//    long updateFormulasCore(FieldFilter filter, Expression expr, EntityExecutionContext context) ;
 
     int initializeCore(EntityExecutionContext executionContext);
 

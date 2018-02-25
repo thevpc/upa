@@ -13,20 +13,20 @@ import net.vpc.upa.impl.persistence.result.QueryResultLazyList;
  * @author taha.bensalah@gmail.com
  */
 public class CloseListenerImpl<R> implements CloseListener {
-    private final QueryResultLazyList<R> outer;
+    private final QueryResultLazyList<R> queryResult;
 
-    public CloseListenerImpl(final QueryResultLazyList<R> outer) {
-        this.outer = outer;
+    public CloseListenerImpl(QueryResultLazyList<R> queryResult) {
+        this.queryResult = queryResult;
     }
 
     @Override
     public void beforeClose(Object source) {
-        outer.ensureLoadAll();
+        queryResult.ensureLoadAll();
     }
 
     @Override
     public void afterClose(Object source) {
-        outer.queryExecutor.getConnection().removeCloseListener(this);
+        queryResult.queryExecutor.getConnection().removeCloseListener(this);
     }
     
 }

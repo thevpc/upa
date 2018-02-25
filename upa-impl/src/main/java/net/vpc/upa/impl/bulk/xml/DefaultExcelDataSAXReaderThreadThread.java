@@ -19,25 +19,25 @@ import net.vpc.upa.impl.bulk.sheet.XLSXHelper;
 @PortabilityHint(target = "C#",name = "suppress")
 class DefaultExcelDataSAXReaderThreadThread extends Thread {
     private static final Logger log = Logger.getLogger(DefaultExcelDataSAXReaderThreadThread.class.getName());
-    private final DefaultSheetSAXReader outer;
+    private final DefaultSheetSAXReader saxReader;
 
-    public DefaultExcelDataSAXReaderThreadThread(final DefaultSheetSAXReader outer) {
+    public DefaultExcelDataSAXReaderThreadThread(DefaultSheetSAXReader saxReader) {
         super("DefaultExcelDataSAXReaderThread");
-        this.outer = outer;
+        this.saxReader = saxReader;
     }
 
     @Override
     public void run() {
-        log.log(Level.FINE, "Start parsing source asynchronously : {0}", outer.source);
+        log.log(Level.FINE, "Start parsing source asynchronously : {0}", saxReader.source);
         try {
-            if (outer.source instanceof File) {
-                XLSXHelper.parseXLSFile((File) outer.source, outer.parser.getSheetIndex(), outer.sheetContentsHandler);
+            if (saxReader.source instanceof File) {
+                XLSXHelper.parseXLSFile((File) saxReader.source, saxReader.parser.getSheetIndex(), saxReader.sheetContentsHandler);
             } else {
-                XLSXHelper.parseXLSFile((InputStream) outer.source, outer.parser.getSheetIndex(), outer.sheetContentsHandler);
+                XLSXHelper.parseXLSFile((InputStream) saxReader.source, saxReader.parser.getSheetIndex(), saxReader.sheetContentsHandler);
             }
         } catch (Throwable ex) {
-            log.log(Level.SEVERE, "parseXLSFile " + outer.source + " failed", ex);
-            outer.sheetContentsHandler.throwError(ex);
+            log.log(Level.SEVERE, "parseXLSFile " + saxReader.source + " failed", ex);
+            saxReader.sheetContentsHandler.throwError(ex);
         }
     }
     

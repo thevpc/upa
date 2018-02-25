@@ -14,20 +14,20 @@ import java.util.logging.Level;
  * @author taha.bensalah@gmail.com
  */
 class URLClassIterableIterator implements Iterator<Class> {
-    private final URLClassIterable outer;
+    private final URLClassIterable classIterable;
     private Class nextType;
     private int urlIndex = 0;
     private Iterator<ClassPathResource> classPathResources;
 
     public URLClassIterableIterator(final URLClassIterable outer) {
-        this.outer = outer;
+        this.classIterable = outer;
     }
 
     public boolean hasNext() {
-        while (urlIndex < outer.urls.length) {
-            URL jarURL = outer.urls[urlIndex];
+        while (urlIndex < classIterable.urls.length) {
+            URL jarURL = classIterable.urls[urlIndex];
             if (classPathResources == null) {
-                if (outer.configFilter.acceptLibrary(jarURL)) {
+                if (classIterable.configFilter.acceptLibrary(jarURL)) {
                     URLClassIterable.log.log(Level.FINE, "configuration from  url : {0}", jarURL);
                     classPathResources = new ClassPathRoot(jarURL).iterator();
                 } else {
@@ -40,7 +40,7 @@ class URLClassIterableIterator implements Iterator<Class> {
                 Class c = null;
                 try {
                     ClassPathResource cr = classPathResources.next();
-                    c = outer.configureClassURL(jarURL, cr.getPath());
+                    c = classIterable.configureClassURL(jarURL, cr.getPath());
                 } catch (ClassNotFoundException ex) {
                     URLClassIterable.log.log(Level.SEVERE, null, ex);
                 }

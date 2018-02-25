@@ -16,21 +16,21 @@ import net.vpc.upa.PortabilityHint;
  */
 @PortabilityHint(target = "C#",name = "suppress")
 class DefaultXmlReaderThreadImpl extends Thread {
-    private final DefaultXmlReader outer;
+    private final DefaultXmlReader xmlReader;
     private static final Logger log = Logger.getLogger(DefaultXmlReaderThreadImpl.class.getName());
 
-    public DefaultXmlReaderThreadImpl(final DefaultXmlReader outer) {
-        this.outer = outer;
+    public DefaultXmlReaderThreadImpl(DefaultXmlReader xmlReader) {
+        this.xmlReader = xmlReader;
     }
 
     @Override
     public void run() {
         try {
-            outer.readXml();
+            xmlReader.readXml();
         } catch (IOException ex) {
             log.log(Level.SEVERE, null, ex);
             try {
-                outer.queue2.put(new BlockingVal(BlockingVal.TYPE_THROWABLE, ex));
+                xmlReader.queue2.put(new BlockingVal(BlockingVal.TYPE_THROWABLE, ex));
             } catch (InterruptedException ex1) {
                 log.log(Level.SEVERE, null, ex1);
             }

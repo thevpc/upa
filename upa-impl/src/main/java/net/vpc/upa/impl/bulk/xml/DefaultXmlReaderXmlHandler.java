@@ -25,19 +25,19 @@ class DefaultXmlReaderXmlHandler extends DefaultHandler {
 
     private static final Logger log = Logger.getLogger(DefaultXmlReaderXmlHandler.class.getName());
     private final List<String> header;
-    private final DefaultXmlReader outer;
+    private final DefaultXmlReader xmlReader;
     boolean expectHeader = true;
     private String name = null;
     private String value = null;
     Map<String, String> line = new HashMap<String, String>();
 
-    public DefaultXmlReaderXmlHandler(List<String> header, final DefaultXmlReader outer) {
-        this.outer = outer;
+    public DefaultXmlReaderXmlHandler(List<String> header, DefaultXmlReader xmlReader) {
+        this.xmlReader = xmlReader;
         this.header = header;
     }
 
     private boolean doStop() {
-        return outer.status == DefaultXmlReader.STOPPED;
+        return xmlReader.status == DefaultXmlReader.STOPPED;
         //                    if (!multiThreaded) {
         //                        return status == STOPPED;
         //                    }
@@ -59,12 +59,12 @@ class DefaultXmlReaderXmlHandler extends DefaultHandler {
         if (doStop()) {
             return;
         }
-        outer.currentDepth++;
+        xmlReader.currentDepth++;
         name = null;
-        if (outer.currentDepth == 1 /*rootNodeName.equals(qName)*/) {
-        } else if (outer.currentDepth == 2 /*lineNodeName.equals(qName)*/) {
+        if (xmlReader.currentDepth == 1 /*rootNodeName.equals(qName)*/) {
+        } else if (xmlReader.currentDepth == 2 /*lineNodeName.equals(qName)*/) {
             line = new HashMap<String, String>();
-        } else if (outer.currentDepth == 3) {
+        } else if (xmlReader.currentDepth == 3) {
             if (expectHeader) {
                 header.add(qName);
             }
@@ -90,9 +90,9 @@ class DefaultXmlReaderXmlHandler extends DefaultHandler {
             if (doStop()) {
                 return;
             }
-            if (outer.currentDepth == 2 /*lineNodeName.equals(qName)*/) {
+            if (xmlReader.currentDepth == 2 /*lineNodeName.equals(qName)*/) {
                 if (expectHeader) {
-                    outer.queue2.put(new BlockingVal(BlockingVal.TYPE_VALUE, header));
+                    xmlReader.queue2.put(new BlockingVal(BlockingVal.TYPE_VALUE, header));
                     expectHeader = false;
                 }
                 ArrayList<String> s = new ArrayList<String>();
@@ -100,9 +100,9 @@ class DefaultXmlReaderXmlHandler extends DefaultHandler {
                     String v = line.get(h);
                     s.add(v == null ? "" : v.trim());
                 }
-                outer.queue2.put(new BlockingVal(BlockingVal.TYPE_VALUE, s));
+                xmlReader.queue2.put(new BlockingVal(BlockingVal.TYPE_VALUE, s));
             }
-            outer.currentDepth--;
+            xmlReader.currentDepth--;
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, null, ex);
         }
@@ -111,7 +111,7 @@ class DefaultXmlReaderXmlHandler extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         try {
-            outer.queue2.put(new BlockingVal(BlockingVal.TYPE_EOF, null));
+            xmlReader.queue2.put(new BlockingVal(BlockingVal.TYPE_EOF, null));
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, null, ex);
         }

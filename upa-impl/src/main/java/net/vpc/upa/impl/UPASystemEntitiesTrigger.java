@@ -24,20 +24,20 @@ import java.util.List;
  */
 class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements PersistenceUnitListener {
 
-    private final PersistenceUnitExt outer;
+    private final PersistenceUnitExt pu;
 
-    public UPASystemEntitiesTrigger(final PersistenceUnitExt outer) {
-        this.outer = outer;
+    public UPASystemEntitiesTrigger(PersistenceUnitExt pu) {
+        this.pu = pu;
     }
 
     @Override
     public void onPreModelChanged(PersistenceUnitEvent event) {
-        for (Entity entity : outer.getEntities()) {
+        for (Entity entity : pu.getEntities()) {
             if (entity.getShield().isLockingSupported()) {
-                if (!outer.containsEntity(LockInfoDesc.LOCK_INFO_ENTITY_NAME)) {
-                    outer.addEntity(LockInfoDesc.class);
+                if (!pu.containsEntity(LockInfoDesc.LOCK_INFO_ENTITY_NAME)) {
+                    pu.addEntity(LockInfoDesc.class);
                 }
-                outer.addLockingSupport(entity);
+                pu.addLockingSupport(entity);
             }
             List<Field> fields = entity.getFields();
             boolean privateSeq = false;
@@ -93,8 +93,8 @@ class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements
                     break;
                 }
             }
-            if (privateSeq && !outer.containsEntity(PrivateSequence.ENTITY_NAME)) {
-                outer.addEntity(PrivateSequence.class);
+            if (privateSeq && !pu.containsEntity(PrivateSequence.ENTITY_NAME)) {
+                pu.addEntity(PrivateSequence.class);
             }
         }
 

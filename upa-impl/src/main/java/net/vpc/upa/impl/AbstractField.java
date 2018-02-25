@@ -32,8 +32,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     protected FlagSet<FieldModifier> effectiveModifiers = FlagSets.noneOf(FieldModifier.class);
     protected boolean closed;
     protected Object unspecifiedValue = UnspecifiedValue.DEFAULT;
-    //    protected PasswordStrategy passwordStrategy;
-//    private Relationship[] manyToOneRelations = new Relationship[0];
     private AccessLevel persistAccessLevel = AccessLevel.READ_WRITE;
     private AccessLevel updateAccessLevel = AccessLevel.READ_WRITE;
     private AccessLevel readAccessLevel = AccessLevel.READ_WRITE;
@@ -69,24 +67,9 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public void commitModelChanges() {
-//        if(getDataType() instanceof SerializableOrManyToOneType){
-//            System.out.println("Why");
-//        }
         relationships = getManyToOneRelationshipsImpl();
-        //do nothing
     }
 
-    //    public boolean is(long modifier) {
-//        return modifier == (modifiers & modifier);
-//    }
-//    public void setModifiers(long v, boolean enable) {
-//        if (enable) {
-//            addModifiers(v);
-//        } else {
-//            removeModifiers(v);
-//        }
-//    }
-//
     public boolean is(FieldFilter filter) throws UPAException {
         return filter.accept(this);
     }
@@ -471,7 +454,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         setReadProtectionLevel(persistLevel);
     }
 
-
     public SearchOperator getSearchOperator() {
         return searchOperator;
     }
@@ -489,52 +471,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         this.preferredIndex = preferredIndex;
     }
 
-    //    public void setPasswordStrategy(CipherStrategyType cipherStrategyType, String cipherStrategy, String cipherValue) {
-//        if (cipherStrategyType == null) {
-//            setPasswordStrategy(null);
-//        } else {
-//            switch (cipherStrategyType) {
-//                case DEFAULT:
-//                case MD5: {
-//                    setPasswordStrategy(DefaultCipherStrategy.MD5, cipherValue);
-//                    break;
-//                }
-//                case SHA1: {
-//                    setPasswordStrategy(DefaultCipherStrategy.SHA1, cipherValue);
-//                    break;
-//                }
-//                case SHA256: {
-//                    setPasswordStrategy(DefaultCipherStrategy.SHA256, cipherValue);
-//                    break;
-//                }
-//                default: {
-//                    if (StringUtils.isNullOrEmpty(cipherStrategy)) {
-//                        throw new UPAException("MissingCipherStrategy", cipherStrategy, this);
-//                    }
-//                    CipherStrategy o;
-//                    try {
-//                        o = (CipherStrategy) Class.forName(cipherStrategy).newInstance();
-//                        setPasswordStrategy(o, cipherValue);
-//                    } catch (Exception ex) {
-//                        throw new UPAException(ex,new I18NString("InvalidCipherStrategy"), cipherStrategy, this);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    public void setPasswordStrategy(CipherStrategy cipherStrategy, String cypherValue) {
-//        setPasswordStrategy(cipherStrategy == null ? null : new DefaultPasswordStrategy(cipherStrategy, cypherValue));
-//    }
-//
-//    public void setPasswordStrategy(PasswordStrategy passwordStrategy) {
-//        PasswordStrategy old = this.passwordStrategy;
-//        this.passwordStrategy = passwordStrategy;
-//        propertyChangeSupport.firePropertyChange("passwordStrategy", old, passwordStrategy);
-//    }
-//
-//    public PasswordStrategy getPasswordStrategy() {
-//        return passwordStrategy;
-//    }
     public FieldPersister getFieldPersister() {
         return fieldPersister;
     }
@@ -689,7 +625,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectivePersistAccessLevel() {
-        if(isSystem()){
+        if (isSystem()) {
             return AccessLevel.INACCESSIBLE;
         }
         AccessLevel al = getPersistAccessLevel();
@@ -750,7 +686,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectiveUpdateAccessLevel() {
-        if(isSystem()){
+        if (isSystem()) {
             return AccessLevel.INACCESSIBLE;
         }
         AccessLevel al = getUpdateAccessLevel();
@@ -825,7 +761,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public AccessLevel getEffectiveReadAccessLevel() {
-        if(isSystem()){
+        if (isSystem()) {
             return AccessLevel.INACCESSIBLE;
         }
         AccessLevel al = getReadAccessLevel();
