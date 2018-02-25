@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.config.ScanFilter;
-//import net.vpc.upa.impl.config.ClassNameFilter;
+import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.config.DefaultConfigFilterItem;
 
 /**
@@ -28,23 +27,6 @@ public class DefaultConfigFilter implements ClassPathFilter {
     private List<DefaultConfigFilterItem> items = new ArrayList<DefaultConfigFilterItem>();
     private Map<URL, List<DefaultConfigFilterItem>> cache = new HashMap<URL, List<DefaultConfigFilterItem>>();
 
-//    public static void main(String[] args) {
-//        try {
-//            ScanFilter r = new ScanFilter("**/*.jar", "net.vpc?.d", true);
-//            DefaultConfigFilter t = new DefaultConfigFilter(new ScanFilter[]{r});
-//            URL url = new File("/home/vpc/.m2/repository/net/vpc/jperf/1.3/jperf-1.3.jar").toURI().toURL();
-////            for (ClassPathResource rr : new ClassPathRoot(url)) {
-////                System.out.println(rr);
-////            }
-//            for (ClassPathResource rr : new ClassPathRoot(new File("/home/wassim"))) {
-//                System.out.println(rr);
-//            }
-//            boolean j = t.acceptLibrary(url);
-//            System.out.println(j);
-//        } catch (MalformedURLException ex) {
-//            Logger.getLogger(DefaultConfigFilter.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
     public DefaultConfigFilter(ScanFilter[] filterList) {
         //always add upa classes
         add(new ScanFilter("", "net.vpc.upa.**", true, Integer.MIN_VALUE));
@@ -144,21 +126,17 @@ public class DefaultConfigFilter implements ClassPathFilter {
     }
 
     private void add(ScanFilter filter) {
-        DefaultConfigFilterItem defaultConfigFilterItem = new DefaultConfigFilterItem(new PatternListLibNameFilter(new String[]{filter.getLibs()}), new PatternListClassNameFilter(new String[]{filter.getTypes()}));
+        for (char c : filter.getTypes().toCharArray()) {
+            if (Character.isJavaIdentifierPart(c) || Character.isWhitespace(c) || c == '.' || c == ',' || c == ';' || c == '|' || c == '*' || c == '?') {
+                //ok accep this
+            } else {
+                throw new UPAIllegalArgumentException("Invalid type pattern " + filter.getTypes());
+            }
+        }
+        String[] types = filter.getTypes().split("[,; \n\r\t|]");
+        String[] libs = filter.getLibs().split("[,; \n\r\t|]");
+
+        DefaultConfigFilterItem defaultConfigFilterItem = new DefaultConfigFilterItem(new PatternListLibNameFilter(libs), new PatternListClassNameFilter(types));
         items.add(defaultConfigFilterItem);
     }
-
-//    public ClassNameFilter getClassNameFilter(URL url) {
-//        for (DefaultConfigFilterItem defaultConfigFilterItem : items) {
-//            switch (defaultConfigFilterItem.getLibFilter().accept(url)) {
-//                case GRANT: {
-//                    return defaultConfigFilterItem.getTypeFilter();
-//                }
-//                case DENY: {
-//                    return null;
-//                }
-//            }
-//        }
-//        return null;//new PatternListClassNameFilter(null);
-//    }
 }
