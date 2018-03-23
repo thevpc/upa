@@ -15,5 +15,6 @@ public enum ObjectType {
     SECTION,
     RELATIONSHIP,
     FUNCTION,
+    FORMULA,
     TRIGGER
 }

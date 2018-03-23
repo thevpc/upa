@@ -52,4 +52,9 @@ public interface ObjectFactory {
     <T> T getSingleton(Class<T> type);
 
     <T> T getSingleton(String typeName);
+
+    <T> Class[] getAlternatives(Class<T> type);
+
+    <T> void addAlternative(Class<T> type, Class<? extends T> impl);
+    void register(Class contract, Class impl) ;
 }

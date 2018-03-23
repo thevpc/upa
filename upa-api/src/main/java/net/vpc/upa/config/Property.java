@@ -46,11 +46,11 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 public @interface Property {
 
-    public String name();
+    String name();
 
-    public String value();
+    String value();
 
-    public String type() default "";
+    String valueType() default "";
 
-    public String format() default "";
+    String format() default "";
 }

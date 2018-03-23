@@ -88,12 +88,12 @@ public class ConnectionProfileParserTest {
         expected.setDatabaseProduct(DatabaseProduct.DERBY);
         expected.setDatabaseProductVersion("10.6");
         expected.setProperties(new HashMap<String, String>());
-        expected.getProperties().put("n1", "v1");
-        expected.getProperties().put("n2", "v2");
-        expected.getProperties().put(ConnectionOption.DATABASE_NAME, "mydb");
-        expected.getProperties().put(ConnectionOption.DATABASE_PATH, "c:/r/t/y");
-        expected.getProperties().put(ConnectionOption.SERVER_ADDRESS, "localhost");
-        expected.getProperties().put(ConnectionOption.SERVER_PORT, "1521");
+        expected.setProperty("n1", "v1");
+        expected.setProperty("n2", "v2");
+        expected.setProperty(ConnectionOption.DATABASE_NAME, "mydb");
+        expected.setProperty(ConnectionOption.DATABASE_PATH, "c:/r/t/y");
+        expected.setProperty(ConnectionOption.SERVER_ADDRESS, "localhost");
+        expected.setProperty(ConnectionOption.SERVER_PORT, "1521");
         Assert.assertEquals(expected, actual);
     }
 
@@ -106,12 +106,12 @@ public class ConnectionProfileParserTest {
         expected.setConnectionDriver("DEFAULT");
         expected.setDatabaseProduct(DatabaseProduct.DERBY);
         expected.setProperties(new HashMap<String, String>());
-        expected.getProperties().put("n1", "v1");
-        expected.getProperties().put("n2", "v2");
-        expected.getProperties().put(ConnectionOption.DATABASE_NAME, "mydb");
-        expected.getProperties().put(ConnectionOption.DATABASE_PATH, "c:/r/t/y");
-        expected.getProperties().put(ConnectionOption.SERVER_ADDRESS, "localhost");
-        expected.getProperties().put(ConnectionOption.SERVER_PORT, "1521");
+        expected.setProperty("n1", "v1");
+        expected.setProperty("n2", "v2");
+        expected.setProperty(ConnectionOption.DATABASE_NAME, "mydb");
+        expected.setProperty(ConnectionOption.DATABASE_PATH, "c:/r/t/y");
+        expected.setProperty(ConnectionOption.SERVER_ADDRESS, "localhost");
+        expected.setProperty(ConnectionOption.SERVER_PORT, "1521");
         Assert.assertEquals(expected, actual);
     }
 
@@ -129,10 +129,10 @@ public class ConnectionProfileParserTest {
         expected.setConnectionDriver("JDBC");
         expected.setDatabaseProduct(DatabaseProduct.DERBY);
         expected.setProperties(new HashMap<String, String>());
-        expected.getProperties().put("driver","my.driver");
-        expected.getProperties().put("url","jdbc:test:my.url");
-        expected.getProperties().put("userName","me");
-        expected.getProperties().put("password","password");
+        expected.setProperty("driver","my.driver");
+        expected.setProperty("url","jdbc:test:my.url");
+        expected.setProperty("userName","me");
+        expected.setProperty("password","password");
         Assert.assertEquals(expected, actual);
     }
 
@@ -150,10 +150,10 @@ public class ConnectionProfileParserTest {
         expected.setConnectionDriver("JDBC");
         expected.setDatabaseProduct(DatabaseProduct.DERBY);
         expected.setProperties(new HashMap<String, String>());
-        expected.getProperties().put("driver","my.driver");
-        expected.getProperties().put("url","jdbc:test:my.url");
-        expected.getProperties().put("userName","me");
-        expected.getProperties().put("password","password");
+        expected.setProperty("driver","my.driver");
+        expected.setProperty("url","jdbc:test:my.url");
+        expected.setProperty("userName","me");
+        expected.setProperty("password","password");
         Assert.assertEquals(expected, actual);
     }
 
@@ -177,13 +177,13 @@ public class ConnectionProfileParserTest {
         expected.setConnectionDriver("JDBC");
         expected.setDatabaseProduct(DatabaseProduct.DERBY);
         expected.setProperties(new HashMap<String, String>());
-        expected.getProperties().put("driver", "my.driver");
-        expected.getProperties().put("url","jdbc:test:my.url");
-        expected.getProperties().put("userName","myuser");
-        expected.getProperties().put("password","mypassword");
-        expected.getProperties().put("pool","true");
-        expected.getProperties().put("poolMaxSize","200");
-        expected.getProperties().put("monitor","javamelody");
+        expected.setProperty("driver", "my.driver");
+        expected.setProperty("url","jdbc:test:my.url");
+        expected.setProperty("userName","myuser");
+        expected.setProperty("password","mypassword");
+        expected.setProperty("pool","true");
+        expected.setProperty("poolMaxSize","200");
+        expected.setProperty("monitor","javamelody");
         Assert.assertEquals(expected, actual);
     }
 

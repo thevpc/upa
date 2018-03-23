@@ -55,5 +55,5 @@ public @interface Transactional {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

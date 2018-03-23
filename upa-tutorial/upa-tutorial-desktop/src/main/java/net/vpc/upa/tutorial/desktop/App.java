@@ -4,10 +4,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import net.vpc.upa.tutorial.business.InvoiceModule;
-import net.vpc.upa.tutorial.model.Customer;
-import net.vpc.upa.tutorial.model.Invoice;
-import net.vpc.upa.tutorial.model.InvoiceDetail;
-import net.vpc.upa.tutorial.model.Product;
+import net.vpc.upa.tutorial.model.*;
 
 /**
  * Hello world!
@@ -58,5 +55,9 @@ public class App {
         for (Invoice i : invoiceModule.findAllInvoices()) {
             System.out.println(i);
         }
+        List<Invoice> allPaid = invoiceModule.findInvoicesByStatus(InvoiceStatus.PAID);
+        System.out.println("Count of paied is "+allPaid);
+        System.out.println("End");
+        System.exit(0);
     }
 }

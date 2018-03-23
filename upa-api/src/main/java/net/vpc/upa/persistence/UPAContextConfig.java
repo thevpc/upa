@@ -37,18 +37,23 @@ package net.vpc.upa.persistence;
 import net.vpc.upa.config.ScanFilter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author taha.bensalah@gmail.com
  */
 public class UPAContextConfig {
+
     public static final int XML_ORDER = Integer.MAX_VALUE;
+    public static final int BOOT_TYPE_ORDER = 999999999;
 
     private Boolean autoScan;
     private List<PersistenceGroupConfig> persistenceGroups = new ArrayList<PersistenceGroupConfig>(2);
     private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
+    private Map<String, Object> properties = new HashMap<>();
 
     public Boolean getAutoScan() {
         return autoScan;
@@ -57,7 +62,6 @@ public class UPAContextConfig {
     public void setAutoScan(Boolean autoScan) {
         this.autoScan = autoScan;
     }
-
 
     public List<ScanFilter> getFilters() {
         return filters;
@@ -75,10 +79,24 @@ public class UPAContextConfig {
         this.persistenceGroups = persistenceGroups;
     }
 
-
     @Override
     public String toString() {
         return "UPAContextConfig{" + "persistenceGroups=" + persistenceGroups + ", filters=" + filters + '}';
     }
 
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
+
+    static String trim(String s) {
+        if (s == null) {
+            s = "";
+        }
+        s = s.trim();
+        return s;
+    }
 }

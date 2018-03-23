@@ -58,7 +58,7 @@ public class PlatformUtils {
         return UNIVERSAL_TIMESTAMP_FORMAT.format(date);
     }
 
-    public static Date parseUniversalMonth(String date) {
+    public static Date parseUniversalMonthYear(String date) {
         try {
             return UNIVERSAL_MONTH_YEAR_FORMAT.parse(date);
         } catch (ParseException e) {

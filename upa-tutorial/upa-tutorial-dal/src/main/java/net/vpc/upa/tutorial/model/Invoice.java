@@ -15,7 +15,20 @@ public class Invoice {
     private Customer customer;
     private double totalTaxFree;
     private double totalIncludingTax;
+    private double totalIncludingTaxExp;
+    private double totalIncludingTaxCustom;
+    private double totalIncludingTaxCustomMulti1;
+    private double totalIncludingTaxCustomMulti2;
+    private InvoiceStatus status;
     private List<InvoiceDetail> details;
+
+    public InvoiceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(InvoiceStatus status) {
+        this.status = status;
+    }
 
     public String getInvoiceId() {
         return invoiceId;
@@ -71,6 +84,38 @@ public class Invoice {
 
     public void setDetails(List<InvoiceDetail> details) {
         this.details = details;
+    }
+
+    public double getTotalIncludingTaxExp() {
+        return totalIncludingTaxExp;
+    }
+
+    public void setTotalIncludingTaxExp(double totalIncludingTaxExp) {
+        this.totalIncludingTaxExp = totalIncludingTaxExp;
+    }
+
+    public double getTotalIncludingTaxCustom() {
+        return totalIncludingTaxCustom;
+    }
+
+    public void setTotalIncludingTaxCustom(double totalIncludingTaxCustom) {
+        this.totalIncludingTaxCustom = totalIncludingTaxCustom;
+    }
+
+    public double getTotalIncludingTaxCustomMulti1() {
+        return totalIncludingTaxCustomMulti1;
+    }
+
+    public void setTotalIncludingTaxCustomMulti1(double totalIncludingTaxCustomMulti1) {
+        this.totalIncludingTaxCustomMulti1 = totalIncludingTaxCustomMulti1;
+    }
+
+    public double getTotalIncludingTaxCustomMulti2() {
+        return totalIncludingTaxCustomMulti2;
+    }
+
+    public void setTotalIncludingTaxCustomMulti2(double totalIncludingTaxCustomMulti2) {
+        this.totalIncludingTaxCustomMulti2 = totalIncludingTaxCustomMulti2;
     }
 
     @Override

@@ -61,13 +61,19 @@ public interface UConnection {
 
     void removeCloseListener(CloseListener closeListener);
 
-    Connection getMetadataAccessibleConnection() throws UPAException;
+    Object getMetadataAccessibleConnection() throws UPAException;
 
-    Connection getPlatformConnection() throws UPAException;
+    Object getPlatformConnection() throws UPAException;
 
     Object getProperty(String name) throws UPAException;
 
     Map<String, Object> getProperties() throws UPAException;
 
     void setProperty(String name, Object value) throws UPAException;
+
+    void beginTransaction();
+
+    void commitTransaction();
+
+    void rollbackTransaction();
 }

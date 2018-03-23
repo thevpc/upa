@@ -37,10 +37,7 @@
  */
 package net.vpc.upa.persistence;
 
-import net.vpc.upa.Entity;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.Properties;
-import net.vpc.upa.Session;
+import net.vpc.upa.*;
 import net.vpc.upa.types.DataType;
 
 import java.util.List;
@@ -48,7 +45,26 @@ import java.util.Map;
 
 public interface EntityExecutionContext extends Properties {
 
+    PersistenceUnit getPersistenceUnit();
+
+    UConnection getConnection();
+
+    Session getSession();
+
+    PersistenceStore getPersistenceStore();
+
     ContextOperation getOperation();
+
+    /**
+     *
+     * @return persist document is getOperation() is ContextOperation.PERSIST
+     */
+    Document getUpdateDocument();
+    /**
+     *
+     * @return update query is getOperation() is ContextOperation.UPDATE
+     */
+    UpdateQuery getUpdateQuery();
 
     Entity getEntity();
 
@@ -76,14 +92,6 @@ public interface EntityExecutionContext extends Properties {
      * @param hints
      */
     EntityExecutionContext setHints(Map<String, Object> hints);
-
-    PersistenceUnit getPersistenceUnit();
-
-    UConnection getConnection();
-
-    Session getSession();
-
-    PersistenceStore getPersistenceStore();
 
     EntityOperationManager getEntityOperationManager();
 

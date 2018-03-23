@@ -31,19 +31,20 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Order;
 import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.persistence.ResultMetaData;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/9/12 9:59 AM
  */
-public interface QueryBuilder extends Query, Serializable {
+public interface QueryBuilder extends Serializable, Closeable {
 
     Entity getEntityType();
 
@@ -69,6 +70,8 @@ public interface QueryBuilder extends Query, Serializable {
 
     QueryBuilder byDocumentPrototype(Document prototype);
 
+    QueryBuilder setUpdatable(boolean updatable);
+
     Expression getExpression();
 
     Order getOrder();
@@ -91,4 +94,124 @@ public interface QueryBuilder extends Query, Serializable {
 
     void setTop(int top);
 
+    Date getDate() throws UPAException;
+
+    Boolean getBoolean() throws UPAException;
+
+    Integer getInteger() throws UPAException;
+
+    Long getLong() throws UPAException;
+
+    Double getDouble() throws UPAException;
+
+    String getString() throws UPAException;
+
+    Number getNumber() throws UPAException;
+
+    Object getSingleValue() throws UPAException;
+
+    Object getSingleValue(Object defaultValue) throws UPAException;
+
+    MultiDocument getMultiDocument() throws UPAException;
+
+    Document getDocument() throws UPAException;
+
+    /**
+     * Executes a Select query and returns a single result.
+     * @param <R> Result Type
+     * @return Single result if unique
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
+     */
+    <R> R getSingleResult() throws UPAException;
+
+    /**
+     * Executes a Select query and returns a single result if found.
+     * If query returns no result null is returned.
+     * When Multiple results NonUniqueResultException will be thrown
+     * @param <R> Result Type
+     * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     */
+    <R> R getSingleResultOrNull() throws UPAException;
+
+    /**
+     * Executes a Select query and returns a single result if found.
+     * If query returns no result null is returned.
+     * When Multiple results, the first result will be returned
+     * @param <R> Result Type
+     * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
+     */
+    <R> R getFirstResultOrNull() throws UPAException;
+
+    boolean isEmpty() throws UPAException;
+
+    <K> List<K> getIdList() throws UPAException;
+
+    <K> Set<K> getIdSet() throws UPAException;
+
+    List<Key> getKeyList() throws UPAException;
+
+    Set<Key> getKeySet() throws UPAException;
+
+    List<MultiDocument> getMultiDocumentList() throws UPAException;
+
+    <T> List<T> getResultList(Class<T> type, String... fields);
+
+    <T> Set<T> getResultSet(Class<T> type, String... fields);
+
+    <T> List<T> getResultList();
+
+    <T> Set<T> getResultSet();
+
+    List<Document> getDocumentList() throws UPAException;
+
+    <T> List<T> getValueList(int index) throws UPAException;
+
+    <T> Set<T> getValueSet(int index) throws UPAException;
+
+    <T> Set<T> getValueSet(String name) throws UPAException;
+
+    <T> List<T> getValueList(String name) throws UPAException;
+
+    ResultMetaData getMetaData() throws UPAException;
+
+    QueryBuilder setParameter(String name, Object value);
+
+    QueryBuilder setParameters(Map<String, Object> parameters);
+
+    QueryBuilder setParameter(int index, Object value);
+
+    QueryBuilder setParameter(String name, Object value, boolean condition);
+
+    QueryBuilder setParameters(Map<String, Object> parameters, boolean condition);
+
+    QueryBuilder setParameter(int index, Object value, boolean condition);
+
+    QueryBuilder removeParameter(String name);
+
+    QueryBuilder removeParameter(int index);
+
+    boolean isLazyListLoadingEnabled();
+
+    QueryBuilder setLazyListLoadingEnabled(boolean lazyLoadingEnabled);
+
+    QueryBuilder setHint(String key, Object value);
+
+    QueryBuilder setHints(Map<String, Object> hints);
+
+    Map<String, Object> getHints();
+
+    Object getHint(String hintName);
+
+    Object getHint(String hintName, Object defaultValue);
+
+
+    boolean isUpdatable();
+
+    void updateCurrent();
+
+    int executeNonQuery();
+
+    Query toQuery();
 }

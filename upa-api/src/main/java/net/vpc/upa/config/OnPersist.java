@@ -15,5 +15,5 @@ public @interface OnPersist {
 
     boolean trackSystemObjects() default false;
 
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

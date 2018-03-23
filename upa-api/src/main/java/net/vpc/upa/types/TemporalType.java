@@ -50,4 +50,5 @@ public abstract class TemporalType extends DefaultDataType implements Cloneable 
     public abstract TemporalOption getTemporalOption();
 
     public abstract java.util.Date validateDate(java.util.Date date);
+    public abstract java.util.Date parse(String value);
 }

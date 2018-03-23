@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class UPABootstrap {
     private boolean contextProviderCreated = false;
-    private Properties properties = new BootstrapProperties();
+    private final Properties properties = new BootstrapProperties();
 
     UPABootstrap() {
         for (Map.Entry<Object, Object> ee : System.getProperties().entrySet()) {

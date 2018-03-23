@@ -15,5 +15,5 @@ public @interface OnPrepare {
 
     boolean trackSystemObjects() default false;
 
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

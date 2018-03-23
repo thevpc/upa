@@ -7,7 +7,6 @@ package net.vpc.upa.tutorial.feature;
 import net.vpc.upa.DefaultFieldBuilder;
 import net.vpc.upa.callbacks.EntityEvent;
 import net.vpc.upa.Entity;
-import net.vpc.upa.EvalContext;
 import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.OnCreate;
 import net.vpc.upa.types.TypesFactory;
@@ -23,6 +22,11 @@ import net.vpc.upa.types.TypesFactory;
  */
 @Callback
 public class MultiTenantFeature {
+    public final static ThreadLocal<Integer> currentTenant = new ThreadLocal<Integer>();
+
+    static {
+        currentTenant.set(15);
+    }
 
     @OnCreate
     public void entityAdded(EntityEvent event) {
@@ -43,18 +47,8 @@ public class MultiTenantFeature {
      * the thread local var from within the tenantId formula
      *
      */
-    @net.vpc.upa.config.Callback
-    public static class CurrentTenant {
-
-        public final static ThreadLocal<Integer> currentTenant = new ThreadLocal<Integer>();
-
-        static {
-            currentTenant.set(15);
-        }
-
-        @net.vpc.upa.config.Function
-        public Integer CurrentTenant(EvalContext evalContext) {
-            return currentTenant.get();
-        }
+    @net.vpc.upa.config.Function
+    public Integer CurrentTenant() {
+        return currentTenant.get();
     }
 }

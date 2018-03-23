@@ -117,18 +117,18 @@ public class PersistenceUnitConfig {
         this.autoScan = autoScan;
     }
 
-    public void setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
+    public void setFilters(List<ScanFilter> filters) {
         this.filters.clear();
         if (filters != null) {
             this.filters.addAll(filters);
         }
     }
 
-    public void addContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void addFilter(ScanFilter filter) {
         filters.add(filter);
     }
 
-    public void removeContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void removeFilter(ScanFilter filter) {
         filters.remove(filter);
     }
 

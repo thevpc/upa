@@ -138,7 +138,7 @@ public @interface ManyToOne {
 
     String[] mappedTo() default {};
 
-    RelationshipType type() default RelationshipType.DEFAULT;
+    RelationshipType relationType() default RelationshipType.DEFAULT;
 
     String targetEntity() default "";
 
@@ -149,5 +149,5 @@ public @interface ManyToOne {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

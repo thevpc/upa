@@ -119,6 +119,7 @@ public interface PersistenceUnit extends Closeable {
 //
 //    void setDefaultConnectionString(String defaultAdapterString);
     String getName();
+
     String getAbsoluteName();
 
     //    void setName(String name) ;
@@ -562,4 +563,12 @@ public interface PersistenceUnit extends Closeable {
     long getEntityCount(Class entityType);
 
     PersistenceUnitInfo getInfo();
+
+    NamedFormulaDefinition[] getNamedFormulas();
+
+    NamedFormulaDefinition getNamedFormula(String name);
+
+    void addNamedFormula(String name, Formula formula);
+
+    void removeNamedFormula(String name);
 }

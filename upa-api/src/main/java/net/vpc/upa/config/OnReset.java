@@ -15,5 +15,5 @@ public @interface OnReset {
 
     boolean trackSystemObjects() default false;
 
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

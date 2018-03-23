@@ -147,6 +147,9 @@ public class TimeType extends TemporalType implements Cloneable {
             return null;
         }
         Class type = getPlatformType();
+        if(date.getClass().equals(type)){
+            return date;
+        }
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -218,5 +221,13 @@ public class TimeType extends TemporalType implements Cloneable {
         return d;
     }
 
+
+    @Override
+    public java.util.Date parse(String value) {
+        if(value==null){
+            return null;
+        }
+        return validateDate(PlatformUtils.parseUniversalTime(value));
+    }
 
 }

@@ -85,7 +85,7 @@ public @interface Field {
 
     UserFieldModifier[] excludeModifiers() default {};
 
-    Class type() default void.class;
+    Class valueType() default void.class;
 
     String namedType() default "";
 
@@ -114,5 +114,5 @@ public @interface Field {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

@@ -176,7 +176,7 @@ public class RelationFormulaUC2 {
 
         private String name;
 
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,this.name)")
+        @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "concat(this.name,this.name)")
         private String goodName;
 
         public Integer getId() {
@@ -249,7 +249,7 @@ public class RelationFormulaUC2 {
         private String name;
         private Phone phone;
 
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "(this.phone.number+'!!')")
+        @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "(this.phone.number+'!!')")
         private String phoneNumber;
 
         public Integer getId() {
@@ -302,7 +302,7 @@ public class RelationFormulaUC2 {
         private String name;
         private Phone2 phone;
 
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "this.phone.country")
+        @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "this.phone.country")
         private Country phoneCountry;
 
         public Integer getId() {

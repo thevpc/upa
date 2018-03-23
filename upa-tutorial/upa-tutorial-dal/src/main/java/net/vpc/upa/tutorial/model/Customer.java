@@ -38,7 +38,7 @@ public class Customer {
     /**
      * Field annotation defines field constraints (this is
      * comparable to the @Column entity for JPA
-     * When using 'Partital' Entities, such annotations are 'merged'
+     * When using 'Partial' Entities, such annotations are 'merged'
      */
     @Field(max = "50", nullable = BoolEnum.TRUE)
     private String name;

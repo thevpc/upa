@@ -8,7 +8,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>upa-api</module>
+        <module>upa-impl-core</module>
         <module>upa-impl</module>
+        <module>upa-android</module>
         <module>upa-web</module>
         <!-- upa-portable is ignored as it uses a non open-source (yet) dependency -->
         <!--<module>upa-portable</module>-->

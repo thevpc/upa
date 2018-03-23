@@ -39,5 +39,5 @@ package net.vpc.upa;
  * @creationdate 12/13/12 11:42 PM
  */
 public interface Function {
-    Object eval(EvalContext evalContext);
+    Object eval(FunctionEvalContext evalContext);
 }

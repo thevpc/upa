@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="upa-android" />
+        <module name="upa-api" />
+        <module name="upa-impl" />
+        <module name="upa-impl-core" />
+        <module name="upa-test" />
+        <module name="upa-tutorial-business" />
+        <module name="upa-tutorial-dal" />
+        <module name="upa-tutorial-desktop" />
+        <module name="upa-tutorial-webjsf" />
+        <module name="upa-vfs" />
+        <module name="upa-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="upa" target="1.7" />
+      <module name="upa-android" target="1.7" />
+      <module name="upa-api" target="1.7" />
+      <module name="upa-impl" target="1.7" />
+      <module name="upa-impl-core" target="1.7" />
+      <module name="upa-test" target="1.7" />
+      <module name="upa-tutorial" target="1.7" />
+      <module name="upa-tutorial-business" target="1.7" />
+      <module name="upa-tutorial-dal" target="1.8" />
+      <module name="upa-tutorial-desktop" target="1.7" />
+      <module name="upa-tutorial-webjsf" target="1.8" />
+      <module name="upa-vfs" target="1.7" />
+      <module name="upa-web" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

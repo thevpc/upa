@@ -41,9 +41,10 @@ package net.vpc.upa.persistence;
 public enum DatabaseProduct {
     ORACLE,
     INTERBASE,
-    SQLSERVER,
+    MSSQLSERVER,
     MYSQL,
     MCKOI,
     DERBY,
+    SQLITE,
     UNKNOWN
 }

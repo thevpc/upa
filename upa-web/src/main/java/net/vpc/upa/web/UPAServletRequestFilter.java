@@ -29,7 +29,7 @@ public class UPAServletRequestFilter implements Filter {
             switcherType=switcherType.trim();
             if(switcherType.length()>0){
                 try {
-                    switcher=(UPAWebContextSwitch) Class.forName(switcherType,true,Thread.currentThread().getContextClassLoader()).newInstance();
+                    switcher=(UPAWebContextSwitch) Class.forName(switcherType,true,Thread.currentThread().getContextClassLoader()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     throw new ServletException("Unable to instantiate context switch",e);
                 }

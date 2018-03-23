@@ -46,5 +46,5 @@ public @interface SecurityContext {
 
     String entity() default "";
 
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

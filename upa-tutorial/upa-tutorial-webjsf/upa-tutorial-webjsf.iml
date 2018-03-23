@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -25,6 +25,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="upa-api" />
     <orderEntry type="module" module-name="upa-impl" scope="RUNTIME" />
+    <orderEntry type="module" module-name="upa-impl-core" scope="RUNTIME" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cglib:cglib:3.2.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.ow2.asm:asm:6.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
@@ -37,11 +38,11 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.xmlbeans:xmlbeans:2.3.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: stax:stax-api:1.0.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-web:1.1.0.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.vpc.upa:upa-web:1.2.0.0.0" level="project" />
     <orderEntry type="module" module-name="upa-tutorial-business" />
     <orderEntry type="module" module-name="upa-tutorial-dal" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derby:10.9.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derbyclient:10.9.1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derby:10.10.1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derbyclient:10.10.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-api:2.1.1-b04" level="project" />
     <orderEntry type="library" name="Maven: com.sun.faces:jsf-impl:2.1.1-b04" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.1.2" level="project" />

@@ -122,10 +122,12 @@ public class YearType extends TemporalType implements Cloneable {
 
         Class type = getPlatformType();
 
+        if(date.getClass().equals(type)){
+            return date;
+        }
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         long time = date.getTime();
-
         if (Year.class.isAssignableFrom(type)) {
             return new Year(time);
         } else if (java.util.Date.class.isAssignableFrom(type)) {
@@ -191,5 +193,11 @@ public class YearType extends TemporalType implements Cloneable {
         return d;
     }
 
-
+    @Override
+    public java.util.Date parse(String value) {
+        if(value==null || value.trim().isEmpty()){
+            return null;
+        }
+        return validateDate(new Year(Integer.parseInt(value)));
+    }
 }

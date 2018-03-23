@@ -34,24 +34,31 @@
  */
 package net.vpc.upa;
 
-
 import net.vpc.upa.exceptions.UnexpectedException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * Lazy holder for ObjectFactory creation.
- * ObjectFactory is created according to the following procedure :
+ * Lazy holder for ObjectFactory creation. ObjectFactory is created according to
+ * the following procedure :
  * <ul>
- *     <li>Look for System.getProperty("net.vpc.upa.ObjectFactory") and create root Factory, If not Found look for net.vpc.upa.RootObjectFactory</li>
- *     <li>Look for ServiceLoader.load(ObjectFactory.class) to find for extension Factories</li>
- *     <li>Sort extensions instances according to their "getContextSupportLevel()"</li>
- *     <li>Chain Factories (Each one becomes the father of the previous) and define user Factory as leaf one (with min contextSupportLevel)</li>
- *     <li>Bind root factory (as parent) to the very ancestor of the Factories Chain</li>
+ * <li>Look for System.getProperty("net.vpc.upa.ObjectFactory") and create root
+ * Factory, If not Found look for net.vpc.upa.RootObjectFactory</li>
+ * <li>Look for ServiceLoader.load(ObjectFactory.class) to find for extension
+ * Factories</li>
+ * <li>Sort extensions instances according to their
+ * "getContextSupportLevel()"</li>
+ * <li>Chain Factories (Each one becomes the father of the previous) and define
+ * user Factory as leaf one (with min contextSupportLevel)</li>
+ * <li>Bind root factory (as parent) to the very ancestor of the Factories
+ * Chain</li>
  * </ul>
+ *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/2/13 12:53 PM
  */
@@ -65,9 +72,10 @@ class BootstrapObjectFactoryLazyHolder {
         ObjectFactory factory = null;
         try {
 
-            ServiceLoader<ObjectFactory> serviceLoader = ServiceLoader.load(ObjectFactory.class);
+            ServiceLoader<ObjectFactory> objectFactoryServiceLoader = ServiceLoader.load(ObjectFactory.class);
+            ServiceLoader<ObjectFactoryConfigurator> objectFactoryConfServiceLoader = ServiceLoader.load(ObjectFactoryConfigurator.class);
             List<ObjectFactory> found = new ArrayList<ObjectFactory>();
-            for (ObjectFactory foundFactory : serviceLoader) {
+            for (ObjectFactory foundFactory : objectFactoryServiceLoader) {
                 found.add(foundFactory);
             }
             if (found.size() > 1) {
@@ -80,30 +88,42 @@ class BootstrapObjectFactoryLazyHolder {
                 factory = found.get(found.size() - 1);
             }
             String key = "net.vpc.upa.ObjectFactory";
+            Logger log = Logger.getLogger(UPA.class.getName());
+            log.log(Level.FINE, "Bootstrapping UPA...");
             String objectFactoryType = UPA.getBootstrap().getProperties().getString("net.vpc.upa.ObjectFactory");
             if (objectFactoryType == null) {
                 objectFactoryType = "net.vpc.upa.RootObjectFactory";
                 /**
                  * Any default implementation of UPA must define this class
-                 * "net.vpc.upa.RootObjectFactory" RootObjectFactory should
-                 * be a general purpose implementation that may be
-                 * overridden by domain specific usages (i.e. web context,
-                 * mobile context, ...) by ServiceLoader Mechanism.
-                 * ServiceLoader Mechanism is provided for User Extensions
-                 * only and should not handle DefaultTypedFactory
-                 * instantiation DefaultTypedFactory must return return 0
-                 * ContextSupportLevel
+                 * "net.vpc.upa.RootObjectFactory" RootObjectFactory should be a
+                 * general purpose implementation that may be overridden by
+                 * domain specific usages (i.e. web context, mobile context,
+                 * ...) by ServiceLoader Mechanism. ServiceLoader Mechanism is
+                 * provided for User Extensions only and should not handle
+                 * DefaultTypedFactory instantiation DefaultTypedFactory must
+                 * return return 0 ContextSupportLevel
                  */
-                System.err.println("System.getProperty(\"" + key + "\") was empty. Using " + objectFactoryType);
+                log.log(Level.FINE, "Using default factory "+objectFactoryType);
+            }else{
+                log.log(Level.FINE, "Using root factory "+objectFactoryType);
             }
             ObjectFactory rootFactory = null;
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             Class<ObjectFactory> loadedClass = (Class<ObjectFactory>) Class.forName(objectFactoryType, true, contextClassLoader);
-            rootFactory = loadedClass.newInstance();
+            rootFactory = loadedClass.getDeclaredConstructor().newInstance();
             if (factory == null) {
                 factory = rootFactory;
             } else {
                 found.get(0).setParentFactory(rootFactory);
+            }
+
+            List<ObjectFactoryConfigurator> confs = new ArrayList<>();
+            for (ObjectFactoryConfigurator objectFactoryConfigurator : objectFactoryConfServiceLoader) {
+                confs.add(objectFactoryConfigurator);
+            }
+            Collections.sort(confs, ObjectFactoryConfiguratorComparator.getInstance());
+            for (ObjectFactoryConfigurator conf : confs) {
+                conf.configure(factory);
             }
         } catch (Exception e) {
             throw new UnexpectedException("Unable to load net.vpc.upa.RootObjectFactory. Most likely a valid UPA Implementation is missing (up-impl for instance)", e);

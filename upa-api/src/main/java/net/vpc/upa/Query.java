@@ -34,6 +34,7 @@ package net.vpc.upa;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.ResultMetaData;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -143,7 +144,7 @@ public interface Query extends Closeable {
 
     Query removeParameter(int index);
 
-    void setUpdatable(boolean forUpdate);
+    Query setUpdatable(boolean forUpdate);
 
     boolean isLazyListLoadingEnabled();
 

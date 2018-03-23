@@ -54,5 +54,5 @@ public @interface Search {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

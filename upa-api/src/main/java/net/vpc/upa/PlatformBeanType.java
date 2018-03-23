@@ -38,11 +38,9 @@ import net.vpc.upa.filters.ObjectFilter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public interface PlatformBeanType {
@@ -55,27 +53,31 @@ public interface PlatformBeanType {
 
     Object newInstance();
 
+    Class getPropertyType(String property);
+
+//    PlatformBeanProperty getProperty(String property, PropertyAccessType propertyAccessType);
+
     boolean containsProperty(String property);
 
-    Object getProperty(Object instance, String field);
+    Object getPropertyValue(Object instance, String field);
 
-    boolean setProperty(Object instance, String property, Object value);
+    boolean setPropertyValue(Object instance, String property, Object value);
 
     /**
      * sets value for the property, if the property exists
+     *
      * @param instance instance to inject into
      * @param property property to inject into
-     * @param value new value
+     * @param value    new value
      */
     void inject(Object instance, String property, Object value);
 
     Method getMethod(Class type, String name, Class ret, Class... args);
 
-    java.lang.reflect.Field findField(String name, ObjectFilter<Field> filter);
+//    java.lang.reflect.Field findField(String name, ObjectFilter<Field> filter);
 
     boolean resetToDefaultValue(Object instance, String field);
 
     boolean isDefaultValue(Object instance, String field);
 
-    Map<String, Object> toMap(Object o, Boolean includeDefaults);
 }

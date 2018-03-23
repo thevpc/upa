@@ -50,16 +50,21 @@ public @interface Formula {
 
     String value() default "";
 
-    Class<net.vpc.upa.Formula> custom() default net.vpc.upa.Formula.class;
+    Class<? extends net.vpc.upa.Formula> customType() default net.vpc.upa.Formula.class;
+
+    /**
+     * if defined will consider named Custom formula registered in PersistenceUnit
+     */
+    String name() default "";
 
     int formulaOrder() default Integer.MIN_VALUE;
 
-    FormulaType[] type() default {};
+    FormulaType[] formulaType() default {};
 
     /**
      * annotation config defines how this annotation must be handled
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

@@ -34,6 +34,7 @@
  */
 package net.vpc.upa.config;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -42,23 +43,22 @@ import java.lang.annotation.Target;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/4/12 11:00 PM
  */
-@Target(value = {})
+@Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Config {
 
-    String packagePath() default net.vpc.upa.UPA.UNDEFINED_STRING;
+    BoolEnum autoScan() default BoolEnum.UNDEFINED;
 
-    String persistenceUnit() default net.vpc.upa.UPA.UNDEFINED_STRING;
+    ScanConfig[] scan() default {};
 
-    String persistenceGroup() default net.vpc.upa.UPA.UNDEFINED_STRING;
+    PersistenceGroupConfig[] persistenceGroups() default {};
 
-    /**
-     * Config order defines the order according to which configuration process
-     * is applied
-     *
-     * @return config order
-     */
-    int order() default 0;
+    PersistenceUnitConfig[] persistenceUnits() default {};
 
-    ConfigAction action() default ConfigAction.MERGE;
+    ConnectionConfig[] connection() default {};
+
+    ConnectionConfig[] rootConnection() default {};
+
+    Property[] properties() default {};
+
 }

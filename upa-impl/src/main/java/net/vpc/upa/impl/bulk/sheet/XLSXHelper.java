@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.bulk.sheet.SheetContentsHandlerExt;
+import net.vpc.upa.impl.bulk.sheet.XLSXDrawingPart;
+import net.vpc.upa.impl.bulk.sheet.XLSXDrawingPicture;
+import net.vpc.upa.impl.bulk.sheet.XLSXFile;
+import net.vpc.upa.impl.bulk.sheet.XLSXSheetPart;
 
 import net.vpc.upa.impl.util.IOUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

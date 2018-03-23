@@ -26,7 +26,8 @@ public enum CallbackType {
     ON_MODEL_CHANGED,
     ON_STORAGE_CHANGED,
     //Function Eval Events
-    ON_EVAL,
+    ON_EVAL_FUNCTION,
+    ON_EVAL_FORMULA,
 //    ON_PRE_PERSIST,
 //    ON_PRE_UPDATE,
 //    ON_PRE_REMOVE,

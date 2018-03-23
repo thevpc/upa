@@ -46,7 +46,7 @@ import java.util.Date;
  * Time: 10:38:06
  * To change this template use Options | File Templates.
  */
-public class DatePeriodType extends TemporalType implements CompoundDataType {
+public class DatePeriodType extends DefaultDataType implements CompoundDataType {
     private String countName;
     private String periodTypeName;
     private NumberType countDataType;
@@ -99,11 +99,6 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
     }
 
     @Override
-    public Date validateDate(Date date) {
-        return date;
-    }
-
-    @Override
     public FieldDescriptor[] getComposingFields(FieldDescriptor fieldDescriptor) {
         String[] names = new String[]{
                 fieldDescriptor.getName() +
@@ -153,11 +148,6 @@ public class DatePeriodType extends TemporalType implements CompoundDataType {
             return new DatePeriod(c, PeriodOption.values()[p]);
         }
         return null;
-    }
-
-    @Override
-    public TemporalOption getTemporalOption() {
-        return TemporalOption.DEFAULT;
     }
 
     @Override

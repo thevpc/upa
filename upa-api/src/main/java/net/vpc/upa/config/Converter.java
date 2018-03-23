@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Converter {
 
-    String type() default "";
+    String valueType() default "";
 
     String expression() default "";
 
@@ -52,5 +52,5 @@ public @interface Converter {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

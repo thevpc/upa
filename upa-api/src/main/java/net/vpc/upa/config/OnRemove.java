@@ -15,5 +15,5 @@ public @interface OnRemove {
 
     boolean trackSystemObjects() default false;
 
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

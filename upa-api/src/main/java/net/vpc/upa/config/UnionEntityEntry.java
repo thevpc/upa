@@ -56,5 +56,5 @@ public @interface UnionEntityEntry {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

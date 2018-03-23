@@ -137,4 +137,9 @@ public class InvoiceModule {
         return UPA.getPersistenceUnit().createQuery("Select customerId id, name name from Customer order by name asc")
                 .getResultList(Header.class);
     }
+
+    public List<Invoice> findInvoicesByStatus(InvoiceStatus status){
+        return UPA.getPersistenceUnit().createQuery("Select c from Invoice c where c.status='"+status+"'")
+                .getResultList();
+    }
 }

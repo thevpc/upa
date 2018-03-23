@@ -128,6 +128,9 @@ public class DateTimeType extends TemporalType implements Cloneable {
         }
 
         Class type = getPlatformType();
+        if(date.getClass().equals(type)){
+            return date;
+        }
 
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -190,6 +193,14 @@ public class DateTimeType extends TemporalType implements Cloneable {
             d.getProperties().put("max", String.valueOf(PlatformUtils.formatUniversalDateTime(max)));
         }
         return d;
+    }
+
+    @Override
+    public java.util.Date parse(String value) {
+        if(value==null || value.trim().isEmpty()){
+            return null;
+        }
+        return validateDate(PlatformUtils.parseUniversalDateTime(value));
     }
 
 }

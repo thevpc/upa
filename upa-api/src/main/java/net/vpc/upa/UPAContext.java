@@ -53,13 +53,13 @@ public interface UPAContext {
      * @param factory
      * @throws UPAException
      */
-    void start(ObjectFactory factory) throws UPAException;
+    void start(ObjectFactory factory,UPAContextConfig[] contextConfig,Class[] configClasses) throws UPAException;
 
     UPAContextFactory getFactory();
 
     UPAContextConfig getBootstrapContextConfig();
 
-    void scan(ScanSource configurationStrategy, ScanListener listener, boolean configure);
+    void scan(UPAContextConfig contextConfig,ScanSource configurationStrategy, ScanListener listener, boolean configure);
 
     PersistenceUnit getPersistenceUnit() throws UPAException;
 

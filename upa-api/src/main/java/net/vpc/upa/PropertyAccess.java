@@ -35,12 +35,12 @@
 package net.vpc.upa;
 
 
-import net.vpc.upa.config.Config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import net.vpc.upa.config.ItemConfig;
 
 /**
  * corresponds to the JPA
@@ -60,5 +60,5 @@ public @interface PropertyAccess {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

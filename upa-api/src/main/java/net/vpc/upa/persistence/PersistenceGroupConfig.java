@@ -54,8 +54,7 @@ public class PersistenceGroupConfig {
     private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
     private Map<String, Object> properties = new HashMap<String, Object>();
 
-    public PersistenceGroupConfig(int configOrder) {
-        this.configOrder = configOrder;
+    public PersistenceGroupConfig() {
     }
 
     public int getConfigOrder() {
@@ -112,6 +111,21 @@ public class PersistenceGroupConfig {
 
     public void setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
         this.filters = filters == null ? new ArrayList<ScanFilter>() : new ArrayList<ScanFilter>(filters);
+    }
+
+    public PersistenceUnitConfig getPersistenceUnit(String name, boolean create, int configOrder) {
+        for (PersistenceUnitConfig persistenceGroup : persistenceUnits) {
+            if (UPAContextConfig.trim(persistenceGroup.getName()).equals(UPAContextConfig.trim(name))) {
+                return persistenceGroup;
+            }
+        }
+        if (create) {
+            PersistenceUnitConfig p = new PersistenceUnitConfig();
+            p.setConfigOrder(configOrder);
+            persistenceUnits.add(p);
+            return p;
+        }
+        return null;
     }
 
     @Override

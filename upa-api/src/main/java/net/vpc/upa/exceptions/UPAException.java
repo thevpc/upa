@@ -40,6 +40,7 @@ import net.vpc.upa.types.I18NString;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class UPAException extends RuntimeException {
+
     private I18NString messageId;
     private Object[] parameters;
 
@@ -55,12 +56,15 @@ public class UPAException extends RuntimeException {
         this(null, message, parameters);
     }
 
+    public UPAException(Throwable cause) {
+        this(cause, new I18NString(cause.toString()));
+    }
+
     public UPAException(Throwable cause, I18NString messageId, Object... parameters) {
         super(buildMessage(messageId, parameters), cause);
         this.messageId = messageId;
         this.parameters = parameters;
     }
-
 
     public I18NString getMessageId() {
         return messageId;
@@ -72,15 +76,15 @@ public class UPAException extends RuntimeException {
 
     private static String buildMessage(I18NString messageId, Object... parameters) {
         StringBuilder b = new StringBuilder();
-        String m0=null;
-        if(messageId!=null) {
+        String m0 = null;
+        if (messageId != null) {
             if (messageId.getKeys().size() > 0) {
                 m0 = messageId.getKey(0);
             } else {
-                m0 =messageId.toString();
+                m0 = messageId.toString();
             }
-        }else {
-            m0="UPAException";
+        } else {
+            m0 = "UPAException";
         }
         b.append(m0);
         if (parameters.length > 0) {
@@ -89,16 +93,16 @@ public class UPAException extends RuntimeException {
                 if (i > 0) {
                     b.append(",");
                 }
-                m0=null;
-                if(parameters[i]!=null && parameters[i] instanceof I18NString) {
-                    I18NString messageId2=(I18NString) parameters[i];
+                m0 = null;
+                if (parameters[i] != null && parameters[i] instanceof I18NString) {
+                    I18NString messageId2 = (I18NString) parameters[i];
                     if (messageId2.getKeys().size() > 0) {
                         m0 = messageId2.getKey(0);
                     } else {
-                        m0 =messageId2.toString();
+                        m0 = messageId2.toString();
                     }
-                }else {
-                    m0=String.valueOf(parameters[i]);
+                } else {
+                    m0 = String.valueOf(parameters[i]);
                 }
 
                 b.append(m0);

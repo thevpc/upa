@@ -41,30 +41,10 @@ package net.vpc.upa;
  * To change this template use Options | File Templates.
  */
 public enum RelationshipType {
-
-
-    //equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
-//equivalent to LINK
+    DEFAULT,
+    ASSOCIATION,
     AGGREGATION,
     COMPOSITION,
-
-    DEFAULT,
-
-    ASSOCIATION,
     SHADOW_ASSOCIATION,
     TRANSIENT
     //,RIGID

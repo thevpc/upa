@@ -110,7 +110,7 @@ public class RelationFormulaUC3 {
         public void testQuery3() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             //ancestorExpression, childExpression, entityName
-            Query q = pu.createQueryBuilder("Person").setFieldFilter(FieldFilters.byModifiersAllOf(FieldModifier.SUMMARY));
+            QueryBuilder q = pu.createQueryBuilder("Person").setFieldFilter(FieldFilters.byModifiersAllOf(FieldModifier.SUMMARY));
             List<Document> t = q.getDocumentList();
             for (Document r : t) {
                 System.out.println(r);

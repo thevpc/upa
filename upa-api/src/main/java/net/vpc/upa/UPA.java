@@ -39,8 +39,11 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.types.I18NString;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.persistence.UPAContextConfig;
 
 /**
  * UPA (Unstructured Persistence API) is a simple yet powerful ORM aiming to
@@ -51,16 +54,30 @@ import java.util.logging.Logger;
  */
 public final class UPA {
 
+    /**
+     * string to use if string value is undefined.
+     */
     public static final String UNDEFINED_STRING = "<<Undefined>>";
+
+    /**
+     * Connection string parameter name
+     */
     public static final String CONNECTION_STRING = "upa.connection";
+
+    /**
+     * Root connection string parameter name
+     */
     public static final String ROOT_CONNECTION_STRING = "upa.root-connection";
     protected static final Logger log = Logger.getLogger(UPA.class.getName());
 
-    private static final UPABootstrap bootstrap = new UPABootstrap();
-    private static final int CONTEXT_NOT_INITIALIZED=0;
-    private static final int CONTEXT_INITIALIZING=1;
-    private static final int CONTEXT_INITIALIZED=2;
+    private static final UPABootstrap BOOTSTRAP = new UPABootstrap();
+    private static final int CONTEXT_NOT_INITIALIZED = 0;
+    private static final int CONTEXT_INITIALIZING = 1;
+    private static final int CONTEXT_INITIALIZED = 2;
     private static int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
+
+    private static final List<UPAContextConfig> configInstances = new ArrayList<>();
+    private static final List<Class> configClasses = new ArrayList<>();
 
     private UPA() {
     }
@@ -157,7 +174,7 @@ public final class UPA {
      * @return current UPAContext
      */
     public static UPAContext getContext() throws UPAException {
-        if(bootstrapStatus==CONTEXT_INITIALIZING){
+        if (bootstrapStatus == CONTEXT_INITIALIZING) {
             throw new UPAException("UPAAlreadyInitializing");
         }
         UPAContextProvider contextProvider = null;
@@ -189,40 +206,43 @@ public final class UPA {
             throw new BootstrapException("UPAContextProviderLazyHolderError", e);
         }
 
-        bootstrap.setContextInitialized();
+        BOOTSTRAP.setContextInitialized();
         UPAContext context = contextProvider.getContext();
         //Double Checking Lock will/should work here because we are not about to instantiate the object,
         //this is the responsibility of the contextProvider
         if (context == null) {
-            synchronized (bootstrap) {
+            synchronized (BOOTSTRAP) {
                 context = contextProvider.getContext();
                 if (context == null) {
-                    bootstrapStatus=CONTEXT_INITIALIZING;
+                    bootstrapStatus = CONTEXT_INITIALIZING;
                     long start = System.currentTimeMillis();
-                    ObjectFactory bootstrapFactory = bootstrap.getFactory();
+                    ObjectFactory bootstrapFactory = BOOTSTRAP.getFactory();
                     context = bootstrapFactory.createObject(UPAContext.class);
-                    context.start(bootstrapFactory);
+                    context.start(bootstrapFactory, configInstances.toArray(new UPAContextConfig[configInstances.size()]), configClasses.toArray(new Class[configClasses.size()]));
                     contextProvider.setContext(context);
                     long end = System.currentTimeMillis();
-                    log.log(Level.FINE, "UPA Context Loaded in " + (end - start) + " ms");
-                    bootstrapStatus=CONTEXT_INITIALIZED;
+                    log.log(Level.FINE, "UPA Context Loaded in {0} ms", end - start);
+                    bootstrapStatus = CONTEXT_INITIALIZED;
                 }
             }
-        }else{
-            if(bootstrapStatus!=CONTEXT_INITIALIZED){
+        } else {
+            if (bootstrapStatus != CONTEXT_INITIALIZED) {
                 throw new BootstrapException("UPAContextStatusInvalid");
             }
         }
         return context;
     }
 
+    public static ObjectFactory getBootstrapFactory() {
+        return BOOTSTRAP.getFactory();
+    }
+    
     public static UPABootstrap getBootstrap() {
-        return bootstrap;
+        return BOOTSTRAP;
     }
 
-
     public static void close() {
-        if (bootstrap.isContextInitialized()) {
+        if (BOOTSTRAP.isContextInitialized()) {
             UPAContext context = UPAContextProviderLazyHolder.INSTANCE.getContext();
             if (context != null) {
                 context.close();
@@ -230,4 +250,21 @@ public final class UPA {
         }
     }
 
+    public static void configure(UPAContextConfig config) {
+        if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (config != null) {
+            configInstances.add(config);
+        }
+    }
+
+    public static void configure(Class config) {
+        if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (config != null) {
+            configClasses.add(config);
+        }
+    }
 }

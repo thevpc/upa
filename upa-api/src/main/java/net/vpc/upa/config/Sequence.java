@@ -52,7 +52,7 @@ public @interface Sequence {
 
     SequenceStrategy strategy() default SequenceStrategy.AUTO;
 
-    SequenceType type() default SequenceType.PERSIST;
+    SequenceType sequenceType() default SequenceType.PERSIST;
 
     int initialValue() default Integer.MIN_VALUE;
 
@@ -72,5 +72,5 @@ public @interface Sequence {
      *
      * @return annotation configuration
      */
-    Config config() default @Config();
+    ItemConfig config() default @ItemConfig();
 }

@@ -45,10 +45,10 @@ import java.net.URL;
  */
 public interface UPAContextFactory extends ObjectFactory {
 
-    ScanSource createURLScanSource(URL[] urls, ScanFilter[] filters, boolean noIgnore);
+    ScanSource createURLScanSource(String sourceName,URL[] urls, ScanFilter[] filters, boolean noIgnore);
 
-    ScanSource createContextScanSource(boolean noIgnore);
+    ScanSource createContextScanSource(String sourceName,boolean noIgnore);
 
-    ScanSource createClassScanSource(Class[] classes, boolean noIgnore);
+    ScanSource createClassScanSource(String sourceName,Class[] classes, boolean noIgnore);
 
 }

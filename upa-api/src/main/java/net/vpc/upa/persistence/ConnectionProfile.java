@@ -55,6 +55,17 @@ public interface ConnectionProfile {
 
     StructureStrategy getStructureStrategy();
 
+    /**
+     *
+     * @return unmodifiable map
+     */
     Map<String, String> getProperties();
 
+    void setProperty(String name, String value) ;
+
+    String getProperty(String name) ;
+
+    String getProperty(String name,String defaultValue) ;
+
+    ConnectionProfile copy();
 }

@@ -16,6 +16,7 @@ public class MethodCallback {
 
     private Object instance;
     private Method method;
+    private ObjectType objectType;
     private CallbackType callbackType;
     private EventPhase phase;
     private Map<String, Object> configuration;
@@ -30,12 +31,17 @@ public class MethodCallback {
         this.callbackType = callbackType;
     }
 
-    public MethodCallback(Object instance, Method method, CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
+    public MethodCallback(Object instance, Method method, ObjectType objectType,CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
         this.instance = instance;
+        this.objectType = objectType;
         this.method = method;
         this.callbackType = callbackType;
         this.phase = phase;
         this.configuration = configuration;
+    }
+
+    public ObjectType getObjectType() {
+        return objectType;
     }
 
     public EventPhase getPhase() {
