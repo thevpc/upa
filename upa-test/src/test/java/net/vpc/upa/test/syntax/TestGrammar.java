@@ -22,7 +22,8 @@ public class TestGrammar {
 
     @Test
     public void testGrammar() throws ParseException {
-        testUQL("if this.vesselRatio=0 then false elseif this.vesselRatio>this.tcvShore and this.vesselRatio<this.tcvSail then true else false end");
+//        testUQL("if this.vesselRatio=0 then false elseif this.vesselRatio>this.tcvShore and this.vesselRatio<this.tcvSail then true else false end");
+        testUQL("this.quality>=0");
 //        testUQL("if this.quality=true then this.tcvLoad elseif 0>1 then 5 else 0 end");
 //        testUQL("Coalesce((Select sum(x.priceTaxFree) From InvoiceDetail x where x.invoiceId=this.invoiceId),0)");
 //        testUQL("Coalesce((3),0)");

@@ -11,11 +11,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.bulk.sheet.SheetContentsHandlerExt;
-import net.vpc.upa.impl.bulk.sheet.XLSXDrawingPicture;
-import net.vpc.upa.impl.bulk.sheet.XLSXFile;
-import net.vpc.upa.impl.bulk.sheet.XLSXMediaPart;
-import net.vpc.upa.impl.bulk.sheet.xssfDataType;
+import net.vpc.upa.impl.util.xml.XmlSAXElement;
+import net.vpc.upa.impl.util.xml.XmlSAXParser;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.BuiltinFormats;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -24,9 +21,6 @@ import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * class mainly inspired from
@@ -35,7 +29,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @PortabilityHint(target = "C#", name = "suppress")
-public class XSSFSheetXMLHandlerExt extends DefaultHandler {
+public class XSSFSheetXMLHandlerExt implements XmlSAXParser {
 
     private static final Logger log = Logger.getLogger(XSSFSheetXMLHandlerExt.class.getName());
 
@@ -144,20 +138,23 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
     }
 
     @Override
-    public void startDocument() throws SAXException {
-        super.startDocument();
+    public void startDocument() {
         output.startSheet(sheetIndex);
     }
 
     @Override
-    public void endDocument() throws SAXException {
-        super.endDocument();
+    public void endDocument() {
         output.endSheet();
     }
 
-    public void startElement(String uri, String localName, String name,
-            Attributes attributes) throws SAXException {
-
+    @Override
+    public void startElement(XmlSAXElement element) {
+//
+//    }
+//
+//    public void startElement(String uri, String localName, String name,
+//                             Attributes attributes) throws SAXException {
+        String name=element.getName();
         if (isTextTag(name)) {
             vIsOpen = true;
             // Clear contents cache
@@ -175,11 +172,11 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
             }
 
             // Decide where to get the formula string from
-            String type = attributes.getValue("t");
+            String type = element.getAttributeValue("t");
             if (type != null && type.equals("shared")) {
                 // Is it the one that defines the shared, or uses it?
-                String ref = attributes.getValue("ref");
-                String si = attributes.getValue("si");
+                String ref = element.getAttributeValue("ref");
+                String si = element.getAttributeValue("si");
 
                 if (ref != null) {
                     // This one defines it
@@ -206,7 +203,7 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
             // Clear contents cache
             headerFooter.setLength(0);
         } else if ("row".equals(name)) {
-            int rowNum = Integer.parseInt(attributes.getValue("r")) - 1;
+            int rowNum = Integer.parseInt(element.getAttributeValue("r")) - 1;
             lastRowNum = rowNum;
             output.startRow(rowNum);
         } // c => cell
@@ -215,9 +212,9 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
             this.nextDataType = xssfDataType.NUMBER;
             this.formatIndex = -1;
             this.formatString = null;
-            cellRef = attributes.getValue("r");
-            String cellType = attributes.getValue("t");
-            String cellStyleStr = attributes.getValue("s");
+            cellRef = element.getAttributeValue("r");
+            String cellType = element.getAttributeValue("t");
+            String cellStyleStr = element.getAttributeValue("s");
             if ("b".equals(cellType)) {
                 nextDataType = xssfDataType.BOOLEAN;
             } else if ("e".equals(cellType)) {
@@ -241,10 +238,9 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
         }
     }
 
-    public void endElement(String uri, String localName, String name)
-            throws SAXException {
+    public void endElement(XmlSAXElement element) {
         String thisStr = null;
-
+        String name=element.getName();
         // v => contents of a cell
         if (isTextTag(name)) {
             vIsOpen = false;
@@ -379,16 +375,15 @@ public class XSSFSheetXMLHandlerExt extends DefaultHandler {
      * Captures characters only if a suitable element is open. Originally was
      * just "v"; extended for inlineStr also.
      */
-    public void characters(char[] ch, int start, int length)
-            throws SAXException {
+    public void characters(String chars) {
         if (vIsOpen) {
-            value.append(ch, start, length);
+            value.append(chars);
         }
         if (fIsOpen) {
-            formula.append(ch, start, length);
+            formula.append(chars);
         }
         if (hfIsOpen) {
-            headerFooter.append(ch, start, length);
+            headerFooter.append(chars);
         }
     }
 

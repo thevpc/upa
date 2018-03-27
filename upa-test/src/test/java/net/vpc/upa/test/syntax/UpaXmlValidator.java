@@ -4,7 +4,7 @@ import net.vpc.upa.UPA;
 import net.vpc.upa.impl.config.ContextElement;
 import net.vpc.upa.impl.config.DefaultUPAContextLoader;
 import net.vpc.upa.impl.util.DefaultVarContext;
-import net.vpc.upa.impl.util.XMLUtils;
+import net.vpc.upa.impl.util.xml.DefaultXmlFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -30,7 +30,7 @@ public class UpaXmlValidator {
                 new DefaultVarContext()
         );
         Assert.assertEquals(true,b);
-        XMLUtils.validateAgainstXSD(xmlURL.openStream(), xsdURL.openStream());
+        new DefaultXmlFactory().validateAgainstXSD(xmlURL.openStream(), xsdURL.openStream());
         Assert.assertEquals(true,true);
     }
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import net.vpc.j2cs.parser.ParseException;
 import net.vpc.j2cs.parser.ast.body.TypeDeclaration;
 import net.vpc.j2cs.project.FilterAction;
-import net.vpc.j2cs.project.ItemFilter;
+import net.vpc.j2cs.project.ItemFilterAction;
 import net.vpc.j2cs.project.Project;
 import net.vpc.j2cs.util.J2CSUtils;
 
@@ -19,7 +19,9 @@ public class UPAConverterMain {
         long start = System.currentTimeMillis();
         try {
             //"DecorationEntityDescriptorResolver"
-            buildUPA("DefaultUPAContext",false);
+            buildUPA("FieldDesc",false);
+//            buildUPA("Date",false);
+//            buildUPA("PersistenceUnit",true);
 //            buildUPA("EntityException");
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -50,8 +52,8 @@ public class UPAConverterMain {
     }
 
     public static void buildImpl(String filterImpl,boolean erase) throws IOException, ParseException {
-        String root = xprojects + "/net/vpc/upa/upa-impl";
-        Project project = new Project("upa-impl");
+        String root = xprojects + "/net/vpc/upa/upa-core";
+        Project project = new Project("upa-core");
         project.addMavenProject(new File(root), "net.vpc.upa.impl");
         project.addConvertConfigurator(new UPAConverterManagerConfigurator());
 
@@ -61,10 +63,10 @@ public class UPAConverterMain {
         processor.process();
     }
 
-    private static ItemFilter<TypeDeclaration> typeDeclarationEquals(final String typeName){
-        return new ItemFilter<TypeDeclaration>() {
+    private static ItemFilterAction<TypeDeclaration> typeDeclarationEquals(final String typeName){
+        return new ItemFilterAction<TypeDeclaration>() {
             //@Override
-            public FilterAction accept(TypeDeclaration declaration) {
+            public FilterAction acceptAction(TypeDeclaration declaration) {
 //                NameExpr pck = declaration.getPackage();
                 String name = declaration.getName();
                 String expectedName = typeName;

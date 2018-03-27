@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.bulk.sheet.SheetContentsHandlerExt;
-import net.vpc.upa.impl.bulk.sheet.XLSXDrawingPart;
-import net.vpc.upa.impl.bulk.sheet.XLSXDrawingPicture;
-import net.vpc.upa.impl.bulk.sheet.XLSXFile;
-import net.vpc.upa.impl.bulk.sheet.XLSXSheetPart;
 
 import net.vpc.upa.impl.util.IOUtils;
+import net.vpc.upa.impl.util.xml.XmlFactory;
+import net.vpc.upa.impl.util.xml.XmlSAXParser;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -26,22 +25,17 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.eventusermodel.ReadOnlySharedStringsTable;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.StylesTable;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@PortabilityHint(target = "C#",name = "suppress")
+@PortabilityHint(target = "C#", name = "suppress")
 public class XLSXHelper {
 
     private static final Logger log = Logger.getLogger(XLSXHelper.class.getName());
 
-    public static String[] getXLSFileSheetNames(File file) throws InvalidFormatException, IOException, OpenXML4JException, SAXException, InterruptedException {
+    public static String[] getXLSFileSheetNames(File file, ObjectFactory factory) throws IOException, OpenXML4JException, SAXException, InterruptedException {
         log.log(Level.FINE, "OPCPackage.opening : {0}", file.getPath());
         OPCPackage pkg = OPCPackage.open(file.getPath());
         log.log(Level.FINE, "OPCPackage open successfully. now parsing");
@@ -49,16 +43,16 @@ public class XLSXHelper {
         StylesTable styles = reader.getStylesTable();
         ReadOnlySharedStringsTable sharedStrings = new ReadOnlySharedStringsTable(pkg);
         log.log(Level.FINE, "creating XLSXFile");
-        XLSXFile xFile = new XLSXFile(file);
+        XLSXFile xFile = new XLSXFile(file, factory);
         List<XLSXSheetPart> sheets = xFile.getWorkbook().getSheets();
-        ArrayList<String> names=new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<String>();
         for (XLSXSheetPart sheet : sheets) {
             names.add(sheet.sheetName);
         }
         return names.toArray(new String[names.size()]);
     }
-    
-    public static void parseXLSFile(File file, Integer sheetIndex, SheetContentsHandlerExt contentsHandler) throws InvalidFormatException, IOException, OpenXML4JException, SAXException, InterruptedException {
+
+    public static void parseXLSFile(File file, Integer sheetIndex, SheetContentsHandlerExt contentsHandler, ObjectFactory factory) throws IOException, OpenXML4JException, SAXException, InterruptedException {
 
         log.log(Level.FINE, "OPCPackage.opening : {0}", file.getPath());
         OPCPackage pkg = OPCPackage.open(file.getPath());
@@ -67,7 +61,7 @@ public class XLSXHelper {
         StylesTable styles = reader.getStylesTable();
         ReadOnlySharedStringsTable sharedStrings = new ReadOnlySharedStringsTable(pkg);
         log.log(Level.FINE, "creating XLSXFile");
-        XLSXFile xFile = new XLSXFile(file);
+        XLSXFile xFile = new XLSXFile(file, factory);
         List<XLSXSheetPart> sheets = xFile.getWorkbook().getSheets();
         log.log(Level.FINE, "parsed {0} sheets", sheets.size());
         contentsHandler.startDocument();
@@ -80,12 +74,9 @@ public class XLSXHelper {
                 for (XLSXDrawingPart xLSXDrawingPart : drawings) {
                     pics.addAll(xLSXDrawingPart.getPictures());
                 }
-                ContentHandler handler = new XSSFSheetXMLHandlerExt(styles, sharedStrings, contentsHandler, new DataFormatter(), false, xFile, pics, sh.getSheetIndex());
-
-                XMLReader parser = XMLReaderFactory.createXMLReader();
-                parser.setContentHandler(handler);
-
-                parser.parse(new InputSource(reader.getSheet(sh.getRelationshipId())));
+                XmlSAXParser handler = new XSSFSheetXMLHandlerExt(styles, sharedStrings, contentsHandler, new DataFormatter(), false, xFile, pics, sh.getSheetIndex());
+                XmlFactory xmlfactory = factory.createObject(XmlFactory.class);
+                xmlfactory.parse(reader.getSheet(sh.getRelationshipId()),handler);
             } else {
                 log.log(Level.FINE, "Ignoring sheet : {0}", sh.getSheetIndex());
             }
@@ -94,10 +85,10 @@ public class XLSXHelper {
         contentsHandler.endDocument();
     }
 
-    public static void parseXLSFile(InputStream stream, Integer sheetIndex, SheetContentsHandlerExt contentsHandler) throws InvalidFormatException, IOException, OpenXML4JException, SAXException, InterruptedException {
+    public static void parseXLSFile(InputStream stream, Integer sheetIndex, SheetContentsHandlerExt contentsHandler, ObjectFactory factory) throws InvalidFormatException, IOException, OpenXML4JException, SAXException, InterruptedException {
         File f = File.createTempFile("upa-", ".xlsx");
         IOUtils.copyToFile(stream, f, 1024);
-        parseXLSFile(f, sheetIndex, contentsHandler);
+        parseXLSFile(f, sheetIndex, contentsHandler, factory);
         f.delete();
     }
 }
