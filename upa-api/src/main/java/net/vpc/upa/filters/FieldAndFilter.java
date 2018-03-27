@@ -76,7 +76,7 @@ public class FieldAndFilter extends AbstractFieldFilter {
         return new FieldAndFilter(all);
     }
 
-    public FieldAndFilter and(FieldFilter filter) {
+    public RichFieldFilter and(FieldFilter filter) {
         if (filter != null) {
             if (filter instanceof FieldAndFilter) {
                 List<FieldFilter> children = ((FieldAndFilter) filter).getChildren();

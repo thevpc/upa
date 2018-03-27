@@ -35,6 +35,7 @@
 package net.vpc.upa.bulk;
 
 import net.vpc.upa.Closeable;
+import net.vpc.upa.ObjectFactory;
 
 import java.io.IOException;
 
@@ -55,5 +56,9 @@ public interface DataParser extends Closeable {
     DataDeserializer getDataDeserializer();
 
     DataReader parse() throws IOException;
+
+    ObjectFactory getFactory() ;
+
+    void setFactory(ObjectFactory factory) ;
 
 }

@@ -53,7 +53,7 @@ public class UPAContextConfig {
     private Boolean autoScan;
     private List<PersistenceGroupConfig> persistenceGroups = new ArrayList<PersistenceGroupConfig>(2);
     private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
-    private Map<String, Object> properties = new HashMap<>();
+    private Map<String, Object> properties = new HashMap<String, Object>();
 
     public Boolean getAutoScan() {
         return autoScan;

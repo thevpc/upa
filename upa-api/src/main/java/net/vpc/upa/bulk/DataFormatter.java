@@ -35,6 +35,7 @@
 package net.vpc.upa.bulk;
 
 import net.vpc.upa.Closeable;
+import net.vpc.upa.ObjectFactory;
 
 import java.io.IOException;
 
@@ -53,5 +54,9 @@ public interface DataFormatter extends Closeable {
 //    DataWriter format(OutputStream outputStream) throws IOException;
 //
 //    DataWriter format(File file) throws IOException;
+
+    ObjectFactory getFactory() ;
+
+    void setFactory(ObjectFactory factory) ;
 
 }

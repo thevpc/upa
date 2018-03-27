@@ -34,11 +34,14 @@
  */
 package net.vpc.upa.bulk;
 
+import net.vpc.upa.ObjectFactory;
+
 /**
  *
  * @author taha.bensalah@gmail.com
  */
 public abstract class AbstractDataFormatter implements DataFormatter {
+    private ObjectFactory factory;
     private DataRowConverter dataRowConverter;
 
     public DataRowConverter getDataRowConverter() {
@@ -50,4 +53,13 @@ public abstract class AbstractDataFormatter implements DataFormatter {
         return this;
     }
 
+    @Override
+    public ObjectFactory getFactory() {
+        return factory;
+    }
+
+    @Override
+    public void setFactory(ObjectFactory factory) {
+        this.factory = factory;
+    }
 }

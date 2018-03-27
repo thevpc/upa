@@ -93,14 +93,14 @@ public class UpdateEvent extends EntityEvent {
         }
         PersistenceUnit pu = this.getPersistenceUnit();
         List old = pu.createQueryBuilder(entity.getName()).byExpression(expr).getIdList();
-        old.size();//force load!
+        int sise=old.size();//force load!
         this.getContext().setObject("updated_ids_" + entity.getName(), old);
     }
 
     public <T> List<T> loadUpdatedIds() {
-        List object = (List) this.getContext().getObject("updated_ids_" + this.getEntity().getName());
+        List<T> object = (List<T>) this.getContext().<List<T>>getObject("updated_ids_" + this.getEntity().getName());
         if (object == null) {
-            throw new IllegalArgumentException("storeUpdatedIds shoud be called in preUpdate");
+            throw new IllegalArgumentException("storeUpdatedIds should be called in preUpdate");
         }
         return object;
     }

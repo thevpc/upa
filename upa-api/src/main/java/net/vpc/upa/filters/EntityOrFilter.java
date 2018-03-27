@@ -49,7 +49,7 @@ public class EntityOrFilter extends AbstractRichEntityFilter {
     public EntityOrFilter() {
     }
 
-    public EntityOrFilter or(Entity filter) {
+    public RichEntityFilter or(Entity filter) {
         if (filter == null) {
             throw new NullPointerException();
         }

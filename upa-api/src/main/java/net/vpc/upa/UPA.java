@@ -76,8 +76,8 @@ public final class UPA {
     private static final int CONTEXT_INITIALIZED = 2;
     private static int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
 
-    private static final List<UPAContextConfig> configInstances = new ArrayList<>();
-    private static final List<Class> configClasses = new ArrayList<>();
+    private static final List<UPAContextConfig> configInstances = new ArrayList<UPAContextConfig>();
+    private static final List<Class> configClasses = new ArrayList<Class>();
 
     private UPA() {
     }

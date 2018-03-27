@@ -117,7 +117,7 @@ class BootstrapObjectFactoryLazyHolder {
                 found.get(0).setParentFactory(rootFactory);
             }
 
-            List<ObjectFactoryConfigurator> confs = new ArrayList<>();
+            List<ObjectFactoryConfigurator> confs = new ArrayList<ObjectFactoryConfigurator>();
             for (ObjectFactoryConfigurator objectFactoryConfigurator : objectFactoryConfServiceLoader) {
                 confs.add(objectFactoryConfigurator);
             }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersistenceContextInfo {
-    private List<PersistenceGroupInfo> groups=new ArrayList<>();
+    private List<PersistenceGroupInfo> groups=new ArrayList<PersistenceGroupInfo>();
 
     public List<PersistenceGroupInfo> getGroups() {
         return groups;

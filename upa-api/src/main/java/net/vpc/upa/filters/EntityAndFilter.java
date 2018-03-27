@@ -53,7 +53,7 @@ public class EntityAndFilter extends AbstractRichEntityFilter {
         this.list = new ArrayList<EntityFilter>(list);
     }
 
-    public EntityAndFilter and(EntityFilter filter) {
+    public RichEntityFilter and(EntityFilter filter) {
         if (filter == null) {
             throw new NullPointerException();
         }

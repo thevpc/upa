@@ -69,7 +69,7 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
 
     public DefaultEntityFilter setAcceptName(String name){
         if(acceptedNames==null){
-            acceptedNames=new HashSet<>();
+            acceptedNames=new HashSet<String>();
         }
         acceptedNames.add(name);
         return this;
@@ -84,7 +84,7 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
 
     public DefaultEntityFilter setRejectName(String name){
         if(rejectedNames==null){
-            rejectedNames=new HashSet<>();
+            rejectedNames=new HashSet<String>();
         }
         rejectedNames.add(name);
         return this;

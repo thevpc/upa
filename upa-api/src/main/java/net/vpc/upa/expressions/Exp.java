@@ -32,32 +32,65 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.vpc.upa.bulk;
-
-import net.vpc.upa.ObjectFactory;
+package net.vpc.upa.expressions;
 
 /**
- *
- * @author taha.bensalah@gmail.com
+ * Created by IntelliJ IDEA.
+ * User: root
+ * Date: 22 mai 2003
+ * Time: 12:21:56
+ * To change this template use Options | File Templates.
  */
-public abstract class AbstractDataParser implements DataParser {
+public class Exp extends FunctionExpression {
+    private static final long serialVersionUID = 1L;
+    private Expression expression;
 
-    private ObjectFactory factory;
-    private DataDeserializer dataDeserializer;
-
-    public DataDeserializer getDataDeserializer() {
-        return dataDeserializer;
+    public Exp(Expression[] expressions) {
+        checkArgCount(getName(), expressions, 1);
+        this.expression = expressions[0];
     }
 
-    public void setDataDeserializer(DataDeserializer dataDeserializer) {
-        this.dataDeserializer = dataDeserializer;
+    public Exp(Expression expression) {
+        this.expression = expression;
     }
 
-    public ObjectFactory getFactory() {
-        return factory;
+    @Override
+    public void setArgument(int index, Expression e) {
+        if (index == 0) {
+            this.expression = e;
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 
-    public void setFactory(ObjectFactory factory) {
-        this.factory = factory;
+    @Override
+    public Expression copy() {
+        Exp o = new Exp(expression.copy());
+        return o;
     }
+
+    @Override
+    public String getName() {
+        return "Exp";
+    }
+
+    @Override
+    public int getArgumentsCount() {
+        return 1;
+    }
+
+    public Expression getArgument() {
+        return expression;
+    }
+
+    @Override
+    public Expression getArgument(int index) {
+        switch (index) {
+            case 0:
+                return expression;
+        }
+        throw new ArrayIndexOutOfBoundsException();
+    }
+
+
 }
