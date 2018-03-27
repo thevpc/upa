@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="j2cs" />
         <module name="upa-android" />
         <module name="upa-api" />
         <module name="upa-impl" />
         <module name="upa-impl-core" />
+        <module name="upa-portable" />
         <module name="upa-test" />
         <module name="upa-tutorial-business" />
         <module name="upa-tutorial-dal" />
@@ -20,11 +22,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="j2cs" target="1.8" />
       <module name="upa" target="1.7" />
       <module name="upa-android" target="1.7" />
       <module name="upa-api" target="1.7" />
       <module name="upa-impl" target="1.7" />
       <module name="upa-impl-core" target="1.7" />
+      <module name="upa-portable" target="1.8" />
       <module name="upa-test" target="1.7" />
       <module name="upa-tutorial" target="1.7" />
       <module name="upa-tutorial-business" target="1.7" />

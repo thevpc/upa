@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../toolbox/j2cs/j2cs.iml" filepath="$PROJECT_DIR$/../toolbox/j2cs/j2cs.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa.iml" filepath="$PROJECT_DIR$/upa.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-android/upa-android.iml" filepath="$PROJECT_DIR$/upa-android/upa-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-api/upa-api.iml" filepath="$PROJECT_DIR$/upa-api/upa-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-impl/upa-impl.iml" filepath="$PROJECT_DIR$/upa-impl/upa-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" filepath="$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/upa-portable/upa-portable.iml" filepath="$PROJECT_DIR$/upa-portable/upa-portable.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-test/upa-test.iml" filepath="$PROJECT_DIR$/upa-test/upa-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial.iml" filepath="$PROJECT_DIR$/upa-tutorial/upa-tutorial.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-business/upa-tutorial-business.iml" filepath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-business/upa-tutorial-business.iml" />
