@@ -163,6 +163,10 @@ public class RootObjectFactory extends AbstractObjectFactory {
             }
             best = type;
         }
+        T s = (T)singletons.get(type.getName());
+        if(s!=null){
+            return s;
+        }
         try {
             return (T) PlatformUtils.newInstance(best);
         } catch (Exception e) {

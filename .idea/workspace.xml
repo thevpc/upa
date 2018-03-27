@@ -7,13 +7,27 @@
       <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.upa/.idea/modules.xml" />
       <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.upa/.idea/vcs.xml" />
       <change beforePath="" afterPath="$PROJECT_DIR$/.idea/.idea.upa/riderModule.iml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_3_8_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_derby_derby_10_13_1_1.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_0_4_RELEASE.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/exceptions/NoSuchPersistenceGroupException.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/pom.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersistenceUnitFactoryBean.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringObjectFactoryConfigurator.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceGroupProvider.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceUnitProvider.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF/services/net.vpc.upa.ObjectFactoryConfigurator" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/upa-spring.iml" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Net.Vpc.Upa.Api.csproj" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Net.Vpc.Upa.Api.csproj" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/AccessLevel.cs" afterPath="" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Action.cs" afterPath="" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapter.cs" afterPath="" />
@@ -621,7 +635,27 @@
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" />
-      <change beforePath="$PROJECT_DIR$/upa.sln" afterPath="$PROJECT_DIR$/upa.sln" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DefaultDecorationRepository.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DefaultDecorationRepository.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractUConnection.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractUConnection.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/xml/DefaultXmlDomElement.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/xml/DefaultXmlDomElement.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/App.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/App.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/LogUtils.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/LogUtils.java" />
     </list>
     <ignored path="$PROJECT_DIR$/upa-api/target/" />
     <ignored path="$PROJECT_DIR$/upa-test/target/" />
@@ -737,6 +771,7 @@
     <ignored path="runtime/upatutorialdb/README_DO_NOT_TOUCH_FILES.txt" />
     <ignored path="runtime/upatutorialdb/service.properties" />
     <ignored path="derby.log" />
+    <ignored path="$PROJECT_DIR$/upa-spring/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -761,108 +796,7 @@
     <option name="HIDE_WARNINGS" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TrackingFeature.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/TrackingFeature.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="24" column="13" lean-forward="false" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InvoiceMO.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProductMO.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/ProductMO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Category.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Category.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Config.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Config.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Customer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Customer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Invoice.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Invoice.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/App.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Blob.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/Blob.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LogUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/LogUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -874,22 +808,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>arrayDim</find>
-      <find>declaredMethods</find>
-      <find>voidt</find>
-      <find>setAll</find>
-      <find>other.toM</find>
-      <find>imports</find>
-      <find>getPackageName</find>
-      <find>knwo</find>
-      <find>knownClasses</find>
-      <find>getTypeNAme0</find>
-      <find>clsName</find>
-      <find>import</find>
-      <find>knownTypeName</find>
-      <find>currentClassName</find>
-      <find>Test known</find>
-      <find>&quot;.isAssignableFrom</find>
       <find>&quot;.getMethods</find>
       <find>LoadUpdatedIds</find>
       <find>&quot;Why&quot;</find>
@@ -904,6 +822,22 @@
       <find>specialized</find>
       <find>visit(field</find>
       <find>spc</find>
+      <find>Ignored ...</find>
+      <find>register Decoration</find>
+      <find>file:$PROJECT_DIR$/upa-impl/target/classes/</find>
+      <find>UPAContextRepo</find>
+      <find>executeNonQuery</find>
+      <find>activeConnections</find>
+      <find>-PURepo</find>
+      <find>&quot;NEXT&quot;</find>
+      <find>count</find>
+      <find>implements NativeStatement</find>
+      <find>Select  INVOICE.CREATION_DATE,INVOICE.CREATION_USER,INVOICE.MODIFICATION_DATE</find>
+      <find>executeQ</find>
+      <find>getPErsistenceUnit</find>
+      <find>createO</find>
+      <find>singletons</find>
+      <find>getSin</find>
     </findStrings>
     <replaceStrings>
       <replace>setProperty</replace>
@@ -934,37 +868,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/project/ItemFilterList.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/project/Project.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/project/Source.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/ProjectProcessor.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/MethodInfo.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/LibMethodInfo.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/SourceMethodInfo.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/test/java/net/vpc/TestTypes.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/converters/ConvertManager.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/DeclarationContext.java" />
-        <option value="$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqliteConnection.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Properties.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/BootstrapProperties.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/util/VisitorHelper.java" />
-        <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/SourceTypeInfo.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/AbstractRichEntityFilter.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityAndFilter.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityOrFilter.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityReverseFilter.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateEvent.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldAndFilter.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeResult.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/Blob.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultBlob.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/Clob.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultClob.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/CharRefArrayToClobMarshaller.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/ByteArrayToBlobMarshaller.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/CharArrayToClobMarshaller.java" />
         <option value="$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/SimpleNativeResult.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeStatement.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/JdbcNativeResult.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PreparedSQLUQLStatement.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/ByteRefArrayToBlobMarshaller.java" />
@@ -985,6 +890,35 @@
         <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/CSharpVisitor.java" />
         <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/TypeManager.java" />
         <option value="$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/converters/MethodConverter.java" />
+        <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/Toto.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/Blob.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/xml/DefaultXmlDomElement.java" />
+        <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/LogUtils.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractUConnection.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" />
+        <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeStatement.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersitenceUnitFactoryBean.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/test/java/PersistenceUnitFactoryBeanTest.java" />
+        <option value="$PROJECT_DIR$/upa-spring/pom.xml" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF/services/net.vpc.upa.ObjectFactoryConfigurator" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceGroupProvider.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceUnitProvider.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/exceptions/NoSuchPersistenceGroupException.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringObjectFactoryConfigurator.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersistenceUnitFactoryBean.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java" />
       </list>
     </option>
   </component>
@@ -1027,9 +961,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="423" />
-    <option name="width" value="1218" />
-    <option name="height" value="677" />
+    <option name="x" value="326" />
+    <option name="y" value="172" />
+    <option name="width" value="1254" />
+    <option name="height" value="688" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -1047,181 +982,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-api" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="types" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="tutorial" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-tutorial-desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="tutorial" type="462c0819:PsiDirectoryNode" />
-              <item name="desktop" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -1272,14 +1032,26 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
+              <item name="upa" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/upa-portable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../work/entities/waycon/dev/central-stamp" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -1293,14 +1065,18 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="net.vpc.upa" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="net.vpc.upa.exceptions" />
+      <recent name="net.vpc.upa" />
       <recent name="net.vpc.upa.impl.persistence" />
       <recent name="net.vpc.upa.types" />
       <recent name="net.vpc.j2cs.project" />
-      <recent name="net.vpc.upa.impl.util.xml" />
-      <recent name="net.vpc.upa.impl.uql.compiler" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="net.vpc.upa" />
       <recent name="net.vpc.upa.tutorial.mo" />
     </key>
   </component>
@@ -1316,7 +1092,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.PersistenceUnitFactoryBeanTest">
     <configuration default="true" type="Applet" factoryName="Applet">
       <module />
       <option name="HTML_USED" value="false" />
@@ -1341,6 +1117,20 @@
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="upa-tutorial-desktop" />
+      <envs />
+    </configuration>
+    <configuration name="PersistenceUnitFactoryBeanTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="net.vpc.upa.spring.test.PersistenceUnitFactoryBeanTest" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="upa-spring" />
       <envs />
     </configuration>
     <configuration name="UPAConverterMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -1486,18 +1276,20 @@
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="JUnit.TestGrammar.testGrammar" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.TestGrammar" />
       <item index="2" class="java.lang.String" itemvalue="Application.App" />
       <item index="3" class="java.lang.String" itemvalue="Application.UPAConverterMain" />
+      <item index="4" class="java.lang.String" itemvalue="Application.PersistenceUnitFactoryBeanTest" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Application.App" />
-        <item index="1" class="java.lang.String" itemvalue="Application.UPAConverterMain" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.TestGrammar.testGrammar" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.TestGrammar" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Application.PersistenceUnitFactoryBeanTest" />
+        <item index="1" class="java.lang.String" itemvalue="Application.App" />
+        <item index="2" class="java.lang.String" itemvalue="Application.UPAConverterMain" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TestGrammar.testGrammar" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.TestGrammar" />
       </list>
     </recent_temporary>
   </component>
@@ -1532,7 +1324,8 @@
       <workItem from="1521971249743" duration="45788000" />
       <workItem from="1522057328842" duration="1861000" />
       <workItem from="1522092173790" duration="598000" />
-      <workItem from="1522146311038" duration="1557000" />
+      <workItem from="1522146311038" duration="3675000" />
+      <workItem from="1522155647547" duration="12037000" />
     </task>
     <task id="LOCAL-00001" summary="version 1.2.0.44 :&#10;+ minor bug fixes (fixed 'If' function in UQL)&#10;+ added android project : upa-impl splitted to upa-core (platform independent) and upa-impl (java/cs-desktop) and upa-android&#10;+ added support for using Enum literal in UQL (example : &quot;where x.myEnumField='MY_CONST'&quot;&#10;+ added support for using Date literal in UQL (example : &quot;where x.myDateField='2012-12-13&quot;&#10;+ added support for NamedFormula as a plain method">
       <created>1521799205715</created>
@@ -1555,7 +1348,14 @@
       <option name="project" value="LOCAL" />
       <updated>1522149794447</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="+Extracted Blob and Clob interfaces&#10;+Moved xls support to upa-impl&#10;+Extracted Xml Parse (Platform Independent) interface&#10;+Extracted upa-core project (platform independent) that should work on android, java an c#">
+      <created>1522149828054</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1522149828054</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1579,7 +1379,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140723000" />
+    <option name="totallyTimeSpent" value="154878000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1595,37 +1395,38 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08736842" sideWeight="0.5064034" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23745997" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20277481" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20704375" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.07203842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5415755" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3358862" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6498906" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3916849" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22251868" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22785486" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41356674" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12379936" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34135666" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1807,11 +1608,29 @@
           <properties />
           <option name="timeStamp" value="204" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/navigator/DefaultEntityNavigator.java</url>
+          <line>44</line>
+          <properties />
+          <option name="timeStamp" value="208" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/TableSequenceIdentityPersister.java</url>
+          <line>79</line>
+          <properties />
+          <option name="timeStamp" value="217" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java</url>
+          <line>108</line>
+          <properties />
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="205" />
+      <option name="time" value="223" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1870,6 +1689,21 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
+        <expression-string>s.toString()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>s.getName()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, document))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
         <expression-string>((w0[i].specialize(s)))</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -1899,484 +1733,485 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>detectVarTypeDown(vn, method.getParameters()[i].getType(), argTypes[i] == null ? null : argTypes[i].getTypeName())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>getTypeManager().specializeWhenNeeded(method, null
-//                    , methodActualTypes.getArgumentTypes()
-                    , argsTypes
-                    , methodActualTypes.getReturnType())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>getTypeManager().getType(args.get(i),declarationContext)</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PreparedSQLUQLStatement.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractUConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/ByteRefArrayToBlobMarshaller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/marshallers/DefaultSerializablePlatformObjectMarshaller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="73" column="42" lean-forward="false" selection-start-line="73" selection-start-column="42" selection-end-line="73" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/oracle/OracleSerializablePlatformObjectMarshaller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="56" column="38" lean-forward="false" selection-start-line="56" selection-start-column="38" selection-end-line="56" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/JdbcNativeResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="405" column="42" lean-forward="false" selection-start-line="405" selection-start-column="42" selection-end-line="405" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultBlob.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="11" column="36" lean-forward="false" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqliteNativeResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqliteNativeStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="32" column="9" lean-forward="false" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/model/CsTypeDeclaration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="29" column="46" lean-forward="false" selection-start-line="29" selection-start-column="46" selection-end-line="29" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/model/CsTypeMemberDeclaration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/model/CsMethodInfoDeclaration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/FieldDesc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/CompoundDataType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/DatePeriodType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-212">
-          <caret line="101" column="29" lean-forward="false" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-portable/src/main/java/net/vpc/upa/upaportable/UPAConverterMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="21" column="31" lean-forward="false" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/parser/ast/body/VariableDeclarator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="74" column="0" lean-forward="false" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/parser/ast/expr/MethodCallExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/MethodInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="17" column="28" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/SpecializedTypeInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="79" column="28" lean-forward="false" selection-start-line="79" selection-start-column="28" selection-end-line="79" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/parser/ast/expr/Expression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="32" column="22" lean-forward="false" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/SourceMethodInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="354" column="0" lean-forward="false" selection-start-line="354" selection-start-column="0" selection-end-line="354" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/java/jdk-9.0.4/lib/src.zip!/java.base/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///usr/java/jdk-9.0.4/lib/src.zip!/java.base/java/util/Arrays.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="3689" column="0" lean-forward="true" selection-start-line="3686" selection-start-column="0" selection-end-line="3689" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/util/J2CSUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="28" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="28" />
+        <state relative-caret-position="261">
+          <caret line="61" column="13" lean-forward="false" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="e#1592#1605#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/ClassTypeName.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/classpath/DecorationParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
-          <folding>
-            <element signature="e#1107#1108#0" expanded="true" />
-            <element signature="e#1184#1185#0" expanded="true" />
-            <element signature="e#1246#1247#0" expanded="true" />
-            <element signature="e#1295#1296#0" expanded="true" />
-            <element signature="e#1336#1337#0" expanded="true" />
-            <element signature="e#1371#1372#0" expanded="true" />
-            <element signature="e#1408#1409#0" expanded="true" />
-            <element signature="e#1491#1492#0" expanded="true" />
-            <element signature="e#1528#1529#0" expanded="true" />
-            <element signature="e#1623#1624#0" expanded="true" />
-            <element signature="e#1662#1663#0" expanded="true" />
-            <element signature="e#1735#1736#0" expanded="true" />
-            <element signature="e#6989#6990#0" expanded="true" />
-            <element signature="e#7019#7020#0" expanded="true" />
-            <element signature="e#7057#7058#0" expanded="true" />
-            <element signature="e#7102#7103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/MethodActualTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/CSharpVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34901">
-          <caret line="2088" column="0" lean-forward="false" selection-start-line="2088" selection-start-column="0" selection-end-line="2088" selection-end-column="0" />
-          <folding>
-            <element signature="e#3636#3637#0" expanded="false" />
-            <element signature="e#3670#3671#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/TypeName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="e#1020#1021#0" expanded="false" />
-            <element signature="e#1335#1336#0" expanded="false" />
-            <element signature="e#1392#1393#0" expanded="false" />
-            <element signature="e#1429#1430#0" expanded="false" />
-            <element signature="e#1486#1487#0" expanded="false" />
-            <element signature="e#1525#1526#0" expanded="false" />
-            <element signature="e#1582#1583#0" expanded="false" />
-            <element signature="e#1624#1625#0" expanded="false" />
-            <element signature="e#1681#1682#0" expanded="false" />
-            <element signature="e#8566#8567#0" expanded="false" />
-            <element signature="e#8593#8594#0" expanded="false" />
-            <element signature="e#11982#11983#0" expanded="false" />
-            <element signature="e#12010#12011#0" expanded="false" />
-            <element signature="e#12709#12710#0" expanded="false" />
-            <element signature="e#12766#12767#0" expanded="false" />
-            <element signature="e#12832#12833#0" expanded="false" />
-            <element signature="e#12889#12890#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/TypeInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2363">
-          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
-          <folding>
-            <element signature="e#1361#1362#0" expanded="false" />
-            <element signature="e#1395#1396#0" expanded="false" />
-            <element signature="e#4776#4777#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/ParamInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="29" lean-forward="false" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/AbstractMethodInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2601">
-          <caret line="155" column="0" lean-forward="false" selection-start-line="155" selection-start-column="0" selection-end-line="155" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/SpecializedMethodInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="148" column="13" lean-forward="false" selection-start-line="148" selection-start-column="13" selection-end-line="148" selection-end-column="13" />
-          <folding>
-            <element signature="e#1057#1058#0" expanded="false" />
-            <element signature="e#1105#1106#0" expanded="false" />
-            <element signature="e#1147#1148#0" expanded="false" />
-            <element signature="e#1183#1184#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/DefTypeName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7021">
-          <caret line="423" column="0" lean-forward="false" selection-start-line="423" selection-start-column="0" selection-end-line="423" selection-end-column="0" />
-          <folding>
-            <element signature="e#14214#14215#0" expanded="false" />
-            <element signature="e#14241#14242#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/model/VarTypeName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2346">
-          <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#585#586#0" expanded="false" />
-            <element signature="e#656#657#0" expanded="false" />
-            <element signature="e#3401#3402#0" expanded="false" />
-            <element signature="e#3476#3477#0" expanded="false" />
-            <element signature="e#3516#3517#0" expanded="false" />
-            <element signature="e#3603#3604#0" expanded="false" />
-            <element signature="e#3645#3646#0" expanded="false" />
-            <element signature="e#3716#3717#0" expanded="false" />
-            <element signature="e#4273#4274#0" expanded="false" />
-            <element signature="e#4306#4307#0" expanded="false" />
-            <element signature="e#4467#4468#0" expanded="false" />
-            <element signature="e#4500#4501#0" expanded="false" />
-            <element signature="e#4561#4562#0" expanded="false" />
-            <element signature="e#4594#4595#0" expanded="false" />
-            <element signature="e#5295#5296#0" expanded="false" />
-            <element signature="e#5597#5598#0" expanded="false" />
-            <element signature="e#5654#5655#0" expanded="false" />
-            <element signature="e#5688#5689#0" expanded="false" />
-            <element signature="e#5715#5716#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/TypeManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46240">
-          <caret line="2790" column="29" lean-forward="false" selection-start-line="2790" selection-start-column="29" selection-end-line="2790" selection-end-column="29" />
-          <folding>
-            <element signature="e#144386#144387#0" expanded="false" />
-            <element signature="e#144422#144423#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../toolbox/j2cs/src/main/java/net/vpc/j2cs/csharp/converters/MethodConverter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="163" column="17" lean-forward="false" selection-start-line="163" selection-start-column="17" selection-end-line="163" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/MultiTenantFeature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/MyIntrospector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/NamingStrategyFeature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/TotalIncludingTaxExpFormula.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/TrackingFeature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="24" column="13" lean-forward="false" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/ProductMO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Category.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="122">
+          <caret line="29" column="40" lean-forward="false" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Customer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="229">
+          <caret line="23" column="44" lean-forward="false" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Invoice.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/navigator/DefaultEntityNavigator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="159">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/LogUtils.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        <state relative-caret-position="161">
+          <caret line="1978" column="0" lean-forward="false" selection-start-line="1978" selection-start-column="0" selection-end-line="1978" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/cglib/cglib/2.2.2/cglib-2.2.2.jar!/net/sf/cglib/proxy/MethodProxy.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="104" column="0" lean-forward="false" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/util/cglib/PlatformMethodProxyEventCGLibJava.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/MakeSessionAwareMethodInterceptorAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/MakeSessionAwareMethodInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/util/cglib/PlatformTypeProxyJavaCGLib.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="39" />
+        <state relative-caret-position="279">
+          <caret line="55" column="0" lean-forward="false" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#366#367#0" expanded="false" />
+            <element signature="e#419#420#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="39" column="36" lean-forward="false" selection-start-line="39" selection-start-column="36" selection-end-line="39" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/Blob.java">
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+        <state relative-caret-position="-170">
+          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqliteNativeStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="24" column="63" lean-forward="false" selection-start-line="24" selection-start-column="63" selection-end-line="24" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="16" column="32" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultUConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding>
+            <element signature="e#2703#2918#0" expanded="false" />
+            <element signature="e#2917#2918#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="2530" column="0" lean-forward="false" selection-start-line="2530" selection-start-column="0" selection-end-line="2530" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PreparedSQLUQLStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="19" lean-forward="false" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-business/src/main/java/net/vpc/upa/tutorial/business/InvoiceModule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding>
+            <element signature="e#786#787#0" expanded="false" />
+            <element signature="e#850#851#0" expanded="false" />
+            <element signature="e#1442#1443#0" expanded="false" />
+            <element signature="e#1497#1498#0" expanded="false" />
+            <element signature="e#1626#1627#0" expanded="false" />
+            <element signature="e#1680#1681#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="74" column="5" lean-forward="false" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/StringUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="776" column="0" lean-forward="false" selection-start-line="776" selection-start-column="0" selection-end-line="776" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/TableSequenceIdentityPersisterString.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/SequencePatternEvaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/TableSequenceIdentityPersisterInt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/TableSequenceIdentityPersister.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding>
+            <element signature="e#1593#1594#0" expanded="false" />
+            <element signature="e#1628#1629#0" expanded="false" />
+            <element signature="e#1666#1667#0" expanded="false" />
+            <element signature="e#1703#1704#0" expanded="false" />
+            <element signature="e#1736#1737#0" expanded="false" />
+            <element signature="e#1765#1766#0" expanded="false" />
+            <element signature="e#1856#1857#0" expanded="false" />
+            <element signature="e#1883#1884#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="125" column="33" lean-forward="false" selection-start-line="125" selection-start-column="33" selection-end-line="125" selection-end-column="33" />
+          <folding>
+            <element signature="e#5291#5308#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="33" column="21" lean-forward="false" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/resources/META-INF/services/net.vpc.upa.ObjectFactoryConfigurator">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnitProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="40" column="29" lean-forward="false" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="159" column="67" lean-forward="false" selection-start-line="159" selection-start-column="45" selection-end-line="159" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="61" column="20" lean-forward="false" selection-start-line="61" selection-start-column="20" selection-end-line="61" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-web/src/main/java/net/vpc/upa/web/WebSessionPersistenceUnitProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="19" column="87" lean-forward="false" selection-start-line="19" selection-start-column="68" selection-end-line="19" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-web/src/main/java/net/vpc/upa/web/WebPersistenceGroupProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="51" lean-forward="false" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPA.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="107" column="36" lean-forward="false" selection-start-line="107" selection-start-column="36" selection-end-line="107" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/exceptions/NoSuchPersistenceUnitException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="41" column="13" lean-forward="false" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/exceptions/NoSuchPersistenceGroupException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="49" column="51" lean-forward="false" selection-start-line="49" selection-start-column="51" selection-end-line="49" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#862#863#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+            <element signature="e#1081#1082#0" expanded="true" />
+            <element signature="e#1148#1149#0" expanded="true" />
+            <element signature="e#1232#1233#0" expanded="true" />
+            <element signature="e#1298#1299#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceUnitProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceGroupProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="79" lean-forward="false" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="79" />
+          <folding>
+            <element signature="e#234#235#0" expanded="true" />
+            <element signature="e#261#262#0" expanded="true" />
+            <element signature="e#330#331#0" expanded="true" />
+            <element signature="e#362#363#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringObjectFactoryConfigurator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="417" column="16" lean-forward="false" selection-start-line="417" selection-start-column="16" selection-end-line="417" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="114" column="9" lean-forward="false" selection-start-line="114" selection-start-column="9" selection-end-line="114" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="57" column="42" lean-forward="true" selection-start-line="57" selection-start-column="42" selection-end-line="57" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultUPAContextFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersistenceUnitFactoryBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="7" column="114" lean-forward="false" selection-start-line="7" selection-start-column="114" selection-end-line="7" selection-end-column="114" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#654#655#0" expanded="true" />
+            <element signature="e#696#697#0" expanded="true" />
+            <element signature="e#766#767#0" expanded="true" />
+            <element signature="e#828#829#0" expanded="true" />
+            <element signature="e#881#882#0" expanded="true" />
+            <element signature="e#920#921#0" expanded="true" />
+            <element signature="e#994#995#0" expanded="true" />
+            <element signature="e#1050#1051#0" expanded="true" />
+            <element signature="e#1097#1098#0" expanded="true" />
+            <element signature="e#1140#1141#0" expanded="true" />
+            <element signature="e#1343#1344#0" expanded="true" />
+            <element signature="e#1389#1390#0" expanded="true" />
+            <element signature="e#1623#1624#0" expanded="true" />
+            <element signature="e#1670#1671#0" expanded="true" />
+            <element signature="e#2067#2068#0" expanded="true" />
+            <element signature="e#2111#2112#0" expanded="true" />
+            <element signature="e#2161#2162#0" expanded="true" />
+            <element signature="e#2189#2190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="72" column="22" lean-forward="false" selection-start-line="72" selection-start-column="22" selection-end-line="72" selection-end-column="22" />
+          <folding>
+            <element signature="e#682#698#0" expanded="true" />
+            <element signature="e#2119#2120#0" expanded="true" />
+            <element signature="e#2166#2167#0" expanded="true" />
+            <element signature="e#3111#3112#0" expanded="true" />
+            <element signature="e#3170#3171#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="43" column="10" lean-forward="false" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="168" column="9" lean-forward="true" selection-start-line="165" selection-start-column="8" selection-end-line="168" selection-end-column="9" />
+          <folding>
+            <element signature="e#2794#2801#0" expanded="true" />
+            <element signature="e#9069#9070#0" expanded="true" />
+            <element signature="e#9093#9094#0" expanded="true" />
+            <element signature="e#9155#9156#0" expanded="true" />
+            <element signature="e#9202#9203#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionStatus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="40" column="12" lean-forward="false" selection-start-line="40" selection-start-column="12" selection-end-line="40" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Transaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="48" column="38" lean-forward="true" selection-start-line="48" selection-start-column="38" selection-end-line="48" selection-end-column="38" />
           <folding />
         </state>
       </provider>

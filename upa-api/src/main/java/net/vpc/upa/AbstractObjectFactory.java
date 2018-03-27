@@ -22,7 +22,7 @@ public abstract class AbstractObjectFactory implements ObjectFactory {
 
     private static Logger log = Logger.getLogger(AbstractObjectFactory.class.getName());
 
-    private final HashMap<String, Object> singletons = new HashMap<String, Object>();
+    protected final HashMap<String, Object> singletons = new HashMap<String, Object>();
     private final Map<Class, Set> alternatives = new HashMap<Class, Set>();
 
     @Override
@@ -103,4 +103,8 @@ public abstract class AbstractObjectFactory implements ObjectFactory {
         found.add(impl);
     }
 
+    @Override
+    public void register(Class contract, Object instance) {
+        singletons.put(contract.getName(),instance);
+    }
 }

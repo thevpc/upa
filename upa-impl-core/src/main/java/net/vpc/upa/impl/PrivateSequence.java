@@ -93,4 +93,17 @@ public class PrivateSequence {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "PrivateSequence{" +
+                "name='" + name + '\'' +
+                ", group='" + group + '\'' +
+                ", locked=" + locked +
+                ", lockDate=" + lockDate +
+                ", lockUserId='" + lockUserId + '\'' +
+                ", value=" + value +
+                ", increment=" + increment +
+                '}';
+    }
 }

@@ -10,6 +10,7 @@ import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.InvocationException;
+import net.vpc.upa.exceptions.NoSuchPersistenceGroupException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.DefaultUPAContextFactory;
@@ -48,12 +49,12 @@ public class DefaultUPAContext implements UPAContext {
     private final LinkedHashMap<String, PersistenceGroup> persistenceGroups = new LinkedHashMap<String, PersistenceGroup>();
     private final List<ScanFilter> filters = new ArrayList<ScanFilter>();
     private final List<CloseListener> closeListeners = new ArrayList<CloseListener>();
-    private final DecorationRepository decorationRepository = new DefaultDecorationRepository("UPAContextRepo", true);
+    private final DecorationRepository decorationRepository = new DefaultDecorationRepository("DecoRepo[boot]", true);
     private ObjectFactory bootstrapObjectFactory;
     private UPAContextFactory objectFactory;
     private PersistenceGroupProvider persistenceGroupProvider;
     private Map<String, Object> properties = new HashMap<String, Object>();
-    private UPAContextConfig bootstratContextConfig;
+    private UPAContextConfig bootstrapContextConfig;
     private InvokeContext emptyInvokeContext = new InvokeContext();
     private UPAContextListenerManager listeners;
     private ThreadLocal<Properties> threadProperties = new ThreadLocal<Properties>();
@@ -76,13 +77,13 @@ public class DefaultUPAContext implements UPAContext {
 
     @Override
     public UPAContextConfig getBootstrapContextConfig() {
-        if (bootstratContextConfig == null) {
+        if (bootstrapContextConfig == null) {
             DefaultVarContext context = new DefaultVarContext(System.getProperties());
             DefaultUPAContextLoader object = new DefaultUPAContextLoader(context);
             UPAContextConfig contextConfig = object.parse();
-            bootstratContextConfig = contextConfig;
+            bootstrapContextConfig = contextConfig;
         }
-        return bootstratContextConfig;
+        return bootstrapContextConfig;
     }
 
     @Override
@@ -192,7 +193,7 @@ public class DefaultUPAContext implements UPAContext {
             name = "";
         }
         if (!persistenceGroups.containsKey(name)) {
-            throw new UPAIllegalArgumentException("PersistenceGroup " + name + " does not exist");
+            throw new NoSuchPersistenceGroupException(name);
         }
         return persistenceGroups.get(name);
     }

@@ -136,7 +136,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             initCalled = true;
         }
         this.name = name;
-        this.decorationRepository = new DefaultDecorationRepository(name + "-PURepo", true);
+        this.decorationRepository = new DefaultDecorationRepository("DecoRepo[pu="+getAbsoluteName()+"]", true);
         this.persistenceGroup = persistenceGroup;
         this.persistenceStore = null;
         this.namingStrategy = CASE_INSENSITIVE_COMPARATOR;
@@ -384,7 +384,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public String getAbsoluteName() {
         PersistenceGroup g = getPersistenceGroup();
-        return StringUtils.trim(g == null ? null : g.getName()) + "/" + StringUtils.trim(name);
+        return StringUtils.trim(g == null ? "" : g.getName()) + "." + StringUtils.trim(name);
     }
 
     //    public boolean isSynchroneMode() {
@@ -552,7 +552,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //    }
     @Override
     public void scan(ScanSource source, ScanListener listener, boolean configure) throws UPAException {
-        log.log(Level.FINE, "{0} : Configuring PersistenceUnit from {1}", new Object[]{getAbsoluteName(), source});
+        log.log(Level.FINE, "[{0}] : Configuring PersistenceUnit from {1}", new Object[]{getAbsoluteName(), source});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
         s.scan(this, source, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
     }
@@ -568,7 +568,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             } else {
                 sourceLog = source.toString();
             }
-            log.log(Level.FINE, "{0} : Define Entity {1}", new Object[]{getAbsoluteName(), sourceLog});
+            log.log(Level.FINE, "[{0}] : Define Entity {1}", new Object[]{getAbsoluteName(), sourceLog});
         }
         EntityDescriptor desc = entityDescriptorResolver.resolve(source);
 
@@ -2429,7 +2429,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public String toString() {
-        return persistenceGroup + "." + name;
+        return getAbsoluteName();
     }
 
     public boolean isClosed() {

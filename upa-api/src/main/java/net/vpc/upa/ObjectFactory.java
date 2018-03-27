@@ -56,5 +56,8 @@ public interface ObjectFactory {
     <T> Class[] getAlternatives(Class<T> type);
 
     <T> void addAlternative(Class<T> type, Class<? extends T> impl);
-    void register(Class contract, Class impl) ;
+
+    void register(Class contract, Class impl);
+
+    void register(Class contract, Object instance);
 }

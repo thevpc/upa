@@ -75,8 +75,10 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
         reconfigureStore(connection);
         return connection;
     }
+    
     public UConnection createConnection(ConnectionProfile connectionProfile) throws UPAException {
         Connection nativeConnection = createNativeConnection(connectionProfile);
+        knownCreatedStores.add(connectionProfile.toString());
         log.log(Level.FINE, "Connection Created {0}", nativeConnection);
         final Map<String, Object> customAttributes = new HashMap<String, Object>();
         UConnection connection = wrapConnection(nativeConnection);

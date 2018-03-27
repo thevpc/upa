@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/upa-impl/upa-impl.iml" filepath="$PROJECT_DIR$/upa-impl/upa-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" filepath="$PROJECT_DIR$/upa-impl-core/upa-impl-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-portable/upa-portable.iml" filepath="$PROJECT_DIR$/upa-portable/upa-portable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/upa-spring/upa-spring.iml" filepath="$PROJECT_DIR$/upa-spring/upa-spring.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-test/upa-test.iml" filepath="$PROJECT_DIR$/upa-test/upa-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial.iml" filepath="$PROJECT_DIR$/upa-tutorial/upa-tutorial.iml" />
       <module fileurl="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-business/upa-tutorial-business.iml" filepath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-business/upa-tutorial-business.iml" />

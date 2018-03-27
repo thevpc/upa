@@ -259,7 +259,7 @@ public class UQLUtils {
             }
             return s2;
         }else if(slower.equals("update")) {
-            String s2 = StringUtils.extractWordAfter("table", q2, 0, true);
+            String s2 = StringUtils.extractWordAfter("update", q2, 0, true);
             if(s2==null){
                 s2="";
             }

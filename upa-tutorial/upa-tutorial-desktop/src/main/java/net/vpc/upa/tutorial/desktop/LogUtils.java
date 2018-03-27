@@ -13,9 +13,9 @@ public class LogUtils {
     public static boolean logEnabled=true;
     static{
         java.util.logging.Logger rootLogger = java.util.logging.Logger.getLogger("");
-        rootLogger.setLevel(Level.FINEST);
+        rootLogger.setLevel(Level.FINER);
         for (Handler handler : rootLogger.getHandlers()) {
-            handler.setLevel(Level.FINEST);
+            handler.setLevel(Level.FINER);
             handler.setFormatter(new LogFormatter());
             handler.setFilter(new Filter() {
                 @Override

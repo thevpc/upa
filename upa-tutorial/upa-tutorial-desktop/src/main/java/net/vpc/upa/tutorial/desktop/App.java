@@ -3,6 +3,7 @@ package net.vpc.upa.tutorial.desktop;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import net.vpc.upa.UPA;
 import net.vpc.upa.tutorial.business.InvoiceModule;
 import net.vpc.upa.tutorial.model.*;
 
@@ -17,6 +18,10 @@ public class App {
     }
 
     public static void main(String[] args) {
+        UPA.makeSessionAware(new App()).run();
+    }
+    
+    public void run() {
 //        Entity<Integer, Customer> e = UPA.getPersistenceUnit().getEntity(Customer.class);
 //        for (Field field : e.getFields()) {
 //            System.out.println(field + " : " + field.getEffectiveModifiers());

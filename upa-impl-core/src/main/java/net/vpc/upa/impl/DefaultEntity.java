@@ -3271,15 +3271,21 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     long documentsCount = getEntityCount(expr);
                     doValidation = documentsCount > 0;
                 }
-            } else {// if KeyExpression dont call getEntityCount(expr)
-                //Boolean b = expr == null ? Boolean.valueOf((!isEmpty())) : (Boolean) expr.getClientProperty(EXPRESSION_SURELY_EXISTS);
-                Boolean b = Boolean.valueOf((!isEmpty()));
-                // doValidation = b != null ? b.booleanValue() : (expr
-                // instanceof KeyExpression || (expr instanceof
-                // KeyCollectionExpression &&
-                // ((KeyCollectionExpression)expr).size()>0) ||
-                // (getEntityCount(expr) > 0)) ;
-                doValidation = b != null ? b : ((getEntityCount(expr) > 0));
+            } else {
+                if(expr instanceof IdExpression){
+                    //most likely to be an update so, gor foreword and run validation
+                    doValidation=true;
+                }else {
+                    // if KeyExpression dont call getEntityCount(expr)
+                    //Boolean b = expr == null ? Boolean.valueOf((!isEmpty())) : (Boolean) expr.getClientProperty(EXPRESSION_SURELY_EXISTS);
+                    Boolean b = Boolean.valueOf((!isEmpty()));
+                    // doValidation = b != null ? b.booleanValue() : (expr
+                    // instanceof KeyExpression || (expr instanceof
+                    // KeyCollectionExpression &&
+                    // ((KeyCollectionExpression)expr).size()>0) ||
+                    // (getEntityCount(expr) > 0)) ;
+                    doValidation = b != null ? b : ((getEntityCount(expr) > 0));
+                }
             }
             long count = 0;
             if (doValidation) {

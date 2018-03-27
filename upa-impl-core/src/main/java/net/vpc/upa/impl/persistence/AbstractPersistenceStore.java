@@ -73,6 +73,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     private ConnectionProfile connectionProfile;
     protected DatabaseProduct databaseProduct;
 
+    //should use a max sized accessibleStores for cache!
+    protected Set<String> knownCreatedStores = new HashSet<>();
+
     //    protected static Hashtable litteralConverters=new Hashtable();
 //    protected static LitteralConverter nullLitteralConverter;
 //    static final public FunctionHandler DEFAULT_HANDLER=new FunctionHandler() {
@@ -101,6 +104,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public AbstractPersistenceStore() {
 
     }
+
     public AbstractPersistenceStore(DatabaseProduct databaseProduct) {
         this.databaseProduct = databaseProduct;
     }
@@ -128,7 +132,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         commitManager.init(this);
     }
 
-    public void configureStore(){
+    public void configureStore() {
         net.vpc.upa.Properties map = getStoreParameters();
         map.setBoolean("isComplexSelectSupported", false);
         map.setBoolean("isUpdateComplexValuesStatementSupported", false);
@@ -332,6 +336,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public boolean isCreatedStorage() throws UPAException {
+        if (knownCreatedStores.contains(connectionProfile.toString())) {
+            return true;
+        }
         UConnection c = null;
         try {
             try {
@@ -395,7 +402,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 //        }
 //    }
     public UConnection wrapConnection(Connection connection) throws UPAException {
-        if(persistenceUnit==null){
+        if (persistenceUnit == null) {
             //this most likely in PU.start() -> checkAccessible, when PU is not yer initialized!
             return new DefaultUConnection("<undefined>", connection, getMarshallManager(), new DefaultProperties());
         }
@@ -1352,7 +1359,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) throws UPAException {
-        return getPersistenceState(object, spec, entityExecutionContext, (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection());
+        return getPersistenceState(object, spec, entityExecutionContext, (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection());
     }
 
     private PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
@@ -1529,7 +1536,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
          * @PortabilityHint(target = "C#", name = "todo")
          */
         {
-            DatabaseMetaData m = ((Connection)connection.getMetadataAccessibleConnection()).getMetaData();
+            DatabaseMetaData m = ((Connection) connection.getMetadataAccessibleConnection()).getMetaData();
             if (m.storesMixedCaseIdentifiers()) {
                 return IdentifierStoreTranslators.MIXED;
             }
@@ -1559,7 +1566,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
              * (found.Rows.Count != 0); }
              */
             try {
-                Connection connection = (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 //connection.getMetaData().storesLowerCaseIdentifiers();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
@@ -1600,7 +1607,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
              * (found.Rows.Count != 0); }
              */
             try {
-                Connection connection = (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
@@ -1637,7 +1644,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
              * return (found.Rows.Count != 0); }
              */
             try {
-                Connection connection = (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getPrimaryKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
@@ -1679,7 +1686,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
              * (found.Rows.Count != 0); }
              */
             try {
-                Connection connection = (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getImportedKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
@@ -1767,6 +1774,5 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         }
     }
 
-
-    protected abstract UConnection createConnection(ConnectionProfile profile) ;
+    protected abstract UConnection createConnection(ConnectionProfile profile);
 }

@@ -17,6 +17,7 @@
         <module>upa-test</module>
         <module>upa-tutorial</module>
         <module>upa-vfs</module>
+        <module>upa-spring</module>
     </modules>
     <url>https://github.com/thevpc/upa/wiki</url>
 

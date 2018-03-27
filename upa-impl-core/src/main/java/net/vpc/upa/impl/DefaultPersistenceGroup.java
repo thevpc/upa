@@ -95,7 +95,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     }
     @Override
     public void scan(ScanSource scanSource, ScanListener listener, boolean configure) throws UPAException {
-        decorationRepository = new DefaultDecorationRepository(getName() + "-PGRepo", true);
+        decorationRepository = new DefaultDecorationRepository("DecoRepo[pg="+getName()+"]", true);
         log.log(Level.FINE, "\"{0}\" : Configuring PersistenceGroup from {1}", new Object[]{getName(), scanSource});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
         s.scan(this, scanSource, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);

@@ -51,7 +51,7 @@ public abstract class AbstractUConnection implements UConnection {
         synchronized (activeConnections) {
             activeConnections.add(this);
             activeConnectionsMaxCount = Math.max(activeConnectionsMaxCount, activeConnections.size());
-            log.log(Level.FINE, "activeConnections " + activeConnections.size() + "/" + activeConnectionsMaxCount);
+            log.log(Level.FINE, "Active Connections " + activeConnections.size() + "/" + activeConnectionsMaxCount);
         }
     }
 
@@ -108,6 +108,7 @@ public abstract class AbstractUConnection implements UConnection {
         int count = -1;
         boolean gen = generatedKeys != null && generatedKeys.size() > 0;
         long startTime = System.currentTimeMillis();
+        String tableDebugString = "[" + resolveMainTableFromSQLQuery(query) + "]";
         try {
             count = executeNonQueryImpl(query, queryParameters, generatedKeys);
         } catch (Exception ee) {
@@ -120,7 +121,7 @@ public abstract class AbstractUConnection implements UConnection {
                     log.log(Level.SEVERE, nameDebugString + " [Error] executeNonQuery " + query + ((queryParameters != null && !queryParameters.isEmpty()) ? (" ;; parameters=" + queryParameters) : ""), error);
                 } else {
                     log.log(Level.FINE, "{0} executeNonQuery {1}" + ((queryParameters != null && !queryParameters.isEmpty())
-                            ? " ;; parameters = {2}" : "") + " ;; time = {3}", new Object[]{nameDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
+                            ? " ;; parameters = {2}" : "") + " ;; time = {3}", new Object[]{nameDebugString +tableDebugString, query, queryParameters, (System.currentTimeMillis() - startTime)});
                 }
             }
 //            Log.log(PersistenceUnitManager.DB_NATIVE_UPDATE_LOG,"[TIME="+Log.DELTA_FORMAT.format(endTime-startTime)+" ; COUNT="+count+"] "+debug+" :=" + currentQuery);

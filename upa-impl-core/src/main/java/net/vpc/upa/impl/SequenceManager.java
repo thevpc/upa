@@ -12,7 +12,7 @@ public interface SequenceManager {
 
     PrivateSequence getSequence(String name, String pattern) throws UPAException;
 
-    void createSequence(String name, String pattern, int initialValue, int increment) throws UPAException;
+    PrivateSequence createSequence(String name, String pattern, int initialValue, int increment) throws UPAException;
 
     boolean isLocked(String name, String pattern) throws UPAException;
 

@@ -24,14 +24,14 @@ public class EntitySequenceManager implements SequenceManager {
 //        System.out.println(">>>>>>>>>>>>>>>>>>> getOrCreateSequence("+name+","+pattern+")");
         PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         if (r == null) {
-            createSequence(name, pattern, initialValue, increment);
-            r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
+            r=createSequence(name, pattern, initialValue, increment);
+            //r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         }
         return r;
     }
 
     @Override
-    public synchronized void createSequence(String name, String pattern, int initialValue, int increment) throws UPAException {
+    public synchronized PrivateSequence createSequence(String name, String pattern, int initialValue, int increment) throws UPAException {
         if (increment == 0) {
             throw new UPAIllegalArgumentException("increment zero");
         }
@@ -42,6 +42,7 @@ public class EntitySequenceManager implements SequenceManager {
         r.setValue(initialValue);
         r.setIncrement(increment);
         entity.persist(r);
+        return r;
 //        System.out.println(">>>>>>>>>>>>>>>>>>> createSequence(" + name + "," + pattern + ")");
     }
 

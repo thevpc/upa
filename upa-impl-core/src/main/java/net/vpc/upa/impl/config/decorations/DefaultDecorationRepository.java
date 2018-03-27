@@ -149,7 +149,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
         String methodOrFieldName = d.getLocation();
         DecorationTarget targetType = d.getTarget();
         if (enableLog && log.isLoggable(Level.FINE)) {
-            log.log(Level.FINEST, "\t[{0}] register Decoration {1}", new Object[]{name, d});
+            log.log(Level.FINE, "\t[{0}] register Decoration {1}", new Object[]{name, d});
         }
 
         DefaultDecorationRepositoryTypeInfo typeInfo = decorationsByType.get(typeName);

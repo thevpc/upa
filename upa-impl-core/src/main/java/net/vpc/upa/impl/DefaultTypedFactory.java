@@ -49,6 +49,10 @@ public class DefaultTypedFactory extends AbstractObjectFactory {
 
     @Override
     public <T> T createObject(String typeName) {
+        T s = (T)singletons.get(typeName);
+        if(s!=null){
+            return s;
+        }
         try {
             Class<T> type = (Class<T>) PlatformUtils.forName(typeName);
             return (T) createObject(type);

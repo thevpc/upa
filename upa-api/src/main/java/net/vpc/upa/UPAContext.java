@@ -65,11 +65,11 @@ public interface UPAContext {
 
     List<PersistenceGroup> getPersistenceGroups() throws UPAException;
 
-    PersistenceGroup getPersistenceGroup() throws UPAException;
+    PersistenceGroup  getPersistenceGroup() throws UPAException;
 
     void setPersistenceGroup(String name) throws UPAException;
 
-    PersistenceGroup getPersistenceGroup(String name) throws UPAException;
+    PersistenceGroup  getPersistenceGroup(String name) throws UPAException;
 
     boolean containsPersistenceGroup(String name) throws UPAException;
 

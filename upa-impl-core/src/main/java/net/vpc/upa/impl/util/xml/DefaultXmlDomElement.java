@@ -34,7 +34,7 @@ public class DefaultXmlDomElement implements XmlDomElement {
                 }else if(item instanceof Text){
                     xmlDomNodes.add(new DefaultXmlDomText(item));
                 }else {
-                    System.out.println("Ignored ... "+item);
+                    //System.out.println("Ignored ... "+item);
                 }
             }
         }
