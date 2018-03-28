@@ -8,32 +8,36 @@ import net.vpc.upa.persistence.UPAContextConfig;
 import net.vpc.upa.spring.PersistenceUnitFactoryBean;
 import net.vpc.upa.spring.SpringPersistenceGroupProvider;
 import net.vpc.upa.spring.SpringPersistenceUnitProvider;
+import net.vpc.upa.spring.UPATransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Repository
+import java.util.List;
+
 public class PersistenceUnitFactoryBeanTest {
 
-    @Autowired
-    PersistenceUnit pu;
+
 
     public static void main(String[] args) {
         LogUtils.prepare();
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-        PersistenceUnitFactoryBeanTest t = ctx.getBean(PersistenceUnitFactoryBeanTest.class);
-        t.run();
+        Repo t = ctx.getBean(Repo.class);
+        Category c=new Category();
+        c.setName("hi ");
+        t.save(c);
+        List all = t.findAll();
+        System.out.println(all);
     }
 
-    private void run() {
-        System.out.println(pu.getName());
-    }
 
     @Configuration
     @ComponentScan("net.vpc")
+    @EnableTransactionManagement
     public static class AppConfig {
 
         @Bean
@@ -44,6 +48,11 @@ public class PersistenceUnitFactoryBeanTest {
         @Bean
         public PersistenceUnitProvider getPersistenceUnitProvider() {
             return new SpringPersistenceUnitProvider();
+        }
+        @Bean
+        public UPATransactionManager transactionManager(PersistenceUnit persistenceUnit){
+            UPATransactionManager upaTransactionManager=new UPATransactionManager(persistenceUnit);
+            return  upaTransactionManager;
         }
 
         @Bean
