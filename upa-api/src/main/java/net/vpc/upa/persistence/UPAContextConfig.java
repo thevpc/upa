@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class UPAContextConfig {
@@ -59,24 +58,39 @@ public class UPAContextConfig {
         return autoScan;
     }
 
-    public void setAutoScan(Boolean autoScan) {
+    public UPAContextConfig setAutoScan(Boolean autoScan) {
         this.autoScan = autoScan;
+        return this;
+    }
+
+    public UPAContextConfig setProperty(String property, Object value) {
+        getProperties().put(property, value);
+        return this;
     }
 
     public List<ScanFilter> getFilters() {
         return filters;
     }
 
-    public void setFilters(List<ScanFilter> filters) {
+    public UPAContextConfig setFilters(List<ScanFilter> filters) {
         this.filters = filters;
+        return this;
+    }
+
+    public UPAContextConfig addPersistenceGroups(PersistenceGroupConfig c) {
+        if (c != null) {
+            getPersistenceGroups().add(c);
+        }
+        return this;
     }
 
     public List<PersistenceGroupConfig> getPersistenceGroups() {
         return persistenceGroups;
     }
 
-    public void setPersistenceGroups(List<PersistenceGroupConfig> persistenceGroups) {
+    public UPAContextConfig setPersistenceGroups(List<PersistenceGroupConfig> persistenceGroups) {
         this.persistenceGroups = persistenceGroups;
+        return this;
     }
 
     @Override
@@ -88,8 +102,9 @@ public class UPAContextConfig {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public UPAContextConfig setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
     }
 
     static String trim(String s) {

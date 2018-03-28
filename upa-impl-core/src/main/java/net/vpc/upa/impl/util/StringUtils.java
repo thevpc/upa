@@ -924,4 +924,20 @@ public final class StringUtils {
         }
         return -1;
     }
+
+    public static Map<String,String> toStringMap(Map<CaseInsensitiveString,String> m){
+        Map<String,String> r=new HashMap<>();
+        for (Map.Entry<CaseInsensitiveString, String> e : m.entrySet()) {
+            r.put(e.getKey().toString(), e.getValue());
+        }
+        return r;
+    }
+
+    public static Map<CaseInsensitiveString,String> toCaseInsensitiveStringMap(Map<String,String> m){
+        Map<CaseInsensitiveString,String> r=new HashMap<>();
+        for (Map.Entry<String, String> e : m.entrySet()) {
+            r.put(new CaseInsensitiveString(e.getKey()), e.getValue());
+        }
+        return r;
+    }
 }

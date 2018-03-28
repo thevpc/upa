@@ -16,11 +16,12 @@ import java.util.*;
  */
 public class ConnectionProfileParser {
 
-    private static String[] IGNORED_OPTIONS = new String[]{ConnectionOption.CONNECTION_DRIVER,
-            ConnectionOption.CONNECTION_DRIVER_VERSION,
-            ConnectionOption.DATABASE_PRODUCT,
-            ConnectionOption.DATABASE_PRODUCT_VERSION,
-            ConnectionOption.DATABASE_PRODUCT_VERSION};
+    private static String[] IGNORED_OPTIONS = new String[]{
+            ConnectionOption.CONNECTION_DRIVER.toLowerCase(),
+            ConnectionOption.CONNECTION_DRIVER_VERSION.toLowerCase(),
+            ConnectionOption.DATABASE_PRODUCT.toLowerCase(),
+            ConnectionOption.DATABASE_PRODUCT_VERSION.toLowerCase(),
+            ConnectionOption.DATABASE_PRODUCT_VERSION.toLowerCase()};
     private static Set<String> IGNORED_OPTIONS_SET = new HashSet<String>(Arrays.asList(IGNORED_OPTIONS));
 
     public List<ConnectionProfile> parseEnabled(Properties p2, ConnectionConfig[] connectionConfigsArr, String prefix0) {
@@ -155,7 +156,7 @@ public class ConnectionProfileParser {
                 String key = e.getKey();
                 if (key.startsWith(connectionStringPropertyName + ".")) {
                     String k = key.substring(connectionStringPropertyName.length() + 1);
-                    if (!IGNORED_OPTIONS_SET.contains(k) && !profile.getProperties().containsKey(k)) {
+                    if (!IGNORED_OPTIONS_SET.contains(k.toLowerCase()) && profile.getProperty(k)==null) {
                         profile.setProperty(k, String.valueOf(e.getValue()));
                     }
                 }
@@ -171,15 +172,15 @@ public class ConnectionProfileParser {
         }
         propertyValue = replaceVars(propertyValue, parameters);
         if (propertyValue != null) {
-            if (ConnectionOption.STRUCTURE.equals(propertyName)) {
+            if (ConnectionOption.STRUCTURE.equalsIgnoreCase(propertyName)) {
                 d.setStructureStrategy(StructureStrategy.valueOf(propertyValue.toUpperCase()));
-            } else if (ConnectionOption.CONNECTION_DRIVER.equals(propertyName)) {
+            } else if (ConnectionOption.CONNECTION_DRIVER.equalsIgnoreCase(propertyName)) {
                 d.setConnectionDriver((propertyValue.toUpperCase()));
-            } else if (ConnectionOption.CONNECTION_DRIVER_VERSION.equals(propertyName)) {
+            } else if (ConnectionOption.CONNECTION_DRIVER_VERSION.equalsIgnoreCase(propertyName)) {
                 d.setConnectionDriverVersion(propertyValue);
-            } else if (ConnectionOption.DATABASE_PRODUCT.equals(propertyName)) {
+            } else if (ConnectionOption.DATABASE_PRODUCT.equalsIgnoreCase(propertyName)) {
                 d.setDatabaseProduct(DatabaseProduct.valueOf(propertyValue.toUpperCase()));
-            } else if (ConnectionOption.DATABASE_PRODUCT_VERSION.equals(propertyName)) {
+            } else if (ConnectionOption.DATABASE_PRODUCT_VERSION.equalsIgnoreCase(propertyName)) {
                 d.setDatabaseProductVersion(propertyValue);
             } else {
                 d.setProperty(propertyName, propertyValue);

@@ -61,75 +61,94 @@ public class PersistenceUnitConfig {
     public PersistenceUnitConfig() {
     }
 
+    public PersistenceUnitConfig(String name) {
+        this.name = name;
+    }
+
     public int getConfigOrder() {
         return configOrder;
     }
 
-    public void setConfigOrder(int configOrder) {
+    public PersistenceUnitConfig setConfigOrder(int configOrder) {
         this.configOrder = configOrder;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public PersistenceUnitConfig setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getPersistenceGroup() {
         return persistenceGroup;
     }
 
-    public void setPersistenceGroup(String persistenceGroup) {
+    public PersistenceUnitConfig setPersistenceGroup(String persistenceGroup) {
         this.persistenceGroup = persistenceGroup;
+        return this;
     }
 
     public PersistenceNameConfig getModel() {
         return model;
     }
 
-    public void setModel(PersistenceNameConfig model) {
+    public PersistenceUnitConfig setModel(PersistenceNameConfig model) {
         this.model = model;
+        return this;
     }
 
     public Map<String, Object> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public PersistenceUnitConfig setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
+    }
+
+    public PersistenceUnitConfig setProperty(String property, Object value) {
+        getProperties().put(property,value);
+        return this;
     }
 
     public Boolean getAutoStart() {
         return autoStart;
     }
 
-    public void setAutoStart(Boolean autoStart) {
+    public PersistenceUnitConfig setAutoStart(Boolean autoStart) {
         this.autoStart = autoStart;
+        return this;
     }
 
     public Boolean getAutoScan() {
         return autoScan;
     }
 
-    public void setAutoScan(Boolean autoScan) {
+    public PersistenceUnitConfig setAutoScan(Boolean autoScan) {
         this.autoScan = autoScan;
+        return this;
     }
 
-    public void setFilters(List<ScanFilter> filters) {
+    public PersistenceUnitConfig setFilters(List<ScanFilter> filters) {
         this.filters.clear();
         if (filters != null) {
             this.filters.addAll(filters);
         }
+        return this;
     }
 
-    public void addFilter(ScanFilter filter) {
+    public PersistenceUnitConfig addFilter(ScanFilter filter) {
         filters.add(filter);
+        return this;
     }
 
-    public void removeFilter(ScanFilter filter) {
+    public PersistenceUnitConfig removeFilter(ScanFilter filter) {
         filters.remove(filter);
+        return this;
     }
 
     public ScanFilter[] getFilters() {
@@ -140,16 +159,18 @@ public class PersistenceUnitConfig {
         return rootConnections;
     }
 
-    public void setRootConnections(List<ConnectionConfig> rootConnections) {
+    public PersistenceUnitConfig setRootConnections(List<ConnectionConfig> rootConnections) {
         this.rootConnections = rootConnections;
+        return this;
     }
 
     public List<ConnectionConfig> getConnections() {
         return connections;
     }
 
-    public void setConnections(List<ConnectionConfig> connections) {
+    public PersistenceUnitConfig setConnections(List<ConnectionConfig> connections) {
         this.connections = connections;
+        return this;
     }
 
     @Override
@@ -157,4 +178,23 @@ public class PersistenceUnitConfig {
         return "PersistenceUnitConfig{" + "name=" + name + ", persistenceGroup=" + persistenceGroup + ", model=" + model + ", autoStart=" + autoStart + ", rootConnections=" + rootConnections + ", connections=" + connections + ", properties=" + properties + ", filters=" + filters + '}';
     }
 
+    public PersistenceUnitConfig addConnectionConfig(ConnectionConfig connectionConfig) {
+        if (connectionConfig != null) {
+            if(connections==null){
+                connections=new ArrayList<>();
+            }
+            connections.add(connectionConfig);
+        }
+        return this;
+    }
+
+    public PersistenceUnitConfig addRootConnectionConfig(ConnectionConfig connectionConfig) {
+        if (connectionConfig != null) {
+            if(rootConnections==null){
+                rootConnections=new ArrayList<>();
+            }
+            rootConnections.add(connectionConfig);
+        }
+        return this;
+    }
 }

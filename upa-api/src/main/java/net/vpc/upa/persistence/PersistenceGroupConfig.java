@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class PersistenceGroupConfig {
@@ -57,60 +56,83 @@ public class PersistenceGroupConfig {
     public PersistenceGroupConfig() {
     }
 
+    public PersistenceGroupConfig(String name) {
+        this.name = name;
+    }
+
     public int getConfigOrder() {
         return configOrder;
     }
 
-    public void setConfigOrder(int configOrder) {
+    public PersistenceGroupConfig setConfigOrder(int configOrder) {
         this.configOrder = configOrder;
+        return this;
     }
 
     public Boolean getAutoScan() {
         return autoScan;
     }
 
-    public void setAutoScan(Boolean autoScan) {
+    public PersistenceGroupConfig setAutoScan(Boolean autoScan) {
         this.autoScan = autoScan;
+        return this;
     }
 
     public List<ScanFilter> getFilters() {
         return filters;
     }
 
-    public void setFilters(List<ScanFilter> filters) {
+    public PersistenceGroupConfig setFilters(List<ScanFilter> filters) {
         this.filters = filters;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public PersistenceGroupConfig setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Map<String, Object> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public PersistenceGroupConfig setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
     }
 
     public List<PersistenceUnitConfig> getPersistenceUnits() {
         return persistenceUnits;
     }
 
-    public void setPersistenceUnits(List<PersistenceUnitConfig> persistenceUnits) {
+    public PersistenceGroupConfig setPersistenceUnits(List<PersistenceUnitConfig> persistenceUnits) {
         this.persistenceUnits = persistenceUnits;
+        return this;
     }
 
     public List<ScanFilter> getContextAnnotationStrategyFilters() {
         return filters;
     }
 
-    public void setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
+    public PersistenceGroupConfig setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
         this.filters = filters == null ? new ArrayList<ScanFilter>() : new ArrayList<ScanFilter>(filters);
+        return this;
+    }
+
+    public PersistenceGroupConfig addPersistenceUnit(PersistenceUnitConfig persistenceUnitConfig) {
+        if (persistenceUnitConfig != null) {
+            getPersistenceUnits().add(persistenceUnitConfig);
+        }
+        return this;
+    }
+
+    public PersistenceGroupConfig setProperty(String property, Object value) {
+        getProperties().put(property, value);
+        return this;
     }
 
     public PersistenceUnitConfig getPersistenceUnit(String name, boolean create, int configOrder) {

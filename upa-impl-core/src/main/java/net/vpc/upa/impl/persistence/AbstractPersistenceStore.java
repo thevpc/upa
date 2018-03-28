@@ -282,7 +282,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             UConnection executor = null;
             try {
                 executor = createRootUConnection(context);
-                executor.executeNonQuery("Create Database " + getConnectionProfile().getProperties().get(ConnectionOption.DATABASE_NAME), null, null);
+                executor.executeNonQuery("Create Database " + getConnectionProfile().getProperty(ConnectionOption.DATABASE_NAME), null, null);
             } finally {
                 if (executor != null) {
                     executor.close();
@@ -301,7 +301,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             UConnection executor = null;
             try {
                 executor = createRootUConnection(context);
-                executor.executeNonQuery("Drop Database " + getConnectionProfile().getProperties().get(ConnectionOption.DATABASE_NAME), null, null);
+                executor.executeNonQuery("Drop Database " + getConnectionProfile().getProperty(ConnectionOption.DATABASE_NAME), null, null);
             } finally {
                 if (executor != null) {
                     executor.close();

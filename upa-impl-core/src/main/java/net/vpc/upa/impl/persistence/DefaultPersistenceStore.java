@@ -174,10 +174,10 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
     @PortabilityHint(target = "C#", name = "suppress")
     protected Connection createDataSourceConnection(ConnectionProfile p) throws UPAException {
         try {
-            Map<String, String> properties = p.getProperties();
+//            Map<String, String> properties = p.getProperties();
             InitialContext ic = new InitialContext();
-            String dbPrefix = properties.get(ConnectionOption.SERVER_ADDRESS);
-            String dbname = properties.get(ConnectionOption.DATABASE_NAME);
+            String dbPrefix = p.getProperty(ConnectionOption.SERVER_ADDRESS);
+            String dbname = p.getProperty(ConnectionOption.DATABASE_NAME);
             if (dbPrefix == null && dbname == null) {
                 throw new UPAException(new I18NString("MissingDatasourceName"));
             } else if (dbname == null) {
@@ -185,7 +185,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
             } else if (dbPrefix != null) {
                 dbname = dbPrefix + "/" + dbname;
             }
-            String noDatasourcePrefix = properties.get("noDatasourcePrefix");
+            String noDatasourcePrefix = p.getProperty("noDatasourcePrefix");
             if (!Boolean.parseBoolean(noDatasourcePrefix) && dbname != null && !dbname.startsWith("java:comp/env/")) {
                 dbname = "java:comp/env/" + dbname;
             }
@@ -240,12 +240,12 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 
     protected Connection createPlatformGenericConnection(ConnectionProfile p) throws UPAException {
         try {
-            Map<String, String> properties = p.getProperties();
-            String driver = properties.get(ConnectionOption.DRIVER);
-            String url = properties.get(ConnectionOption.URL);
-            String user = properties.get(ConnectionOption.USER_NAME);
-            String password = properties.get(ConnectionOption.PASSWORD);
-            return createPlatformConnection(driver, url, user, password, properties);
+//            Map<String, String> properties = p.getProperties();
+            String driver = p.getProperty(ConnectionOption.DRIVER);
+            String url = p.getProperty(ConnectionOption.URL);
+            String user = p.getProperty(ConnectionOption.USER_NAME);
+            String password = p.getProperty(ConnectionOption.PASSWORD);
+            return createPlatformConnection(driver, url, user, password, p.getProperties());
         } catch (UPAException e) {
             throw e;
         } catch (Exception e) {
@@ -257,7 +257,8 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
             String url,
             String user,
             String password,
-            Map<String, String> properties) throws UPAException {
+            Map<String, String> properties0) throws UPAException {
+        Map<CaseInsensitiveString, String> properties=StringUtils.toCaseInsensitiveStringMap(properties0);
         try {
             net.vpc.upa.Properties uproperties = this.properties;
             PropertiesDollarConverter varConverter = new PropertiesDollarConverter(uproperties);
@@ -268,10 +269,10 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 
             Map<String, String> jdbcProperties = new HashMap<String, String>();
             if (properties != null) {
-                for (Map.Entry<String, String> e : properties.entrySet()) {
+                for (Map.Entry<CaseInsensitiveString, String> e : properties.entrySet()) {
                     String value = e.getValue();
                     value = StringUtils.replaceDollarVars(value, varConverter);
-                    jdbcProperties.put(e.getKey(), value);
+                    jdbcProperties.put(e.getKey().toString(), value);
                 }
             }
             if (user != null) {
@@ -344,11 +345,11 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 
     protected Connection createOdbcConnection(ConnectionProfile p) throws UPAException {
         try {
-            Map<String, String> properties = p.getProperties();
-            String user = properties.get(ConnectionOption.USER_NAME);
-            String password = properties.get(ConnectionOption.PASSWORD);
-            String odbcDriver = properties.get(ConnectionOption.DRIVER);
-            String trustedString = properties.get(ConnectionOption.TRUSTED);
+//            Map<String, String> properties = p.getProperties();
+            String user = p.getProperty(ConnectionOption.USER_NAME);
+            String password = p.getProperty(ConnectionOption.PASSWORD);
+            String odbcDriver = p.getProperty(ConnectionOption.DRIVER);
+            String trustedString = p.getProperty(ConnectionOption.TRUSTED);
             boolean trustedBoolean = false;
 
             if (trustedString != null) {
@@ -360,19 +361,19 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 
             String odbcURL = "jdbc:odbc:";
             if (odbcDriver == null) {
-                String dbname = properties.get(ConnectionOption.DATABASE_NAME);
+                String dbname = p.getProperty(ConnectionOption.DATABASE_NAME);
                 odbcURL += dbname;
             } else if (odbcDriver.equals("mdb")) {
                 odbcURL += "Driver={Microsoft Access Driver (*.mdb)}";
-                String dbname = properties.get(ConnectionOption.DATABASE_PATH);
+                String dbname = p.getProperty(ConnectionOption.DATABASE_PATH);
                 odbcURL += ";DBQ=" + dbname;
             } else if (odbcDriver.equals("xls")) {
                 odbcURL += "Driver={Microsoft Excel Driver (*.xls)}";
-                String dbname = properties.get(ConnectionOption.DATABASE_PATH);
+                String dbname = p.getProperty(ConnectionOption.DATABASE_PATH);
                 odbcURL += ";DBQ=" + dbname;
             } else if (odbcDriver.equals("oracle")) {
                 odbcURL += "Driver={Microsoft ODBC for Oracle}";
-                String server = properties.get(ConnectionOption.SERVER_ADDRESS);
+                String server = p.getProperty(ConnectionOption.SERVER_ADDRESS);
                 if (server == null) {
                     server = "localhost";
                 }
@@ -382,7 +383,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
                 }
             } else if (odbcDriver.equals("mssqlserver")) {
                 odbcURL += "Driver={SQL Server}";
-                String server = properties.get(ConnectionOption.SERVER_ADDRESS);
+                String server = p.getProperty(ConnectionOption.SERVER_ADDRESS);
                 if (server == null) {
                     server = "(local)";
                 }
@@ -391,7 +392,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
                     odbcURL += ";Trusted_Connection=Yes";
                 }
             }
-            return createPlatformConnection(null, odbcURL, user, password, properties);
+            return createPlatformConnection(null, odbcURL, user, password, p.getProperties());
 
         } catch (UPAException e) {
             throw e;

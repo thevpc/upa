@@ -1,6 +1,8 @@
 package net.vpc.upa.impl.persistence.connection;
 
+import net.vpc.upa.impl.util.CaseInsensitiveString;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.DatabaseProduct;
 import net.vpc.upa.persistence.StructureStrategy;
@@ -24,7 +26,7 @@ public class DefaultConnectionProfile implements ConnectionProfile {
 
     private StructureStrategy structureStrategy = StructureStrategy.IGNORE;
 
-    private Map<String, String> properties = new HashMap<>();
+    private Map<CaseInsensitiveString, String> properties = new HashMap<>();
 
     public DefaultConnectionProfile() {
     }
@@ -83,18 +85,18 @@ public class DefaultConnectionProfile implements ConnectionProfile {
 
     public void setProperty(String name, String value) {
         if (value == null) {
-            properties.remove(name);
+            properties.remove(new CaseInsensitiveString(name));
         } else {
-            properties.put(name, value);
+            properties.put(new CaseInsensitiveString(name), value);
         }
     }
 
     public String getProperty(String name) {
-        return properties.get(name);
+        return properties.get(new CaseInsensitiveString(name));
     }
 
     public String getProperty(String name,String defaultValue) {
-        String e = properties.get(name);
+        String e = properties.get(new CaseInsensitiveString(name));
         if(e==null){
             return defaultValue;
         }
@@ -102,11 +104,11 @@ public class DefaultConnectionProfile implements ConnectionProfile {
     }
 
     public Map<String, String> getProperties() {
-        return properties;
+        return StringUtils.toStringMap(properties);
     }
 
     public void setProperties(Map<String, String> properties) {
-        this.properties = properties == null ? new HashMap<String, String>() : new HashMap<String, String>(properties);
+        this.properties = properties==null?new HashMap<CaseInsensitiveString, String>() : StringUtils.toCaseInsensitiveStringMap(properties);
     }
 
     @Override

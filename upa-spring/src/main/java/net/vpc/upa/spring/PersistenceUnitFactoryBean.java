@@ -1,40 +1,16 @@
-package net.vpc.upa;
+package net.vpc.upa.spring;
 
+import net.vpc.upa.*;
 import net.vpc.upa.persistence.ConnectionConfig;
+import net.vpc.upa.persistence.UPAContextConfig;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
 public class PersistenceUnitFactoryBean implements FactoryBean<PersistenceUnit> , InitializingBean, DisposableBean{
-    private String persistenceGroupName;
-    private String persistenceUnitName;
-    private ConnectionConfig connectionConfig;
     private PersistenceUnitProvider persistenceUnitProvider;
     private PersistenceGroupProvider persistenceGroupProvider;
-
-    public String getPersistenceUnitName() {
-        return persistenceUnitName;
-    }
-
-    public void setPersistenceUnitName(String persistenceUnitName) {
-        this.persistenceUnitName = persistenceUnitName;
-    }
-
-    public ConnectionConfig getConnectionConfig() {
-        return connectionConfig;
-    }
-
-    public void setConnectionConfig(ConnectionConfig connectionConfig) {
-        this.connectionConfig = connectionConfig;
-    }
-
-    public String getPersistenceGroupName() {
-        return persistenceGroupName;
-    }
-
-    public void setPersistenceGroupName(String persistenceGroupName) {
-        this.persistenceGroupName = persistenceGroupName;
-    }
+    private UPAContextConfig config;
 
     public PersistenceUnitProvider getPersistenceUnitProvider() {
         return persistenceUnitProvider;
@@ -54,7 +30,7 @@ public class PersistenceUnitFactoryBean implements FactoryBean<PersistenceUnit> 
 
     @Override
     public PersistenceUnit getObject() {
-        return UPA.getPersistenceGroup(getPersistenceGroupName()).getPersistenceUnit(getPersistenceUnitName());
+        return UPA.getPersistenceGroup().getPersistenceUnit();
     }
 
     @Override
@@ -75,25 +51,19 @@ public class PersistenceUnitFactoryBean implements FactoryBean<PersistenceUnit> 
         if(persistenceUnitProvider!=null) {
             UPA.getBootstrapFactory().register(PersistenceUnitProvider.class, persistenceUnitProvider);
         }
-        PersistenceUnit pu=null;
-        PersistenceGroup pg =null;
-        if(!UPA.getContext().containsPersistenceGroup(getPersistenceGroupName())){
-            pg = UPA.getContext().addPersistenceGroup(getPersistenceGroupName());
-        }else{
-            pg = UPA.getContext().getPersistenceGroup(getPersistenceGroupName());
-        }
-
-        if(pg.containsPersistenceUnit(getPersistenceUnitName())) {
-            pu = pg.getPersistenceUnit(getPersistenceUnitName());
-        }else{
-            pu = pg.addPersistenceUnit(getPersistenceUnitName());
-            pu.addConnectionConfig(getConnectionConfig());
-            pu.start();
-        }
+        UPA.configure(config);
     }
 
     @Override
     public void destroy() throws Exception {
         UPA.getContext().close();
+    }
+
+    public UPAContextConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(UPAContextConfig config) {
+        this.config = config;
     }
 }

@@ -38,7 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class ConnectionConfig {
@@ -54,48 +53,59 @@ public class ConnectionConfig {
         return connectionString;
     }
 
-    public void setConnectionString(String connectionString) {
+    public ConnectionConfig setConnectionString(String connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    public ConnectionConfig setProperty(String property, String value) {
+        getProperties().put(property, value);
+        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public ConnectionConfig setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public ConnectionConfig setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public StructureStrategy getStructureStrategy() {
         return structureStrategy;
     }
 
-    public void setStructureStrategy(StructureStrategy structureStrategy) {
+    public ConnectionConfig setStructureStrategy(StructureStrategy structureStrategy) {
         this.structureStrategy = structureStrategy;
+        return this;
     }
 
     public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, String> properties) {
+    public ConnectionConfig setProperties(Map<String, String> properties) {
         this.properties = properties;
+        return this;
     }
 
     public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public ConnectionConfig setEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
     }
 
     @Override

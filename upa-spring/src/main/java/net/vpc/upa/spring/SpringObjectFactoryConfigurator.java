@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.vpc.upa;
+package net.vpc.upa.spring;
 
+import net.vpc.upa.ObjectFactory;
+import net.vpc.upa.ObjectFactoryConfigurator;
 import net.vpc.upa.impl.context.DefaultPersistenceUnitProvider;
 import net.vpc.upa.impl.util.classpath.ClassFileIteratorFactory;
 import net.vpc.upa.persistence.PersistenceStore;

@@ -1,5 +1,6 @@
-package net.vpc.upa;
+package net.vpc.upa.spring;
 
+import net.vpc.upa.PersistenceGroupProvider;
 import org.springframework.stereotype.Component;
 
 public class SpringPersistenceGroupProvider implements PersistenceGroupProvider {
