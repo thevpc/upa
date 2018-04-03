@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,13 +27,13 @@ namespace Net.Vpc.Upa
              * @param factory
              * @throws UPAException
              */
-         void Start(Net.Vpc.Upa.ObjectFactory factory) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void Start(Net.Vpc.Upa.ObjectFactory factory, Net.Vpc.Upa.Persistence.UPAContextConfig[] contextConfig, System.Type[] configClasses) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          Net.Vpc.Upa.UPAContextFactory GetFactory();
 
          Net.Vpc.Upa.Persistence.UPAContextConfig GetBootstrapContextConfig();
 
-         void Scan(Net.Vpc.Upa.Config.ScanSource configurationStrategy, Net.Vpc.Upa.ScanListener listener, bool configure);
+         void Scan(Net.Vpc.Upa.Persistence.UPAContextConfig contextConfig, Net.Vpc.Upa.Config.ScanSource configurationStrategy, Net.Vpc.Upa.ScanListener listener, bool configure);
 
          Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -104,9 +104,9 @@ namespace Net.Vpc.Upa
 
          void SetProperties(System.Collections.Generic.IDictionary<string , object> properties);
 
-         Net.Vpc.Upa.Callback CreateCallback(Net.Vpc.Upa.CallbackConfig callbackConfig);
+         Net.Vpc.Upa.Callback CreateCallback(Net.Vpc.Upa.MethodCallback methodCallback);
 
-         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.CallbackConfig callbackConfig);
+         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.MethodCallback methodCallback);
 
          void AddCallback(Net.Vpc.Upa.Callback callback);
 
@@ -115,5 +115,7 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Callback[] GetCallbacks(Net.Vpc.Upa.CallbackType callbackType, Net.Vpc.Upa.ObjectType objectType, string nameFilter, bool system, bool preparedOnly, Net.Vpc.Upa.EventPhase phase);
 
          Net.Vpc.Upa.Properties GetThreadProperties();
+
+         Net.Vpc.Upa.PersistenceContextInfo GetInfo();
     }
 }

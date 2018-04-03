@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa
      */
     public enum ConditionType {
 
-        PROTOTYPE, RECORD_PROTOTYPE, OBJECT, RECORD, ID, KEY, KEY_LIST, ID_LIST, EXPRESSION, EXPRESSION_LIST
+        PROTOTYPE, DOCUMENT_PROTOTYPE, OBJECT, DOCUMENT, ID, KEY, KEY_LIST, ID_LIST, EXPRESSION, EXPRESSION_LIST
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -55,12 +55,12 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryField> GetFields() {
-            return new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryField>(fields);
+            return new System.Collections.Generic.List<E>(fields);
         }
 
         public Select() {
-            joinsEntities = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.JoinCriteria>();
-            fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryField>(1);
+            joinsEntities = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.JoinCriteria>(3);
+            fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryField>(5);
             //        groupByList = new Vector(1);
             group = new Net.Vpc.Upa.Expressions.GroupCriteria();
             order = new Net.Vpc.Upa.Expressions.Order();
@@ -69,7 +69,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>((fields).Count + (joinsEntities).Count + group.Size() + order.Size() + 3);
             //    private Expression where;
             //    private Expression having;
             //    private Order order;
@@ -314,12 +314,12 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual Net.Vpc.Upa.Expressions.Select OrderAscendentBy(Net.Vpc.Upa.Expressions.Expression field) {
-            order.Ascendent(field);
+            order.Ascendant(field);
             return this;
         }
 
         public virtual Net.Vpc.Upa.Expressions.Select OrderByDesc(Net.Vpc.Upa.Expressions.Expression field) {
-            order.Descendent(field);
+            order.Descendant(field);
             return this;
         }
 
@@ -506,7 +506,7 @@ namespace Net.Vpc.Upa.Expressions
 
         public virtual void AddParameter(Net.Vpc.Upa.QLParameter p) {
             if (parameters == null) {
-                parameters = new System.Collections.Generic.List<Net.Vpc.Upa.QLParameter>();
+                parameters = new System.Collections.Generic.List<Net.Vpc.Upa.QLParameter>(5);
             }
             parameters.Add(p);
         }

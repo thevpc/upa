@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -56,9 +56,9 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Session GetCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
          void SetCurrentSession(Net.Vpc.Upa.Session session) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         Net.Vpc.Upa.Session FindCurrentSession() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          Net.Vpc.Upa.Session OpenSession();
 
@@ -79,6 +79,8 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.PersistenceGroupSecurityManager GetPersistenceGroupSecurityManager();
 
          void SetPersistenceGroupSecurityManager(Net.Vpc.Upa.PersistenceGroupSecurityManager securityManager);
+
+         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.MethodCallback callback);
 
          void AddCallback(Net.Vpc.Upa.Callback callback);
 
@@ -101,5 +103,15 @@ namespace Net.Vpc.Upa
          void InvokePrivileged(Net.Vpc.Upa.VoidAction action, Net.Vpc.Upa.InvokeContext invokeContext);
 
          void InvokePrivileged(Net.Vpc.Upa.VoidAction action);
+
+         Net.Vpc.Upa.Properties GetProperties();
+
+         Net.Vpc.Upa.PersistenceGroupInfo GetInfo();
+
+         Net.Vpc.Upa.UPAI18n GetI18n();
+
+         void SetI18n(Net.Vpc.Upa.UPAI18n i18n);
+
+         Net.Vpc.Upa.UPAI18n GetI18nOrDefault();
     }
 }

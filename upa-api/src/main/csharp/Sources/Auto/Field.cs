@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,13 +20,13 @@ namespace Net.Vpc.Upa
      */
     public interface Field : Net.Vpc.Upa.EntityPart {
 
-         void SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType @value);
-
          Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType();
 
-         void SetUnspecifiedValue(object o);
+         void SetPropertyAccessType(Net.Vpc.Upa.PropertyAccessType @value);
 
          object GetUnspecifiedValue();
+
+         void SetUnspecifiedValue(object o);
 
         /**
              * should return a valid value of UnspecifiedValue. Actually, if
@@ -39,11 +39,11 @@ namespace Net.Vpc.Upa
 
          bool IsUnspecifiedValue(object @value);
 
-         void SetDefaultObject(object o);
-
          object GetDefaultValue();
 
          object GetDefaultObject();
+
+         void SetDefaultObject(object o);
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetManyToOneRelationships();
 
@@ -53,47 +53,63 @@ namespace Net.Vpc.Upa
 
          void SetPersistFormula(string formula);
 
-         void SetPersistFormula(Net.Vpc.Upa.Formula formula);
-
          Net.Vpc.Upa.Formula GetPersistFormula();
+
+         void SetPersistFormula(Net.Vpc.Upa.Formula formula);
 
          int GetPersistFormulaOrder();
 
-         void SetFormulaOrder(int order);
-
          void SetPersistFormulaOrder(int order);
+
+         void SetFormulaOrder(int order);
 
          Net.Vpc.Upa.Formula GetUpdateFormula();
 
-         int GetUpdateFormulaOrder();
+         void SetUpdateFormula(Net.Vpc.Upa.Formula formula);
 
          void SetUpdateFormula(string formula);
 
-         void SetUpdateFormula(Net.Vpc.Upa.Formula formula);
+         int GetUpdateFormulaOrder();
 
          void SetUpdateFormulaOrder(int order);
 
          Net.Vpc.Upa.Formula GetSelectFormula();
 
-         void SetSelectFormula(string formula);
-
          void SetSelectFormula(Net.Vpc.Upa.Formula formula);
+
+         void SetSelectFormula(string formula);
 
          Net.Vpc.Upa.Types.DataType GetDataType();
 
+         void SetDataType(Net.Vpc.Upa.Types.DataType datatype);
+
          Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
-
-         Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
-
-         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
 
          void SetPersistAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
+         Net.Vpc.Upa.AccessLevel GetUpdateAccessLevel();
+
          void SetUpdateAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+
+         Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
 
          void SetReadAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
 
          void SetAccessLevel(Net.Vpc.Upa.AccessLevel accessLevel);
+
+         Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel();
+
+         void SetPersistProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+
+         Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
+
+         void SetUpdateProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+
+         Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel();
+
+         void SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
+
+         void SetProtectionLevel(Net.Vpc.Upa.ProtectionLevel protectionLevel);
 
          Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserModifiers();
 
@@ -105,31 +121,29 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> GetModifiers();
 
-         bool IsId() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsId();
 
-         bool IsMain() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsGeneratedId();
 
-         bool IsSummary() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsSystem();
 
-         bool Is(Net.Vpc.Upa.Filters.FieldFilter ff) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsMain();
 
-         void SetDataType(Net.Vpc.Upa.Types.DataType datatype);
+         bool IsSummary();
 
-        /**
-             * check is this is target or source!!!
-             *
-             * @param r
-             */
+         bool Is(Net.Vpc.Upa.Filters.FieldFilter filter);
+
          Net.Vpc.Upa.SearchOperator GetSearchOperator();
 
          void SetSearchOperator(Net.Vpc.Upa.SearchOperator @operator);
 
-         void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform transform);
-
          Net.Vpc.Upa.Types.DataTypeTransform GetTypeTransform();
+
+         void SetTypeTransform(Net.Vpc.Upa.Types.DataTypeTransform transform);
 
         /**
              * value of the field for the given instance
+             *
              * @param instance object instance
              * @return value of the field
              */
@@ -137,6 +151,7 @@ namespace Net.Vpc.Upa
 
         /**
              * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
+             *
              * @param instance instance to get value on
              * @return displayable value
              */
@@ -145,5 +160,27 @@ namespace Net.Vpc.Upa
          void SetValue(object instance, object @value);
 
          void Check(object @value);
+
+         int GetPreferredIndex();
+
+         void SetPreferredIndex(int preferredIndex);
+
+         bool IsManyToOne();
+
+         Net.Vpc.Upa.Relationship GetManyToOneRelationship();
+
+         Net.Vpc.Upa.ProtectionLevel GetProtectionLevel(Net.Vpc.Upa.AccessMode mode);
+
+         Net.Vpc.Upa.AccessLevel GetAccessLevel(Net.Vpc.Upa.AccessMode mode);
+
+         Net.Vpc.Upa.AccessLevel GetEffectiveAccessLevel(Net.Vpc.Upa.AccessMode mode);
+
+         Net.Vpc.Upa.AccessLevel GetEffectivePersistAccessLevel();
+
+         Net.Vpc.Upa.AccessLevel GetEffectiveUpdateAccessLevel();
+
+         Net.Vpc.Upa.AccessLevel GetEffectiveReadAccessLevel();
+
+         Net.Vpc.Upa.FieldInfo GetInfo();
     }
 }

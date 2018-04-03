@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -76,6 +76,10 @@ namespace Net.Vpc.Upa.Callbacks
 
         public virtual Net.Vpc.Upa.Entity GetEntity() {
             return entity;
+        }
+
+        public virtual Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() {
+            return persistenceUnit.GetPersistenceGroup();
         }
 
         public virtual Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit() {

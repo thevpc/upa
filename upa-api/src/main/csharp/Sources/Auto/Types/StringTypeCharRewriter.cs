@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,6 +13,7 @@
 
 namespace Net.Vpc.Upa.Types
 {
+
 
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -28,7 +29,7 @@ namespace Net.Vpc.Upa.Types
             this.from = from;
             this.to = to;
             if (from == null || to == null || (from).Length == 0 || (from).Length != (to).Length) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
         }
 

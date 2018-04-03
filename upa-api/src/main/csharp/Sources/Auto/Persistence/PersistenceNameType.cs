@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -51,19 +51,19 @@ namespace Net.Vpc.Upa.Persistence
         }
 
         public static Net.Vpc.Upa.Persistence.PersistenceNameType ValueOf(string name) {
-            Net.Vpc.Upa.Persistence.PersistenceNameType f = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<string,Net.Vpc.Upa.Persistence.PersistenceNameType>(values,name);
+            Net.Vpc.Upa.Persistence.PersistenceNameType f = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<K,V>(values,name);
             if (f == null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("PersistenceNameType not found " + name);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType not found " + name);
             }
             return f;
         }
 
         public static Net.Vpc.Upa.Persistence.PersistenceNameType Create(string name, bool globalScope) {
             if (name == null || (name).Length == 0 || (name.Trim()).Length != (name).Length) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Invalid PersistenceNameType Name " + name);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid PersistenceNameType Name " + name);
             }
             if (values.ContainsKey(name)) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("PersistenceNameType already exists " + name);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("PersistenceNameType already exists " + name);
             }
             Net.Vpc.Upa.Persistence.PersistenceNameType t = new Net.Vpc.Upa.Persistence.PersistenceNameType(name, globalScope);
             values[t.Name()]=t;

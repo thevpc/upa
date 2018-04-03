@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -16,7 +16,7 @@ namespace Net.Vpc.Upa.Filters
 {
 
 
-    public abstract class AbstractFieldFilter : Net.Vpc.Upa.Filters.FieldFilter {
+    public abstract class AbstractFieldFilter : Net.Vpc.Upa.Filters.RichFieldFilter {
 
         public abstract bool AcceptDynamic() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -82,6 +82,31 @@ namespace Net.Vpc.Upa.Filters
 
         public override int GetHashCode() {
             return 731;
+        }
+
+
+        public virtual Net.Vpc.Upa.Filters.RichFieldFilter And(Net.Vpc.Upa.Filters.FieldFilter filter) {
+            return Net.Vpc.Upa.Filters.FieldAndFilter.And(this, filter);
+        }
+
+
+        public virtual Net.Vpc.Upa.Filters.RichFieldFilter AndNot(Net.Vpc.Upa.Filters.FieldFilter filter) {
+            return Net.Vpc.Upa.Filters.FieldAndFilter.And(this, Net.Vpc.Upa.Filters.FieldFilters.As(filter).Negate());
+        }
+
+
+        public virtual Net.Vpc.Upa.Filters.RichFieldFilter Or(Net.Vpc.Upa.Filters.FieldFilter filter) {
+            return Net.Vpc.Upa.Filters.FieldOrFilter.Or(this, filter);
+        }
+
+
+        public virtual Net.Vpc.Upa.Filters.RichFieldFilter OrNot(Net.Vpc.Upa.Filters.FieldFilter filter) {
+            return Net.Vpc.Upa.Filters.FieldOrFilter.Or(this, Net.Vpc.Upa.Filters.FieldFilters.As(filter).Negate());
+        }
+
+
+        public virtual Net.Vpc.Upa.Filters.RichFieldFilter Negate() {
+            return new Net.Vpc.Upa.Filters.FieldReverseFilter(this);
         }
     }
 }

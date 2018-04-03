@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -63,7 +63,7 @@ namespace Net.Vpc.Upa.Expressions
                 Add(newValue);
                 return this;
             } else {
-                throw new System.ArgumentException ("No more tokens are expected");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("No more tokens are expected");
             }
         }
 
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Expressions
                 state = VALID;
                 return this;
             } else {
-                throw new System.ArgumentException ("Expected a value");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Expected a value");
             }
         }
 

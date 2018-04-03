@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -61,18 +61,20 @@ namespace Net.Vpc.Upa
 
          bool IsAskForConfirm();
 
-         Net.Vpc.Upa.Key ExtractKey(Net.Vpc.Upa.Record sourceRecord);
+         Net.Vpc.Upa.Key ExtractKey(Net.Vpc.Upa.Document sourceDocument);
 
-         object ExtractId(Net.Vpc.Upa.Record sourceRecord);
+         object ExtractId(Net.Vpc.Upa.Document sourceDocument);
 
-         object ExtractIdByEntityField(Net.Vpc.Upa.Record sourceRecord);
+         object ExtractIdByEntityField(Net.Vpc.Upa.Document sourceDocument);
 
-         object ExtractIdByForeignFields(Net.Vpc.Upa.Record sourceRecord);
+         object ExtractIdByForeignFields(Net.Vpc.Upa.Document sourceDocument);
 
          Net.Vpc.Upa.Extensions.HierarchyExtension GetHierarchyExtension();
 
          void SetHierarchyExtension(Net.Vpc.Upa.Extensions.HierarchyExtension extension);
 
          Net.Vpc.Upa.Expressions.Expression CreateTargetListExpression(object currentInstance, string alias);
+
+         Net.Vpc.Upa.RelationshipInfo GetInfo();
     }
 }

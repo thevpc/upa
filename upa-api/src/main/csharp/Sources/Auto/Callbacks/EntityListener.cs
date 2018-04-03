@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Callbacks
          void OnPreInitialize(Net.Vpc.Upa.Callbacks.EntityEvent @event);
 
         /**
-             * called when Entity is initialized aka default entities / records where
+             * called when Entity is initialized aka default entities / Documents where
              * inserted
              *
              * @param event

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -35,7 +35,7 @@ namespace Net.Vpc.Upa.Expressions
             this.applier = applier;
             this.name = name;
             if (name.Contains(".")) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Name could not contain dots");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Name could not contain dots");
             }
         }
 
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Expressions
             if (tag.Equals(PARENT)) {
                 this.applier = e;
             } else {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Not supported yet.");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Not supported yet.");
             }
         }
 

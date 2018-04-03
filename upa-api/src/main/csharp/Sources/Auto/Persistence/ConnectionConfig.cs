@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -84,6 +84,30 @@ namespace Net.Vpc.Upa.Persistence
 
         public override string ToString() {
             return "ConnectionConfig{" + "connectionString=" + connectionString + ", userName=" + userName + ", password=" + password + ", structureStrategy=" + structureStrategy + ", properties=" + properties + '}';
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            Net.Vpc.Upa.Persistence.ConnectionConfig that = (Net.Vpc.Upa.Persistence.ConnectionConfig) o;
+            if (connectionString != null ? !connectionString.Equals(that.connectionString) : that.connectionString != null) return false;
+            if (enabled != null ? !enabled.Equals(that.enabled) : that.enabled != null) return false;
+            if (userName != null ? !userName.Equals(that.userName) : that.userName != null) return false;
+            if (password != null ? !password.Equals(that.password) : that.password != null) return false;
+            if (structureStrategy != that.structureStrategy) return false;
+            return properties != null ? properties.Equals(that.properties) : that.properties == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = connectionString != null ? connectionString.GetHashCode() : 0;
+            result = 31 * result + (enabled != null ? enabled.GetHashCode() : 0);
+            result = 31 * result + (userName != null ? userName.GetHashCode() : 0);
+            result = 31 * result + (password != null ? password.GetHashCode() : 0);
+            result = 31 * result + (structureStrategy != default(Net.Vpc.Upa.Persistence.StructureStrategy) ? structureStrategy.GetHashCode() : 0);
+            result = 31 * result + (properties != null ? properties.GetHashCode() : 0);
+            return result;
         }
     }
 }

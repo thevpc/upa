@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -50,11 +50,18 @@ namespace Net.Vpc.Upa.Types
         public TimeType(string name, System.Type type, Net.Vpc.Upa.Types.Time min, Net.Vpc.Upa.Types.Time max, bool nullable)  : base(name, type == null ? typeof(Net.Vpc.Upa.Types.Time) : type, 0, 0, nullable){
 
             if (type != null && !typeof(Net.Vpc.Upa.Types.Time).Equals(type) && !typeof(Net.Vpc.Upa.Types.Time).Equals(type) && !typeof(Net.Vpc.Upa.Types.Temporal).Equals(type)) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Invalid Temporal Type " + type);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid Temporal Type " + type);
             }
             this.min = min;
             this.max = max;
-            SetDefaultNonNullValue(Convert(new Net.Vpc.Upa.Types.DateTime(0)));
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = (Convert(new Net.Vpc.Upa.Types.DateTime(0)));
+            }
         }
 
         public virtual Net.Vpc.Upa.Types.Time GetMin() {
@@ -106,6 +113,9 @@ namespace Net.Vpc.Upa.Types
                 return null;
             }
             System.Type type = GetPlatformType();
+            if (date.GetType().Equals(type)) {
+                return date;
+            }
             Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
             c.SetTime(date);
             long time = date.GetTime();
@@ -116,8 +126,70 @@ namespace Net.Vpc.Upa.Types
             } else if (typeof(Net.Vpc.Upa.Types.Temporal).IsAssignableFrom(type)) {
                 return new Net.Vpc.Upa.Types.DateTime(time);
             } else {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.TimeType timeType = (Net.Vpc.Upa.Types.TimeType) o;
+            if (min != null ? !min.Equals(timeType.min) : timeType.min != null) return false;
+            return max != null ? max.Equals(timeType.max) : timeType.max == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (min != null ? min.GetHashCode() : 0);
+            result = 31 * result + (max != null ? max.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.Types.TemporalOption GetTemporalOption() {
+            return Net.Vpc.Upa.Types.TemporalOption.TIME;
+        }
+
+
+        public override string ToString() {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder("TimeType[" + (GetPlatformType()).FullName + "]");
+            System.Collections.Generic.IDictionary<string , object> v = new System.Collections.Generic.Dictionary<string , object>();
+            //        if(name!=null){
+            //            v.put("name",name);
+            //        }
+            if (min != null) {
+                v["min"]=min;
+            }
+            if (min != null) {
+                v["max"]=max;
+            }
+            if ((v).Count > 0) {
+                sb.Append(v);
+            }
+            return sb.ToString();
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            if (min != null) {
+                d.GetProperties()["min"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalTime(min));
+            }
+            if (max != null) {
+                d.GetProperties()["max"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalTime(max));
+            }
+            return d;
+        }
+
+
+        public override Net.Vpc.Upa.Types.Temporal Parse(string @value) {
+            if (@value == null) {
+                return null;
+            }
+            return ValidateDate(Net.Vpc.Upa.Types.PlatformUtils.ParseUniversalTime(@value));
         }
     }
 }

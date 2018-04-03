@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -153,10 +153,10 @@ namespace Net.Vpc.Upa.Callbacks
         public virtual void OnDropPersistenceGroup(Net.Vpc.Upa.Callbacks.PersistenceGroupEvent @event) {
         }
 
-        public virtual void OnPreInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPrePrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
         }
 
-        public virtual void OnInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
+        public virtual void OnPrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event) {
         }
     }
 }

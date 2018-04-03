@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -93,6 +93,26 @@ namespace Net.Vpc.Upa.Types
             } else {
                 return "";
             }
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            if (maxSize != null) {
+                d.GetProperties()["maxSize"]=System.Convert.ToString(maxSize);
+            }
+            if (extensions != null) {
+                System.Text.StringBuilder s = new System.Text.StringBuilder();
+                for (int i = 0; i < extensions.Length; i++) {
+                    if (i > 0) {
+                        s.Append(",");
+                    }
+                    string extension = extensions[i];
+                    s.Append(extension);
+                }
+                d.GetProperties()["extensions"]=System.Convert.ToString(s);
+            }
+            return d;
         }
     }
 }

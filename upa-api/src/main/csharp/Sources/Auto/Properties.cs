@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -120,8 +120,6 @@ namespace Net.Vpc.Upa
          bool IsSet(string key);
 
          void Remove(string key);
-
-         object Eval(string expression);
 
          void AddPropertyChangeListener(string key, Net.Vpc.Upa.PropertyChangeListener listener);
 

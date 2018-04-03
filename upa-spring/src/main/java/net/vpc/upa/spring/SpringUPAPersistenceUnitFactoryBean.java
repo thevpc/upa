@@ -9,7 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class PersistenceUnitFactoryBean implements FactoryBean<PersistenceUnit>, InitializingBean, DisposableBean,ApplicationContextAware {
+public class SpringUPAPersistenceUnitFactoryBean implements FactoryBean<PersistenceUnit>, InitializingBean, DisposableBean,ApplicationContextAware {
     private UPAContextProvider upaContextProvider;
     private PersistenceUnitProvider persistenceUnitProvider;
     private PersistenceGroupProvider persistenceGroupProvider;

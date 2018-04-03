@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,14 +27,14 @@ namespace Net.Vpc.Upa.Expressions
 
         private Net.Vpc.Upa.Expressions.Var alias;
 
-        public IdEnumerationExpression(System.Collections.Generic.IList<object> keys, Net.Vpc.Upa.Expressions.Var alias) {
-            this.ids = keys;
+        public IdEnumerationExpression(System.Collections.Generic.IList<object> ids, Net.Vpc.Upa.Expressions.Var alias) {
+            this.ids = ids;
             this.alias = alias;
         }
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(1);
             if (alias != null) {
                 all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(alias, ALIAS));
             }

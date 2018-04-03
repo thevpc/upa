@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -52,6 +52,6 @@ namespace Net.Vpc.Upa
              * are managed by the framework and should never be set directly by
              * application. FOREIGN fields always points to REFERENCED fields
              */
-        FOREIGN, PERSIST, PERSIST_DEFAULT, PERSIST_FORMULA, PERSIST_SEQUENCE, UPDATE, UPDATE_DEFAULT, UPDATE_FORMULA, UPDATE_SEQUENCE, SELECT, SELECT_DEFAULT, SELECT_LIVE, SELECT_STORED, SELECT_CUSTOM, REFERENCED, SYSTEM, TRANSIENT
+        FOREIGN, PERSIST, PERSIST_DEFAULT, PERSIST_FORMULA, PERSIST_SEQUENCE, UPDATE, UPDATE_DEFAULT, UPDATE_FORMULA, UPDATE_SEQUENCE, SELECT, SELECT_DEFAULT, SELECT_LIVE, SELECT_COMPILED, SELECT_CUSTOM, REFERENCED, SYSTEM, TRANSIENT
     }
 }

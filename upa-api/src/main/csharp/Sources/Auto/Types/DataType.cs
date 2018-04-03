@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,10 +27,6 @@ namespace Net.Vpc.Upa.Types
          object GetDefaultValue();
 
          void SetDefaultValue(object defaultValue);
-
-         object GetDefaultNonNullValue();
-
-         void SetDefaultNonNullValue(object defaultNonNullValue);
 
          bool IsNullable();
 
@@ -79,5 +75,7 @@ namespace Net.Vpc.Upa.Types
          Net.Vpc.Upa.Properties GetProperties();
 
          void SetProperties(Net.Vpc.Upa.Properties properties);
+
+         Net.Vpc.Upa.DataTypeInfo GetInfo();
     }
 }

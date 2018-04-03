@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -36,10 +36,10 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private string _Type = "";
-        public  string Type{
-            get {return _Type;}
-            set {_Type=value;}
+        private string _ValueType = "";
+        public  string ValueType{
+            get {return _ValueType;}
+            set {_ValueType=value;}
         }
 
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -18,8 +18,6 @@ namespace Net.Vpc.Upa
     public class KeyType : Net.Vpc.Upa.Types.StructType {
 
         private Net.Vpc.Upa.Expressions.Expression filter;
-
-        private Net.Vpc.Upa.Relationship relationship;
 
         private Net.Vpc.Upa.Entity entity;
 
@@ -53,16 +51,8 @@ namespace Net.Vpc.Upa
             return entity;
         }
 
-        public virtual Net.Vpc.Upa.Relationship GetRelationship() {
-            return relationship;
-        }
-
-        public virtual void SetRelationship(Net.Vpc.Upa.Relationship r) {
-            relationship = r;
-        }
-
         private static string[] ConstructorFieldNames(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = entity.GetPrimaryFields();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = entity.GetIdFields();
             string[] fs = new string[(primaryFields).Count];
             for (int i = 0; i < fs.Length; i++) {
                 fs[i] = primaryFields[i].GetName();
@@ -71,7 +61,7 @@ namespace Net.Vpc.Upa
         }
 
         private static Net.Vpc.Upa.Types.DataType[] ConstructorFieldTypes(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = entity.GetPrimaryFields();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Field> primaryFields = entity.GetIdFields();
             Net.Vpc.Upa.Types.DataType[] dt = new Net.Vpc.Upa.Types.DataType[(primaryFields).Count];
             for (int i = 0; i < dt.Length; i++) {
                 dt[i] = primaryFields[i].GetDataType();
@@ -92,6 +82,24 @@ namespace Net.Vpc.Upa
 
         public override object[] GetArrayForObject(object @value) {
             return @value == null ? null : ((Net.Vpc.Upa.Key) @value).GetValue();
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.KeyType keyType = (Net.Vpc.Upa.KeyType) o;
+            if (filter != null ? !filter.Equals(keyType.filter) : keyType.filter != null) return false;
+            return entity != null ? entity.Equals(keyType.entity) : keyType.entity == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (filter != null ? filter.GetHashCode() : 0);
+            result = 31 * result + (entity != null ? entity.GetHashCode() : 0);
+            return result;
         }
     }
 }

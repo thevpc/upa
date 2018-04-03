@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -29,7 +29,7 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public BootstrapException(string message, System.Exception throwable)  : base(throwable, new Net.Vpc.Upa.Types.I18NString("IllegalArgumentException"), message){
+        public BootstrapException(string message, System.Exception throwable)  : base(throwable, new Net.Vpc.Upa.Types.I18NString("BootstrapException"), message){
 
         }
     }

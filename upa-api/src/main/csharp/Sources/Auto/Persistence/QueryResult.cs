@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,7 +20,11 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface QueryResult : Net.Vpc.Upa.Closeable {
 
-         int GetFieldsCount();
+         string GetColumnName(int index);
+
+         System.Type GetColumnType(int index);
+
+         int GetColumnsCount();
 
           T Read<T>(int index);
 

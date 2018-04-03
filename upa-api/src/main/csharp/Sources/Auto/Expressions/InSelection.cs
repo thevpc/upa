@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(left.Length + 1);
             for (int i = 0; i < left.Length; i++) {
                 Net.Vpc.Upa.Expressions.Expression expression = left[i];
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(expression, new Net.Vpc.Upa.Expressions.IndexedTag("LEFT", i)));
@@ -72,7 +72,7 @@ namespace Net.Vpc.Upa.Expressions
         public override Net.Vpc.Upa.Expressions.Expression Copy() {
             Net.Vpc.Upa.Expressions.Expression[] left2 = new Net.Vpc.Upa.Expressions.Expression[left.Length];
             for (int i = 0; i < left2.Length; i++) {
-                left2[i] = left2[i].Copy();
+                left2[i] = left[i].Copy();
             }
             return new Net.Vpc.Upa.Expressions.InSelection(left2, (Net.Vpc.Upa.Expressions.Select) query.Copy());
         }

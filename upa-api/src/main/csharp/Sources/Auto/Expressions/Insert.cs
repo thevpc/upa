@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -44,7 +44,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>((fields).Count + 1);
             if (entity != null) {
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
             }
@@ -132,7 +132,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual Net.Vpc.Upa.Expressions.Insert Set(System.Collections.Generic.IDictionary<string , object> keysValues) {
-            foreach (System.Collections.Generic.KeyValuePair<string , object> e in keysValues) {
+            foreach (System.Collections.Generic.KeyValuePair<string , object> e in new System.Collections.Generic.HashSet<System.Collections.Generic.KeyValuePair<string,object>>(keysValues)) {
                 Set((e).Key, (e).Value);
             }
             return this;

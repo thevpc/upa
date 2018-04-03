@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -49,7 +49,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(2);
             if (left != null) {
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
             }
@@ -66,7 +66,7 @@ namespace Net.Vpc.Upa.Expressions
             } else if (tag.Equals(RIGHT)) {
                 this.right = e;
             } else {
-                throw new System.ArgumentException ("Insuppoerted");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Insuppoerted");
             }
         }
 
@@ -159,7 +159,7 @@ namespace Net.Vpc.Upa.Expressions
                     }
                 default:
                     {
-                        throw new System.ArgumentException ("Not Supported Yet");
+                        throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Not Supported Yet");
                     }
             }
         }
@@ -257,7 +257,7 @@ namespace Net.Vpc.Upa.Expressions
                     }
                 default:
                     {
-                        throw new System.ArgumentException ("Not Supported Yet");
+                        throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Not Supported Yet");
                     }
             }
         }

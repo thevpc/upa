@@ -10,6 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.List;
 
@@ -26,33 +27,10 @@ public class PersistenceUnitFactoryBeanTest {
         List all = t.findAll();
         System.out.println(all);
     }
+
     @Configuration
     @ComponentScan("net.vpc")
-    @EnableTransactionManagement
-    public static class AppConfig {
+    public static class AppConfig extends SpringUPAConfig{
 
-        @Bean
-        public SpringUPATransactionManager transactionManager(){
-            SpringUPATransactionManager upaTransactionManager=new SpringUPATransactionManager();
-            return  upaTransactionManager;
-        }
-
-        @Bean
-        public PersistenceUnitFactoryBean getPersistenceUnitFactoryBean() {
-            PersistenceUnitFactoryBean e = new PersistenceUnitFactoryBean();
-            e.setConfig(new UPAContextConfig()
-                    .addFilter(new ScanFilter().setLibs("**").setTypes("**"))
-                    .addPersistenceGroups(
-                            new PersistenceGroupConfig("example")
-                                    .addPersistenceUnit(
-                                            new PersistenceUnitConfig("myCnx")
-                                                    .addConnectionConfig(
-                                                            new ConnectionConfig()
-                                                                    .setConnectionString("derby:embedded://mydb;structure=create;userName=me;password=metoo")
-                                                    )
-                                    )
-                    ));
-            return e;
-        }
     }
 }

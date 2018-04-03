@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa.Types
      * Time: 10:38:06
      * To change this template use Options | File Templates.
      */
-    public class DatePeriodType : Net.Vpc.Upa.Types.TemporalType, Net.Vpc.Upa.CompoundDataType {
+    public class DatePeriodType : Net.Vpc.Upa.Types.DefaultDataType, Net.Vpc.Upa.CompoundDataType {
 
         private string countName;
 
@@ -45,10 +45,20 @@ namespace Net.Vpc.Upa.Types
             if (this.countName == null) {
                 this.countName = "count";
             }
-            if (periodTypeName == null) {
-                periodTypeName = "type";
+            if (this.periodTypeName == null) {
+                this.periodTypeName = "type";
             }
-            SetDefaultNonNullValue(new Net.Vpc.Upa.Types.DatePeriod((((int?) countDataType.GetDefaultNonNullValue())).Value, Net.Vpc.Upa.Types.PeriodOption.DAY));
+            ReevaluateCachedValues();
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            //        Integer defaultNonNullValue = (Integer) countDataType.getDefaultValue();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                //            defaultValue=(new DatePeriod(defaultNonNullValue == null ? 0 : defaultNonNullValue.intValue(), PeriodOption.DAY));
+                defaultValue = (new Net.Vpc.Upa.Types.DatePeriod(0, Net.Vpc.Upa.Types.PeriodOption.DAY));
+            }
         }
 
         public virtual string GetCountName() {
@@ -68,33 +78,28 @@ namespace Net.Vpc.Upa.Types
         }
 
 
-        public override Net.Vpc.Upa.Types.Temporal ValidateDate(Net.Vpc.Upa.Types.Temporal date) {
-            return date;
-        }
-
-
         public virtual Net.Vpc.Upa.FieldDescriptor[] GetComposingFields(Net.Vpc.Upa.FieldDescriptor fieldDescriptor) {
             string[] names = new string[] { fieldDescriptor.GetName() + char.ToUpper(countName[0]) + countName.Substring(1), fieldDescriptor.GetName() + char.ToUpper(periodTypeName[0]) + periodTypeName.Substring(1) };
             if (fieldDescriptor.GetPersistFormula() != null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Persist Formula");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported composing Persist Formula");
             }
             if (fieldDescriptor.GetUpdateFormula() != null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Update Formula");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported composing Update Formula");
             }
             if (fieldDescriptor.GetSelectFormula() != null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unsupported composing Select Formula");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported composing Select Formula");
             }
             Net.Vpc.Upa.FieldDescriptor[] fieldDescriptors = new Net.Vpc.Upa.FieldDescriptor[names.Length];
             object[] def = GetPrimitiveValues(fieldDescriptor.GetDefaultObject());
             object[] uns = GetPrimitiveValues(fieldDescriptor.GetUnspecifiedObject());
             for (int i = 0; i < fieldDescriptors.Length; i++) {
                 Net.Vpc.Upa.DefaultFieldDescriptor d = new Net.Vpc.Upa.DefaultFieldDescriptor();
-                d.SetReadAccessLevel(Net.Vpc.Upa.AccessLevel.PRIVATE);
+                d.SetReadProtectionLevel(Net.Vpc.Upa.ProtectionLevel.PRIVATE);
                 d.SetDataType(i == 0 ? Net.Vpc.Upa.Types.TypesFactory.INT : Net.Vpc.Upa.Types.TypesFactory.INT);
                 d.SetDefaultObject(def == null ? null : def[i]);
                 d.SetUnspecifiedObject(uns == null ? null : uns[i]);
                 d.SetPersistAccessLevel(fieldDescriptor.GetPersistAccessLevel());
-                d.SetUserFieldModifiers(Net.Vpc.Upa.FlagSets.Of<Net.Vpc.Upa.UserFieldModifier>(Net.Vpc.Upa.UserFieldModifier.SYSTEM));
+                d.SetModifiers(Net.Vpc.Upa.FlagSets.Of<>(Net.Vpc.Upa.UserFieldModifier.SYSTEM));
                 d.SetUpdateAccessLevel(fieldDescriptor.GetPersistAccessLevel());
                 fieldDescriptors[i] = d;
             }
@@ -116,6 +121,28 @@ namespace Net.Vpc.Upa.Types
                 return new Net.Vpc.Upa.Types.DatePeriod(c, ((Net.Vpc.Upa.Types.PeriodOption[])System.Enum.GetValues(typeof(Net.Vpc.Upa.Types.PeriodOption)))[p]);
             }
             return null;
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.DatePeriodType that = (Net.Vpc.Upa.Types.DatePeriodType) o;
+            if (countName != null ? !countName.Equals(that.countName) : that.countName != null) return false;
+            if (periodTypeName != null ? !periodTypeName.Equals(that.periodTypeName) : that.periodTypeName != null) return false;
+            if (countDataType != null ? !countDataType.Equals(that.countDataType) : that.countDataType != null) return false;
+            return periodTypeDataType != null ? periodTypeDataType.Equals(that.periodTypeDataType) : that.periodTypeDataType == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (countName != null ? countName.GetHashCode() : 0);
+            result = 31 * result + (periodTypeName != null ? periodTypeName.GetHashCode() : 0);
+            result = 31 * result + (countDataType != null ? countDataType.GetHashCode() : 0);
+            result = 31 * result + (periodTypeDataType != null ? periodTypeDataType.GetHashCode() : 0);
+            return result;
         }
     }
 }

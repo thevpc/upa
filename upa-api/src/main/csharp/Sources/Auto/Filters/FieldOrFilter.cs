@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
         public FieldOrFilter(System.Collections.Generic.IList<Net.Vpc.Upa.Filters.FieldFilter> filters) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>();
+            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>((filters).Count);
             foreach (Net.Vpc.Upa.Filters.FieldFilter a in filters) {
                 if (a != null) {
                     all.Add(a);
@@ -42,7 +42,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
         public static Net.Vpc.Upa.Filters.FieldOrFilter Or(params Net.Vpc.Upa.Filters.FieldFilter [] filters) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>();
+            System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(filters.Length);
             foreach (Net.Vpc.Upa.Filters.FieldFilter filter in filters) {
                 if (filter != null) {
                     if (filter is Net.Vpc.Upa.Filters.FieldOrFilter) {
@@ -55,15 +55,16 @@ namespace Net.Vpc.Upa.Filters
             return new Net.Vpc.Upa.Filters.FieldOrFilter(all);
         }
 
-        public virtual Net.Vpc.Upa.Filters.FieldOrFilter Or(Net.Vpc.Upa.Filters.FieldFilter filter) {
+        public override Net.Vpc.Upa.Filters.FieldOrFilter Or(Net.Vpc.Upa.Filters.FieldFilter filter) {
             if (filter != null) {
                 if (filter is Net.Vpc.Upa.Filters.FieldOrFilter) {
-                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>();
+                    System.Collections.Generic.IList<Net.Vpc.Upa.Filters.FieldFilter> children = ((Net.Vpc.Upa.Filters.FieldOrFilter) filter).GetChildren();
+                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v.Length + (children).Count);
                     Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v));
-                    Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, ((Net.Vpc.Upa.Filters.FieldOrFilter) filter).GetChildren());
+                    Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, children);
                     return new Net.Vpc.Upa.Filters.FieldOrFilter(all);
                 } else {
-                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>();
+                    System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter> all = new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v.Length + 1);
                     Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(all, new System.Collections.Generic.List<Net.Vpc.Upa.Filters.FieldFilter>(v));
                     all.Add(filter);
                     return new Net.Vpc.Upa.Filters.FieldOrFilter(all);

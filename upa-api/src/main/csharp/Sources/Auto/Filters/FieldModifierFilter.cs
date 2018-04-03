@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -81,8 +81,8 @@ namespace Net.Vpc.Upa.Filters
         }
 
         private Net.Vpc.Upa.Filters.FieldModifierFilter Or(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> y = modifierYes == null ? Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.FieldModifier>() : Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.FieldModifier>().AddAll(modifierYes);
-            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> n = modifierNo == null ? Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.FieldModifier>() : Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.FieldModifier>().AddAll(modifierNo);
+            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> y = modifierYes == null ? Net.Vpc.Upa.FlagSets.NoneOf<>() : Net.Vpc.Upa.FlagSets.NoneOf<>().AddAll(modifierYes);
+            Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.FieldModifier> n = modifierNo == null ? Net.Vpc.Upa.FlagSets.NoneOf<>() : Net.Vpc.Upa.FlagSets.NoneOf<>().AddAll(modifierNo);
             for (int i = 0; i < accepted.Length; i++) {
                 if (accepted[i].Equals(y) && rejected[i].Equals(n)) {
                     return this;
@@ -99,21 +99,21 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
             return Or(modifierYes, modifierNo);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOfFirstsAndNoneOfSeconds instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
@@ -124,7 +124,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOfFirstsAndNoneOfSeconds(Net.Vpc.Upa.FieldModifier[] modifierYes, Net.Vpc.Upa.FieldModifier[] modifierNo) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOfFirstsAndNoneOfSeconds instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             for (int i = 0; i < modifierYes.Length; i++) {
@@ -135,14 +135,14 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsAllOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsAllOf instead");
             }
             return Or(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsAnyOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -153,7 +153,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsOneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -164,7 +164,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsNotOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNotOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -175,7 +175,7 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNotAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isNotOneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isNotOneOf instead");
             }
             Net.Vpc.Upa.Filters.FieldModifierFilter x = this;
             foreach (Net.Vpc.Upa.FieldModifier m in modifiers) {
@@ -186,21 +186,21 @@ namespace Net.Vpc.Upa.Filters
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter IsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length != 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use orIsNoneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use orIsNoneOf instead");
             }
             return OrNot(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsAllOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isAllOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isAllOf instead");
             }
             return Or(modifiers);
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldModifierFilter OrIsNoneOf(params Net.Vpc.Upa.FieldModifier [] modifiers) {
             if (accepted.Length == 0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("use isNoneOf instead");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("use isNoneOf instead");
             }
             return OrNot(modifiers);
         }

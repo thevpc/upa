@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -17,9 +17,9 @@ namespace Net.Vpc.Upa
 
     public interface Entity : Net.Vpc.Upa.PersistenceUnitPart {
 
-         void SetEntitySecurityManager(Net.Vpc.Upa.EntitySecurityManager securityManager);
-
          Net.Vpc.Upa.EntitySecurityManager GetEntitySecurityManager();
+
+         void SetEntitySecurityManager(Net.Vpc.Upa.EntitySecurityManager securityManager);
 
          Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> GetUserModifiers();
 
@@ -40,6 +40,15 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Relationship GetCompositionRelation();
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationships();
+
+         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsBySource();
+
+         System.Collections.Generic.IList<Net.Vpc.Upa.Relationship> GetRelationshipsByTarget();
+
+        /**
+             * @return true if this entity is its own parent
+             */
+         bool IsHierarchical();
 
          string GetParentSecurityAction();
 
@@ -73,23 +82,21 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Section GetSection(string path, Net.Vpc.Upa.MissingStrategy missingStrategy);
 
-         Net.Vpc.Upa.Section AddSection(string name, string parentPath);
+         Net.Vpc.Upa.Section AddSection(string path, int index);
 
-         Net.Vpc.Upa.Section AddSection(string name, string parentPath, int index);
+         Net.Vpc.Upa.Section AddSection(string path);
 
-         Net.Vpc.Upa.Section AddSection(string name, int index);
+         bool IsInstance(object @object);
 
-         Net.Vpc.Upa.Section AddSection(string name);
+         bool IsIdInstance(object @object);
 
          System.Type GetEntityType();
 
          System.Type GetIdType();
 
-         bool NeedsView();
+         bool HasAssociatedView();
 
          Net.Vpc.Upa.Types.DataType GetDataType();
-
-         void SetDataType(Net.Vpc.Upa.Types.DataType newDataType);
 
          bool IsDependentOnEntity(string entityName);
 
@@ -97,9 +104,7 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Field AddField(Net.Vpc.Upa.FieldDescriptor fieldDescriptor);
 
-         Net.Vpc.Upa.Field AddField(string name, string sectionPath, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers, object defaultValue, Net.Vpc.Upa.Types.DataType type);
-
-         Net.Vpc.Upa.Field AddField(string name, string sectionPath, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers, object defaultValue, Net.Vpc.Upa.Types.DataType type, int index);
+         Net.Vpc.Upa.Field AddField(Net.Vpc.Upa.FieldBuilder fieldBuilder);
 
          Net.Vpc.Upa.Field GetMainField();
 
@@ -107,11 +112,11 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.EntityNavigator GetNavigator();
 
-         void SetNavigator(Net.Vpc.Upa.EntityNavigator newNavigator);
+         void SetNavigator(Net.Vpc.Upa.EntityNavigator navigator);
 
          int GetFieldsCount();
 
-         bool ContainsField(string key);
+         bool ContainsField(string fieldName);
 
          System.Collections.Generic.IList<Net.Vpc.Upa.DynamicField> GetDynamicFields();
 
@@ -121,11 +126,18 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Field FindField(string fieldName);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetPrimaryFields();
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetIdFields();
+
+        /**
+             * When and id field is ManyToOne Field, it will be flattened
+             *
+             * @return
+             */
+         System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> GetIdPrimitiveFields();
 
          System.Collections.Generic.IList<string> GetFieldNames(Net.Vpc.Upa.Filters.FieldFilter fieldFilter);
 
-         object CloneRecord(object oldId, object newId);
+         object CloneDocument(object oldId, object newId);
 
          object Rename(object oldId, object newId);
 
@@ -151,13 +163,13 @@ namespace Net.Vpc.Upa
 
           K NextId<K>();
 
-         void Persist(object objectOrRecord);
+         void Persist(object objectOrDocument);
 
-         bool Save(object objectOrRecord);
+         bool Save(object objectOrDocument);
 
-         void Persist(object objectOrRecord, System.Collections.Generic.IDictionary<string , object> hints);
+         void Persist(object objectOrDocument, System.Collections.Generic.IDictionary<string , object> hints);
 
-         bool Save(object objectOrRecord, System.Collections.Generic.IDictionary<string , object> hints);
+         bool Save(object objectOrDocument, System.Collections.Generic.IDictionary<string , object> hints);
 
          void Clear();
 
@@ -175,9 +187,9 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.UpdateQuery CreateUpdateQuery();
 
-         void Update(object objectOrRecord);
+         void Update(object objectOrDocument);
 
-         void Merge(object objectOrRecord);
+         void Merge(object objectOrDocument);
 
          void UpdateFormulas();
 
@@ -193,9 +205,15 @@ namespace Net.Vpc.Upa
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields(Net.Vpc.Upa.Filters.FieldFilter filter);
 
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetImmediateFields();
+
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetImmediateFields(Net.Vpc.Upa.Filters.FieldFilter filter);
+
          Net.Vpc.Upa.Expressions.Order GetArchivingOrder();
 
-         Net.Vpc.Upa.Field GetLeadingPrimaryField();
+         void SetArchivingOrder(Net.Vpc.Upa.Expressions.Order archivingOrder);
+
+         Net.Vpc.Upa.Field GetLeadingIdField();
 
          System.Collections.Generic.IList<string> GetOrderedFields(string[] fields);
 
@@ -210,8 +228,6 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Expressions.Order GetListOrder();
 
          void SetListOrder(Net.Vpc.Upa.Expressions.Order listOrder);
-
-         void SetArchivingOrder(Net.Vpc.Upa.Expressions.Order archivingOrder);
 
          System.Collections.Generic.IList<Net.Vpc.Upa.PrimitiveField> GetPrimitiveFields(Net.Vpc.Upa.Filters.FieldFilter fieldFilter);
 
@@ -263,7 +279,7 @@ namespace Net.Vpc.Upa
 
          void SetShield(Net.Vpc.Upa.EntityShield shield);
 
-         Net.Vpc.Upa.Expressions.Expression ChildToParentExpression(Net.Vpc.Upa.Record child);
+         Net.Vpc.Upa.Expressions.Expression ChildToParentExpression(Net.Vpc.Upa.Document child);
 
          Net.Vpc.Upa.Expressions.Expression ChildToParentExpression(Net.Vpc.Upa.Expressions.Expression childExpression);
 
@@ -273,7 +289,7 @@ namespace Net.Vpc.Upa
 
          object CreateId(params object [] keyValues);
 
-         Net.Vpc.Upa.Record CreateRecord();
+         Net.Vpc.Upa.Document CreateDocument();
 
           R CreateObject<R>();
 
@@ -294,17 +310,7 @@ namespace Net.Vpc.Upa
 
          void RemoveDefinitionListener(Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener);
 
-         int UpdateCore(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression condition, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext);
-
-         void PersistCore(Net.Vpc.Upa.Record values, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext);
-
-         int RemoveCore(Net.Vpc.Upa.Expressions.Expression condition, bool recurse, Net.Vpc.Upa.RemoveTrace deleteInfo, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext);
-
-         int ClearCore(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext);
-
-         int InitializeCore(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext);
-
-         object Compile(Net.Vpc.Upa.Expressions.Expression expression);
+         object Compile(Net.Vpc.Upa.Expressions.Expression expression, string alias);
 
          void AddFilter(string name, string expression);
 
@@ -317,8 +323,6 @@ namespace Net.Vpc.Upa
          System.Collections.Generic.ISet<string> GetFilterNames();
 
          bool IsSystem();
-
-         void SetModifiers(Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.EntityModifier> modifiers);
 
          void Initialize();
 
@@ -342,8 +346,10 @@ namespace Net.Vpc.Upa
 
           System.Collections.Generic.IList<T> FindAllIds<T>();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Record> FindAllRecords();
+         System.Collections.Generic.IList<Net.Vpc.Upa.Document> FindAllDocuments();
 
-         Net.Vpc.Upa.BeanType GetBeanType();
+         Net.Vpc.Upa.PlatformBeanType GetPlatformBeanType();
+
+         Net.Vpc.Upa.EntityInfo GetInfo();
     }
 }

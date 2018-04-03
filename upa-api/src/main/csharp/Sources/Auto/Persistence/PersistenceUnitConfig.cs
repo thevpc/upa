@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -34,13 +34,13 @@ namespace Net.Vpc.Upa.Persistence
 
         private bool? autoScan;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> rootConnections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> rootConnections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>(2);
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> connections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ConnectionConfig> connections = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.ConnectionConfig>(2);
 
-        private System.Collections.Generic.IDictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>();
+        private System.Collections.Generic.IDictionary<string , object> properties = new System.Collections.Generic.Dictionary<string , object>(5);
 
-        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>();
+        private readonly System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters = new System.Collections.Generic.List<Net.Vpc.Upa.Config.ScanFilter>(2);
 
         public PersistenceUnitConfig() {
         }
@@ -101,18 +101,18 @@ namespace Net.Vpc.Upa.Persistence
             this.autoScan = autoScan;
         }
 
-        public virtual void SetContextAnnotationStrategyFilters(System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters) {
+        public virtual void SetFilters(System.Collections.Generic.IList<Net.Vpc.Upa.Config.ScanFilter> filters) {
             this.filters.Clear();
             if (filters != null) {
                 Net.Vpc.Upa.FwkConvertUtils.ListAddRange(this.filters, filters);
             }
         }
 
-        public virtual void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void AddFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
             filters.Add(filter);
         }
 
-        public virtual void RemoveContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
+        public virtual void RemoveFilter(Net.Vpc.Upa.Config.ScanFilter filter) {
             filters.Remove(filter);
         }
 

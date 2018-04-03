@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -18,7 +18,7 @@ namespace Net.Vpc.Upa.Filters
     /**
      * @author Taha BEN SALAH <taha.bensalah@gmail.com>
      */
-    public class DefaultEntityFilter : Net.Vpc.Upa.Filters.EntityFilter {
+    public class DefaultEntityFilter : Net.Vpc.Upa.Filters.AbstractRichEntityFilter {
 
         private int acceptCloneable = 0;
 
@@ -50,7 +50,41 @@ namespace Net.Vpc.Upa.Filters
 
         private System.Type rootClass;
 
+        private System.Collections.Generic.ISet<string> acceptedNames;
+
+        private System.Collections.Generic.ISet<string> rejectedNames;
+
         public DefaultEntityFilter() {
+        }
+
+        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetAcceptName(string name) {
+            if (acceptedNames == null) {
+                acceptedNames = new System.Collections.Generic.HashSet<string>();
+            }
+            acceptedNames.Add(name);
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter UnsetAcceptName(string name) {
+            if (acceptedNames != null) {
+                acceptedNames.Remove(name);
+            }
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter SetRejectName(string name) {
+            if (rejectedNames == null) {
+                rejectedNames = new System.Collections.Generic.HashSet<string>();
+            }
+            rejectedNames.Add(name);
+            return this;
+        }
+
+        public virtual Net.Vpc.Upa.Filters.DefaultEntityFilter UnsetRejectName(string name) {
+            if (rejectedNames != null) {
+                rejectedNames.Remove(name);
+            }
+            return this;
         }
 
         public virtual System.Type GetRootTableClass() {
@@ -244,9 +278,15 @@ namespace Net.Vpc.Upa.Filters
             return acceptClear == -1;
         }
 
-        public virtual bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public override bool Accept(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             object source = entity.GetEntityDescriptor().GetSource();
             if (rootClass != null && (source == null || !rootClass.IsAssignableFrom(source.GetType()))) {
+                return false;
+            }
+            if (acceptedNames != null && (acceptedNames).Count > 0 && !acceptedNames.Contains(entity.GetName())) {
+                return false;
+            }
+            if (rejectedNames != null && (rejectedNames).Count > 0 && rejectedNames.Contains(entity.GetName())) {
                 return false;
             }
             Net.Vpc.Upa.EntityShield v = entity.GetShield();

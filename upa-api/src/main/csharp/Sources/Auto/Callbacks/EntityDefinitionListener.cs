@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -24,9 +24,9 @@ namespace Net.Vpc.Upa.Callbacks
 
          void OnCreateEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnPreInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnPrePrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
 
-         void OnInitEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
+         void OnPrepareEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
 
          void OnPreDropEntity(Net.Vpc.Upa.Callbacks.EntityEvent @event);
 

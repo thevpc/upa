@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -36,6 +36,15 @@ namespace Net.Vpc.Upa.Bulk
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> GetColumns() {
             return columns;
+        }
+
+        public virtual System.Collections.Generic.IList<string> GetColumnNames() {
+            System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.SheetColumn> columns = GetColumns();
+            System.Collections.Generic.IList<string> names = new System.Collections.Generic.List<string>((columns).Count);
+            foreach (Net.Vpc.Upa.Bulk.SheetColumn column in columns) {
+                names.Add(column.GetName());
+            }
+            return names;
         }
 
         public virtual bool IsContainsHeader() {

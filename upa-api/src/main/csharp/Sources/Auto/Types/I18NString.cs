@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -42,27 +42,30 @@ namespace Net.Vpc.Upa.Types
 
         public I18NString(System.Collections.Generic.IList<string> keys) {
             if (keys == null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
             this.keys = new System.Collections.Generic.List<string>(keys);
         }
 
         public virtual string GetKey(int index) {
+            if (keys == null) {
+                throw new System.IndexOutOfRangeException("Invalid Index "+(index));
+            }
             return keys[index];
         }
 
         public virtual System.Collections.Generic.IList<string> GetKeys() {
-            return keys;
+            return keys == null ? new System.Collections.Generic.List<string>() : keys;
         }
 
         public virtual Net.Vpc.Upa.Types.I18NString Append(Net.Vpc.Upa.Types.I18NString path) {
             if (path == null) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
             System.Collections.Generic.HashSet<string> a = new System.Collections.Generic.HashSet<string>();
             foreach (string key1 in keys) {
                 foreach (string key2 in path.keys) {
-                    string s = key1.Length==0 ? key2 : key2.Length==0 ? key1 : (key1 + "." + key2);
+                    string s = (key1.Length==0) ? key2 : (key2.Length==0) ? key1 : (key1 + "." + key2);
                     if (!a.Contains(s)) {
                         a.Add(s);
                     }
@@ -72,18 +75,18 @@ namespace Net.Vpc.Upa.Types
         }
 
         public virtual Net.Vpc.Upa.Types.I18NString Append(string path) {
-            if (path == null || path.Length==0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+            if (path == null || (path.Length==0)) {
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
-            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>();
+            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>((keys).Count);
             foreach (string key in keys) {
-                a.Add(key.Length==0 ? path : key + "." + path);
+                a.Add((key.Length==0) ? path : key + "." + path);
             }
             return new Net.Vpc.Upa.Types.I18NString(a);
         }
 
         public virtual Net.Vpc.Upa.Types.I18NString Union(Net.Vpc.Upa.Types.I18NString other) {
-            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>();
+            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>((this.keys).Count + (other.keys).Count);
             Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(a, this.keys);
             Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(a, other.keys);
             Net.Vpc.Upa.Types.I18NString b = new Net.Vpc.Upa.Types.I18NString(a);
@@ -96,10 +99,10 @@ namespace Net.Vpc.Upa.Types
         }
 
         public virtual Net.Vpc.Upa.Types.I18NString Union(string other) {
-            if (other == null || other.Length==0) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+            if (other == null || (other.Length==0)) {
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
-            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>();
+            System.Collections.Generic.List<string> a = new System.Collections.Generic.List<string>((this.keys).Count + 1);
             Net.Vpc.Upa.FwkConvertUtils.CollectionAddRange(a, this.keys);
             a.Add(other);
             return new Net.Vpc.Upa.Types.I18NString(a);

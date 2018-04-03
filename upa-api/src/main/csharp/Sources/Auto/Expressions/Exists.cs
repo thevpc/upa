@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -19,6 +19,10 @@ namespace Net.Vpc.Upa.Expressions
 
 
         private Net.Vpc.Upa.Expressions.QueryStatement query;
+
+        public Exists(Net.Vpc.Upa.Expressions.Expression expressions) {
+            SetQuery((Net.Vpc.Upa.Expressions.QueryStatement) expressions);
+        }
 
         public Exists(Net.Vpc.Upa.Expressions.Expression[] expressions) {
             CheckArgCount(GetName(), expressions, 1);

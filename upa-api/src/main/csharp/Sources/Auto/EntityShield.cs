@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -47,59 +47,59 @@ namespace Net.Vpc.Upa
 
          bool IsGeneratedId() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetFullNonDeletableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetFullNonDeletableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetFullNonRenamableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetFullNonRenamableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetFullNonCloneableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetFullNonCloneableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetFullNonUpdatableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetFullNonUpdatableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetNonDeletableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetNonDeletableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void SetNonDeletableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNonDeletableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetNonUpdatableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetNonUpdatableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void SetNonUpdatableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNonUpdatableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetNonRenamableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetNonRenamableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void SetNonRenamableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNonRenamableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Expressions.Expression GetNonCloneableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetNonCloneableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void SetNonCloneableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNonCloneableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void CheckInitialize() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void CheckClear() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void CheckPersist(Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CheckPersist(Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void CheckUpdate(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CheckUpdate(Net.Vpc.Upa.Document updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
         /**
              * @param oldId
              * @param newId
              * @throws net.vpc.upa.exceptions.UPAException
-             * CloneRecordNotAllowedException, CloneRecordNotAllowedException,
-             * CloneRecordNotAllowedException, CloneRecordOldKeyNotFoundException,
-             * CloneRecordNewKeyInUseException
+             * CloneDocumentNotAllowedException, CloneDocumentNotAllowedException,
+             * CloneDocumentNotAllowedException, CloneDocumentOldKeyNotFoundException,
+             * CloneDocumentNewKeyInUseException
              */
          void CheckClone(object oldId, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
         /**
-             * Check for the faisabilty of the rename operation. When oldId is null, the
-             * verification is done for ALL keys (rname should be supported+enabled for
-             * the curent user) When newId is null, the verification is done only on
+             * Check for the feasibility of the rename operation. When oldId is null, the
+             * verification is done for ALL keys (name should be supported+enabled for
+             * the current user) When newId is null, the verification is done only on
              * oldId
              *
              * @param oldId old id
              * @param newId new id
              * @throws net.vpc.upa.exceptions.UPAException :
-             * RenameRecordNotAllowedException, UnrenamableRecordException,
-             * RenameRecordOldKeyNotFoundException, RenameRecordNewKeyInUseException
+             * RenameDocumentNotAllowedException, UnrenamableDocumentException,
+             * RenameDocumentOldKeyNotFoundException, RenameDocumentNewKeyInUseException
              */
          void CheckRename(object oldId, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -107,11 +107,11 @@ namespace Net.Vpc.Upa
 
          void CheckNavigate() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void CheckRemove(Net.Vpc.Upa.Expressions.Expression condition, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CheckRemove(Net.Vpc.Upa.Expressions.Expression condition, bool recurse, long toRemoveCount) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsDeletableRecord(object k, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsDeletableDocument(object k, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         bool IsUpdatableRecord(object k) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsUpdatableDocument(object k) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsPersistEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,44 +21,44 @@ namespace Net.Vpc.Upa
      */
     public interface EntitySecurityManager {
 
-         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity, object instance) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedPersist(Net.Vpc.Upa.Entity entity, object instance);
 
-         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedUpdate(Net.Vpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRemove(Net.Vpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedClone(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedClone(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedClone(Net.Vpc.Upa.Entity entity, object instance, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedClone(Net.Vpc.Upa.Entity entity, object instance, object newId);
 
-         bool IsAllowedRename(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRename(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedRename(Net.Vpc.Upa.Entity entity, object instance, object newId) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRename(Net.Vpc.Upa.Entity entity, object instance, object newId);
 
-         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedLoad(Net.Vpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, string navigationMode) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, string navigationMode);
 
-         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedNavigate(Net.Vpc.Upa.Entity entity, object id, object @value);
 
-         bool IsAllowedRead(Net.Vpc.Upa.Field entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRead(Net.Vpc.Upa.Field field);
 
-         bool IsAllowedRead(Net.Vpc.Upa.Field entity, object id, object @object) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedRead(Net.Vpc.Upa.Field field, object id, object @object);
 
-         bool IsAllowedWrite(Net.Vpc.Upa.Field field) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedWrite(Net.Vpc.Upa.Field field);
 
-         bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         bool IsAllowedWrite(Net.Vpc.Upa.Field field, object id, object @value);
 
-         Net.Vpc.Upa.Expressions.Expression GetEntityFilter(Net.Vpc.Upa.Entity entity) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Expressions.Expression GetEntityFilter(Net.Vpc.Upa.Entity entity);
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,15 +22,15 @@ namespace Net.Vpc.Upa.Exceptions
 
         }
 
-        public EntityException(Net.Vpc.Upa.Entity entity, string operationName)  : base(entity.GetI18NString().Append(operationName), entity.GetI18NString()){
+        public EntityException(Net.Vpc.Upa.Entity entity, string operationName)  : base(entity.GetI18NTitle().Append(operationName), entity.GetI18NTitle()){
 
         }
 
-        public EntityException(Net.Vpc.Upa.Entity entity, string operationName, params object [] @params)  : base(entity.GetI18NString().Append(operationName), CombineParams(entity.GetI18NString(), @params)){
+        public EntityException(Net.Vpc.Upa.Entity entity, string operationName, params object [] @params)  : base(entity.GetI18NTitle().Append(operationName), CombineParams(entity.GetI18NTitle(), @params)){
 
         }
 
-        public EntityException(System.Exception cause, Net.Vpc.Upa.Entity entity, string operationName, params object [] @params)  : base(cause, entity.GetI18NString().Append(operationName), CombineParams(entity.GetI18NString(), @params)){
+        public EntityException(System.Exception cause, Net.Vpc.Upa.Entity entity, string operationName, params object [] @params)  : base(cause, entity.GetI18NTitle().Append(operationName), CombineParams(entity.GetI18NTitle(), @params)){
 
         }
 

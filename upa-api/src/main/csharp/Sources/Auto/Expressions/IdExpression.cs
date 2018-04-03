@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -29,24 +29,40 @@ namespace Net.Vpc.Upa.Expressions
 
         public IdExpression(Net.Vpc.Upa.Entity entity, object id, string alias) {
             if (id == null) {
-                throw new System.ArgumentException ("Key could not be null");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Id could not be null");
             }
             //        entity.getIdType().cast(key);
             this.id = id;
-            entityName = entity.GetName();
+            this.entityName = entity.GetName();
             this.alias = alias;
+            this.entity = entity;
+        }
+
+        public virtual void SetId(object id) {
+            this.id = id;
+        }
+
+        public virtual void SetEntityName(string entityName) {
+            this.entityName = entityName;
+        }
+
+        public virtual void SetAlias(string alias) {
+            this.alias = alias;
+        }
+
+        public virtual void SetEntity(Net.Vpc.Upa.Entity entity) {
             this.entity = entity;
         }
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(1);
             return list;
         }
 
 
         public override void SetChild(Net.Vpc.Upa.Expressions.Expression e, Net.Vpc.Upa.Expressions.ExpressionTag tag) {
-            throw new System.ArgumentException ("Insupported");
+            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Insupported");
         }
 
         public virtual object GetId() {

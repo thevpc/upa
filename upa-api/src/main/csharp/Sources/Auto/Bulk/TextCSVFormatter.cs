@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Bulk
      */
     public abstract class TextCSVFormatter : Net.Vpc.Upa.Bulk.AbstractDataFormatter {
 
-        private bool containsHeader;
+        private bool writeHeader;
 
         private bool trimValues = true;
 
@@ -38,16 +38,22 @@ namespace Net.Vpc.Upa.Bulk
 
         private int skipRows;
 
+        public virtual Net.Vpc.Upa.Bulk.TextCSVColumn AddColumn(string name) {
+            Net.Vpc.Upa.Bulk.TextCSVColumn column = new Net.Vpc.Upa.Bulk.TextCSVColumn();
+            GetColumns().Add((Net.Vpc.Upa.Bulk.TextCSVColumn) column.UpdateName(name));
+            return column;
+        }
+
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Bulk.TextCSVColumn> GetColumns() {
             return columns;
         }
 
-        public virtual bool IsContainsHeader() {
-            return containsHeader;
+        public virtual bool IsWriteHeader() {
+            return writeHeader;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetContainsHeader(bool containsHeader) {
-            this.containsHeader = containsHeader;
+        public virtual Net.Vpc.Upa.Bulk.TextCSVFormatter SetWriteHeader(bool writeHeader) {
+            this.writeHeader = writeHeader;
             return this;
         }
 

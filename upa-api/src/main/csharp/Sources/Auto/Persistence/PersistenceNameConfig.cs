@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Persistence
 
         private int configOrder;
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceName> names = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceName>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceName> names = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceName>(2);
 
         private string globalPersistenceName;
 

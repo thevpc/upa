@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -30,11 +30,23 @@ namespace Net.Vpc.Upa.Types
         public MonthType(string name, System.Type type, Net.Vpc.Upa.Types.Month min, Net.Vpc.Upa.Types.Month max, bool nullable)  : base(name, type == null ? typeof(Net.Vpc.Upa.Types.Month) : type, 0, 0, nullable){
 
             if (type != null && !type.Equals(typeof(Net.Vpc.Upa.Types.Month)) && !type.Equals(typeof(Net.Vpc.Upa.Types.Temporal))) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Invalid Temporal Type " + type);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Invalid Temporal Type " + type);
             }
             this.min = min;
             this.max = max;
-            SetDefaultNonNullValue(Convert(new Net.Vpc.Upa.Types.DateTime(0)));
+        }
+
+
+        public override Net.Vpc.Upa.Types.TemporalOption GetTemporalOption() {
+            return Net.Vpc.Upa.Types.TemporalOption.MONTH;
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = Convert(new Net.Vpc.Upa.Types.DateTime(0));
+            }
         }
 
         public virtual Net.Vpc.Upa.Types.Month GetMin() {
@@ -86,6 +98,9 @@ namespace Net.Vpc.Upa.Types
                 return null;
             }
             System.Type type = GetPlatformType();
+            if (date.GetType().Equals(type)) {
+                return date;
+            }
             Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
             c.SetTime(date);
             long time = date.GetTime();
@@ -94,8 +109,62 @@ namespace Net.Vpc.Upa.Types
             } else if (typeof(Net.Vpc.Upa.Types.Temporal).IsAssignableFrom(type)) {
                 return new Net.Vpc.Upa.Types.Date(time);
             } else {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.MonthType monthType = (Net.Vpc.Upa.Types.MonthType) o;
+            if (min != null ? !min.Equals(monthType.min) : monthType.min != null) return false;
+            return max != null ? max.Equals(monthType.max) : monthType.max == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (min != null ? min.GetHashCode() : 0);
+            result = 31 * result + (max != null ? max.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public override string ToString() {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder("MonthType[" + (GetPlatformType()).FullName + "]");
+            System.Collections.Generic.IDictionary<string , object> v = new System.Collections.Generic.Dictionary<string , object>();
+            if (min != null) {
+                v["min"]=min;
+            }
+            if (min != null) {
+                v["max"]=max;
+            }
+            if ((v).Count > 0) {
+                sb.Append(v);
+            }
+            return sb.ToString();
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            if (min != null) {
+                d.GetProperties()["min"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalMonthYear(min));
+            }
+            if (max != null) {
+                d.GetProperties()["max"]=System.Convert.ToString(Net.Vpc.Upa.Types.PlatformUtils.FormatUniversalMonthYear(max));
+            }
+            return d;
+        }
+
+
+        public override Net.Vpc.Upa.Types.Temporal Parse(string @value) {
+            if (@value == null || (@value.Trim().Length==0)) {
+                return null;
+            }
+            return ValidateDate(Net.Vpc.Upa.Types.PlatformUtils.ParseUniversalMonthYear(@value));
         }
     }
 }

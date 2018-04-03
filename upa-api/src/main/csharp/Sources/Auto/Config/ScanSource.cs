@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -19,6 +19,8 @@ namespace Net.Vpc.Upa.Config
      * @creationdate 9/24/12 2:57 AM
      */
     public interface ScanSource {
+
+         string GetName();
 
          bool IsNoIgnore();
     }

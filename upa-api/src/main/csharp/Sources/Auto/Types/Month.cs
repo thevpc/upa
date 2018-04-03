@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -82,7 +82,8 @@ namespace Net.Vpc.Upa.Types
         public override string ToString() {
             Net.Vpc.Upa.Types.Calendar calendar = Net.Vpc.Upa.Types.Calendar.GetInstance();
             calendar.SetTimeInMillis(GetTime());
-            int year = calendar.Get(Net.Vpc.Upa.Types.Calendar.YEAR) + 1900;
+            int year = calendar.Get(Net.Vpc.Upa.Types.Calendar.YEAR);
+            //+ 1900;
             int month = calendar.Get(Net.Vpc.Upa.Types.Calendar.MONTH) + 1;
             char[] buf = "2000-00".ToCharArray();
             buf[0] = (char) ('0' + (year / 1000));

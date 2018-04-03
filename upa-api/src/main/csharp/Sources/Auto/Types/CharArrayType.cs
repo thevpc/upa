@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -25,15 +25,15 @@ namespace Net.Vpc.Upa.Types
 
         public static readonly Net.Vpc.Upa.Types.CharArrayType CHAR_REFS = new Net.Vpc.Upa.Types.CharArrayType("FILE", true, null, true);
 
-        private int? maxSize;
+        private int? max;
 
-        public CharArrayType(string name, int? maxSize, bool nullable)  : this(name, false, maxSize, nullable){
+        public CharArrayType(string name, int? max, bool nullable)  : this(name, false, max, nullable){
 
         }
 
-        public CharArrayType(string name, bool @ref, int? maxSize, bool nullable)  : base(name, @ref ? typeof(char?[]) : typeof(char[]), nullable){
+        public CharArrayType(string name, bool @ref, int? max, bool nullable)  : base(name, @ref ? typeof(char?[]) : typeof(char[]), nullable){
 
-            this.maxSize = maxSize;
+            this.max = max;
         }
 
 
@@ -43,24 +43,33 @@ namespace Net.Vpc.Upa.Types
                 return;
             }
             if (@value is char[]) {
-                if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((char[]) @value).Length) {
-                    throw new Net.Vpc.Upa.Types.ConstraintsException("ArraySizeTooLong", name, description, @value, maxSize);
+                if ((GetMax()).Value > 0 && (GetMax()).Value < ((char[]) @value).Length) {
+                    throw new Net.Vpc.Upa.Types.ConstraintsException("ArraySizeTooLong", name, description, @value, max);
                 }
             } else if (@value is char?[]) {
-                if ((GetMaxSize()).Value > 0 && (GetMaxSize()).Value < ((char?[]) @value).Length) {
-                    throw new Net.Vpc.Upa.Types.ConstraintsException("ArraySizeTooShort", name, description, @value, maxSize);
+                if ((GetMax()).Value > 0 && (GetMax()).Value < ((char?[]) @value).Length) {
+                    throw new Net.Vpc.Upa.Types.ConstraintsException("ArraySizeTooShort", name, description, @value, max);
                 }
             } else {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, maxSize);
+                throw new Net.Vpc.Upa.Types.ConstraintsException("InvalidCast", name, description, @value, max);
             }
         }
 
-        public virtual int? GetMaxSize() {
-            return maxSize;
+        public virtual int? GetMax() {
+            return max;
         }
 
-        public virtual void SetMaxSize(int? maxSize) {
-            this.maxSize = maxSize;
+        public virtual void SetMax(int? max) {
+            this.max = max;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            if (max != null) {
+                d.GetProperties()["max"]=System.Convert.ToString(max);
+            }
+            return d;
         }
     }
 }

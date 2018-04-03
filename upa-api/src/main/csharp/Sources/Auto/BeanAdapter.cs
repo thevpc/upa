@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa
      */
     public interface BeanAdapter {
 
-         Net.Vpc.Upa.BeanType GetBeanType();
+         Net.Vpc.Upa.PlatformBeanType GetPlatformBeanType();
 
          object GetProperty(string field);
 

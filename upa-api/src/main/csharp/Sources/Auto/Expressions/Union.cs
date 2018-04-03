@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,7 +21,7 @@ namespace Net.Vpc.Upa.Expressions
      */
     public class Union : Net.Vpc.Upa.Expressions.DefaultEntityStatement, Net.Vpc.Upa.Expressions.QueryStatement {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryStatement> queryStatements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryStatement>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.QueryStatement> queryStatements = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.QueryStatement>(2);
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {

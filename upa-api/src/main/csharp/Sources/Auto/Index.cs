@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,7 +13,6 @@
 
 namespace Net.Vpc.Upa
 {
-
 
     public interface Index : Net.Vpc.Upa.UPAObject {
 
@@ -26,5 +25,7 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Entity GetEntity();
 
          bool IsUnique();
+
+         Net.Vpc.Upa.IndexInfo GetInfo();
     }
 }

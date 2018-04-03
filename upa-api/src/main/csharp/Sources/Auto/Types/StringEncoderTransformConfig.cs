@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -38,7 +38,7 @@ namespace Net.Vpc.Upa.Types
 
         protected internal virtual void SetEncoderObject(object stringifyStrategy) {
             if (!(stringifyStrategy == null || stringifyStrategy is string || stringifyStrategy is System.Type || stringifyStrategy is Net.Vpc.Upa.Types.StringEncoder || (stringifyStrategy is Net.Vpc.Upa.Config.StringEncoderType && !stringifyStrategy.Equals(Net.Vpc.Upa.Config.StringEncoderType.CUSTOM)))) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
             }
             this.encoder = stringifyStrategy;
         }

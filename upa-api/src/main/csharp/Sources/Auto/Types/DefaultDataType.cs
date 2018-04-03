@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -54,11 +54,13 @@ namespace Net.Vpc.Upa.Types
 
         protected internal Net.Vpc.Upa.Properties properties;
 
-        protected internal object defaultNonNullValue;
-
         protected internal object defaultValue;
 
         protected internal object defaultUnspecifiedValue;
+
+        protected internal bool defaultValueUserDefined;
+
+        protected internal bool defaultUnspecifiedValueUserDefined;
 
         protected internal System.Type platformType;
 
@@ -66,9 +68,9 @@ namespace Net.Vpc.Upa.Types
 
         protected internal int precision;
 
-        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> valueValidators = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueValidator>();
+        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueValidator> valueValidators = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueValidator>(1);
 
-        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> valueRewriters = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueRewriter>();
+        protected internal System.Collections.Generic.IList<Net.Vpc.Upa.Types.TypeValueRewriter> valueRewriters = new System.Collections.Generic.List<Net.Vpc.Upa.Types.TypeValueRewriter>(1);
 
         public DefaultDataType(string name, System.Type platformType)  : this(name, platformType, 0, 0, false){
 
@@ -84,9 +86,16 @@ namespace Net.Vpc.Upa.Types
             this.platformType = platformType;
             this.scale = scale;
             this.precision = precision;
-            this.defaultValue = nullable ? Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType) : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NON_NULLABLE_DEFAULT_VALUES,platformType);
-            this.defaultUnspecifiedValue = Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType);
-            this.defaultNonNullValue = this.defaultValue;
+            ReevaluateCachedValues();
+        }
+
+        protected internal virtual void ReevaluateCachedValues() {
+            if (!this.defaultValueUserDefined) {
+                this.defaultValue = nullable ? Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType) : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NON_NULLABLE_DEFAULT_VALUES,platformType);
+            }
+            if (!this.defaultUnspecifiedValueUserDefined) {
+                this.defaultUnspecifiedValue = nullable ? null : Net.Vpc.Upa.FwkConvertUtils.GetMapValue<System.Type,object>(NULLABLE_DEFAULT_VALUES,platformType);
+            }
         }
 
 
@@ -97,6 +106,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void SetDefaultUnspecifiedValue(object defaultUnspecifiedValue) {
             this.defaultUnspecifiedValue = defaultUnspecifiedValue;
+            this.defaultUnspecifiedValueUserDefined = true;
         }
 
 
@@ -107,16 +117,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void SetDefaultValue(object defaultValue) {
             this.defaultValue = defaultValue;
-        }
-
-
-        public virtual object GetDefaultNonNullValue() {
-            return defaultNonNullValue;
-        }
-
-
-        public virtual void SetDefaultNonNullValue(object defaultNonNullValue) {
-            this.defaultNonNullValue = defaultNonNullValue;
+            this.defaultValueUserDefined = true;
         }
 
 
@@ -127,6 +128,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void SetNullable(bool enable) {
             nullable = enable;
+            ReevaluateCachedValues();
         }
 
 
@@ -155,7 +157,7 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void Check(object @value, string name, string description) /* throws Net.Vpc.Upa.Types.ConstraintsException */  {
             if (@value == null && !IsNullable()) {
-                throw new Net.Vpc.Upa.Types.ConstraintsException("IllegalNull", name, description, @value);
+                throw new Net.Vpc.Upa.Types.ConstraintsException("IllegalNull", name, description, null);
             }
             foreach (Net.Vpc.Upa.Types.TypeValueValidator typeValueValidator in valueValidators) {
                 typeValueValidator.ValidateValue(@value, name, description, this);
@@ -263,6 +265,56 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void SetProperties(Net.Vpc.Upa.Properties properties) {
             this.properties = properties;
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            Net.Vpc.Upa.Types.DefaultDataType that = (Net.Vpc.Upa.Types.DefaultDataType) o;
+            if (nullable != that.nullable) return false;
+            if (defaultValueUserDefined != that.defaultValueUserDefined) return false;
+            if (defaultUnspecifiedValueUserDefined != that.defaultUnspecifiedValueUserDefined) return false;
+            if (scale != that.scale) return false;
+            if (precision != that.precision) return false;
+            if (unitName != null ? !unitName.Equals(that.unitName) : that.unitName != null) return false;
+            if (name != null ? !name.Equals(that.name) : that.name != null) return false;
+            if (properties != null ? !properties.Equals(that.properties) : that.properties != null) return false;
+            if (defaultValue != null ? !defaultValue.Equals(that.defaultValue) : that.defaultValue != null) return false;
+            if (defaultUnspecifiedValue != null ? !defaultUnspecifiedValue.Equals(that.defaultUnspecifiedValue) : that.defaultUnspecifiedValue != null) return false;
+            if (platformType != null ? !platformType.Equals(that.platformType) : that.platformType != null) return false;
+            if (valueValidators != null ? !valueValidators.Equals(that.valueValidators) : that.valueValidators != null) return false;
+            return valueRewriters != null ? valueRewriters.Equals(that.valueRewriters) : that.valueRewriters == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = unitName != null ? unitName.GetHashCode() : 0;
+            result = 31 * result + (name != null ? name.GetHashCode() : 0);
+            result = 31 * result + (nullable ? 1 : 0);
+            result = 31 * result + (properties != null ? properties.GetHashCode() : 0);
+            result = 31 * result + (defaultValue != null ? defaultValue.GetHashCode() : 0);
+            result = 31 * result + (defaultUnspecifiedValue != null ? defaultUnspecifiedValue.GetHashCode() : 0);
+            result = 31 * result + (defaultValueUserDefined ? 1 : 0);
+            result = 31 * result + (defaultUnspecifiedValueUserDefined ? 1 : 0);
+            result = 31 * result + (platformType != null ? platformType.GetHashCode() : 0);
+            result = 31 * result + scale;
+            result = 31 * result + precision;
+            result = 31 * result + (valueValidators != null ? valueValidators.GetHashCode() : 0);
+            result = 31 * result + (valueRewriters != null ? valueRewriters.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public virtual Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = new Net.Vpc.Upa.DataTypeInfo();
+            d.SetName(GetName());
+            d.SetType((GetType()).FullName);
+            d.SetPlatformType((GetPlatformType()).FullName);
+            d.SetUnitName(GetUnitName());
+            System.Collections.Generic.IDictionary<string , string> p = new System.Collections.Generic.Dictionary<string , string>();
+            d.SetProperties(p);
+            return d;
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         virtual public object Clone() { return base.MemberwiseClone();}

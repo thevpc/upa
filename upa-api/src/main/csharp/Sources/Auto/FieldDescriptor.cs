@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
 
          string GetName();
 
-         string GetFieldPath();
+         string GetPath();
 
          object GetDefaultObject();
 
@@ -42,9 +42,9 @@ namespace Net.Vpc.Upa
 
          int GetUpdateFormulaOrder();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserFieldModifiers();
+         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetModifiers();
 
-         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetUserExcludeModifiers();
+         Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> GetExcludeModifiers();
 
          Net.Vpc.Upa.AccessLevel GetPersistAccessLevel();
 
@@ -52,10 +52,16 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.AccessLevel GetReadAccessLevel();
 
+         Net.Vpc.Upa.ProtectionLevel GetPersistProtectionLevel();
+
+         Net.Vpc.Upa.ProtectionLevel GetUpdateProtectionLevel();
+
+         Net.Vpc.Upa.ProtectionLevel GetReadProtectionLevel();
+
          System.Collections.Generic.IDictionary<string , object> GetFieldParams();
 
          Net.Vpc.Upa.PropertyAccessType GetPropertyAccessType();
 
-         int GetPosition();
+         int GetIndex();
     }
 }

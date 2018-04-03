@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,6 +23,6 @@ namespace Net.Vpc.Upa.Persistence
 
          Net.Vpc.Upa.Expressions.EntityStatement GetStatement();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> GetFields();
+         System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.ResultField> GetResultFields();
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,27 +23,27 @@ namespace Net.Vpc.Upa.Callbacks
 
         private object persistedId;
 
-        private Net.Vpc.Upa.Record persistedRecord;
+        private Net.Vpc.Upa.Document persistedDocument;
 
         private object persistedObject;
 
-        public PersistEvent(object persistedId, Net.Vpc.Upa.Record persistedRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
+        public PersistEvent(object persistedId, Net.Vpc.Upa.Document persistedDocument, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.persistedId = persistedId;
-            this.persistedRecord = persistedRecord;
+            this.persistedDocument = persistedDocument;
         }
 
         public virtual object GetPersistedId() {
             return persistedId;
         }
 
-        public virtual Net.Vpc.Upa.Record GetPersistedRecord() {
-            return persistedRecord;
+        public virtual Net.Vpc.Upa.Document GetPersistedDocument() {
+            return persistedDocument;
         }
 
         public virtual object GetPersistedObject() {
-            if (persistedObject == null && persistedRecord != null) {
-                persistedObject = GetContext().GetEntity().GetBuilder().RecordToObject<object>(persistedRecord);
+            if (persistedObject == null && persistedDocument != null) {
+                persistedObject = GetContext().GetEntity().GetBuilder().DocumentToObject<>(persistedDocument);
             }
             return persistedObject;
         }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,6 +20,6 @@ namespace Net.Vpc.Upa.Persistence
      */
     public enum DatabaseProduct {
 
-        ORACLE, INTERBASE, SQLSERVER, MYSQL, MCKOI, DERBY, UNKNOWN
+        ORACLE, INTERBASE, MSSQLSERVER, MYSQL, MCKOI, DERBY, SQLITE, UNKNOWN
     }
 }

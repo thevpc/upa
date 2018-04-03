@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,5 +27,9 @@ namespace Net.Vpc.Upa.Bulk
          Net.Vpc.Upa.Bulk.DataRowConverter GetDataRowConverter();
 
          Net.Vpc.Upa.Bulk.DataWriter CreateWriter() /* throws System.IO.IOException */ ;
+
+         Net.Vpc.Upa.ObjectFactory GetFactory();
+
+         void SetFactory(Net.Vpc.Upa.ObjectFactory factory);
     }
 }

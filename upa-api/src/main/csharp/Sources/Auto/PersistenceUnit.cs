@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -60,13 +60,15 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Package GetPackage(string path);
 
-         Net.Vpc.Upa.Package GetDefaulPackage();
+         Net.Vpc.Upa.Package GetDefaultPackage();
 
          bool IsReadOnly();
 
          void SetReadOnly(bool enable);
 
          string GetName();
+
+         string GetAbsoluteName();
 
          bool IsLastStartSucceeded();
 
@@ -107,10 +109,10 @@ namespace Net.Vpc.Upa
          bool ContainsEntity(string entityName);
 
         /**
-             * @param source source to be parsed
-             * @param listener listener to track scanned items or null
+             * @param source    source to be parsed
+             * @param listener  listener to track scanned items or null
              * @param configure if true process configuration (add entities,
-             * functions...)
+             *                  functions...)
              * @
              */
          void Scan(Net.Vpc.Upa.Config.ScanSource source, Net.Vpc.Upa.ScanListener listener, bool configure);
@@ -163,9 +165,9 @@ namespace Net.Vpc.Upa
 
          bool IsValidPersistenceUnit();
 
-         Net.Vpc.Upa.Persistence.DBConfigModel GetDBConfigModel();
+         void Clear(string name, System.Collections.Generic.IDictionary<string , object> hints);
 
-         void SetDBConfigModel(Net.Vpc.Upa.Persistence.DBConfigModel dbConfigModel);
+         void Clear(System.Type entity, System.Collections.Generic.IDictionary<string , object> hints);
 
          void Clear(Net.Vpc.Upa.Filters.EntityFilter entityFilter, System.Collections.Generic.IDictionary<string , object> hints);
 
@@ -203,14 +205,14 @@ namespace Net.Vpc.Upa
 
         /**
              * @param definitionListener
-             * @param trackSystem when true system entities are also tracked
+             * @param trackSystem        when true system entities are also tracked
              */
          void AddDefinitionListener(Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
 
         /**
              * @param entityName
              * @param definitionListener
-             * @param trackSystem when true system entities are also tracked
+             * @param trackSystem        when true system entities are also tracked
              */
          void AddDefinitionListener(string entityName, Net.Vpc.Upa.Callbacks.DefinitionListener definitionListener, bool trackSystem);
 
@@ -277,7 +279,7 @@ namespace Net.Vpc.Upa
              * @param triggerName
              * @param interceptor
              * @param entityNamePattern
-             * @param system if true include system entities
+             * @param system            if true include system entities
              * @
              */
          void AddTrigger(string triggerName, Net.Vpc.Upa.Callbacks.EntityInterceptor interceptor, string entityNamePattern, bool system);
@@ -292,15 +294,15 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Persistence.ConnectionProfile GetConnectionProfile();
 
-         void Persist(string entityName, object objectOrRecord);
+         void Persist(string entityName, object objectOrDocument);
 
-         void Persist(string entity, object objectOrRecord, System.Collections.Generic.IDictionary<string , object> hints);
+         void Persist(string entity, object objectOrDocument, System.Collections.Generic.IDictionary<string , object> hints);
 
-         void Persist(object objectOrRecord);
+         void Persist(object objectOrDocument);
 
-         Net.Vpc.Upa.RemoveTrace Remove(string entityName, object objectOrRecord);
+         Net.Vpc.Upa.RemoveTrace Remove(string entityName, object objectOrDocument);
 
-         Net.Vpc.Upa.RemoveTrace Remove(object objectOrRecord);
+         Net.Vpc.Upa.RemoveTrace Remove(object objectOrDocument);
 
          Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(string entityName);
 
@@ -308,17 +310,21 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.UpdateQuery CreateUpdateQuery(object @object);
 
-         void Merge(string entityName, object objectOrRecord);
+         void Merge(string entityName, object objectOrDocument);
 
-         void Merge(object objectOrRecord);
+         void Merge(object objectOrDocument);
 
-         void Update(object objectOrRecord);
+         void Update(object objectOrDocument);
 
-         bool Save(object objectOrRecord);
+         bool Save(object objectOrDocument);
 
-         bool Save(string entityName, object objectOrRecord);
+         bool Save(System.Type entityType, object objectOrDocument);
 
-         void Update(string entityName, object objectOrRecord);
+         bool Save(string entityName, object objectOrDocument);
+
+         void Update(System.Type entityType, object objectOrDocument);
+
+         void Update(string entityName, object objectOrDocument);
 
          void UpdateFormulas();
 
@@ -350,13 +356,13 @@ namespace Net.Vpc.Upa
 
          bool ExistsById(string entityName, object id);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Record> FindAllRecords(System.Type entityType);
+         System.Collections.Generic.IList<Net.Vpc.Upa.Document> FindAllDocuments(System.Type entityType);
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Record> FindAllRecords(string entityName);
+         System.Collections.Generic.IList<Net.Vpc.Upa.Document> FindAllDocuments(string entityName);
 
-         Net.Vpc.Upa.Record FindRecordById(System.Type entityType, object id);
+         Net.Vpc.Upa.Document FindDocumentById(System.Type entityType, object id);
 
-         Net.Vpc.Upa.Record FindRecordById(string entityName, object id);
+         Net.Vpc.Upa.Document FindDocumentById(string entityName, object id);
 
          Net.Vpc.Upa.QueryBuilder CreateQueryBuilder(System.Type entityType);
 
@@ -367,8 +373,7 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Query CreateQuery(string query);
 
         /**
-             *
-             * @param transactionType
+             * @param transactionType transactionType
              * @return true if a transaction has been created
              * @
              */
@@ -394,8 +399,6 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Bulk.ImportExportManager GetImportExportManager();
 
-         void Init(string name, Net.Vpc.Upa.PersistenceGroup persistenceGroup);
-
          Net.Vpc.Upa.Types.DataTypeTransformFactory GetTypeTransformFactory();
 
          void SetTypeTransformFactory(Net.Vpc.Upa.Types.DataTypeTransformFactory typeTransformFactory);
@@ -412,9 +415,9 @@ namespace Net.Vpc.Upa
 
          void RemoveRootConnectionConfig(int index);
 
-         void SetPersistenceNameConfig(Net.Vpc.Upa.Persistence.PersistenceNameConfig nameStrategyModel);
-
          Net.Vpc.Upa.Persistence.PersistenceNameConfig GetPersistenceNameConfig();
+
+         void SetPersistenceNameConfig(Net.Vpc.Upa.Persistence.PersistenceNameConfig nameStrategyModel);
 
          void AddContextAnnotationStrategyFilter(Net.Vpc.Upa.Config.ScanFilter filter);
 
@@ -427,8 +430,8 @@ namespace Net.Vpc.Upa
         /**
              * push new user context if login and credentials are valid
              *
-             * @param login
-             * @param credentials
+             * @param login       login
+             * @param credentials credentials
              */
          void Login(string login, string credentials);
 
@@ -445,7 +448,7 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Key CreateKey(params object [] keyValues);
 
-         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.CallbackConfig callbackConfig);
+         Net.Vpc.Upa.Callback AddCallback(Net.Vpc.Upa.MethodCallback methodCallback);
 
          void AddCallback(Net.Vpc.Upa.Callback callback);
 
@@ -488,5 +491,15 @@ namespace Net.Vpc.Upa
          long GetEntityCount(string entityName);
 
          long GetEntityCount(System.Type entityType);
+
+         Net.Vpc.Upa.PersistenceUnitInfo GetInfo();
+
+         Net.Vpc.Upa.NamedFormulaDefinition[] GetNamedFormulas();
+
+         Net.Vpc.Upa.NamedFormulaDefinition GetNamedFormula(string name);
+
+         void AddNamedFormula(string name, Net.Vpc.Upa.Formula formula);
+
+         void RemoveNamedFormula(string name);
     }
 }

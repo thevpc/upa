@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Expressions
      */
     public class ExpressionHelper {
 
-        private static readonly System.Collections.Generic.ISet<string> RESERVED_WORDS = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(new[]{"select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like"}));
+        private static readonly System.Collections.Generic.ISet<string> RESERVED_WORDS = new System.Collections.Generic.HashSet<string>(new System.Collections.Generic.List<string>(new[]{"select", "update", "remove", "insert", "set", "from", "where", "and", "or", "if", "then", "switch", "case", "else", "elseif", "end", "true", "false", "null", "order", "group", "by", "desc", "asc", "inner", "left", "right", "full", "cross", "join", "having", "on", "not", "like", "primary", "outer"}));
 
         public static bool IsReservedWord(string s) {
             return s != null && RESERVED_WORDS.Contains(s.ToLower());
@@ -56,6 +56,9 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public static string EscapeIdentifier(string s) {
+            if (s == null) {
+                return "null";
+            }
             if (IsEscapeIdentifier(s)) {
                 return "`" + EscapeStringLiteral(s, false, false, true) + "`";
             }
@@ -86,13 +89,13 @@ namespace Net.Vpc.Upa.Expressions
             for (int i = 0; i < sz; i++) {
                 char ch = str[i];
                 // handle unicode
-                if (ch > 0xfff) {
+                if (ch > ((char)0xfff)) {
                     outString.Append("\\u").Append(Hex(ch));
-                } else if (ch > 0xff) {
+                } else if (ch > ((char)0xff)) {
                     outString.Append("\\u0").Append(Hex(ch));
-                } else if (ch > 0x7f) {
+                } else if (ch > ((char)0x7f)) {
                     outString.Append("\\u00").Append(Hex(ch));
-                } else if (ch < 32) {
+                } else if (ch < ((char)32)) {
                     switch(ch) {
                         case '\b':
                             outString.Append('\\');
@@ -115,7 +118,7 @@ namespace Net.Vpc.Upa.Expressions
                             outString.Append('r');
                             break;
                         default:
-                            if (ch > 0xf) {
+                            if (ch > ((char)0xf)) {
                                 outString.Append("\\u00").Append(Hex(ch));
                             } else {
                                 outString.Append("\\u000").Append(Hex(ch));
@@ -180,7 +183,7 @@ namespace Net.Vpc.Upa.Expressions
                             unicodeStr = false;
                             encountredSlash = false;
                         } catch (System.Exception nfe) {
-                            throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
+                            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unable to parse unicode value: " + unicode, nfe);
                         }
                     }
                     continue;

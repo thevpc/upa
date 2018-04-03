@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -11,6 +11,7 @@
 
 
 
+using System.Linq;
 namespace Net.Vpc.Upa
 {
 
@@ -24,13 +25,36 @@ namespace Net.Vpc.Upa
      */
     public sealed class UPA {
 
+        /**
+             * string to use if string value is undefined.
+             */
         public const string UNDEFINED_STRING = "<<Undefined>>";
 
+        /**
+             * Connection string parameter name
+             */
         public const string CONNECTION_STRING = "upa.connection";
 
+        /**
+             * Root connection string parameter name
+             */
         public const string ROOT_CONNECTION_STRING = "upa.root-connection";
 
-        internal static bool contextProviderCreated = false;
+        protected internal static readonly System.Diagnostics.TraceSource log = new System.Diagnostics.TraceSource((typeof(Net.Vpc.Upa.UPA)).FullName);
+
+        private static readonly Net.Vpc.Upa.UPABootstrap BOOTSTRAP = new Net.Vpc.Upa.UPABootstrap();
+
+        private const int CONTEXT_NOT_INITIALIZED = 0;
+
+        private const int CONTEXT_INITIALIZING = 1;
+
+        private const int CONTEXT_INITIALIZED = 2;
+
+        private static int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
+
+        private static readonly System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.UPAContextConfig> configInstances = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.UPAContextConfig>();
+
+        private static readonly System.Collections.Generic.IList<System.Type> configClasses = new System.Collections.Generic.List<System.Type>();
 
         private UPA() {
         }
@@ -46,6 +70,19 @@ namespace Net.Vpc.Upa
              */
         public static Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             return GetContext().GetPersistenceGroup();
+        }
+
+        /**
+             * PersistenceGroup by name {@code name}. Equivalent to
+             * <pre>
+             *     UPA.getContext().getPersistenceGroup(name)
+             * </pre>
+             *
+             * @return current PersistenceGroup of the current context
+             * @throws UPAException
+             */
+        public static Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return GetContext().GetPersistenceGroup(name);
         }
 
         /**
@@ -97,15 +134,15 @@ namespace Net.Vpc.Upa
         }
 
         public static  T MakeSessionAware<T>(T instance) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return MakeSessionAware<T>(instance, (Net.Vpc.Upa.MethodFilter) null);
+            return MakeSessionAware<>(instance, (Net.Vpc.Upa.MethodFilter) null);
         }
 
         public static  T MakeSessionAware<T>(T instance, System.Type sessionAwareMethodAnnotation) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return GetContext().MakeSessionAware<T>(instance, sessionAwareMethodAnnotation);
+            return GetContext().MakeSessionAware<>(instance, sessionAwareMethodAnnotation);
         }
 
         public static  T MakeSessionAware<T>(T instance, Net.Vpc.Upa.MethodFilter methodFilter) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return GetContext().MakeSessionAware<T>(instance, methodFilter);
+            return GetContext().MakeSessionAware<>(instance, methodFilter);
         }
 
         /**
@@ -114,41 +151,69 @@ namespace Net.Vpc.Upa
              * @return current UPAContext
              */
         public static Net.Vpc.Upa.UPAContext GetContext() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            if (bootstrapStatus == CONTEXT_INITIALIZING) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("UPAAlreadyInitializing");
+            }
             Net.Vpc.Upa.UPAContextProvider contextProvider = null;
+            BOOTSTRAP.SetContextInitialized();
             Net.Vpc.Upa.UPAContext context = contextProvider.GetContext();
             //Double Checking Lock will/should work here because we are not about to instantiate the object,
             //this is the responsibility of the contextProvider
             if (context == null) {
-                lock (typeof(Net.Vpc.Upa.UPAContext)) {
+                lock (BOOTSTRAP) {
                     context = contextProvider.GetContext();
                     if (context == null) {
-                        Net.Vpc.Upa.ObjectFactory bootstrapFactory = GetBootstrapFactory();
-                        context = bootstrapFactory.CreateObject<Net.Vpc.Upa.UPAContext>(typeof(Net.Vpc.Upa.UPAContext));
-                        context.Start(bootstrapFactory);
+                        bootstrapStatus = CONTEXT_INITIALIZING;
+                        long start = System.DateTime.Now.Ticks;
+                        Net.Vpc.Upa.ObjectFactory bootstrapFactory = BOOTSTRAP.GetFactory();
+                        context = bootstrapFactory.CreateObject<>(typeof(Net.Vpc.Upa.UPAContext));
+                        context.Start(bootstrapFactory, configInstances.ToArray(), configClasses.ToArray());
                         contextProvider.SetContext(context);
+                        long end = System.DateTime.Now.Ticks;
+                        log.TraceEvent(System.Diagnostics.TraceEventType.Verbose,60,Net.Vpc.Upa.FwkConvertUtils.LogMessageExceptionFormatter("UPA Context Loaded in {0} ms",null,end - start));
+                        bootstrapStatus = CONTEXT_INITIALIZED;
                     }
+                }
+            } else {
+                if (bootstrapStatus != CONTEXT_INITIALIZED) {
+                    throw new Net.Vpc.Upa.Exceptions.BootstrapException("UPAContextStatusInvalid");
                 }
             }
             return context;
         }
 
         public static Net.Vpc.Upa.ObjectFactory GetBootstrapFactory() {
-            try {
-                return Net.Vpc.Upa.BootstrapObjectFactoryLazyHolder.INSTANCE;
-            } catch (System.Exception e) {
-                if (e is Net.Vpc.Upa.Exceptions.UPAException) {
-                    throw (Net.Vpc.Upa.Exceptions.UPAException) e;
-                }
-                throw new Net.Vpc.Upa.Exceptions.BootstrapException("LoadBootstrapFactoryException", e);
-            }
+            return BOOTSTRAP.GetFactory();
+        }
+
+        public static Net.Vpc.Upa.UPABootstrap GetBootstrap() {
+            return BOOTSTRAP;
         }
 
         public static void Close() {
-            if (contextProviderCreated) {
+            if (BOOTSTRAP.IsContextInitialized()) {
                 Net.Vpc.Upa.UPAContext context = Net.Vpc.Upa.UPAContextProviderLazyHolder.INSTANCE.GetContext();
                 if (context != null) {
                     context.Close();
                 }
+            }
+        }
+
+        public static void Configure(Net.Vpc.Upa.Persistence.UPAContextConfig config) {
+            if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("UPAAlreadyInitializing");
+            }
+            if (config != null) {
+                configInstances.Add(config);
+            }
+        }
+
+        public static void Configure(System.Type config) {
+            if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+                throw new Net.Vpc.Upa.Exceptions.UPAException("UPAAlreadyInitializing");
+            }
+            if (config != null) {
+                configClasses.Add(config);
             }
         }
     }

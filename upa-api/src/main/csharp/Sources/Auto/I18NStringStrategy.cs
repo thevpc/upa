@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,7 +22,7 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Types.I18NString GetPackageString(Net.Vpc.Upa.Package module);
 
-         Net.Vpc.Upa.Types.I18NString GetSectionString(Net.Vpc.Upa.Entity entity, string section);
+         Net.Vpc.Upa.Types.I18NString GetSectionString(Net.Vpc.Upa.Section section);
 
          Net.Vpc.Upa.Types.I18NString GetRelationshipRoleString(Net.Vpc.Upa.RelationshipRole role);
 
@@ -33,5 +33,7 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Types.I18NString GetFieldListString(Net.Vpc.Upa.Entity entity);
 
          Net.Vpc.Upa.Types.I18NString GetFieldString(Net.Vpc.Upa.Field field);
+
+         Net.Vpc.Upa.Types.I18NString GetIndexString(Net.Vpc.Upa.Index index);
     }
 }

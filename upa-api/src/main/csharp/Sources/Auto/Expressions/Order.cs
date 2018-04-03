@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -17,16 +17,16 @@ namespace Net.Vpc.Upa.Expressions
 
     public class Order : System.ICloneable {
 
-        private System.Collections.Generic.List<Net.Vpc.Upa.Expressions.OrderItem> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.OrderItem>(1);
+        private System.Collections.Generic.List<Net.Vpc.Upa.Expressions.OrderItem> fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.OrderItem>(3);
 
         public Order() {
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Order Ascendent(Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual Net.Vpc.Upa.Expressions.Order Ascendant(Net.Vpc.Upa.Expressions.Expression field) {
             return AddOrder(field, true);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Order Descendent(Net.Vpc.Upa.Expressions.Expression field) {
+        public virtual Net.Vpc.Upa.Expressions.Order Descendant(Net.Vpc.Upa.Expressions.Expression field) {
             return AddOrder(field, false);
         }
 

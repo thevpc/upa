@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -84,7 +84,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public virtual System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.Expression> Find(Net.Vpc.Upa.Expressions.ExpressionFilter filter, bool firstResult) {
-            System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression> found = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>();
+            System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression> found = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.Expression>(firstResult ? 1 : 5);
             if (filter.Accept(this)) {
                 found.Add(this);
                 if (firstResult) {

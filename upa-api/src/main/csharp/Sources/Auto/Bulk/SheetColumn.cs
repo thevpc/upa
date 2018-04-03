@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -33,7 +33,7 @@ namespace Net.Vpc.Upa.Bulk
             this.skippedColumns = skippedColumns;
         }
 
-        public virtual Net.Vpc.Upa.Bulk.SheetColumn UpdateSkippedColumns(int skippedColumns) {
+        public virtual Net.Vpc.Upa.Bulk.DataColumn UpdateSkippedColumns(int skippedColumns) {
             SetSkippedColumns(skippedColumns);
             return this;
         }

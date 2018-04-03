@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -43,13 +43,13 @@ namespace Net.Vpc.Upa
         }
 
 
-        public virtual bool IsDeletableRecord(object k, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.IsDeletableRecord(k, recurse);
+        public virtual bool IsDeletableDocument(object k, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.IsDeletableDocument(k, recurse);
         }
 
 
-        public virtual bool IsUpdatableRecord(object k) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.IsUpdatableRecord(k);
+        public virtual bool IsUpdatableDocument(object k) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.IsUpdatableDocument(k);
         }
 
 
@@ -103,59 +103,59 @@ namespace Net.Vpc.Upa
             return @base.IsGeneratedId();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonDeletableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetFullNonDeletableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonDeletableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetFullNonDeletableDocumentsExpression();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonRenamableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetFullNonRenamableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonRenamableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetFullNonRenamableDocumentsExpression();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonCloneableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetFullNonCloneableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonCloneableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetFullNonCloneableDocumentsExpression();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonUpdatableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetFullNonUpdatableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetFullNonUpdatableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetFullNonUpdatableDocumentsExpression();
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetNonDeletableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetNonDeletableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetNonDeletableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetNonDeletableDocumentsExpression();
         }
 
-        public virtual void SetNonDeletableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.SetNonDeletableRecordsExpression(expression);
+        public virtual void SetNonDeletableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.SetNonDeletableDocumentsExpression(expression);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetNonUpdatableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetNonUpdatableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetNonUpdatableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetNonUpdatableDocumentsExpression();
         }
 
-        public virtual void SetNonUpdatableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.SetNonUpdatableRecordsExpression(expression);
+        public virtual void SetNonUpdatableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.SetNonUpdatableDocumentsExpression(expression);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetNonRenamableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetNonRenamableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetNonRenamableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetNonRenamableDocumentsExpression();
         }
 
-        public virtual void SetNonRenamableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.SetNonRenamableRecordsExpression(expression);
+        public virtual void SetNonRenamableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.SetNonRenamableDocumentsExpression(expression);
         }
 
-        public virtual Net.Vpc.Upa.Expressions.Expression GetNonCloneableRecordsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            return @base.GetNonCloneableRecordsExpression();
+        public virtual Net.Vpc.Upa.Expressions.Expression GetNonCloneableDocumentsExpression() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            return @base.GetNonCloneableDocumentsExpression();
         }
 
-        public virtual void SetNonCloneableRecordsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.SetNonCloneableRecordsExpression(expression);
+        public virtual void SetNonCloneableDocumentsExpression(Net.Vpc.Upa.Expressions.Expression expression) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.SetNonCloneableDocumentsExpression(expression);
         }
 
-        public virtual void CheckPersist(Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.CheckPersist(record);
+        public virtual void CheckPersist(Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.CheckPersist(document);
         }
 
-        public virtual void CheckUpdate(Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void CheckUpdate(Net.Vpc.Upa.Document updates, Net.Vpc.Upa.Expressions.Expression condition) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             @base.CheckUpdate(updates, condition);
         }
 
@@ -167,8 +167,8 @@ namespace Net.Vpc.Upa
             @base.CheckNavigate();
         }
 
-        public virtual void CheckRemove(Net.Vpc.Upa.Expressions.Expression condition, bool recurse) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            @base.CheckRemove(condition, recurse);
+        public virtual void CheckRemove(Net.Vpc.Upa.Expressions.Expression condition, bool recurse, long toRemoveCount) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+            @base.CheckRemove(condition, recurse, toRemoveCount);
         }
 
         public virtual bool IsPersistEnabled() /* throws Net.Vpc.Upa.Exceptions.UPAException */  {

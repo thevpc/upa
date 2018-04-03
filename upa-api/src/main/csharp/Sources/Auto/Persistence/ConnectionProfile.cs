@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa.Persistence
              * DRIVER_TYPE_DATASOURCE = "DATASOURCE";
              * DRIVER_TYPE_GENERIC = "GENERIC";
              * String DRIVER_TYPE_ODBC = "ODBC";
-             * @return 
+             * @return
              */
          string GetConnectionDriver();
 
@@ -36,6 +36,18 @@ namespace Net.Vpc.Upa.Persistence
 
          Net.Vpc.Upa.Persistence.StructureStrategy GetStructureStrategy();
 
+        /**
+             *
+             * @return unmodifiable map
+             */
          System.Collections.Generic.IDictionary<string , string> GetProperties();
+
+         void SetProperty(string name, string @value);
+
+         string GetProperty(string name);
+
+         string GetProperty(string name, string defaultValue);
+
+         Net.Vpc.Upa.Persistence.ConnectionProfile Copy();
     }
 }

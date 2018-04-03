@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -28,17 +28,24 @@ namespace Net.Vpc.Upa.Types
         }
 
         /**
-             * @param min minimum value (compared to value * multiplier). if null, no
-             * constraints
-             * @param max maximum value (compared to value * multiplier). if null, no
-             * constraints
+             * @param min      minimum value (compared to value * multiplier). if null, no
+             *                 constraints
+             * @param max      maximum value (compared to value * multiplier). if null, no
+             *                 constraints
              * @param nullable null accept if true
              */
         public ByteType(string name, byte? min, byte? max, bool nullable, bool primitiveType)  : base(name, primitiveType ? typeof(byte) : typeof(byte?), 10, 0, nullable){
 
             this.min = min;
             this.max = max;
-            SetDefaultNonNullValue((byte) ((byte)0));
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = ((byte) ((byte)0));
+            }
         }
 
         public virtual byte? GetMin() {
@@ -93,10 +100,40 @@ namespace Net.Vpc.Upa.Types
 
 
         public override object Parse(string @value) {
-            if (@value == null || @value.Trim().Length==0) {
+            if (@value == null || (@value.Trim().Length==0)) {
                 return null;
             }
             return System.Convert.ToByte(@value);
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.ByteType byteType = (Net.Vpc.Upa.Types.ByteType) o;
+            if (min != null ? !min.Equals(byteType.min) : byteType.min != null) return false;
+            return max != null ? max.Equals(byteType.max) : byteType.max == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (min != null ? min.GetHashCode() : 0);
+            result = 31 * result + (max != null ? max.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            if (min != null) {
+                d.GetProperties()["min"]=System.Convert.ToString(min);
+            }
+            if (max != null) {
+                d.GetProperties()["max"]=System.Convert.ToString(max);
+            }
+            return d;
         }
     }
 }

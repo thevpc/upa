@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,10 +22,10 @@ namespace Net.Vpc.Upa.Config
 
     public class Converter : System.Attribute {
 
-        private string _Type = "";
-        public  string Type{
-            get {return _Type;}
-            set {_Type=value;}
+        private string _ValueType = "";
+        public  string ValueType{
+            get {return _ValueType;}
+            set {_ValueType=value;}
         }
 
 
@@ -41,8 +41,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.Config _Config = new Net.Vpc.Upa.Config.Config();
-        public  Net.Vpc.Upa.Config.Config Config{
+        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
+        public  Net.Vpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

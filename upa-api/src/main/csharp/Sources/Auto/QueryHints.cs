@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,21 +21,35 @@ namespace Net.Vpc.Upa
 
         /**
              * when true password transformations are disabled. this is helpful when copying entities (import/export)
-             * type : boolean, default is false
-             *
+             * type : boolean
+             * default : false
              */
         public const string NO_TYPE_TRANSFORM = "noTypeTransform";
 
         /**
-             * type : string enum {select, join}, default is 'join'
+             * type :QueryFetchStrategy enum {select, join}
+             * default is 'join'
+             * @see QueryFetchStrategy see QueryFetchStrategy for possible values
              */
         public const string FETCH_STRATEGY = "fetchStrategy";
 
         /**
              * sub entities depth
-             *  type int &gt;= 0 : default is 3, meaningful in join fetch strategy
+             * type int &gt;= 0 : default is 60, meaningful in join fetch strategy
              */
-        public const string NAVIGATION_DEPTH = "navigationDepth";
+        public const string MAX_NAVIGATION_DEPTH = "maxNavigationDepth";
+
+        /**
+             * max joins in a query (and all its sub queries)
+             * type int &gt;= 0 : default is 60, meaningful in join fetch strategy
+             */
+        public const string MAX_JOINS = "maxJoins";
+
+        /**
+             * query cache size to reuse
+             * type int
+             */
+        public const string QUERY_CACHE_SIZE = "queryCacheSize";
 
         private QueryHints() {
         }

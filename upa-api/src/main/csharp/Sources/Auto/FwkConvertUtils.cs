@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,18 +13,16 @@
 namespace Net.Vpc.Upa
 {
     internal sealed class FwkConvertUtils{
-        public static void ListAddRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.IList<E> items)
+        public static void ListAddRange<E>(System.Collections.Generic.IList<E> list, System.Collections.Generic.ICollection<E> items)
         {
             foreach(E i in items)
             {
               list.Add(i);
             }
         }
-        public static V GetMapValue<K,V>(System.Collections.Generic.IDictionary<K,V> map, K key)
+        public static bool ObjectEquals(object a, object b)
         {
-            V r=default(V);
-            map.TryGetValue(key,out r);
-            return r;
+            return (a == b) || (a != null && a.Equals(b));;
         }
         public static System.IO.Stream OpenURLStream(string url)
         {
@@ -61,6 +59,12 @@ namespace Net.Vpc.Upa
               return url;
             }
         }
+        public static V GetMapValue<K,V>(System.Collections.Generic.IDictionary<K,V> map, K key)
+        {
+            V r=default(V);
+            map.TryGetValue(key,out r);
+            return r;
+        }
         public static System.Numerics.BigInteger CreateBigInteger(string value)
         {
             System.Numerics.BigInteger i;
@@ -76,6 +80,15 @@ namespace Net.Vpc.Upa
             {
               c.Add(i);
             }
+        }
+        public static string LogMessageExceptionFormatter(string message, System.Exception ex, params object[] formatParameters)
+        {
+            if(ex==null){return message;}
+            string m=message+"\n";if (ex!=null){
+              m=message+ex.Message+"\n";
+              m=message+ex.StackTrace+"\n";
+            }
+            return m;
         }
         public static void PutAllMap<K,V>(System.Collections.Generic.IDictionary<K,V> mapTo, System.Collections.Generic.IDictionary<K,V> mapFrom)
         {

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,6 +13,7 @@
 
 namespace Net.Vpc.Upa.Expressions
 {
+
 
     public sealed class Avg : Net.Vpc.Upa.Expressions.FunctionExpression {
 
@@ -34,7 +35,7 @@ namespace Net.Vpc.Upa.Expressions
             if (index == 0) {
                 this.expression = e;
             } else {
-                throw new System.ArgumentException ();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
         }
 

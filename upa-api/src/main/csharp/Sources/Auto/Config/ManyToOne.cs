@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -127,10 +127,10 @@ namespace Net.Vpc.Upa.Config
         }
 
 
-        private Net.Vpc.Upa.RelationshipType _Type = Net.Vpc.Upa.RelationshipType.DEFAULT;
-        public  Net.Vpc.Upa.RelationshipType Type{
-            get {return _Type;}
-            set {_Type=value;}
+        private Net.Vpc.Upa.RelationshipType _RelationType = Net.Vpc.Upa.RelationshipType.DEFAULT;
+        public  Net.Vpc.Upa.RelationshipType RelationType{
+            get {return _RelationType;}
+            set {_RelationType=value;}
         }
 
 
@@ -153,8 +153,8 @@ namespace Net.Vpc.Upa.Config
              *
              * @return annotation configuration
              */
-        private Net.Vpc.Upa.Config.Config _Config = new Net.Vpc.Upa.Config.Config();
-        public  Net.Vpc.Upa.Config.Config Config{
+        private Net.Vpc.Upa.Config.ItemConfig _Config = new Net.Vpc.Upa.Config.ItemConfig();
+        public  Net.Vpc.Upa.Config.ItemConfig Config{
             get {return _Config;}
             set {_Config=value;}
         }

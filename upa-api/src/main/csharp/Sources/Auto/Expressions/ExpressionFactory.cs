@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -44,13 +44,13 @@ namespace Net.Vpc.Upa.Expressions
                     try {
                         c = defaultInstance.GetConstructor(new System.Type[] { typeof(object) });
                     } catch (System.Exception e2) {
-                        throw new System.ArgumentException ("Could not cast " + e + " as Expression", e1);
+                        throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Could not cast " + e + " as Expression", e1);
                     }
                 }
                 try {
                     return (Net.Vpc.Upa.Expressions.Expression) c.Invoke(new object[] { e });
                 } catch (System.Exception e1) {
-                    throw new System.ArgumentException (e1.ToString());
+                    throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException(e1.ToString());
                 }
             }
         }

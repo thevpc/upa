@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -48,7 +48,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public Literal(bool @value) {
-            SetValue((@value) ? true : false);
+            SetValue((@value) ? new System.Nullable<bool>(true) : new System.Nullable<bool>(false));
         }
 
         public Literal(long @value) {
@@ -79,7 +79,7 @@ namespace Net.Vpc.Upa.Expressions
             //                && !(value instanceof Date)
             //                && !(value instanceof Boolean)
             //        ) {
-            //            throw new IllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
+            //            throw new UPAIllegalArgumentException("bad sql value : " + value.getClass().getName() + " ==> " + value);
             //        } else {
             this.@value = @value;
             if (type == null) {

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -82,9 +82,9 @@ namespace Net.Vpc.Upa.Expressions
 
         public override string ToString() {
             if (IsUnspecified()) {
-                return ":" + GetName();
+                return ":" + (GetName() == null ? "?" : GetName());
             }
-            return ":" + GetName() + "(=" + GetValue() + ")";
+            return ":" + (GetName() == null ? "?" : GetName()) + "(=" + GetValue() + ")";
         }
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -14,7 +14,6 @@
 namespace Net.Vpc.Upa
 {
 
-
     /**
      *
      * @author taha.bensalah@gmail.com
@@ -24,6 +23,8 @@ namespace Net.Vpc.Upa
          void RegisterTypeEvaluator(System.Type type, Net.Vpc.Upa.QLTypeEvaluator t);
 
          void RegisterFunctionEvaluator(string name, Net.Vpc.Upa.QLTypeEvaluator t);
+
+         void RegisterFunctionEvaluator(string name, Net.Vpc.Upa.Function t);
 
          void UnregisterFunctionEvaluator(string name);
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,7 +27,7 @@ namespace Net.Vpc.Upa
         public EntityPartPath(Net.Vpc.Upa.Entity entity, System.Collections.Generic.IList<Net.Vpc.Upa.EntityPart> path) {
             this.entity = entity;
             if (path == null) {
-                this.path = new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>();
+                this.path = new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(5);
             } else {
                 this.path = new System.Collections.Generic.List<Net.Vpc.Upa.EntityPart>(path);
             }

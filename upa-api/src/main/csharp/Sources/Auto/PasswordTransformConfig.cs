@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -60,7 +60,7 @@ namespace Net.Vpc.Upa
                 throw new System.NullReferenceException();
             }
             if (!(cipherStrategy is string || cipherStrategy is System.Type || cipherStrategy is Net.Vpc.Upa.PasswordStrategy || (cipherStrategy is Net.Vpc.Upa.PasswordStrategyType && !cipherStrategy.Equals(Net.Vpc.Upa.PasswordStrategyType.CUSTOM)))) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any balue but custom)");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any value but custom)");
             }
             this.cipherStrategy = cipherStrategy;
         }

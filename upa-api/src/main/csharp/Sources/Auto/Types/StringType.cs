@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,6 +13,7 @@
 
 namespace Net.Vpc.Upa.Types
 {
+
 
     public class StringType : Net.Vpc.Upa.Types.DefaultDataType {
 
@@ -40,7 +41,14 @@ namespace Net.Vpc.Upa.Types
 
             this.max = max;
             this.min = min;
-            SetDefaultNonNullValue("");
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = ("");
+            }
         }
 
 
@@ -76,6 +84,32 @@ namespace Net.Vpc.Upa.Types
                 s.Append("]");
             }
             return s.ToString();
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.StringType that = (Net.Vpc.Upa.Types.StringType) o;
+            if (min != that.min) return false;
+            return max == that.max;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + min;
+            result = 31 * result + max;
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            d.GetProperties()["min"]=System.Convert.ToString(min);
+            d.GetProperties()["max"]=System.Convert.ToString(max);
+            return d;
         }
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -39,14 +39,14 @@ namespace Net.Vpc.Upa
         }
 
         public virtual object GetValue(string fieldName) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = entity.GetPrimaryFields();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Field> f = entity.GetIdFields();
             Net.Vpc.Upa.Key uKey = GetKey();
             for (int i = 0; i < (f).Count; i++) {
                 if (f[i].GetName().Equals(fieldName)) {
                     return uKey.GetObjectAt(i);
                 }
             }
-            throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
+            throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Either key " + ToString() + " or fieldName " + fieldName + " does not refer to entity " + entity.GetName());
         }
     }
 }

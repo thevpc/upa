@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -32,5 +32,9 @@ namespace Net.Vpc.Upa.Bulk
          Net.Vpc.Upa.Bulk.DataDeserializer GetDataDeserializer();
 
          Net.Vpc.Upa.Bulk.DataReader Parse() /* throws System.IO.IOException */ ;
+
+         Net.Vpc.Upa.ObjectFactory GetFactory();
+
+         void SetFactory(Net.Vpc.Upa.ObjectFactory factory);
     }
 }

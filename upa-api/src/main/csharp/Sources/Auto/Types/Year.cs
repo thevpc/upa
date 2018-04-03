@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -97,12 +97,13 @@ namespace Net.Vpc.Upa.Types
         public override string ToString() {
             Net.Vpc.Upa.Types.Calendar c = Net.Vpc.Upa.Types.Calendar.GetInstance();
             c.SetTime(this);
-            int year = c.Get(Net.Vpc.Upa.Types.Calendar.YEAR) + 1900;
+            int year = c.Get(Net.Vpc.Upa.Types.Calendar.YEAR);
+            // + 1900;
             char[] buf = "2000".ToCharArray();
             buf[0] = (char) ('0' + (year / 1000));
-            buf[1] = (char) (((year / 100) % 10));
-            buf[2] = (char) (((year / 10) % 10));
-            buf[3] = (char) ((year % 10));
+            buf[1] = (char) ('0' + ((year / 100) % 10));
+            buf[2] = (char) ('0' + ((year / 10) % 10));
+            buf[3] = (char) ('0' + (year % 10));
             return new string(buf);
         }
     }

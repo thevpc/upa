@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -16,7 +16,8 @@ namespace Net.Vpc.Upa.Filters
 
 
     /**
-    * Created by vpc on 1/4/14.*/
+     * Created by vpc on 1/4/14.
+     */
     internal class FieldDynamicFilter : Net.Vpc.Upa.Filters.AbstractFieldFilter {
 
         public FieldDynamicFilter() {

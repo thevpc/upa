@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,7 +23,14 @@ namespace Net.Vpc.Upa.Types
 
         public BooleanType(string name, bool nullable, bool primitiveType)  : base(name, primitiveType ? typeof(bool) : typeof(bool?), nullable){
 
-            SetDefaultNonNullValue(false);
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = (false);
+            }
         }
 
 
@@ -36,19 +43,19 @@ namespace Net.Vpc.Upa.Types
 
 
         public override System.Collections.Generic.IList<object> GetValues() {
-            System.Collections.Generic.IList<object> list = new System.Collections.Generic.List<object>();
-            list.Add(true);
-            list.Add(false);
+            System.Collections.Generic.IList<object> list = new System.Collections.Generic.List<object>(2);
+            list.Add(new System.Nullable<bool>(true));
+            list.Add(new System.Nullable<bool>(false));
             return list;
         }
 
 
         public override string ToString() {
-            return "Boolean{null=" + IsNullable() + '}';
+            return "Boolean" + (IsNullable() ? "?" : "");
         }
 
         public virtual bool? Parse(string @value) {
-            if (@value == null || @value.Trim().Length==0) {
+            if (@value == null || (@value.Trim().Length==0)) {
                 return null;
             }
             return System.Convert.ToBoolean(@value);

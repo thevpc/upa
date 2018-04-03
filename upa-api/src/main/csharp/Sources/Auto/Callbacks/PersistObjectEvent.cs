@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,27 +23,27 @@ namespace Net.Vpc.Upa.Callbacks
 
         private object objectId;
 
-        private Net.Vpc.Upa.Record objectRecord;
+        private Net.Vpc.Upa.Document objectDocument;
 
         private object objectValue;
 
-        public PersistObjectEvent(object objectId, Net.Vpc.Upa.Record objectRecord, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
+        public PersistObjectEvent(object objectId, Net.Vpc.Upa.Document objectDocument, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(entityExecutionContext, phase){
 
             this.objectId = objectId;
-            this.objectRecord = objectRecord;
+            this.objectDocument = objectDocument;
         }
 
         public virtual object GetObjectId() {
             return objectId;
         }
 
-        public virtual Net.Vpc.Upa.Record GetObjectRecord() {
-            return objectRecord;
+        public virtual Net.Vpc.Upa.Document GetObjectDocument() {
+            return objectDocument;
         }
 
         public virtual object GetObjectValue() {
-            if (objectValue == null && objectRecord != null) {
-                objectValue = GetContext().GetEntity().GetBuilder().RecordToObject<object>(objectRecord);
+            if (objectValue == null && objectDocument != null) {
+                objectValue = GetContext().GetEntity().GetBuilder().DocumentToObject<>(objectDocument);
             }
             return objectValue;
         }

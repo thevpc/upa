@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -46,7 +46,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(3);
             if (left != null) {
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
             }
@@ -68,7 +68,7 @@ namespace Net.Vpc.Upa.Expressions
             } else if (tag.Equals(MAX)) {
                 this.max = e;
             } else {
-                throw new System.ArgumentException ("Insupported");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("Unsupported");
             }
         }
 

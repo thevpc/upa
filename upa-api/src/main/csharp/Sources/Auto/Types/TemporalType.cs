@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -28,6 +28,10 @@ namespace Net.Vpc.Upa.Types
 
         }
 
+        public abstract Net.Vpc.Upa.Types.TemporalOption GetTemporalOption();
+
         public abstract Net.Vpc.Upa.Types.Temporal ValidateDate(Net.Vpc.Upa.Types.Temporal date);
+
+        public abstract Net.Vpc.Upa.Types.Temporal Parse(string @value);
     }
 }

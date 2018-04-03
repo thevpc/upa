@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,6 +22,6 @@ namespace Net.Vpc.Upa
      */
     public enum RelationshipType {
 
-        AGGREGATION, COMPOSITION, DEFAULT, ASSOCIATION, SHADOW_ASSOCIATION, TRANSIENT
+        DEFAULT, ASSOCIATION, AGGREGATION, COMPOSITION, SHADOW_ASSOCIATION, TRANSIENT
     }
 }

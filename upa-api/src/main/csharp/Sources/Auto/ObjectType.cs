@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -19,6 +19,6 @@ namespace Net.Vpc.Upa
      */
     public enum ObjectType {
 
-        UNKNOWN, CONTEXT, PERSISTENCE_GROUP, PERSISTENCE_UNIT, PACKAGE, ENTITY, INDEX, FIELD, SECTION, RELATIONSHIP, FUNCTION, TRIGGER
+        UNKNOWN, CONTEXT, PERSISTENCE_GROUP, PERSISTENCE_UNIT, PACKAGE, ENTITY, INDEX, FIELD, SECTION, RELATIONSHIP, FUNCTION, FORMULA, TRIGGER
     }
 }

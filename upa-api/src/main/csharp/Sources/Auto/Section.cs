@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -17,9 +17,9 @@ namespace Net.Vpc.Upa
 
     public interface Section : Net.Vpc.Upa.EntityPart {
 
-         Net.Vpc.Upa.Field AddField(string name, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers, object defaultValue, Net.Vpc.Upa.Types.DataType type) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Field AddField(Net.Vpc.Upa.FieldBuilder fieldBuilder) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Field AddField(string name, Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers, object defaultValue, Net.Vpc.Upa.Types.DataType type, int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Field AddField(Net.Vpc.Upa.FieldDescriptor fieldDescriptor) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void AddPart(Net.Vpc.Upa.EntityPart child) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -33,7 +33,20 @@ namespace Net.Vpc.Upa
 
          void MovePart(string itemName, int newIndex) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
+        /**
+             * @return this section (and it subsequent sub sections) fields
+             * @throws UPAException
+             */
          System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetFields(Net.Vpc.Upa.Filters.FieldFilter fieldFilter) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+        /**
+             * @return
+             */
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetImmediateFields();
+
+         System.Collections.Generic.IList<Net.Vpc.Upa.Field> GetImmediateFields(Net.Vpc.Upa.Filters.FieldFilter fieldFilter);
 
          System.Collections.Generic.IList<Net.Vpc.Upa.Section> GetSections() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -51,16 +64,14 @@ namespace Net.Vpc.Upa
 
          int GetPartsCount() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Section FindSection(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Section FindSection(string path) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          Net.Vpc.Upa.Section GetSection(string path, Net.Vpc.Upa.MissingStrategy missingStrategy) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Section AddSection(string name, string parentPath) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Section AddSection(string path, int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Section AddSection(string name, string parentPath, int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Section AddSection(string path) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Section AddSection(string name, int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-         Net.Vpc.Upa.Section AddSection(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.SectionInfo GetInfo();
     }
 }

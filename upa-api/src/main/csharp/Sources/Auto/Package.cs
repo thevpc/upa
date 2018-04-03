@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -16,6 +16,8 @@ namespace Net.Vpc.Upa
 
 
     public interface Package : Net.Vpc.Upa.PersistenceUnitPart {
+
+         Net.Vpc.Upa.PackageInfo GetInfo();
 
          string GetPath();
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -50,7 +50,7 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface PersistenceNameStrategy {
 
-         void Init(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore, Net.Vpc.Upa.Persistence.PersistenceNameConfig model);
+         void Init(Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore, Net.Vpc.Upa.Persistence.PersistenceNameConfig model, Net.Vpc.Upa.Properties properties);
 
          void Close();
 

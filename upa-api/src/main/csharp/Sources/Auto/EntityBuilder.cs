@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,9 +21,9 @@ namespace Net.Vpc.Upa
      */
     public interface EntityBuilder {
 
-         Net.Vpc.Upa.Record CreateRecord();
+         Net.Vpc.Upa.Document CreateDocument();
 
-         Net.Vpc.Upa.Record CreateInitializedRecord();
+         Net.Vpc.Upa.Document CreateInitializedDocument();
 
           R CreateInitializedObject<R>();
 
@@ -31,9 +31,9 @@ namespace Net.Vpc.Upa
 
           R CopyObject<R>(R r);
 
-         Net.Vpc.Upa.Record CopyRecord(Net.Vpc.Upa.Record rec);
+         Net.Vpc.Upa.Document CopyDocument(Net.Vpc.Upa.Document rec);
 
-         Net.Vpc.Upa.Record ObjectToRecord(object entity, System.Collections.Generic.ISet<string> fields, bool ignoreUnspecified, bool ensureIncludeIds);
+         Net.Vpc.Upa.Document ObjectToDocument(object entity, System.Collections.Generic.ISet<string> fields, bool ignoreUnspecified, bool ensureIncludeIds);
 
          void SetProperty(object entityObject, string property, object @value);
 
@@ -45,11 +45,15 @@ namespace Net.Vpc.Upa
 
          object GetId(Net.Vpc.Upa.Key unstructuredKey);
 
+         object GetObject(object objectOrDocument);
+
+         Net.Vpc.Upa.Document GetDocument(object objectOrDocument);
+
          Net.Vpc.Upa.Key GetKey(object key);
 
         /**
-             * transforms entity id to a Record key representation of the given entity
-             * id. Updates to the record are NOT recorded to the provided value and vice
+             * transforms entity id to a Document key representation of the given entity
+             * id. Updates to the Document are NOT reflected in the provided value and vice
              * versa
              *
              * @param entityId entity id
@@ -58,77 +62,97 @@ namespace Net.Vpc.Upa
          Net.Vpc.Upa.Key IdToKey(object entityId);
 
         /**
-             * transforms record key to a entity id representation of the given record
-             * key. Updates to the record are NOT recorded to the provided value and
+             * transforms Document key to a entity id representation of the given Document
+             * key. Updates to the Document are NOT reflected in the provided value and
              * vice versa
              *
-             * @param recordKey record key
+             * @param documentKey Document key
              * @return key representation
              */
-         object KeyToId(Net.Vpc.Upa.Key recordKey);
+         object KeyToId(Net.Vpc.Upa.Key documentKey);
 
         /**
-             * transforms entity value to a Record value representation of the given
-             * entity value. Updates to the record are recorded to the provided value
+             * transforms entity value to a Document value representation of the given
+             * entity value. Updates to the Document are reflected in the provided value
              * and vice versa
              *
              * @param objectValue entity value
-             * @return entityToRecord(r, false)
+             * @return entityToDocument(r, false)
              * @
              */
-         Net.Vpc.Upa.Record ObjectToRecord(object objectValue);
+         Net.Vpc.Upa.Document ObjectToDocument(object objectValue);
 
         /**
-             * Record value representation of the given entity. updates to the record
-             * are recorded to the provided value
+             * transforms id to PrimitiveId
+             * PrimitiveId is a representation of the Entity's Id where
+             * all Relationships composing the Id/Primary key are flattened
+             * to primitive fields and values
              *
-             * @param objectValue entity value
-             * @param ignoreUnspecified when true primitive number type zeros and
-             * boolean type false values are reported as null (not included in record)
-             * @return objectToRecord(r, false)
+             * @param id entity value
+             * @return entityToDocument(r, false)
+             * @
              */
-         Net.Vpc.Upa.Record ObjectToRecord(object objectValue, bool ignoreUnspecified);
+         Net.Vpc.Upa.PrimitiveId IdToPrimitiveId(object id);
+
+         object PrimitiveIdToId(object id);
+
+         Net.Vpc.Upa.PrimitiveId ObjectToPrimitiveId(object @object);
+
+        /**
+             * Document value representation of the given entity. updates to the Document
+             * are reflected in the provided value
+             *
+             * @param objectValue       entity value
+             * @param ignoreUnspecified when true primitive number type zeros and
+             *                          boolean type false values are reported as null (not included in Document)
+             * @return objectToDocument(r, false)
+             */
+         Net.Vpc.Upa.Document ObjectToDocument(object objectValue, bool ignoreUnspecified);
+
+         string ObjectToName(object objectValue);
+
+         Net.Vpc.Upa.NamedId ObjectToNamedId(object objectValue);
 
          object GetMainValue(object objectValue);
 
-          R RecordToObject<R>(Net.Vpc.Upa.Record record);
+          R DocumentToObject<R>(Net.Vpc.Upa.Document document);
 
           R IdToObject<R>(object objectId);
 
-         Net.Vpc.Upa.Record IdToRecord(object objectId);
+         Net.Vpc.Upa.Document IdToDocument(object objectId);
 
          object ObjectToId(object objectValue);
 
          Net.Vpc.Upa.Key ObjectToKey(object objectValue);
 
-         object RecordToId(Net.Vpc.Upa.Record record);
+         object DocumentToId(Net.Vpc.Upa.Document document);
 
-         Net.Vpc.Upa.Key RecordToKey(Net.Vpc.Upa.Record record);
+         Net.Vpc.Upa.Key DocumentToKey(Net.Vpc.Upa.Document document);
 
          object KeyToObject(Net.Vpc.Upa.Key key);
 
-         Net.Vpc.Upa.Record KeyToRecord(Net.Vpc.Upa.Key key);
+         Net.Vpc.Upa.Document KeyToDocument(Net.Vpc.Upa.Key key);
 
-         void SetRecordId(Net.Vpc.Upa.Record record, object id);
+         void SetDocumentId(Net.Vpc.Upa.Document document, object id);
 
          void SetObjectId(object @object, object id);
 
-         Net.Vpc.Upa.Expressions.Expression RecordToExpression(Net.Vpc.Upa.Record record, string alias);
+         Net.Vpc.Upa.Expressions.Expression DocumentToExpression(Net.Vpc.Upa.Document document, string alias);
 
          Net.Vpc.Upa.Expressions.Expression ObjectToExpression(object @object, bool ignoreUnspecified, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression ObjectToIdExpression(object objectOrRecord, string alias);
+         Net.Vpc.Upa.Expressions.Expression ObjectToIdExpression(object objectOrDocument, string alias);
 
          Net.Vpc.Upa.Expressions.Expression IdToExpression(object id, string alias);
 
-         Net.Vpc.Upa.Expressions.Expression KeyToExpression(Net.Vpc.Upa.Key recordKey, string alias);
+         Net.Vpc.Upa.Expressions.Expression KeyToExpression(Net.Vpc.Upa.Key documentKey, string alias);
 
           Net.Vpc.Upa.Expressions.Expression IdListToExpression<K>(System.Collections.Generic.IList<K> idList, string alias);
 
          Net.Vpc.Upa.Expressions.Expression KeyListToExpression(System.Collections.Generic.IList<Net.Vpc.Upa.Key> keyList, string alias);
 
-         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord();
+         Net.Vpc.Upa.QualifiedDocument CreateQualifiedDocument();
 
-         Net.Vpc.Upa.QualifiedRecord CreateQualifiedRecord(Net.Vpc.Upa.Record record);
+         Net.Vpc.Upa.QualifiedDocument CreateQualifiedDocument(Net.Vpc.Upa.Document document);
     }
 }

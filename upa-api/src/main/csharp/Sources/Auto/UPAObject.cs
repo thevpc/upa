@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,9 +22,9 @@ namespace Net.Vpc.Upa
 
          string GetName();
 
-         string GetAbsoluteName();
-
          void SetName(string name);
+
+         string GetAbsoluteName();
 
          string GetPersistenceName();
 
@@ -32,17 +32,31 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit();
 
-         Net.Vpc.Upa.Types.I18NString GetTitle();
+         Net.Vpc.Upa.PersistenceGroup GetPersistenceGroup();
 
-         void SetTitle(Net.Vpc.Upa.Types.I18NString title);
+        /**
+             * localized title
+             * @return localized title
+             * @see #getI18NTitle()
+             * @see net.vpc.upa.UPAI18n
+             */
+         string GetTitle();
 
-         Net.Vpc.Upa.Types.I18NString GetDescription();
+        /**
+             * localized description
+             * @return localized description
+             * @see #getI18NTitle()
+             * @see net.vpc.upa.UPAI18n
+             */
+         string GetDescription();
 
-         void SetDescription(Net.Vpc.Upa.Types.I18NString description);
+         Net.Vpc.Upa.Types.I18NString GetI18NTitle();
 
-         Net.Vpc.Upa.Types.I18NString GetI18NString();
+         void SetI18NTitle(Net.Vpc.Upa.Types.I18NString title);
 
-         void SetI18NString(Net.Vpc.Upa.Types.I18NString i18NString);
+         Net.Vpc.Upa.Types.I18NString GetI18NDescription();
+
+         void SetI18NDescription(Net.Vpc.Upa.Types.I18NString description);
 
          Net.Vpc.Upa.Properties GetProperties();
 
@@ -54,19 +68,19 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.UPAObjectListener[] GetObjectListeners();
 
-         void AddPropertyChangeListener(string property, Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(string property, Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(string property, Net.Vpc.Upa.PropertyChangeListener listener);
+         void RemovePropertyChangeListener(string property, Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.PropertyChangeListener listener);
 
-         void AddPropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
+         void AddPropertyChangeListener(Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.PropertyChangeListener listener);
 
-         void RemovePropertyChangeListener(Net.Vpc.Upa.PropertyChangeListener listener);
-
-
-         bool Equals(object other);
+         void RemovePropertyChangeListener(Net.Vpc.Upa.EventPhase phase, Net.Vpc.Upa.PropertyChangeListener listener);
 
 
-         int GetHashCode();
+        override bool Equals(object other);
+
+
+        override int GetHashCode();
 
          void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
     }

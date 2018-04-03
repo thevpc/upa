@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -35,5 +35,11 @@ namespace Net.Vpc.Upa
           T GetSingleton<T>(System.Type type);
 
           T GetSingleton<T>(string typeName);
+
+          System.Type[] GetAlternatives<T>(System.Type type);
+
+          void AddAlternative<T>(System.Type type, System.Type impl);
+
+         void Register(System.Type contract, System.Type impl);
     }
 }

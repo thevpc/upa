@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -13,6 +13,7 @@
 
 namespace Net.Vpc.Upa.Types
 {
+
 
     public class FloatType : Net.Vpc.Upa.Types.NumberType {
 
@@ -43,7 +44,14 @@ namespace Net.Vpc.Upa.Types
 
             this.min = min;
             this.max = max;
-            SetDefaultNonNullValue(0f);
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = (0f);
+            }
         }
 
         public virtual float? GetMin() {
@@ -120,15 +128,54 @@ namespace Net.Vpc.Upa.Types
                 }
                 s.Append("]");
             }
+            if (IsNullable()) {
+                s.Append("?");
+            }
             return s.ToString();
         }
 
 
         public override object Parse(string @value) {
-            if (@value == null || @value.Trim().Length==0) {
+            if (@value == null || (@value.Trim().Length==0)) {
                 return null;
             }
             return System.Convert.ToSingle(@value);
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.FloatType floatType = (Net.Vpc.Upa.Types.FloatType) o;
+            if (fixedDigits != floatType.fixedDigits) return false;
+            if (min != null ? !min.Equals(floatType.min) : floatType.min != null) return false;
+            if (max != null ? !max.Equals(floatType.max) : floatType.max != null) return false;
+            return userFormatName != null ? userFormatName.Equals(floatType.userFormatName) : floatType.userFormatName == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (min != null ? min.GetHashCode() : 0);
+            result = 31 * result + (max != null ? max.GetHashCode() : 0);
+            result = 31 * result + (fixedDigits ? 1 : 0);
+            result = 31 * result + (userFormatName != null ? userFormatName.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            d.GetProperties()["userFormatName"]=System.Convert.ToString(userFormatName);
+            d.GetProperties()["fixedDigits"]=System.Convert.ToString(fixedDigits);
+            if (min != null) {
+                d.GetProperties()["min"]=System.Convert.ToString(min);
+            }
+            if (max != null) {
+                d.GetProperties()["max"]=System.Convert.ToString(max);
+            }
+            return d;
         }
     }
 }

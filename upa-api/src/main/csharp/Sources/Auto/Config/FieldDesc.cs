@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -27,9 +27,9 @@ namespace Net.Vpc.Upa.Config
 
         private Net.Vpc.Upa.Types.DataType type;
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.UserFieldModifier>();
+        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> modifiers = Net.Vpc.Upa.FlagSets.NoneOf<T>();
 
-        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<Net.Vpc.Upa.UserFieldModifier>();
+        private Net.Vpc.Upa.FlagSet<Net.Vpc.Upa.UserFieldModifier> excludeModifiers = Net.Vpc.Upa.FlagSets.NoneOf<T>();
 
         private Net.Vpc.Upa.Formula persistFormula;
 

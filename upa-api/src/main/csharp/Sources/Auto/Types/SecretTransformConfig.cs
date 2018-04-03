@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -53,7 +53,7 @@ namespace Net.Vpc.Upa.Types
                 throw new System.NullReferenceException();
             }
             if (!(secretStrategy is string || secretStrategy is System.Type || secretStrategy is Net.Vpc.Upa.SecretStrategy || (secretStrategy is Net.Vpc.Upa.SecretStrategyType && !secretStrategy.Equals(Net.Vpc.Upa.SecretStrategyType.CUSTOM)))) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
             }
             this.secretStrategy = secretStrategy;
         }

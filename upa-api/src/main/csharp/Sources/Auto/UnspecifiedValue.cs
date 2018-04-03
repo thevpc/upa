@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -17,7 +17,7 @@ namespace Net.Vpc.Upa
 
     /**
      * UnspecifiedValue is used to identify the "unspecified value" of fields of an entity
-     * when dealing with unstructured records or Prototype records (Find by example).
+     * when dealing with unstructured Documents or Prototype Documents (Find by example).
      * Each field has has a unique value that is defined as "unspecified value",
      * if the field value is equal to that value, the field is supposed not to be explicitly
      * mentioned by user so that in "query by example" object for instance, that value is not

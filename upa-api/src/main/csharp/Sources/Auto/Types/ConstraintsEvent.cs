@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -18,7 +18,7 @@ namespace Net.Vpc.Upa.Types
 
     public class ConstraintsEvent {
 
-        private System.Collections.Generic.IList<Net.Vpc.Upa.Types.ConstraintsException> errors = new System.Collections.Generic.List<Net.Vpc.Upa.Types.ConstraintsException>();
+        private System.Collections.Generic.IList<Net.Vpc.Upa.Types.ConstraintsException> errors = new System.Collections.Generic.List<Net.Vpc.Upa.Types.ConstraintsException>(1);
 
         /**
              * The object on which the Event initially occurred.
@@ -29,10 +29,10 @@ namespace Net.Vpc.Upa.Types
              * Constructs a prototypical Event.
              *
              * @param source The object on which the Event initially occurred.
-             * @throws IllegalArgumentException if source is null.
+             * @throws UPAIllegalArgumentException if source is null.
              */
         public ConstraintsEvent(object source) {
-            if (source == null) throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException("null source");
+            if (source == null) throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("null source");
             this.source = source;
         }
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -40,14 +40,6 @@ namespace Net.Vpc.Upa.Types
 
         public virtual void SetDefaultValue(object defaultValue) {
             dataType.SetDefaultValue(defaultValue);
-        }
-
-        public virtual object GetDefaultNonNullValue() {
-            return dataType.GetDefaultNonNullValue();
-        }
-
-        public virtual void SetDefaultNonNullValue(object defaultNonNullValue) {
-            dataType.SetDefaultNonNullValue(defaultNonNullValue);
         }
 
         public virtual bool IsNullable() {
@@ -148,6 +140,24 @@ namespace Net.Vpc.Upa.Types
             } catch (System.Exception ex) {
                 throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
             }
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            Net.Vpc.Upa.Types.DataTypeAdapter that = (Net.Vpc.Upa.Types.DataTypeAdapter) o;
+            return dataType != null ? dataType.Equals(that.dataType) : that.dataType == null;
+        }
+
+
+        public override int GetHashCode() {
+            return dataType != null ? dataType.GetHashCode() : 0;
+        }
+
+
+        public virtual Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            return dataType.GetInfo();
         }
         // This Method is added by J2CS UPA Portable Framework.  Do Not Edit
         virtual public object Clone() { return base.MemberwiseClone();}

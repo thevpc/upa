@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Expressions
             entityAlias = null;
         }
 
-        private Net.Vpc.Upa.Expressions.Delete From(string entity, string alias) {
+        public virtual Net.Vpc.Upa.Expressions.Delete From(string entity, string alias) {
             this.entity = new Net.Vpc.Upa.Expressions.EntityName(entity);
             entityAlias = alias;
             return this;
@@ -47,7 +47,7 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(2);
             if (entity != null) {
                 all.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
             }
@@ -80,7 +80,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public override string GetEntityAlias() {
-            return entityAlias == null ? entity.GetName() : entityAlias;
+            return entityAlias;
         }
 
         public virtual Net.Vpc.Upa.Expressions.Delete Where(Net.Vpc.Upa.Expressions.Expression condition) {

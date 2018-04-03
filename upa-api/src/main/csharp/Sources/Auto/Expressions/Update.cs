@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -32,12 +32,12 @@ namespace Net.Vpc.Upa.Expressions
         private string entityAlias;
 
         public Update() {
-            fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.VarVal>();
+            fields = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.VarVal>(5);
         }
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>((fields).Count + 2);
             if (entity != null) {
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(entity, ENTITY));
             }
@@ -100,7 +100,7 @@ namespace Net.Vpc.Upa.Expressions
         }
 
         public override string GetEntityAlias() {
-            return entityAlias == null ? (entity == null ? null : entity.GetName()) : entityAlias;
+            return entityAlias;
         }
 
         public int Size() {

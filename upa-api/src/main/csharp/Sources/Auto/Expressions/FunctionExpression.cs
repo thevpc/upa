@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -41,8 +41,8 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
             Net.Vpc.Upa.Expressions.Expression[] arr = GetArguments();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> all = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>(arr.Length);
             for (int i = 0; i < arr.Length; i++) {
                 Net.Vpc.Upa.Expressions.Expression e = arr[i];
                 if (e != null) {
@@ -73,7 +73,7 @@ namespace Net.Vpc.Upa.Expressions
 
         protected internal static void CheckArgCount(string name, Net.Vpc.Upa.Expressions.Expression[] args, int count) {
             if (args.Length != count) {
-                throw new System.ArgumentException ("function " + name + " expects " + count + " argument(s) but found " + args.Length);
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException("function " + name + " expects " + count + " argument(s) but found " + args.Length);
             }
         }
     }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -54,13 +54,13 @@ namespace Net.Vpc.Upa.Expressions
 
 
         public override System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> GetChildren() {
-            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>();
+            System.Collections.Generic.IList<Net.Vpc.Upa.Expressions.TaggedExpression> list = new System.Collections.Generic.List<Net.Vpc.Upa.Expressions.TaggedExpression>((right).Count + 1);
             if (left != null) {
                 list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(left, LEFT));
             }
             for (int i = 0; i < (right).Count; i++) {
                 Net.Vpc.Upa.Expressions.Expression r = right[i];
-                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(r, new Net.Vpc.Upa.Expressions.IndexedTag("RIGTH", i)));
+                list.Add(new Net.Vpc.Upa.Expressions.TaggedExpression(r, new Net.Vpc.Upa.Expressions.IndexedTag("RIGHT", i)));
             }
             return list;
         }

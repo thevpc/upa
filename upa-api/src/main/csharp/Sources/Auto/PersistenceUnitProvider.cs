@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,8 +20,8 @@ namespace Net.Vpc.Upa
      */
     public interface PersistenceUnitProvider {
 
-         Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit(Net.Vpc.Upa.PersistenceGroup persistenceGroup);
+         string GetPersistenceUnitName(Net.Vpc.Upa.PersistenceGroup persistenceGroup);
 
-         void SetPersistenceUnit(Net.Vpc.Upa.PersistenceGroup persistenceGroup, Net.Vpc.Upa.PersistenceUnit current);
+         void SetPersistenceUnitName(Net.Vpc.Upa.PersistenceGroup persistenceGroup, string current);
     }
 }

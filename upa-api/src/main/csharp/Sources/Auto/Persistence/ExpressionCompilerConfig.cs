@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -20,17 +20,15 @@ namespace Net.Vpc.Upa.Persistence
      */
     public class ExpressionCompilerConfig {
 
-        private System.Collections.Generic.IDictionary<string , string> aliasToEntityContext;
+        private System.Collections.Generic.IDictionary<string , string> aliasToEntityContext = new System.Collections.Generic.Dictionary<string , string>();
 
         private System.Collections.Generic.IDictionary<string , object> hints;
 
-        private bool validate = true;
+        private bool compile = true;
 
-        private bool expandFields = true;
+        private bool resolveThis = true;
 
         private Net.Vpc.Upa.Filters.FieldFilter expandFieldFilter;
-
-        private bool expandEntityFilter = true;
 
         private string thisAlias = null;
 
@@ -41,7 +39,7 @@ namespace Net.Vpc.Upa.Persistence
             return aliasToEntityContext;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig BindAliastoEntity(string alias, string entityName) {
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig BindAliasToEntity(string alias, string entityName) {
             if (aliasToEntityContext == null) {
                 aliasToEntityContext = new System.Collections.Generic.Dictionary<string , string>();
             }
@@ -50,20 +48,6 @@ namespace Net.Vpc.Upa.Persistence
             } else {
                 aliasToEntityContext[alias]=entityName;
             }
-            return this;
-        }
-
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetAliasToEntityContext(System.Collections.Generic.IDictionary<string , string> aliasToEntityContext) {
-            this.aliasToEntityContext = aliasToEntityContext;
-            return this;
-        }
-
-        public virtual bool IsExpandFields() {
-            return expandFields;
-        }
-
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetExpandFields(bool expandFields) {
-            this.expandFields = expandFields;
             return this;
         }
 
@@ -76,21 +60,21 @@ namespace Net.Vpc.Upa.Persistence
             return this;
         }
 
-        public virtual bool IsExpandEntityFilter() {
-            return expandEntityFilter;
+        public virtual bool IsCompile() {
+            return compile;
         }
 
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetExpandEntityFilter(bool expandEntityFilter) {
-            this.expandEntityFilter = expandEntityFilter;
+        public virtual bool IsTranslateOnly() {
+            return !compile;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetCompile(bool compile) {
+            this.compile = compile;
             return this;
         }
 
-        public virtual bool IsValidate() {
-            return validate;
-        }
-
-        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetValidate(bool validate) {
-            this.validate = validate;
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetTranslateOnly() {
+            this.compile = false;
             return this;
         }
 
@@ -121,9 +105,27 @@ namespace Net.Vpc.Upa.Persistence
             return this;
         }
 
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig Copy() {
+            Net.Vpc.Upa.Persistence.ExpressionCompilerConfig other = new Net.Vpc.Upa.Persistence.ExpressionCompilerConfig();
+            other.aliasToEntityContext = aliasToEntityContext == null ? null : new System.Collections.Generic.Dictionary<string , string>(aliasToEntityContext);
+            other.hints = hints == null ? null : new System.Collections.Generic.Dictionary<string , object>(hints);
+            other.compile = compile;
+            other.thisAlias = thisAlias;
+            return other;
+        }
+
+        public virtual bool IsResolveThis() {
+            return resolveThis;
+        }
+
+        public virtual Net.Vpc.Upa.Persistence.ExpressionCompilerConfig SetResolveThis(bool resolveThis) {
+            this.resolveThis = resolveThis;
+            return this;
+        }
+
 
         public override string ToString() {
-            return "ExpressionCompilerConfig{" + "aliasToEntityContext=" + aliasToEntityContext + ", validate=" + validate + ", expandFields=" + expandFields + ", expandFieldFilter=" + expandFieldFilter + ", expandEntityFilter=" + expandEntityFilter + ", thisAlias=" + thisAlias + '}';
+            return "ExpressionCompilerConfig{" + "aliasToEntityContext=" + aliasToEntityContext + ", " + (compile ? "compile" : "translate") + ", expandFieldFilter=" + expandFieldFilter + ", thisAlias=" + thisAlias + '}';
         }
     }
 }

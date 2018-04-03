@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -22,19 +22,19 @@ namespace Net.Vpc.Upa.Callbacks
     public class SingleDataInterceptorAdapter : Net.Vpc.Upa.Callbacks.SingleEntityListener {
 
 
-        public virtual void BeforePersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforePersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void AfterPersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterPersist(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void BeforeUpdate(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforeUpdate(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void AfterUpdate(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterUpdate(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
@@ -46,11 +46,11 @@ namespace Net.Vpc.Upa.Callbacks
         }
 
 
-        public virtual void BeforeUpdateFormulas(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void BeforeUpdateFormulas(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
 
 
-        public virtual void AfterUpdateFormulas(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Record record) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        public virtual void AfterUpdateFormulas(Net.Vpc.Upa.Callbacks.EntityTriggerContext context, object id, Net.Vpc.Upa.Document document) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
         }
     }
 }

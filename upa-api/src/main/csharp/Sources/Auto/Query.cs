@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -39,17 +39,37 @@ namespace Net.Vpc.Upa
 
          object GetSingleValue(object defaultValue) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.MultiRecord GetMultiRecord() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.MultiDocument GetMultiDocument() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         Net.Vpc.Upa.Record GetRecord() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         Net.Vpc.Upa.Document GetDocument() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-          System.Collections.Generic.IList<R> GetEntityList<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        /**
+             * Executes a Select query and returns a single result.
+             * @param <R> Result Type
+             * @return Single result if unique
+             * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+             * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
+             */
+          R GetSingleResult<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-          R GetSingleEntity<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        /**
+             * Executes a Select query and returns a single result if found.
+             * If query returns no result null is returned.
+             * When Multiple results NonUniqueResultException will be thrown
+             * @param <R> Result Type
+             * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
+             * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+             */
+          R GetSingleResultOrNull<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-          R GetSingleEntityOrNull<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-          R GetEntity<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+        /**
+             * Executes a Select query and returns a single result if found.
+             * If query returns no result null is returned.
+             * When Multiple results, the first result will be returned
+             * @param <R> Result Type
+             * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
+             */
+          R GetFirstResultOrNull<R>() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsEmpty() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -61,13 +81,17 @@ namespace Net.Vpc.Upa
 
          System.Collections.Generic.ISet<Net.Vpc.Upa.Key> GetKeySet() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.MultiRecord> GetMultiRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.Vpc.Upa.MultiDocument> GetMultiDocumentList() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+          System.Collections.Generic.IList<T> GetResultList<T>(System.Type type, params string [] fields);
+
+          System.Collections.Generic.ISet<T> GetResultSet<T>(System.Type type, params string [] fields);
 
           System.Collections.Generic.IList<T> GetResultList<T>();
 
           System.Collections.Generic.ISet<T> GetResultSet<T>();
 
-         System.Collections.Generic.IList<Net.Vpc.Upa.Record> GetRecordList() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         System.Collections.Generic.IList<Net.Vpc.Upa.Document> GetDocumentList() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
           System.Collections.Generic.IList<T> GetValueList<T>(int index) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
@@ -77,10 +101,6 @@ namespace Net.Vpc.Upa
 
           System.Collections.Generic.IList<T> GetValueList<T>(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-          System.Collections.Generic.IList<T> GetTypeList<T>(System.Type type, params string [] fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
-          System.Collections.Generic.ISet<T> GetTypeSet<T>(System.Type type, params string [] fields) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
-
          Net.Vpc.Upa.Persistence.ResultMetaData GetMetaData() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          Net.Vpc.Upa.Query SetParameter(string name, object @value);
@@ -89,11 +109,17 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.Query SetParameter(int index, object @value);
 
+         Net.Vpc.Upa.Query SetParameter(string name, object @value, bool condition);
+
+         Net.Vpc.Upa.Query SetParameters(System.Collections.Generic.IDictionary<string , object> parameters, bool condition);
+
+         Net.Vpc.Upa.Query SetParameter(int index, object @value, bool condition);
+
          Net.Vpc.Upa.Query RemoveParameter(string name);
 
          Net.Vpc.Upa.Query RemoveParameter(int index);
 
-         void SetUpdatable(bool forUpdate);
+         Net.Vpc.Upa.Query SetUpdatable(bool forUpdate);
 
          bool IsLazyListLoadingEnabled();
 

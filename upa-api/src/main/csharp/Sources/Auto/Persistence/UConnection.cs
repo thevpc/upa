@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -33,14 +33,20 @@ namespace Net.Vpc.Upa.Persistence
 
          void RemoveCloseListener(Net.Vpc.Upa.CloseListener closeListener);
 
-         System.Data.IDbConnection GetMetadataAccessibleConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetMetadataAccessibleConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         System.Data.IDbConnection GetPlatformConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         object GetPlatformConnection() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          object GetProperty(string name) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          System.Collections.Generic.IDictionary<string , object> GetProperties() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void SetProperty(string name, object @value) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+
+         void BeginTransaction();
+
+         void CommitTransaction();
+
+         void RollbackTransaction();
     }
 }

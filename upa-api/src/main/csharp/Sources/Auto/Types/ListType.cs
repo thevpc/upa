@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -37,7 +37,18 @@ namespace Net.Vpc.Upa.Types
 
             this.elementType = elementType;
             SetData(collection);
-            SetDefaultNonNullValue((GetValues()).Count > 0 ? GetValues()[0] : null);
+            ReevaluateCachedValues();
+        }
+
+
+        protected internal override void ReevaluateCachedValues() {
+            base.ReevaluateCachedValues();
+            if (elementType == null) {
+                return;
+            }
+            if (!defaultValueUserDefined && !IsNullable()) {
+                defaultValue = ((GetValues()).Count > 0 ? GetValues()[0] : null);
+            }
         }
 
         public ListType(string name, System.Collections.Generic.IList<object> collection, Net.Vpc.Upa.Types.DataType modelClass, int length, int precision)  : this(name, collection, modelClass, length, precision, false){
@@ -54,7 +65,7 @@ namespace Net.Vpc.Upa.Types
         }
 
         private void SetData(System.Collections.Generic.IList<object> collection) {
-            elements = new System.Collections.Generic.List<object>();
+            elements = new System.Collections.Generic.List<object>(collection == null ? 1 : (collection).Count);
             if (collection != null) {
                 foreach (object s in collection) {
                     if (s != null && !GetPlatformType().IsInstanceOfType(s)) {
@@ -118,6 +129,39 @@ namespace Net.Vpc.Upa.Types
             } catch (System.Exception ex) {
                 throw new Net.Vpc.Upa.Exceptions.UnexpectedException("Clone Not Supported", ex);
             }
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.ListType listType = (Net.Vpc.Upa.Types.ListType) o;
+            if (elementType != null ? !elementType.Equals(listType.elementType) : listType.elementType != null) return false;
+            return elements != null ? elements.Equals(listType.elements) : listType.elements == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (elementType != null ? elementType.GetHashCode() : 0);
+            result = 31 * result + (elements != null ? elements.GetHashCode() : 0);
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            System.Text.StringBuilder s = new System.Text.StringBuilder();
+            d.GetProperties()["elementType"]=System.Convert.ToString(elementType);
+            foreach (object o in elements) {
+                if ((s).Length > 0) {
+                    s.Append(",");
+                }
+                s.Append(o.ToString());
+            }
+            d.GetProperties()["values"]=System.Convert.ToString(s);
+            return d;
         }
     }
 }

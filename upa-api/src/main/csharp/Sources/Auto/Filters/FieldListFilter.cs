@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -39,7 +39,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldListFilter SetAccepted(Net.Vpc.Upa.PrimitiveField[] f) {
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Field> a = new System.Collections.Generic.List<Net.Vpc.Upa.Field>();
+            System.Collections.Generic.ICollection<Net.Vpc.Upa.Field> a = new System.Collections.Generic.List<Net.Vpc.Upa.Field>(f.Length);
             foreach (Net.Vpc.Upa.PrimitiveField primitiveField in f) {
                 a.Add(primitiveField);
             }
@@ -61,7 +61,7 @@ namespace Net.Vpc.Upa.Filters
         }
 
         public virtual Net.Vpc.Upa.Filters.FieldListFilter SetRejected(Net.Vpc.Upa.PrimitiveField[] f) {
-            System.Collections.Generic.ICollection<Net.Vpc.Upa.Field> a = new System.Collections.Generic.List<Net.Vpc.Upa.Field>();
+            System.Collections.Generic.ICollection<Net.Vpc.Upa.Field> a = new System.Collections.Generic.List<Net.Vpc.Upa.Field>(f.Length);
             foreach (Net.Vpc.Upa.PrimitiveField primitiveField in f) {
                 a.Add(primitiveField);
             }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -53,10 +53,6 @@ namespace Net.Vpc.Upa.Types
             this.relationship = relationship;
         }
 
-        public virtual Net.Vpc.Upa.Entity GetTargetEntity() {
-            return GetRelationship().GetTargetRole().GetEntity();
-        }
-
         public virtual bool IsUpdatable() {
             return updatable;
         }
@@ -70,6 +66,41 @@ namespace Net.Vpc.Upa.Types
                 n = n + ":" + GetTargetEntityName();
             }
             return "ManyToOneType{" + n + ", updatable=" + updatable + '}';
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.ManyToOneType that = (Net.Vpc.Upa.Types.ManyToOneType) o;
+            if (updatable != that.updatable) return false;
+            if (targetEntityName != null ? !targetEntityName.Equals(that.targetEntityName) : that.targetEntityName != null) return false;
+            return relationship != null ? relationship.Equals(that.relationship) : that.relationship == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (targetEntityName != null ? targetEntityName.GetHashCode() : 0);
+            result = 31 * result + (relationship != null ? relationship.GetHashCode() : 0);
+            result = 31 * result + (updatable ? 1 : 0);
+            return result;
+        }
+
+
+        public override Net.Vpc.Upa.DataTypeInfo GetInfo() {
+            Net.Vpc.Upa.DataTypeInfo d = base.GetInfo();
+            d.GetProperties()["updatable"]=System.Convert.ToString(updatable);
+            if (targetEntityName != null) {
+                d.GetProperties()["targetEntityName"]=System.Convert.ToString(targetEntityName);
+            }
+            if (relationship != null) {
+                d.GetProperties()["relationship"]=System.Convert.ToString(relationship.GetName());
+            }
+            if (relationship != null) {
+            }
+            return d;
         }
     }
 }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -24,7 +24,7 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.UpdateQuery SetValues(object @object);
 
-         Net.Vpc.Upa.UpdateQuery SetValues(Net.Vpc.Upa.Record record);
+         Net.Vpc.Upa.UpdateQuery SetValues(Net.Vpc.Upa.Document document);
 
          object GetValues();
 
@@ -38,9 +38,9 @@ namespace Net.Vpc.Upa
 
          Net.Vpc.Upa.UpdateQuery ByPrototype(object expr);
 
-         Net.Vpc.Upa.UpdateQuery ByRecord(Net.Vpc.Upa.Record expr);
+         Net.Vpc.Upa.UpdateQuery ByDocument(Net.Vpc.Upa.Document expr);
 
-         Net.Vpc.Upa.UpdateQuery ByPrototype(Net.Vpc.Upa.Record expr);
+         Net.Vpc.Upa.UpdateQuery ByPrototype(Net.Vpc.Upa.Document expr);
 
          Net.Vpc.Upa.UpdateQuery ByKeyList(System.Collections.Generic.IList<Net.Vpc.Upa.Key> expr);
 

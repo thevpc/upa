@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -127,7 +127,7 @@ namespace Net.Vpc.Upa.Types
             Register(typeof(long), LONG);
             Register(typeof(short?), SHORT);
             Register(typeof(short), SHORT);
-            Register(typeof(string), Net.Vpc.Upa.Types.StringType.DEFAULT);
+            Register(typeof(string), STRING);
             Register(typeof(Net.Vpc.Upa.Types.Date), DATE);
             Register(typeof(Net.Vpc.Upa.Types.Month), MONTH);
             Register(typeof(Net.Vpc.Upa.Types.Year), YEAR);
@@ -139,6 +139,8 @@ namespace Net.Vpc.Upa.Types
             Register(typeof(char[]), CHARS);
             Register(typeof(byte?[]), BYTE_REFS);
             Register(typeof(char?[]), CHAR_REFS);
+            Register(typeof(void), VOID);
+            Register(typeof(void), VOID);
             //All the of the following types are not supported in C#
         }
 
@@ -155,7 +157,9 @@ namespace Net.Vpc.Upa.Types
                 return o;
             }
             if ((clazz).IsEnum) {
-                return new Net.Vpc.Upa.Types.EnumType(clazz, true);
+                Net.Vpc.Upa.Types.EnumType @value = new Net.Vpc.Upa.Types.EnumType(clazz, true);
+                defaultMapping[clazz]=@value;
+                return @value;
             }
             return OBJECT;
         }

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,13 +21,13 @@ namespace Net.Vpc.Upa.Persistence
      */
     public interface PersistenceStore {
 
+         void SetProperties(Net.Vpc.Upa.Properties parameters);
+
          bool IsAccessible(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile);
 
          string GetValidIdentifier(string s);
 
          void CheckAccessible(Net.Vpc.Upa.Persistence.ConnectionProfile connectionProfile);
-
-         void Init(Net.Vpc.Upa.PersistenceUnit persistenceUnit, bool readOnly, Net.Vpc.Upa.Persistence.ConnectionProfile connection, Net.Vpc.Upa.Persistence.PersistenceNameConfig nameConfig) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          System.Collections.Generic.ISet<string> GetSupportedDrivers();
 
@@ -43,6 +43,8 @@ namespace Net.Vpc.Upa.Persistence
 
          Net.Vpc.Upa.Properties GetProperties();
 
+         Net.Vpc.Upa.Properties GetStoreParameters();
+
          Net.Vpc.Upa.Persistence.ConnectionProfile GetConnectionProfile() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          void Close() /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
@@ -55,11 +57,11 @@ namespace Net.Vpc.Upa.Persistence
 
          Net.Vpc.Upa.Query CreateQuery(Net.Vpc.Upa.Expressions.EntityStatement query, Net.Vpc.Upa.Persistence.EntityExecutionContext qlContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
-         void CreateStructure(Net.Vpc.Upa.PersistenceUnit persistenceUnit, Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void CreateStructure(Net.Vpc.Upa.Persistence.EntityExecutionContext executionContext) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsReservedKeyword(string name);
 
-         void SetNativeConstraintsEnabled(Net.Vpc.Upa.PersistenceUnit persistenceUnit, bool enable) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
+         void SetNativeConstraintsEnabled(bool enable) /* throws Net.Vpc.Upa.Exceptions.UPAException */ ;
 
          bool IsComplexSelectSupported();
 

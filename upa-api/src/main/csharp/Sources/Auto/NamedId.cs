@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -21,12 +21,16 @@ namespace Net.Vpc.Upa
 
         private object id;
 
-        private string name;
+        /**
+             * name is changed from String to Object as some Entities does not
+             * define String typed @Main fields.
+             */
+        private object name;
 
         public NamedId() {
         }
 
-        public NamedId(object id, string name) {
+        public NamedId(object id, object name) {
             this.id = id;
             this.name = name;
         }
@@ -35,15 +39,23 @@ namespace Net.Vpc.Upa
             return id;
         }
 
-        public virtual string GetName() {
+        public virtual object GetName() {
             return name;
+        }
+
+        public virtual string GetStringName() {
+            return name == null ? "" : System.Convert.ToString(name);
+        }
+
+        public virtual string GetStringId() {
+            return id == null ? "" : System.Convert.ToString(id);
         }
 
         public virtual void SetId(object id) {
             this.id = id;
         }
 
-        public virtual void SetName(string name) {
+        public virtual void SetName(object name) {
             this.name = name;
         }
 

@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -19,18 +19,20 @@ namespace Net.Vpc.Upa.Types
 
         public static readonly object OLD_VALUE = new object();
 
-        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Types.DataType> elementsMap = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Types.DataType>();
+        private System.Collections.Generic.IDictionary<string , Net.Vpc.Upa.Types.DataType> elementsMap;
 
-        private System.Collections.Generic.IList<string> elementsList = new System.Collections.Generic.List<string>();
+        private System.Collections.Generic.IList<string> elementsList;
 
         public StructType(string name, System.Type clazz, string[] fieldNames, Net.Vpc.Upa.Types.DataType[] datatypes, bool nullable)  : base(name, clazz, datatypes.Length, 0, nullable){
 
             if (fieldNames.Length != datatypes.Length) {
-                throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
             }
+            elementsMap = new System.Collections.Generic.Dictionary<string , Net.Vpc.Upa.Types.DataType>(fieldNames.Length);
+            elementsList = new System.Collections.Generic.List<string>(fieldNames.Length);
             for (int i = 0; i < fieldNames.Length; i++) {
                 if (elementsMap.ContainsKey(fieldNames[i])) {
-                    throw new Net.Vpc.Upa.Exceptions.IllegalArgumentException();
+                    throw new Net.Vpc.Upa.Exceptions.UPAIllegalArgumentException();
                 }
                 elementsMap[fieldNames[i]]=datatypes[i];
                 elementsList.Add(fieldNames[i]);
@@ -99,6 +101,24 @@ namespace Net.Vpc.Upa.Types
 
         public virtual object[] GetArrayForObject(object @value) {
             return (object[]) @value;
+        }
+
+
+        public override bool Equals(object o) {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            if (!base.Equals(o)) return false;
+            Net.Vpc.Upa.Types.StructType that = (Net.Vpc.Upa.Types.StructType) o;
+            if (elementsMap != null ? !elementsMap.Equals(that.elementsMap) : that.elementsMap != null) return false;
+            return elementsList != null ? elementsList.Equals(that.elementsList) : that.elementsList == null;
+        }
+
+
+        public override int GetHashCode() {
+            int result = base.GetHashCode();
+            result = 31 * result + (elementsMap != null ? elementsMap.GetHashCode() : 0);
+            result = 31 * result + (elementsList != null ? elementsList.GetHashCode() : 0);
+            return result;
         }
     }
 }

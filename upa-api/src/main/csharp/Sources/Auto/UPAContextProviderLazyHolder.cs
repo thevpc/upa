@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,8 +23,7 @@ namespace Net.Vpc.Upa
         internal static Net.Vpc.Upa.UPAContextProvider INSTANCE = Create();
 
         public static Net.Vpc.Upa.UPAContextProvider Create() {
-            Net.Vpc.Upa.UPAContextProvider o = Net.Vpc.Upa.UPA.GetBootstrapFactory().CreateObject<Net.Vpc.Upa.UPAContextProvider>(typeof(Net.Vpc.Upa.UPAContextProvider));
-            Net.Vpc.Upa.UPA.contextProviderCreated = true;
+            Net.Vpc.Upa.UPAContextProvider o = Net.Vpc.Upa.UPA.GetBootstrapFactory().CreateObject<>(typeof(Net.Vpc.Upa.UPAContextProvider));
             return o;
         }
     }

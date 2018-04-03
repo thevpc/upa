@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -51,19 +51,19 @@ namespace Net.Vpc.Upa
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForPrototype(object expr) {
-            if (expr is Net.Vpc.Upa.Record) {
-                return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD_PROTOTYPE, expr);
+            if (expr is Net.Vpc.Upa.Document) {
+                return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.DOCUMENT_PROTOTYPE, expr);
             } else {
                 return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.PROTOTYPE, expr);
             }
         }
 
-        public static Net.Vpc.Upa.RemoveOptions ForRecord(Net.Vpc.Upa.Record expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD, expr);
+        public static Net.Vpc.Upa.RemoveOptions ForDocument(Net.Vpc.Upa.Document expr) {
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.DOCUMENT, expr);
         }
 
-        public static Net.Vpc.Upa.RemoveOptions ForPrototye(Net.Vpc.Upa.Record expr) {
-            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.RECORD_PROTOTYPE, expr);
+        public static Net.Vpc.Upa.RemoveOptions ForPrototype(Net.Vpc.Upa.Document expr) {
+            return new Net.Vpc.Upa.RemoveOptions(Net.Vpc.Upa.ConditionType.DOCUMENT_PROTOTYPE, expr);
         }
 
         public static Net.Vpc.Upa.RemoveOptions ForKeyList(System.Collections.Generic.IList<Net.Vpc.Upa.Key> expr) {

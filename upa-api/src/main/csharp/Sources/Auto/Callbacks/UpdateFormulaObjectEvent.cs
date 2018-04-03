@@ -2,7 +2,7 @@
  *********************************************************
  **   DO NOT EDIT                                       **
  **                                                     **
- **   THIS FILE AS BEEN GENERATED AUTOMATICALLY         **
+ **   THIS FILE HAS BEEN GENERATED AUTOMATICALLY         **
  **   BY UPA PORTABLE GENERATOR                         **
  **   (c) vpc                                           **
  **                                                     **
@@ -23,7 +23,7 @@ namespace Net.Vpc.Upa.Callbacks
 
         private object objectId;
 
-        public UpdateFormulaObjectEvent(object objectId, Net.Vpc.Upa.Record updates, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(updates, filterExpression, entityExecutionContext, phase){
+        public UpdateFormulaObjectEvent(object objectId, Net.Vpc.Upa.Document updates, Net.Vpc.Upa.Expressions.Expression filterExpression, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, Net.Vpc.Upa.EventPhase phase)  : base(updates, filterExpression, entityExecutionContext, phase){
 
             this.objectId = objectId;
         }
