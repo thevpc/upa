@@ -25,6 +25,7 @@ import net.vpc.upa.persistence.*;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.vpc.upa.config.UPAContextConfigAnnotationParser;
 import net.vpc.upa.impl.bulk.DefaultImportEntityFinder;
 import net.vpc.upa.impl.bulk.DefaultImportDataManager;
@@ -56,6 +57,7 @@ public class RootObjectFactory extends AbstractObjectFactory {
     final Logger log = Logger.getLogger(RootObjectFactory.class.getName());
     private ObjectFactory parentFactory;
     private ClassMap<Class> map = new ClassMap<Class>();
+    private PlatformObjectFactory platformObjectFactory;
 
     public RootObjectFactory() {
         register(UPAContext.class, DefaultUPAContext.class);
@@ -153,6 +155,14 @@ public class RootObjectFactory extends AbstractObjectFactory {
 
     @Override
     public <T> T createObject(Class<T> type, String name) {
+        return createObject(type, name,null);
+    }
+
+    protected <T> T createObject(Class<T> type, String name,PlatformObjectFactory platformObjectFactory) {
+        T s = (T) singletons.get(type.getName());
+        if (s != null) {
+            return s;
+        }
         Class best = map.get(type);
         if (best == null || !type.isAssignableFrom(best)) {
             if (parentFactory != null) {
@@ -163,12 +173,14 @@ public class RootObjectFactory extends AbstractObjectFactory {
             }
             best = type;
         }
-        T s = (T)singletons.get(type.getName());
-        if(s!=null){
-            return s;
+        if (best == null) {
+            best=type;
+        }
+        if(platformObjectFactory!=null){
+            return (T) platformObjectFactory.createObject(best,name);
         }
         try {
-            return (T) PlatformUtils.newInstance(best);
+            return (T) createPlatformInstance(best, name);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -206,5 +218,17 @@ public class RootObjectFactory extends AbstractObjectFactory {
             throw new RuntimeException(ex);
         }
     }
+
+    protected Object createPlatformInstance(Class cls, String name) {
+        if (platformObjectFactory == null) {
+            if (cls.equals(PlatformObjectFactory.class) || cls.equals(DefaultPlatformObjectFactory.class)) {
+                platformObjectFactory= DefaultPlatformObjectFactory.INSTANCE;
+            }else {
+                platformObjectFactory = createObject(PlatformObjectFactory.class,null,DefaultPlatformObjectFactory.INSTANCE);
+            }
+        }
+        return platformObjectFactory.createObject(cls, name);
+    }
+
 
 }

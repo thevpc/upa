@@ -2,6 +2,7 @@ package net.vpc.upa.spring;
 
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.TransactionType;
+import net.vpc.upa.UPA;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
@@ -12,20 +13,19 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 public class UPATransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
-    private PersistenceUnit persistenceUnit;
+    //private PersistenceUnit persistenceUnit;
     private boolean nestedTx;
 
-    public UPATransactionManager(PersistenceUnit persistenceUnit) {
-        this.persistenceUnit = persistenceUnit;
+    public UPATransactionManager() {
     }
 
-    public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
-        this.persistenceUnit = persistenceUnit;
-    }
-
-    public PersistenceUnit getPersistenceUnit() {
-        return persistenceUnit;
-    }
+//    public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
+//        this.persistenceUnit = persistenceUnit;
+//    }
+//
+//    public PersistenceUnit getPersistenceUnit() {
+//        return persistenceUnit;
+//    }
 
     public boolean isNestedTx() {
         return nestedTx;
@@ -39,7 +39,8 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
     protected Object doGetTransaction() throws TransactionException {
 
         UPATxObject txObject = new UPATxObject();
-        UPAHolder resource = (UPAHolder) TransactionSynchronizationManager.getResource(getPersistenceUnit());
+        PersistenceUnit persistenceUnit = UPA.getPersistenceUnit();
+        UPAHolder resource = (UPAHolder) TransactionSynchronizationManager.getResource(persistenceUnit);
         if (resource != null) {
             txObject.setUpaHolder(resource, false);
         }
@@ -49,12 +50,20 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
     private TransactionType getTransactionType(TransactionDefinition def) {
         int propagationBehavior = def.getPropagationBehavior();
         switch (propagationBehavior) {
-            case 0:
+            case TransactionDefinition.PROPAGATION_REQUIRED:
                 return TransactionType.REQUIRED;
-            case 1:
+            case TransactionDefinition.PROPAGATION_SUPPORTS:
                 return TransactionType.SUPPORTS;
-            case 2:
+            case TransactionDefinition.PROPAGATION_MANDATORY:
                 return TransactionType.MANDATORY;
+            case TransactionDefinition.PROPAGATION_NEVER:
+                return TransactionType.NEVER;
+            case TransactionDefinition.PROPAGATION_NOT_SUPPORTED:
+                return TransactionType.NOT_SUPPORTED;
+            case TransactionDefinition.PROPAGATION_REQUIRES_NEW:
+                return TransactionType.REQUIRES_NEW;
+            case TransactionDefinition.PROPAGATION_NESTED:
+                return TransactionType.REQUIRED;
             default:
                 return TransactionType.REQUIRED;
         }
@@ -63,37 +72,46 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
     @Override
     protected void doBegin(Object transaction, TransactionDefinition definition) throws TransactionException {
         UPATxObject upaTxObject = (UPATxObject) transaction;
-
+        PersistenceUnit persistenceUnit = null;
         if (upaTxObject.getUpaHolder() == null) {
-            persistenceUnit.openSession();
-            upaTxObject.setUpaHolder(new UPAHolder(persistenceUnit), true);
-
-
+            boolean sessionCreated=false;
+            persistenceUnit=UPA.getPersistenceUnit();
+            if(!persistenceUnit.currentSessionExists()) {
+                persistenceUnit.openSession();
+            }
+            UPAHolder upaHolder = new UPAHolder(persistenceUnit);
+            upaHolder.setSessionCreated(sessionCreated);
+            upaTxObject.setUpaHolder(upaHolder, true);
         }
-        PersistenceUnit persistenceUnit = upaTxObject.getUpaHolder().getPersistenceUnit();
+        persistenceUnit = upaTxObject.getUpaHolder().getPersistenceUnit();
         persistenceUnit.beginTransaction(getTransactionType(definition));
         if (upaTxObject.isNewUPA()) {
-            TransactionSynchronizationManager.bindResource(
-                    getPersistenceUnit(), upaTxObject.getUpaHolder());
+            TransactionSynchronizationManager.bindResource(persistenceUnit, upaTxObject.getUpaHolder());
 
         }
         upaTxObject.getUpaHolder().setSynchronizedWithTransaction(true);
-
-
-
     }
 
     @Override
     protected void doCommit(DefaultTransactionStatus status) throws TransactionException {
         UPATxObject upaTxObject = (UPATxObject) status.getTransaction();
-        upaTxObject.getUpaHolder().getPersistenceUnit().commitTransaction();
-
+        PersistenceUnit persistenceUnit = upaTxObject.getUpaHolder().getPersistenceUnit();
+        persistenceUnit.commitTransaction();
+        if(upaTxObject.getUpaHolder().isSessionCreated()){
+            upaTxObject.getUpaHolder().setSessionCreated(false);
+            persistenceUnit.getCurrentSession().close();
+        }
     }
 
     @Override
     protected void doRollback(DefaultTransactionStatus status) throws TransactionException {
         UPATxObject upaTxObject = (UPATxObject) status.getTransaction();
-        upaTxObject.getUpaHolder().getPersistenceUnit().rollbackTransaction();
+        PersistenceUnit persistenceUnit = upaTxObject.getUpaHolder().getPersistenceUnit();
+        persistenceUnit.rollbackTransaction();
+        if(upaTxObject.getUpaHolder().isSessionCreated()){
+            upaTxObject.getUpaHolder().setSessionCreated(false);
+            persistenceUnit.getCurrentSession().close();
+        }
     }
 
     @Override
@@ -148,4 +166,3 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
         }
     }
 }
-

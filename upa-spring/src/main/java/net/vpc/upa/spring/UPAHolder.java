@@ -7,10 +7,19 @@ import org.springframework.transaction.support.ResourceHolderSupport;
 public class UPAHolder extends ResourceHolderSupport {
     private PersistenceUnit persistenceUnit;
     private boolean txActive;
+    private boolean sessionCreated;
     private SavepointManager savepointManager;
 
     public UPAHolder(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
+    }
+
+    public boolean isSessionCreated() {
+        return sessionCreated;
+    }
+
+    public void setSessionCreated(boolean sessionCreated) {
+        this.sessionCreated = sessionCreated;
     }
 
     public PersistenceUnit getPersistenceUnit() {
@@ -42,7 +51,6 @@ public class UPAHolder extends ResourceHolderSupport {
         super.clear();
         this.savepointManager=null;
         this.txActive=false;
+        this.sessionCreated=false;
     }
-
-
 }

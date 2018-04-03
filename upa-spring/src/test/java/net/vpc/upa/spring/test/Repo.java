@@ -8,16 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
 public class Repo {
-    @Autowired
     private PersistenceUnit pu;
 
     public  List<Category> findAll() {
         List<Category> all = pu.findAll(Category.class);
         return all;
     }
+    @Autowired
 
+    public void setPu(PersistenceUnit pu) {
+        this.pu = pu;
+    }
+
+    @Transactional
     public void save(Category c){
         pu.save(c);
     }

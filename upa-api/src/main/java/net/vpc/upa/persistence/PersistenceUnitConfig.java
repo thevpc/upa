@@ -181,7 +181,7 @@ public class PersistenceUnitConfig {
     public PersistenceUnitConfig addConnectionConfig(ConnectionConfig connectionConfig) {
         if (connectionConfig != null) {
             if(connections==null){
-                connections=new ArrayList<>();
+                connections=new ArrayList<ConnectionConfig>();
             }
             connections.add(connectionConfig);
         }
@@ -191,7 +191,7 @@ public class PersistenceUnitConfig {
     public PersistenceUnitConfig addRootConnectionConfig(ConnectionConfig connectionConfig) {
         if (connectionConfig != null) {
             if(rootConnections==null){
-                rootConnections=new ArrayList<>();
+                rootConnections=new ArrayList<ConnectionConfig>();
             }
             rootConnections.add(connectionConfig);
         }

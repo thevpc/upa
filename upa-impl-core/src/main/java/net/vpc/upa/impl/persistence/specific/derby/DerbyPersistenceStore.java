@@ -242,7 +242,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 userDir = System.getProperty("user.dir");
                 log.log(Level.FINE, "Using Derby Embedded at {0}", (file.isAbsolute() ? file.getPath() : userDir + "/" + file.getPath()));
                 String driverClass = "org.apache.derby.jdbc.EmbeddedDriver";
-                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
+                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL     : {1}\n\tDriver  : {2}\n\tUser    : {3}", new Object[]{p, url, driverClass, userName});
                 return createPlatformConnection(driverClass, url, userName, password, p.getProperties());
             }else  if (DRIVER_TYPE_DEFAULT.equalsIgnoreCase(connectionDriver)) {
                 String url = "jdbc:derby://";
@@ -271,7 +271,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                     url += ";create=true";
                 }
                 String driverClass = "org.apache.derby.jdbc.ClientDriver";
-                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
+                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL     : {1}\n\tDriver  : {2}\n\tUser    : {3}", new Object[]{p, url, driverClass, userName});
                 return createPlatformConnection(driverClass, url, userName, password, p.getProperties());
             }
         } catch (UPAException e) {

@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author vpc
  */
 public abstract class AbstractObjectFactory implements ObjectFactory {
@@ -97,14 +96,16 @@ public abstract class AbstractObjectFactory implements ObjectFactory {
     public <T> void addAlternative(Class<T> type, Class<? extends T> impl) {
         Set found = alternatives.get(type);
         if (found == null) {
-            found=new LinkedHashSet();
-            alternatives.put(type,found);
+            found = new LinkedHashSet();
+            alternatives.put(type, found);
         }
         found.add(impl);
     }
 
     @Override
     public void register(Class contract, Object instance) {
-        singletons.put(contract.getName(),instance);
+        singletons.put(contract.getName(), instance);
     }
+
+
 }

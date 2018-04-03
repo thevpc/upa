@@ -12,5 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="j2cs" />
+    <orderEntry type="module" module-name="j2cs" />
   </component>
 </module>

@@ -72,6 +72,13 @@ public class UPAContextConfig {
         return filters;
     }
 
+    public UPAContextConfig addFilter(ScanFilter filter) {
+        if(filter!=null){
+            this.filters.add(filter);
+        }
+        return this;
+    }
+
     public UPAContextConfig setFilters(List<ScanFilter> filters) {
         this.filters = filters;
         return this;

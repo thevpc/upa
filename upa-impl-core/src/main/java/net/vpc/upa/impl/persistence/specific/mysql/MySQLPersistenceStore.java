@@ -255,7 +255,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 }
                 url += "?zeroDateTimeBehavior=convertToNull&useUnicode=yes&characterEncoding=UTF-8";
                 String driverClass = "com.mysql.jdbc.Driver";
-                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL :{1}\n\tDriver :{2}\n\tUser :{3}", new Object[]{p, url, driverClass, userName});
+                log.log(Level.FINER, "Creating Connection \n\tProfile : {0} \n\tURL     : {1}\n\tDriver  : {2}\n\tUser    : {3}", new Object[]{p, url, driverClass, userName});
                 return createPlatformConnection(driverClass, url, userName, password, p.getProperties());
             }
         } catch (UPAException e) {

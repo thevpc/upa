@@ -26,7 +26,7 @@
       <module name="j2cs" target="1.8" />
       <module name="upa" target="1.7" />
       <module name="upa-android" target="1.7" />
-      <module name="upa-api" target="1.7" />
+      <module name="upa-api" target="1.6" />
       <module name="upa-impl" target="1.7" />
       <module name="upa-impl-core" target="1.7" />
       <module name="upa-portable" target="1.8" />

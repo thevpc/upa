@@ -96,6 +96,14 @@ public class PersistenceGroupConfig {
         return this;
     }
 
+    public PersistenceGroupConfig addFilter(ScanFilter filter) {
+        if(filter!=null){
+            this.filters.add(filter);
+        }
+        return this;
+    }
+
+
     public Map<String, Object> getProperties() {
         return properties;
     }

@@ -228,7 +228,12 @@ public interface PersistenceUnit extends Closeable {
 
     void clear(EntityFilter entityFilter, Map<String, Object> hints);
 
+    /**
+     * clears all entities by removing all information (rows, except special rows if any)
+     */
     void clear();
+
+    void flush();
 
     @Deprecated
     void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);

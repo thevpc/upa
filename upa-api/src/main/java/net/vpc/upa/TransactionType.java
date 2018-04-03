@@ -43,6 +43,9 @@ package net.vpc.upa;
  */
 public enum TransactionType {
     REQUIRED,
+    REQUIRES_NEW,
     MANDATORY,
-    SUPPORTS
+    SUPPORTS,
+    NOT_SUPPORTED,
+    NEVER,
 }

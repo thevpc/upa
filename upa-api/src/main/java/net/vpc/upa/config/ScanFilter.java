@@ -50,6 +50,14 @@ public class ScanFilter {
      */
     private boolean propagate;
 
+    public ScanFilter() {
+
+    }
+
+    public ScanFilter(String libs, String types) {
+        this(libs,types,true,0);
+    }
+
     public ScanFilter(String libs, String types, boolean propagate, int configOrder) {
         this.libs = libs == null ? "" : libs.trim();
         this.types = types == null ? "" : types.trim();
@@ -61,16 +69,18 @@ public class ScanFilter {
         return configOrder;
     }
 
-    public void setConfigOrder(int configOrder) {
+    public ScanFilter setConfigOrder(int configOrder) {
         this.configOrder = configOrder;
+        return this;
     }
 
     public boolean isPropagate() {
         return propagate;
     }
 
-    public void setPropagate(boolean propagate) {
+    public ScanFilter setPropagate(boolean propagate) {
         this.propagate = propagate;
+        return this;
     }
 
     public String getLibs() {
@@ -79,6 +89,16 @@ public class ScanFilter {
 
     public String getTypes() {
         return types;
+    }
+
+    public ScanFilter setLibs(String libs) {
+        this.libs = libs;
+        return this;
+    }
+
+    public ScanFilter setTypes(String types) {
+        this.types = types;
+        return this;
     }
 
     @Override
