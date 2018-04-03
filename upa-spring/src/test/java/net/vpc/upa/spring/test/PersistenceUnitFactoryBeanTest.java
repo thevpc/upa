@@ -1,5 +1,7 @@
 package net.vpc.upa.spring.test;
 
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.UPA;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.PersistenceGroupConfig;
@@ -26,6 +28,7 @@ public class PersistenceUnitFactoryBeanTest {
         t.save(c);
         List all = t.findAll();
         System.out.println(all);
+        PersistenceUnit pu = UPA.getPersistenceUnit();
     }
 
     @Configuration

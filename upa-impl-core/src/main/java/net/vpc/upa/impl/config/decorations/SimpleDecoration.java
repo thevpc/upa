@@ -9,6 +9,8 @@ import net.vpc.upa.config.DecorationTarget;
 import net.vpc.upa.config.DecorationSourceType;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.config.DecorationValue;
+
+import java.util.HashMap;
 import java.util.Map;
 import net.vpc.upa.config.ConfigAction;
 import net.vpc.upa.config.ConfigInfo;
@@ -36,7 +38,7 @@ public final class SimpleDecoration extends AbstractDecoration {
         this.type = type;
         this.location = location;
         this.configInfo = configInfo;
-        this.values = attr;
+        this.values = attr==null?new HashMap<String, DecorationValue>() : new HashMap<String, DecorationValue>(attr);
         this.position = position;
     }
 
@@ -87,6 +89,13 @@ public final class SimpleDecoration extends AbstractDecoration {
         return configInfo;
     }
 
+    public void addPrimitiveAttribute(String name,Object value){
+        addAttribute(name,new DecorationPrimitiveValue(value,ConfigInfo.DEFAULT));
+    }
+
+    public void addAttribute(String name,DecorationValue value){
+        values.put(name,value);
+    }
     protected Map<String, DecorationValue> getAttributes0() {
         return values;
     }

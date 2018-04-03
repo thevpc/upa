@@ -122,13 +122,16 @@ public class URLAnnotationStrategySupport {
                             net.vpc.upa.config.Properties.class,
                             net.vpc.upa.config.Property.class)
                     .addTypeDecorations(
-                            "javax.annotation.PostConstruct"
+                            JPAProcessor.JPA_ANNOTATIONS
                     ), null, null, decorationRepository);
             parser.parse();
             //repository that contains just the scanned classes
             //older classes
             DecorationRepository newDecorationRepository = parser.getNewDecorationRepository();
-            processJAVAXAnnotations(decorationRepository, newDecorationRepository, source.isNoIgnore());
+            /**
+             * @PortabilityHint(target = "C#", name = "suppress")
+             */
+            JPAProcessor.processJAVAXAnnotations(decorationRepository, newDecorationRepository, source.isNoIgnore());
 //            Map<Class, Object> instances = new HashMap<Class, Object>();
 //            for (PersistenceGroupDefinitionListener old : context.getPersistenceGroupDefinitionListeners()) {
 //                if(!instances.containsKey(old.getClass())){
@@ -318,12 +321,15 @@ public class URLAnnotationStrategySupport {
                     )
                     .addDecorations(SecurityContext.class)
                     .addTypeDecorations(
-                            "javax.annotation.PostConstruct"
+                            JPAProcessor.JPA_ANNOTATIONS
                     ), persistenceGroup.getName(), null, decorationRepository);
             parser.parse();
             DecorationRepository repo = parser.getDecorationRepository();
             DecorationRepository newrepo = parser.getNewDecorationRepository();
-            processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            /**
+             * @PortabilityHint(target = "C#", name = "suppress")
+             */
+            JPAProcessor.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
                 Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
@@ -438,14 +444,12 @@ public class URLAnnotationStrategySupport {
                             net.vpc.upa.config.Entity.class,
                             net.vpc.upa.config.Partial.class
                     )
-                    .addTypeDecorations(
-                            "javax.persistence.Entity", "javax.persistence.Id", "javax.persistence.ManyToOne", "javax.annotation.PostConstruct"
-                    ),
+                    .addTypeDecorations(JPAProcessor.JPA_ANNOTATIONS ),
                     persistenceUnit.getPersistenceGroup().getName(), persistenceUnit.getName(), decorationRepository);
             parser.parse();
             DecorationRepository repo = parser.getDecorationRepository();
             DecorationRepository newrepo = parser.getNewDecorationRepository();
-            processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            JPAProcessor.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
                 Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
@@ -591,72 +595,6 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    /**
-     * transform supported JPA Annotations to UPA Decorations
-     */
-    private void processJAVAXAnnotations(DecorationRepository readFrom, DecorationRepository writeTo, boolean noIgnore) {
-        int pos = 0;
-        for (Decoration at : readFrom.getDeclaredDecorations("javax.persistence.Entity")) {
-            Decoration ignored = noIgnore ? null : readFrom.getTypeDecoration(at.getLocationType(), Ignore.class.getName());
-            if (ignored != null) {
-                log.log(Level.FINE, "\t Ignored javax.persistence.Entity {0}", at);
-                continue;
-            }
-
-            HashMap<String, DecorationValue> v = new HashMap<String, DecorationValue>();
-            SimpleDecoration s = new SimpleDecoration(
-                    net.vpc.upa.config.Entity.class.getName(),
-                    at.getDecorationSourceType(),
-                    at.getTarget(), at.getLocationType(), at.getLocation(), pos, ConfigInfo.DEFAULT, v);
-//            readFrom.register(s);
-            writeTo.visit(s);
-            pos++;
-        }
-        pos = 0;
-        for (Decoration at : readFrom.getDeclaredDecorations("javax.persistence.Id")) {
-//            Decoration ignored = repo.getTypeDecoration(at.getType(), Ignore.class.getName());
-//            if (ignored != null) {
-//                log.log(Level.FINE, "\t Ignored javax.persistence.Id {0}", at);
-//                continue;
-//            }
-            HashMap<String, DecorationValue> v = new HashMap<String, DecorationValue>();
-            SimpleDecoration s = new SimpleDecoration(
-                    net.vpc.upa.config.Id.class.getName(),
-                    at.getDecorationSourceType(),
-                    at.getTarget(), at.getLocationType(), at.getLocation(), pos, ConfigInfo.DEFAULT, v);
-//            readFrom.register(s);
-            writeTo.visit(s);
-            pos++;
-        }
-        pos = 0;
-        for (Decoration at : readFrom.getDeclaredDecorations("javax.persistence.ManyToOne")) {
-//            Decoration ignored = repo.getTypeDecoration(at.getType(), Ignore.class.getName());
-//            if (ignored != null) {
-//                log.log(Level.FINE, "\t Ignored javax.persistence.Id javax.persistence.ManyToOne", at);
-//                continue;
-//            }
-            HashMap<String, DecorationValue> v = new HashMap<String, DecorationValue>();
-            SimpleDecoration s = new SimpleDecoration(
-                    net.vpc.upa.config.ManyToOne.class.getName(),
-                    at.getDecorationSourceType(),
-                    at.getTarget(), at.getLocationType(), at.getLocation(), pos, ConfigInfo.DEFAULT, v);
-//            readFrom.register(s);
-            writeTo.visit(s);
-            pos++;
-        }
-
-        pos = 0;
-        for (Decoration at : readFrom.getDeclaredDecorations("javax.annotation.PostConstruct")) {
-            HashMap<String, DecorationValue> v = new HashMap<String, DecorationValue>();
-            SimpleDecoration s = new SimpleDecoration(
-                    net.vpc.upa.config.Init.class.getName(),
-                    at.getDecorationSourceType(),
-                    at.getTarget(), at.getLocationType(), at.getLocation(), pos, ConfigInfo.DEFAULT, v);
-//            readFrom.register(s);
-            writeTo.visit(s);
-            pos++;
-        }
-    }
 
     private Class getRootEntity(Class c, Map<Class, Set<Class>> entityClasses, Map<Class, Class> partialEntities) {
         if (entityClasses.containsKey(c)) {

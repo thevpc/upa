@@ -2,614 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f07e7555-5869-4f87-98dd-bbf2b1809b95" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/AccessLevel.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/AccessLevel.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Action.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Action.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapterFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapterFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanType.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BootstrapObjectFactoryLazyHolder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BootstrapObjectFactoryLazyHolder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BootstrapObjectFactoryLazyHolder_.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BootstrapObjectFactoryLazyHolder_.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/AbstractDataFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/AbstractDataFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/AbstractDataParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/AbstractDataParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataColumn.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataColumn.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataDeserializer.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataDeserializer.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataReader.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataReader.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataRow.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataRow.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataRowConverter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataRowConverter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataWriter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/DataWriter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/FieldParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/FieldParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataConverter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataConverter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataMode.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportDataMode.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportEntityFinder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportEntityFinder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportEntityMapper.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportEntityMapper.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportExportManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportExportManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportPersistenceUnitListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ImportPersistenceUnitListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ParseFormatManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ParseFormatManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetColumn.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetColumn.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetContentType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetContentType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/SheetParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextAlignment.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextAlignment.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVColumn.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVColumn.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextCSVParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthColumn.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthColumn.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/TextFixedWidthParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ValueConverter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ValueConverter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ValueValidator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/ValueValidator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlColumn.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlColumn.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlFormatter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlFormatter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Bulk/XmlParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callback.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callback.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CallbackConfig.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CallbackType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CallbackType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/ContextEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/ContextEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/DefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/DefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/DefinitionListenerAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/DefinitionListenerAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityInstaller.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityInstaller.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityInterceptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityInterceptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityListenerAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityListenerAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityTriggerContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/EntityTriggerContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FieldDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FieldDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FieldEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FieldEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FormulaUpdaterDataInterceptorAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FormulaUpdaterDataInterceptorAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FunctionEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/FunctionEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/IndexDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/IndexDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/IndexEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/IndexEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PackageDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PackageDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PackageEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PackageEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistObjectEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistObjectEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceGroupDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceGroupDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceGroupEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceGroupEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitListenerAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/PersistenceUnitListenerAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipDefinitionListenerAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipDefinitionListenerAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RelationshipEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RemoveEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RemoveEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RemoveObjectEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/RemoveObjectEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SectionDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SectionDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SectionEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SectionEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SessionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SessionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SessionListenerAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SessionListenerAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SingleDataInterceptorAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SingleDataInterceptorAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SingleEntityListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/SingleEntityListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/Trigger.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/Trigger.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/TriggerDefinitionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/TriggerDefinitionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/TriggerEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/TriggerEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UPAEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UPAEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaInterceptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaInterceptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaObjectEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateFormulaObjectEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateObjectEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateObjectEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateRelationshipSourceFormulaInterceptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateRelationshipSourceFormulaInterceptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateRelationshipTargetFormulaInterceptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Callbacks/UpdateRelationshipTargetFormulaInterceptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CloseListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CloseListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Closeable.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Closeable.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CompoundDataType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CompoundDataType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CompoundField.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CompoundField.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ConditionType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ConditionType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/BoolEnum.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/BoolEnum.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Callback.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Callback.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Config.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Config.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ConfigAction.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ConfigAction.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ConfigInfo.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ConfigInfo.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Converter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Converter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Decoration.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Decoration.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationSourceType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationSourceType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationTarget.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationTarget.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationValue.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/DecorationValue.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Entity.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Entity.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Field.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Field.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/FieldDesc.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/FieldDesc.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/FilterEntity.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/FilterEntity.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Formula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Formula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Formulas.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Formulas.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Function.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Function.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Hierarchy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Hierarchy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Id.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Id.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Ignore.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Ignore.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Index.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Index.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Indexes.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Indexes.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Init.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Init.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Main.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Main.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ManyToOne.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ManyToOne.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnAlter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnAlter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnCreate.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnCreate.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnDrop.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnDrop.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnInitialize.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPersist.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPersist.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreAlter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreAlter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreCreate.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreCreate.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreDrop.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreDrop.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreInitialize.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPrePersist.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPrePersist.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreRemove.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreRemove.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreReset.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreReset.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreUpdate.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreUpdate.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreUpdateFormula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnPreUpdateFormula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnRemove.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnRemove.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnReset.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnReset.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnUpdate.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnUpdate.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnUpdateFormula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/OnUpdateFormula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Partial.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Partial.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Password.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Password.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Path.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Path.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceName.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceName.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceNameStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceNameStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceNameType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceNameType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceUnit.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/PersistenceUnit.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Properties.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Properties.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Property.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Property.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ScanFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ScanFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ScanSource.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ScanSource.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Search.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Search.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Secret.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Secret.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/SecurityContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/SecurityContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Sequence.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Sequence.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Singleton.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Singleton.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/StringEncoderType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/StringEncoderType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Summary.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Summary.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Temporal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Temporal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToByteArray.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToByteArray.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToCharArray.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToCharArray.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToString.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/ToString.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Transactional.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Transactional.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/UnionEntity.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/UnionEntity.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/UnionEntityEntry.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/UnionEntityEntry.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Unique.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/Unique.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/View.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Config/View.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ConfigurationFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchFieldException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CustomDefaultObject.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CustomDefaultObject.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CustomFormula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CustomFormula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/CustomUpdaterFormula.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultEntityDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultEntityDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultEntitySecurityManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultEntitySecurityManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultFieldDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultFieldDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultIndexDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultIndexDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultRelationshipDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultRelationshipDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultUserPrincipal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DefaultUserPrincipal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DeletionTraceElement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DeletionTraceElement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DynamicField.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/DynamicField.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Entity.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Entity.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityBuilder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityBuilder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityModifier.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityModifier.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityNavigator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityNavigator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityPart.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityPart.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityPartPath.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityPartPath.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntitySecurityManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntitySecurityManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShield.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShield.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShieldAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShieldAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShieldVeto.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EntityShieldVeto.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EvalContext.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EventPhase.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/EventPhase.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/AlreadyLockedPersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/AlreadyLockedPersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/BootstrapException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/BootstrapException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CloneRecordNewKeyInUseException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CloneRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CloneRecordOldKeyNotFoundException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ConnectionException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ConnectionException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CreatePersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CreatePersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CurrentSessionNotFoundException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/CurrentSessionNotFoundException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DataNotFoundException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DataNotFoundException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DatabaseNotFoundException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DatabaseNotFoundException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DeleteRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DriverNotFoundException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DriverNotFoundException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DropPersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/DropPersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/EntityAlreadyExistsException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/EntityAlreadyExistsException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/EntityException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/EntityException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ExecutionException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ExecutionException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/FindException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/FindException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/IllegalArgumentException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/InsertRecordDuplicateKeyException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/InsertRecordDuplicateUniqueFieldsException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/InvalidStructureModificationContextException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/InvalidStructureModificationContextException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/LoadRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/MissingDefaultPersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/MissingDefaultPersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/MultipleEntityMatchForTypeException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/MultipleEntityMatchForTypeException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NavigateEntityNotAllowedException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NavigateEntityNotAllowedException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NavigateEntityNotSupportedException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NavigateEntityNotSupportedException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchEntityException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchEntityException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchEntityItemException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchEntityItemException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchIndexException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchIndexException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchPackageException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchPackageException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchPersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchPersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchRelationshipException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchRelationshipException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchSectionException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/NoSuchSectionException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ObjectAlreadyExistsException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/ObjectAlreadyExistsException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitAlreadyExistsException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitAlreadyExistsException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitLockingException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/PersistenceUnitLockingException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/RenameRecordNewKeyInUseException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/RenameRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/RenameRecordOldKeyNotFoundException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/RootConnectionStringNotFoundException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/RootConnectionStringNotFoundException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/TransactionException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/TransactionException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UPAException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UPAException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UncompleteCompoundFieldDefinitionException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UncompleteCompoundFieldDefinitionException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UndeletableRecordException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UnexpectedException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UnexpectedException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UnrenamableRecordException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UnupdatableRecordException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UpdateRecordDuplicateKeyException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UpdateRecordKeyNotFoundException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/UpdateRecordNotAllowedException.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/VetoException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Exceptions/VetoException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ExpressionFormula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ExpressionFormula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ExpressionManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ExpressionManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/And.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/And.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Avg.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Avg.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Between.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Between.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BinaryOperator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BinaryOperator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BinaryOperatorExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BinaryOperatorExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BitAnd.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BitAnd.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BitOr.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/BitOr.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Cast.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Cast.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Coalesce.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Coalesce.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CompiledExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CompiledExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Complement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Complement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Concat.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Concat.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Count.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Count.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Cst.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Cst.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentDate.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentDate.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentTime.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentTime.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentTimestamp.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentTimestamp.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentUser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/CurrentUser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/D2V.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/D2V.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateAdd.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateAdd.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateDiff.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateDiff.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DatePart.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DatePart.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DatePartType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DatePartType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateTrunc.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DateTrunc.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Decode.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Decode.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultEntityStatement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultEntityStatement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultTag.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/DefaultTag.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Delete.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Delete.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Different.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Different.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Div.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Div.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/EntityName.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/EntityName.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/EntityStatement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/EntityStatement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Equals.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Equals.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Exists.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Exists.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Expression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Expression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionHelper.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionHelper.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTag.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTag.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTransformer.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTransformer.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTransformerResult.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionTransformerResult.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionVisitor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/ExpressionVisitor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/FunctionExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/FunctionExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GreaterEqualThan.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GreaterEqualThan.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GreaterThan.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GreaterThan.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GroupCriteria.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/GroupCriteria.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/I2V.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/I2V.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdCollectionExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdCollectionExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdEnumerationExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdEnumerationExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IdExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/If.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/If.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InCollection.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InCollection.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InSelection.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InSelection.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IndexedTag.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IndexedTag.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IndexedVar.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IndexedVar.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Insert.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Insert.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InsertSelection.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/InsertSelection.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/IsHierarchyDescendent.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/JoinCriteria.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/JoinCriteria.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/JoinType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/JoinType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LShift.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LShift.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LessEqualThan.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LessEqualThan.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LessThan.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/LessThan.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Like.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Like.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Literal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Literal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Max.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Max.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Min.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Min.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Minus.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Minus.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/MonthEnd.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/MonthEnd.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/MonthStart.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/MonthStart.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Mul.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Mul.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NameOrQuery.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NameOrQuery.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Negative.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Negative.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NonQueryStatement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NonQueryStatement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Not.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Not.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NullVal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/NullVal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/OperatorExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/OperatorExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Or.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Or.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Order.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Order.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/OrderItem.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/OrderItem.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Param.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Param.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Plus.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Plus.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Positive.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Positive.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QLParameterProcessor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QLParameterProcessor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryField.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryField.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryScript.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryScript.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryStatement.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/QueryStatement.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/RShift.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/RShift.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Reminder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Reminder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Select.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Select.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Sign.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Sign.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Star.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Star.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/StrFormat.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/StrFormat.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/StrLen.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/StrLen.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Sum.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Sum.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/TaggedExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/TaggedExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/TypeExpressionFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/TypeExpressionFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/URShift.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/URShift.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UnaryOperator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UnaryOperator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UnaryOperatorExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UnaryOperatorExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Union.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Union.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Update.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Update.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Uplet.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Uplet.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UserExpression.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/UserExpression.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Var.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/Var.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/VarVal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/VarVal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/XOr.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Expressions/XOr.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/DefaultUnionEntityExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/DefaultUnionEntityExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/EntityExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/EntityExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/FilterEntityExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/FilterEntityExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/HierarchyExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/HierarchyExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/RelationshipExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/RelationshipExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/SingletonExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/SingletonExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/UnionEntityExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/UnionEntityExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/UnionQueryInfo.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/UnionQueryInfo.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/ViewEntityExtensionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Extensions/ViewEntityExtensionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Field.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Field.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FieldDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FieldDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FieldModifier.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FieldModifier.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/AbstractFieldFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/AbstractFieldFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/DefaultEntityFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/DefaultEntityFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityAndFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityAndFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityOrFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityOrFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityReverseFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/EntityReverseFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAccessLevelFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAccessLevelFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAndFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAndFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAnyFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldAnyFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldDataTypeFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldDataTypeFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldDynamicFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldDynamicFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldFilterAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldFilterAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldImplTypeFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldImplTypeFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldListFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldListFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldModifierFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldModifierFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldNameFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldNameFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldOrFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldOrFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldPrimitiveFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldPrimitiveFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldRegularFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldRegularFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldReverseFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/FieldReverseFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/Fields.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/ObjectFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Filters/ObjectFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FlagSet.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FlagSet.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FlagSets.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FlagSets.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Formula.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Formula.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FormulaType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FormulaType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Function.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Function.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FunctionDefinition.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FunctionDefinition.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FwkConvertUtils.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/FwkConvertUtils.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/I18NStringStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/I18NStringStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Index.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Index.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/IndexDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/IndexDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/InvokeContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/InvokeContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Key.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Key.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/KeyType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/KeyType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/LockInfo.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/LockInfo.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/MethodFilter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/MethodFilter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/MissingStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/MissingStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/MultiRecord.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/NamedId.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/NamedId.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/NamingStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/NamingStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectFactoryComparator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectFactoryComparator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ObjectType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Package.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Package.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordStrategyType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordStrategyType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PasswordTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionOption.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionOption.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionProfile.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ConnectionProfile.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ContextOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ContextOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/DBConfigModel.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/DatabaseProduct.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/DatabaseProduct.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/DefaultParameter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/DefaultParameter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityClearOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityClearOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityExecutionContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityExecutionContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityFindOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityFindOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityInitializeOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityInitializeOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityOperationManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityOperationManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityPersistOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityPersistOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityRemoveOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityRemoveOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityResetOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityResetOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityUpdateOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/EntityUpdateOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ExpressionCompilerConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ExpressionCompilerConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersistenceDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersistenceDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersistenceModifier.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersistenceModifier.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersister.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FieldPersister.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FilterEntityExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/FilterEntityExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/Parameter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/Parameter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceGroupConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceGroupConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceName.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceName.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceStore.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceStore.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceStoreFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceStoreFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceUnitConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceUnitConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/QueryResult.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/QueryResult.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/QueryResultParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/QueryResultParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ResultField.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ResultField.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ResultMetaData.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ResultMetaData.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/SingletonExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/SingletonExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/StructureStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/StructureStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/TransactionManagerFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/TransactionManagerFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UConnection.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UConnection.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UPAContextConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UPAContextConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UnionEntityExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/UnionEntityExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ViewEntityExtension.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/ViewEntityExtension.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceGroup.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceGroup.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceGroupContextProvider.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnitProvider.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceGroupSecurityManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceGroupSecurityManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceState.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceState.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnit.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnit.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnitPart.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnitPart.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PreparedCallback.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PreparedCallback.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PrimitiveField.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PrimitiveField.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Properties.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Properties.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Property.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Property.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyAccess.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyAccess.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyAccessType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyAccessType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeSupport.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PropertyChangeSupport.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLEvaluator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLEvaluator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLEvaluatorRegistry.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLEvaluatorRegistry.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLExpressionParser.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLExpressionParser.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLParameter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLParameter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLParameterType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLParameterType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLTypeEvaluator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QLTypeEvaluator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QualifiedIdentifier.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QualifiedIdentifier.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QualifiedRecord.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QualifiedValue.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QualifiedValue.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Query.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Query.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryBuilder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryBuilder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryFetchStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryFetchStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryHints.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/QueryHints.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Record.cs" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Relationship.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Relationship.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipDescriptor.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipDescriptor.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipRole.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipRole.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipRoleType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipRoleType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipUpdateType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RelationshipUpdateType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RemoveOptions.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RemoveOptions.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RemoveTrace.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/RemoveTrace.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ScanEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ScanEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ScanListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/ScanListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SearchOperator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SearchOperator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SecretStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SecretStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SecretStrategyType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SecretStrategyType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Section.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Section.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Sequence.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Sequence.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SequenceStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SequenceStrategy.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SequenceType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SequenceType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Session.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Session.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SessionContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SessionContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SessionContextProvider.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/SessionContextProvider.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Transaction.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Transaction.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionStatus.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionStatus.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/TransactionType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/BigIntType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/BigIntType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/BooleanType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/BooleanType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayEncoder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayEncoder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayEncoderTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayEncoderTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteArrayType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ByteType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Calendar.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Calendar.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayEncoder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayEncoder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayEncoderTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayEncoderTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CharArrayType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsEvent.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsEvent.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsException.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsException.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ConstraintsListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomExpressionDataTypeTransform.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomExpressionDataTypeTransform.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomInstanceDataTypeTransform.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomInstanceDataTypeTransform.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomTypeDataTypeTransform.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/CustomTypeDataTypeTransform.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeAdapter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransform.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransform.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransformFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DataTypeTransformFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Date.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Date.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriod.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriod.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriodType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriodType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriod_.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DatePeriod_.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateTime.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateTime.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateTimeType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateTimeType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DateType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Date_.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Date_.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DefaultDataType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DefaultDataType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DoubleType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/DoubleType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/EnumType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/EnumType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/EnumType_.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/EnumType_.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileData.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileData.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileData_.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileData_.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FileType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FloatType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/FloatType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/I18NString.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/I18NString.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ImageType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ImageType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/IntType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/IntType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/LOBType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/LOBType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ListType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ListType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/LongType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/LongType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ManyToOneType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ManyToOneType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Month.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Month.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/MonthType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/MonthType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/NumberType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/NumberType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/PeriodOption.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/PeriodOption.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/PrimitiveDataType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/PrimitiveDataType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SecretTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SecretTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SerializableType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SerializableType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SeriesType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/SeriesType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ShortType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/ShortType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringEncoder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringEncoder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringEncoderTransformConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringEncoderTransformConfig.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringTypeCharRewriter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringTypeCharRewriter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringTypeCharValidator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StringTypeCharValidator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StructType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/StructType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Temporal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Temporal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TemporalOption.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TemporalOption.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TemporalType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TemporalType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Time.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Time.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TimeType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TimeType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Timestamp.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Timestamp.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TimestampType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TimestampType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypeValueRewriter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypeValueRewriter.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypeValueValidator.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypeValueValidator.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypesFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/TypesFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/URL.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/URL.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Year.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/Year.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/YearType.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Types/YearType.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPA.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPA.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContext.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContext.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextFactory.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextFactory.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextProvider.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextProvider.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextProviderLazyHolder.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAContextProviderLazyHolder.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObject.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObject.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObjectListener.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObjectListener.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPASecurityManager.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPASecurityManager.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UniqueConstraint.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UniqueConstraint.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UnspecifiedValue.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UnspecifiedValue.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UpdateQuery.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UpdateQuery.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UserFieldModifier.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UserFieldModifier.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UserPrincipal.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UserPrincipal.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/VetoableOperation.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/VetoableOperation.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/VoidAction.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/VoidAction.cs" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.dll" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.dll" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/PersistenceUnitFactoryBean.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" />
       <change beforePath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" afterPath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/upa-api/target/" />
@@ -1009,32 +405,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Repo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java">
+      <file leaf-file-name="URLAnnotationStrategySupport.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="229">
+              <caret line="323" column="37" lean-forward="true" selection-start-line="323" selection-start-column="37" selection-end-line="323" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpringUPATransactionManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java">
+      <file leaf-file-name="JPAProcessor.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PersistenceUnitFactoryBeanTest.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-              <folding />
+            <state relative-caret-position="397">
+              <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1042,22 +432,8 @@
       <file leaf-file-name="SpringUPAConfig.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#611#612#0" expanded="true" />
-                <element signature="e#667#668#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DefaultPersistenceGroup.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
+            <state relative-caret-position="476">
+              <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -1066,38 +442,73 @@
       <file leaf-file-name="SpringUPAPersistenceUnitFactoryBean.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="11" column="72" lean-forward="false" selection-start-line="11" selection-start-column="72" selection-end-line="11" selection-end-column="72" />
+            <state relative-caret-position="85">
+              <caret line="76" column="34" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractPlatformTransactionManager.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/AbstractPlatformTransactionManager.java">
+      <file leaf-file-name="UPAContextConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="82" column="68" lean-forward="false" selection-start-line="82" selection-start-column="68" selection-end-line="82" selection-end-column="94" />
+            <state relative-caret-position="136">
+              <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RootObjectFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java">
+      <file leaf-file-name="PersistenceGroupConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="222" column="0" lean-forward="false" selection-start-line="222" selection-start-column="0" selection-end-line="222" selection-end-column="0" />
+            <state relative-caret-position="85">
+              <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpringPlatformObjectFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPlatformObjectFactory.java">
+      <file leaf-file-name="PersistenceUnitConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+            <state relative-caret-position="51">
+              <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SimpleDecoration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="329">
+              <caret line="40" column="115" lean-forward="false" selection-start-line="40" selection-start-column="115" selection-end-line="40" selection-end-column="115" />
+              <folding>
+                <element signature="e#2875#2876#0" expanded="true" />
+                <element signature="e#2913#2914#0" expanded="true" />
+                <element signature="e#2975#2976#0" expanded="true" />
+                <element signature="e#3004#3005#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractDecoration.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="502">
+              <caret line="198" column="52" lean-forward="false" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Entity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="11" selection-end-line="60" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -1115,14 +526,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>UPAContextRepo</find>
-      <find>executeNonQuery</find>
-      <find>activeConnections</find>
-      <find>-PURepo</find>
-      <find>&quot;NEXT&quot;</find>
-      <find>count</find>
-      <find>implements NativeStatement</find>
-      <find>Select  INVOICE.CREATION_DATE,INVOICE.CREATION_USER,INVOICE.MODIFICATION_DATE</find>
       <find>executeQ</find>
       <find>getPErsistenceUnit</find>
       <find>createO</find>
@@ -1145,19 +548,27 @@
       <find>Platform</find>
       <find>newInst</find>
       <find>newIns</find>
+      <find>javax.persistence</find>
+      <find>javax.persistence.Entity</find>
+      <find>log.</find>
+      <find>&quot;javax.persistence.Entity&quot;</find>
+      <find>&quot;csharp&quot;</find>
+      <find>suppress</find>
+      <find>javax</find>
+      <find>getAttributes0</find>
     </findStrings>
     <replaceStrings>
       <replace>setProperty</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util</dir>
-      <dir>$PROJECT_DIR$/upa-impl-core/src/main/java</dir>
       <dir>$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/bulk/sheet</dir>
       <dir>$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/bulk</dir>
       <dir>$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl</dir>
       <dir>$PROJECT_DIR$/upa-api/src/main/java</dir>
       <dir>$PROJECT_DIR$/upa-impl/src</dir>
       <dir>$PROJECT_DIR$/upa-impl-core/src</dir>
+      <dir>$PROJECT_DIR$/upa-impl-core/src/main/java</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -1175,9 +586,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeStatement.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersitenceUnitFactoryBean.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/test/java/PersistenceUnitFactoryBeanTest.java" />
@@ -1224,8 +632,11 @@
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" />
       </list>
     </option>
   </component>
@@ -1699,7 +1110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1522764378524</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Renamed Spring classes">
+      <created>1522765399347</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1522765399347</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1762,14 +1180,14 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24653149" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17662753" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08971553" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21824974" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0891142" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25054705" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.07203842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39934355" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.118161924" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1999,7 +1417,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java</url>
-          <line>21</line>
+          <line>23</line>
           <properties />
           <option name="timeStamp" value="237" />
         </line-breakpoint>
@@ -2113,122 +1531,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE.jar!/org/springframework/transaction/interceptor/TransactionInterceptor.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE.jar!/org/springframework/transaction/interceptor/TransactionAspectSupport.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="261" column="0" lean-forward="false" selection-start-line="261" selection-start-column="0" selection-end-line="261" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE.jar!/org/springframework/transaction/support/AbstractPlatformTransactionManager.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE.jar!/org/springframework/transaction/support/ResourceHolderSupport.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="22" column="16" lean-forward="false" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/interceptor/TransactionInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/interceptor/TransactionAspectSupport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/ResourceHolderSupport.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/DefaultTransactionStatus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="44" lean-forward="true" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPersistenceUnitProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/LogUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="21" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Category.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="29" column="1" lean-forward="false" selection-start-line="29" selection-start-column="1" selection-end-line="29" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="45" column="16" lean-forward="false" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/connection/ConnectionProfileParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="98" column="0" lean-forward="false" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/context/DefaultSessionContextProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#624#625#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/5.0.4.RELEASE/spring-aop-5.0.4.RELEASE.jar!/org/springframework/aop/framework/CglibAopProxy.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -2579,14 +1881,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="11" column="72" lean-forward="false" selection-start-line="11" selection-start-column="72" selection-end-line="11" selection-end-column="72" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/AbstractPlatformTransactionManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
@@ -2600,18 +1894,6 @@
         <state relative-caret-position="291">
           <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="33" column="13" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#611#612#0" expanded="true" />
-            <element signature="e#667#668#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2649,9 +1931,154 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="34" column="5" lean-forward="true" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        <state relative-caret-position="273">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Config/URLAnnotationStrategySupport.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2024">
+          <caret line="467" column="57" lean-forward="false" selection-start-line="467" selection-start-column="31" selection-end-line="467" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ScanElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/PersistenceGroupElement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="165" column="36" lean-forward="false" selection-start-line="165" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationSourceType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="12" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationTarget.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="12" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Decoration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="11" selection-end-line="60" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="323" column="37" lean-forward="true" selection-start-line="323" selection-start-column="37" selection-end-line="323" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="198" column="52" lean-forward="false" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="76" column="34" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="40" column="115" lean-forward="false" selection-start-line="40" selection-start-column="115" selection-end-line="40" selection-end-column="115" />
+          <folding>
+            <element signature="e#2875#2876#0" expanded="true" />
+            <element signature="e#2913#2914#0" expanded="true" />
+            <element signature="e#2975#2976#0" expanded="true" />
+            <element signature="e#3004#3005#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
