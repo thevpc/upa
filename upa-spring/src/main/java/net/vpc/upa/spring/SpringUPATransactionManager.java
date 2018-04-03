@@ -11,12 +11,12 @@ import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.SmartTransactionObject;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-public class UPATransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
+public class SpringUPATransactionManager extends AbstractPlatformTransactionManager implements InitializingBean {
 
     //private PersistenceUnit persistenceUnit;
     private boolean nestedTx;
 
-    public UPATransactionManager() {
+    public SpringUPATransactionManager() {
     }
 
 //    public void setPersistenceUnit(PersistenceUnit persistenceUnit) {
@@ -40,7 +40,7 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
 
         UPATxObject txObject = new UPATxObject();
         PersistenceUnit persistenceUnit = UPA.getPersistenceUnit();
-        UPAHolder resource = (UPAHolder) TransactionSynchronizationManager.getResource(persistenceUnit);
+        SpringUPAHolder resource = (SpringUPAHolder) TransactionSynchronizationManager.getResource(persistenceUnit);
         if (resource != null) {
             txObject.setUpaHolder(resource, false);
         }
@@ -79,7 +79,7 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
             if(!persistenceUnit.currentSessionExists()) {
                 persistenceUnit.openSession();
             }
-            UPAHolder upaHolder = new UPAHolder(persistenceUnit);
+            SpringUPAHolder upaHolder = new SpringUPAHolder(persistenceUnit);
             upaHolder.setSessionCreated(sessionCreated);
             upaTxObject.setUpaHolder(upaHolder, true);
         }
@@ -121,29 +121,29 @@ public class UPATransactionManager extends AbstractPlatformTransactionManager im
 
 
     private class UPATxObject implements SmartTransactionObject {
-        private UPAHolder upaHolder;
+        private SpringUPAHolder upaHolder;
         private boolean newUPA;
 
         public UPATxObject() {
 
         }
 
-        public UPATxObject(UPAHolder upaHolder, boolean newUPA) {
+        public UPATxObject(SpringUPAHolder upaHolder, boolean newUPA) {
             this.upaHolder = upaHolder;
             this.newUPA = newUPA;
         }
 
-        public void setUpaHolder(UPAHolder upaHolder) {
+        public void setUpaHolder(SpringUPAHolder upaHolder) {
             this.upaHolder = upaHolder;
         }
 
-        public void setUpaHolder(UPAHolder upaHolder, boolean isNew) {
+        public void setUpaHolder(SpringUPAHolder upaHolder, boolean isNew) {
             this.upaHolder = upaHolder;
             this.newUPA = isNew;
 
         }
 
-        public UPAHolder getUpaHolder() {
+        public SpringUPAHolder getUpaHolder() {
             return upaHolder;
         }
 

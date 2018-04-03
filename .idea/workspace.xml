@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f07e7555-5869-4f87-98dd-bbf2b1809b95" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_3_8_1.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_0_4_RELEASE.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_orm_5_0_4_RELEASE.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_0_4_RELEASE.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformObjectFactory.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPlatformObjectFactory.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPlatformObjectFactory.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_vpc_toolbox_j2cs_1_0_0.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/upa-api/pom.xml" afterPath="$PROJECT_DIR$/upa-api/pom.xml" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/AccessLevel.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/AccessLevel.cs" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Action.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Action.cs" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapter.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/BeanAdapter.cs" />
@@ -619,27 +608,9 @@
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/bin/Debug/Net.Vpc.Upa.pdb" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.Api.csproj.FilesWrittenAbsolute.txt" />
       <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/obj/Debug/Net.Vpc.Upa.dll" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ScanFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ScanFilter.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java" />
-      <change beforePath="$PROJECT_DIR$/upa-api/upa-api.iml" afterPath="$PROJECT_DIR$/upa-api/upa-api.iml" />
-      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
-      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
-      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/derby/DerbyPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/derby/DerbyPersistenceStore.java" />
-      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLPersistenceStore.java" />
-      <change beforePath="$PROJECT_DIR$/upa-portable/upa-portable.iml" afterPath="$PROJECT_DIR$/upa-portable/upa-portable.iml" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/pom.xml" afterPath="$PROJECT_DIR$/upa-spring/pom.xml" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/PersistenceUnitFactoryBean.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/PersistenceUnitFactoryBean.java" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java" />
+      <change beforePath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" afterPath="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java" />
       <change beforePath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" afterPath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java" afterPath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/upa-spring.iml" afterPath="$PROJECT_DIR$/upa-spring/upa-spring.iml" />
-      <change beforePath="$PROJECT_DIR$/upa-vfs/upa-vfs.iml" afterPath="$PROJECT_DIR$/upa-vfs/upa-vfs.iml" />
     </list>
     <ignored path="$PROJECT_DIR$/upa-api/target/" />
     <ignored path="$PROJECT_DIR$/upa-test/target/" />
@@ -1065,21 +1036,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UPAHolder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java">
+      <file leaf-file-name="SpringUPAHolder.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+            <state relative-caret-position="68">
+              <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PersistenceUnitFactoryBeanTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PersistenceUnitFactoryBeanTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="37" column="13" lean-forward="true" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+            <state relative-caret-position="236">
+              <caret line="34" column="30" lean-forward="false" selection-start-line="34" selection-start-column="30" selection-end-line="34" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1213,11 +1184,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UPATransactionManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java">
+      <file leaf-file-name="SpringUPATransactionManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="79" column="40" lean-forward="false" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
+            <state relative-caret-position="68">
+              <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -1322,8 +1293,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" />
         <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/FormulasFeature.java" />
         <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/NativeStatement.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/SequenceManager.java" />
@@ -1362,8 +1331,6 @@
         <option value="$PROJECT_DIR$/upa-spring/pom.xml" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
         <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java" />
         <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformObjectFactory.java" />
         <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" />
@@ -1373,6 +1340,10 @@
         <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/PersistenceUnitFactoryBean.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
         <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" />
+        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java" />
       </list>
     </option>
   </component>
@@ -1494,144 +1465,6 @@
             <path>
               <item name="upa" type="b2602c69:ProjectViewProjectNode" />
               <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="spring" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="spring" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="upa" type="b2602c69:ProjectViewProjectNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="upa-spring" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-              <item name="vpc" type="462c0819:PsiDirectoryNode" />
-              <item name="upa" type="462c0819:PsiDirectoryNode" />
-              <item name="spring" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -1970,7 +1803,14 @@
       <option name="project" value="LOCAL" />
       <updated>1522228779482</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Spring integration (added new SpringPlatformObjectFactory)">
+      <created>1522764273407</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1522764273407</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -2028,7 +1868,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08736842" sideWeight="0.5064034" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20277481" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33150986" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.108315095" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2101,7 +1941,8 @@
     <MESSAGE value="version 1.2.0.44 :&#10;+ minor bug fixes (fixed 'If' function in UQL)&#10;+ added android project : upa-impl splitted to upa-core (platform independent) and upa-impl (java/cs-desktop) and upa-android&#10;+ added support for using Enum literal in UQL (example : &quot;where x.myEnumField='MY_CONST'&quot;&#10;+ added support for using Date literal in UQL (example : &quot;where x.myDateField='2012-12-13&quot;&#10;+ added support for NamedFormula as a plain method" />
     <MESSAGE value="+Extracted Blob and Clob interfaces&#10;+Moved xls support to upa-impl&#10;+Extracted Xml Parse (Platform Independent) interface&#10;+Extracted upa-core project (platform independent) that should work on android, java an c#" />
     <MESSAGE value="First Spring integration (added new project UPA Spring)" />
-    <option name="LAST_COMMIT_MESSAGE" value="First Spring integration (added new project UPA Spring)" />
+    <MESSAGE value="Spring integration (added new SpringPlatformObjectFactory)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Spring integration (added new SpringPlatformObjectFactory)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2267,20 +2108,20 @@
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java</url>
+          <url>file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java</url>
           <line>96</line>
           <properties />
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java</url>
+          <url>file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java</url>
           <line>107</line>
           <properties />
           <option name="timeStamp" value="232" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java</url>
-          <line>24</line>
+          <line>20</line>
           <properties />
           <option name="timeStamp" value="237" />
         </line-breakpoint>
@@ -2960,22 +2801,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="79" column="40" lean-forward="false" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/AbstractPlatformTransactionManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
@@ -2994,11 +2819,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="37" column="13" lean-forward="true" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        <state relative-caret-position="236">
+          <caret line="34" column="30" lean-forward="false" selection-start-line="34" selection-start-column="30" selection-end-line="34" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="13" column="13" lean-forward="true" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>

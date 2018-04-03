@@ -4,13 +4,13 @@ import net.vpc.upa.PersistenceUnit;
 import org.springframework.transaction.SavepointManager;
 import org.springframework.transaction.support.ResourceHolderSupport;
 
-public class UPAHolder extends ResourceHolderSupport {
+public class SpringUPAHolder extends ResourceHolderSupport {
     private PersistenceUnit persistenceUnit;
     private boolean txActive;
     private boolean sessionCreated;
     private SavepointManager savepointManager;
 
-    public UPAHolder(PersistenceUnit persistenceUnit) {
+    public SpringUPAHolder(PersistenceUnit persistenceUnit) {
         this.persistenceUnit = persistenceUnit;
     }
 
