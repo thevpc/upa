@@ -13,6 +13,6 @@ import net.vpc.upa.PortabilityHint;
  */
 @PortabilityHint(target = "C#",name = "suppress")
 public enum xssfDataType {
-    BOOLEAN, ERROR, FORMULA, INLINE_STRING, SST_STRING, NUMBER
+    UNDEFINED,BOOLEAN, ERROR, FORMULA, INLINE_STRING, SST_STRING, NUMBER
     
 }
