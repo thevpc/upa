@@ -10,7 +10,7 @@ import net.vpc.upa.UPAObject;
 public class PersistentObjectInfo {
     private UPAObject object;
     private String type;
-    private PersistenceState persistenceState = PersistenceState.UNKNOWN;
+    private PersistenceState persistenceState = PersistenceState.UNDEFINED;
     private String persistentName;
 
     PersistentObjectInfo(UPAObject object, String type) {

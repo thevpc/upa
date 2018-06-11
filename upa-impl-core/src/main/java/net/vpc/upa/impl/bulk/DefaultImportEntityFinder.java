@@ -29,8 +29,11 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
     public Map<String, Object> valueToMap(Entity entity, Object value) {
         List<HierarchyExtension> c = new ArrayList<HierarchyExtension>();
         for (Relationship relation : entity.getRelationships()) {
-            if (relation.getHierarchyExtension() != null) {
-                c.add(relation.getHierarchyExtension());
+            if(relation instanceof ManyToOneRelationship) {
+                ManyToOneRelationship m=(ManyToOneRelationship) relation;
+                if (m.getHierarchyExtension() != null) {
+                    c.add(m.getHierarchyExtension());
+                }
             }
         }
         if (c.isEmpty()) {
@@ -68,8 +71,11 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
     public Object findEntity(Entity entity, Map<String, Object> values) {
         List<HierarchyExtension> c = new ArrayList<HierarchyExtension>();
         for (Relationship relation : entity.getRelationships()) {
-            if (relation.getHierarchyExtension() != null) {
-                c.add(relation.getHierarchyExtension());
+            if(relation instanceof ManyToOneRelationship) {
+                ManyToOneRelationship m = (ManyToOneRelationship) relation;
+                if (m.getHierarchyExtension() != null) {
+                    c.add(m.getHierarchyExtension());
+                }
             }
         }
         if (c.isEmpty()) {

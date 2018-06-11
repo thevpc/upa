@@ -18,7 +18,7 @@
                     <password type="plain">upatest</password>
                 </connection>
 
-                <property name="persistenceName">UPA_*</property>
+                <property name="persistenceNameFormat">UPA_*</property>
             <property name="simpleName">simpleValue</property>
             <configure types=""/>
             <configure types="net.vpc.upa.test.**"/>
@@ -38,7 +38,7 @@
             <userName>upatest</userName>
             <password type="plain">upatest</password>
         </connection>
-        <property name="persistenceName">UPA_*</property>
+        <property name="persistenceNameFormat">UPA_*</property>
         <configure/>
     </persistenceUnit>-->
     <!--</persistenceGroup>-->

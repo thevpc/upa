@@ -1,11 +1,10 @@
-package net.vpc.upa.impl;
-
-import net.vpc.upa.NamingStrategy;
+package net.vpc.upa.impl.util;
 
 /**
 * Created by vpc on 12/20/13.
 */
-class CaseSensitiveNamingStrategy implements NamingStrategy {
+public class CaseSensitiveNamingStrategy implements NamingStrategy {
+    public static final NamingStrategy INSTANCE=new CaseSensitiveNamingStrategy();
     public String getUniformValue(String name) {
         return name;
     }

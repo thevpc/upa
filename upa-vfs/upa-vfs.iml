@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.vpc.common:vfs:1.9" level="project" />
+    <orderEntry type="module" module-name="vfs" />
     <orderEntry type="module" module-name="upa-api" />
   </component>
 </module>

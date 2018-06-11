@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
 import net.vpc.upa.*;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.UpdateSQLProvider;
@@ -15,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
-import net.vpc.upa.persistence.PersistenceNameType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change

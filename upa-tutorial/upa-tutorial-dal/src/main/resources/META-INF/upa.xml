@@ -5,7 +5,7 @@
         <userName>me</userName>
         <password>never</password>
     </connection>
-    <property name="persistenceName">upa_{object_name}</property>
+    <property name="persistenceNameFormat">upa_{object_name}</property>
 <!--    <decorations>
         <import package="net.*"/>
         <type name="Customer">

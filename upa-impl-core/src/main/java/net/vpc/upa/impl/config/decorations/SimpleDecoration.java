@@ -10,14 +10,16 @@ import net.vpc.upa.config.DecorationSourceType;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.config.DecorationValue;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.vpc.upa.config.ConfigAction;
 import net.vpc.upa.config.ConfigInfo;
 import net.vpc.upa.config.ItemConfig;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public final class SimpleDecoration extends AbstractDecoration {
@@ -31,14 +33,26 @@ public final class SimpleDecoration extends AbstractDecoration {
     private ConfigInfo configInfo;
     private Map<String, DecorationValue> values = null;
 
-    public SimpleDecoration(String name, DecorationSourceType locationType, DecorationTarget targetType, String type, String location, int position,ConfigInfo configInfo,Map<String, DecorationValue> attr) {
+    public SimpleDecoration(Class clz, Decoration at, int position) {
+        this(clz.getName(), at, position);
+        for (Map.Entry<String, DecorationValue> deco : PlatformUtils.getAnnotationDefaultDecorationValues(clz).entrySet()) {
+            addAttribute(deco.getKey(), deco.getValue());
+        }
+    }
+
+    public SimpleDecoration(String name, Decoration at, int position) {
+        this(name, at.getDecorationSourceType(),
+                at.getTarget(), at.getLocationType(), at.getLocation(), position, ConfigInfo.DEFAULT, null);
+    }
+
+    public SimpleDecoration(String name, DecorationSourceType locationType, DecorationTarget targetType, String type, String location, int position, ConfigInfo configInfo, Map<String, DecorationValue> attr) {
         this.name = name;
         this.decorationSourceType = locationType;
         this.targetType = targetType;
         this.type = type;
         this.location = location;
         this.configInfo = configInfo;
-        this.values = attr==null?new HashMap<String, DecorationValue>() : new HashMap<String, DecorationValue>(attr);
+        this.values = attr == null ? new HashMap<String, DecorationValue>() : new HashMap<String, DecorationValue>(attr);
         this.position = position;
     }
 
@@ -49,7 +63,7 @@ public final class SimpleDecoration extends AbstractDecoration {
     public int getPosition() {
         return position;
     }
-    
+
 
     protected ConfigInfo getConfigInfo0() {
         if (configInfo == null) {
@@ -89,13 +103,22 @@ public final class SimpleDecoration extends AbstractDecoration {
         return configInfo;
     }
 
-    public void addPrimitiveAttribute(String name,Object value){
-        addAttribute(name,new DecorationPrimitiveValue(value,ConfigInfo.DEFAULT));
+    public void copyAttributes(Decoration from, String... names) {
+        for (String s : names) {
+            if (from.contains(s)) {
+                DecorationValue a = from.get(s);
+            }
+        }
     }
 
-    public void addAttribute(String name,DecorationValue value){
-        values.put(name,value);
+    public void addPrimitiveAttribute(String name, Object value) {
+        addAttribute(name, new DecorationPrimitiveValue(value, ConfigInfo.DEFAULT));
     }
+
+    public void addAttribute(String name, DecorationValue value) {
+        values.put(name, value);
+    }
+
     protected Map<String, DecorationValue> getAttributes0() {
         return values;
     }

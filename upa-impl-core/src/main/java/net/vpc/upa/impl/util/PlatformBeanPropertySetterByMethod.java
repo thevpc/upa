@@ -25,10 +25,10 @@ class PlatformBeanPropertySetterByMethod implements  PlatformBeanPropertySetter{
             if (e instanceof InvocationTargetException) {
                 e= (Exception)((InvocationTargetException)e).getTargetException();
             }
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            }
-            throw new RuntimeException(e);
+//            if (e instanceof RuntimeException) {
+//                throw (RuntimeException) e;
+//            }
+            throw new RuntimeException("Unable to set value of type "+(value==null?"null":value.getClass().getName())+" using "+setter,e);
         }
     }
 }

@@ -41,7 +41,6 @@ public class EntityPlatformBeanType implements PlatformBeanType {
         return entity.getField(property).getDataType().getPlatformType();
     }
 
-
     @Override
     public Class getPlatformType() {
         return entity.getEntityType();
@@ -93,18 +92,21 @@ public class EntityPlatformBeanType implements PlatformBeanType {
 
     public boolean isDefaultValue(Object o, String field) throws UPAException {
         EntityBeanAttribute attrAdapter = getAttrAdapter(field);
-        return attrAdapter.isDefaultValue(o);
+        if (attrAdapter != null) {
+            return attrAdapter.isDefaultValue(o);
+        }
+        return false;
     }
 
     public Set<String> getPropertyNames() {
-        if(propertyNames==null) {
+        if (propertyNames == null) {
             LinkedHashSet<String> t = new LinkedHashSet<String>();
             for (net.vpc.upa.Field f : entity.getFields()) {
                 if (getAttrAdapter(f.getName()) != null) {
                     t.add(f.getName());
                 }
             }
-            propertyNames=t;
+            propertyNames = t;
         }
         return Collections.unmodifiableSet(propertyNames);
     }
@@ -167,8 +169,8 @@ public class EntityPlatformBeanType implements PlatformBeanType {
     @Override
     public void inject(Object instance, String property, Object value) {
         EntityBeanAttribute a = getAttrAdapter(property);
-        if(a!=null){
-            a.setValue(instance,value);
+        if (a != null) {
+            a.setValue(instance, value);
         }
     }
 
@@ -180,6 +182,4 @@ public class EntityPlatformBeanType implements PlatformBeanType {
 //    public Field findField(String name, ObjectFilter<Field> filter) {
 //        return platformPlatformBeanType.findField(name, filter);
 //    }
-
-
 }

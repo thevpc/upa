@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.CreatePersistenceUnitException;
 import net.vpc.upa.exceptions.DatabaseNotFoundException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
@@ -29,7 +28,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -119,7 +117,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             Sequence sequence = (Sequence) UPAUtils.getPersistFormula(field);
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
             switch (strategy) {
-                case UNSPECIFIED:
+                case UNDEFINED:
                 case AUTO:
                 case IDENTITY: {
                     DataType d = (field.getDataType());
@@ -145,7 +143,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             f = sequence.getFormat();
         }
         switch (strategy) {
-            case UNSPECIFIED:
+            case UNDEFINED:
             case AUTO:
             case IDENTITY: {
                 DataType d = (field.getDataType());

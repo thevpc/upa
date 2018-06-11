@@ -11,10 +11,9 @@ import java.util.logging.Logger;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceState;
 import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.ColumnDesc;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
@@ -35,11 +34,11 @@ public class EntityPKStructureCommit extends StructureCommit {
     }
 
     @Override
-    public void persist(EntityExecutionContext executionContext, PersistenceState status) throws SQLException, UPAException {
+    public void persist(EntityExecutionContext executionContext, PersistenceState status) {
         Entity entity = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (entity.getIdFields().size() > 0) {
-            log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
+            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
             UConnection b = executionContext.getConnection();
             for (PrimitiveField primaryField : entity.getPrimitiveFields(FieldFilters.id())) {
                 ColumnDesc cd = store.loadColumnDesc(primaryField, (Connection)b.getMetadataAccessibleConnection());

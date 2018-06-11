@@ -7,22 +7,17 @@ package net.vpc.upa.impl.config.decorations;
 
 import net.vpc.upa.config.DecorationTarget;
 import net.vpc.upa.config.Decoration;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.vpc.upa.config.DecorationValue;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
- *
  * @author taha.bensalah@gmail.com
  */
 public class DefaultDecorationRepository implements DecorationRepository {
@@ -52,89 +47,128 @@ public class DefaultDecorationRepository implements DecorationRepository {
         return getTypeDecorations(type.getName());
     }
 
-    public Decoration getTypeDecoration(Class type, String annType) {
-        return getTypeDecoration(type.getName(), annType);
+    public Decoration getTypeDecoration(Class type, String decorationType) {
+        return getTypeDecoration(type.getName(), decorationType);
     }
 
-    public Decoration getTypeDecoration(Class type, Class annType) {
-        return getTypeDecoration(type.getName(), annType.getName());
+    public Decoration getTypeDecoration(Class type, Class decorationType) {
+        return getTypeDecoration(type.getName(), decorationType.getName());
     }
 
     public Decoration[] getTypeDecorations(Class type, String annType) {
         return getTypeDecorations(type.getName(), annType);
     }
 
-    public Decoration[] getTypeDecorations(String type, String annType) {
+    public Decoration[] getTypeDecorations(String type, String decorationType) {
         List<Decoration> found = new ArrayList<Decoration>();
         for (Decoration decoration : getTypeDecorations(type)) {
-            if (decoration.getName().equals(annType)) {
+            if (decoration.getName().equals(decorationType)) {
                 found.add(decoration);
             }
         }
         return found.toArray(new Decoration[found.size()]);
     }
 
-    public Decoration getTypeDecoration(String type, String annType) {
-        Decoration[] found = getTypeDecorations(type, annType);
+    @Override
+    public Decoration[] getTypeRepeatableDecorations(Class type, Class decorationType, Class arrayDecorationType) {
+        return getTypeRepeatableDecorations(type.getName(),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+    }
+
+    @Override
+    public Decoration[] getTypeRepeatableDecorations(String type, String decorationType, String arrayDecorationType) {
+        List<Decoration> found = new ArrayList<Decoration>();
+        for (Decoration decoration : getTypeDecorations(type)) {
+            if (decoration.getName().equals(decorationType)) {
+                found.add(decoration);
+            }else if(arrayDecorationType!=null && decoration.getName().equals(arrayDecorationType)){
+                found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
+            }
+        }
+        return found.toArray(new Decoration[found.size()]);
+    }
+
+    public Decoration getTypeDecoration(String type, String decorationType) {
+        Decoration[] found = getTypeDecorations(type, decorationType);
         return found.length == 0 ? null : found[0];
     }
 
-    public Decoration[] getMethodDecorations(Method method, String annType) {
-        return getMethodDecorations(method.getDeclaringClass().getName(), PlatformUtils.getMethodSignature(method), annType);
+    public Decoration[] getMethodDecorations(Method method, String decorationType) {
+        return getMethodDecorations(method.getDeclaringClass().getName(), PlatformUtils.getMethodSignature(method), decorationType);
     }
 
-    public Decoration[] getMethodDecorations(String type, String method, String annType) {
+    public Decoration[] getMethodDecorations(String type, String method, String decorationType) {
         List<Decoration> found = new ArrayList<Decoration>();
         for (Decoration decoration : getMethodDecorations(type, method)) {
-            if (decoration.getName().equals(annType)) {
+            if (decoration.getName().equals(decorationType)) {
                 found.add(decoration);
             }
         }
         return found.toArray(new Decoration[found.size()]);
     }
 
-    public Decoration getMethodDecoration(String type, String method, String annType) {
-        Decoration[] found = getMethodDecorations(type, method, annType);
+    public Decoration[] getMethodRepeatableDecorations(Method method, Class decorationType, Class arrayDecorationType) {
+        return getMethodRepeatableDecorations(method.getDeclaringClass().getName(),PlatformUtils.getMethodSignature(method),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+    }
+
+    public Decoration[] getMethodRepeatableDecorations(String type, String method, String decorationType, String arrayDecorationType) {
+        List<Decoration> found = new ArrayList<Decoration>();
+        for (Decoration decoration : getMethodDecorations(type, method)) {
+            if (decoration.getName().equals(decorationType)) {
+                found.add(decoration);
+            }else if(arrayDecorationType!=null && arrayDecorationType.equals(decoration.getName())){
+                found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
+            }
+        }
+        return found.toArray(new Decoration[found.size()]);
+    }
+
+    public Decoration getMethodDecoration(String type, String method, String decorationType) {
+        Decoration[] found = getMethodDecorations(type, method, decorationType);
         return found.length == 0 ? null : found[0];
     }
 
-    public Decoration getMethodDecoration(Method method, Class annType) {
-        return getMethodDecoration(method, annType.getName());
+    public Decoration getMethodDecoration(Method method, Class decorationType) {
+        return getMethodDecoration(method, decorationType.getName());
     }
 
-    public Decoration getMethodDecoration(Method method, String annType) {
+    public Decoration getMethodDecoration(Method method, String decorationType) {
         for (Decoration decoration : getMethodDecorations(method)) {
-            if (decoration.getName().equals(annType)) {
+            if (decoration.getName().equals(decorationType)) {
                 return decoration;
             }
         }
         return null;
     }
 
-    public Decoration getFieldDecoration(String type, String field, Class annType) {
-        return getFieldDecoration(type, field, annType.getName());
-    }
-
-    public Decoration getFieldDecoration(String type, String field, String annType) {
+    public Decoration getFieldDecoration(String type, String field, String decorationType) {
         for (Decoration decoration : getFieldDecorations(type, field)) {
-            if (decoration.getName().equals(annType)) {
+            if (decoration.getName().equals(decorationType)) {
                 return decoration;
             }
         }
         return null;
     }
 
-    public Decoration getFieldDecoration(Field field, Class annType) {
-        return getFieldDecoration(field, annType.getName());
-    }
-
-    public Decoration getFieldDecoration(Field field, String annType) {
-        for (Decoration decoration : getFieldDecorations(field)) {
-            if (decoration.getName().equals(annType)) {
-                return decoration;
+    @Override
+    public Decoration[] getFieldRepeatableDecorations(String type, String field, String decorationType, String arrayDecorationType) {
+        List<Decoration> found=new ArrayList<>();
+        for (Decoration decoration : getFieldDecorations(type, field)) {
+            if (decoration.getName().equals(decorationType)) {
+                found.add(decoration);
+            }else if(arrayDecorationType!=null && decoration.getName().equals(arrayDecorationType)){
+                found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
             }
         }
-        return null;
+        return found.toArray(new Decoration[found.size()]);
+    }
+
+    @Override
+    public Decoration[] getFieldRepeatableDecorations(Field field, Class decorationType, Class arrayDecorationType) {
+        return getFieldRepeatableDecorations(field.getDeclaringClass().getName(),field.getName(),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+    }
+
+    public Decoration getFieldDecoration(Field field, Class decorationType) {
+        return getFieldDecoration(field.getDeclaringClass().getName(),field.getName(), decorationType.getName());
     }
 
     public void visit(Decoration d) {
@@ -245,6 +279,34 @@ public class DefaultDecorationRepository implements DecorationRepository {
         return found == null ? new String[0] : found.toArray(new String[found.size()]);
     }
 
+    @Override
+    public Decoration[] getDeclaredRepeatableDecorations(String decorationName, String arrayDecorationName) {
+        List<Decoration> found = new ArrayList<>();
+        found.addAll(Arrays.asList(getDeclaredDecorations(decorationName)));
+        if (arrayDecorationName != null) {
+            found.addAll(Arrays.asList(expandRepeatableDecorations(getDeclaredDecorations(arrayDecorationName))));
+        }
+        return found.toArray(new Decoration[found.size()]);
+    }
+
+    private Decoration[] expandRepeatableDecorations(Decoration[] decorations){
+        List<Decoration> found = new ArrayList<>();
+        for (Decoration decoration : decorations) {
+            found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
+        }
+        return found.toArray(new Decoration[found.size()]);
+    }
+    private Decoration[] expandRepeatableDecorations(Decoration decoration){
+        List<Decoration> found = new ArrayList<>();
+        DecorationValue[] value = decoration.getArray("value");
+        if (value != null) {
+            for (DecorationValue decorationValue : value) {
+                found.add((Decoration) decorationValue);
+            }
+        }
+        return found.toArray(new Decoration[found.size()]);
+    }
+
     public Decoration[] getDeclaredDecorations(String decorationName) {
         List<Decoration> all = new ArrayList<Decoration>();
         Set<String> found = typesByDecoration.get(decorationName);
@@ -293,5 +355,11 @@ public class DefaultDecorationRepository implements DecorationRepository {
         }
         return new Decoration[0];
     }
+
+    @Override
+    public Decoration[] getDeclaredRepeatableDecorations(Class decorationName, Class arrayDecorationName) {
+        return getDeclaredRepeatableDecorations(decorationName.getName(),arrayDecorationName.getName());
+    }
+
 
 }

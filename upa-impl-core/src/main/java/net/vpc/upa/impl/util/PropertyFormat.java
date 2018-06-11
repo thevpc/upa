@@ -9,6 +9,7 @@ package net.vpc.upa.impl.util;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum PropertyFormat {
+    UNDEFINED,
     UNIX,
     BRACES
 }

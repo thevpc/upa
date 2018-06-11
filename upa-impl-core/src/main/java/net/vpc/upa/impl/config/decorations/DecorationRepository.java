@@ -17,45 +17,64 @@ public interface DecorationRepository {
 
     void visit(Decoration d);
 
+    Decoration[] getTypeDecorations(Class type);
+
     Decoration[] getTypeDecorations(String type);
 
-    Decoration[] getMethodDecorations(String type, String method);
+    Decoration getTypeDecoration(Class type, Class decorationType);
 
-    Decoration[] getFieldDecorations(String type, String field);
+    Decoration getTypeDecoration(Class type, String decorationType);
 
-    Decoration getFieldDecoration(Field field, Class annType);
+    Decoration getTypeDecoration(String type, String decorationType);
 
-    Decoration getFieldDecoration(Field field, String annType);
+    Decoration[] getTypeDecorations(String type, String decorationType);
 
-    Decoration getFieldDecoration(String type, String field, Class annType);
+    Decoration[] getTypeRepeatableDecorations(Class type, Class decorationType, Class arrayDecorationType);
 
-    Decoration getFieldDecoration(String type, String field, String annType);
+    Decoration[] getTypeRepeatableDecorations(String type, String decorationType, String arrayDecorationType);
 
     Decoration[] getFieldDecorations(Field field);
 
-    Decoration getMethodDecoration(Method method, Class annType);
+    Decoration[] getFieldDecorations(String type, String field);
 
-    Decoration getMethodDecoration(Method method, String annType);
+    Decoration getFieldDecoration(Field field, Class decorationType);
 
-    Decoration getMethodDecoration(String type, String method, String annType);
+    Decoration getFieldDecoration(String type, String field, String decorationType);
+
+    Decoration[] getFieldRepeatableDecorations(Field field, Class decorationType, Class arrayDecorationType);
+
+    Decoration[] getFieldRepeatableDecorations(String type, String field, String decorationType, String arrayDecorationType);
+
+    Decoration[] getMethodDecorations(String type, String method);
+
+    Decoration getMethodDecoration(Method method, Class decorationType);
+
+    Decoration getMethodDecoration(Method method, String decorationType);
+
+    Decoration getMethodDecoration(String type, String method, String decorationType);
 
     Decoration[] getMethodDecorations(Method method);
 
-    Decoration getTypeDecoration(Class type, Class annType);
+    Decoration[] getMethodDecorations(Method method, String decorationType);
 
-    Decoration getTypeDecoration(Class type, String annType);
+    Decoration[] getMethodDecorations(String type, String method, String decorationType);
 
-    Decoration getTypeDecoration(String type, String annType);
+    Decoration[] getMethodRepeatableDecorations(Method method, Class decorationType, Class arrayDecorationType) ;
 
-    Decoration[] getTypeDecorations(Class type);
+    Decoration[] getMethodRepeatableDecorations(String type, String method, String decorationType, String arrayDecorationType) ;
 
-    Decoration[] getTypeDecorations(String type, String annType);
-
-    Decoration[] getMethodDecorations(Method method, String annType);
-
-    Decoration[] getMethodDecorations(String type, String method, String annType);
 
     String[] getTypesForDecoration(String decorationName);
 
     Decoration[] getDeclaredDecorations(String decorationName);
+
+    /**
+     * returns all decorations of type decorationName or found as value of arrayDecorationName.
+     * This is valuable method to enable repeatable annotations/decorations on an item
+     * @param decorationName
+     * @param arrayDecorationName
+     * @return
+     */
+    Decoration[] getDeclaredRepeatableDecorations(String decorationName,String arrayDecorationName);
+    Decoration[] getDeclaredRepeatableDecorations(Class decorationName,Class arrayDecorationName);
 }

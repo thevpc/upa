@@ -4,6 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.Entity;
+import net.vpc.upa.config.Properties;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.extensions.*;
@@ -71,18 +72,8 @@ public class DecorationEntityDescriptorResolver {
                     parseEntityType(entityInfo, descriptorType, true, true, true, factory);
                 }
 
-                Decoration paramAnn = repo.getTypeDecoration(descriptorType, net.vpc.upa.config.Property.class);
-                if (paramAnn != null) {
-                    parameterInfos.add(UPAUtils.createProperty(paramAnn));
-                }
-
-                Decoration paramsAnn = repo.getTypeDecoration(descriptorType, net.vpc.upa.config.Properties.class);
-                if (paramsAnn != null) {
-                    for (DecorationValue p : paramsAnn.getArray("value")) {
-                        //p of type net.vpc.upa.config.Property
-                        Decoration pp = (Decoration) p;
-                        parameterInfos.add(UPAUtils.createProperty(pp));
-                    }
+                for (Decoration decoration : repo.getTypeRepeatableDecorations(descriptorType, net.vpc.upa.config.Property.class, Properties.class)) {
+                    parameterInfos.add(UPAUtils.createProperty(decoration));
                 }
                 Decoration pathDeco = repo.getTypeDecoration(descriptorType, net.vpc.upa.config.Path.class);
                 if (pathDeco != null) {
@@ -127,7 +118,7 @@ public class DecorationEntityDescriptorResolver {
                     entityInfo.fieldsMap.remove(fieldInfo.name);
                 }
             }
-            //handle cross depende
+            //handle cross dependencies
             if (entityInfo.idType == null) {
                 DecorationFieldDescriptor pk = null;
                 int pkCount = 0;
@@ -178,22 +169,8 @@ public class DecorationEntityDescriptorResolver {
 //            }
 //        }
 //    }
-    private List<Decoration> findIndexAnnotation(Class type) {
-        List<Decoration> list = new ArrayList<Decoration>();
-        Decoration indexAnn = repo.getTypeDecoration(type, net.vpc.upa.config.Index.class);
-        if (indexAnn != null) {
-            list.add(indexAnn);
-        }
-        Decoration indexAnnAll = repo.getTypeDecoration(type, net.vpc.upa.config.Indexes.class);
-        if (indexAnnAll != null) {
-            for (DecorationValue index : indexAnnAll.getArray("value")) {
-                if (indexAnn != null) {
-                    list.add((Decoration) index);
-                }
-            }
-        }
-        return list;
-    }
+
+
 
     void parseEntityType(DecorationEntityDescriptor entityInfo, Class type, boolean parseFields, boolean parseModifiers, boolean parseExtensions, ObjectFactory factory) {
         Decoration ue = repo.getTypeDecoration(type, Entity.class);
@@ -229,7 +206,7 @@ public class DecorationEntityDescriptorResolver {
             entityInfo.archivingOrder.setBetterValue(ue.getString("archivingOrder"), ue.getConfig().getOrder());
         }
 
-        Decoration path = (Decoration) repo.getTypeDecoration(type, Path.class);
+        Decoration path = repo.getTypeDecoration(type, Path.class);
         if (path != null) {
             if (path.getString("value").length() > 0) {
                 entityInfo.path.setBetterValue(path.getString("value"), path.getConfig().getOrder());
@@ -238,7 +215,8 @@ public class DecorationEntityDescriptorResolver {
                 entityInfo.pathPosition.setBetterValue(path.getInt("position"), path.getConfig().getOrder());
             }
         }
-        for (Decoration indexAnn : findIndexAnnotation(type)) {
+
+        for (Decoration indexAnn : repo.getTypeRepeatableDecorations(type, net.vpc.upa.config.Index.class,net.vpc.upa.config.Indexes.class)) {
             //net.vpc.upa.config.Index 
             List<String> rr = new ArrayList<String>();
             rr.addAll(Arrays.asList(indexAnn.getPrimitiveArray("fields", String.class)));

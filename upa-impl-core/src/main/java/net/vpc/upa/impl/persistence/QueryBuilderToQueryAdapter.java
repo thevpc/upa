@@ -197,6 +197,21 @@ public class QueryBuilderToQueryAdapter implements Query {
         return query.getMetaData();
     }
 
+    @Override
+    public <R> R getSingleResult(Class<R> type, String... fields) {
+        return query.getSingleResult(type, fields);
+    }
+
+    @Override
+    public <R> R getSingleResultOrNull(Class<R> type, String... fields) {
+        return query.getSingleResultOrNull(type, fields);
+    }
+
+    @Override
+    public <R> R getFirstResultOrNull(Class<R> type, String... fields) {
+        return query.getFirstResultOrNull(type, fields);
+    }
+
     public boolean isLazyListLoadingEnabled() {
         return query.isLazyListLoadingEnabled();
     }

@@ -27,7 +27,7 @@ public class DefaultTransaction extends AbstractTransaction {
     @Override
     public void commitImpl() throws SQLException {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Commit Transaction {0}", transactionId);
+            log.log(Level.FINE, "Transaction Commit {0}", transactionId);
         }
         connection.commitTransaction();
     }
@@ -35,7 +35,7 @@ public class DefaultTransaction extends AbstractTransaction {
     @Override
     protected void beginImpl() throws Exception {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Begin  Transaction {0}", transactionId);
+            log.log(Level.FINE, "Transaction Begin  {0}", transactionId);
         }
         connection.beginTransaction();
     }
@@ -43,7 +43,7 @@ public class DefaultTransaction extends AbstractTransaction {
     @Override
     public void rollbackImpl() throws Exception {
         if (log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "Rollback Transaction {0}", transactionId);
+            log.log(Level.FINE, "Transaction Rollback {0}", transactionId);
         }
         connection.rollbackTransaction();
     }

@@ -12,6 +12,7 @@ import net.vpc.upa.tutorial.model.Invoice;
  * @creationdate 12/15/12 9:43 PM
  */
 @Entity(entityType = Invoice.class,path = "Tutorial/Sell")
+@Table("TBL_INVOICE")
 public class InvoiceMO {
     @Id
     @Sequence(format = "{datepart(year,currentDate())}/{#}"

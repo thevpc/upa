@@ -3,11 +3,10 @@ package net.vpc.upa.impl;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
+import net.vpc.upa.impl.util.NamingStrategyHelper;
+import net.vpc.upa.impl.util.NamingStrategy;
 import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.EnumType;
-import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +39,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     private ProtectionLevel readProtectionLevel = ProtectionLevel.PUBLIC;
     private FieldPersister fieldPersister;
     private PropertyAccessType accessType;
-    private List<Relationship> relationships;
+    private List<Relationship> manyToOneRelationships;
+    private List<Relationship> oneToOneRelationships;
     private int preferredIndex = -1;
     private boolean _customDefaultObject = false;
     private Object _typeDefaultObject = false;
@@ -67,7 +67,8 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public void commitModelChanges() {
-        relationships = getManyToOneRelationshipsImpl();
+        manyToOneRelationships = getManyToOneRelationshipsImpl();
+        oneToOneRelationships = getOneToOneRelationshipsImpl();
     }
 
     public boolean is(FieldFilter filter) throws UPAException {
@@ -101,11 +102,32 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public List<Relationship> getManyToOneRelationships() {
-        return relationships;
-//        return getManyToOneRelationshipsImpl();
+        return manyToOneRelationships;
     }
 
-    public List<Relationship> getManyToOneRelationshipsImpl() {
+    public List<Relationship> getOneToOneRelationships() {
+        return oneToOneRelationships;
+    }
+
+    protected List<Relationship> getManyToOneRelationshipsImpl() {
+        List<Relationship> relations = new ArrayList<Relationship>();
+        for (Relationship r : getPersistenceUnit().getRelationshipsBySource(getEntity())) {
+            Field entityField = r.getSourceRole().getEntityField();
+            if (entityField != null && entityField.equals(this)) {
+                relations.add(r);
+            } else {
+                List<Field> fields = r.getSourceRole().getFields();
+                for (Field field : fields) {
+                    if (field.equals(this)) {
+                        relations.add(r);
+                    }
+                }
+            }
+        }
+        return PlatformUtils.trimToSize(relations);
+    }
+
+    protected List<Relationship> getOneToOneRelationshipsImpl() {
         List<Relationship> relations = new ArrayList<Relationship>();
         for (Relationship r : getPersistenceUnit().getRelationshipsBySource(getEntity())) {
             Field entityField = r.getSourceRole().getEntityField();
@@ -299,7 +321,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
             return 1;
         }
         Field f = (Field) other;
-        NamingStrategy comp = getEntity().getPersistenceUnit().getNamingStrategy();
+        NamingStrategy comp = NamingStrategyHelper.getNamingStrategy(getEntity().getPersistenceUnit().isCaseSensitiveIdentifiers());
 
         String s1 = entity != null ? comp.getUniformValue(entity.getName()) : "";
         String s2 = f.getName() != null ? comp.getUniformValue(f.getEntity().getName()) : "";
@@ -378,7 +400,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setPersistAccessLevel(AccessLevel persistAccessLevel) {
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, persistAccessLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, persistAccessLevel)) {
             persistAccessLevel = AccessLevel.READ_WRITE;
         }
         this.persistAccessLevel = persistAccessLevel;
@@ -389,7 +411,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setUpdateAccessLevel(AccessLevel updateAccessLevel) {
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, updateAccessLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, updateAccessLevel)) {
             updateAccessLevel = AccessLevel.READ_WRITE;
         }
         this.updateAccessLevel = updateAccessLevel;
@@ -400,7 +422,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setReadAccessLevel(AccessLevel readAccessLevel) {
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, readAccessLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, readAccessLevel)) {
             readAccessLevel = AccessLevel.READ_ONLY;
         }
         if (readAccessLevel == AccessLevel.READ_WRITE) {
@@ -420,7 +442,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setPersistProtectionLevel(ProtectionLevel persistProtectionLevel) {
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, persistProtectionLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, persistProtectionLevel)) {
             persistProtectionLevel = ProtectionLevel.PUBLIC;
         }
         this.persistProtectionLevel = persistProtectionLevel;
@@ -431,7 +453,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setUpdateProtectionLevel(ProtectionLevel updateProtectionLevel) {
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, updateProtectionLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, updateProtectionLevel)) {
             updateProtectionLevel = ProtectionLevel.PUBLIC;
         }
         this.updateProtectionLevel = updateProtectionLevel;
@@ -442,7 +464,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     public void setReadProtectionLevel(ProtectionLevel readProtectionLevel) {
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, readProtectionLevel)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, readProtectionLevel)) {
             readProtectionLevel = ProtectionLevel.PUBLIC;
         }
         this.readProtectionLevel = readProtectionLevel;
@@ -531,10 +553,24 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     }
 
     @Override
-    public Relationship getManyToOneRelationship() {
+    public boolean isOneToOne() {
+        return getDataType() instanceof OneToOneType;
+    }
+
+    @Override
+    public ManyToOneRelationship getManyToOneRelationship() {
         DataType dataType = getDataType();
         if (dataType instanceof ManyToOneType) {
-            return ((ManyToOneType) dataType).getRelationship();
+            return (ManyToOneRelationship) ((ManyToOneType) dataType).getRelationship();
+        }
+        return null;
+    }
+
+    @Override
+    public OneToOneRelationship getOneToOneRelationship() {
+        DataType dataType = getDataType();
+        if (dataType instanceof OneToOneType) {
+            return (OneToOneRelationship) ((OneToOneType) dataType).getRelationship();
         }
         return null;
     }
@@ -581,7 +617,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public AccessLevel getEffectiveAccessLevel(AccessMode mode) {
-        if (mode != null) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
             switch (mode) {
                 case READ:
                     return getEffectiveReadAccessLevel();
@@ -596,7 +632,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public AccessLevel getAccessLevel(AccessMode mode) {
-        if (mode != null) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
             switch (mode) {
                 case READ:
                     return getReadAccessLevel();
@@ -611,7 +647,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public ProtectionLevel getProtectionLevel(AccessMode mode) {
-        if (mode != null) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
             switch (mode) {
                 case READ:
                     return getReadProtectionLevel();
@@ -630,10 +666,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         }
         AccessLevel al = getPersistAccessLevel();
         ProtectionLevel pl = getPersistProtectionLevel();
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, al)) {
             al = AccessLevel.READ_WRITE;
         }
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, pl)) {
             pl = ProtectionLevel.PUBLIC;
         }
         switch (al) {
@@ -692,10 +728,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         AccessLevel al = getUpdateAccessLevel();
         ProtectionLevel pl = getUpdateProtectionLevel();
 
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, al)) {
             al = AccessLevel.READ_WRITE;
         }
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, pl)) {
             pl = ProtectionLevel.PUBLIC;
         }
         switch (al) {
@@ -766,10 +802,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         }
         AccessLevel al = getReadAccessLevel();
         ProtectionLevel pl = getReadProtectionLevel();
-        if (PlatformUtils.isUndefinedValue(AccessLevel.class, al)) {
+        if (PlatformUtils.isUndefinedEnumValue(AccessLevel.class, al)) {
             al = AccessLevel.READ_WRITE;
         }
-        if (PlatformUtils.isUndefinedValue(ProtectionLevel.class, pl)) {
+        if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, pl)) {
             pl = ProtectionLevel.PUBLIC;
         }
         if (al == AccessLevel.READ_WRITE) {

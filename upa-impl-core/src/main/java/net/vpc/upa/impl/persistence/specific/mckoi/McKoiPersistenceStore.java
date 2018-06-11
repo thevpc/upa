@@ -1,14 +1,11 @@
 package net.vpc.upa.impl.persistence.specific.mckoi;
 
 
-import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.DatabaseProduct;
-import net.vpc.upa.persistence.PersistenceNameConfig;
 
 
 @PortabilityHint(target = "C#", name = "suppress")

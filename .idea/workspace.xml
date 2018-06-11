@@ -2,11 +2,238 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f07e7555-5869-4f87-98dd-bbf2b1809b95" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/vpc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ColumnPersistenceNameRule.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/IndexPersistenceNameRule.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ManyToOneRelationship.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/OneToOneRelationship.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceNameRule.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipPersistenceNameRule.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TablePersistenceNameRule.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Column.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Columns.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DatabaseCondition.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/OneToOne.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Table.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Tables.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameStrategyCondition.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameTransformer.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/OneToOneType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/RelationDataType.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultManyToOneRelationship.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultOneToOneRelationship.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/jpa/JPAAnnotationsAdapter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceNameStrategyCondition.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PersistenceNameRuleSet.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/NamingStrategyHelper.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqlitePersistenceStore.java" afterPath="$PROJECT_DIR$/upa-android/src/main/java/net/vpc/upa/impl/android/AndroidSqlitePersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameConfig.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameConfig.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameStrategy.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/Persistence/PersistenceNameStrategy.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnit.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/PersistenceUnit.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObject.cs" afterPath="$PROJECT_DIR$/upa-api/src/main/csharp/Sources/Auto/UPAObject.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AccessMode.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AccessMode.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/BootstrapProperties.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/BootstrapProperties.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ConditionType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ConditionType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/DefaultRelationshipDescriptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/DefaultRelationshipDescriptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShield.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShield.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShieldAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShieldAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShieldVeto.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/EntityShieldVeto.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Field.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Field.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/KeyType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/KeyType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/MethodFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/MethodFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/NamingStrategy.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/NamingStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroup.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroup.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroupSecurityManager.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroupSecurityManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceState.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceState.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformBeanProperty.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformBeanProperty.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLExpressionParser.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLExpressionParser.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLParameter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLParameter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLParameterType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QLParameterType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QualifiedIdentifier.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QualifiedIdentifier.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Query.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Query.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QueryBuilder.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QueryBuilder.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QueryFetchStrategy.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/QueryFetchStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Relationship.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Relationship.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipDescriptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipDescriptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipRoleType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipRoleType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipUpdateType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipUpdateType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Section.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Section.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/SequenceStrategy.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/SequenceStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Transaction.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Transaction.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionManager.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionStatus.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionStatus.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPA.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPA.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAI18n.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAI18n.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAObject.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAObject.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPASecurityManager.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPASecurityManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UserFieldModifier.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UserFieldModifier.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/VetoableOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/VetoableOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/ImportDataMode.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/ImportDataMode.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/SheetContentType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/SheetContentType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/TextAlignment.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/bulk/TextAlignment.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/DefinitionListenerAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/DefinitionListenerAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/EntityInstaller.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/EntityInstaller.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/FieldDefinitionListener.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/FieldDefinitionListener.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/FormulaUpdaterDataInterceptorAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/FormulaUpdaterDataInterceptorAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/PersistenceUnitInterceptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/PersistenceUnitInterceptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/PersistenceUnitInterceptorAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/PersistenceUnitInterceptorAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/SingleDataInterceptorAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/SingleDataInterceptorAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/SingleEntityListener.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/SingleEntityListener.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateFormulaInterceptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateFormulaInterceptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateRelationshipSourceFormulaInterceptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateRelationshipSourceFormulaInterceptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateRelationshipTargetFormulaInterceptor.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/callbacks/UpdateRelationshipTargetFormulaInterceptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/BoolEnum.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/BoolEnum.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ConfigAction.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ConfigAction.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Decoration.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Decoration.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationSourceType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationSourceType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationTarget.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationTarget.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceName.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameFormat.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameStrategy.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Properties.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Properties.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ToString.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ToString.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/BinaryOperator.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/BinaryOperator.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/DatePartType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/DatePartType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/JoinType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/JoinType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/UnaryOperator.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/expressions/UnaryOperator.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/extensions/HierarchyExtension.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/extensions/HierarchyExtension.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/AbstractFieldFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/AbstractFieldFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/CustomFieldFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/CustomFieldFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/DefaultEntityFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/DefaultEntityFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityAndFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityAndFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityAnyFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityAnyFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityNameFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityNameFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityOrFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityOrFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityReverseFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/EntityReverseFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldAccessLevelFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldAccessLevelFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldDynamicFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldDynamicFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldModifierFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldModifierFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldProtectionLevelFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldProtectionLevelFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldRegularFilter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/FieldRegularFilter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/RichEntityFilterAdapter.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/filters/RichEntityFilterAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/ContextOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/ContextOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/DatabaseProduct.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/DatabaseProduct.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityClearOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityClearOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityExtension.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityExtension.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityFindOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityFindOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityInitializeOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityInitializeOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityPersistOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityPersistOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityRemoveOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityRemoveOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityResetOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityResetOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityUpdateOperation.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/EntityUpdateOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/FieldPersister.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/FieldPersister.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceName.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameFormat.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameConfig.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameStrategy.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameType.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceStore.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/QueryResultParser.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/QueryResultParser.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/StructureStrategy.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/StructureStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UConnection.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UConnection.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UnionEntityExtension.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UnionEntityExtension.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/DataTypeTransformFactory.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/DataTypeTransformFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ListType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ListType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ManyToOneType.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ManyToOneType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/PeriodOption.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/PeriodOption.java" />
+      <change beforePath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/PlatformUtils.java" afterPath="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/PlatformUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/AbstractUPAObject.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/AbstractUPAObject.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Config/URLAnnotationStrategySupport.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Config/URLAnnotationStrategySupport.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/DefaultPersistenceUnit.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/DefaultPersistenceUnit.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceNameStrategy.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceNameStrategy.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceStore.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/DefaultPersistenceStore.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/Shared/UpdateSQLProvider.cs" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Persistence/Shared/UpdateSQLProvider.cs" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractField.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractField.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractUPAObject.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractUPAObject.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/CaseInsensitiveNamingStrategy.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/CaseInsensitiveNamingStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/CaseSensitiveNamingStrategy.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/CaseSensitiveNamingStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultEntity.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnitRegistrationModel.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnitRegistrationModel.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultRelationship.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultRelationship.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntityTypeFieldPersister.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntityTypeFieldPersister.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/OnHoldCommitActionType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/OnHoldCommitActionType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/UPASystemEntitiesTrigger.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/UPASystemEntitiesTrigger.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/bulk/DefaultImportEntityFinder.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/bulk/DefaultImportEntityFinder.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ConfigureScanListener.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ConfigureScanListener.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DenyGrantAction.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DenyGrantAction.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationEntityDescriptorResolver.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationEntityDescriptorResolver.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationFieldDescriptor.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationFieldDescriptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/RelationshipDescriptorProcessor.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/RelationshipDescriptorProcessor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/RelationshipInfo.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/RelationshipInfo.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/SequenceInfo.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/SequenceInfo.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DecorationRepository.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DecorationRepository.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DefaultDecorationRepository.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DefaultDecorationRepository.java" />
       <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" />
-      <change beforePath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" afterPath="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/ext/PersistenceUnitExt.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/ext/PersistenceUnitExt.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/ext/persistence/PersistenceStoreExt.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/ext/persistence/PersistenceStoreExt.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/extension/HierarchicalRelationshipDataInterceptor.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/extension/HierarchicalRelationshipDataInterceptor.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/extension/HierarchicalRelationshipSupport.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/extension/HierarchicalRelationshipSupport.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/ComposedToFlatFieldPersister.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/ComposedToFlatFieldPersister.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultEntityPersistOperation.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultEntityPersistOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultEntityUpdateOperation.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultEntityUpdateOperation.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceNameStrategy.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceNameStrategy.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/FieldPersistenceInfo.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/FieldPersistenceInfo.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/NativeStatementType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/NativeStatementType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/ObjectAndType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/ObjectAndType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PersistentObjectInfo.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PersistentObjectInfo.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommitComparator.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommitComparator.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/UPAObjectAndSpec.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/UPAObjectAndSpec.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityImplicitViewStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityImplicitViewStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityPKStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityPKStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/IndexStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/IndexStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/PrimitiveFieldStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/PrimitiveFieldStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/RelationshipStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/RelationshipStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/ViewStructureCommit.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/ViewStructureCommit.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/EntityNameSQLProvider.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/EntityNameSQLProvider.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/IdEnumerationExpressionSQLProvider.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/IdEnumerationExpressionSQLProvider.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/UpdateSQLProvider.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/UpdateSQLProvider.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/VarSQLProvider.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/shared/sql/VarSQLProvider.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/derby/DerbyPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/derby/DerbyPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/interbase/InterBasePersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/interbase/InterBasePersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mckoi/McKoiPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mckoi/McKoiPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mssqlserver/MSSQLServerPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mssqlserver/MSSQLServerPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLPersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLPersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLUpdateSQLProvider.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mysql/MySQLUpdateSQLProvider.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/oracle/OraclePersistenceStore.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/oracle/OraclePersistenceStore.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/transaction/DefaultTransaction.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/transaction/DefaultTransaction.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/DecObjectType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/DecObjectType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/DefaultExpressionManager.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/DefaultExpressionManager.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/ExpressionCompiler.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/ExpressionCompiler.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/ReplaceResultType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/ReplaceResultType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/compiledexpression/IsHierarchyDescendantCompiled.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/compiledexpression/IsHierarchyDescendantCompiled.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PatternType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PatternType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformBeanPropertySetterByMethod.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformBeanPropertySetterByMethod.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformMethodType.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformMethodType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformUtils.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PropertyFormat.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PropertyFormat.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/UPAUtils.java" afterPath="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/UPAUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/bulk/sheet/xssfDataType.java" afterPath="$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/bulk/sheet/xssfDataType.java" />
+      <change beforePath="$PROJECT_DIR$/upa-test/src/main/java/net/vpc/upa/test/util/PUUtils.java" afterPath="$PROJECT_DIR$/upa-test/src/main/java/net/vpc/upa/test/util/PUUtils.java" />
+      <change beforePath="$PROJECT_DIR$/upa-test/src/test/java/net/vpc/upa/test/syntax/TestGrammar.java" afterPath="$PROJECT_DIR$/upa-test/src/test/java/net/vpc/upa/test/syntax/TestGrammar.java" />
+      <change beforePath="$PROJECT_DIR$/upa-test/src/test/resources/META-INF/upa.xml" afterPath="$PROJECT_DIR$/upa-test/src/test/resources/META-INF/upa.xml" />
+      <change beforePath="$PROJECT_DIR$/upa-test/src/test/resources/test-resources/upa-bloated.xml" afterPath="$PROJECT_DIR$/upa-test/src/test/resources/test-resources/upa-bloated.xml" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/NamingStrategyFeature.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/NamingStrategyFeature.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Category.java" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/model/Category.java" />
+      <change beforePath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/resources/META-INF/upa.xml" afterPath="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/resources/META-INF/upa.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/upa-api/target/" />
     <ignored path="$PROJECT_DIR$/upa-test/target/" />
@@ -404,158 +631,48 @@
     <option name="HIDE_WARNINGS" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="URLAnnotationStrategySupport.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="323" column="37" lean-forward="true" selection-start-line="323" selection-start-column="37" selection-end-line="323" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JPAProcessor.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpringUPAConfig.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpringUPAPersistenceUnitFactoryBean.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="76" column="34" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UPAContextConfig.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PersistenceGroupConfig.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PersistenceUnitConfig.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SimpleDecoration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="40" column="115" lean-forward="false" selection-start-line="40" selection-start-column="115" selection-end-line="40" selection-end-column="115" />
-              <folding>
-                <element signature="e#2875#2876#0" expanded="true" />
-                <element signature="e#2913#2914#0" expanded="true" />
-                <element signature="e#2975#2976#0" expanded="true" />
-                <element signature="e#3004#3005#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractDecoration.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="198" column="52" lean-forward="false" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Entity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="11" selection-end-line="60" selection-end-column="15" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>executeQ</find>
-      <find>getPErsistenceUnit</find>
-      <find>createO</find>
-      <find>singletons</find>
-      <find>getSin</find>
-      <find>derby:embedded</find>
-      <find>getContext</find>
-      <find>configInstances</find>
-      <find>void</find>
-      <find>userName</find>
-      <find>&quot;userName&quot;</find>
-      <find>properties</find>
-      <find>passw</find>
-      <find>clear</find>
+      <find>filter</find>
+      <find>//    public void clearing(EntityExecutionContext executionContext, boolean before)</find>
       <find>throws UPAException</find>
-      <find>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</find>
-      <find>transactionManager</find>
-      <find>opense</find>
-      <find>Creating Connection</find>
-      <find>Platform</find>
-      <find>newInst</find>
-      <find>newIns</find>
-      <find>javax.persistence</find>
-      <find>javax.persistence.Entity</find>
-      <find>log.</find>
-      <find>&quot;javax.persistence.Entity&quot;</find>
-      <find>&quot;csharp&quot;</find>
-      <find>suppress</find>
-      <find>javax</find>
-      <find>getAttributes0</find>
+      <find>NoSuchElementException</find>
+      <find>canard</find>
+      <find>vila</find>
+      <find>Entity.class</find>
+      <find>Call</find>
+      <find>Entity</find>
+      <find>strat</find>
+      <find>strate</find>
+      <find>strategy</find>
+      <find>create ta</find>
+      <find>create t</find>
+      <find>version</find>
+      <find>enum</find>
+      <find>persistN</find>
+      <find>getShortName</find>
+      <find>getPersiste</find>
+      <find>TypeDecoration</find>
+      <find>getType</find>
+      <find>Field</find>
+      <find>annType</find>
+      <find>&quot;customType&quot;</find>
+      <find>&quot;custom&quot;</find>
+      <find>instead of</find>
+      <find>getMetadataAccessibleConnection</find>
+      <find>] executeNonQuery</find>
+      <find>: Start</find>
+      <find>&quot;Commit</find>
     </findStrings>
     <replaceStrings>
       <replace>setProperty</replace>
@@ -569,6 +686,7 @@
       <dir>$PROJECT_DIR$/upa-impl/src</dir>
       <dir>$PROJECT_DIR$/upa-impl-core/src</dir>
       <dir>$PROJECT_DIR$/upa-impl-core/src/main/java</dir>
+      <dir>$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -586,57 +704,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/PrivateSequence.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersitenceUnitFactoryBean.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/PersistenceUnitFactoryBeanTest.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF/services/net.vpc.upa.ObjectFactoryConfigurator" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceGroupProvider.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringPersistenceUnitProvider.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/exceptions/NoSuchPersistenceGroupException.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/SpringObjectFactoryConfigurator.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/PersistenceUnitFactoryBean.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPA.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/ConnectionConfig.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/LogUtils.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/ConnectionOption.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/ConnectionProfile.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/CaseInsensitiveMap.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/CaseInsensitiveString.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/StringUtils.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/connection/DefaultConnectionProfile.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceStore.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/connection/ConnectionProfileParser.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ScanFilter.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/derby/DerbyMonthEndSQLProvider.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/FieldPersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformUtils.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationPersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/IndexPersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/RelationshipPersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractUPAObject.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAObject.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/ext/PersistenceUnitExt.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PersistenceNameRuleSet.java" />
         <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Category.java" />
-        <option value="$PROJECT_DIR$/upa-spring/pom.xml" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TransactionType.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPlatformObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPersistenceGroupProvider.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPlatformObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/PersistenceUnitFactoryBean.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPATransactionManager.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/UPAHolder.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java" />
-        <option value="$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultRelationship.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/oracle/OraclePersistenceStore.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/specific/mssqlserver/MSSQLServerPersistenceStore.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/TablePersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DatabaseCondition.java" />
+        <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DefaultDecorationRepository.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/DecorationRepository.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ColumnPersistenceNameRule.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ConfigureScanListener.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Properties.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationEntityDescriptorResolver.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameFormat.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameStrategy.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameObfuscator.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameTransformer.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ToString.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationFieldDescriptor.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameFormat.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameStrategy.java" />
         <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java" />
-        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformBeanPropertySetterByMethod.java" />
+        <option value="$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/NamingStrategyFeature.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceNameStrategy.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommitComparator.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityImplicitViewStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityPKStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/IndexStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/PrimitiveFieldStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/RelationshipStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/ViewStructureCommit.java" />
+        <option value="$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/transaction/DefaultTransaction.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/BootstrapProperties.java" />
+        <option value="$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ListType.java" />
       </list>
     </option>
   </component>
@@ -656,15 +774,6 @@
   <component name="MavenProjectNavigator">
     <treeState>
       <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="net.vpc.upa.upa" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="net.vpc.upa.upa" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
-        </path>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
           <item name="net.vpc.upa.upa-portable" type="9519ce18:MavenProjectsStructure$ProjectNode" />
@@ -700,6 +809,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="AndroidView">
@@ -763,7 +873,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -785,19 +894,19 @@
       <recent name="net.vpc.upa.spring" />
       <recent name="net.vpc.upa" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="net.vpc.upa.spring.test" />
-      <recent name="net.vpc.upa.exceptions" />
-      <recent name="net.vpc.upa" />
-      <recent name="net.vpc.upa.impl.persistence" />
-      <recent name="net.vpc.upa.types" />
-    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="net.vpc.upa" />
       <recent name="net.vpc.upa.tutorial.mo" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="net.vpc.upa" />
+      <recent name="net.vpc.upa.config" />
+      <recent name="net.vpc.upa.impl" />
+      <recent name="net.vpc.upa.types" />
+      <recent name="net.vpc.upa.spring.test" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/upa-spring/src/main/resources/META-INF" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -812,7 +921,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.PersistenceUnitFactoryBeanTest">
+  <component name="RunManager" selected="Application.App">
     <configuration default="true" type="Applet" factoryName="Applet">
       <module />
       <option name="HTML_USED" value="false" />
@@ -1005,11 +1114,11 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.PersistenceUnitFactoryBeanTest" />
-        <item index="1" class="java.lang.String" itemvalue="Application.App" />
-        <item index="2" class="java.lang.String" itemvalue="Application.UPAConverterMain" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.ConnectionProfileParserTest.test3" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.TestGrammar.testGrammar" />
+        <item index="0" class="java.lang.String" itemvalue="Application.App" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TestGrammar.testGrammar" />
+        <item index="2" class="java.lang.String" itemvalue="Application.PersistenceUnitFactoryBeanTest" />
+        <item index="3" class="java.lang.String" itemvalue="Application.UPAConverterMain" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.ConnectionProfileParserTest.test3" />
       </list>
     </recent_temporary>
   </component>
@@ -1053,6 +1162,12 @@
       <workItem from="1522155647547" duration="20777000" />
       <workItem from="1522473587044" duration="1418000" />
       <workItem from="1522614260126" duration="55000" />
+      <workItem from="1523037351202" duration="2863000" />
+      <workItem from="1523172495070" duration="161000" />
+      <workItem from="1523172686297" duration="17303000" />
+      <workItem from="1523293213642" duration="2391000" />
+      <workItem from="1524428988425" duration="2668000" />
+      <workItem from="1524470792266" duration="19000" />
     </task>
     <task id="LOCAL-00001" summary="version 1.2.0.44 :&#10;+ minor bug fixes (fixed 'If' function in UQL)&#10;+ added android project : upa-impl splitted to upa-core (platform independent) and upa-impl (java/cs-desktop) and upa-android&#10;+ added support for using Enum literal in UQL (example : &quot;where x.myEnumField='MY_CONST'&quot;&#10;+ added support for using Date literal in UQL (example : &quot;where x.myDateField='2012-12-13&quot;&#10;+ added support for NamedFormula as a plain method">
       <created>1521799205715</created>
@@ -1117,16 +1232,17 @@
       <option name="project" value="LOCAL" />
       <updated>1522765399347</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="first jpa extension">
+      <created>1522767006064</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1522767006064</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ConnectionProfileParserTest_test3 - 2018.03.28 at 09h 59m 53s.xml">
-      <configuration name="ConnectionProfileParserTest.test3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ConnectionProfileParserTest_test3 - 2018.03.28 at 10h 03m 13s.xml">
-      <configuration name="ConnectionProfileParserTest.test3" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ConnectionProfileParserTest_test3 - 2018.03.28 at 10h 03m 16s.xml">
       <configuration name="ConnectionProfileParserTest.test3" configurationId="JUnit" />
     </history-entry>
@@ -1151,9 +1267,15 @@
     <history-entry file="ConnectionProfileParserTest_test3 - 2018.03.28 at 10h 14m 29s.xml">
       <configuration name="ConnectionProfileParserTest.test3" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TestGrammar_testGrammar - 2018.04.03 at 20h 55m 43s.xml">
+      <configuration name="TestGrammar.testGrammar" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TestGrammar_testGrammar - 2018.04.03 at 20h 56m 51s.xml">
+      <configuration name="TestGrammar.testGrammar" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="165091000" />
+    <option name="totallyTimeSpent" value="190496000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1168,39 +1290,39 @@
     <frame x="326" y="172" width="1920" height="1044" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08736842" sideWeight="0.5064034" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20277481" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46936542" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17289221" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21824974" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0891142" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25054705" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.07203842" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.106723584" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.118161924" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41356674" sideWeight="0.7678762" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934355" sideWeight="0.708111" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13713981" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17129135" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44091904" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Thumbnails" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32932165" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22538294" sideWeight="0.49359658" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1250,7 +1372,8 @@
     <MESSAGE value="First Spring integration (added new project UPA Spring)" />
     <MESSAGE value="Spring integration (added new SpringPlatformObjectFactory)" />
     <MESSAGE value="Renamed Spring classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed Spring classes" />
+    <MESSAGE value="first jpa extension" />
+    <option name="LAST_COMMIT_MESSAGE" value="first jpa extension" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1392,12 +1515,6 @@
           <option name="timeStamp" value="208" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/TableSequenceIdentityPersister.java</url>
-          <line>79</line>
-          <properties />
-          <option name="timeStamp" value="217" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/EntitySequenceManager.java</url>
           <line>108</line>
           <properties />
@@ -1421,13 +1538,35 @@
           <properties />
           <option name="timeStamp" value="237" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ConfigureScanListener.java</url>
+          <line>84</line>
+          <properties />
+          <option name="timeStamp" value="250" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PreparedSQLUQLStatement.java</url>
+          <line>162</line>
+          <properties />
+          <option name="timeStamp" value="258" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java</url>
+          <line>1667</line>
+          <properties />
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="248" />
+      <option name="time" value="263" />
     </breakpoint-manager>
     <watches-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
@@ -1482,7 +1621,24 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
+    <expressions id="watch">
+      <expression>
+        <expression-string>persistenceUnitCommitManager.persistenceStore.getPersistenceState(object, typedObject.getSpec(), entityExecutionContext)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>persistenceUnitCommitManager.persistenceStore.getPersistenceState(object, typedObject.getSpec(), entityExecutionContext)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(condition.accept(rule.getDatabaseProduct(),rule.getDatabaseVersion(),rule.getStrategyName()))</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>getCurrentSession()</expression-string>
         <language-id>JAVA</language-id>
@@ -1518,567 +1674,365 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>StringUtils.replaceNoDollarVars(pattern, new SequencePatternEvaluator(field, replacement, document))</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>((w0[i].specialize(s)))</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/5.0.4.RELEASE/spring-aop-5.0.4.RELEASE.jar!/org/springframework/aop/framework/CglibAopProxy.class">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Properties.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="481" column="0" lean-forward="false" selection-start-line="481" selection-start-column="0" selection-end-line="481" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="170">
+          <caret line="46" column="26" lean-forward="false" selection-start-line="46" selection-start-column="26" selection-end-line="46" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl/src/main/java/net/vpc/upa/impl/util/cglib/PlatformMethodProxyEventCGLibJava.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Indexes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="45" column="18" lean-forward="false" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
-          <folding />
+        <state relative-caret-position="170">
+          <caret line="46" column="22" lean-forward="false" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformMethodProxyEvent.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameFormat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="11" lean-forward="false" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
-          <folding />
+        <state relative-caret-position="153">
+          <caret line="43" column="30" lean-forward="true" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/MakeSessionAwareMethodInterceptorAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="11" lean-forward="false" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="95" column="10" lean-forward="false" selection-start-line="95" selection-start-column="10" selection-end-line="95" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="200" column="84" lean-forward="false" selection-start-line="200" selection-start-column="84" selection-end-line="200" selection-end-column="84" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultQueryBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="271" column="0" lean-forward="false" selection-start-line="271" selection-start-column="0" selection-end-line="271" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/DefaultUPAContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="318" column="0" lean-forward="false" selection-start-line="318" selection-start-column="0" selection-end-line="318" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/MakeSessionAwareMethodInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="33" column="45" lean-forward="false" selection-start-line="33" selection-start-column="45" selection-end-line="33" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="72" column="12" lean-forward="false" selection-start-line="72" selection-start-column="12" selection-end-line="72" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="1875" column="43" lean-forward="false" selection-start-line="1875" selection-start-column="43" selection-end-line="1875" selection-end-column="43" />
-          <folding>
-            <element signature="e#72919#72920#0" expanded="false" />
-            <element signature="e#72958#72959#0" expanded="false" />
-            <element signature="e#103235#103236#0" expanded="false" />
-            <element signature="e#103302#103303#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="85" column="12" lean-forward="false" selection-start-line="85" selection-start-column="12" selection-end-line="85" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/ObjectFactory.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/UPAObjectAndSpec.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
+          <caret line="13" column="16" lean-forward="true" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultUPAContextFactory.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameTransformer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-205">
-          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="e#1106#1107#0" expanded="false" />
-            <element signature="e#1165#1166#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="238">
+          <caret line="14" column="58" lean-forward="false" selection-start-line="14" selection-start-column="58" selection-end-line="14" selection-end-column="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultTypedFactory.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/StringEncoderType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding>
-            <element signature="e#818#819#0" expanded="false" />
-            <element signature="e#879#880#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="119">
+          <caret line="40" column="12" lean-forward="false" selection-start-line="40" selection-start-column="12" selection-end-line="40" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnitProvider.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationFieldDescriptor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="44" column="1" lean-forward="false" selection-start-line="44" selection-start-column="1" selection-end-line="44" selection-end-column="1" />
-          <folding />
+        <state relative-caret-position="243">
+          <caret line="971" column="83" lean-forward="false" selection-start-line="971" selection-start-column="83" selection-end-line="971" selection-end-column="83" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/UPAContextProvider.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/ToString.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="39" column="35" lean-forward="false" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="35" />
-          <folding />
+        <state relative-caret-position="255">
+          <caret line="76" column="11" lean-forward="false" selection-start-line="76" selection-start-column="11" selection-end-line="76" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/AbstractObjectFactory.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameFormat.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="662">
-          <caret line="110" column="0" lean-forward="false" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-          <folding>
-            <element signature="e#2116#2117#0" expanded="false" />
-            <element signature="e#2163#2164#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPersistenceGroupProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="643" column="0" lean-forward="false" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringObjectFactoryConfigurator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.0.4.RELEASE/spring-context-5.0.4.RELEASE.jar!/org/springframework/context/support/AbstractApplicationContext.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="611" column="42" lean-forward="false" selection-start-line="611" selection-start-column="42" selection-end-line="611" selection-end-column="42" />
-          <folding>
-            <marker date="1519937452564" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1519937452564" expanded="false" signature="159:3526" ph="..." />
-            <marker date="1519937452564" expanded="true" signature="4845:5354" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="5431:5486" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="5520:5531" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="5544:5550" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="5577:5588" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="5603:5609" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="5649:5660" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="5670:5676" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="5729:5849" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="5885:5896" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="5920:5926" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="5983:5994" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6013:6019" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="6088:6099" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6130:6136" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="6190:6338" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="6397:6408" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6441:6447" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="6548:6593" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="6627:6638" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6662:6668" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="6722:6733" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6780:6786" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="6830:6841" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="6888:6894" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="6978:8118" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="8214:8518" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="8596:8880" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="8949:9018" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="9083:9405" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="9491:9641" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="9715:9726" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="9764:9770" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="9844:10141" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="10214:10225" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="10258:10264" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="10337:11549" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="11587:11973" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="12016:12023" ph="{}" />
-            <marker date="1519937452564" expanded="true" signature="12096:12395" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="12480:14532" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="14621:14628" ph="{}" />
-            <marker date="1519937452564" expanded="true" signature="14726:15175" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="15268:15364" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="15405:16679" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="16734:17712" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="17758:18733" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="18788:18795" ph="{}" />
-            <marker date="1519937452564" expanded="true" signature="18836:19968" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="20066:21068" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="20461:20550" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="21105:21373" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="21426:21437" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="21460:21466" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="21507:21665" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="21706:22130" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="21781:21831" ph="run() → {" />
-            <marker date="1519937452564" expanded="false" signature="22024:22043" ph="}" />
-            <marker date="1519937452564" expanded="true" signature="22136:22154" ph="/**...*/" />
-            <marker date="1519937452564" expanded="false" signature="22196:22207" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="22220:22226" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="22252:22657" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="22688:23672" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="23707:23718" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="23760:23766" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="23797:23804" ph="{}" />
-            <marker date="1519937452564" expanded="false" signature="23835:23846" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="23871:23877" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="23924:24252" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="24315:24414" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="24509:24622" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="24701:24806" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="24878:24985" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="25073:25186" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="25232:25243" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="25291:25297" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="25380:25483" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="25566:25669" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="25780:25896" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="26011:26127" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="26221:26320" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="26365:26376" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="26422:26428" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="26489:26567" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="26608:26619" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="26673:26679" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="26725:26736" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="26790:26796" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="26859:26970" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="27037:27148" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="27269:27418" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="27512:27618" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="27766:27910" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="28002:28129" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="28251:28375" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="28527:28659" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="28720:28731" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="28755:28761" ph=" }" />
-            <marker date="1519937452564" expanded="false" signature="28812:28823" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="28876:28882" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="28955:29141" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="29258:29352" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="29466:29544" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="29656:29734" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="29810:30071" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="30148:30325" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="30405:30487" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="30513:30644" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="30669:30799" ph="{...}" />
-            <marker date="1519937452564" expanded="false" signature="30831:30842" ph=" { " />
-            <marker date="1519937452564" expanded="false" signature="30920:30926" ph=" }" />
-            <marker date="1519937452564" expanded="true" signature="31202:31644" ph="{...}" />
-            <marker date="1519937452564" expanded="true" signature="31657:31708" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PlatformObjectFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPlatformObjectFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="26" lean-forward="false" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#361#362#0" expanded="false" />
-            <element signature="e#419#420#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/5.0.4.RELEASE/spring-beans-5.0.4.RELEASE-sources.jar!/org/springframework/beans/factory/support/DefaultListableBeanFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="998" column="53" lean-forward="false" selection-start-line="998" selection-start-column="34" selection-end-line="998" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/5.0.4.RELEASE/spring-beans-5.0.4.RELEASE-sources.jar!/org/springframework/beans/factory/BeanFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="192" column="10" lean-forward="false" selection-start-line="192" selection-start-column="10" selection-end-line="192" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/5.0.4.RELEASE/spring-tx-5.0.4.RELEASE-sources.jar!/org/springframework/transaction/support/AbstractPlatformTransactionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="82" column="68" lean-forward="false" selection-start-line="82" selection-start-column="68" selection-end-line="82" selection-end-column="94" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/RootObjectFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="222" column="0" lean-forward="false" selection-start-line="222" selection-start-column="0" selection-end-line="222" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringPlatformObjectFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/Repo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPATransactionManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/test/java/net/vpc/upa/spring/test/PersistenceUnitFactoryBeanTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/csharp/Sources/Auto/Config/URLAnnotationStrategySupport.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2024">
-          <caret line="467" column="57" lean-forward="false" selection-start-line="467" selection-start-column="31" selection-end-line="467" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/ScanElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/PersistenceGroupElement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/AbstractProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="165" column="36" lean-forward="false" selection-start-line="165" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationSourceType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="12" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/DecorationTarget.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="12" lean-forward="false" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
-          <folding />
+        <state relative-caret-position="260">
+          <caret line="56" column="25" lean-forward="false" selection-start-line="56" selection-start-column="11" selection-end-line="56" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Decoration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-          <folding />
+        <state relative-caret-position="251">
+          <caret line="30" column="11" lean-forward="false" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Entity.java">
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-desktop/src/main/java/net/vpc/upa/tutorial/desktop/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="60" column="15" lean-forward="false" selection-start-line="60" selection-start-column="11" selection-end-line="60" selection-end-column="15" />
-          <folding />
+        <state relative-caret-position="136">
+          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceNameStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="323" column="37" lean-forward="true" selection-start-line="323" selection-start-column="37" selection-end-line="323" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="184">
+          <caret line="73" column="17" lean-forward="false" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/annotationparser/DecorationEntityDescriptorResolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="175" column="0" lean-forward="false" selection-start-line="175" selection-start-column="0" selection-end-line="175" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/AbstractDecoration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="198" column="52" lean-forward="false" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
-          <folding />
+        <state relative-caret-position="156">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAConfig.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Column.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="37" column="54" lean-forward="false" selection-start-line="37" selection-start-column="54" selection-end-line="37" selection-end-column="54" />
-          <folding />
+        <state relative-caret-position="425">
+          <caret line="78" column="16" lean-forward="false" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceUnitConfig.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="47" column="13" lean-forward="false" selection-start-line="47" selection-start-column="13" selection-end-line="47" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="94">
+          <caret line="53" column="24" lean-forward="false" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceGroupConfig.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/PersistenceUnit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="46" column="13" lean-forward="false" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="338">
+          <caret line="559" column="34" lean-forward="false" selection-start-line="559" selection-start-column="34" selection-end-line="559" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UPAContextConfig.java">
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/Table.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="611">
+          <caret line="74" column="31" lean-forward="false" selection-start-line="74" selection-start-column="22" selection-end-line="74" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/URLAnnotationStrategySupport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="625" column="63" lean-forward="false" selection-start-line="625" selection-start-column="63" selection-end-line="625" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/util/PlatformBeanPropertySetterByMethod.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="30" column="125" lean-forward="false" selection-start-line="30" selection-start-column="125" selection-end-line="30" selection-end-column="125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/mo/InvoiceMO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="13" column="7" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PersistenceNameRuleSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/PersistenceStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="130" column="21" lean-forward="false" selection-start-line="130" selection-start-column="21" selection-end-line="130" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultExecutionContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultUConnection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
-          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/IdentifierStoreTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/IdentifierStoreTranslatorLower.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" column="18" lean-forward="false" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceUnitCommitManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="103" column="0" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/persistence/UConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="53" column="8" lean-forward="false" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/PreparedSQLUQLStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2482">
+          <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-spring/src/main/java/net/vpc/upa/spring/SpringUPAPersistenceUnitFactoryBean.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractUConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="76" column="34" lean-forward="false" selection-start-line="76" selection-start-column="33" selection-end-line="76" selection-end-column="34" />
+        <state relative-caret-position="595">
+          <caret line="58" column="41" lean-forward="false" selection-start-line="58" selection-start-column="41" selection-end-line="58" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/uql/util/UQLUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4675">
+          <caret line="286" column="0" lean-forward="false" selection-start-line="286" selection-start-column="0" selection-end-line="286" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/DefaultPersistenceUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-11203">
+          <caret line="1214" column="13" lean-forward="false" selection-start-line="1214" selection-start-column="13" selection-end-line="1214" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-tutorial/upa-tutorial-dal/src/main/java/net/vpc/upa/tutorial/feature/NamingStrategyFeature.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/ObjectAndType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="42" lean-forward="false" selection-start-line="13" selection-start-column="42" selection-end-line="13" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="20" column="19" lean-forward="false" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/config/PersistenceNameType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="42" column="11" lean-forward="false" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/StructureCommitComparator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="26" column="78" lean-forward="false" selection-start-line="26" selection-start-column="78" selection-end-line="26" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/DefaultPersistenceNameStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3128">
+          <caret line="201" column="62" lean-forward="false" selection-start-line="201" selection-start-column="62" selection-end-line="201" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/AbstractPersistenceStore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23171">
+          <caret line="1439" column="45" lean-forward="false" selection-start-line="1439" selection-start-column="45" selection-end-line="1439" selection-end-column="45" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/decorations/SimpleDecoration.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityStructureCommit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="40" column="115" lean-forward="false" selection-start-line="40" selection-start-column="115" selection-end-line="40" selection-end-column="115" />
-          <folding>
-            <element signature="e#2875#2876#0" expanded="true" />
-            <element signature="e#2913#2914#0" expanded="true" />
-            <element signature="e#2975#2976#0" expanded="true" />
-            <element signature="e#3004#3005#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="374">
+          <caret line="36" column="63" lean-forward="false" selection-start-line="36" selection-start-column="63" selection-end-line="36" selection-end-column="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/config/JPAProcessor.java">
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityPKStructureCommit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="391">
+          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/IndexStructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/PrimitiveFieldStructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/types/ListType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="49" column="91" lean-forward="false" selection-start-line="49" selection-start-column="91" selection-end-line="49" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/BootstrapProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="245" column="42" lean-forward="true" selection-start-line="245" selection-start-column="42" selection-end-line="245" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-api/src/main/java/net/vpc/upa/Properties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="44" column="22" lean-forward="false" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/transaction/DefaultTransaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="30" column="9" lean-forward="false" selection-start-line="30" selection-start-column="9" selection-end-line="30" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/ViewStructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/RelationshipStructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/upa-impl-core/src/main/java/net/vpc/upa/impl/persistence/commit/EntityImplicitViewStructureCommit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
         </state>
       </provider>
     </entry>

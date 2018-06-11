@@ -31,7 +31,7 @@ namespace Net.Vpc.Upa.Impl.Persistence.Shared
             Net.Vpc.Upa.Persistence.PersistenceStore persistenceStore = context.GetPersistenceStore();
             Net.Vpc.Upa.PersistenceUnit pu = context.GetPersistenceUnit();
             Net.Vpc.Upa.Entity entity = pu.GetEntity(o.GetEntity().GetName());
-            //        String persistenceName = persistenceStore.getPersistenceName(entity);
+            //        String persistenceNameFormat = persistenceStore.getPersistenceName(entity);
             System.Text.StringBuilder sb = new System.Text.StringBuilder("Update " + sqlManager.GetSQL(new Net.Vpc.Upa.Impl.Uql.Compiledexpression.CompiledEntityName(entity.GetName()), context, declarations));
             string tableAlias = o.GetEntityAlias();
             if (tableAlias != null) {

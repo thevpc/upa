@@ -6,6 +6,7 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.uql.util.ThatExpressionReplacer;
 import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.util.NamingStrategyHelper;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
@@ -21,6 +22,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.RelationDataType;
 
 public class DefaultRelationship extends AbstractUPAObject implements Relationship {
 
@@ -33,7 +35,6 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
     protected Expression filter;
     private int tuningMaxInline = 10;
     private boolean nullable;
-    private HierarchyExtension hierarchyExtension;
 
     public DefaultRelationship() {
         targetRole = new DefaultRelationshipRole();
@@ -133,16 +134,16 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         if (getSourceRole().getEntityField() != null) {
             Field sourceEntityField = getSourceRole().getEntityField();
             DataType dt = sourceEntityField.getDataType();
-            if (dt instanceof ManyToOneType) {
-                ManyToOneType edt = (ManyToOneType) dt;
+            if (dt instanceof RelationDataType) {
+                RelationDataType edt = (RelationDataType) dt;
                 edt.setRelationship(this);
             }
         }
         if (getTargetRole().getEntityField() != null) {
             Field targetEntityField = getTargetRole().getEntityField();
             DataType dt = targetEntityField.getDataType();
-            if (dt instanceof ManyToOneType) {
-                ManyToOneType edt = (ManyToOneType) dt;
+            if (dt instanceof RelationDataType) {
+                RelationDataType edt = (RelationDataType) dt;
                 edt.setRelationship(this);
             }
         }
@@ -152,15 +153,15 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         setI18NTitle(new I18NString("Relationship").append(getName()));
         setI18NDescription(getI18NTitle().append(".desc"));
 
-        StringBuilder preferredPersistenceName = new StringBuilder(getName().length());
-        for (int i = 0; i < getName().length(); i++) {
-            if (ExpressionHelper.isIdentifierPart(getName().charAt(i))) {
-                preferredPersistenceName.append(getName().charAt(i));
-            } else {
-                preferredPersistenceName.append('_');
-            }
-        }
-        setPersistenceName(preferredPersistenceName.toString());
+//        StringBuilder preferredPersistenceName = new StringBuilder(getName().length());
+//        for (int i = 0; i < getName().length(); i++) {
+//            if (ExpressionHelper.isIdentifierPart(getName().charAt(i))) {
+//                preferredPersistenceName.append(getName().charAt(i));
+//            } else {
+//                preferredPersistenceName.append('_');
+//            }
+//        }
+//        setPersistenceName(preferredPersistenceName.toString());
         if (getRelationshipType() == RelationshipType.COMPOSITION) {
             ((EntityExt) sourceEntity).setCompositionRelationship(this);
         }
@@ -292,7 +293,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             return false;
         } else {
             DefaultRelationship o = (DefaultRelationship) other;
-            return getPersistenceUnit().getNamingStrategy().equals(getName(), o.getName());
+            return NamingStrategyHelper.equals(getPersistenceUnit().isCaseSensitiveIdentifiers(),getName(), o.getName());
         }
     }
 
@@ -586,13 +587,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return null;
     }
 
-    public HierarchyExtension getHierarchyExtension() {
-        return hierarchyExtension;
-    }
 
-    public void setHierarchyExtension(HierarchyExtension hierarchyExtension) {
-        this.hierarchyExtension = hierarchyExtension;
-    }
 
     public Expression createTargetListExpression(Object currentInstance, String alias){
         if(filter==null){

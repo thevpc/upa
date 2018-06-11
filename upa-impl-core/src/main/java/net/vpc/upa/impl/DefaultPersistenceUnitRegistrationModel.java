@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.vpc.upa.*;
-import net.vpc.upa.NamingStrategy;
 import net.vpc.upa.Package;
 import net.vpc.upa.exceptions.*;
+import net.vpc.upa.impl.util.NamingStrategyHelper;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -82,8 +82,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         return (entities.containsKey(s));
     }
     private String uniformName(String name){
-        NamingStrategy namingStrategy = unit.getNamingStrategy();
-        return namingStrategy.getUniformValue(name);
+        return NamingStrategyHelper.getUniformValue(unit.isCaseSensitiveIdentifiers(),name);
     }
 
     public void registerEntity(Entity item, Package parent) {
@@ -113,8 +112,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public void unregisterEntity(Entity item) {
-        String s = item.getName();
-        s = unit.getNamingStrategy().getUniformValue(s);
+        String s =  NamingStrategyHelper.getUniformValue(unit.isCaseSensitiveIdentifiers(),item.getName());
         entities.remove(s);
     }
 
@@ -228,9 +226,8 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public Entity getEntity(String name) throws UPAException {
-        NamingStrategy namingStrategy = unit.getNamingStrategy();
         String s = name;
-        name = namingStrategy.getUniformValue(s);
+        name = NamingStrategyHelper.getUniformValue(unit.isCaseSensitiveIdentifiers(),s);
 
         Entity item = entities.get(name);
         if (item == null) {

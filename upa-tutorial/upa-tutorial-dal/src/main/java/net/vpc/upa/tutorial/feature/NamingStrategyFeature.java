@@ -4,7 +4,7 @@
  */
 package net.vpc.upa.tutorial.feature;
 
-import net.vpc.upa.config.PersistenceName;
+import net.vpc.upa.config.PersistenceNameFormat;
 import net.vpc.upa.config.PersistenceNameStrategy;
 import net.vpc.upa.config.PersistenceNameType;
 
@@ -15,14 +15,14 @@ import net.vpc.upa.config.PersistenceNameType;
 @PersistenceNameStrategy(
         //all names are capitalized
         persistenceName = "{OBJECT_NAME}",
-        names = {
+        persistenceNameFormats = {
                 //tables will start with 'T_' and will be capitalized
-            @PersistenceName(
+            @PersistenceNameFormat(
                     persistenceNameType = PersistenceNameType.TABLE,
                     value = "T_{OBJECT_NAME}"
             ),
                 //foreign constraints will start with 'FK_' and will be capitalized
-            @PersistenceName(
+            @PersistenceNameFormat(
                     persistenceNameType = PersistenceNameType.FK_CONSTRAINT,
                     value = "FK_{OBJECT_NAME}"
             )

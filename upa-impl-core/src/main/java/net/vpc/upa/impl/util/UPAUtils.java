@@ -16,6 +16,7 @@ import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
+import net.vpc.upa.impl.uql.ReplaceResultType;
 import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
@@ -859,5 +860,19 @@ public class UPAUtils {
             return f.getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
         }
         return a;
+    }
+
+    public static ReplaceResultType max(ReplaceResultType one, ReplaceResultType two){
+        if(one.ordinal()>two.ordinal()){
+            return one;
+        }
+        return two;
+    }
+
+    public static ReplaceResultType min(ReplaceResultType one, ReplaceResultType two){
+        if(one.ordinal()<two.ordinal()){
+            return one;
+        }
+        return two;
     }
 }

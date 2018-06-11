@@ -12,7 +12,6 @@ import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -123,7 +122,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
             Sequence sequence = (Sequence) UPAUtils.getPersistFormula(field);
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
             switch (strategy) {
-                case UNSPECIFIED:
+                case UNDEFINED:
                 case AUTO:
                 case IDENTITY: {
                     DataType d = (field.getDataType());
@@ -149,7 +148,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
             f = sequence.getFormat();
         }
         switch (strategy) {
-            case UNSPECIFIED:
+            case UNDEFINED:
             case AUTO:
             case IDENTITY: {
                 DataType d = (field.getDataType());

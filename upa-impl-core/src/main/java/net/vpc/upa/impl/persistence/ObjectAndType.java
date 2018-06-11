@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
-import net.vpc.upa.persistence.PersistenceNameType;
+import net.vpc.upa.config.PersistenceNameType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

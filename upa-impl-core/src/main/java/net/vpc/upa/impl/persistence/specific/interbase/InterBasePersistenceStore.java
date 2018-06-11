@@ -1,13 +1,10 @@
 package net.vpc.upa.impl.persistence.specific.interbase;
 
-import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.Properties;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.DatabaseProduct;
-import net.vpc.upa.persistence.PersistenceNameConfig;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

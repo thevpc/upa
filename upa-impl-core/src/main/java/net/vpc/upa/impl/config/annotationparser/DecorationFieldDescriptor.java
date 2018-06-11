@@ -6,6 +6,7 @@ import net.vpc.upa.NamedFormula;
 import net.vpc.upa.Property;
 import net.vpc.upa.Sequence;
 import net.vpc.upa.config.*;
+import net.vpc.upa.config.Properties;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
@@ -459,18 +460,8 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 overriddenTemporal.setBetterValue(temporalAnn.getEnum("value", TemporalOption.class), temporalAnn.getConfig().getOrder());
             }
 
-            Decoration propertyDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Property.class);
-            if (propertyDeco != null) {
-                parameterInfos.add(UPAUtils.createProperty(propertyDeco));
-            }
-
-            Decoration propertiesDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Properties.class);
-            if (propertiesDeco != null) {
-                for (DecorationValue p : propertiesDeco.getArray("value")) {
-                    //p of type net.vpc.upa.config.Property
-                    Decoration pp = (Decoration) p;
-                    parameterInfos.add(UPAUtils.createProperty(pp));
-                }
+            for (Decoration decoration : repo.getFieldRepeatableDecorations(someField, net.vpc.upa.config.Property.class, Properties.class)) {
+                parameterInfos.add(UPAUtils.createProperty(decoration));
             }
 
             Decoration pathDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Path.class);
@@ -507,34 +498,34 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 //                if (fieldDeco.getEnum("end", BoolEnum.class) != BoolEnum.UNDEFINED) {
 //                    overriddenEnd.setBetterValue(fieldDeco.getEnum("nullable", BoolEnum.class), processOrder);
 //                }
-                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("accessLevel", AccessLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(AccessLevel.class, fieldDeco.getEnum("accessLevel", AccessLevel.class))) {
                     AccessLevel accessLevel = fieldDeco.getEnum("accessLevel", AccessLevel.class);
                     overriddenPersistAccessLevel.setBetterValue(accessLevel, processOrder);
                     overriddenUpdateAccessLevel.setBetterValue(accessLevel, processOrder);
                     overriddenReadAccessLevel.setBetterValue(accessLevel, processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("persistAccessLevel", AccessLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(AccessLevel.class, fieldDeco.getEnum("persistAccessLevel", AccessLevel.class))) {
                     overriddenPersistAccessLevel.setBetterValue(fieldDeco.getEnum("persistAccessLevel", AccessLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("updateAccessLevel", AccessLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(AccessLevel.class, fieldDeco.getEnum("updateAccessLevel", AccessLevel.class))) {
                     overriddenUpdateAccessLevel.setBetterValue(fieldDeco.getEnum("updateAccessLevel", AccessLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(AccessLevel.class, fieldDeco.getEnum("readAccessLevel", AccessLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(AccessLevel.class, fieldDeco.getEnum("readAccessLevel", AccessLevel.class))) {
                     overriddenReadAccessLevel.setBetterValue(fieldDeco.getEnum("readAccessLevel", AccessLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("protectionLevel", ProtectionLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, fieldDeco.getEnum("protectionLevel", ProtectionLevel.class))) {
                     ProtectionLevel protectionLevel = fieldDeco.getEnum("protectionLevel", ProtectionLevel.class);
                     overriddenReadProtectionLevel.setBetterValue(protectionLevel, processOrder);
                     overriddenPersistProtectionLevel.setBetterValue(protectionLevel, processOrder);
                     overriddenUpdateProtectionLevel.setBetterValue(protectionLevel, processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("persistProtectionLevel", ProtectionLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, fieldDeco.getEnum("persistProtectionLevel", ProtectionLevel.class))) {
                     overriddenPersistProtectionLevel.setBetterValue(fieldDeco.getEnum("persistProtectionLevel", ProtectionLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("updateProtectionLevel", ProtectionLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, fieldDeco.getEnum("updateProtectionLevel", ProtectionLevel.class))) {
                     overriddenUpdateProtectionLevel.setBetterValue(fieldDeco.getEnum("updateProtectionLevel", ProtectionLevel.class), processOrder);
                 }
-                if (!PlatformUtils.isUndefinedValue(ProtectionLevel.class, fieldDeco.getEnum("readProtectionLevel", ProtectionLevel.class))) {
+                if (!PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, fieldDeco.getEnum("readProtectionLevel", ProtectionLevel.class))) {
                     overriddenReadProtectionLevel.setBetterValue(fieldDeco.getEnum("readProtectionLevel", ProtectionLevel.class), processOrder);
                 }
                 AnnotationParserUtils.validStr(fieldDeco.getString("charsAccepted"), overriddenCharsAccepted, processOrder);
@@ -621,22 +612,22 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 //        if (overriddenTargetType.specified) {
 //            this.targetType = (overriddenTargetType.value);
 //        }
-        if (overriddenPersistAccessLevel.specified && !PlatformUtils.isUndefinedValue(AccessLevel.class, overriddenPersistAccessLevel.value)) {
+        if (overriddenPersistAccessLevel.specified && !PlatformUtils.isUndefinedEnumValue(AccessLevel.class, overriddenPersistAccessLevel.value)) {
             this.persistAccessLevel = overriddenPersistAccessLevel.value;
         }
-        if (overriddenUpdateAccessLevel.specified && !PlatformUtils.isUndefinedValue(AccessLevel.class, overriddenUpdateAccessLevel.value)) {
+        if (overriddenUpdateAccessLevel.specified && !PlatformUtils.isUndefinedEnumValue(AccessLevel.class, overriddenUpdateAccessLevel.value)) {
             this.updateAccessLevel = overriddenUpdateAccessLevel.value;
         }
-        if (overriddenReadAccessLevel.specified && !PlatformUtils.isUndefinedValue(AccessLevel.class, overriddenReadAccessLevel.value)) {
+        if (overriddenReadAccessLevel.specified && !PlatformUtils.isUndefinedEnumValue(AccessLevel.class, overriddenReadAccessLevel.value)) {
             this.readAccessLevel = overriddenReadAccessLevel.value;
         }
-        if (overriddenPersistProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenPersistProtectionLevel.value)) {
+        if (overriddenPersistProtectionLevel.specified && !PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, overriddenPersistProtectionLevel.value)) {
             this.persistProtectionLevel = overriddenPersistProtectionLevel.value;
         }
-        if (overriddenUpdateProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenUpdateProtectionLevel.value)) {
+        if (overriddenUpdateProtectionLevel.specified && !PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, overriddenUpdateProtectionLevel.value)) {
             this.updateProtectionLevel = overriddenUpdateProtectionLevel.value;
         }
-        if (overriddenReadProtectionLevel.specified && !PlatformUtils.isUndefinedValue(ProtectionLevel.class, overriddenReadProtectionLevel.value)) {
+        if (overriddenReadProtectionLevel.specified && !PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, overriddenReadProtectionLevel.value)) {
             this.readProtectionLevel = overriddenReadProtectionLevel.value;
         }
 //        this.entityField = upaField;
@@ -652,8 +643,15 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                         throw new UPAIllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
                     if (!f.foreignInfo.isSpecified()) {
-                        ManyToOneType manyToOneType = new ManyToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
-                        f.overriddenDataType.setValue(manyToOneType);
+                        if(f.foreignInfo.isManyToOne()) {
+                            ManyToOneType manyToOneType = new ManyToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
+                            f.overriddenDataType.setValue(manyToOneType);
+                        }else if(f.foreignInfo.isOneToOne()){
+                            OneToOneType manyToOneType = new OneToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
+                            f.overriddenDataType.setValue(manyToOneType);
+                        }else{
+                            throw new UPAIllegalArgumentException(f.name + " has invalid foreign reference");
+                        }
                     } else {
                         throw new UPAIllegalArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
                     }
@@ -966,12 +964,12 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                     StringEncoderTransformConfig s2 = new StringEncoderTransformConfig();
                     StringEncoderType stringStrategyType = fieldDecoration.getEnum("value", StringEncoderType.class);
                     if (stringStrategyType == StringEncoderType.CUSTOM) {
-                        s2.setEncoder(fieldDecoration.getString("custom"));
+                        s2.setEncoder(fieldDecoration.getString("customTypeName"));
                     } else {
-                        if (StringUtils.isNullOrEmpty(fieldDecoration.getString("custom"))) {
+                        if (StringUtils.isNullOrEmpty(fieldDecoration.getString("customTypeName"))) {
                             s2.setEncoder(stringStrategyType);
                         } else if (stringStrategyType == StringEncoderType.DEFAULT) {
-                            s2.setEncoder(fieldDecoration.getString("custom"));
+                            s2.setEncoder(fieldDecoration.getString("customTypeName"));
                         } else {
                             throw new UPAIllegalArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
                         }

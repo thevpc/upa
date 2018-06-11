@@ -479,34 +479,34 @@ namespace Net.Vpc.Upa.Impl.Config
                 if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("escape"))) {
                     target.SetPersistenceNameEscape(persistenceNameStrategy.GetString("escape"));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("globalPersistenceName"))) {
-                    target.SetGlobalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("globalPersistenceName")));
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("globalPersistenceNameFormat"))) {
+                    target.SetGlobalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("globalPersistenceNameFormat")));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("localPersistenceName"))) {
-                    target.SetLocalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("localPersistenceName")));
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("localPersistenceNameFormat"))) {
+                    target.SetLocalPersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameStrategy.GetString("localPersistenceNameFormat")));
                 }
-                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("persistenceName"))) {
-                    target.SetGlobalPersistenceName(persistenceNameStrategy.GetString("persistenceName"));
+                if (!Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("persistenceNameFormat"))) {
+                    target.SetGlobalPersistenceName(persistenceNameStrategy.GetString("persistenceNameFormat"));
                 }
                 foreach (object persistenceNameObj in persistenceNameStrategy.GetArray("names")) {
-                    Net.Vpc.Upa.Config.Decoration persistenceName = (Net.Vpc.Upa.Config.Decoration) persistenceNameObj;
+                    Net.Vpc.Upa.Config.Decoration persistenceNameFormat = (Net.Vpc.Upa.Config.Decoration) persistenceNameObj;
                     Net.Vpc.Upa.Persistence.PersistenceNameType type2 = null;
-                    switch((Net.Vpc.Upa.Config.PersistenceNameType)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.PersistenceNameType),persistenceName.GetString("type")))) {
+                    switch((Net.Vpc.Upa.Config.PersistenceNameType)(System.Enum.Parse(typeof(Net.Vpc.Upa.Config.PersistenceNameType),persistenceNameFormat.GetString("type")))) {
                         case Net.Vpc.Upa.Config.PersistenceNameType.CUSTOM:
                             {
                                 if (Net.Vpc.Upa.Impl.Util.StringUtils.IsUndefined(persistenceNameStrategy.GetString("custom"))) {
                                     throw new Net.Vpc.Upa.Exceptions.UPAException("MissingCustomPersistenceNameType");
                                 }
-                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceName.GetString("customType"));
+                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("customType"));
                                 break;
                             }
                         default:
                             {
-                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceName.GetString("type"));
+                                type2 = Net.Vpc.Upa.Persistence.PersistenceNameType.ValueOf(persistenceNameFormat.GetString("type"));
                                 break;
                             }
                     }
-                    target.GetNames().Add(new Net.Vpc.Upa.Persistence.PersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceName.GetString("object")), type2, Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceName.GetString("value")), persistenceName.GetConfig().GetOrder()));
+                    target.GetNames().Add(new Net.Vpc.Upa.Persistence.PersistenceName(Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("object")), type2, Net.Vpc.Upa.Impl.Util.StringUtils.Trim(persistenceNameFormat.GetString("value")), persistenceNameFormat.GetConfig().GetOrder()));
                 }
             }
         }

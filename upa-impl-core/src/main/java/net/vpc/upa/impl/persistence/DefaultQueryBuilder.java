@@ -58,10 +58,10 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     }
 
     @Override
-    public QueryBuilder byExpression(Expression expression,boolean applyAndOp) {
-        if(applyAndOp || this.expression == null){
+    public QueryBuilder byExpression(Expression expression, boolean applyAndOp) {
+        if (applyAndOp || this.expression == null) {
             this.expression = expression;
-        }else {
+        } else {
             this.expression = new And(this.expression, expression);
         }
         return this;
@@ -257,6 +257,21 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     }
 
     @Override
+    public <R> R getSingleResultOrNull(Class<R> type, String... fields) {
+        return build().getSingleResultOrNull(type, fields);
+    }
+
+    @Override
+    public <R> R getFirstResultOrNull(Class<R> type, String... fields) {
+        return build().getFirstResultOrNull(type, fields);
+    }
+
+    @Override
+    public <R> R getSingleResult(Class<R> type, String... fields) {
+        return build().getSingleResult(type, fields);
+    }
+
+    @Override
     public MultiDocument getMultiDocument() throws UPAException {
         return build().getMultiDocument();
     }
@@ -281,13 +296,13 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     @Override
     public <T> List<T> getResultList(Class<T> type, String... fields) {
         Query q = build();
-        return q.getResultList(type,fields);
+        return q.getResultList(type, fields);
     }
 
     @Override
     public <T> Set<T> getResultSet(Class<T> type, String... fields) {
         Query q = build();
-        return q.getResultSet(type,fields);
+        return q.getResultSet(type, fields);
     }
 
     @Override
@@ -340,6 +355,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     public <R> R getSingleResultOrNull() throws UPAException {
         return build().getSingleResultOrNull();
     }
+
     public <R> R getFirstResultOrNull() throws UPAException {
         return build().getFirstResultOrNull();
     }
@@ -374,7 +390,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder removeParameter(String name) {
-        if(paramsByName!=null){
+        if (paramsByName != null) {
             paramsByName.remove(name);
         }
         return this;
@@ -382,7 +398,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder removeParameter(int index) {
-        if(paramsByIndex!=null){
+        if (paramsByIndex != null) {
             paramsByIndex.remove(index);
         }
         return this;
@@ -427,14 +443,14 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder byIdList(List<Object> ids) {
-        if(ids==null || ids.size()==0){
+        if (ids == null || ids.size() == 0) {
             return byId(null);
         }
         Object[] objects = ids.toArray(new Object[ids.size()]);
-        if(ids.size()==1){
+        if (ids.size() == 1) {
             return byId(objects[0]);
         }
-        if(entity==null){
+        if (entity == null) {
             throw new UPAIllegalArgumentException("Missing Entity");
         }
         return byExpression(entity.getBuilder().idListToExpression(ids, UQLUtils.THIS));
@@ -462,15 +478,15 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
         if (query != null) {
             return query.getHint(hintName);
         }
-        return hints==null?null:hints.get(hintName);
+        return hints == null ? null : hints.get(hintName);
     }
 
-    public Object getHint(String hintName,Object defaultValue) {
+    public Object getHint(String hintName, Object defaultValue) {
         if (query != null) {
-            return query.getHint(hintName,defaultValue);
+            return query.getHint(hintName, defaultValue);
         }
         Object c = hints == null ? null : hints.get(hintName);
-        return c==null?defaultValue:c;
+        return c == null ? defaultValue : c;
     }
 
     @Override
@@ -488,7 +504,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder setHints(Map<String, Object> hints) {
-        if(hints!=null) {
+        if (hints != null) {
             for (Map.Entry<String, Object> e : hints.entrySet()) {
                 setHint(e.getKey(), e.getValue());
             }

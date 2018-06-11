@@ -18,6 +18,7 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -68,7 +69,7 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
                     // A's id is A.b where b is an entity
                     //TODO fix all cases!
                     if (entity.getIdFields().size() == 1) {
-                        ManyToOneType et = (ManyToOneType) entity.getIdFields().get(0).getDataType();
+                        RelationDataType et = (RelationDataType) entity.getIdFields().get(0).getDataType();
                         List<Field> ff = et.getRelationship().getSourceRole().getFields();
                         Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
                         for (int j = 0; j < ff.size(); j++) {

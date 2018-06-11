@@ -6,5 +6,5 @@ package net.vpc.upa.impl.persistence;
  */
 public enum NativeStatementType {
 
-    SELECT, UPDATE
+    UNDEFINED,SELECT, UPDATE
 }

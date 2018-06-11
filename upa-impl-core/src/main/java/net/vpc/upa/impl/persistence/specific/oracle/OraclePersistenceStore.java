@@ -3,7 +3,6 @@ package net.vpc.upa.impl.persistence.specific.oracle;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.DatabaseProduct;
-import net.vpc.upa.persistence.PersistenceNameConfig;
 import net.vpc.upa.types.*;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -133,7 +132,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         sb.append(" Index ");
         sb.append(getValidIdentifier(getPersistenceName(index)));
         sb.append(" On ");
-        sb.append(index.getEntity().getPersistenceName());
+        sb.append(getValidIdentifier(getPersistenceName(index.getEntity())));
         sb.append("(");
         boolean first = true;
         List<PrimitiveField> primitiveFields = index.getEntity().getPrimitiveFields(

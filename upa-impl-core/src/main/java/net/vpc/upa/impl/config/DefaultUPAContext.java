@@ -452,7 +452,7 @@ public class DefaultUPAContext implements UPAContext {
 //        if (r != null) {
 //            transactionType = TransactionType.valueOf(r.getString("value"));
 //        }
-//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
 //            r = decorationRepository.getMethodDecoration(method, "javax.ejb.TransactionAttribute");
 //            if (r != null) {
 //                try {
@@ -463,13 +463,13 @@ public class DefaultUPAContext implements UPAContext {
 //            }
 //        }
 //
-//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
 //            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), Transactional.class);
 //            if (r != null) {
 //                transactionType = TransactionType.valueOf(r.getString("value"));
 //            }
 //        }
-//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
 //            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), "javax.ejb.TransactionAttribute");
 //            if (r != null) {
 //                try {
@@ -483,7 +483,7 @@ public class DefaultUPAContext implements UPAContext {
 //            properties = new HashMap<String, Object>();
 //        }
 //        properties.put(TransactionType.class.getName(),
-//                PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)
+//                PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)
 //                ? TransactionType.REQUIRED : transactionType
 //        );
 //        beginInvocation(properties);
@@ -502,7 +502,7 @@ public class DefaultUPAContext implements UPAContext {
 //            sessionCreated = true;
 //        }
 //        TransactionType transactionType = (TransactionType) properties.get(TransactionType.class.getName());
-//        if (PlatformUtils.isUndefinedValue(TransactionType.class, transactionType)) {
+//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
 //            transactionType = TransactionType.REQUIRED;
 //        }
 //        boolean transactionCreated = false;
@@ -585,7 +585,7 @@ public class DefaultUPAContext implements UPAContext {
         ObjectType objectType = PlatformUtils.getUndefinedValue(ObjectType.class);
         ObjectType requestedObjectType = methodCallback.getObjectType();
         EventPhase phase = methodCallback.getPhase();
-        if (!PlatformUtils.isUndefinedValue(ObjectType.class, requestedObjectType)) {
+        if (!PlatformUtils.isUndefinedEnumValue(ObjectType.class, requestedObjectType)) {
             objectType = requestedObjectType;
         } else {
             for (Class<?> parameterType : method.getParameterTypes()) {
@@ -637,8 +637,8 @@ public class DefaultUPAContext implements UPAContext {
             }
         }
 
-        if (PlatformUtils.isUndefinedValue(ObjectType.class, objectType)) {
-            if (PlatformUtils.isUndefinedValue(ObjectType.class, objectType)) {
+        if (PlatformUtils.isUndefinedEnumValue(ObjectType.class, objectType)) {
+            if (PlatformUtils.isUndefinedEnumValue(ObjectType.class, objectType)) {
                 throw new UPAException("UnableToResoleObjectType");
             }
         }

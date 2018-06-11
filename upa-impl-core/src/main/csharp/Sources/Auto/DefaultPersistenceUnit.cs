@@ -62,7 +62,7 @@ namespace Net.Vpc.Upa.Impl
 
         private bool initCalled;
 
-        private string persistenceName;
+        private string persistenceNameFormat;
 
         private Net.Vpc.Upa.PersistenceGroup persistenceGroup;
 
@@ -983,12 +983,12 @@ namespace Net.Vpc.Upa.Impl
 
 
         public virtual string GetPersistenceName() {
-            return persistenceName;
+            return persistenceNameFormat;
         }
 
 
-        public virtual void SetPersistenceName(string persistenceName) {
-            this.persistenceName = persistenceName;
+        public virtual void SetPersistenceName(string persistenceNameFormat) {
+            this.persistenceNameFormat = persistenceNameFormat;
         }
 
         public virtual void DropStorage(Net.Vpc.Upa.Persistence.EntityExecutionContext context) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {

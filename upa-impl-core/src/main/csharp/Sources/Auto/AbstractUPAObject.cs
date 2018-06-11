@@ -24,7 +24,7 @@ namespace Net.Vpc.Upa.Impl
 
         private string name;
 
-        private string persistenceName;
+        private string persistenceNameFormat;
 
         private Net.Vpc.Upa.Types.I18NString title;
 
@@ -58,13 +58,13 @@ namespace Net.Vpc.Upa.Impl
         }
 
         public virtual string GetPersistenceName() {
-            return persistenceName;
+            return persistenceNameFormat;
         }
 
-        public virtual void SetPersistenceName(string persistenceName) {
-            string old = this.persistenceName;
-            this.persistenceName = persistenceName;
-            propertyChangeSupport.FirePropertyChange("persistenceName", old, persistenceName);
+        public virtual void SetPersistenceName(string persistenceNameFormat) {
+            string old = this.persistenceNameFormat;
+            this.persistenceNameFormat = persistenceNameFormat;
+            propertyChangeSupport.FirePropertyChange("persistenceNameFormat", old, persistenceNameFormat);
         }
 
         public virtual Net.Vpc.Upa.Types.I18NString GetTitle() {

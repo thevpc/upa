@@ -91,8 +91,8 @@ public class PUUtils {
         pu.addConnectionConfig(cc);
         if (clz != null) {
             String namePrefix = clz.getSimpleName();
-            pu.getPersistenceNameConfig().setGlobalPersistenceName(namePrefix+"_{OBJECT_NAME}");
-            pu.getPersistenceNameConfig().setLocalPersistenceName("{OBJECT_NAME}");
+            pu.getPersistenceNameStrategy().setGlobalPersistenceNameFormat(namePrefix+"_{OBJECT_NAME}");
+            pu.getPersistenceNameStrategy().setLocalPersistenceNameFormat("{OBJECT_NAME}");
 //        pu.getParameters().setString(UPA.CONNECTION_STRING, "derby:embedded://upatest;structure=create;userName=upatest;password=upatest");
 //        pu.getParameters().setString(UPA.CONNECTION_STRING+"."+ ConnectionOption.USER_NAME, "upatest");
         }

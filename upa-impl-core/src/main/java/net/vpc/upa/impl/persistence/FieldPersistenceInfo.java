@@ -9,6 +9,7 @@ import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.persistence.PersistenceStore;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -44,8 +45,8 @@ public class FieldPersistenceInfo {
     }
 
     public void synchronize() {
-        if (field.isManyToOne()) {
-            ManyToOneType t = (ManyToOneType) field.getDataType();
+        if (field.isManyToOne() || field.isOneToOne()) {
+            RelationDataType t = (RelationDataType) field.getDataType();
             Relationship manyToOneRelationship = t.getRelationship();
             if (manyToOneRelationship == null) {
                 throw new UPAException("MissingRelationForField", field);

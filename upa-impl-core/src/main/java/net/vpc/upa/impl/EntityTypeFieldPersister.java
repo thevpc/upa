@@ -13,6 +13,7 @@ import net.vpc.upa.Document;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 /**
  *
@@ -21,7 +22,7 @@ import net.vpc.upa.types.ManyToOneType;
 public class EntityTypeFieldPersister implements FieldPersister {
 
     public void prepareFieldForPersist(Field field, Object value, Document userDocument, Document persistentDocument, EntityExecutionContext executionContext, Set<Field> persistNonNullable, Set<Field> persistWithDefaultValue) throws UPAException {
-        ManyToOneType e = (ManyToOneType) field.getDataType();
+        RelationDataType e = (RelationDataType) field.getDataType();
         if (e.isUpdatable()) {
             for (Field fk : e.getRelationship().getSourceRole().getFields()) {
                 persistNonNullable.remove(fk);

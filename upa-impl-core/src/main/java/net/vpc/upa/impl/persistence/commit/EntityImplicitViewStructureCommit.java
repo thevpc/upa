@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceState;
-import net.vpc.upa.persistence.PersistenceNameType;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
@@ -34,7 +34,7 @@ public class EntityImplicitViewStructureCommit extends StructureCommit {
         Entity entity = (Entity) object;
         PersistenceStoreExt persistenceUnitManager = (PersistenceStoreExt) executionContext.getPersistenceStore();
         if (persistenceUnitManager.isViewSupported() && entity.hasAssociatedView()) {
-            log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
+            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
             UConnection b = executionContext.getConnection();
             b.executeNonQuery(persistenceUnitManager.getCreateImplicitViewStatement(entity, executionContext), null, null);
         }

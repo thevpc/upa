@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceState;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
@@ -30,14 +31,14 @@ public class ViewStructureCommit extends StructureCommit {
     protected static Logger log = Logger.getLogger(ViewStructureCommit.class.getName());
 
     public ViewStructureCommit(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Entity.class, null);
+        super(persistenceUnitCommitManager, object, Entity.class, PersistenceNameType.TABLE);
     }
 
     @Override
     public void persist(EntityExecutionContext executionContext, PersistenceState status) throws SQLException, UPAException {
         Entity entityManager = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
-        log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
+        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
         UConnection b = executionContext.getConnection();
 
         List<ViewEntityExtension> specSupport = entityManager.getExtensions(ViewEntityExtension.class);

@@ -9,8 +9,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
-import net.vpc.upa.persistence.PersistenceNameType;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -20,11 +20,11 @@ class StructureCommitComparator implements Comparator<StructureCommit> {
     Map<ObjectAndType, Integer> pos = new HashMap<ObjectAndType, Integer>();
 
     StructureCommitComparator() {
-        pos.put(new ObjectAndType(Entity.class, null), 100);
-        pos.put(new ObjectAndType(PrimitiveField.class, null), 200);
+        pos.put(new ObjectAndType(Entity.class, PersistenceNameType.TABLE), 100);
+        pos.put(new ObjectAndType(PrimitiveField.class, PersistenceNameType.COLUMN), 200);
         pos.put(new ObjectAndType(Entity.class, PersistenceNameType.PK_CONSTRAINT), 300);
-        pos.put(new ObjectAndType(Index.class, null), 400);
-        pos.put(new ObjectAndType(Relationship.class, null), 500);
+        pos.put(new ObjectAndType(Index.class, PersistenceNameType.INDEX), 400);
+        pos.put(new ObjectAndType(Relationship.class, PersistenceNameType.FK_CONSTRAINT), 500);
         pos.put(new ObjectAndType(Entity.class, PersistenceNameType.IMPLICIT_VIEW), 800);
     }
 

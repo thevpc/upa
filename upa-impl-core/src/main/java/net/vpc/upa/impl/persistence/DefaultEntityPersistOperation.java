@@ -12,6 +12,8 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.EntityPersistOperation;
 import net.vpc.upa.persistence.UConnection;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.OneToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 import java.util.Map;
 
@@ -38,10 +40,14 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 String key = entry.getKey();
                 Field field = entity.findField(key);
                 //should process specific entity fields
-                if (field.isManyToOne()) {
-                    ManyToOneType e = (ManyToOneType) field.getDataType();
+                if (field.isManyToOne() || field.isOneToOne()) {
+                    RelationDataType e = (RelationDataType) field.getDataType();
                     if (e.isUpdatable()) {
-                        Entity masterEntity = pu.getEntity(e.getTargetEntityName());
+                        String targetEntityName=
+                                (e instanceof ManyToOneType)?((ManyToOneType) e).getTargetEntityName():
+                                        ((OneToOneType) e).getTargetEntityName();
+
+                        Entity masterEntity = pu.getEntity(targetEntityName);
                         Key k = null;
                         if (value instanceof Document) {
                             k = masterEntity.getBuilder().documentToKey((Document) value);
@@ -73,10 +79,13 @@ public class DefaultEntityPersistOperation implements EntityPersistOperation {
                 String key = entry.getKey();
                 Field field = entity.findField(key);
                 //should process specific entity fields
-                if (field.isManyToOne()) {
-                    ManyToOneType e = (ManyToOneType) field.getDataType();
+                if (field.isManyToOne() || field.isOneToOne()) {
+                    RelationDataType e = (RelationDataType) field.getDataType();
                     if (e.isUpdatable()) {
-                        Entity masterEntity = pu.getEntity(e.getTargetEntityName());
+                        String targetEntityName=
+                                (e instanceof ManyToOneType)?((ManyToOneType) e).getTargetEntityName():
+                                        ((OneToOneType) e).getTargetEntityName();
+                        Entity masterEntity = pu.getEntity(targetEntityName);
                         Key k = null;
                         if (value instanceof Document) {
                             k = masterEntity.getBuilder().documentToKey((Document) value);

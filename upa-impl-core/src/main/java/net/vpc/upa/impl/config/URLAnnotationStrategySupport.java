@@ -1,57 +1,28 @@
 package net.vpc.upa.impl.config;
 
-import net.vpc.upa.callbacks.TriggerDefinitionListener;
-import net.vpc.upa.callbacks.IndexDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceUnitDefinitionListener;
-import net.vpc.upa.callbacks.EntityInterceptor;
-import net.vpc.upa.callbacks.SectionDefinitionListener;
-import net.vpc.upa.callbacks.RelationshipDefinitionListener;
-import net.vpc.upa.callbacks.FieldDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.PackageDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceGroupDefinitionListener;
+import net.vpc.upa.*;
+import net.vpc.upa.PersistenceUnit;
+import net.vpc.upa.callbacks.*;
+import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.*;
-
-import java.lang.reflect.Method;
-
+import net.vpc.upa.config.PersistenceNameFormat;
+import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
+import net.vpc.upa.impl.jpa.JPAAnnotationsAdapter;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.classpath.DecorationParser;
+import net.vpc.upa.persistence.ConnectionConfig;
+import net.vpc.upa.persistence.*;
+import net.vpc.upa.persistence.PersistenceGroupConfig;
 import net.vpc.upa.persistence.PersistenceUnitConfig;
-import java.util.ArrayList;
-import java.util.Collections;
 import net.vpc.upa.types.I18NString;
-import net.vpc.upa.PersistenceGroup;
-import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.UPAContext;
-import net.vpc.upa.exceptions.UPAException;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.vpc.upa.EntityDescriptor;
-import net.vpc.upa.EntitySecurityManager;
-import net.vpc.upa.Function;
-import net.vpc.upa.ScanEvent;
-import net.vpc.upa.ScanListener;
-import net.vpc.upa.PersistenceGroupSecurityManager;
-import net.vpc.upa.UPASecurityManager;
-import net.vpc.upa.config.OnInit;
-import net.vpc.upa.impl.config.decorations.SimpleDecoration;
-import net.vpc.upa.persistence.ConnectionConfig;
-import net.vpc.upa.persistence.PersistenceGroupConfig;
-import net.vpc.upa.persistence.PersistenceNameConfig;
-import net.vpc.upa.persistence.PersistenceNameType;
-import net.vpc.upa.persistence.UPAContextConfig;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -61,9 +32,14 @@ public class URLAnnotationStrategySupport {
 
     private static final Logger log = Logger.getLogger(URLAnnotationStrategySupport.class.getName());
     private static final Class[] persistenceUnitItemDefinitionListenerTypes = new Class[]{
-        PackageDefinitionListener.class, SectionDefinitionListener.class, EntityDefinitionListener.class, FieldDefinitionListener.class, IndexDefinitionListener.class, TriggerDefinitionListener.class //            , PersistenceUnitTriggerDefinitionListener.class
-        , RelationshipDefinitionListener.class
+            PackageDefinitionListener.class, SectionDefinitionListener.class, EntityDefinitionListener.class, FieldDefinitionListener.class, IndexDefinitionListener.class, TriggerDefinitionListener.class //            , PersistenceUnitTriggerDefinitionListener.class
+            , RelationshipDefinitionListener.class
     };
+    /**
+     * @PortabilityHint(target = "C#", name = "replace")
+     * private String[] EXTRA_ANNOTATIONS={};
+     */
+    private String[] EXTRA_ANNOTATIONS = JPAAnnotationsAdapter.JPA_ANNOTATIONS;
 
     public static boolean isPersistenceUnitItemDefinitionListener(Class c) {
         for (Class p : persistenceUnitItemDefinitionListenerTypes) {
@@ -84,46 +60,46 @@ public class URLAnnotationStrategySupport {
         return all.toArray(new Class[all.size()]);
     }
 
-    public void scan(UPAContext context, UPAContextConfig bootstrapContextConfig ,ScanSource source, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(UPAContext context, UPAContextConfig bootstrapContextConfig, ScanSource source, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
 //            UPAContextConfig bootstrapContextConfig = context.getBootstrapContextConfig();
             DecorationParser parser = new DecorationParser(UPAUtils.toConfigurationStrategy(source).toIterable(context),
                     new DefaultDecorationFilter()
-                    .addDecorations(
-                            Callback.class,
+                            .addDecorations(
+                                    Callback.class,
 
-                            OnAlter.class,
-                            OnPreAlter.class,
-                            OnPreCreate.class,
-                            OnCreate.class,
-                            OnPreDrop.class,
-                            OnDrop.class,
-                            OnPreRemove.class,
-                            OnRemove.class,
-                            OnPrePersist.class,
-                            OnPersist.class,
-                            OnPreRemove.class,
-                            OnRemove.class,
-                            OnPreUpdate.class,
-                            OnPreUpdate.class,
-                            OnUpdate.class,
-                            OnPreUpdateFormula.class,
-                            OnUpdateFormula.class,
-                            OnPreInit.class,
-                            OnInit.class,
-                            OnPrePrepare.class,
-                            OnPrepare.class,
-                            OnPreReset.class,
-                            OnReset.class,
+                                    OnAlter.class,
+                                    OnPreAlter.class,
+                                    OnPreCreate.class,
+                                    OnCreate.class,
+                                    OnPreDrop.class,
+                                    OnDrop.class,
+                                    OnPreRemove.class,
+                                    OnRemove.class,
+                                    OnPrePersist.class,
+                                    OnPersist.class,
+                                    OnPreRemove.class,
+                                    OnRemove.class,
+                                    OnPreUpdate.class,
+                                    OnPreUpdate.class,
+                                    OnUpdate.class,
+                                    OnPreUpdateFormula.class,
+                                    OnUpdateFormula.class,
+                                    OnPreInit.class,
+                                    OnInit.class,
+                                    OnPrePrepare.class,
+                                    OnPrepare.class,
+                                    OnPreReset.class,
+                                    OnReset.class,
 
-                            SecurityContext.class,
-                            net.vpc.upa.config.PersistenceUnit.class,
-                            net.vpc.upa.config.PersistenceNameStrategy.class,
-                            net.vpc.upa.config.Properties.class,
-                            net.vpc.upa.config.Property.class)
-                    .addTypeDecorations(
-                            JPAProcessor.JPA_ANNOTATIONS
-                    ), null, null, decorationRepository);
+                                    SecurityContext.class,
+                                    net.vpc.upa.config.PersistenceUnit.class,
+                                    net.vpc.upa.config.PersistenceNameStrategy.class,
+                                    net.vpc.upa.config.Properties.class,
+                                    net.vpc.upa.config.Property.class)
+                            .addTypeDecorations(
+                                    EXTRA_ANNOTATIONS
+                            ), null, null, decorationRepository);
             parser.parse();
             //repository that contains just the scanned classes
             //older classes
@@ -131,7 +107,7 @@ public class URLAnnotationStrategySupport {
             /**
              * @PortabilityHint(target = "C#", name = "suppress")
              */
-            JPAProcessor.processJAVAXAnnotations(decorationRepository, newDecorationRepository, source.isNoIgnore());
+            JPAAnnotationsAdapter.processJAVAXAnnotations(decorationRepository, newDecorationRepository, source.isNoIgnore());
 //            Map<Class, Object> instances = new HashMap<Class, Object>();
 //            for (PersistenceGroupDefinitionListener old : context.getPersistenceGroupDefinitionListeners()) {
 //                if(!instances.containsKey(old.getClass())){
@@ -187,12 +163,7 @@ public class URLAnnotationStrategySupport {
                         partialPersistenceUnitConfig.put(key, puc);
                         persistenceUnitConfigs.add(new OrderedIem<PersistenceUnitConfig>(configOrder, puc));
                     }
-                    PersistenceNameConfig target = puc.getModel();
-                    if (target == null) {
-                        target = new PersistenceNameConfig(UPAContextConfig.XML_ORDER);
-                        puc.setModel(target);
-                    }
-                    merge(a, target);
+                    merge(a, puc);
                 }
             }
 
@@ -227,7 +198,7 @@ public class URLAnnotationStrategySupport {
                             g.addContextAnnotationStrategyFilter(a);
                         }
                         for (Map.Entry<String, Object> stringObjectEntry : pgc.getProperties().entrySet()) {
-                            g.getProperties().setObject(stringObjectEntry.getKey(),stringObjectEntry.getValue());
+                            g.getProperties().setObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
                         }
                     }
                 }
@@ -238,50 +209,48 @@ public class URLAnnotationStrategySupport {
             }
 
             //persistence units
-            List<PersistenceUnit> createdPersistenceUnits = new ArrayList<PersistenceUnit>();
-            for (PersistenceUnitConfig c : buildPersistenceUnitConfigs) {
-                if (!StringUtils.isSimpleExpression(c.getName())) {
+            List<PersistenceUnit> createdPersistenceUnits = new ArrayList<>();
+            for (PersistenceUnitConfig puc : buildPersistenceUnitConfigs) {
+                if (!StringUtils.isSimpleExpression(puc.getName())) {
                     for (PersistenceGroup persistenceGroup : context.getPersistenceGroups()) {
-                        if (StringUtils.matchesSimpleExpression(persistenceGroup.getName(), c.getPersistenceGroup(), PatternType.DOT_PATH)) {
-                            if (!persistenceGroup.containsPersistenceUnit(c.getName())) {
-                                PersistenceUnit pu = persistenceGroup.addPersistenceUnit(c.getName());
-                                createdPersistenceUnits.add(pu);
+                        if (StringUtils.matchesSimpleExpression(persistenceGroup.getName(), puc.getPersistenceGroup(), PatternType.DOT_PATH)) {
+                            if (!persistenceGroup.containsPersistenceUnit(puc.getName())) {
+                                PersistenceUnit pu = persistenceGroup.addPersistenceUnit(puc.getName());
+                                if ((puc.getAutoScan() != null)) {
+                                    pu.setAutoScan(puc.getAutoScan());
+                                }
+                                pu.setAutoStart(puc.getAutoStart() == null ? Boolean.TRUE : puc.getAutoStart().booleanValue());
+                                for (ScanFilter a : puc.getFilters()) {
+                                    puc.addFilter(a);
+                                }
+                                for (ConnectionConfig connectionConfig : puc.getConnections()) {
+                                    pu.addConnectionConfig(connectionConfig);
+                                }
+                                for (ConnectionConfig connectionConfig : puc.getRootConnections()) {
+                                    pu.addRootConnectionConfig(connectionConfig);
+                                }
+                                for (Map.Entry<String, Object> stringObjectEntry : puc.getProperties().entrySet()) {
+                                    pu.getProperties().setObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
+                                }
+                                net.vpc.upa.persistence.PersistenceNameStrategy ns = pu.getPersistenceNameStrategy();
+                                ns.setGlobalPersistenceNameFormat(puc.getGlobalPersistenceNameFormat());
+                                ns.setLocalPersistenceNameFormat(puc.getLocalPersistenceNameFormat());
+                                ns.setPersistenceNameEscape(puc.getPersistenceNameEscape());
+                                for (net.vpc.upa.persistence.PersistenceNameFormat persistenceNameFormat : puc.getNameFormats()) {
+                                    ns.addNameFormat(persistenceNameFormat);
+                                }
+                                if (listener != null) {
+                                    listener.contextItemScanned(new ScanEvent(context, null, null, PersistenceUnit.class, null, pu));
+                                }
+                                if (pu.isAutoScan()) {
+                                    pu.scan(source, listener, false);
+                                }
                             }
                         }
                     }
                 }
             }
-            for (PersistenceUnit pu : createdPersistenceUnits) {
-                boolean autoScan = false;
-                for (PersistenceUnitConfig puc : buildPersistenceUnitConfigs) {
-                    if (StringUtils.matchesSimpleExpression(pu.getPersistenceGroup().getName(), puc.getPersistenceGroup(), PatternType.DOT_PATH)
-                            && StringUtils.matchesSimpleExpression(pu.getName(), puc.getName(), PatternType.DOT_PATH)) {
-                        if ((puc.getAutoScan() != null)) {
-                            pu.setAutoScan(autoScan);
-                        }
-                        pu.setAutoStart(puc.getAutoStart() == null ? Boolean.TRUE : puc.getAutoStart().booleanValue());
-                        PersistenceNameConfig oldPersistenceNameConfig = pu.getPersistenceNameConfig();
-                        merge(puc.getModel(), oldPersistenceNameConfig);
-                        pu.setPersistenceNameConfig(oldPersistenceNameConfig);
-                        for (ScanFilter a : puc.getFilters()) {
-                            puc.addFilter(a);
-                        }
-                        for (ConnectionConfig connectionConfig : puc.getConnections()) {
-                            pu.addConnectionConfig(connectionConfig);
-                        }
-                        for (ConnectionConfig connectionConfig : puc.getRootConnections()) {
-                            pu.addRootConnectionConfig(connectionConfig);
-                        }
-                        for (Map.Entry<String, Object> stringObjectEntry : puc.getProperties().entrySet()) {
-                            pu.getProperties().setObject(stringObjectEntry.getKey(),stringObjectEntry.getValue());
-                        }
-                    }
-                }
-                if (listener != null) {
-                    listener.contextItemScanned(new ScanEvent(context, null, null, PersistenceUnit.class, null, pu));
-                }
-                pu.scan(source, listener, false);
-            }
+
 
         } catch (UPAException e) {
             throw e;
@@ -294,42 +263,42 @@ public class URLAnnotationStrategySupport {
         try {
             DecorationParser parser = new DecorationParser(UPAUtils.toConfigurationStrategy(strategy).toIterable(persistenceGroup),
                     new DefaultDecorationFilter()
-                    .addDecorations(
-                            Callback.class,
-                            OnPreAlter.class,
-                            OnAlter.class,
-                            OnPreCreate.class,
-                            OnCreate.class,
-                            OnPreDrop.class,
-                            OnDrop.class,
-                            OnPreRemove.class,
-                            OnRemove.class,
-                            OnPrePersist.class,
-                            OnPersist.class,
-                            OnPreRemove.class,
-                            OnRemove.class,
-                            OnPreUpdate.class,
-                            OnUpdate.class,
-                            OnPreUpdateFormula.class,
-                            OnUpdateFormula.class,
-                            OnPreInit.class,
-                            OnInit.class,
-                            OnPrePrepare.class,
-                            OnPrepare.class,
-                            OnPreReset.class,
-                            OnReset.class
-                    )
-                    .addDecorations(SecurityContext.class)
-                    .addTypeDecorations(
-                            JPAProcessor.JPA_ANNOTATIONS
-                    ), persistenceGroup.getName(), null, decorationRepository);
+                            .addDecorations(
+                                    Callback.class,
+                                    OnPreAlter.class,
+                                    OnAlter.class,
+                                    OnPreCreate.class,
+                                    OnCreate.class,
+                                    OnPreDrop.class,
+                                    OnDrop.class,
+                                    OnPreRemove.class,
+                                    OnRemove.class,
+                                    OnPrePersist.class,
+                                    OnPersist.class,
+                                    OnPreRemove.class,
+                                    OnRemove.class,
+                                    OnPreUpdate.class,
+                                    OnUpdate.class,
+                                    OnPreUpdateFormula.class,
+                                    OnUpdateFormula.class,
+                                    OnPreInit.class,
+                                    OnInit.class,
+                                    OnPrePrepare.class,
+                                    OnPrepare.class,
+                                    OnPreReset.class,
+                                    OnReset.class
+                            )
+                            .addDecorations(SecurityContext.class)
+                            .addTypeDecorations(
+                                    EXTRA_ANNOTATIONS
+                            ), persistenceGroup.getName(), null, decorationRepository);
             parser.parse();
             DecorationRepository repo = parser.getDecorationRepository();
             DecorationRepository newrepo = parser.getNewDecorationRepository();
             /**
              * @PortabilityHint(target = "C#", name = "suppress")
              */
-            JPAProcessor.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
                 Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
@@ -374,82 +343,87 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    public void scan(PersistenceUnit persistenceUnit, ScanSource strategy, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(net.vpc.upa.PersistenceUnit persistenceUnit, ScanSource strategy, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
             EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, decorationRepository);
             DecorationParser parser = new DecorationParser(
                     UPAUtils.toConfigurationStrategy(strategy).toIterable(persistenceUnit),
                     new DefaultDecorationFilter()
-                    .addDecorations(
-                            net.vpc.upa.config.SecurityContext.class,
-                            net.vpc.upa.config.ItemConfig.class,
-                            net.vpc.upa.config.Field.class,
-                            net.vpc.upa.config.Main.class,
-                            net.vpc.upa.config.Summary.class,
-                            net.vpc.upa.config.Unique.class,
-                            net.vpc.upa.config.FilterEntity.class,
-                            net.vpc.upa.config.Formula.class,
-                            net.vpc.upa.config.NamedFormula.class,
-                            net.vpc.upa.config.Formulas.class,
-                            net.vpc.upa.config.Id.class,
-                            net.vpc.upa.config.Ignore.class,
-                            net.vpc.upa.config.Index.class,
-                            net.vpc.upa.config.Indexes.class,
-                            net.vpc.upa.config.Init.class,
-                            net.vpc.upa.config.ManyToOne.class,
-                            net.vpc.upa.config.Partial.class,
-                            net.vpc.upa.config.Password.class,
-                            net.vpc.upa.config.ToString.class,
-                            net.vpc.upa.config.ToByteArray.class,
-                            net.vpc.upa.config.Converter.class,
-                            net.vpc.upa.config.Path.class,
-                            net.vpc.upa.config.PersistenceName.class,
-                            net.vpc.upa.config.PersistenceNameStrategy.class,
-                            net.vpc.upa.config.PersistenceUnit.class,
-                            net.vpc.upa.config.Properties.class,
-                            net.vpc.upa.config.Property.class,
-                            net.vpc.upa.config.Function.class,
-                            net.vpc.upa.config.Search.class,
-                            net.vpc.upa.config.Secret.class,
-                            net.vpc.upa.config.Sequence.class,
-                            net.vpc.upa.config.Singleton.class,
-                            net.vpc.upa.config.Temporal.class,
-                            net.vpc.upa.config.Transactional.class,
-                            net.vpc.upa.config.Hierarchy.class,
-                            net.vpc.upa.config.Callback.class,
-                            OnPreAlter.class,
-                            OnAlter.class,
-                            OnPreCreate.class,
-                            OnCreate.class,
-                            OnPreDrop.class,
-                            OnDrop.class,
-                            OnPreRemove.class,
-                            OnRemove.class,
-                            OnPrePersist.class,
-                            OnPrePersist.class,
-                            OnPersist.class,
-                            OnPreUpdate.class,
-                            OnUpdate.class,
-                            OnPreUpdateFormula.class,
-                            OnUpdateFormula.class,
-                            OnPreInit.class,
-                            OnInit.class,
-                            OnPrePrepare.class,
-                            OnPrepare.class,
-                            OnPreReset.class,
-                            OnReset.class,
-                            net.vpc.upa.config.UnionEntity.class,
-                            net.vpc.upa.config.UnionEntityEntry.class,
-                            net.vpc.upa.config.View.class,
-                            net.vpc.upa.config.Entity.class,
-                            net.vpc.upa.config.Partial.class
-                    )
-                    .addTypeDecorations(JPAProcessor.JPA_ANNOTATIONS ),
+                            .addDecorations(
+                                    net.vpc.upa.config.SecurityContext.class,
+                                    net.vpc.upa.config.ItemConfig.class,
+                                    net.vpc.upa.config.Field.class,
+                                    net.vpc.upa.config.Main.class,
+                                    net.vpc.upa.config.Summary.class,
+                                    net.vpc.upa.config.Unique.class,
+                                    net.vpc.upa.config.FilterEntity.class,
+                                    net.vpc.upa.config.Formula.class,
+                                    net.vpc.upa.config.NamedFormula.class,
+                                    net.vpc.upa.config.Formulas.class,
+                                    net.vpc.upa.config.Id.class,
+                                    net.vpc.upa.config.Ignore.class,
+                                    net.vpc.upa.config.Index.class,
+                                    net.vpc.upa.config.Indexes.class,
+                                    net.vpc.upa.config.Init.class,
+                                    net.vpc.upa.config.ManyToOne.class,
+                                    net.vpc.upa.config.OneToOne.class,
+                                    net.vpc.upa.config.Partial.class,
+                                    net.vpc.upa.config.Password.class,
+                                    net.vpc.upa.config.ToString.class,
+                                    net.vpc.upa.config.ToByteArray.class,
+                                    net.vpc.upa.config.Converter.class,
+                                    net.vpc.upa.config.Path.class,
+                                    net.vpc.upa.config.PersistenceUnit.class,
+                                    net.vpc.upa.config.Properties.class,
+                                    net.vpc.upa.config.Property.class,
+                                    net.vpc.upa.config.Function.class,
+                                    net.vpc.upa.config.Search.class,
+                                    net.vpc.upa.config.Secret.class,
+                                    net.vpc.upa.config.Sequence.class,
+                                    net.vpc.upa.config.Singleton.class,
+                                    net.vpc.upa.config.Temporal.class,
+                                    net.vpc.upa.config.Transactional.class,
+                                    net.vpc.upa.config.Hierarchy.class,
+                                    net.vpc.upa.config.Callback.class,
+                                    net.vpc.upa.config.OnPreAlter.class,
+                                    net.vpc.upa.config.OnAlter.class,
+                                    net.vpc.upa.config.OnPreCreate.class,
+                                    net.vpc.upa.config.OnCreate.class,
+                                    net.vpc.upa.config.OnPreDrop.class,
+                                    net.vpc.upa.config.OnDrop.class,
+                                    net.vpc.upa.config.OnPreRemove.class,
+                                    net.vpc.upa.config.OnRemove.class,
+                                    net.vpc.upa.config.OnPrePersist.class,
+                                    net.vpc.upa.config.OnPrePersist.class,
+                                    net.vpc.upa.config.OnPersist.class,
+                                    net.vpc.upa.config.OnPreUpdate.class,
+                                    net.vpc.upa.config.OnUpdate.class,
+                                    net.vpc.upa.config.OnPreUpdateFormula.class,
+                                    net.vpc.upa.config.OnUpdateFormula.class,
+                                    net.vpc.upa.config.OnPreInit.class,
+                                    net.vpc.upa.config.OnInit.class,
+                                    net.vpc.upa.config.OnPrePrepare.class,
+                                    net.vpc.upa.config.OnPrepare.class,
+                                    net.vpc.upa.config.OnPreReset.class,
+                                    net.vpc.upa.config.OnReset.class,
+                                    net.vpc.upa.config.UnionEntity.class,
+                                    net.vpc.upa.config.UnionEntityEntry.class,
+                                    net.vpc.upa.config.View.class,
+                                    net.vpc.upa.config.Entity.class,
+                                    net.vpc.upa.config.Partial.class,
+                                    net.vpc.upa.config.Table.class,
+                                    net.vpc.upa.config.Tables.class,
+                                    net.vpc.upa.config.Column.class,
+                                    net.vpc.upa.config.Columns.class,
+                                    net.vpc.upa.config.PersistenceNameFormat.class,
+                                    net.vpc.upa.config.PersistenceNameStrategy.class
+                            )
+                            .addTypeDecorations(EXTRA_ANNOTATIONS),
                     persistenceUnit.getPersistenceGroup().getName(), persistenceUnit.getName(), decorationRepository);
             parser.parse();
             DecorationRepository repo = parser.getDecorationRepository();
             DecorationRepository newrepo = parser.getNewDecorationRepository();
-            JPAProcessor.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
                 Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
@@ -548,13 +522,125 @@ public class URLAnnotationStrategySupport {
                 }
                 entityClasses.get(rootEntity).add(entry.getKey());
             }
+
+            Map<String, String> typeToEntityNameMap = new HashMap<>();
             for (Set<Class> ee : entityClasses.values()) {
                 if (listener != null) {
+                    EntityDescriptor resolved = r.resolve(ee.toArray(new Class[ee.size()]));
+                    for (Class aClass : ee) {
+                        typeToEntityNameMap.put(aClass.getName(), resolved.getName());
+                    }
                     listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, EntityDescriptor.class, EntityDescriptor.class,
-                            r.resolve(ee.toArray(new Class[ee.size()]))
+                            resolved
                     ));
                 }
             }
+
+            for (Decoration d : newrepo.getDeclaredRepeatableDecorations(
+                    net.vpc.upa.config.Table.class.getName(),
+                    net.vpc.upa.config.Tables.class.getName()
+
+            )) {
+                String entityName = null;
+                switch (d.getTarget()) {
+                    case UNDEFINED:
+                    case TYPE: {
+                        entityName = d.getString("entityName");
+                        if (StringUtils.isNullOrEmpty(entityName)) {
+                            //check Entity by current class name
+                            entityName = typeToEntityNameMap.get(d.getLocationType());
+                        }
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                if (StringUtils.isNullOrEmpty(entityName)) {
+                    //check Entity by current class name
+                    log.log(Level.SEVERE, "You should use entityName on Entity Type " + d + ". Unable to resolve that entity for " + d);
+                } else {
+                    PersistenceNameRule rule = new TablePersistenceNameRule()
+                            .setEntityName(entityName)
+                            .setPersistenceName(d.getString("value"))
+                            .setCatalog(d.getString("catalog"))
+                            .setSchema(d.getString("schema"))
+                            .setPkPersistenceName(d.getString("pkPersistenceName"))
+                            .setViewPersistenceName(d.getString("viewPersistenceName"))
+                            .setShortPersistenceNamePrefix(d.getString("shortPersistenceNamePrefix"))
+                            .setDatabaseProduct(d.getDecoration("condition").getEnum("databaseProduct", DatabaseProduct.class))
+                            .setDatabaseVersion(d.getDecoration("condition").getString("databaseVersion"))
+                            .setStrategyName(d.getDecoration("condition").getString("strategyName"));
+                    if (listener != null) {
+                        listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(),
+                                persistenceUnit.getPersistenceGroup(), persistenceUnit, PersistenceNameRule.class, PersistenceNameRule.class,
+                                rule
+                        ));
+                    }
+                }
+            }
+            for (Decoration d : newrepo.getDeclaredRepeatableDecorations(
+                    net.vpc.upa.config.Column.class.getName(),
+                    net.vpc.upa.config.Columns.class.getName()
+
+            )) {
+                String entityName = null;
+                String fieldName = null;
+                boolean ignore = false;
+                switch (d.getTarget()) {
+                    case TYPE: {
+                        entityName = d.getString("entityName");
+                        if (StringUtils.isNullOrEmpty(entityName)) {
+                            //check Entity by current class name
+                            entityName = typeToEntityNameMap.get(d.getLocationType());
+                        }
+                        fieldName = d.getString("fieldName");
+//                        if (StringUtils.isNullOrEmpty(entityName)) {
+//                            //check Entity by current class name
+//                            fieldName = typeToEntityNameMap.get(d.getLocation());
+//                        }
+                        break;
+                    }
+                    case UNDEFINED:
+                    case METHOD:
+                    case FIELD: {
+                        ignore = true;
+                        //will not process, this should has bean already processed!
+//                        entityName = d.getString("entityName");
+//                        if(StringUtils.isNullOrEmpty(entityName)){
+//                          //check Entity by current class name
+//                            entityName = typeToEntityNameMap.get(d.getLocationType());
+//                        }
+                        break;
+                    }
+                    default: {
+                        ignore = true;
+                        break;
+                    }
+                }
+                if (!ignore) {
+                    if (StringUtils.isNullOrEmpty(entityName)) {
+                        //check Entity by current class name
+                        log.log(Level.SEVERE, "You should use entityName on Entity Type " + d + ". Unable to resolve that entity for " + d);
+                    } else {
+                        ColumnPersistenceNameRule rule = new ColumnPersistenceNameRule()
+                                .setEntityName(entityName)
+                                .setFieldName(fieldName)
+                                .setPersistenceName(d.getString("value"))
+                                .setTableName(d.getString("tableName"))
+                                .setDatabaseProduct(d.getDecoration("condition").getEnum("databaseProduct", DatabaseProduct.class))
+                                .setDatabaseVersion(d.getDecoration("condition").getString("databaseVersion"))
+                                .setStrategyName(d.getDecoration("condition").getString("strategyName"));
+                        if (listener != null) {
+                            listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(),
+                                    persistenceUnit.getPersistenceGroup(), persistenceUnit, PersistenceNameRule.class, PersistenceNameRule.class,
+                                    rule
+                            ));
+                        }
+                    }
+                }
+            }
+
 
             for (Decoration d : newrepo.getDeclaredDecorations(net.vpc.upa.config.Function.class.getName())) {
                 final Class tt = PlatformUtils.forName(d.getLocationType());
@@ -565,7 +651,7 @@ public class URLAnnotationStrategySupport {
                 }
                 log.log(Level.FINE, "\t Detect Function {0}", tt);
                 if (listener != null) {
-                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, Function.class, tt, null));
+                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, net.vpc.upa.Function.class, tt, null));
                 }
             }
             for (Decoration at : newrepo.getDeclaredDecorations(SecurityContext.class.getName())) {
@@ -634,27 +720,27 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    private void merge(Decoration persistenceNameStrategy, PersistenceNameConfig target) {
+    private void merge(Decoration persistenceNameStrategy, PersistenceUnitConfig target) {
         if (persistenceNameStrategy != null) {
             if (!StringUtils.isUndefined(persistenceNameStrategy.getString("escape"))) {
                 target.setPersistenceNameEscape(persistenceNameStrategy.getString("escape"));
             }
-            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("globalPersistenceName"))) {
-                target.setGlobalPersistenceName(StringUtils.trim(persistenceNameStrategy.getString("globalPersistenceName")));
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("globalPersistenceNameFormat"))) {
+                target.setGlobalPersistenceNameFormat(StringUtils.trim(persistenceNameStrategy.getString("globalPersistenceNameFormat")));
             }
-            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("localPersistenceName"))) {
-                target.setLocalPersistenceName(StringUtils.trim(persistenceNameStrategy.getString("localPersistenceName")));
+            if (!StringUtils.isUndefined(persistenceNameStrategy.getString("localPersistenceNameFormat"))) {
+                target.setLocalPersistenceNameFormat(StringUtils.trim(persistenceNameStrategy.getString("localPersistenceNameFormat")));
             }
             if (!StringUtils.isUndefined(persistenceNameStrategy.getString("persistenceName"))) {
-                target.setGlobalPersistenceName(persistenceNameStrategy.getString("persistenceName"));
+                target.setGlobalPersistenceNameFormat(persistenceNameStrategy.getString("persistenceName"));
             }
-            for (Object persistenceNameObj : persistenceNameStrategy.getArray("names")) {
+            for (Object persistenceNameObj : persistenceNameStrategy.getArray("persistenceNameFormats")) {
                 Decoration persistenceName = (Decoration) persistenceNameObj;
 
                 PersistenceNameType type2 = null;
                 switch (net.vpc.upa.config.PersistenceNameType.valueOf(persistenceName.getString("persistenceNameType"))) {
                     case CUSTOM: {
-                        if (StringUtils.isUndefined(persistenceNameStrategy.getString("custom"))) {
+                        if (StringUtils.isUndefined(persistenceNameStrategy.getString("customTypeName"))) {
                             throw new UPAException("MissingCustomPersistenceNameType");
                         }
                         type2 = PersistenceNameType.valueOf(persistenceName.getString("customType"));
@@ -665,27 +751,9 @@ public class URLAnnotationStrategySupport {
                         break;
                     }
                 }
-                target.getNames().add(new net.vpc.upa.persistence.PersistenceName(StringUtils.trim(persistenceName.getString("object")), type2, StringUtils.trim(persistenceName.getString("value")), persistenceName.getConfig().getOrder()));
-            }
-        }
-    }
-
-    private void merge(PersistenceNameConfig source, PersistenceNameConfig target) {
-        if (source != null) {
-            if (StringUtils.isNullOrEmpty(source.getPersistenceNameEscape())) {
-                target.setPersistenceNameEscape(source.getPersistenceNameEscape());
-            }
-            if (StringUtils.isNullOrEmpty(source.getGlobalPersistenceName())) {
-                target.setGlobalPersistenceName(source.getGlobalPersistenceName());
-            }
-            if (source.getGlobalPersistenceName() != null) {
-                target.setGlobalPersistenceName(source.getGlobalPersistenceName());
-            }
-            if (source.getLocalPersistenceName() != null) {
-                target.setLocalPersistenceName(source.getLocalPersistenceName());
-            }
-            for (net.vpc.upa.persistence.PersistenceName v : source.getNames()) {
-                target.getNames().add(new net.vpc.upa.persistence.PersistenceName(v.getObject(), v.getPersistenceNameType(), v.getValue(), v.getConfigOrder()));
+                target.getNameFormats().add(new net.vpc.upa.persistence.PersistenceNameFormat(
+                        StringUtils.trim(persistenceName.getString("object")),
+                        type2, StringUtils.trim(persistenceName.getString("value")), persistenceName.getConfig().getOrder()));
             }
         }
     }
@@ -708,28 +776,20 @@ public class URLAnnotationStrategySupport {
             if (c.getAutoStart() != null) {
                 old.setAutoStart(c.getAutoStart());
             }
-            if (c.getModel() != null) {
-                PersistenceNameConfig m0 = c.getModel();
-                PersistenceNameConfig m = old.getModel();
-                if (m == null) {
-                    m = new PersistenceNameConfig(orderedIem.order);
-                    old.setModel(m);
-                }
-                if (StringUtils.isNullOrEmpty(m0.getPersistenceNameEscape())) {
-                    m.setPersistenceNameEscape(m0.getPersistenceNameEscape());
-                }
-                if (StringUtils.isNullOrEmpty(m0.getGlobalPersistenceName())) {
-                    m.setGlobalPersistenceName(m0.getGlobalPersistenceName());
-                }
-                if (m0.getGlobalPersistenceName() != null) {
-                    m.setGlobalPersistenceName(m0.getGlobalPersistenceName());
-                }
-                if (m0.getLocalPersistenceName() != null) {
-                    m.setLocalPersistenceName(m0.getLocalPersistenceName());
-                }
-                for (net.vpc.upa.persistence.PersistenceName v : m0.getNames()) {
-                    m.getNames().add(new net.vpc.upa.persistence.PersistenceName(v.getObject(), v.getPersistenceNameType(), v.getValue(), v.getConfigOrder()));
-                }
+            if (StringUtils.isNullOrEmpty(c.getPersistenceNameEscape())) {
+                old.setPersistenceNameEscape(c.getPersistenceNameEscape());
+            }
+            if (StringUtils.isNullOrEmpty(c.getGlobalPersistenceNameFormat())) {
+                old.setGlobalPersistenceNameFormat(c.getGlobalPersistenceNameFormat());
+            }
+            if (c.getGlobalPersistenceNameFormat() != null) {
+                old.setGlobalPersistenceNameFormat(c.getGlobalPersistenceNameFormat());
+            }
+            if (c.getLocalPersistenceNameFormat() != null) {
+                old.setLocalPersistenceNameFormat(c.getLocalPersistenceNameFormat());
+            }
+            for (net.vpc.upa.persistence.PersistenceNameFormat v : c.getNameFormats()) {
+                old.getNameFormats().add(new net.vpc.upa.persistence.PersistenceNameFormat(v.getObject(), v.getPersistenceNameType(), v.getValue(), v.getConfigOrder()));
             }
             for (Map.Entry<String, Object> entry : c.getProperties().entrySet()) {
                 if (entry.getValue() == null) {

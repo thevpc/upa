@@ -16,59 +16,62 @@ import java.util.regex.Pattern;
  */
 //@WebFilter("/*")
 public class UPAServletRequestFilter implements Filter {
+
     private Pattern pattern;
     private UPAWebContextSwitch switcher;
+
     public void init(FilterConfig filterConfig) throws ServletException {
         WebUPAContext.fallBackContext.setServletContext(filterConfig.getServletContext());
         String filter = filterConfig.getServletContext().getInitParameter("upa.web.context-url-filter");
-        if(filter!=null && filter.trim().length()>0) {
+        if (filter != null && filter.trim().length() > 0) {
             pattern = Pattern.compile(WebHelper.simpexpToRegexp(filter.trim()));
         }
         String switcherType = filterConfig.getServletContext().getInitParameter("upa.web.context-switch");
-        if(switcherType!=null){
-            switcherType=switcherType.trim();
-            if(switcherType.length()>0){
+        if (switcherType != null) {
+            switcherType = switcherType.trim();
+            if (switcherType.length() > 0) {
                 try {
-                    switcher=(UPAWebContextSwitch) Class.forName(switcherType,true,Thread.currentThread().getContextClassLoader()).getDeclaredConstructor().newInstance();
+                    switcher = (UPAWebContextSwitch) Class.forName(switcherType, true, Thread.currentThread().getContextClassLoader()).getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
-                    throw new ServletException("Unable to instantiate context switch",e);
+                    throw new ServletException("Unable to instantiate context switch", e);
                 }
             }
         }
     }
+
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest=(HttpServletRequest) request;
-        boolean enabledContext=true;
-        if(pattern!=null){
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        boolean enabledContext = true;
+        if (pattern != null) {
             try {
-                String sp=httpServletRequest.getServletPath();
-                if(sp==null){
-                    sp="";
+                String sp = httpServletRequest.getServletPath();
+                if (sp == null) {
+                    sp = "";
                 }
                 String p = httpServletRequest.getPathInfo();
-                if(p!=null && p.length()>0){
-                    if(!p.startsWith("/")){
-                        sp+="/";
+                if (p != null && p.length() > 0) {
+                    if (!p.startsWith("/")) {
+                        sp += "/";
                     }
-                    sp+=p;
+                    sp += p;
                 }
                 Matcher matcher = pattern.matcher(sp);
-                if(!matcher.matches()){
-                    enabledContext=false;
+                if (!matcher.matches()) {
+                    enabledContext = false;
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 //
             }
         }
-        if(enabledContext){
-            InvokeContext invokeContext=null;
-            if(switcher!=null){
+        if (enabledContext) {
+            InvokeContext invokeContext = null;
+            if (switcher != null) {
                 invokeContext = switcher.createInvokeContext(request);
-                if(invokeContext==null){
-                    enabledContext=false;
+                if (invokeContext == null) {
+                    enabledContext = false;
                 }
             }
-            if(enabledContext) {
+            if (enabledContext) {
                 WebUPAContext nfo = new WebUPAContext();
                 nfo.setServletContext(request.getServletContext());
                 nfo.setRequest((HttpServletRequest) request);
@@ -89,21 +92,19 @@ public class UPAServletRequestFilter implements Filter {
                         throw (IOException) cause;
                     }
                     if (cause instanceof ServletException) {
-                        ServletException cause1 = (ServletException) cause;
-//                    Throwable rootCause = cause1.getRootCause();
-//                    if(rootCause instanceof ViewExpiredException){
-//
-//                    }
-                        throw cause1;
+                        throw (ServletException) cause;
+                    }
+                    if (cause instanceof RuntimeException) {
+                        throw (RuntimeException)cause;
                     }
                     throw e;
                 } finally {
                     WebUPAContext.Current.set(null);
                 }
-            }else{
+            } else {
                 chain.doFilter(request, response);
             }
-        }else{
+        } else {
             chain.doFilter(request, response);
         }
     }

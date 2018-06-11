@@ -320,7 +320,7 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         List<Field> fields = table.getIdFields();
         for (Field field : fields) {
             if (UPAUtils.getPersistFormula(field) instanceof Sequence) {
-                return ("Set Identity_Insert " + table.getPersistenceName() + " On");
+                return ("Set Identity_Insert " + getValidIdentifier(getPersistenceName(table)) + " On");
             }
         }
         return null;

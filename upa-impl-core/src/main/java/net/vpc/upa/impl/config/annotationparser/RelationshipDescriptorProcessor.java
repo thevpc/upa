@@ -6,7 +6,6 @@ package net.vpc.upa.impl.config.annotationparser;
 
 import net.vpc.upa.*;
 import net.vpc.upa.callbacks.*;
-import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
@@ -16,6 +15,8 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.OneToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -160,10 +161,17 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         } else {
             Field baseField = sourceEntity.getField(relationDescriptor.getBaseField());
             DataType baseFieldType = baseField.getDataType();
-            if (baseFieldType instanceof ManyToOneType) {
-                ManyToOneType et = (ManyToOneType) baseFieldType;
-                if (et.getTargetEntityName() == null || et.getTargetEntityName().isEmpty()) {
-                    et.setTargetEntityName(targetEntity.getName());
+            if (baseFieldType instanceof ManyToOneType || baseFieldType instanceof OneToOneType) {
+                if (baseFieldType instanceof ManyToOneType) {
+                    ManyToOneType met = (ManyToOneType) baseFieldType;
+                    if (met.getTargetEntityName() == null || met.getTargetEntityName().isEmpty()) {
+                        met.setTargetEntityName(targetEntity.getName());
+                    }
+                } else if (baseFieldType instanceof OneToOneType) {
+                    OneToOneType met = (OneToOneType) baseFieldType;
+                    if (met.getTargetEntityName() == null || met.getTargetEntityName().isEmpty()) {
+                        met.setTargetEntityName(targetEntity.getName());
+                    }
                 }
                 sourceUpdateType = RelationshipUpdateType.COMPOSED;
                 List<Field> masterPK = targetEntity.getIdFields();
@@ -176,16 +184,16 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                         }
                     } else {
                         for (Field masterField : masterPK) {
-                            List<Field> mfields=null;
+                            List<Field> mfields = null;
                             try {
                                 mfields = resolveBaseFields(masterField);
-                            }catch(RuntimeException e){
-                                if(throwErrors){
+                            } catch (RuntimeException e) {
+                                if (throwErrors) {
                                     throw e;
                                 }
                                 return false;
                             }
-                            if(mfields.size()==1 && mfields.get(0).equals(masterField)){
+                            if (mfields.size() == 1 && mfields.get(0).equals(masterField)) {
                                 String f = masterField.getName();
                                 if (f.length() == 1) {
                                     f = f.toUpperCase();
@@ -194,7 +202,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                                 }
                                 String extraName = baseField.getName() + f;
                                 sourceFieldNames.add(extraName);
-                            }else {
+                            } else {
                                 for (Field mfield : mfields) {
                                     String f = mfield.getName();
                                     if (f.length() == 1) {
@@ -230,22 +238,22 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
                     Field idField = sourceEntity.findField(extraName);
                     if (idField == null) {
                         Field field = masterPK.get(i);
-                        List<Field> referencedFields2=null;
+                        List<Field> referencedFields2 = null;
                         try {
                             referencedFields2 = resolveBaseFields(field);
-                        }catch (RuntimeException rt){
+                        } catch (RuntimeException rt) {
                             if (throwErrors) {
                                 throw rt;
                             }
                             return false;
                         }
-                        int ii=0;
+                        int ii = 0;
                         for (Field field1 : referencedFields2) {
                             DataType dt = (DataType) field1.getDataType().copy();
                             boolean nullable = baseFieldType.isNullable();
                             dt.setNullable(nullable);
                             sourceEntity.addField(
-                                    new DefaultFieldBuilder().setName(extraName+ (ii==0?"":(ii+1))).setPath("system").addModifier(UserFieldModifier.SYSTEM)
+                                    new DefaultFieldBuilder().setName(extraName + (ii == 0 ? "" : (ii + 1))).setPath("system").addModifier(UserFieldModifier.SYSTEM)
                                             .addExcludeModifier(UserFieldModifier.UPDATE)
                                             .setDataType(dt).setProtectionLevel(ProtectionLevel.PRIVATE)
                             );
@@ -296,16 +304,16 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
         return true;
     }
 
-    private List<Field> resolveBaseFields(Field f){
-        List<Field> all=new ArrayList<>();
-        if(f.getDataType() instanceof SerializableOrManyToOneType) {
+    private List<Field> resolveBaseFields(Field f) {
+        List<Field> all = new ArrayList<>();
+        if (f.getDataType() instanceof SerializableOrManyToOneType) {
             throw new UPAIllegalArgumentException("Unable to resolve type");
-        }else if(f.isManyToOne()){
+        } else if (f.isManyToOne()) {
             Relationship manyToOneRelationship = f.getManyToOneRelationship();
             for (Field field : manyToOneRelationship.getTargetEntity().getIdFields()) {
                 all.addAll(resolveBaseFields(field));
             }
-        }else{
+        } else {
             all.add(f);
         }
         return all;
@@ -372,8 +380,10 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
 
             relation.getTargetRole().setEntityField(null);
             relation.getTargetRole().setRelationshipUpdateType(PlatformUtils.getUndefinedValue(RelationshipUpdateType.class));
-            relation.setFilter(filter);
             relation.setNullable(nullable);
+            if (relation instanceof ManyToOneRelationship) {
+                ((ManyToOneRelationship) relation).setFilter(filter);
+            }
         }
         return true;
     }

@@ -392,7 +392,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public void registerField(Field field) throws UPAException {
-        fieldsMap.put(getPersistenceUnit().getNamingStrategy().getUniformValue(field.getName()), (Field) field);
+        fieldsMap.put(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(field.getName()), (Field) field);
     }
 
     @Override
@@ -693,7 +693,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     //    private void revalidateStructure_addPart(EntityPart part) throws UPAException {
-////        NamingStrategy namesComparator = getPersistenceUnit().getNamingStrategy();
+////        NamingStrategy namesComparator = NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers());
 //        if (part instanceof Section) {
 //            List<EntityPart> children = ((Section) part).getChildren();
 //            for (EntityPart aChildren : children) {
@@ -1478,7 +1478,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 log.log(Level.WARNING, getName() + "." + field.getName() + " is a formula but is not nullable. Forced to nullable (type reference changed)");
                 //throw new UPAException(new I18NString("NoNullableFormulaException", field.getName(), getName()));
             }
-            if (fieldsMap.containsKey(getPersistenceUnit().getNamingStrategy().getUniformValue(field.getName()))) {
+            if (fieldsMap.containsKey(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(field.getName()))) {
                 throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", field.getName(), this);
             }
         } else if (part instanceof Section) {
@@ -1633,7 +1633,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         f.setUserExcludeModifiers(fieldDescriptor.getExcludeModifiers());
 
         PropertyAccessType propertyAccessType = fieldDescriptor.getPropertyAccessType();
-        if (PlatformUtils.isUndefinedValue(PropertyAccessType.class, propertyAccessType)) {
+        if (PlatformUtils.isUndefinedEnumValue(PropertyAccessType.class, propertyAccessType)) {
             propertyAccessType = PropertyAccessType.PROPERTY;
         }
         f.setPropertyAccessType(propertyAccessType);
@@ -1720,12 +1720,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             return false;
         } else {
             DefaultEntity o = (DefaultEntity) other;
-            return getPersistenceUnit().getNamingStrategy().equals(getName(), o.getName());
+            return NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).equals(getName(), o.getName());
         }
     }
 
     public boolean containsField(String fieldName) throws UPAException {
-        return fieldsMap.containsKey(getPersistenceUnit().getNamingStrategy().getUniformValue(fieldName));
+        return fieldsMap.containsKey(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(fieldName));
     }
 
     public List<DynamicField> getDynamicFields() throws UPAException {
@@ -1756,7 +1756,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public Field getField(String fieldName) throws UPAException {
         revalidateStructure();
-        Field f = fieldsMap.get(getPersistenceUnit().getNamingStrategy().getUniformValue(fieldName));
+        Field f = fieldsMap.get(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(fieldName));
         if (f != null) {
             return f;
         }
@@ -1770,7 +1770,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public Field findField(String fieldName) throws UPAException {
         revalidateStructure();
-        return fieldsMap.get(getPersistenceUnit().getNamingStrategy().getUniformValue(fieldName));
+        return fieldsMap.get(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(fieldName));
     }
 
     public List<Field> getIdFields() throws UPAException {
@@ -1919,7 +1919,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     //    public int indexOfField(String key) throws UPAException {
-//        NamingStrategy comp = getPersistenceUnit().getNamingStrategy();
+//        NamingStrategy comp = NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers());
 //        String k = comp.getUniformValue(key);
 //        for (int i = 0; i < fieldsList.size(); i++) {
 //            if (comp.getUniformValue(fieldsList.get(i).getName()).equals(k)) {
@@ -2638,6 +2638,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     private Expression objToExpression(ConditionType conditionType, Object condition, String alias) {
         Expression expr = null;
         EntityBuilder builder = getBuilder();
+        if(PlatformUtils.isUndefinedEnumValue(ConditionType.class,conditionType)){
+            throw new UPAException("InvalidConditionType");
+        }
         switch (conditionType) {
             case EXPRESSION: {
                 expr = ((Expression) condition);
@@ -3627,7 +3630,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     //    protected void addFieldToCache(Field f) throws UPAException {
-//        NamingStrategy namesComparator = getPersistenceUnit().getNamingStrategy();
+//        NamingStrategy namesComparator = NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers());
 //        String uniformValue = namesComparator.getUniformValue(f.getName());
 //        if (!fieldsMap.containsKey(uniformValue)) {
 //            fieldsMap.put(uniformValue, f);

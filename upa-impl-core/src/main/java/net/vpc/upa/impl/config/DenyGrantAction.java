@@ -9,6 +9,7 @@
 // * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 // */
 //public enum DenyGrantAction {
+//    UNDEFINED,
 //    GRANT,
 //    DENY,
 //    IGNORE

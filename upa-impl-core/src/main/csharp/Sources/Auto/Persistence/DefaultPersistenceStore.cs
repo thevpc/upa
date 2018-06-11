@@ -1085,13 +1085,13 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         protected internal virtual string GetPersistenceName(Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec e) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            string persistenceName = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec,string>(persistenceNamesMap,e);
-            if (persistenceName == null) {
+            string persistenceNameFormat = Net.Vpc.Upa.Impl.FwkConvertUtils.GetMapValue<Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec,string>(persistenceNamesMap,e);
+            if (persistenceNameFormat == null) {
                 object @object = e.GetObject();
-                persistenceName = persistenceNameStrategy.GetPersistenceName(@object, e.GetSpec());
-                persistenceNamesMap[e]=persistenceName;
+                persistenceNameFormat = persistenceNameStrategy.GetPersistenceName(@object, e.GetSpec());
+                persistenceNamesMap[e]=persistenceNameFormat;
             }
-            return persistenceName;
+            return persistenceNameFormat;
         }
 
         public virtual Net.Vpc.Upa.Persistence.PersistenceNameStrategy GetPersistenceNameStrategy() {
@@ -1185,24 +1185,24 @@ namespace Net.Vpc.Upa.Impl.Persistence
         }
 
         public virtual Net.Vpc.Upa.PersistenceState GetEntityPersistenceState(Net.Vpc.Upa.Entity @object, Net.Vpc.Upa.Persistence.PersistenceNameType spec, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext, System.Data.IDbConnection connection) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
-            string persistenceName = GetPersistenceName(@object, spec);
+            string persistenceNameFormat = GetPersistenceName(@object, spec);
             if (spec == null) {
                 Net.Vpc.Upa.PersistenceState persistenceState = Net.Vpc.Upa.PersistenceState.UNKNOWN;
-                if (TableExists(persistenceName, entityExecutionContext)) {
+                if (TableExists(persistenceNameFormat, entityExecutionContext)) {
                     persistenceState = Net.Vpc.Upa.PersistenceState.VALID;
                 }
                 //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
                 return persistenceState;
             } else if (Net.Vpc.Upa.Persistence.PersistenceNameType.IMPLICIT_VIEW.Equals(spec)) {
                 Net.Vpc.Upa.PersistenceState persistenceState = Net.Vpc.Upa.PersistenceState.UNKNOWN;
-                if (ViewExists(persistenceName, entityExecutionContext)) {
+                if (ViewExists(persistenceNameFormat, entityExecutionContext)) {
                     persistenceState = Net.Vpc.Upa.PersistenceState.VALID;
                 }
                 //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
                 return persistenceState;
             } else if (Net.Vpc.Upa.Persistence.PersistenceNameType.PK_CONSTRAINT.Equals(spec)) {
                 Net.Vpc.Upa.PersistenceState persistenceState = Net.Vpc.Upa.PersistenceState.UNKNOWN;
-                if (PkConstraintsExists(GetPersistenceName(@object, null), persistenceName, entityExecutionContext)) {
+                if (PkConstraintsExists(GetPersistenceName(@object, null), persistenceNameFormat, entityExecutionContext)) {
                     persistenceState = Net.Vpc.Upa.PersistenceState.VALID;
                 }
                 return persistenceState;
@@ -1260,8 +1260,8 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 status = Net.Vpc.Upa.PersistenceState.TRANSIENT;
             } else {
                 string tablePersistenceName = GetPersistenceName(@object.GetSourceRole().GetEntity());
-                string persistenceName = GetPersistenceName(@object);
-                if (ForeignKeyExists(tablePersistenceName, persistenceName, entityExecutionContext)) {
+                string persistenceNameFormat = GetPersistenceName(@object);
+                if (ForeignKeyExists(tablePersistenceName, persistenceNameFormat, entityExecutionContext)) {
                     status = Net.Vpc.Upa.PersistenceState.VALID;
                 }
             }
@@ -1287,18 +1287,18 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return Net.Vpc.Upa.Impl.Persistence.IdentifierStoreTranslators.UPPER;
         }
 
-        protected internal virtual bool TableExists(string persistenceName, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+        protected internal virtual bool TableExists(string persistenceNameFormat, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
             try {
                 System.Data.IDataReader rs = null;
                 System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
                 if (connection is System.Data.Common.DbConnection)
                 {
                 System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
-                System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceName, "BASE TYPE" });
+                System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceNameFormat, "BASE TYPE" });
                 return (found.Rows.Count != 0);
                 }
             } catch (System.Exception ex) {
-                throw CreateUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
+                throw CreateUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceNameFormat);
             }
             return false;
         }
@@ -1307,18 +1307,18 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return identifierStoreTranslator;
         }
 
-        protected internal virtual bool ViewExists(string persistenceName, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
+        protected internal virtual bool ViewExists(string persistenceNameFormat, Net.Vpc.Upa.Persistence.EntityExecutionContext entityExecutionContext) {
             try {
                 System.Data.IDataReader rs = null;
                 System.Data.IDbConnection connection = entityExecutionContext.GetConnection().GetPlatformConnection();
                 if (connection is System.Data.Common.DbConnection)
                 {
                 System.Data.Common.DbConnection dconnection = (System.Data.Common.DbConnection)connection;
-                System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceName, "VIEW" });
+                System.Data.DataTable found = dconnection.GetSchema("Tables", new string[] { null, null, persistenceNameFormat, "VIEW" });
                 return (found.Rows.Count != 0);
                 }
             } catch (System.Exception ex) {
-                throw CreateUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
+                throw CreateUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceNameFormat);
             }
             return false;
         }

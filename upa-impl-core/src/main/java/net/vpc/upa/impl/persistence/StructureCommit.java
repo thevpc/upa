@@ -1,9 +1,9 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.PersistenceState;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.UPAObject;
-import net.vpc.upa.persistence.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.StructureStrategy;
@@ -40,13 +40,13 @@ public abstract class StructureCommit {
                         //do nothing
                         break;
                     }
-                    case UNKNOWN:
+                    case UNDEFINED:
                     case DIRTY: {
                         //throw new UPAException(new I18NString("DirtyObject"),object);
                         try {
                             persist(executionContext, status);
                         } catch (Exception e) {
-                            throw new UPAException(e, new I18NString("CommitFailed"));
+                            throw new UPAException(e, new I18NString("CommitFailed"),object);
                         }
                         object.getProperties().setString("persistence.PersistenceAction", "ADD");
                         //info.setPersistenceState(PersistenceState.VALID);
@@ -62,7 +62,7 @@ public abstract class StructureCommit {
             }
             case MANDATORY: {
                 switch (status) {
-                    case UNKNOWN: {
+                    case UNDEFINED: {
                         throw new UPAException(new I18NString("MandatoryObject"), object);
                     }
                     case VALID: {

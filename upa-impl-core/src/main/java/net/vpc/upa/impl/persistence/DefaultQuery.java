@@ -491,4 +491,5 @@ public class DefaultQuery extends AbstractQuery {
         return c == null ? defaultValue : c;
     }
 
+
 }

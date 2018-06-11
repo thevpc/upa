@@ -20,13 +20,13 @@ import net.vpc.upa.expressions.ExpressionHelper;
 public abstract class AbstractUPAObject implements UPAObject {
 
     private String name;
-    private String persistenceName;
+//    private String persistenceName;
     private I18NString title;
     private I18NString description;
 //    private I18NString i18NString;
     private PersistenceUnit persistenceUnit;
     private final Properties parameters = new DefaultProperties();
-    private PersistenceState persistenceState = PersistenceState.UNKNOWN;
+    private PersistenceState persistenceState = PersistenceState.UNDEFINED;
     protected PropertyChangeSupport beforePropertyChangeSupport;
     protected PropertyChangeSupport afterPropertyChangeSupport;
     protected List<UPAObjectListener> objectListeners;
@@ -49,17 +49,17 @@ public abstract class AbstractUPAObject implements UPAObject {
         afterPropertyChangeSupport.firePropertyChange("name", old, recent);
     }
 
-    public String getPersistenceName() {
-        return persistenceName;
-    }
-
-    public void setPersistenceName(String persistenceName) {
-        String old = this.persistenceName;
-        String recent = persistenceName;
-        beforePropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
-        this.persistenceName = persistenceName;
-        afterPropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
-    }
+//    public String getPersistenceName() {
+//        return persistenceName;
+//    }
+//
+//    public void setPersistenceName(String persistenceName) {
+//        String old = this.persistenceName;
+//        String recent = persistenceName;
+//        beforePropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
+//        this.persistenceName = persistenceName;
+//        afterPropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
+//    }
 
     public I18NString getI18NTitle() {
         return title;
@@ -110,7 +110,7 @@ public abstract class AbstractUPAObject implements UPAObject {
 //    @Override
     public void setPersistenceState(PersistenceState persistenceState) {
         PersistenceState old = this.persistenceState;
-        persistenceState = PlatformUtils.isUndefinedValue(PersistenceState.class,persistenceState) ? PersistenceState.UNKNOWN : persistenceState;
+        persistenceState = PlatformUtils.isUndefinedEnumValue(PersistenceState.class,persistenceState) ? PersistenceState.UNDEFINED : persistenceState;
         PersistenceState recent = persistenceState;
 
         beforePropertyChangeSupport.firePropertyChange("persistenceState", old, recent);

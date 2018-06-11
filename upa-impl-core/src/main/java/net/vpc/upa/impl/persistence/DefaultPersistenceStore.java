@@ -35,7 +35,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 
 
     @Override
-    public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile, PersistenceNameConfig nameConfig) throws UPAException {
+    public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile) throws UPAException {
         embeddedDataSourceSupported = null;
         /**
          * @PortabilityHint(target = "C#", name = "suppress")
@@ -45,7 +45,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
          * @PortabilityHint(target = "C#", name = "suppress")
          */
         embeddedDatasourceFactories.add(DBCPv2EmbeddedDatasourceFactory.INSTANCE);
-        super.init(persistenceUnit, readOnly, connectionProfile, nameConfig); //To change body of generated methods, choose Tools | Templates.
+        super.init(persistenceUnit, readOnly, connectionProfile);
     }
 
 

@@ -24,6 +24,11 @@ public abstract class AbstractDecoration extends AbstractDecorationValue impleme
     private ConfigInfo mergedConfigInfo = null;
     private Map<String, DecorationValue> mergedAttributes = null;
 
+    public boolean contains(String name) {
+        Map<String, DecorationValue> a = getAttributes();
+        return a.containsKey(name);
+    }
+
     public DecorationValue get(String name) {
         Map<String, DecorationValue> a = getAttributes();
         DecorationValue v = a.get(name);

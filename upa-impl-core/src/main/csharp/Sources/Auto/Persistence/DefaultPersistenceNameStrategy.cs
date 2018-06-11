@@ -45,11 +45,11 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 modelMap["LOCAL_PERSISTENCE_NAME"]=model.GetLocalPersistenceName();
                 modelMap["PERSISTENCE_NAME_ESCAPE"]=model.GetPersistenceNameEscape();
                 if (model.GetNames() != null) {
-                    foreach (Net.Vpc.Upa.Persistence.PersistenceName persistenceName in model.GetNames()) {
-                        if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(persistenceName.GetObject())) {
-                            modelMap[persistenceName.GetPersistenceNameType().Name()]=persistenceName.GetValue();
+                    foreach (Net.Vpc.Upa.Persistence.PersistenceName persistenceNameFormat in model.GetNames()) {
+                        if (Net.Vpc.Upa.Impl.Util.StringUtils.IsNullOrEmpty(persistenceNameFormat.GetObject())) {
+                            modelMap[persistenceNameFormat.GetPersistenceNameType().Name()]=persistenceNameFormat.GetValue();
                         } else {
-                            modelMap[persistenceName.GetPersistenceNameType().Name() + ":" + persistenceName.GetObject()]=persistenceName.GetValue();
+                            modelMap[persistenceNameFormat.GetPersistenceNameType().Name() + ":" + persistenceNameFormat.GetObject()]=persistenceNameFormat.GetValue();
                         }
                     }
                 }
@@ -168,7 +168,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
             return null;
         }
 
-        protected internal virtual string ValidatePersistenceName(string persistenceName, Net.Vpc.Upa.Persistence.PersistenceNameType defaultType, string absoluteName, Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec e, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceNameType> types) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
+        protected internal virtual string ValidatePersistenceName(string persistenceNameFormat, Net.Vpc.Upa.Persistence.PersistenceNameType defaultType, string absoluteName, Net.Vpc.Upa.Impl.Persistence.UPAObjectAndSpec e, System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceNameType> types) /* throws Net.Vpc.Upa.Exceptions.UPAException */  {
             //        String varName = "*";
             string confPrefix = "";
             //UPA.CONNECTION_STRING+".";
@@ -193,7 +193,7 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 persistenceNamePattern = persistenceNamePattern.Trim();
                 if ((persistenceNamePattern).Length > 0) {
                     noPatternDefined = false;
-                    persistenceName = ReplacePersistenceName(persistenceNamePattern, persistenceName);
+                    persistenceNameFormat = ReplacePersistenceName(persistenceNamePattern, persistenceNameFormat);
                 }
             }
             if (defaultType.IsGlobal()) {
@@ -205,14 +205,14 @@ namespace Net.Vpc.Upa.Impl.Persistence
                 persistenceNamePattern = persistenceNamePattern.Trim();
                 if ((persistenceNamePattern).Length > 0) {
                     noPatternDefined = false;
-                    persistenceName = ReplacePersistenceName(persistenceNamePattern, persistenceName);
+                    persistenceNameFormat = ReplacePersistenceName(persistenceNamePattern, persistenceNameFormat);
                 }
             }
             if (noPatternDefined) {
                 //use default pattern...
-                persistenceName = ReplacePersistenceName("*", persistenceName);
+                persistenceNameFormat = ReplacePersistenceName("*", persistenceNameFormat);
             }
-            if (GetPersistenceStore().IsReservedKeyword(persistenceName)) {
+            if (GetPersistenceStore().IsReservedKeyword(persistenceNameFormat)) {
                 if (escapedNamePattern == null) {
                     escapedNamePattern = GetParamValue(confPrefix, "PERSISTENCE_NAME_ESCAPE", parameters);
                     if (escapedNamePattern == null) {
@@ -226,10 +226,10 @@ namespace Net.Vpc.Upa.Impl.Persistence
                     }
                 }
                 if ((escapedNamePattern).Length > 0) {
-                    persistenceName = ReplacePersistenceName(escapedNamePattern, persistenceName);
+                    persistenceNameFormat = ReplacePersistenceName(escapedNamePattern, persistenceNameFormat);
                 }
             }
-            return persistenceName;
+            return persistenceNameFormat;
         }
 
         protected internal static string ReplacePersistenceName(string pattern, string objectName) {

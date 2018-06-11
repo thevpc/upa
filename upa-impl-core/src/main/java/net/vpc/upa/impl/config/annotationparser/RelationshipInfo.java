@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import net.vpc.upa.RelationshipDescriptor;
 import net.vpc.upa.config.Hierarchy;
+import net.vpc.upa.config.OneToOne;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.UserExpression;
@@ -20,6 +21,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.OneToOneType;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -39,6 +41,7 @@ class RelationshipInfo implements RelationshipDescriptor {
     private int hierarchyConfigOrder;
     private String hierarchyPathSeparator;
     private boolean hierarchy;
+    private boolean oneToOne;
     private boolean manyToOne;
     private boolean nullable=true;//TODO FIX ME
     private String hierarchyPathField;
@@ -56,10 +59,12 @@ class RelationshipInfo implements RelationshipDescriptor {
     public void parse(List<Field> fields, boolean nullable) {
         fieldsList = fields;
         List<Decoration> manyToOneDecorations = new ArrayList<Decoration>();
+        List<Decoration> oneToOneDecorations = new ArrayList<Decoration>();
         List<Decoration> hierarchyDecorations = new ArrayList<Decoration>();
         for (Field javaField : fields) {
             Decoration gid = repo.getFieldDecoration(javaField, ManyToOne.class);
             Decoration gid2 = repo.getFieldDecoration(javaField, Hierarchy.class);
+            Decoration gid3 = repo.getFieldDecoration(javaField, OneToOne.class);
 
             if (gid != null) {
 //                ConfigInfo config = gid.getConfig();
@@ -68,6 +73,10 @@ class RelationshipInfo implements RelationshipDescriptor {
             if (gid2 != null) {
 //                ConfigInfo config = gid.getConfig();
                 hierarchyDecorations.add(gid2);
+            }
+            if (gid3 != null) {
+//                ConfigInfo config = gid.getConfig();
+                oneToOneDecorations.add(gid3);
             }
         }
         if (manyToOneDecorations.size() > 1) {
@@ -79,6 +88,9 @@ class RelationshipInfo implements RelationshipDescriptor {
         for (Decoration gid : manyToOneDecorations) {
             mergeManyToOne(gid);
         }
+        for (Decoration gid : oneToOneDecorations) {
+            mergeOneToOne(gid);
+        }
         for (Decoration gid : hierarchyDecorations) {
             mergeHierarchy(gid);
         }
@@ -88,8 +100,15 @@ class RelationshipInfo implements RelationshipDescriptor {
         if (isManyToOne()) {
             Class<?> nativeClass = getFieldType();
             if (!UPAUtils.isSimpleFieldType(nativeClass)) {
-                ManyToOneType manyToOneType = new ManyToOneType(name, nativeClass, null, true, nullable);
-                preferredDataType = (manyToOneType);
+                ManyToOneType pdt = new ManyToOneType(name, nativeClass, null, true, nullable);
+                preferredDataType = (pdt);
+            }
+        }
+        if (isOneToOne()) {
+            Class<?> nativeClass = getFieldType();
+            if (!UPAUtils.isSimpleFieldType(nativeClass)) {
+                OneToOneType pdt = new OneToOneType(name, nativeClass, null, true, nullable);
+                preferredDataType = (pdt);
             }
         }
     }
@@ -110,10 +129,11 @@ class RelationshipInfo implements RelationshipDescriptor {
             specified = true;
             hierarchy = true;
             manyToOne = true;
+            oneToOne = false;
             targetEntity = baseFieldInfo.getEntityInfo().getName();
             Class entityType = baseFieldInfo.getEntityInfo().getEntityType();
             targetEntityType = entityType;
-            if(PlatformUtils.isUndefinedValue(RelationshipType.class,relationType)) {
+            if(PlatformUtils.isUndefinedEnumValue(RelationshipType.class,relationType)) {
                 relationType = RelationshipType.COMPOSITION;
             }
             Class<?> nativeClass = getFieldType();
@@ -133,9 +153,18 @@ class RelationshipInfo implements RelationshipDescriptor {
     }
 
     public void mergeManyToOne(Decoration gid) {
+        mergeAnyToOne(gid,true);
+    }
+
+    public void mergeOneToOne(Decoration gid) {
+        mergeAnyToOne(gid,false);
+    }
+
+    public void mergeAnyToOne(Decoration gid,boolean manyToOne) {
         if (gid.getConfig().getOrder() >= manyToOneConfigOrder) {
             specified = true;
-            manyToOne = true;
+            this.manyToOne = manyToOne?true:false;
+            oneToOne = manyToOne?false:true;
             Class<?> nativeClass = getFieldType();
             if (nativeClass.isArray()) {
                 throw new UPAIllegalArgumentException("Invalid Array type " + nativeClass + " for ManyToOne");
@@ -303,6 +332,10 @@ class RelationshipInfo implements RelationshipDescriptor {
 
     public boolean isManyToOne() {
         return manyToOne;
+    }
+
+    public boolean isOneToOne() {
+        return oneToOne;
     }
 
     @Override

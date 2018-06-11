@@ -8,6 +8,8 @@ import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.EntityUpdateOperation;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.OneToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 import java.util.*;
 
@@ -75,11 +77,15 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             Field f = entity.findField(fieldName);
             if (f != null /*&& FieldFilters2.UPDATE.accept(f)*/) {
                 Object value = updates.getObject(fieldName);
-                if (f.isManyToOne()) {
-                    ManyToOneType e = (ManyToOneType) f.getDataType();
+                if (f.isManyToOne() || f.isOneToOne()) {
+                    RelationDataType e = (RelationDataType) f.getDataType();
                     if (e.isUpdatable()) {
+                        String targetEntityName=
+                                (e instanceof ManyToOneType)?((ManyToOneType) e).getTargetEntityName():
+                                        ((OneToOneType) e).getTargetEntityName();
+
                         String rname = e.getName()+"_";
-                        Entity masterEntity = context.getPersistenceUnit().getEntity(e.getTargetEntityName());
+                        Entity masterEntity = context.getPersistenceUnit().getEntity(targetEntityName);
                         EntityBuilder mbuilder = masterEntity.getBuilder();
                         if (value instanceof Expression) {
                             Expression evalue;
@@ -171,10 +177,13 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             if (f != null && FieldFilters2.UPDATE.accept(f)) {
                 Object value = updates.getObject(fieldName);
                 if (f.isManyToOne()) {
-                    ManyToOneType e = (ManyToOneType) f.getDataType();
+                    RelationDataType e = (RelationDataType) f.getDataType();
                     if (e.isUpdatable()) {
+                        String targetEntityName=
+                                (e instanceof ManyToOneType)?((ManyToOneType) e).getTargetEntityName():
+                                        ((OneToOneType) e).getTargetEntityName();
                         String rname = e.getName()+"_";
-                        Entity masterEntity = context.getPersistenceUnit().getEntity(e.getTargetEntityName());
+                        Entity masterEntity = context.getPersistenceUnit().getEntity(targetEntityName);
                         EntityBuilder mbuilder = masterEntity.getBuilder();
                         if (value instanceof Expression) {
                             Expression evalue;

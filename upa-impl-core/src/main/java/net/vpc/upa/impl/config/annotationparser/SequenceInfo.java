@@ -7,7 +7,6 @@ import net.vpc.upa.SequenceType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
@@ -73,7 +72,7 @@ class SequenceInfo {
             if (gid.getString("name").length() > 0) {
                 name = gid.getString("name");
             }
-            if (gid.getEnum("strategy", SequenceStrategy.class) != SequenceStrategy.UNSPECIFIED) {
+            if (gid.getEnum("strategy", SequenceStrategy.class) != SequenceStrategy.UNDEFINED) {
                 strategy = gid.getEnum("strategy", SequenceStrategy.class);
             }
             if (gid.getInt("formulaOrder") != Integer.MIN_VALUE) {

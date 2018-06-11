@@ -102,7 +102,6 @@ public abstract class AbstractQuery implements QueryExt {
         }
     }
 
-
     public <R> R getSingleResult() throws UPAException {
         List<R> entityList = null;
         try {
@@ -125,10 +124,52 @@ public abstract class AbstractQuery implements QueryExt {
         }
     }
 
-    public <R> R getSingleResultOrNull() throws UPAException {
+    public <R> R getSingleResult(Class<R> type, String... fields) throws UPAException {
+        List<R> entityList = null;
+        try {
+            entityList = getResultList(type, fields);
+            if (entityList.isEmpty()) {
+                throw new NoResultException();
+            }
+            //do not call size, as it will load all entities if fount
+            //just iterate and throw exception if ambiguity
+            int x = 0;
+            for (Object object : entityList) {
+                x++;
+                if (x > 1) {
+                    throw new NonUniqueResultException();
+                }
+            }
+            return entityList.get(0);
+        } finally {
+            UPAUtils.close(entityList);
+        }
+    }
+    @Override
+    public <R> R getSingleResultOrNull() {
         List<R> entityList = null;
         try {
             entityList = getResultList();
+            if (entityList.isEmpty()) {
+                return null;
+            }
+            int x = 0;
+            for (Object object : entityList) {
+                x++;
+                if (x > 1) {
+                    throw new NonUniqueResultException();
+                }
+            }
+            return entityList.get(0);
+        } finally {
+            UPAUtils.close(entityList);
+        }
+    }
+
+    public <R> R getSingleResultOrNull(Class<R> type, String... fields) throws UPAException {
+        List<R> entityList = null;
+        try {
+            entityList = getResultList(type, fields);
             if (entityList.isEmpty()) {
                 return null;
             }
@@ -149,6 +190,19 @@ public abstract class AbstractQuery implements QueryExt {
         List<R> entityList = null;
         try {
             entityList = getResultList();
+            if (entityList.isEmpty()) {
+                return null;
+            }
+            return entityList.get(0);
+        } finally {
+            UPAUtils.close(entityList);
+        }
+    }
+
+    public <R> R getFirstResultOrNull(Class<R> type, String... fields) throws UPAException {
+        List<R> entityList = null;
+        try {
+            entityList = getResultList(type, fields);
             if (entityList.isEmpty()) {
                 return null;
             }
@@ -199,6 +253,5 @@ public abstract class AbstractQuery implements QueryExt {
         }
         return setParameter(index, value);
     }
-
 
 }

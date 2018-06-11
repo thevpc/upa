@@ -2,18 +2,14 @@ package net.vpc.upa.impl.android;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.CreatePersistenceUnitException;
-import net.vpc.upa.exceptions.DatabaseNotFoundException;
-import net.vpc.upa.exceptions.RootConnectionStringNotFoundException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.impl.DefaultProperties;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.persistence.*;
-import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.marshallers.FloatAsDoubleMarshaller;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
@@ -27,12 +23,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -111,7 +102,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
             Sequence sequence = (Sequence) UPAUtils.getPersistFormula(field);
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
             switch (strategy) {
-                case UNSPECIFIED:
+                case UNDEFINED:
                 case AUTO:
                 case IDENTITY: {
                     DataType d = (field.getDataType());
@@ -137,7 +128,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
             f = sequence.getFormat();
         }
         switch (strategy) {
-            case UNSPECIFIED:
+            case UNDEFINED:
             case AUTO:
             case IDENTITY: {
                 DataType d = (field.getDataType());

@@ -5,6 +5,6 @@ package net.vpc.upa.impl;
 * @creationdate 1/8/13 1:51 AM
 */
 public enum OnHoldCommitActionType {
-    UNKNWON,
+    UNDEFINED,
     CREATE,UPDATE,REMOVE
 }

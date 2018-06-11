@@ -60,6 +60,7 @@ public class RootObjectFactory extends AbstractObjectFactory {
     private PlatformObjectFactory platformObjectFactory;
 
     public RootObjectFactory() {
+        register(PlatformObjectFactory.class, DefaultPlatformObjectFactory.class);
         register(UPAContext.class, DefaultUPAContext.class);
         register(UPAContextProvider.class, DefaultUPAContextProvider.class);
         register(ObjectFactory.class, DefaultTypedFactory.class);
@@ -81,7 +82,6 @@ public class RootObjectFactory extends AbstractObjectFactory {
         register(Index.class, DefaultIndex.class);
         register(Entity.class, DefaultEntity.class);
         register(Package.class, DefaultPackage.class);
-        register(Relationship.class, DefaultRelationship.class);
         register(Section.class, DefaultSection.class);
         register(UPASecurityManager.class, DefaultSecurityManager.class);
         register(TransactionManagerFactory.class, DefaultTransactionManagerFactory.class);

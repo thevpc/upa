@@ -5,6 +5,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.OnHoldCommitAction;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.event.PersistenceUnitListenerManager;
+import net.vpc.upa.impl.persistence.PersistenceNameRuleSet;
 import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 

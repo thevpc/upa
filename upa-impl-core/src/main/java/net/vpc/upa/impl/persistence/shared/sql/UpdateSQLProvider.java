@@ -4,6 +4,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.EntityPart;
 import net.vpc.upa.Field;
 import net.vpc.upa.PrimitiveField;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
@@ -15,7 +16,6 @@ import net.vpc.upa.persistence.PersistenceStore;
 import java.util.Arrays;
 import java.util.List;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.persistence.PersistenceNameType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change

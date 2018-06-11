@@ -121,7 +121,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
             throw new UPAIllegalArgumentException("Expected " + expectedEntity.getName() + " but found " + treeEntity.getName() + " in " + o);
         }
 
-        Relationship t = HierarchicalRelationshipSupport.getTreeRelation(treeEntity);
+        ManyToOneRelationship t = HierarchicalRelationshipSupport.getTreeRelation(treeEntity);
         if (t == null) {
             throw new UPAIllegalArgumentException("Hierarchy Relationship not found");
         }

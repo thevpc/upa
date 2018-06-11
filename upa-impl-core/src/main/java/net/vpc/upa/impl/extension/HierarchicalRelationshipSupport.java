@@ -74,14 +74,16 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
                 getEntity().getBuilder().idToExpression(childId, UQLUtils.THIS))) > 0;
     }
 
-    public static Relationship getTreeRelation(Entity e) throws UPAException {
-        Relationship r = null;
+    public static ManyToOneRelationship getTreeRelation(Entity e) throws UPAException {
+        ManyToOneRelationship r = null;
         for (Relationship relation : e.getPersistenceUnit().getRelationshipsBySource(e)) {
-            if (relation.getTargetRole().getEntity().equals(e)) {
-                if (r != null) {
-                    throw new IllegalStateException("Ambiguity in resolving tree relation");
+            if(relation instanceof ManyToOneRelationship) {
+                if (relation.getTargetRole().getEntity().equals(e)) {
+                    if (r != null) {
+                        throw new IllegalStateException("Ambiguity in resolving tree relation");
+                    }
+                    r = (ManyToOneRelationship) relation;
                 }
-                r = relation;
             }
         }
         return r;

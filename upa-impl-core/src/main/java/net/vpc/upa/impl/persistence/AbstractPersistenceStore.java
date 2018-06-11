@@ -2,6 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Properties;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
@@ -24,7 +25,6 @@ import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
 import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
 import net.vpc.upa.impl.util.*;
-import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.*;
@@ -42,7 +42,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public static final String DRIVER_TYPE_DATASOURCE = "DATASOURCE";
     public static final String DRIVER_TYPE_GENERIC = "GENERIC";
     public static final String DRIVER_TYPE_ODBC = "ODBC";
-//    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
+    //    protected static final TypeMarshaller SERIALIZABLE_OBJECT_PLATFORM_MARSHALLER = new DefaultSerializablePlatformObjectMarshaller();
     protected static final String COMPLEX_SELECT_PERSIST = "Store.COMPLEX_SELECT_PERSIST";
     protected static final String COMPLEX_SELECT_MERGE = "Store.COMPLEX_SELECT_MERGE";
     protected static Logger log = Logger.getLogger(AbstractPersistenceStore.class.getName());
@@ -56,7 +56,6 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     private ObjectFactory factory;
     protected IdentifierStoreTranslator identifierStoreTranslator;
 
-    private PersistenceNameStrategy persistenceNameStrategy;
     private Map<UPAObjectAndSpec, String> persistenceNamesMap = new HashMap<UPAObjectAndSpec, String>();
     //    private DefaultPersistenceNameStrategyManager defaultPersistenceNameStrategyManager;
     //    private String name;
@@ -67,11 +66,12 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     private MarshallManager marshallManager;
     private SQLManager sqlManager;
     protected String identifierQuoteString;
-    private PersistenceNameConfig nameConfig;
     protected PersistenceUnit persistenceUnit;
     protected HashSet<String> reservedWords;
     private ConnectionProfile connectionProfile;
     protected DatabaseProduct databaseProduct;
+    protected PersistenceNameStrategy persistenceNameStrategy;
+    protected String databaseVersion;
 
     //should use a max sized accessibleStores for cache!
     protected Set<String> knownCreatedStores = new HashSet<>();
@@ -114,20 +114,14 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     @Override
-    public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile, PersistenceNameConfig nameConfig) throws UPAException {
+    public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile) throws UPAException {
         parameters = new DefaultProperties();
         marshallManager = new DefaultMarshallManager();
         sqlManager = new DefaultSQLManager(marshallManager);
         this.persistenceUnit = persistenceUnit;
-        this.nameConfig = nameConfig;
+        this.persistenceNameStrategy = persistenceUnit.getPersistenceNameStrategy();
         this.readOnly = readOnly;
         this.connectionProfile = connectionProfile;
-
-        PersistenceNameStrategy c = persistenceUnit.getFactory().createObject(PersistenceNameStrategy.class);
-        setPersistenceNameStrategy(c);
-        PlatformBeanType b = PlatformUtils.getBeanType(persistenceNameStrategy.getClass());
-        b.inject(persistenceNameStrategy, "persistenceStore", this);
-        b.inject(persistenceNameStrategy, "properties", persistenceUnit.getProperties());
         configureStore();
         commitManager.init(this);
     }
@@ -857,7 +851,15 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                     fillPrimitiveField(field, list);
                 }
             } else {
-                list.add(pf);
+                Relationship oneToOneRelationship = pf.getOneToOneRelationship();
+                if (oneToOneRelationship != null) {
+                    OneToOneType rd = (OneToOneType) d;
+                    for (Field field : rd.getRelationship().getSourceRole().getFields()) {
+                        fillPrimitiveField(field, list);
+                    }
+                } else {
+                    list.add(pf);
+                }
             }
         } else if (f instanceof CompoundField) {
             CompoundField c = (CompoundField) f;
@@ -1190,28 +1192,55 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return getPersistenceName(new UPAObjectAndSpec(name, spec));
     }
 
+    protected String buildPersistenceName(UPAObjectAndSpec e) throws UPAException {
+        Object object = e.getObject();
+        DefaultPersistenceNameStrategyCondition condition = new DefaultPersistenceNameStrategyCondition(databaseProduct, getDatabaseVersion(), getStrategyName());
+        if (object instanceof Entity) {
+            Entity entity = (Entity) object;
+            PersistenceNameType spec = e.getSpec();
+            if (spec != null) {
+                if (spec.equals(PersistenceNameType.PK_CONSTRAINT)) {
+                    return persistenceNameStrategy.getTablePKPersistenceName(entity, spec, condition);
+                } else if (spec.equals(PersistenceNameType.IMPLICIT_VIEW)) {
+                    return persistenceNameStrategy.getImplicitViewPersistenceName(entity, spec, condition);
+                } else if (spec.equals(PersistenceNameType.TABLE)) {
+                    return persistenceNameStrategy.getTablePersistenceName(entity, spec, condition);
+                } else {
+                    //
+                    return persistenceNameStrategy.getTablePersistenceName(entity, spec, condition);
+                }
+            } else {
+                return persistenceNameStrategy.getTablePersistenceName(entity, spec, condition);
+            }
+        } else if (object instanceof Field) {
+            return persistenceNameStrategy.getFieldPersistenceName((Field) object, e.getSpec(), condition);
+        } else if (object instanceof Index) {
+            return persistenceNameStrategy.getIndexPersistenceName((Index) object, e.getSpec(), condition);
+        } else if (object instanceof Relationship) {
+            return persistenceNameStrategy.getRelationshipPersistenceName((Relationship) object, e.getSpec(),condition);
+        } else if (object instanceof String) {
+            return persistenceNameStrategy.getIdentifierPersistenceName((String) object, e.getSpec(), condition);
+        } else {
+            throw new UPAIllegalArgumentException("UnsupportedPersistenceNameType");
+        }
+
+    }
+
     protected String getPersistenceName(UPAObjectAndSpec e) throws UPAException {
         String persistenceName = persistenceNamesMap.get(e);
         if (persistenceName == null) {
-            Object object = e.getObject();
-            persistenceName = persistenceNameStrategy.getPersistenceName(object, e.getSpec());
+            persistenceName = buildPersistenceName(e);
             persistenceNamesMap.put(e, persistenceName);
         }
         return persistenceName;
     }
 
-    public PersistenceNameStrategy getPersistenceNameStrategy() {
-        return persistenceNameStrategy;
+    public String getStrategyName() {
+        return getConnectionProfile().getProperty("namingStrategy");
     }
 
-    public void setPersistenceNameStrategy(PersistenceNameStrategy persistenceNameStrategy) {
-        if (this.persistenceNameStrategy != null) {
-            this.persistenceNameStrategy.close();
-        }
-        this.persistenceNameStrategy = persistenceNameStrategy;
-        if (this.persistenceNameStrategy != null) {
-            this.persistenceNameStrategy.init(this, nameConfig, persistenceUnit.getProperties());
-        }
+    public String getDatabaseVersion() {
+        return databaseVersion;
     }
 
     public String getTablePKName(Entity o) throws UPAException {
@@ -1382,22 +1411,22 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     public PersistenceState getEntityPersistenceState(Entity object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         String persistenceName = getPersistenceName(object, spec);
-        if (spec == null) {
-            PersistenceState persistenceState = PersistenceState.UNKNOWN;
+        if (spec == PersistenceNameType.TABLE) {
+            PersistenceState persistenceState = PersistenceState.UNDEFINED;
             if (tableExists(persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return persistenceState;
         } else if (PersistenceNameType.IMPLICIT_VIEW.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.UNKNOWN;
+            PersistenceState persistenceState = PersistenceState.UNDEFINED;
             if (viewExists(persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return persistenceState;
         } else if (PersistenceNameType.PK_CONSTRAINT.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.UNKNOWN;
+            PersistenceState persistenceState = PersistenceState.UNDEFINED;
             if (pkConstraintsExists(getPersistenceName(object, null), persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
@@ -1408,9 +1437,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getIndexPersistenceState(Index object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        if (spec == null) {
+        if (spec == PersistenceNameType.INDEX) {
             ResultSet rs = null;
-            PersistenceState status = PersistenceState.UNKNOWN;
+            PersistenceState status = PersistenceState.UNDEFINED;
             String indexName = getPersistenceName(object, spec);
             String tableName = getPersistenceName(object.getEntity(), null);
             boolean unique = object.isUnique();
@@ -1461,7 +1490,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getFieldPersistenceState(Field object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.UNKNOWN;
+        PersistenceState status = PersistenceState.UNDEFINED;
         FlagSet<FieldModifier> fieldModifiers = object.getModifiers();
         if (object.isManyToOne()) {
 //            status = PersistenceState.VALID;
@@ -1471,7 +1500,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } else {
             String tableName = getPersistenceName(object.getEntity());
             String columnName = getPersistenceName(object);
-            status = PersistenceState.UNKNOWN;
+            status = PersistenceState.UNDEFINED;
             /**
              * @PortabilityHint(target = "C#", name = "todo")
              */
@@ -1504,7 +1533,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getRelationshipPersistenceState(Relationship object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.UNKNOWN;
+        PersistenceState status = PersistenceState.UNDEFINED;
         if (isView(object.getTargetRole().getEntity()) || isView(object.getSourceRole().getEntity())) {
             status = PersistenceState.TRANSIENT;
         } else {
@@ -1654,7 +1683,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                     if (expectedName.equals(n)) {
                         return true;
                     } else {
-                        log.log(Level.WARNING, "Found Conflicting PK Constraints " + n + " instead of " + expectedName);
+                        log.log(Level.WARNING, "Found Conflicting PK Constraints " + n + " instead of " + expectedName+" in table "+tableName+". Will use it anyway...");
                         return true;
                     }
                 }
@@ -1690,12 +1719,25 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getImportedKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
+                String constraintNameIdentifier = getIdentifierStoreTranslator().translateIdentifier(constraintName);
                 while (rs.next()) {
                     String FK_NAME = rs.getString("FK_NAME");
-                    if (getIdentifierStoreTranslator().translateIdentifier(constraintName).equals(FK_NAME)) {
+                    if (constraintNameIdentifier.equals(FK_NAME)) {
                         return true;
                     }
                 }
+
+                //should we check further if this name is used elsewhere ?
+                //how to ?  TODO
+//                rs.close();
+//                rs = connection.getMetaData().getImportedKeys(catalog, schema, "%");
+//                while (rs.next()) {
+//                    String FK_NAME = rs.getString("FK_NAME");
+//                    if (getIdentifierStoreTranslator().translateIdentifier(constraintName).equals(FK_NAME)) {
+//                        return true;
+//                    }
+//                }
+
             } finally {
                 if (rs != null) {
                     rs.close();

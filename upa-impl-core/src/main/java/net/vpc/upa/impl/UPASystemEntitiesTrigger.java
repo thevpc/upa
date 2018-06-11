@@ -55,7 +55,7 @@ class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements
                     String g = sequence.getGroup();
                     String f = sequence.getFormat();
                     switch (strategy) {
-                        case UNSPECIFIED:
+                        case UNDEFINED:
                         case AUTO:
                         case IDENTITY: {
                             DataType d = (field.getDataType());

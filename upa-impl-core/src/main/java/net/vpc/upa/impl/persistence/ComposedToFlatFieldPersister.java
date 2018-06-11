@@ -11,6 +11,7 @@ import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.types.ManyToOneType;
+import net.vpc.upa.types.RelationDataType;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ComposedToFlatFieldPersister implements FieldPersister {
 
     public ComposedToFlatFieldPersister(Field field) {
         this.field = field;
-        ManyToOneType t = (ManyToOneType) field.getDataType();
+        RelationDataType t = (RelationDataType) field.getDataType();
         master = t.getRelationship().getTargetRole().getEntity();
         RelationshipRole detailRole = t.getRelationship().getSourceRole();
         flatFields = detailRole.getFields();

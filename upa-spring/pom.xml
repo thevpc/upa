@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>upa-spring</artifactId>
-
+    <name>net.vpc.upa.upa-spring</name>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

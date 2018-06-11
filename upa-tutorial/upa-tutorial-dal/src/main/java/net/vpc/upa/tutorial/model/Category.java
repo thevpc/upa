@@ -13,7 +13,7 @@ import net.vpc.upa.config.*;
  * more @Hierarchy many ot one fields.
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@Entity
+@Entity @PersistenceNameFormat(persistenceNameType = PersistenceNameType.TABLE,value = "TBL_CAT")
 public class Category {
 
     @Id @Sequence

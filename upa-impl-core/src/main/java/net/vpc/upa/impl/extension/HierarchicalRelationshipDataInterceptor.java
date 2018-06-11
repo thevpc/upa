@@ -31,7 +31,9 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
     public HierarchicalRelationshipDataInterceptor(Relationship defaultTreeEntityExtensionSupport) {
         super();
         this.relation = defaultTreeEntityExtensionSupport;
-        support = (HierarchicalRelationshipSupport)relation.getHierarchyExtension();
+        if(relation instanceof ManyToOneRelationship) {
+            support = (HierarchicalRelationshipSupport) ((ManyToOneRelationship)relation).getHierarchyExtension();
+        }
     }
 
     @Override

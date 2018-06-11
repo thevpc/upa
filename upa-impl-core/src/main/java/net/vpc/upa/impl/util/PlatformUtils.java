@@ -2,10 +2,12 @@ package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.config.Decoration;
+import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.filters.ObjectFilter;
+import net.vpc.upa.impl.config.decorations.AnnotationDecoration;
+import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.Date;
@@ -13,6 +15,7 @@ import net.vpc.upa.types.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,11 +27,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.UPA;
-import net.vpc.upa.config.BoolEnum;
 import net.vpc.upa.impl.util.classpath.ClassFileIterator;
 import net.vpc.upa.impl.util.classpath.ClassFileIteratorFactory;
 import net.vpc.upa.impl.util.classpath.ClassFilter;
 import net.vpc.upa.impl.util.classpath.ClassPathFilter;
+import net.vpc.upa.types.Temporal;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -1008,7 +1011,7 @@ public class PlatformUtils {
         return result;
     }
 
-    public static <T> boolean isUndefinedValue(Class<T> type, T value) {
+    public static <T> boolean isUndefinedEnumValue(Class<T> type, T value) {
         /**
          * @PortabilityHint(target = "C#", name = "replace") return value ==
          * default(T);
@@ -1020,7 +1023,7 @@ public class PlatformUtils {
             Object v = getEnumValues(type)[0];
             if (value == v) {
                 String n = ((Enum) v).name();
-                if ("DEFAULT".equals(n) || "UNKNOWN".equals(n)) {
+                if ("DEFAULT".equals(n) || "UNDEFINED".equals(n)) {
                     return true;
                 }
                 //type.getDeclaredField(n).getAnnotation(type)
@@ -1266,6 +1269,41 @@ public class PlatformUtils {
             }
         }
         return platformBeanType;
+    }
+
+
+    public static Map<String,DecorationValue> getAnnotationDefaultDecorationValues(Class annotationClass) {
+        Map<String,DecorationValue> a=new HashMap<>();
+        for (Method method : annotationClass.getDeclaredMethods()) {
+            if(method.getParameterTypes().length==0){
+                a.put(method.getName(),getAnnotationDefaultDecorationValue(annotationClass,method.getName()));
+            }
+        }
+        return a;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static DecorationValue getAnnotationDefaultDecorationValue(Class annotationClass, String element) {
+        Object annotationDefault = getAnnotationDefault(annotationClass, element);
+        if(annotationDefault instanceof Annotation){
+            return new AnnotationDecoration((Annotation) annotationDefault, DecorationSourceType.TYPE, null,null,null,-1);
+        }
+        return new DecorationPrimitiveValue(annotationDefault, ConfigInfo.DEFAULT);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static<T> T getAnnotationDefault(Class annotationClass, String element) {
+        Method method = null;
+        try {
+            method = annotationClass.getMethod(element,(Class[])null);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return ((T)method.getDefaultValue());
+    }
+
+    public static boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
     }
 
 }

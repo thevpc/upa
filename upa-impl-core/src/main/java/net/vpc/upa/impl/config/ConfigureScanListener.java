@@ -21,6 +21,7 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.EqualsStringFilter;
 import net.vpc.upa.impl.util.SimpleEntityFilter;
 import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.persistence.DatabaseProduct;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 
@@ -153,6 +154,9 @@ public class ConfigureScanListener implements ScanListener {
                     new EqualsStringFilter(d.getString("entity"), false, false),
                     true
             ), new SecurityManagerEntityConfigurator(secu));
+        } else if (PersistenceNameRule.class.equals(event.getContract())) {
+            PersistenceNameRule rule = (PersistenceNameRule) event.getUserObject();
+            persistenceUnit.getPersistenceNameStrategy().addPersistenceNameRule(rule);
         } else if (event.getUserObject() instanceof DecoratedMethodScan) {
             DecoratedMethodScan dms = (DecoratedMethodScan) event.getUserObject();
             Decoration callbackDecoration = dms.getDecoration();

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceState;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
@@ -25,7 +26,7 @@ public class EntityStructureCommit extends StructureCommit {
     protected static Logger log = Logger.getLogger(EntityStructureCommit.class.getName());
 
     public EntityStructureCommit(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Entity.class, null);
+        super(persistenceUnitCommitManager, object, Entity.class, PersistenceNameType.TABLE);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class EntityStructureCommit extends StructureCommit {
         Entity entity = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
 
-        log.log(Level.FINE, "Commit {0} / {1} : found {2}, persist", new Object[]{object, typedObject, status});
+        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
         UConnection b = executionContext.getConnection();
         b.executeNonQuery(store.getCreateTableStatement(entity,executionContext), null, null);
     }

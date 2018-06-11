@@ -78,7 +78,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
         }
         fetchStrategy = (QueryFetchStrategy) config.getHint(QueryHints.FETCH_STRATEGY, QueryFetchStrategy.JOIN);
-        if (fetchStrategy == null) {
+        if (PlatformUtils.isUndefinedEnumValue(QueryFetchStrategy.class,fetchStrategy)) {
             fetchStrategy = QueryFetchStrategy.JOIN;
         }
     }
@@ -334,7 +334,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     oldReferrerEntity = ((Field) referrer).getEntity();
 //                    throw new UPAIllegalArgumentException("Unexpected");
                 }
-                Relationship manyToOneRelationship = field.getManyToOneRelationship();
+                ManyToOneRelationship manyToOneRelationship = field.getManyToOneRelationship();
                 if (manyToOneRelationship != null) {
                     List<Field> newFields = FieldFilters2.filter(manyToOneRelationship.getTargetEntity().getFields(), config.getExpandFieldFilter());
                     if (currentJoins >= maxJoins || depth <= 0 || (fetchStrategy == QueryFetchStrategy.SELECT) || (currColumnsCount + newFields.size()) > maxColumns) {
@@ -665,7 +665,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             switch (replaceChild.getType()) {
                 case NEW_INSTANCE: {
                     ReplaceResult e2 = UQLCompiledUtils.replaceThisVar(replaceChild.getExpression(), o, updateContext);
-                    switch (ReplaceResultType.max(e2.getType(), replaceChild.getType())) {
+                    switch (UPAUtils.max(e2.getType(), replaceChild.getType())) {
                         case NO_UPDATES: {
                             return ReplaceResult.NO_UPDATES_STOP;
                         }

@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.ext.persistence;
 
 import java.util.Map;
+
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Properties;
@@ -10,7 +11,6 @@ import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.persistence.PersistenceNameConfig;
 import net.vpc.upa.persistence.PersistenceStore;
 
 /**
@@ -18,23 +18,24 @@ import net.vpc.upa.persistence.PersistenceStore;
  */
 public interface PersistenceStoreExt extends PersistenceStore {
 
-    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection, PersistenceNameConfig nameConfig) throws UPAException;
+    void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connection) throws UPAException;
 
-    public QueryExecutor createDefaultExecutor(
+    QueryExecutor createDefaultExecutor(
             Expression baseExpression,
             Map<String, Object> parametersByName,
             Map<Integer, Object> parametersByIndex,
             boolean updatable,
             FieldFilter defaultFieldFilter, EntityExecutionContext context) throws UPAException;
 
-    public String getCreateImplicitViewStatement(Entity entity, EntityExecutionContext executionContext);
+    String getCreateImplicitViewStatement(Entity entity, EntityExecutionContext executionContext);
 
-    public QueryExecutor createExecutor(
+    QueryExecutor createExecutor(
             Expression baseExpression,
             Map<String, Object> parametersByName,
             Map<Integer, Object> parametersByIndex,
             boolean updatable,
             FieldFilter defaultFieldFilter,
             EntityExecutionContext context) throws UPAException;
+
     int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters);
 }

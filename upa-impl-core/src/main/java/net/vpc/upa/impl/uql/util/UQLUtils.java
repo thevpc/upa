@@ -6,19 +6,11 @@
 package net.vpc.upa.impl.uql.util;
 
 import net.vpc.upa.*;
-import net.vpc.upa.config.ManyToOne;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.ExpressionDeclaration;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.ExpressionTranslationManager;
-import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.StringUtils;
-import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.ManyToOneType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -272,6 +264,18 @@ public class UQLUtils {
             return s2;
         }else if(slower.equals("insert")) {
             String s2 = StringUtils.extractWordAfter("into", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }else if(slower.equals("create")) {
+            String s2 = StringUtils.extractWordAfter("table", q2, 0, true);
+            if(s2==null){
+                s2="";
+            }
+            return s2;
+        }else if(slower.equals("alter")) {
+            String s2 = StringUtils.extractWordAfter("table", q2, 0, true);
             if(s2==null){
                 s2="";
             }

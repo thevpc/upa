@@ -10,7 +10,7 @@
                 <password>never</password>
                 <structure>create</structure>
                 <enabled>true</enabled>
-                <property name="persistenceName">upa_{object_name}</property>
+                <property name="persistenceNameFormat">upa_{object_name}</property>
             </connection>
             <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
                 <connectionString>
@@ -20,17 +20,17 @@
                 <password>never</password>
                 <structure>drop</structure>
                 <enabled>true</enabled>
-                <property name="persistenceName">upa_{object_name}</property>
+                <property name="persistenceNameFormat">upa_{object_name}</property>
             </rootConnection>
             <connectionString>
             </connectionString>
             <rootConnectionString>
             </rootConnectionString>
             <scan types="net.vpc.app.**" libs="" propagate="true"/>
-            <property name="persistenceName">upa_{object_name}</property>
+            <property name="persistenceNameFormat">upa_{object_name}</property>
         </persistenceUnit>
         <scan types="net.vpc.app.**" libs=""/>
-        <property name="persistenceName">upa_{object_name}</property>
+        <property name="persistenceNameFormat">upa_{object_name}</property>
     </persistenceGroup>
 
     <persistenceUnit name="main" start="true" autoScan="true">
@@ -42,7 +42,7 @@
             <password>never</password>
             <structure>ignore</structure>
             <enabled>true</enabled>
-            <property name="persistenceName">upa_{OBJECTNAME}</property>
+            <property name="persistenceNameFormat">upa_{OBJECTNAME}</property>
         </connection>
         <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
             <connectionString>
@@ -52,14 +52,14 @@
             <password>never</password>
             <structure>synchronize</structure>
             <enabled>true</enabled>
-            <property name="persistenceName">upa_{object_name}</property>
+            <property name="persistenceNameFormat">upa_{object_name}</property>
         </rootConnection>
         <connectionString>
         </connectionString>
         <rootConnectionString>
         </rootConnectionString>
         <scan types="net.vpc.app.**" libs="" propagate="true"/>
-        <property name="persistenceName">upa_{objectname}</property>
+        <property name="persistenceNameFormat">upa_{objectname}</property>
     </persistenceUnit>
 
     <connection userName="me" password="never" structure="create" enabled="true" connectionString="">
@@ -70,7 +70,7 @@
         <password>never</password>
         <structure>mandatory</structure>
         <enabled>true</enabled>
-        <property name="persistenceName">upa_{object_name}</property>
+        <property name="persistenceNameFormat">upa_{object_name}</property>
     </connection>
 
     <rootConnection userName="me" password="never" structure="create" enabled="true" connectionString="">
@@ -81,7 +81,7 @@
         <password>never</password>
         <structure>create</structure>
         <enabled>true</enabled>
-        <property name="persistenceName">upa_{object_name}</property>
+        <property name="persistenceNameFormat">upa_{object_name}</property>
     </rootConnection>
 
     <connectionString>
@@ -109,12 +109,12 @@
                         <structure>create</structure>
                         <enabled>true</enabled>
                         <property name="intProperty" type="int">18</property>
-                        <property name="persistenceName" type="string">upa_{ObjectName}</property>
+                        <property name="persistenceNameFormat" type="string">upa_{ObjectName}</property>
                         <property name="longProperty" type="long">98556</property>
                         <property name="dateProperty" type="date" format="yyyy-dd">2016-05</property>
                         <property name="dateProperty" type="month" format="yyyy-dd">2016-05</property>
                     </connection>
-                    <property name="persistenceName">upa_{OBJECT_NAME}</property>
+                    <property name="persistenceNameFormat">upa_{OBJECT_NAME}</property>
                 </persistenceUnit>
             </persistenceGroup>
         </default>
