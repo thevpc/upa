@@ -47,12 +47,12 @@ class FieldDynamicFilter extends AbstractFieldFilter {
     }
 
     @Override
-    public boolean acceptDynamic() throws UPAException {
+    public boolean acceptDynamic()  {
         return true;
     }
 
     @Override
-    public boolean accept(Field f) throws UPAException {
+    public boolean accept(Field f) {
         return (f instanceof DynamicField);
     }
 

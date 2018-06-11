@@ -34,13 +34,14 @@
  */
 package net.vpc.upa.persistence;
 
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
  *
  * @author taha.bensalah@gmail.com
  */
-public class PersistenceName {
+public class PersistenceNameFormat {
 
     private int configOrder;
     private String object;
@@ -49,7 +50,7 @@ public class PersistenceName {
 
     private String value;
 
-    public PersistenceName(String object, PersistenceNameType type, String name, int configOrder) {
+    public PersistenceNameFormat(String object, PersistenceNameType type, String name, int configOrder) {
         if (type == null) {
             throw new UPAException("NullType");
         }
@@ -100,7 +101,7 @@ public class PersistenceName {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PersistenceName other = (PersistenceName) obj;
+        final PersistenceNameFormat other = (PersistenceNameFormat) obj;
         if ((this.object == null) ? (other.object != null) : !this.object.equals(other.object)) {
             return false;
         }
@@ -115,7 +116,7 @@ public class PersistenceName {
 
     @Override
     public String toString() {
-        return "PersistenceName{" + "object=" + object + ", type=" + persistenceNameType + ", value=" + value + '}';
+        return "PersistenceNameFormat{" + "object=" + object + ", type=" + persistenceNameType + ", value=" + value + '}';
     }
 
 }

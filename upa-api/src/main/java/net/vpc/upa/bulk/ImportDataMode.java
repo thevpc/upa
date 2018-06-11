@@ -38,6 +38,7 @@ package net.vpc.upa.bulk;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum ImportDataMode {
+    UNDEFINED,
     ADD,
     ADD_UPDATE,
     UPDATE

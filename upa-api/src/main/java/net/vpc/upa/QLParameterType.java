@@ -39,6 +39,7 @@ package net.vpc.upa;
  * @creationdate 12/30/12 2:08 PM
  */
 public enum QLParameterType {
+    UNDEFINED,
     ENTITY,
     FIELD
 }

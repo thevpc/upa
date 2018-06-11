@@ -39,12 +39,12 @@ package net.vpc.upa.persistence;
  * @creationdate 9/12/12 8:03 AM
  */
 public enum DatabaseProduct {
+    UNDEFINED,
     ORACLE,
     INTERBASE,
     MSSQLSERVER,
     MYSQL,
     MCKOI,
     DERBY,
-    SQLITE,
-    UNKNOWN
+    SQLITE
 }

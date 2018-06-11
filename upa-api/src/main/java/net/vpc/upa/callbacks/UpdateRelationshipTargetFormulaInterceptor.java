@@ -46,5 +46,5 @@ public interface UpdateRelationshipTargetFormulaInterceptor extends EntityInterc
 
     FieldFilter getConditionFields();
 
-    Expression translateExpression(Expression e) throws UPAException;
+    Expression translateExpression(Expression e) ;
 }

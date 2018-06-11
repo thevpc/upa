@@ -8,12 +8,12 @@ import java.math.BigInteger;
 import java.util.*;
 
 /**
- * AbstractParameters is an abstract implementation of the Parameters interface
+ * BootstrapProperties is a dummy implementation of the Parameters interface
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 8/25/12 1:31 AM
  */
-class BootstrapProperties implements Properties {
+public class BootstrapProperties implements Properties {
 
 
     private Map<String, Object> base = new HashMap<String, Object>();
@@ -297,13 +297,19 @@ class BootstrapProperties implements Properties {
     @Override
     public <T> T getObject(String key, T value) {
         if (base.containsKey(key)) {
-            return (T) base.get(key);
+            T t = (T) base.get(key);
+            if(t!=null){
+                return t;
+            }
         } else {
             if (parent != null) {
-                return parent.getObject(key, value);
+                T t = parent.getObject(key, value);
+                if(t!=null){
+                    return t;
+                }
             }
-            return value;
         }
+        return value;
     }
 
     @Override

@@ -42,5 +42,5 @@ import net.vpc.upa.exceptions.UPAException;
  * @creationdate 9/5/12 2:05 AM
  */
 public interface EntityInstaller {
-    void installDefaults(Entity entity) throws UPAException;
+    void installDefaults(Entity entity) ;
 }

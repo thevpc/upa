@@ -35,6 +35,7 @@
 package net.vpc.upa.persistence;
 
 import net.vpc.upa.*;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.EntityStatement;
 
@@ -67,23 +68,23 @@ public interface PersistenceStore {
 
     Set<String> getSupportedDrivers();
 
-    boolean isCreatedStorage() throws UPAException;
+    boolean isCreatedStorage() ;
 
-    FieldPersister createPersistSequenceGenerator(Field field) throws UPAException;
+    FieldPersister createPersistSequenceGenerator(Field field) ;
 
-    FieldPersister createUpdateSequenceGenerator(Field field) throws UPAException;
+    FieldPersister createUpdateSequenceGenerator(Field field) ;
 
-    void createStorage(EntityExecutionContext context) throws UPAException;
+    void createStorage(EntityExecutionContext context) ;
 
-    void dropStorage(EntityExecutionContext context) throws UPAException;
+    void dropStorage(EntityExecutionContext context) ;
 
     Properties getProperties();
 
     Properties getStoreParameters();
 
-    ConnectionProfile getConnectionProfile() throws UPAException;
+    ConnectionProfile getConnectionProfile() ;
 
-    void close() throws UPAException;
+    void close() ;
 
     void setReadOnly(boolean value);
 
@@ -97,17 +98,17 @@ public interface PersistenceStore {
 //    TypeMarshallerFactory getTypeMarshallerFactory(Class someClass);
 //
 //    String formatSqlValue(Object value);
-    Query createQuery(Entity e, EntityStatement query, EntityExecutionContext qlContext) throws UPAException;
+    Query createQuery(Entity e, EntityStatement query, EntityExecutionContext qlContext) ;
 
-    Query createQuery(EntityStatement query, EntityExecutionContext qlContext) throws UPAException;
+    Query createQuery(EntityStatement query, EntityExecutionContext qlContext) ;
 
-    void createStructure(EntityExecutionContext executionContext) throws UPAException;
+    void createStructure(EntityExecutionContext executionContext) ;
 
-//    int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) throws UPAException;
+//    int executeNonQuery(NonQueryStatement query, EntityExecutionContext qlContext) ;
 
     boolean isReservedKeyword(String name);
 
-    void setNativeConstraintsEnabled(boolean enable) throws UPAException;
+    void setNativeConstraintsEnabled(boolean enable) ;
 
     boolean isComplexSelectSupported();
 
@@ -121,37 +122,33 @@ public interface PersistenceStore {
 
     boolean isTopSupported();
 
-    PersistenceNameStrategy getPersistenceNameStrategy();
+    String getPersistenceName(UPAObject persistentObject) ;
 
-    void setPersistenceNameStrategy(PersistenceNameStrategy persistenceNameStrategy);
+    String getPersistenceName(UPAObject persistentObject, PersistenceNameType spec) ;
 
-    String getPersistenceName(UPAObject persistentObject) throws UPAException;
+    String getPersistenceName(String name, PersistenceNameType spec) ;
 
-    String getPersistenceName(UPAObject persistentObject, PersistenceNameType spec) throws UPAException;
-
-    String getPersistenceName(String name, PersistenceNameType spec) throws UPAException;
-
-    PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) throws UPAException;
+    PersistenceState getPersistenceState(UPAObject object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext) ;
 
     boolean isView(Entity entity);
 
-    void alterPersistenceUnitAddObject(UPAObject object) throws UPAException;
+    void alterPersistenceUnitAddObject(UPAObject object) ;
 
-    void alterPersistenceUnitRemoveObject(UPAObject object) throws UPAException;
+    void alterPersistenceUnitRemoveObject(UPAObject object) ;
 
-    void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) throws UPAException;
+    void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) ;
 
-    boolean commitStorage() throws UPAException;
+    boolean commitStorage() ;
 
-    void revalidateModel() throws UPAException;
+    void revalidateModel() ;
 
     /**
      * create connection
      *
      * @return
-     * @throws UPAException
+     * @
      */
-    UConnection createConnection() throws UPAException;
+    UConnection createConnection() ;
 
     void setIdentityConstraintsEnabled(Entity entity, boolean enable, EntityExecutionContext context);
 }

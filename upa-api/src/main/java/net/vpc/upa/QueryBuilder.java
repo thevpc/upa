@@ -94,27 +94,27 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     void setTop(int top);
 
-    Date getDate() throws UPAException;
+    Date getDate() ;
 
-    Boolean getBoolean() throws UPAException;
+    Boolean getBoolean() ;
 
-    Integer getInteger() throws UPAException;
+    Integer getInteger() ;
 
-    Long getLong() throws UPAException;
+    Long getLong() ;
 
-    Double getDouble() throws UPAException;
+    Double getDouble() ;
 
-    String getString() throws UPAException;
+    String getString() ;
 
-    Number getNumber() throws UPAException;
+    Number getNumber() ;
 
-    Object getSingleValue() throws UPAException;
+    Object getSingleValue() ;
 
-    Object getSingleValue(Object defaultValue) throws UPAException;
+    Object getSingleValue(Object defaultValue) ;
 
-    MultiDocument getMultiDocument() throws UPAException;
+    MultiDocument getMultiDocument() ;
 
-    Document getDocument() throws UPAException;
+    Document getDocument() ;
 
     /**
      * Executes a Select query and returns a single result.
@@ -123,7 +123,7 @@ public interface QueryBuilder extends Serializable, Closeable {
      * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
      * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
      */
-    <R> R getSingleResult() throws UPAException;
+    <R> R getSingleResult() ;
 
     /**
      * Executes a Select query and returns a single result if found.
@@ -133,7 +133,11 @@ public interface QueryBuilder extends Serializable, Closeable {
      * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
      * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
      */
-    <R> R getSingleResultOrNull() throws UPAException;
+    <R> R getSingleResultOrNull() ;
+
+    <R> R getSingleResultOrNull(Class<R> type, String... fields);
+    <R> R getFirstResultOrNull(Class<R> type, String... fields);
+    <R> R getSingleResult(Class<R> type, String... fields);
 
     /**
      * Executes a Select query and returns a single result if found.
@@ -142,19 +146,19 @@ public interface QueryBuilder extends Serializable, Closeable {
      * @param <R> Result Type
      * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
      */
-    <R> R getFirstResultOrNull() throws UPAException;
+    <R> R getFirstResultOrNull() ;
 
-    boolean isEmpty() throws UPAException;
+    boolean isEmpty() ;
 
-    <K> List<K> getIdList() throws UPAException;
+    <K> List<K> getIdList() ;
 
-    <K> Set<K> getIdSet() throws UPAException;
+    <K> Set<K> getIdSet() ;
 
-    List<Key> getKeyList() throws UPAException;
+    List<Key> getKeyList() ;
 
-    Set<Key> getKeySet() throws UPAException;
+    Set<Key> getKeySet() ;
 
-    List<MultiDocument> getMultiDocumentList() throws UPAException;
+    List<MultiDocument> getMultiDocumentList() ;
 
     <T> List<T> getResultList(Class<T> type, String... fields);
 
@@ -164,17 +168,17 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     <T> Set<T> getResultSet();
 
-    List<Document> getDocumentList() throws UPAException;
+    List<Document> getDocumentList() ;
 
-    <T> List<T> getValueList(int index) throws UPAException;
+    <T> List<T> getValueList(int index) ;
 
-    <T> Set<T> getValueSet(int index) throws UPAException;
+    <T> Set<T> getValueSet(int index) ;
 
-    <T> Set<T> getValueSet(String name) throws UPAException;
+    <T> Set<T> getValueSet(String name) ;
 
-    <T> List<T> getValueList(String name) throws UPAException;
+    <T> List<T> getValueList(String name) ;
 
-    ResultMetaData getMetaData() throws UPAException;
+    ResultMetaData getMetaData() ;
 
     QueryBuilder setParameter(String name, Object value);
 

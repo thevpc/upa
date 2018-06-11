@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.config;
 
+import net.vpc.upa.types.StringEncoder;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -72,7 +74,7 @@ public @interface ToString {
      * This value could be filled if value() == StringEncoderType.DEFAULT
      * @return StringEncoder class name
      */
-    String custom() default "";
+    String customTypeName() default "";
 
     /**
      * annotation config defines how this annotation must be handled

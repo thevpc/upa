@@ -57,7 +57,7 @@ public class EntityOrFilter extends AbstractRichEntityFilter {
         return this;
     }
 
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity) {
         for (int i = v.size() - 1; i >= 0; i--) {
             EntityFilter entityFilter = (EntityFilter) v.get(i);
             if (entityFilter.accept(entity)) {

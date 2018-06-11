@@ -41,15 +41,15 @@ import net.vpc.upa.exceptions.UPAException;
  * @creationdate 11/27/12 8:55 PM
  */
 public interface FieldDefinitionListener extends DefinitionListener {
-    void onPreCreateField(FieldEvent event) throws UPAException;
+    void onPreCreateField(FieldEvent event) ;
 
-    void onCreateField(FieldEvent event) throws UPAException;
+    void onCreateField(FieldEvent event) ;
 
-    void onPreDropField(FieldEvent event) throws UPAException;
+    void onPreDropField(FieldEvent event) ;
 
-    void onDropField(FieldEvent event) throws UPAException;
+    void onDropField(FieldEvent event) ;
 
-    void onPreMoveField(FieldEvent event) throws UPAException;
+    void onPreMoveField(FieldEvent event) ;
 
-    void onMoveField(FieldEvent event) throws UPAException;
+    void onMoveField(FieldEvent event) ;
 }

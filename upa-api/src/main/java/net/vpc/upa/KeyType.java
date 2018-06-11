@@ -48,19 +48,19 @@ public class KeyType extends StructType {
     private Expression filter;
     private Entity entity;
 
-    public KeyType(Entity entity) throws UPAException {
+    public KeyType(Entity entity)  {
         this(entity, (Expression) null, true);
     }
 
-    public KeyType(Entity entity, String filter, boolean nullable) throws UPAException {
+    public KeyType(Entity entity, String filter, boolean nullable)  {
         this(entity, filter == null ? null : new UserExpression(filter), nullable);
     }
 
-    public KeyType(Entity entity, boolean nullable) throws UPAException {
+    public KeyType(Entity entity, boolean nullable)  {
         this(entity, (Expression) null, nullable);
     }
 
-    public KeyType(Entity entity, Expression filter, boolean nullable) throws UPAException {
+    public KeyType(Entity entity, Expression filter, boolean nullable)  {
         super(entity.getName(), Key.class, constructorFieldNames(entity), constructorFieldTypes(entity), nullable);
         this.entity = entity;
         this.filter = filter;
@@ -79,7 +79,7 @@ public class KeyType extends StructType {
         return entity;
     }
 
-    private static String[] constructorFieldNames(Entity entity) throws UPAException {
+    private static String[] constructorFieldNames(Entity entity)  {
         List<Field> primaryFields = entity.getIdFields();
         String[] fs = new String[primaryFields.size()];
         for (int i = 0; i < fs.length; i++) {
@@ -88,7 +88,7 @@ public class KeyType extends StructType {
         return fs;
     }
 
-    private static DataType[] constructorFieldTypes(Entity entity) throws UPAException {
+    private static DataType[] constructorFieldTypes(Entity entity)  {
 
         List<Field> primaryFields = entity.getIdFields();
         DataType[] dt = new DataType[primaryFields.size()];

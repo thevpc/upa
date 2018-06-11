@@ -28,7 +28,7 @@ namespace Net.Vpc.Upa
 
          string GetPersistenceName();
 
-         void SetPersistenceName(string persistenceName);
+         void SetPersistenceName(string persistenceNameFormat);
 
          Net.Vpc.Upa.PersistenceUnit GetPersistenceUnit();
 

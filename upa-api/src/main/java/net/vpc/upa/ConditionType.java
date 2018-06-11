@@ -5,6 +5,7 @@ package net.vpc.upa;
  */
 public enum ConditionType {
 
+    DEFAULT,
     PROTOTYPE,
     DOCUMENT_PROTOTYPE,
     OBJECT,

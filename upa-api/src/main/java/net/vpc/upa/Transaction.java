@@ -44,13 +44,13 @@ public interface Transaction {
 
     TransactionStatus getStatus();
 
-    void begin() throws UPAException;
+    void begin() ;
 
-    void commit() throws UPAException;
+    void commit() ;
 
-    void rollback() throws UPAException;
+    void rollback() ;
 
-    void close() throws UPAException;
+    void close() ;
 
     void addTransactionListener(TransactionListener transactionListener);
 

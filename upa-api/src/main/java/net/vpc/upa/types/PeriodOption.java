@@ -43,5 +43,5 @@ package net.vpc.upa.types;
  * To change this template use Options | File Templates.
  */
 public enum PeriodOption {
-    DAY, MONTH, YEAR
+    UNDEFINED,DAY, MONTH, YEAR
 }

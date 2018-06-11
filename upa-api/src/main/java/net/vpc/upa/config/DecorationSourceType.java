@@ -9,6 +9,7 @@ package net.vpc.upa.config;
  * @author taha.bensalah@gmail.com
  */
 public enum DecorationSourceType {
+    UNDEFINED,
     XML,
     TYPE
 }

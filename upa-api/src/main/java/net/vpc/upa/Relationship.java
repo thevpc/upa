@@ -43,45 +43,41 @@ import java.util.Map;
 
 public interface Relationship extends UPAObject {
 
-    void commitModelChanged() throws UPAException;
+    void commitModelChanged() ;
 
-    void setRelationshipType(RelationshipType dataType) throws UPAException;
+    void setRelationshipType(RelationshipType dataType) ;
 
-    void setDataType(DataType dataType) throws UPAException;
+    void setDataType(DataType dataType) ;
 
-    void setNullable(boolean nullable) throws UPAException;
+    void setNullable(boolean nullable) ;
 
-    RelationshipType getRelationshipType() throws UPAException;
+    RelationshipType getRelationshipType() ;
 
-    int size() throws UPAException;
+    int size() ;
 
-    DataType getDataType() throws UPAException;
+    DataType getDataType() ;
 
-    Map<String, String> getSourceToTargetFieldNamesMap(boolean absolute) throws UPAException;
+    Map<String, String> getSourceToTargetFieldNamesMap(boolean absolute) ;
 
-    Map<String, String> getTargetToSourceFieldNamesMap(boolean absolute) throws UPAException;
+    Map<String, String> getTargetToSourceFieldNamesMap(boolean absolute) ;
 
-    Map<String, String> getSourceToTargetFieldsMap() throws UPAException;
+    Map<String, String> getSourceToTargetFieldsMap() ;
 
-    Map<String, String> getTargetToSourceFieldsMap() throws UPAException;
+    Map<String, String> getTargetToSourceFieldsMap() ;
 
-    Expression getTargetCondition(Expression sourceCondition, String sourceAlias, String targetAlias) throws UPAException;
+    Expression getTargetCondition(Expression sourceCondition, String sourceAlias, String targetAlias) ;
 
-    Expression getSourceCondition(Expression targetCondition, String sourceAlias, String targetAlias) throws UPAException;
+    Expression getSourceCondition(Expression targetCondition, String sourceAlias, String targetAlias) ;
 
-    Expression getFilter() throws UPAException;
+    boolean isTransient() ;
 
-    void setFilter(Expression filter) throws UPAException;
+    Entity getTargetEntity() ;
 
-    boolean isTransient() throws UPAException;
+    Entity getSourceEntity() ;
 
-    Entity getTargetEntity() throws UPAException;
+    RelationshipRole getTargetRole() ;
 
-    Entity getSourceEntity() throws UPAException;
-
-    RelationshipRole getTargetRole() throws UPAException;
-
-    RelationshipRole getSourceRole() throws UPAException;
+    RelationshipRole getSourceRole() ;
 
     boolean isFollowLinks();
 
@@ -94,10 +90,6 @@ public interface Relationship extends UPAObject {
     Object extractIdByEntityField(Document sourceDocument);
 
     Object extractIdByForeignFields(Document sourceDocument);
-
-    HierarchyExtension getHierarchyExtension();
-
-    void setHierarchyExtension(HierarchyExtension extension);
 
     Expression createTargetListExpression(Object currentInstance, String alias);
 

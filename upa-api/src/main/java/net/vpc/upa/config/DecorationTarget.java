@@ -10,5 +10,6 @@ package net.vpc.upa.config;
  */
 public enum DecorationTarget {
 
+    UNDEFINED,
     FIELD, METHOD, TYPE
 }

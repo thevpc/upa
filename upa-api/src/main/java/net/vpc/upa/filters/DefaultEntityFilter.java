@@ -300,7 +300,7 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
         return acceptClear == -1;
     }
 
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity)  {
         Object source = entity.getEntityDescriptor().getSource();
         if (rootClass != null && (source == null || !rootClass.isAssignableFrom(source.getClass()))) {
             return false;

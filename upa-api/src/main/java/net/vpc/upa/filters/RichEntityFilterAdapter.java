@@ -17,7 +17,7 @@ class RichEntityFilterAdapter extends AbstractRichEntityFilter {
     }
 
     @Override
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity) {
         return other.accept(entity);
     }
 }

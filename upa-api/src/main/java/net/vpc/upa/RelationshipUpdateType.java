@@ -38,6 +38,7 @@ package net.vpc.upa;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum RelationshipUpdateType {
+    UNDEFINED,
     FLAT,
     COMPOSED
 }

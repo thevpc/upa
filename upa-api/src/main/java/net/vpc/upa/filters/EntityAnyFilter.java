@@ -45,7 +45,7 @@ public class EntityAnyFilter extends AbstractRichEntityFilter {
 
     }
 
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity)  {
         return true;
     }
 }

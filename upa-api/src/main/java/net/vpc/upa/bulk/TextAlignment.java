@@ -38,5 +38,5 @@ package net.vpc.upa.bulk;
  * Created by vpc on 12/19/13.
  */
 public enum TextAlignment {
-    LEFT, RIGHT, CENTER
+    UNDEFINED, LEFT, RIGHT, CENTER
 }

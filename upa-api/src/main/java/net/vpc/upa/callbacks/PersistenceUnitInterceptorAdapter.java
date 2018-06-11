@@ -45,30 +45,30 @@ package net.vpc.upa.callbacks;
 // */
 //public class PersistenceUnitInterceptorAdapter implements PersistenceUnitInterceptor {
 //    @Override
-//    public void clearing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void clearing(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void initializing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void initializing(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void resetting(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void resetting(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void creating(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void creating(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void committingModelChanges(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void committingModelChanges(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void committingStorageChanges(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void committingStorageChanges(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //
 //    @Override
-//    public void closing(EntityExecutionContext executionContext, boolean before) throws UPAException {
+//    public void closing(EntityExecutionContext executionContext, boolean before)  {
 //    }
 //}

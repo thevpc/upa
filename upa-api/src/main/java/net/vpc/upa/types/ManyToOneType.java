@@ -38,11 +38,9 @@ import net.vpc.upa.DataTypeInfo;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Relationship;
 
-public class ManyToOneType extends DefaultDataType implements Cloneable {
+public class ManyToOneType extends RelationDataType implements Cloneable {
 
     private String targetEntityName;
-    private Relationship relationship;
-    private boolean updatable;
 
     //    public ManyToOneType(String name, Class platformType, boolean updatable) {
 //        super(name, platformType);
@@ -58,7 +56,7 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
 
     public ManyToOneType(String typeName, Class entityType, String entityName, boolean updatable, boolean nullable) {
         super(typeName, entityType, nullable);
-        this.updatable = updatable;
+        setUpdatable(updatable);
         this.targetEntityName = entityName;
     }
 
@@ -70,17 +68,7 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
         this.targetEntityName = targetEntityName;
     }
 
-    public Relationship getRelationship() {
-        return relationship;
-    }
 
-    public void setRelationship(Relationship relationship) {
-        this.relationship = relationship;
-    }
-
-    public boolean isUpdatable() {
-        return updatable;
-    }
 
     @Override
     public String toString() {
@@ -90,7 +78,7 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
         } else if (getTargetEntityName() != null) {
             n = n + ":" + getTargetEntityName();
         }
-        return "ManyToOneType{" + n + ", updatable=" + updatable + '}';
+        return "ManyToOneType{" + n + ", updatable=" + isUpdatable() + '}';
     }
 
     @Override
@@ -101,32 +89,23 @@ public class ManyToOneType extends DefaultDataType implements Cloneable {
 
         ManyToOneType that = (ManyToOneType) o;
 
-        if (updatable != that.updatable) return false;
         if (targetEntityName != null ? !targetEntityName.equals(that.targetEntityName) : that.targetEntityName != null)
             return false;
-        return relationship != null ? relationship.equals(that.relationship) : that.relationship == null;
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (targetEntityName != null ? targetEntityName.hashCode() : 0);
-        result = 31 * result + (relationship != null ? relationship.hashCode() : 0);
-        result = 31 * result + (updatable ? 1 : 0);
         return result;
     }
 
     @Override
     public DataTypeInfo getInfo() {
         DataTypeInfo d = super.getInfo();
-        d.getProperties().put("updatable", String.valueOf(updatable));
         if(targetEntityName!=null) {
             d.getProperties().put("targetEntityName", String.valueOf(targetEntityName));
-        }
-        if(relationship!=null) {
-            d.getProperties().put("relationship", String.valueOf(relationship.getName()));
-        }
-        if(relationship!=null) {
         }
         return d;
     }

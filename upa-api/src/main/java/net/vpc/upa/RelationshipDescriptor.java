@@ -45,6 +45,10 @@ public interface RelationshipDescriptor {
 
     String getHierarchyPathSeparator();
 
+    boolean isManyToOne();
+
+    boolean isOneToOne();
+
     boolean isHierarchy();
 
     boolean isNullable();

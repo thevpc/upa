@@ -31,10 +31,8 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.ResultMetaData;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -46,67 +44,81 @@ import java.util.Set;
  */
 public interface Query extends Closeable {
 
-    Date getDate() throws UPAException;
+    Date getDate();
 
-    Boolean getBoolean() throws UPAException;
+    Boolean getBoolean();
 
-    Integer getInteger() throws UPAException;
+    Integer getInteger();
 
-    Long getLong() throws UPAException;
+    Long getLong();
 
-    Double getDouble() throws UPAException;
+    Double getDouble();
 
-    String getString() throws UPAException;
+    String getString();
 
-    Number getNumber() throws UPAException;
+    Number getNumber();
 
-    Object getSingleValue() throws UPAException;
+    Object getSingleValue();
 
-    Object getSingleValue(Object defaultValue) throws UPAException;
+    Object getSingleValue(Object defaultValue);
 
-    MultiDocument getMultiDocument() throws UPAException;
+    MultiDocument getMultiDocument();
 
-    Document getDocument() throws UPAException;
+    Document getDocument();
 
     /**
      * Executes a Select query and returns a single result.
+     *
      * @param <R> Result Type
      * @return Single result if unique
-     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
-     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one
+     * result was returned by query
+     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned
+     * by query
      */
-    <R> R getSingleResult() throws UPAException;
+    <R> R getSingleResult();
+
+    <R> R getSingleResult(Class<R> type, String... fields);
 
     /**
-     * Executes a Select query and returns a single result if found.
-     * If query returns no result null is returned.
-     * When Multiple results NonUniqueResultException will be thrown
+     * Executes a Select query and returns a single result if found. If query
+     * returns no result null is returned. When Multiple results
+     * NonUniqueResultException will be thrown
+     *
      * @param <R> Result Type
-     * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
-     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     * @return Single result if found. When Multiple results
+     * NonUniqueResultException will be thrown
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one
+     * result was returned by query
      */
-    <R> R getSingleResultOrNull() throws UPAException;
+    <R> R getSingleResultOrNull();
+
+    <R> R getSingleResultOrNull(Class<R> type, String... fields);
 
     /**
-     * Executes a Select query and returns a single result if found.
-     * If query returns no result null is returned.
-     * When Multiple results, the first result will be returned
+     * Executes a Select query and returns a single result if found. If query
+     * returns no result null is returned. When Multiple results, the first
+     * result will be returned
+     *
      * @param <R> Result Type
-     * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
+     * @return Single result if found. When Multiple results, the first result
+     * will be returned. If query returns no result null is returned.
      */
-    <R> R getFirstResultOrNull() throws UPAException;
+    <R> R getFirstResultOrNull();
 
-    boolean isEmpty() throws UPAException;
+    <R> R getFirstResultOrNull(Class<R> type, String... fields);
 
-    <K> List<K> getIdList() throws UPAException;
+    boolean isEmpty();
 
-    <K> Set<K> getIdSet() throws UPAException;
+    <K> List<K> getIdList();
 
-    List<Key> getKeyList() throws UPAException;
+    <K> Set<K> getIdSet();
 
-    Set<Key> getKeySet() throws UPAException;
+    List<Key> getKeyList();
 
-    List<MultiDocument> getMultiDocumentList() throws UPAException;
+    Set<Key> getKeySet();
+
+    List<MultiDocument> getMultiDocumentList();
 
     <T> List<T> getResultList(Class<T> type, String... fields);
 
@@ -116,17 +128,17 @@ public interface Query extends Closeable {
 
     <T> Set<T> getResultSet();
 
-    List<Document> getDocumentList() throws UPAException;
+    List<Document> getDocumentList();
 
-    <T> List<T> getValueList(int index) throws UPAException;
+    <T> List<T> getValueList(int index);
 
-    <T> Set<T> getValueSet(int index) throws UPAException;
+    <T> Set<T> getValueSet(int index);
 
-    <T> Set<T> getValueSet(String name) throws UPAException;
+    <T> Set<T> getValueSet(String name);
 
-    <T> List<T> getValueList(String name) throws UPAException;
+    <T> List<T> getValueList(String name);
 
-    ResultMetaData getMetaData() throws UPAException;
+    ResultMetaData getMetaData();
 
     Query setParameter(String name, Object value);
 
@@ -159,7 +171,6 @@ public interface Query extends Closeable {
     Object getHint(String hintName);
 
     Object getHint(String hintName, Object defaultValue);
-
 
     boolean isUpdatable();
 

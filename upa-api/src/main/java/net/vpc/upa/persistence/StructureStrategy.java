@@ -44,6 +44,7 @@ package net.vpc.upa.persistence;
 
 public enum StructureStrategy {
 
+    UNDEFINED,
     DROP,
     IGNORE,
     CREATE,

@@ -46,10 +46,10 @@ import java.io.Reader;
  */
 public interface QLExpressionParser {
 
-    Expression parse(String text) throws UPAException;
+    Expression parse(String text) ;
 
-    Expression parse(Reader text) throws UPAException;
+    Expression parse(Reader text) ;
 
-    Expression parse(InputStream inputStream) throws UPAException;
+    Expression parse(InputStream inputStream) ;
 
 }

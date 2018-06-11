@@ -46,7 +46,7 @@ public interface EntityExtension {
 
     EntityExtensionDefinition getDefinition();
 
-    void install(Entity entity, EntityOperationManager entityOperationManager, EntityExtensionDefinition definition) throws UPAException;
+    void install(Entity entity, EntityOperationManager entityOperationManager, EntityExtensionDefinition definition) ;
 
-    void commitModelChanges() throws UPAException;
+    void commitModelChanges() ;
 }

@@ -40,53 +40,53 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface UPASecurityManager {
 
-    boolean isAllowedPersist(Entity entity) throws UPAException;
+    boolean isAllowedPersist(Entity entity) ;
 
-    boolean isAllowedPersist(Entity entity, Object instance) throws UPAException;
+    boolean isAllowedPersist(Entity entity, Object instance) ;
 
-    boolean isAllowedUpdate(Entity entity) throws UPAException;
+    boolean isAllowedUpdate(Entity entity) ;
 
-    boolean isAllowedUpdate(Entity entity, Object id, Object value) throws UPAException;
+    boolean isAllowedUpdate(Entity entity, Object id, Object value) ;
 
-    boolean isAllowedRemove(Entity entity) throws UPAException;
+    boolean isAllowedRemove(Entity entity) ;
 
-    boolean isAllowedRemove(Entity entity, Object id) throws UPAException;
+    boolean isAllowedRemove(Entity entity, Object id) ;
 
-    boolean isAllowedClone(Entity entity) throws UPAException;
+    boolean isAllowedClone(Entity entity) ;
 
-    boolean isAllowedClone(Entity entity, Object instance, Object newId) throws UPAException;
+    boolean isAllowedClone(Entity entity, Object instance, Object newId) ;
 
-    boolean isAllowedRename(Entity entity) throws UPAException;
+    boolean isAllowedRename(Entity entity) ;
 
-    boolean isAllowedRename(Entity entity, Object instance, Object newId) throws UPAException;
+    boolean isAllowedRename(Entity entity, Object instance, Object newId) ;
 
-    boolean isAllowedLoad(Entity entity) throws UPAException;
+    boolean isAllowedLoad(Entity entity) ;
 
-    boolean isAllowedLoad(Entity entity, Object id, Object object) throws UPAException;
+    boolean isAllowedLoad(Entity entity, Object id, Object object) ;
 
-    boolean isAllowedNavigate(Entity entity) throws UPAException;
+    boolean isAllowedNavigate(Entity entity) ;
 
-    boolean isAllowedNavigate(Entity entity, String navigationMode) throws UPAException;
+    boolean isAllowedNavigate(Entity entity, String navigationMode) ;
 
-    boolean isAllowedNavigate(Entity entity, Object id, Object object) throws UPAException;
+    boolean isAllowedNavigate(Entity entity, Object id, Object object) ;
 
-    boolean isAllowedRead(Field field) throws UPAException;
+    boolean isAllowedRead(Field field) ;
 
-    boolean isAllowedRead(Field field, Object id, Object object) throws UPAException;
+    boolean isAllowedRead(Field field, Object id, Object object) ;
 
-    boolean isAllowedWrite(Field field) throws UPAException;
+    boolean isAllowedWrite(Field field) ;
 
-    boolean isAllowedWrite(Field field, Object id, Object object) throws UPAException;
+    boolean isAllowedWrite(Field field, Object id, Object object) ;
 
-    boolean isAllowedKey(Entity entity, String key) throws UPAException;
+    boolean isAllowedKey(Entity entity, String key) ;
 
-    boolean isAllowedKey(String key) throws UPAException;
+    boolean isAllowedKey(String key) ;
 
-    Expression getEntityFilter(Entity entity) throws UPAException;
+    Expression getEntityFilter(Entity entity) ;
 
-    UserPrincipal getUserPrincipal() throws UPAException;
+    UserPrincipal getUserPrincipal() ;
 
-    UserPrincipal login(String login, String credentials) throws UPAException;
+    UserPrincipal login(String login, String credentials) ;
 
-    UserPrincipal loginPrivileged(String login) throws UPAException;
+    UserPrincipal loginPrivileged(String login) ;
 }

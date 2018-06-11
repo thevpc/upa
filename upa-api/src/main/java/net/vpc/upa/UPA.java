@@ -89,9 +89,8 @@ public final class UPA {
      * </pre>
      *
      * @return current PersistenceGroup of the current context
-     * @throws UPAException
      */
-    public static PersistenceGroup getPersistenceGroup() throws UPAException {
+    public static PersistenceGroup getPersistenceGroup()  {
         return getContext().getPersistenceGroup();
     }
 
@@ -102,9 +101,9 @@ public final class UPA {
      * </pre>
      *
      * @return current PersistenceGroup of the current context
-     * @throws UPAException
+     * @
      */
-    public static PersistenceGroup getPersistenceGroup(String name) throws UPAException {
+    public static PersistenceGroup getPersistenceGroup(String name)  {
         return getContext().getPersistenceGroup(name);
     }
 
@@ -117,9 +116,9 @@ public final class UPA {
      *
      * @return Current PersistenceUnit of teh current PersistenceGroup of the
      * current context
-     * @throws UPAException
+     * @
      */
-    public static PersistenceUnit getPersistenceUnit() throws UPAException {
+    public static PersistenceUnit getPersistenceUnit()  {
         return getContext().getPersistenceGroup().getPersistenceUnit();
     }
 
@@ -133,9 +132,9 @@ public final class UPA {
      * @param name PersistenceUnit name
      * @return PersistenceUnit named {@code name} in the current
      * PersistenceGroup of the current context
-     * @throws UPAException
+     * @
      */
-    public static PersistenceUnit getPersistenceUnit(String name) throws UPAException {
+    public static PersistenceUnit getPersistenceUnit(String name)  {
         return getContext().getPersistenceGroup().getPersistenceUnit(name);
     }
 
@@ -150,21 +149,21 @@ public final class UPA {
      * @param persistenceUnit PersistenceUnit name. Should not be null
      * @return PersistenceUnit named {@code persistenceUnit} in the current
      * PersistenceGroup of the current context
-     * @throws UPAException
+     * @
      */
-    public static PersistenceUnit getPersistenceUnit(String persistenceGroup, String persistenceUnit) throws UPAException {
+    public static PersistenceUnit getPersistenceUnit(String persistenceGroup, String persistenceUnit)  {
         return getContext().getPersistenceGroup(persistenceGroup).getPersistenceUnit(persistenceUnit);
     }
 
-    public static <T> T makeSessionAware(T instance) throws UPAException {
+    public static <T> T makeSessionAware(T instance)  {
         return makeSessionAware(instance, (MethodFilter) null);
     }
 
-    public static <T> T makeSessionAware(T instance, final Class<Annotation> sessionAwareMethodAnnotation) throws UPAException {
+    public static <T> T makeSessionAware(T instance, final Class<Annotation> sessionAwareMethodAnnotation)  {
         return getContext().makeSessionAware(instance, sessionAwareMethodAnnotation);
     }
 
-    public static <T> T makeSessionAware(T instance, MethodFilter methodFilter) throws UPAException {
+    public static <T> T makeSessionAware(T instance, MethodFilter methodFilter)  {
         return getContext().makeSessionAware(instance, methodFilter);
     }
 
@@ -173,7 +172,7 @@ public final class UPA {
      *
      * @return current UPAContext
      */
-    public static UPAContext getContext() throws UPAException {
+    public static UPAContext getContext()  {
         if (bootstrapStatus == CONTEXT_INITIALIZING) {
             throw new UPAException("UPAAlreadyInitializing");
         }

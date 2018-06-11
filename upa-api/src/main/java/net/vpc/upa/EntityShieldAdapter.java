@@ -52,215 +52,215 @@ public class EntityShieldAdapter implements EntityShield {
     }
 
     @Override
-    public void init(Entity entity) throws UPAException {
+    public void init(Entity entity)  {
         base.init(entity);
     }
 
     @Override
-    public void checkClone(Object oldId, Object newId) throws UPAException {
+    public void checkClone(Object oldId, Object newId)  {
         base.checkClone(oldId, newId);
     }
 
     @Override
-    public void checkRename(Object oldId, Object newId) throws UPAException {
+    public void checkRename(Object oldId, Object newId)  {
         base.checkRename(oldId, newId);
     }
 
     @Override
-    public boolean isDeletableDocument(Object k, boolean recurse) throws UPAException {
+    public boolean isDeletableDocument(Object k, boolean recurse)  {
         return base.isDeletableDocument(k, recurse);
     }
 
     @Override
-    public boolean isUpdatableDocument(Object k) throws UPAException {
+    public boolean isUpdatableDocument(Object k)  {
         return base.isUpdatableDocument(k);
     }
 
     @Override
-    public boolean isUpdateFormulaSupported() throws UPAException {
+    public boolean isUpdateFormulaSupported()  {
         return base.isUpdateFormulaSupported();
     }
 
     @Override
-    public boolean isUpdateFormulaOnPersistSupported() throws UPAException {
+    public boolean isUpdateFormulaOnPersistSupported()  {
         return base.isUpdateFormulaOnPersistSupported();
     }
 
     @Override
-    public boolean isUpdateFormulaOnUpdateSupported() throws UPAException {
+    public boolean isUpdateFormulaOnUpdateSupported()  {
         return base.isUpdateFormulaOnUpdateSupported();
     }
 
-    public boolean isLockingSupported() throws UPAException {
+    public boolean isLockingSupported()  {
         return base.isLockingSupported();
     }
 
-    public boolean isPersistSupported() throws UPAException {
+    public boolean isPersistSupported()  {
         return base.isPersistSupported();
     }
 
-    public boolean isUpdateSupported() throws UPAException {
+    public boolean isUpdateSupported()  {
         return base.isUpdateSupported();
     }
 
-    public boolean isDeleteSupported() throws UPAException {
+    public boolean isDeleteSupported()  {
         return base.isDeleteSupported();
     }
 
-    public boolean isCloneSupported() throws UPAException {
+    public boolean isCloneSupported()  {
         return base.isCloneSupported();
     }
 
-    public boolean isRenameSupported() throws UPAException {
+    public boolean isRenameSupported()  {
         return base.isRenameSupported();
     }
 
-    public boolean isKeyEditionSupported() throws UPAException {
+    public boolean isKeyEditionSupported()  {
         return base.isKeyEditionSupported();
     }
 
-    public boolean isNavigateSupported() throws UPAException {
+    public boolean isNavigateSupported()  {
         return base.isNavigateSupported();
     }
 
-    public boolean isGeneratedId() throws UPAException {
+    public boolean isGeneratedId()  {
         return base.isGeneratedId();
     }
 
-    public Expression getFullNonDeletableDocumentsExpression() throws UPAException {
+    public Expression getFullNonDeletableDocumentsExpression()  {
         return base.getFullNonDeletableDocumentsExpression();
     }
 
-    public Expression getFullNonRenamableDocumentsExpression() throws UPAException {
+    public Expression getFullNonRenamableDocumentsExpression()  {
         return base.getFullNonRenamableDocumentsExpression();
     }
 
-    public Expression getFullNonCloneableDocumentsExpression() throws UPAException {
+    public Expression getFullNonCloneableDocumentsExpression()  {
         return base.getFullNonCloneableDocumentsExpression();
     }
 
-    public Expression getFullNonUpdatableDocumentsExpression() throws UPAException {
+    public Expression getFullNonUpdatableDocumentsExpression()  {
         return base.getFullNonUpdatableDocumentsExpression();
     }
 
-    public Expression getNonDeletableDocumentsExpression() throws UPAException {
+    public Expression getNonDeletableDocumentsExpression()  {
         return base.getNonDeletableDocumentsExpression();
     }
 
-    public void setNonDeletableDocumentsExpression(Expression expression) throws UPAException {
+    public void setNonDeletableDocumentsExpression(Expression expression)  {
         base.setNonDeletableDocumentsExpression(expression);
     }
 
-    public Expression getNonUpdatableDocumentsExpression() throws UPAException {
+    public Expression getNonUpdatableDocumentsExpression()  {
         return base.getNonUpdatableDocumentsExpression();
     }
 
-    public void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException {
+    public void setNonUpdatableDocumentsExpression(Expression expression)  {
         base.setNonUpdatableDocumentsExpression(expression);
     }
 
-    public Expression getNonRenamableDocumentsExpression() throws UPAException {
+    public Expression getNonRenamableDocumentsExpression()  {
         return base.getNonRenamableDocumentsExpression();
     }
 
-    public void setNonRenamableDocumentsExpression(Expression expression) throws UPAException {
+    public void setNonRenamableDocumentsExpression(Expression expression)  {
         base.setNonRenamableDocumentsExpression(expression);
     }
 
-    public Expression getNonCloneableDocumentsExpression() throws UPAException {
+    public Expression getNonCloneableDocumentsExpression()  {
         return base.getNonCloneableDocumentsExpression();
     }
 
-    public void setNonCloneableDocumentsExpression(Expression expression) throws UPAException {
+    public void setNonCloneableDocumentsExpression(Expression expression)  {
         base.setNonCloneableDocumentsExpression(expression);
     }
 
-    public void checkPersist(Document document) throws UPAException {
+    public void checkPersist(Document document)  {
         base.checkPersist(document);
     }
 
-    public void checkUpdate(Document updates, Expression condition) throws UPAException {
+    public void checkUpdate(Document updates, Expression condition)  {
         base.checkUpdate(updates, condition);
     }
 
-    public void checkLoad() throws UPAException {
+    public void checkLoad()  {
         base.checkLoad();
     }
 
-    public void checkNavigate() throws UPAException {
+    public void checkNavigate()  {
         base.checkNavigate();
     }
 
-    public void checkRemove(Expression condition, boolean recurse, long toRemoveCount) throws UPAException {
+    public void checkRemove(Expression condition, boolean recurse, long toRemoveCount)  {
         base.checkRemove(condition, recurse, toRemoveCount);
     }
 
-    public boolean isPersistEnabled() throws UPAException {
+    public boolean isPersistEnabled()  {
         return base.isPersistEnabled();
     }
 
-    public boolean isUpdateEnabled() throws UPAException {
+    public boolean isUpdateEnabled()  {
         return base.isUpdateEnabled();
     }
 
-    public boolean isDeleteEnabled() throws UPAException {
+    public boolean isDeleteEnabled()  {
         return base.isDeleteEnabled();
     }
 
-    public boolean isRenameEnabled() throws UPAException {
+    public boolean isRenameEnabled()  {
         return base.isRenameEnabled();
     }
 
-    public boolean isCloneEnabled() throws UPAException {
+    public boolean isCloneEnabled()  {
         return base.isCloneEnabled();
     }
 
     @Override
-    public boolean isClearSupported() throws UPAException {
+    public boolean isClearSupported()  {
         return base.isClearSupported();
     }
 
     @Override
-    public boolean isPrivate() throws UPAException {
+    public boolean isPrivate()  {
         return base.isPrivate();
     }
 
     @Override
-    public boolean isTransient() throws UPAException {
+    public boolean isTransient()  {
         return base.isTransient();
     }
 
     @Override
-    public void addVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException {
+    public void addVeto(VetoableOperation operation, EntityShieldVeto veto)  {
         base.addVeto(operation, veto);
     }
 
     @Override
-    public void removeVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException {
+    public void removeVeto(VetoableOperation operation, EntityShieldVeto veto)  {
         base.removeVeto(operation, veto);
     }
 
     @Override
-    public List<EntityShieldVeto> getVetoList(VetoableOperation operation) throws UPAException {
+    public List<EntityShieldVeto> getVetoList(VetoableOperation operation)  {
         return base.getVetoList(operation);
     }
 
     @Override
-    public void checkInitialize() throws UPAException {
+    public void checkInitialize()  {
         base.checkInitialize();
     }
 
     @Override
-    public void checkClear() throws UPAException {
+    public void checkClear()  {
         base.checkClear();
     }
 //
 //    @Override
-//    public void checkReset() throws UPAException {
+//    public void checkReset()  {
 //        base.checkReset();
 //    }
 
-    public boolean isSystem() throws UPAException {
+    public boolean isSystem()  {
         return base.isSystem();
     }
 

@@ -89,12 +89,12 @@ public class FieldAccessLevelFilter extends AbstractFieldFilter {
     }
 
     @Override
-    public boolean acceptDynamic() throws UPAException {
+    public boolean acceptDynamic()  {
         return dynamic;
     }
 
     @Override
-    public boolean accept(Field f) throws UPAException {
+    public boolean accept(Field f) {
         if (checkPersist) {
             if (!accepted.contains(f.getPersistAccessLevel())) {
                 return false;

@@ -34,29 +34,51 @@
  */
 package net.vpc.upa.config;
 
+import net.vpc.upa.persistence.DatabaseProduct;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * corresponds to the JPA
+ * Specifies that the class is an entity or is an Entity Descriptor. To Its
+ * simplest form, this annotation is similar to JPA @Entity Annotation.
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
- * @Id
- * @creationdate 8/28/12 10:17 PM
+ * @Entity
+ * @creationdate 8/28/12 10:14 PM
  */
-@Target(value = {ElementType.METHOD, ElementType.FIELD})
+@Target(value = ElementType.TYPE)
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface PersistenceName {
+public @interface Table {
 
-    String object() default "";
+    /**
+     * Entity Name
+     * Optional if the annotation is defined on a non entity class
+     *
+     * @return Entity Name
+     */
+    String entityName() default "";
 
-    PersistenceNameType persistenceNameType();
+    /**
+     * table name
+     *
+     * @return
+     */
+    String value();
 
-    String customType() default "";
+    String catalog() default "";
 
-    String value() default "";
+    String schema() default "";
+
+    DatabaseCondition condition() default @DatabaseCondition();
+
+    String shortPersistenceNamePrefix() default "";
+
+    String pkPersistenceName() default "";
+
+    String viewPersistenceName() default "";
 
     /**
      * annotation config defines how this annotation must be handled
@@ -64,4 +86,5 @@ public @interface PersistenceName {
      * @return annotation configuration
      */
     ItemConfig config() default @ItemConfig();
+
 }

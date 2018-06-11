@@ -74,7 +74,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
         return new FieldModifierFilter(accepted, rejected, acceptDynamic);
     }
 
-    public boolean accept(FlagSet<FieldModifier> modifiersValue) throws UPAException {
+    public boolean accept(FlagSet<FieldModifier> modifiersValue)  {
         for (int i = 0; i < accepted.length; i++) {
             if (accept(modifiersValue, i)) {
                 return true;
@@ -83,7 +83,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
         return false;
     }
 
-    private boolean accept(FlagSet<FieldModifier> modifiersValue, int i) throws UPAException {
+    private boolean accept(FlagSet<FieldModifier> modifiersValue, int i)  {
         FlagSet<FieldModifier> a = accepted[i];
         FlagSet<FieldModifier> r = rejected[i];
         for (FieldModifier m : a) {
@@ -99,7 +99,7 @@ public class FieldModifierFilter extends AbstractFieldFilter {
         return true;
     }
 
-    public boolean accept(Field f) throws UPAException {
+    public boolean accept(Field f)  {
         FlagSet<FieldModifier> modifiersValue = f.getModifiers();
         return accept(modifiersValue);
     }

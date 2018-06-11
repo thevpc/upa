@@ -43,5 +43,7 @@ package net.vpc.upa;
 
 
 public enum RelationshipRoleType {
-    TARGET, SOURCE
+    UNDEFINED,
+    TARGET,
+    SOURCE
 }

@@ -32,18 +32,25 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.vpc.upa;
+package net.vpc.upa.config;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vpc
- * Date: 8/16/12
- * Time: 2:41 AM
- * To change this template use File | Settings | File Templates.
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public interface NamingStrategy {
+@Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Columns {
+    Column[] value() default {};
 
-    String getUniformValue(String name);
-
-    boolean equals(String o1, String o2);
+    /**
+     * annotation config defines how this annotation must be handled
+     *
+     * @return annotation configuration
+     */
+    ItemConfig config() default @ItemConfig();
 }

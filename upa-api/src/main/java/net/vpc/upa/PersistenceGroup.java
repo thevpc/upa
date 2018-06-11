@@ -44,9 +44,9 @@ import java.util.List;
  */
 public interface PersistenceGroup extends Closeable {
 
-    void scan(ScanSource strategy, ScanListener listener, boolean configure) throws UPAException;
+    void scan(ScanSource strategy, ScanListener listener, boolean configure) ;
 
-    String getName() throws UPAException;
+    String getName() ;
 
     /**
      * if true, when no scan filter is specified will scan all class-path
@@ -59,29 +59,29 @@ public interface PersistenceGroup extends Closeable {
 
     UPAContext getContext();
 
-    PersistenceUnit getPersistenceUnit() throws UPAException;
+    PersistenceUnit getPersistenceUnit() ;
 
-    void setPersistenceUnit(String name) throws UPAException;
+    void setPersistenceUnit(String name) ;
 
-    List<PersistenceUnit> getPersistenceUnits() throws UPAException;
+    List<PersistenceUnit> getPersistenceUnits() ;
 
-    PersistenceUnit getPersistenceUnit(String name) throws UPAException;
+    PersistenceUnit getPersistenceUnit(String name) ;
 
-    ObjectFactory getFactory() throws UPAException;
+    ObjectFactory getFactory() ;
 
-    boolean containsPersistenceUnit(String name) throws UPAException;
+    boolean containsPersistenceUnit(String name) ;
 
-    PersistenceUnit addPersistenceUnit(String name) throws UPAException;
+    PersistenceUnit addPersistenceUnit(String name) ;
 
-    void dropPersistenceUnit(String name) throws UPAException;
+    void dropPersistenceUnit(String name) ;
 
     boolean currentSessionExists();
 
-    Session getCurrentSession() throws UPAException;
+    Session getCurrentSession() ;
 
-    void setCurrentSession(Session session) throws UPAException;
+    void setCurrentSession(Session session) ;
 
-    Session findCurrentSession() throws UPAException;
+    Session findCurrentSession() ;
 
     Session openSession();
 

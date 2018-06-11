@@ -35,7 +35,12 @@
 package net.vpc.upa;
 
 public enum UserFieldModifier {
-
+    /**
+     * value to mock undefined value. this should be equivalent to null
+     * instance of this enumeration.
+     * Added to help support non nullable enums in C#
+     */
+    UNDEFINED,
     /**
      * ID fields defines the Entity Identifier's fields which are mapped to the
      * Table's primary key. An Entity may define zero or many ID fields but is

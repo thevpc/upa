@@ -40,9 +40,9 @@ package net.vpc.upa.config;
  */
 public enum PersistenceNameType {
 
+    UNDEFINED,
     TABLE,
-    //    UNION_TABLE,
-//    TREE_TABLE,
+    UNION_TABLE,
     VIEW,
     IMPLICIT_VIEW,
     COLUMN,

@@ -47,7 +47,7 @@ public class EntityReverseFilter extends AbstractRichEntityFilter {
         this.base = base;
     }
 
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity) {
         return !base.accept(entity);
     }
 }

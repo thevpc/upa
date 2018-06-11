@@ -51,7 +51,7 @@ public class EntityNameFilter extends AbstractRichEntityFilter {
         this.names = new HashSet<String>(names);
     }
 
-    public boolean accept(Entity entity) throws UPAException {
+    public boolean accept(Entity entity) {
         return names.contains(entity.getName());
     }
 }

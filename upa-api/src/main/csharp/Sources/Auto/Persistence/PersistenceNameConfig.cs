@@ -25,9 +25,9 @@ namespace Net.Vpc.Upa.Persistence
 
         private System.Collections.Generic.IList<Net.Vpc.Upa.Persistence.PersistenceName> names = new System.Collections.Generic.List<Net.Vpc.Upa.Persistence.PersistenceName>(2);
 
-        private string globalPersistenceName;
+        private string globalPersistenceNameFormat;
 
-        private string localPersistenceName;
+        private string localPersistenceNameFormat;
 
         private string persistenceNameEscape;
 
@@ -44,11 +44,11 @@ namespace Net.Vpc.Upa.Persistence
         }
 
         public virtual string GetGlobalPersistenceName() {
-            return globalPersistenceName;
+            return globalPersistenceNameFormat;
         }
 
-        public virtual void SetGlobalPersistenceName(string globalPersistenceName) {
-            this.globalPersistenceName = globalPersistenceName;
+        public virtual void SetGlobalPersistenceName(string globalPersistenceNameFormat) {
+            this.globalPersistenceNameFormat = globalPersistenceNameFormat;
         }
 
         public virtual string GetPersistenceNameEscape() {
@@ -64,19 +64,19 @@ namespace Net.Vpc.Upa.Persistence
         }
 
         public virtual string GetLocalPersistenceName() {
-            return localPersistenceName;
+            return localPersistenceNameFormat;
         }
 
-        public virtual void SetLocalPersistenceName(string localPersistenceName) {
-            this.localPersistenceName = localPersistenceName;
+        public virtual void SetLocalPersistenceName(string localPersistenceNameFormat) {
+            this.localPersistenceNameFormat = localPersistenceNameFormat;
         }
 
 
         public override int GetHashCode() {
             int hash = 5;
             hash = 59 * hash + (this.names != null ? this.names.GetHashCode() : 0);
-            hash = 59 * hash + (this.globalPersistenceName != null ? this.globalPersistenceName.GetHashCode() : 0);
-            hash = 59 * hash + (this.localPersistenceName != null ? this.localPersistenceName.GetHashCode() : 0);
+            hash = 59 * hash + (this.globalPersistenceNameFormat != null ? this.globalPersistenceNameFormat.GetHashCode() : 0);
+            hash = 59 * hash + (this.localPersistenceNameFormat != null ? this.localPersistenceNameFormat.GetHashCode() : 0);
             hash = 59 * hash + (this.persistenceNameEscape != null ? this.persistenceNameEscape.GetHashCode() : 0);
             return hash;
         }
@@ -93,10 +93,10 @@ namespace Net.Vpc.Upa.Persistence
             if (this.names != other.names && (this.names == null || !this.names.Equals(other.names))) {
                 return false;
             }
-            if ((this.globalPersistenceName == null) ? (other.globalPersistenceName != null) : !this.globalPersistenceName.Equals(other.globalPersistenceName)) {
+            if ((this.globalPersistenceNameFormat == null) ? (other.globalPersistenceNameFormat != null) : !this.globalPersistenceNameFormat.Equals(other.globalPersistenceNameFormat)) {
                 return false;
             }
-            if ((this.localPersistenceName == null) ? (other.localPersistenceName != null) : !this.localPersistenceName.Equals(other.localPersistenceName)) {
+            if ((this.localPersistenceNameFormat == null) ? (other.localPersistenceNameFormat != null) : !this.localPersistenceNameFormat.Equals(other.localPersistenceNameFormat)) {
                 return false;
             }
             if ((this.persistenceNameEscape == null) ? (other.persistenceNameEscape != null) : !this.persistenceNameEscape.Equals(other.persistenceNameEscape)) {
@@ -107,7 +107,7 @@ namespace Net.Vpc.Upa.Persistence
 
 
         public override string ToString() {
-            return "PersistenceNameStrategyModel{" + "names=" + names + ", globalPersistenceName=" + globalPersistenceName + ", localPersistenceName=" + localPersistenceName + ", persistenceNameEscape=" + persistenceNameEscape + '}';
+            return "PersistenceNameStrategyModel{" + "names=" + names + ", globalPersistenceNameFormat=" + globalPersistenceNameFormat + ", localPersistenceNameFormat=" + localPersistenceNameFormat + ", persistenceNameEscape=" + persistenceNameEscape + '}';
         }
     }
 }

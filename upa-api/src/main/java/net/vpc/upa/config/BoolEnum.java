@@ -41,5 +41,5 @@ package net.vpc.upa.config;
  * @creationdate 9/18/12 1:32 AM
  */
 public enum BoolEnum {
-    TRUE, FALSE, UNDEFINED
+    UNDEFINED, TRUE, FALSE
 }

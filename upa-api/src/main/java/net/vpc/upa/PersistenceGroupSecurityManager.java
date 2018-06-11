@@ -39,11 +39,11 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface PersistenceGroupSecurityManager {
 
-    boolean isAllowedKey(String key) throws UPAException;
+    boolean isAllowedKey(String key) ;
 
-    UserPrincipal getUserPrincipal() throws UPAException;
+    UserPrincipal getUserPrincipal() ;
 
-    UserPrincipal login(String login, String credentials) throws UPAException;
+    UserPrincipal login(String login, String credentials) ;
 
-    UserPrincipal loginPrivileged(String login) throws UPAException;
+    UserPrincipal loginPrivileged(String login) ;
 }

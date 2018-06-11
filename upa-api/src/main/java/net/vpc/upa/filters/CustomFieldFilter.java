@@ -83,12 +83,12 @@ public class CustomFieldFilter extends AbstractFieldFilter {
     }
 
     @Override
-    public boolean acceptDynamic() throws UPAException {
+    public boolean acceptDynamic()  {
         return base.acceptDynamic();
     }
 
     @Override
-    public boolean accept(Field f) throws UPAException {
+    public boolean accept(Field f)  {
         return base.accept(f);
     }
 

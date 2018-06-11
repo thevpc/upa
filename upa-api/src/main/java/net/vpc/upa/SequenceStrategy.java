@@ -38,7 +38,7 @@ package net.vpc.upa;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum SequenceStrategy {
-    UNSPECIFIED,
+    UNDEFINED,
     AUTO,
     IDENTITY,
     SEQUENCE,

@@ -161,7 +161,7 @@ namespace Net.Vpc.Upa
 
          string GetPersistenceName();
 
-         void SetPersistenceName(string persistenceName);
+         void SetPersistenceName(string persistenceNameFormat);
 
          bool IsValidPersistenceUnit();
 

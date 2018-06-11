@@ -49,7 +49,7 @@ public class QualifiedIdentifier {
         this.entity = entity;
     }
 
-    public Key getKey() throws UPAException {
+    public Key getKey()  {
         return entity.getBuilder().idToKey(id);
     }
 
@@ -61,7 +61,7 @@ public class QualifiedIdentifier {
         return entity;
     }
 
-    public Object getValue(String fieldName) throws UPAException {
+    public Object getValue(String fieldName)  {
         List<Field> f = entity.getIdFields();
         Key uKey = getKey();
         for (int i = 0; i < f.size(); i++) {

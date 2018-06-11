@@ -40,5 +40,5 @@ package net.vpc.upa.config;
  */
 public enum ConfigAction {
 
-    MERGE, DELETE, REPLACE
+    UNDEFINED, MERGE, DELETE, REPLACE
 }

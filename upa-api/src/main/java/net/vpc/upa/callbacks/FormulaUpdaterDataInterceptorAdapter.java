@@ -49,7 +49,7 @@ public abstract class FormulaUpdaterDataInterceptorAdapter implements UpdateForm
     }
 
     @Override
-    public FieldFilter getFormulaFields() throws UPAException {
+    public FieldFilter getFormulaFields()  {
         return formulaFields;
     }
 }

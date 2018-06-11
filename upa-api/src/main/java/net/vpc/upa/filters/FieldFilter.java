@@ -39,7 +39,7 @@ import net.vpc.upa.exceptions.UPAException;
 
 public interface FieldFilter {
 
-    boolean acceptDynamic() throws UPAException;
+    boolean acceptDynamic() ;
 
-    boolean accept(Field f) throws UPAException;
+    boolean accept(Field f) ;
 }

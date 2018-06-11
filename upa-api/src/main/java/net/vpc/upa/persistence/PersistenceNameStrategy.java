@@ -34,7 +34,8 @@
  */
 package net.vpc.upa.persistence;
 
-import net.vpc.upa.Properties;
+import net.vpc.upa.*;
+import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 
 /**
@@ -72,16 +73,99 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public interface PersistenceNameStrategy {
 
-    void init(PersistenceStore persistenceStore, PersistenceNameConfig model, Properties properties);
+    void init(PersistenceStore persistenceStore, Properties properties);
 
     void close();
 
     /**
-     * @param source may be as String or an UPAObject
-     * @param spec a valid string from PersistenceNameStrategyNames, or an
-     * implementor custom spec Id
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
      * @return a valid SQL Identifier
-     * @throws UPAException
      */
-    String getPersistenceName(Object source, PersistenceNameType spec) throws UPAException;
+    String getTablePersistenceName(Entity source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getTablePKPersistenceName(Entity source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getImplicitViewPersistenceName(Entity source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getIndexPersistenceName(Index source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getRelationshipPersistenceName(Relationship source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getIdentifierPersistenceName(String source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    /**
+     * @param source    may be as String or an UPAObject
+     * @param spec      a valid string from PersistenceNameStrategyNames, or an
+     *                  implementor custom spec Id
+     * @param condition
+     * @return a valid SQL Identifier
+     */
+    String getFieldPersistenceName(Field source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException;
+
+    PersistenceNameRule[] getPersistenceNameRules();
+
+    void addPersistenceNameRule(PersistenceNameRule rule);
+
+    void removePersistenceNameRule(PersistenceNameRule rule);
+
+
+    String getGlobalPersistenceNameFormat();
+
+    void setGlobalPersistenceNameFormat(String globalPersistenceNameFormat);
+
+    String getPersistenceNameEscape();
+
+    void setPersistenceNameEscape(String persistenceNameEscape);
+
+    void addNameFormat(PersistenceNameFormat nameFormat);
+
+    void removeNameFormat(PersistenceNameFormat nameFormat);
+
+    PersistenceNameFormat[] getNameFormats();
+
+    String getLocalPersistenceNameFormat();
+
+    void setLocalPersistenceNameFormat(String localPersistenceNameFormat);
+
+    void setPersistenceNameTransformer(PersistenceNameTransformer obfuscator);
+
+    PersistenceNameTransformer getPersistenceNameTransformer();
 }

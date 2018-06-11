@@ -45,63 +45,63 @@ import java.util.List;
  */
 public interface EntityShield {
 
-    void init(Entity entity) throws UPAException;
+    void init(Entity entity) ;
 
-    boolean isUpdateFormulaSupported() throws UPAException;
+    boolean isUpdateFormulaSupported() ;
 
-    boolean isUpdateFormulaOnPersistSupported() throws UPAException;
+    boolean isUpdateFormulaOnPersistSupported() ;
 
-    boolean isUpdateFormulaOnUpdateSupported() throws UPAException;
+    boolean isUpdateFormulaOnUpdateSupported() ;
 
-    boolean isLockingSupported() throws UPAException;
+    boolean isLockingSupported() ;
 
-    boolean isPersistSupported() throws UPAException;
+    boolean isPersistSupported() ;
 
-    boolean isUpdateSupported() throws UPAException;
+    boolean isUpdateSupported() ;
 
-    boolean isDeleteSupported() throws UPAException;
+    boolean isDeleteSupported() ;
 
-    boolean isCloneSupported() throws UPAException;
+    boolean isCloneSupported() ;
 
-    boolean isRenameSupported() throws UPAException;
+    boolean isRenameSupported() ;
 
-    boolean isKeyEditionSupported() throws UPAException;
+    boolean isKeyEditionSupported() ;
 
-    boolean isNavigateSupported() throws UPAException;
+    boolean isNavigateSupported() ;
 
-    boolean isGeneratedId() throws UPAException;
+    boolean isGeneratedId() ;
 
-    Expression getFullNonDeletableDocumentsExpression() throws UPAException;
+    Expression getFullNonDeletableDocumentsExpression() ;
 
-    Expression getFullNonRenamableDocumentsExpression() throws UPAException;
+    Expression getFullNonRenamableDocumentsExpression() ;
 
-    Expression getFullNonCloneableDocumentsExpression() throws UPAException;
+    Expression getFullNonCloneableDocumentsExpression() ;
 
-    Expression getFullNonUpdatableDocumentsExpression() throws UPAException;
+    Expression getFullNonUpdatableDocumentsExpression() ;
 
-    Expression getNonDeletableDocumentsExpression() throws UPAException;
+    Expression getNonDeletableDocumentsExpression() ;
 
-    void setNonDeletableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonDeletableDocumentsExpression(Expression expression) ;
 
-    Expression getNonUpdatableDocumentsExpression() throws UPAException;
+    Expression getNonUpdatableDocumentsExpression() ;
 
-    void setNonUpdatableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonUpdatableDocumentsExpression(Expression expression) ;
 
-    Expression getNonRenamableDocumentsExpression() throws UPAException;
+    Expression getNonRenamableDocumentsExpression() ;
 
-    void setNonRenamableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonRenamableDocumentsExpression(Expression expression) ;
 
-    Expression getNonCloneableDocumentsExpression() throws UPAException;
+    Expression getNonCloneableDocumentsExpression() ;
 
-    void setNonCloneableDocumentsExpression(Expression expression) throws UPAException;
+    void setNonCloneableDocumentsExpression(Expression expression) ;
 
-    void checkInitialize() throws UPAException;
+    void checkInitialize() ;
 
-    void checkClear() throws UPAException;
+    void checkClear() ;
 
-    void checkPersist(Document document) throws UPAException;
+    void checkPersist(Document document) ;
 
-    void checkUpdate(Document updates, Expression condition) throws UPAException;
+    void checkUpdate(Document updates, Expression condition) ;
 
     /**
      * @param oldId
@@ -111,7 +111,7 @@ public interface EntityShield {
      * CloneDocumentNotAllowedException, CloneDocumentOldKeyNotFoundException,
      * CloneDocumentNewKeyInUseException
      */
-    void checkClone(Object oldId, Object newId) throws UPAException;
+    void checkClone(Object oldId, Object newId) ;
 
     /**
      * Check for the feasibility of the rename operation. When oldId is null, the
@@ -125,39 +125,39 @@ public interface EntityShield {
      * RenameDocumentNotAllowedException, UnrenamableDocumentException,
      * RenameDocumentOldKeyNotFoundException, RenameDocumentNewKeyInUseException
      */
-    void checkRename(Object oldId, Object newId) throws UPAException;
+    void checkRename(Object oldId, Object newId) ;
 
-    void checkLoad() throws UPAException;
+    void checkLoad() ;
 
-    void checkNavigate() throws UPAException;
+    void checkNavigate() ;
 
-    void checkRemove(Expression condition, boolean recurse, long toRemoveCount) throws UPAException;
+    void checkRemove(Expression condition, boolean recurse, long toRemoveCount) ;
 
-    boolean isDeletableDocument(Object k, boolean recurse) throws UPAException;
+    boolean isDeletableDocument(Object k, boolean recurse) ;
 
-    boolean isUpdatableDocument(Object k) throws UPAException;
+    boolean isUpdatableDocument(Object k) ;
 
-    boolean isPersistEnabled() throws UPAException;
+    boolean isPersistEnabled() ;
 
-    boolean isUpdateEnabled() throws UPAException;
+    boolean isUpdateEnabled() ;
 
-    boolean isDeleteEnabled() throws UPAException;
+    boolean isDeleteEnabled() ;
 
-    boolean isRenameEnabled() throws UPAException;
+    boolean isRenameEnabled() ;
 
-    boolean isCloneEnabled() throws UPAException;
+    boolean isCloneEnabled() ;
 
-    boolean isClearSupported() throws UPAException;
+    boolean isClearSupported() ;
 
-    boolean isSystem() throws UPAException;
+    boolean isSystem() ;
 
-    boolean isPrivate() throws UPAException;
+    boolean isPrivate() ;
 
-    boolean isTransient() throws UPAException;
+    boolean isTransient() ;
 
-    void addVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
+    void addVeto(VetoableOperation operation, EntityShieldVeto veto) ;
 
-    void removeVeto(VetoableOperation operation, EntityShieldVeto veto) throws UPAException;
+    void removeVeto(VetoableOperation operation, EntityShieldVeto veto) ;
 
-    List<EntityShieldVeto> getVetoList(VetoableOperation operation) throws UPAException;
+    List<EntityShieldVeto> getVetoList(VetoableOperation operation) ;
 }

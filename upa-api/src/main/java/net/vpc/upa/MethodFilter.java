@@ -37,7 +37,7 @@ package net.vpc.upa;
 import java.lang.reflect.Method;
 
 /**
- * General Use Methof Filter Interface
+ * General Use Method Filter Interface
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public interface MethodFilter {

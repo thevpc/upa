@@ -45,17 +45,17 @@ package net.vpc.upa.callbacks;
 // */
 //public interface PersistenceUnitInterceptor {
 //
-//    public void clearing(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void clearing(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void initializing(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void initializing(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void resetting(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void resetting(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void creating(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void creating(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void committingModelChanges(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void committingModelChanges(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void committingStorageChanges(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void committingStorageChanges(EntityExecutionContext executionContext, boolean before) ;
 //
-//    public void closing(EntityExecutionContext executionContext, boolean before) throws UPAException;
+//    public void closing(EntityExecutionContext executionContext, boolean before) ;
 //}

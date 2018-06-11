@@ -73,22 +73,22 @@ public class DefinitionListenerAdapter //        implements DefinitionListener, 
     public void onDropTrigger(TriggerEvent event) {
     }
 
-    public void onPreCreateField(FieldEvent event) throws UPAException {
+    public void onPreCreateField(FieldEvent event)  {
     }
 
-    public void onCreateField(FieldEvent event) throws UPAException {
+    public void onCreateField(FieldEvent event)  {
     }
 
-    public void onPreDropField(FieldEvent event) throws UPAException {
+    public void onPreDropField(FieldEvent event)  {
     }
 
-    public void onDropField(FieldEvent event) throws UPAException {
+    public void onDropField(FieldEvent event)  {
     }
 
-    public void onPreMoveField(FieldEvent event) throws UPAException {
+    public void onPreMoveField(FieldEvent event)  {
     }
 
-    public void onMoveField(FieldEvent event) throws UPAException {
+    public void onMoveField(FieldEvent event)  {
     }
 
     public void onCreateIndex(IndexEvent event) {

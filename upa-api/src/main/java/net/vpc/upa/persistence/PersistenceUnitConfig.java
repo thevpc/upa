@@ -50,13 +50,17 @@ public class PersistenceUnitConfig {
     private int configOrder;
     private String name;
     private String persistenceGroup;
-    private PersistenceNameConfig model;
     private Boolean autoStart;
     private Boolean autoScan;
     private List<ConnectionConfig> rootConnections = new ArrayList<ConnectionConfig>(2);
     private List<ConnectionConfig> connections = new ArrayList<ConnectionConfig>(2);
     private Map<String, Object> properties = new HashMap<String, Object>(5);
     private final List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
+
+    private List<PersistenceNameFormat> nameFormats = new ArrayList<PersistenceNameFormat>(2);
+    private String globalPersistenceNameFormat;
+    private String localPersistenceNameFormat;
+    private String persistenceNameEscape;
 
     public PersistenceUnitConfig() {
     }
@@ -89,15 +93,6 @@ public class PersistenceUnitConfig {
 
     public PersistenceUnitConfig setPersistenceGroup(String persistenceGroup) {
         this.persistenceGroup = persistenceGroup;
-        return this;
-    }
-
-    public PersistenceNameConfig getModel() {
-        return model;
-    }
-
-    public PersistenceUnitConfig setModel(PersistenceNameConfig model) {
-        this.model = model;
         return this;
     }
 
@@ -175,7 +170,7 @@ public class PersistenceUnitConfig {
 
     @Override
     public String toString() {
-        return "PersistenceUnitConfig{" + "name=" + name + ", persistenceGroup=" + persistenceGroup + ", model=" + model + ", autoStart=" + autoStart + ", rootConnections=" + rootConnections + ", connections=" + connections + ", properties=" + properties + ", filters=" + filters + '}';
+        return "PersistenceUnitConfig{" + "name=" + name + ", persistenceGroup=" + persistenceGroup + ", autoStart=" + autoStart + ", rootConnections=" + rootConnections + ", connections=" + connections + ", properties=" + properties + ", filters=" + filters + '}';
     }
 
     public PersistenceUnitConfig addConnectionConfig(ConnectionConfig connectionConfig) {
@@ -196,5 +191,37 @@ public class PersistenceUnitConfig {
             rootConnections.add(connectionConfig);
         }
         return this;
+    }
+
+    public List<PersistenceNameFormat> getNameFormats() {
+        return nameFormats;
+    }
+
+    public void setNameFormats(List<PersistenceNameFormat> nameFormats) {
+        this.nameFormats = nameFormats;
+    }
+
+    public String getGlobalPersistenceNameFormat() {
+        return globalPersistenceNameFormat;
+    }
+
+    public void setGlobalPersistenceNameFormat(String globalPersistenceNameFormat) {
+        this.globalPersistenceNameFormat = globalPersistenceNameFormat;
+    }
+
+    public String getLocalPersistenceNameFormat() {
+        return localPersistenceNameFormat;
+    }
+
+    public void setLocalPersistenceNameFormat(String localPersistenceNameFormat) {
+        this.localPersistenceNameFormat = localPersistenceNameFormat;
+    }
+
+    public String getPersistenceNameEscape() {
+        return persistenceNameEscape;
+    }
+
+    public void setPersistenceNameEscape(String persistenceNameEscape) {
+        this.persistenceNameEscape = persistenceNameEscape;
     }
 }

@@ -7,5 +7,5 @@ public interface UPAI18n {
 
     String get(I18NString s, Object... params);
 
-    String getEnum(Object obj) ;
+    String getEnum(Object obj);
 }

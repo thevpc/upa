@@ -47,15 +47,15 @@ public class ListType extends SeriesType implements Cloneable {
     protected List<Object> elements;
 
     public ListType(String name, List<Object> collection, DataType modelClass, boolean nullable) {
-        this(name, collection, modelClass, 0, 0, nullable);
+        this(name, collection, modelClass, modelClass.getScale(), modelClass.getPrecision(), nullable);
     }
 
     public ListType(String name, List<Object> collection, DataType modelClass) {
-        this(name, collection, modelClass, 0, 0, false);
+        this(name, collection, modelClass, modelClass.getScale(), modelClass.getPrecision(), modelClass.isNullable());
     }
 
     public ListType(String name, Object[] collection, DataType modelClass) {
-        this(name, Arrays.asList(collection), modelClass, 0, 0, false);
+        this(name, Arrays.asList(collection), modelClass, modelClass.getScale(), modelClass.getPrecision(), modelClass.isNullable());
     }
 
     public ListType(String name, List<Object> collection, DataType elementType, int length, int precision, boolean nullable) {

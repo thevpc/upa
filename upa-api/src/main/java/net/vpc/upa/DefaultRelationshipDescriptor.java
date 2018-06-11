@@ -11,7 +11,9 @@ public class DefaultRelationshipDescriptor implements RelationshipDescriptor {
     public String hierarchyPathSeparator;
 
     public boolean hierarchy;
+
     public boolean nullable;
+    public boolean oneToOne;
 
     public String hierarchyPathField;
 
@@ -38,6 +40,26 @@ public class DefaultRelationshipDescriptor implements RelationshipDescriptor {
     public int getHierarchyConfigOrder() {
         return hierarchyConfigOrder;
     }
+
+    @Override
+    public boolean isOneToOne() {
+        return oneToOne;
+    }
+
+    public void setOneToOne(boolean oneToOne) {
+        this.oneToOne = oneToOne;
+    }
+
+    public void setManyToOne(boolean manyToOne) {
+        setOneToOne(!manyToOne);
+    }
+
+    @Override
+    public boolean isManyToOne() {
+        return !isOneToOne();
+    }
+
+
 
     public DefaultRelationshipDescriptor setHierarchyConfigOrder(int hierarchyConfigOrder) {
         this.hierarchyConfigOrder = hierarchyConfigOrder;

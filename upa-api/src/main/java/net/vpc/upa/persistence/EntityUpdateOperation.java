@@ -47,7 +47,7 @@ import net.vpc.upa.expressions.Update;
  */
 public interface EntityUpdateOperation {
 
-    int update(Entity entity, EntityExecutionContext context, Document updates, Expression condition) throws UPAException;
+    int update(Entity entity, EntityExecutionContext context, Document updates, Expression condition) ;
 
-    Query createQuery(Entity e, Update query, EntityExecutionContext context) throws UPAException;
+    Query createQuery(Entity e, Update query, EntityExecutionContext context) ;
 }

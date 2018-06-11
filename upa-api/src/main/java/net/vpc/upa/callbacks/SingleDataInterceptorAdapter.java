@@ -43,34 +43,34 @@ import net.vpc.upa.exceptions.UPAException;
  */
 public class SingleDataInterceptorAdapter implements SingleEntityListener {
     @Override
-    public void beforePersist(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void beforePersist(EntityTriggerContext context, Object id, Document document)  {
     }
 
     @Override
-    public void afterPersist(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void afterPersist(EntityTriggerContext context, Object id, Document document)  {
     }
 
     @Override
-    public void beforeUpdate(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void beforeUpdate(EntityTriggerContext context, Object id, Document document)  {
     }
 
     @Override
-    public void afterUpdate(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void afterUpdate(EntityTriggerContext context, Object id, Document document)  {
     }
 
     @Override
-    public void beforeDelete(EntityTriggerContext context, Object id) throws UPAException {
+    public void beforeDelete(EntityTriggerContext context, Object id)  {
     }
 
     @Override
-    public void afterDelete(EntityTriggerContext context, Object id) throws UPAException {
+    public void afterDelete(EntityTriggerContext context, Object id)  {
     }
 
     @Override
-    public void beforeUpdateFormulas(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void beforeUpdateFormulas(EntityTriggerContext context, Object id, Document document)  {
     }
 
     @Override
-    public void afterUpdateFormulas(EntityTriggerContext context, Object id, Document document) throws UPAException {
+    public void afterUpdateFormulas(EntityTriggerContext context, Object id, Document document)  {
     }
 }

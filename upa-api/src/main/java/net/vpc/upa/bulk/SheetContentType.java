@@ -39,5 +39,5 @@ package net.vpc.upa.bulk;
  * @author taha.bensalah@gmail.com
  */
 public enum SheetContentType {
-    XLS, XLSX, ODS
+    UNDEFINED,XLS, XLSX, ODS
 }

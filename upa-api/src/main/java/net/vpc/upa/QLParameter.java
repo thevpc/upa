@@ -34,6 +34,8 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.types.PlatformUtils;
+
 /**
  * Created by IntelliJ IDEA.
  * User: vpc

@@ -39,6 +39,7 @@ package net.vpc.upa;
  * @creationdate 9/16/12 4:55 PM
  */
 public enum TransactionStatus {
+    UNDEFINED,
     NOT_ACTIVE,
     ACTIVE,
     COMMITTED,

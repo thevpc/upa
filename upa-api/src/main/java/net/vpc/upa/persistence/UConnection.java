@@ -49,27 +49,27 @@ import java.util.Map;
  */
 public interface UConnection {
 
-    QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException;
+    QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) ;
 
-    int executeNonQuery(String currentQuery, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException;
+    int executeNonQuery(String currentQuery, List<Parameter> queryParameters, List<Parameter> generatedKeys) ;
 
-    int executeScript(QueryScript script, boolean exitOnError) throws UPAException;
+    int executeScript(QueryScript script, boolean exitOnError) ;
 
-    void close() throws UPAException;
+    void close() ;
 
     void addCloseListener(CloseListener closeListener);
 
     void removeCloseListener(CloseListener closeListener);
 
-    Object getMetadataAccessibleConnection() throws UPAException;
+    Object getMetadataAccessibleConnection() ;
 
-    Object getPlatformConnection() throws UPAException;
+    Object getPlatformConnection() ;
 
-    Object getProperty(String name) throws UPAException;
+    Object getProperty(String name) ;
 
-    Map<String, Object> getProperties() throws UPAException;
+    Map<String, Object> getProperties() ;
 
-    void setProperty(String name, Object value) throws UPAException;
+    void setProperty(String name, Object value) ;
 
     void beginTransaction();
 

@@ -42,5 +42,5 @@ import net.vpc.upa.exceptions.UPAException;
  * @creationdate 8/30/12 1:05 AM
  */
 public interface EntityClearOperation {
-    int clear(Entity entity, EntityExecutionContext executionContext) throws UPAException;
+    int clear(Entity entity, EntityExecutionContext executionContext) ;
 }

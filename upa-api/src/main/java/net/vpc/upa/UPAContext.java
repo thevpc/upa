@@ -51,9 +51,9 @@ public interface UPAContext {
      * start context and load config
      *
      * @param factory
-     * @throws UPAException
+     * @
      */
-    void start(ObjectFactory factory,UPAContextConfig[] contextConfig,Class[] configClasses) throws UPAException;
+    void start(ObjectFactory factory,UPAContextConfig[] contextConfig,Class[] configClasses) ;
 
     UPAContextFactory getFactory();
 
@@ -61,58 +61,58 @@ public interface UPAContext {
 
     void scan(UPAContextConfig contextConfig,ScanSource configurationStrategy, ScanListener listener, boolean configure);
 
-    PersistenceUnit getPersistenceUnit() throws UPAException;
+    PersistenceUnit getPersistenceUnit() ;
 
-    List<PersistenceGroup> getPersistenceGroups() throws UPAException;
+    List<PersistenceGroup> getPersistenceGroups() ;
 
-    PersistenceGroup  getPersistenceGroup() throws UPAException;
+    PersistenceGroup  getPersistenceGroup() ;
 
-    void setPersistenceGroup(String name) throws UPAException;
+    void setPersistenceGroup(String name) ;
 
-    PersistenceGroup  getPersistenceGroup(String name) throws UPAException;
+    PersistenceGroup  getPersistenceGroup(String name) ;
 
-    boolean containsPersistenceGroup(String name) throws UPAException;
+    boolean containsPersistenceGroup(String name) ;
 
-    PersistenceGroup addPersistenceGroup(String name) throws UPAException;
+    PersistenceGroup addPersistenceGroup(String name) ;
 
-    void removePersistenceGroup(String name) throws UPAException;
+    void removePersistenceGroup(String name) ;
 
-    void addPersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
+    void addPersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) ;
 
     PersistenceGroupDefinitionListener[] getPersistenceGroupDefinitionListeners();
 
-    void removePersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException;
+    void removePersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) ;
 
-    <T> T makeSessionAware(T instance) throws UPAException;
+    <T> T makeSessionAware(T instance) ;
 
-    <T> T makeSessionAware(T instance, Class<Annotation> sessionAwareMethodAnnotation) throws UPAException;
+    <T> T makeSessionAware(T instance, Class<Annotation> sessionAwareMethodAnnotation) ;
 
-    <T> T makeSessionAware(T instance, MethodFilter methodFilter) throws UPAException;
+    <T> T makeSessionAware(T instance, MethodFilter methodFilter) ;
 
-    <T> T makeSessionAware(Class<T> type, MethodFilter methodFilter) throws UPAException;
+    <T> T makeSessionAware(Class<T> type, MethodFilter methodFilter) ;
 
-    <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    <T> T invoke(Action<T> action, InvokeContext invokeContext) ;
 
-    <T> T invoke(Action<T> action) throws UPAException;
+    <T> T invoke(Action<T> action) ;
 
-    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException;
+    <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) ;
 
-    <T> T invokePrivileged(Action<T> action) throws UPAException;
+    <T> T invokePrivileged(Action<T> action) ;
 
-    void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    void invoke(VoidAction action, InvokeContext invokeContext) ;
 
-    void invoke(VoidAction action) throws UPAException;
+    void invoke(VoidAction action) ;
 
-    void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException;
+    void invokePrivileged(VoidAction action, InvokeContext invokeContext) ;
 
-    void invokePrivileged(VoidAction action) throws UPAException;
+    void invokePrivileged(VoidAction action) ;
 
     /**
      * closes context and removed all persistence groups
      *
-     * @throws UPAException
+     * @
      */
-    void close() throws UPAException;
+    void close() ;
 
     void addCloseListener(CloseListener listener);
 

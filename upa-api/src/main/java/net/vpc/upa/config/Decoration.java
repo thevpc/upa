@@ -36,6 +36,8 @@ public interface Decoration extends DecorationValue {
 
     <T> T getEnum(String name, Class<T> type);
 
+    boolean contains(String name);
+
     DecorationValue get(String name);
 
     Class getType(String name);

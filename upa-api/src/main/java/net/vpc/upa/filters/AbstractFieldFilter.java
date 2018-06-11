@@ -44,9 +44,9 @@ import java.util.List;
 
 
 public abstract class AbstractFieldFilter implements RichFieldFilter {
-    public abstract boolean acceptDynamic() throws UPAException;
+    public abstract boolean acceptDynamic() ;
 
-    public abstract boolean accept(Field f) throws UPAException;
+    public abstract boolean accept(Field f) ;
 
     public static AbstractFieldFilter toAbstractFieldFilter(FieldFilter filter) {
         if (filter == null) {
@@ -58,7 +58,7 @@ public abstract class AbstractFieldFilter implements RichFieldFilter {
         }
     }
 
-    public List<Field> filter(List<Field> fields) throws UPAException {
+    public List<Field> filter(List<Field> fields)  {
         List<Field> v = new ArrayList<Field>(fields.size());
         for (Field field : fields) {
             if (accept(field)) {
@@ -68,7 +68,7 @@ public abstract class AbstractFieldFilter implements RichFieldFilter {
         return v;
     }
 
-    public Field[] filter(Field[] fields) throws UPAException {
+    public Field[] filter(Field[] fields)  {
         List<Field> v = new ArrayList<Field>(fields.length);
         for (Field field : fields) {
             if (accept(field)) {
@@ -78,7 +78,7 @@ public abstract class AbstractFieldFilter implements RichFieldFilter {
         return v.toArray(new Field[v.size()]);
     }
 
-    public PrimitiveField[] filter(PrimitiveField[] fields) throws UPAException {
+    public PrimitiveField[] filter(PrimitiveField[] fields)  {
         ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>(fields.length);
         for (Field field : fields) {
             if (accept(field)) {
@@ -88,7 +88,7 @@ public abstract class AbstractFieldFilter implements RichFieldFilter {
         return v.toArray(new PrimitiveField[v.size()]);
     }
 
-    public CompoundField[] filter(CompoundField[] fields) throws UPAException {
+    public CompoundField[] filter(CompoundField[] fields)  {
         ArrayList<CompoundField> v = new ArrayList<CompoundField>(fields.length);
         for (Field field : fields) {
             if (accept(field)) {

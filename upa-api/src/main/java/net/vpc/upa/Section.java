@@ -41,29 +41,29 @@ import java.util.List;
 
 public interface Section extends EntityPart {
 
-    Field addField(FieldBuilder fieldBuilder) throws UPAException;
+    Field addField(FieldBuilder fieldBuilder) ;
 
-    Field addField(FieldDescriptor fieldDescriptor) throws UPAException;
+    Field addField(FieldDescriptor fieldDescriptor) ;
 
-    void addPart(EntityPart child) throws UPAException;
+    void addPart(EntityPart child) ;
 
-    void addPart(EntityPart child, int index) throws UPAException;
+    void addPart(EntityPart child, int index) ;
 
-    EntityPart removePartAt(int index) throws UPAException;
+    EntityPart removePartAt(int index) ;
 
-    EntityPart removePart(String name) throws UPAException;
+    EntityPart removePart(String name) ;
 
-    void movePart(int index, int newIndex) throws UPAException;
+    void movePart(int index, int newIndex) ;
 
-    void movePart(String itemName, int newIndex) throws UPAException;
+    void movePart(String itemName, int newIndex) ;
 
     /**
      * @return this section (and it subsequent sub sections) fields
-     * @throws UPAException
+     * @
      */
-    List<Field> getFields() throws UPAException;
+    List<Field> getFields() ;
 
-    List<Field> getFields(FieldFilter fieldFilter) throws UPAException;
+    List<Field> getFields(FieldFilter fieldFilter) ;
 
     /**
      * @return
@@ -72,30 +72,30 @@ public interface Section extends EntityPart {
 
     List<Field> getImmediateFields(FieldFilter fieldFilter);
 
-    List<Section> getSections() throws UPAException;
+    List<Section> getSections() ;
 
-    List<EntityPart> getParts() throws UPAException;
+    List<EntityPart> getParts() ;
 
-    EntityPart getPart(String name) throws UPAException;
+    EntityPart getPart(String name) ;
 
-    EntityPart getPartAt(int index) throws UPAException;
+    EntityPart getPartAt(int index) ;
 
-    Section getSection(String name) throws UPAException;
+    Section getSection(String name) ;
 
-    int indexOfPart(EntityPart part) throws UPAException;
+    int indexOfPart(EntityPart part) ;
 
-    int indexOfPart(String partName) throws UPAException;
+    int indexOfPart(String partName) ;
 
-    int getPartsCount() throws UPAException;
+    int getPartsCount() ;
 
 
-    Section findSection(String path) throws UPAException;
+    Section findSection(String path) ;
 
-    Section getSection(String path, MissingStrategy missingStrategy) throws UPAException;
+    Section getSection(String path, MissingStrategy missingStrategy) ;
 
-    Section addSection(String path, int index) throws UPAException;
+    Section addSection(String path, int index) ;
 
-    Section addSection(String path) throws UPAException;
+    Section addSection(String path) ;
 
     SectionInfo getInfo();
 }

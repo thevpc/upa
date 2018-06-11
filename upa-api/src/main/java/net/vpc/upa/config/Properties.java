@@ -46,7 +46,7 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 public @interface Properties {
 
-    public Property[] value();
+    Property[] value();
 
     /**
      * annotation config defines how this annotation must be handled

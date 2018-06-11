@@ -131,12 +131,6 @@ public interface PersistenceUnit extends Closeable {
 
     boolean isLockablePersistenceUnit();
 
-    boolean isCaseSensitive();
-
-    void setCaseSensitive(boolean enable);
-
-    NamingStrategy getNamingStrategy();
-
     PersistenceStore getPersistenceStore();
 
     /**
@@ -401,7 +395,7 @@ public interface PersistenceUnit extends Closeable {
 
     void updateFormulas();
 
-    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) throws UPAException;
+    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) ;
 
     //////// REMOVE
     RemoveTrace remove(Class entityType, Object object);
@@ -489,10 +483,6 @@ public interface PersistenceUnit extends Closeable {
 
     void removeRootConnectionConfig(int index);
 
-    PersistenceNameConfig getPersistenceNameConfig();
-
-    void setPersistenceNameConfig(PersistenceNameConfig nameStrategyModel);
-
     void addContextAnnotationStrategyFilter(ScanFilter filter);
 
     void removeContextAnnotationStrategyFilter(ScanFilter filter);
@@ -576,4 +566,13 @@ public interface PersistenceUnit extends Closeable {
     void addNamedFormula(String name, Formula formula);
 
     void removeNamedFormula(String name);
+
+
+
+    boolean isCaseSensitiveIdentifiers();
+
+    void setCaseSensitiveIdentifiers(boolean caseSensitiveIdentifiers);
+
+    PersistenceNameStrategy getPersistenceNameStrategy();
+
 }

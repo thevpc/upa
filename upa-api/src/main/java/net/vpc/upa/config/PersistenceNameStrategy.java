@@ -34,6 +34,8 @@
  */
 package net.vpc.upa.config;
 
+import net.vpc.upa.persistence.PersistenceNameTransformer;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -49,9 +51,18 @@ public @interface PersistenceNameStrategy {
 
     String persistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
 
-    Class custom() default net.vpc.upa.persistence.PersistenceNameStrategy.class;
+    Class customTypeName() default net.vpc.upa.persistence.PersistenceNameStrategy.class;
 
-    PersistenceName[] names() default {};
+    PersistenceNameFormat[] persistenceNameFormats() default {};
+
+
+    /**
+     * defines an implementation of {@link net.vpc.upa.persistence.PersistenceNameTransformer} that
+     * will be applied to persistence names
+     * #{@link net.vpc.upa.persistence.PersistenceNameTransformer}
+     * @return persistence name transformer class name
+     */
+    Class transformerType() default PersistenceNameTransformer.class;
 
     /**
      * Top level pattern applied for Top Level Object names. This pattern will
@@ -66,9 +77,9 @@ public @interface PersistenceNameStrategy {
      *
      * @return Naming pattern for global scope objects
      */
-    String globalPersistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
+    String globalPersistenceNameFormat() default net.vpc.upa.UPA.UNDEFINED_STRING;
 
-    String localPersistenceName() default net.vpc.upa.UPA.UNDEFINED_STRING;
+    String localPersistenceNameFormat() default net.vpc.upa.UPA.UNDEFINED_STRING;
 
     String escape() default net.vpc.upa.UPA.UNDEFINED_STRING;
 

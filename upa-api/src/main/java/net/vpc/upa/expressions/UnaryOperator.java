@@ -44,6 +44,7 @@ package net.vpc.upa.expressions;
  * @author taha.bensalah@gmail.com
  */
 public enum UnaryOperator {
+    UNDEFINED,
     NOT,
     COMPLEMENT,
     NEGATIVE,

@@ -55,33 +55,33 @@ public interface HierarchyExtension extends RelationshipExtensionDefinition {
 
     void setHierarchyPathField(String hierarchyPathField);
 
-    boolean isParent(Object parentId, Object childId) throws UPAException;
+    boolean isParent(Object parentId, Object childId) ;
 
-    boolean isEqualOrIsParent(Object parentId, Object childId) throws UPAException;
+    boolean isEqualOrIsParent(Object parentId, Object childId) ;
 
-    Relationship getTreeRelationship() throws UPAException;
+    Relationship getTreeRelationship() ;
 
-    Expression createFindRootsExpression(String alias) throws UPAException;
+    Expression createFindRootsExpression(String alias) ;
 
-    Expression createFindDeepChildrenExpression(String expression, Object id, boolean includeId) throws UPAException;
+    Expression createFindDeepChildrenExpression(String expression, Object id, boolean includeId) ;
 
-    Expression createFindImmediateChildrenExpression(String alias, Object id) throws UPAException;
+    Expression createFindImmediateChildrenExpression(String alias, Object id) ;
 
-    Expression createFindEntityByMainPathExpression(String mainFieldPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByMainPathExpression(String mainFieldPath, String entityAlias) ;
 
-    Expression createFindEntityByIdPathExpression(Object[] idPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByIdPathExpression(Object[] idPath, String entityAlias) ;
 
-    Expression createFindEntityByKeyPathExpression(Key[] keyPath, String entityAlias) throws UPAException;
+    Expression createFindEntityByKeyPathExpression(Key[] keyPath, String entityAlias) ;
 
-    Object findEntityByMainPath(String mainFieldPath) throws UPAException;
+    Object findEntityByMainPath(String mainFieldPath) ;
 
-    Object findEntityByIdPath(Object[] idPath) throws UPAException;
+    Object findEntityByIdPath(Object[] idPath) ;
 
-    Object findEntityByKeyPath(Key[] keyPath) throws UPAException;
+    Object findEntityByKeyPath(Key[] keyPath) ;
 
-    <T> List<T> findRootsEntityList() throws UPAException;
+    <T> List<T> findRootsEntityList() ;
 
-    <T> List<T> findDeepChildrenEntityList(Object id, boolean includeId) throws UPAException;
+    <T> List<T> findDeepChildrenEntityList(Object id, boolean includeId) ;
 
-    <T> List<T> findImmediateChildrenEntityList(Object id) throws UPAException;
+    <T> List<T> findImmediateChildrenEntityList(Object id) ;
 }

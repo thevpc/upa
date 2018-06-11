@@ -39,7 +39,7 @@ package net.vpc.upa;
  * @creationdate 9/9/12 3:25 PM
  */
 public enum PersistenceState {
-    UNKNOWN,
+    UNDEFINED,
     DIRTY,
     TRANSIENT,
     VALID,

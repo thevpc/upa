@@ -50,10 +50,10 @@ public interface UPAObject {
 
     String getAbsoluteName();
 
-    String getPersistenceName();
-
-    void setPersistenceName(String persistenceName);
-
+//    String getPersistenceName();
+//
+//    void setPersistenceName(String persistenceName);
+//
     PersistenceUnit getPersistenceUnit();
 
     PersistenceGroup getPersistenceGroup();
@@ -85,7 +85,7 @@ public interface UPAObject {
     //--------------------------- PROPERTIES SUPPORT
     Properties getProperties();
 
-    //    void prepare() throws UPAException;
+    //    void prepare() ;
 //    void setStatus(PersistenceState status);
     PersistenceState getPersistenceState();
 
@@ -109,5 +109,5 @@ public interface UPAObject {
     @Override
     int hashCode();
 
-    void close() throws UPAException;
+    void close() ;
 }

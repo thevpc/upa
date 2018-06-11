@@ -72,6 +72,8 @@ public interface Field extends EntityPart {
 
     List<Relationship> getManyToOneRelationships();
 
+    List<Relationship> getOneToOneRelationships();
+
     void setFormula(String formula);
 
     void setFormula(Formula formula);
@@ -192,10 +194,14 @@ public interface Field extends EntityPart {
 
     void setPreferredIndex(int preferredIndex);
 
+    boolean isOneToOne();
+
     boolean isManyToOne();
 
 
-    Relationship getManyToOneRelationship();
+    ManyToOneRelationship getManyToOneRelationship();
+
+    OneToOneRelationship getOneToOneRelationship();
 
     ProtectionLevel getProtectionLevel(AccessMode mode);
 

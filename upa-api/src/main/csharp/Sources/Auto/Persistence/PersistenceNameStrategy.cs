@@ -20,7 +20,7 @@ namespace Net.Vpc.Upa.Persistence
      * <pre>
      * &amp;@PersistenceUnit(
      *      persistenceNameStrategy = @PersistenceNameStrategy(
-     *              persistenceName = "{OBJECT_NAME}",
+     *              persistenceNameFormat = "{OBJECT_NAME}",
      *              suffix = "_TBL",
      *              prefix = "T_",
      *              escape = "UPA_*",
@@ -36,7 +36,7 @@ namespace Net.Vpc.Upa.Persistence
      *      &lt;persistenceGroup>
      *          &lt;persistenceUnit>
      *              &lt;connexion>
-     *                  &lt;persistenceNameStrategy persistenceName="" prefix=""  suffix="" escape="">
+     *                  &lt;persistenceNameStrategy persistenceNameFormat="" prefix=""  suffix="" escape="">
      *                      &lt;name value="" prefix="" suffix=""/>
      *                  &lt;/persistenceNameStrategy>
      *              &lt;/connexion>
