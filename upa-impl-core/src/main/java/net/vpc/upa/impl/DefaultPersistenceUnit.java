@@ -627,10 +627,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             for (EntityExtensionDefinition s : entitySpecs) {
                 boolean ok = false;
                 for (Class ext : new Class[]{
-                        ViewEntityExtensionDefinition.class,
-                        SingletonExtensionDefinition.class,
-                        FilterEntityExtensionDefinition.class,
-                        UnionEntityExtensionDefinition.class
+                    ViewEntityExtensionDefinition.class,
+                    SingletonExtensionDefinition.class,
+                    FilterEntityExtensionDefinition.class,
+                    UnionEntityExtensionDefinition.class
                 }) {
                     if (ext.isInstance(s)) {
                         ok = true;
@@ -733,7 +733,6 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 break;
             }
         }
-
 
         if (name == null) {
             if (detailEntityFieldName != null) {
@@ -1174,15 +1173,21 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         }
 
         if (getConnectionProfile() == null || validPersistenceStore == null) {
+            Throwable cause = null;
             if (validConnectionProfiles.isEmpty()) {
                 log.log(Level.SEVERE, "Unable to create Store because no valid ConnectionProfile was found");
             } else {
                 log.log(Level.SEVERE, "Unable to create Store because all ConnectionProfiles failed to be accessible");
                 for (Object[] objects : errors) {
-                    log.log(Level.SEVERE, "Profile " + objects[0] + " failed because of " + ((Throwable) objects[1]).toString(), ((Throwable) objects[1]));
+                    cause = ((Throwable) objects[1]);
+                    log.log(Level.SEVERE, "Profile " + objects[0] + " failed because of " + cause.toString(), cause);
                 }
             }
-            throw new UPAException("UnableToCreatePersistenceStore", this);
+            if (cause == null) {
+                throw new UPAException("UnableToCreatePersistenceStore", this);
+            } else {
+                throw new UPAException(cause, new I18NString("UnableToCreatePersistenceStore"), this);
+            }
         }
 
         this.persistenceStore = validPersistenceStore;
@@ -2777,7 +2782,6 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //        }
 //        return connection;
 //    }
-
     public EntityExecutionContext createContext(ContextOperation operation, Map<String, Object> hints) {
 //        Session currentSession = persistenceUnit.getPersistenceGroup().getCurrentSession();
         EntityExecutionContextExt context = null;
@@ -2916,7 +2920,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public NamedFormulaDefinition getNamedFormula(String name) {
-        String uname = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(),name);
+        String uname = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(), name);
         NamedFormulaDefinition f = namedFormulas.get(uname);
         if (f == null) {
             throw new UPAIllegalArgumentException("Formula Not Found " + name);
@@ -2925,7 +2929,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public void addNamedFormula(String name, Formula formula) {
-        name = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(),name);
+        name = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(), name);
         if (formula == null) {
             throw new UPAException("InvalidCustomFormula", formula);
         }
@@ -2947,7 +2951,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public void removeNamedFormula(String name) {
-        name = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(),name);
+        name = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(), name);
         if (namedFormulas.containsKey(name)) {
             throw new UPAIllegalArgumentException("No Such Function " + name);
         }
