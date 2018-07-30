@@ -45,27 +45,52 @@ import java.util.Map;
 
 public interface EntityExecutionContext extends Properties {
 
+    /**
+     * Contextual Persistence Unit
+     * equivalent to getExecutionContext().getPersistenceUnit()
+     * @return Contextual Persistence Unit
+     */
     PersistenceUnit getPersistenceUnit();
 
+    /**
+     * Current Connection to Store
+     * equivalent to getExecutionContext().getConnection()
+     * @return Current Connection to Store
+     */
     UConnection getConnection();
 
+    /**
+     * Current Session
+     * equivalent to getExecutionContext().getSession()
+     * @return Current Session
+     */
     Session getSession();
 
+    /**
+     * Current Persistence Store
+     * equivalent to getExecutionContext().getPersistenceStore()
+     * @return Persistence Store
+     */
     PersistenceStore getPersistenceStore();
 
     ContextOperation getOperation();
 
     /**
-     *
-     * @return persist document is getOperation() is ContextOperation.PERSIST
+     * Current document values to use for the current formula.
+     * @return Current document values to use for the current formula.
      */
     Document getUpdateDocument();
+
     /**
-     *
-     * @return update query is getOperation() is ContextOperation.UPDATE
+     * Current update query expression
+     * @return Current update query expression
      */
     UpdateQuery getUpdateQuery();
 
+    /**
+     * Current Entity to be updated by formula.
+     * @return Current Entity to be updated by formula
+     */
     Entity getEntity();
 
     Map<String, Object> getValues();

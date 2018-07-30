@@ -1767,7 +1767,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     protected UConnection createRootUConnection(EntityExecutionContext context) throws UPAException {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         Properties p2 = new DefaultProperties(getProperties());
-        List<ConnectionProfile> all = connectionProfileParser.parseEnabled(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING);
+        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING,true);
         if (all.size() == 0) {
             throw new RootConnectionStringNotFoundException();
         }

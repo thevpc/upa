@@ -91,4 +91,16 @@ public class MethodCallback {
         configuration.put(name, value);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "MethodCallback{" +
+                "instance=" + instance +
+                ", method=" + method +
+                ", objectType=" + objectType +
+                ", callbackType=" + callbackType +
+                ", phase=" + phase +
+                ", configuration=" + configuration +
+                '}';
+    }
 }

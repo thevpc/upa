@@ -33,9 +33,10 @@ public class DefaultImportExportManager implements ImportExportManager {
 
     public void setFactory(ObjectFactory factory) {
         this.factory = factory;
-        if (parseFormatManager != null) {
-            parseFormatManager.setFactory(getFactory());
+        if (parseFormatManager == null) {
+            parseFormatManager = factory.createObject(ParseFormatManager.class);
         }
+        parseFormatManager.setFactory(getFactory());
     }
 
     public TextFixedWidthParser createTextFixedWidthParser(Object source) throws IOException {

@@ -639,7 +639,7 @@ public class DefaultUPAContext implements UPAContext {
 
         if (PlatformUtils.isUndefinedEnumValue(ObjectType.class, objectType)) {
             if (PlatformUtils.isUndefinedEnumValue(ObjectType.class, objectType)) {
-                throw new UPAException("UnableToResoleObjectType");
+                throw new UPAException("UnableToResoleObjectType for "+methodCallback);
             }
         }
         switch (objectType) {

@@ -20,19 +20,19 @@ public interface UpdateQuery {
 
     Object getValues();
 
+    UpdateQuery byField(String name,Object expr);
+
     UpdateQuery byId(Object expr);
 
-    <T> UpdateQuery byIdList(List<T> expr);
+    UpdateQuery byIdList(List<Object> expr);
 
     UpdateQuery byKey(Key expr);
 
-    UpdateQuery byObject(Object expr);
+//    UpdateQuery byObject(Object expr);
 
     UpdateQuery byPrototype(Object expr);
 
-    UpdateQuery byDocument(Document expr);
-
-    UpdateQuery byPrototype(Document expr);
+    UpdateQuery byDocumentPrototype(Document expr);
 
     UpdateQuery byKeyList(List<Key> expr);
 
@@ -40,11 +40,11 @@ public interface UpdateQuery {
 
     UpdateQuery byExpression(Expression expr);
 
-    UpdateQuery byAll();
+//    UpdateQuery byAll();
 
-    ConditionType getUpdateConditionType();
+//    ConditionType getUpdateConditionType();
 
-    Object getUpdateCondition();
+    Expression getUpdateExpression();
 
     Map<String, Object> getHints();
 

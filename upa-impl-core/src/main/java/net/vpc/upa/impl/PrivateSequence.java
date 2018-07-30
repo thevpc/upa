@@ -4,12 +4,9 @@
  */
 package net.vpc.upa.impl;
 
+import net.vpc.upa.config.*;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.EntityModifier;
-import net.vpc.upa.config.Entity;
-import net.vpc.upa.config.Field;
-import net.vpc.upa.config.Id;
-import net.vpc.upa.config.Ignore;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -19,12 +16,13 @@ import net.vpc.upa.config.Ignore;
 public class PrivateSequence {
     public static final String ENTITY_NAME = "PrivateSequence";
 
+
     @Id
     @Field(max = "512")
     private String name;
 
     @Id
-    @Field(max = "4000")
+    @Field(max = "512")
     private String group;
 
     private boolean locked;

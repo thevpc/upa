@@ -35,6 +35,15 @@
 package net.vpc.upa;
 
 /**
+ * A task that returns a result.
+ * Implementors define a single method with no arguments called
+ * {@code run}.
+ * This task is used in invokePrivileged and invoke methods in UPAContext,PersistenceGroup and PersistenceUnit
+ *
+ * @see UPAContext#invokePrivileged(Action, InvokeContext)
+ * @see UPAContext#invoke(Action)
+ * @see PersistenceGroup#invoke(Action)
+ * @see PersistenceUnit#invoke(Action)
  *
  * @author taha.bensalah@gmail.com
  */

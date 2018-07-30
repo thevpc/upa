@@ -42,6 +42,34 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * The following formulas in fields formula1 and formula2 are equivalent that simply concatenates str1 and str2.
+ * formula1 uses UPQL formula and formula2 uses.
+ * <p>ddd</p>
+ *<blockquote><pre>
+ * &#64;Entity
+ * public class Example{
+ *     private int id;
+ *     private String str1;
+ *     private String str2;
+
+ *     &#64;Formula(value="concat(this.str1,this.str2)")
+ *     private String formula1;
+
+ *     &#64;Formula(name="myconcat")
+ *     private String formula2;
+ * }
+ *
+ * &#64;Callback
+ * public class ExampleSupport{
+ *    &#64;NamedFormula
+ *    public String myconcat({@link net.vpc.upa.CustomFormulaContext} ctx){
+ *      String str1=ctx.getUpdateDocument().getString("str1")
+ *      String str2=ctx.getUpdateDocument().getString("str2")
+ *      return str1+str2;
+ *    }
+ * }
+ * </pre></blockquote>
+ * public Double alpha14AD(CustomFormulaContext ctx){
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 @Target(value = {ElementType.METHOD})

@@ -105,7 +105,7 @@ public class EntitySequenceManager implements SequenceManager {
     }
 
     public final int nextValue0(String name, String pattern, int initialValue, int increment, boolean autoCreate) throws UPAException {
-        
+
         PrivateSequence r = autoCreate ? getOrCreateSequence(name, pattern, initialValue, increment) : getSequence(name, pattern);
         if (r.isLocked() && !r.getLockUserId().equals(entity.getPersistenceUnit().getUserPrincipal().getName())) {
             throw new UPAException("Already locked");

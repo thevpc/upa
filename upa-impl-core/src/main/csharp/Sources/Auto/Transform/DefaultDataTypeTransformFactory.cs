@@ -32,7 +32,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                 string name = null;
                 System.Collections.Generic.List<string> args = new System.Collections.Generic.List<string>();
                 J2CS.IO.StreamTokenizer st = new J2CS.IO.StreamTokenizer(new System.IO.StringReader(expression.Trim()));
-                int tok = -1;
+                int tokenizer = -1;
                 const int STATUS_NAME = 1;
                 const int STATUS_OPEN_PAR_OR_END = 2;
                 const int STATUS_ARG_OR_CLOSE_PAR = 3;
@@ -43,14 +43,14 @@ namespace Net.Vpc.Upa.Impl.Transform
                 bool finish = false;
                 while (!finish) {
                     try {
-                        tok = st.NextToken();
+                        tokenizer = st.NextToken();
                     } catch (System.IO.IOException ex) {
                         throw new System.Exception("Never");
                     }
                     switch(status) {
                         case STATUS_NAME:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case J2CS.IO.StreamTokenizer.TT_WORD:
                                         {
                                             name = st.sval;
@@ -66,7 +66,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                             }
                         case STATUS_OPEN_PAR_OR_END:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case '(':
                                         {
                                             status = STATUS_ARG_OR_CLOSE_PAR;
@@ -86,7 +86,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                             }
                         case STATUS_ARG_OR_CLOSE_PAR:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case J2CS.IO.StreamTokenizer.TT_WORD:
                                         {
                                             args.Add(st.sval);
@@ -121,7 +121,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                             }
                         case STATUS_COMMA_OR_CLOSE_PAR:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case ',':
                                         {
                                             status = STATUS_ARG;
@@ -141,7 +141,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                             }
                         case STATUS_ARG:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case J2CS.IO.StreamTokenizer.TT_WORD:
                                         {
                                             args.Add(st.sval);
@@ -170,7 +170,7 @@ namespace Net.Vpc.Upa.Impl.Transform
                             }
                         case STATUS_END:
                             {
-                                switch(tok) {
+                                switch(tokenizer) {
                                     case J2CS.IO.StreamTokenizer.TT_EOF:
                                         {
                                             finish = true;

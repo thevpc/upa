@@ -408,7 +408,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
     public Connection createNativeRootConnection(EntityExecutionContext context) throws UPAException {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         DefaultProperties p2 = new DefaultProperties(context.getPersistenceUnit().getProperties());
-        List<ConnectionProfile> all = connectionProfileParser.parseEnabled(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING);
+        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING,true);
         if (all.size() == 0) {
             throw new RootConnectionStringNotFoundException();
         }

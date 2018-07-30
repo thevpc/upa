@@ -428,7 +428,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 if (field.getDataType() instanceof SerializableOrManyToOneType) {
                     Class entityType = ((SerializableOrManyToOneType) field.getDataType()).getEntityType();
 //                    if(findEntity(entityType)!=null){
-                    throw new UnexpectedException("Bug");
+                    throw new UnexpectedException("Field "+field.toString()+" could not be resolved to an Entity type : "+entityType+" is not actually an entity... is it?");
 //                    }
                 }
             }
@@ -1157,7 +1157,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         persistenceStoreFactory = getPersistenceGroup().getFactory().createObject(PersistenceStoreFactory.class);
         persistenceStoreFactory.configure(getPersistenceGroup().getFactory());
         PersistenceStoreExt validPersistenceStore = null;
-        List<ConnectionProfile> validConnectionProfiles = getValidConnectionProfiles(false);
+        List<ConnectionProfile> validConnectionProfiles = getConnectionProfiles(false,true);
         List<Object[]> errors = new ArrayList<Object[]>();
         for (ConnectionProfile p : validConnectionProfiles) {
             PersistenceStoreExt pm0 = (PersistenceStoreExt) persistenceStoreFactory.createPersistenceStore(p, getPersistenceGroup().getFactory(), getProperties());
@@ -1175,7 +1175,20 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (getConnectionProfile() == null || validPersistenceStore == null) {
             Throwable cause = null;
             if (validConnectionProfiles.isEmpty()) {
-                log.log(Level.SEVERE, "Unable to create Store because no valid ConnectionProfile was found");
+                List<ConnectionProfile> anyConnectionProfiles = getConnectionProfiles(false,false);
+                if(anyConnectionProfiles.isEmpty()) {
+                    log.log(Level.SEVERE, "["+getName()+"] Unable to create Store because no valid ConnectionProfile was found. Actually no ConnectionProfile found at all.");
+                }else{
+                    StringBuilder sb = new StringBuilder("["+getName()+"] Unable to create Store because no valid ConnectionProfile was found. " + anyConnectionProfiles.size() + " ConnectionProfile(s) found : ");
+                    for (int i = 0; i < anyConnectionProfiles.size(); i++) {
+                        if(i>0){
+                            sb.append(" ; ");
+                        }
+                        ConnectionProfile anyConnectionProfile = anyConnectionProfiles.get(i);
+                        sb.append(anyConnectionProfile);
+                    }
+                    log.log(Level.SEVERE, sb.toString());
+                }
             } else {
                 log.log(Level.SEVERE, "Unable to create Store because all ConnectionProfiles failed to be accessible");
                 for (Object[] objects : errors) {
@@ -1240,10 +1253,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     }
 
-    private List<ConnectionProfile> getValidConnectionProfiles(boolean root) {
+    private List<ConnectionProfile> getConnectionProfiles(boolean root,boolean enabledOnly) {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         Properties p2 = new DefaultProperties(getProperties());
-        return connectionProfileParser.parseEnabled(p2, getConnectionConfigs(), (root ? UPA.ROOT_CONNECTION_STRING : UPA.CONNECTION_STRING));
+        return connectionProfileParser.parse(p2, getConnectionConfigs(), (root ? UPA.ROOT_CONNECTION_STRING : UPA.CONNECTION_STRING),enabledOnly);
     }
 
     @Override

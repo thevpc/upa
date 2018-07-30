@@ -23,14 +23,15 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     private boolean lazyListLoadingEnabled = true;
     private Entity entity;
     private String entityAlias;
-    private Expression expression;
+    private CriteriaBuilder criteriaBuilder;
     private Order order;
     private int top;
     private FieldFilter fieldFilter;
-    private Object id;
-    private Key key;
-    private Object prototype;
-    private Document documentPrototype;
+//    private Object id;
+//    private Key key;
+//    private Object prototype;
+//    private Document documentPrototype;
+//    private Expression expression;
     private Map<String, Object> hints = new HashMap<String, Object>();
     private QueryExt query;
     private LinkedHashMap<String, Object> paramsByName = new LinkedHashMap<String, Object>();
@@ -38,6 +39,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     public DefaultQueryBuilder(Entity entity) {
         this.entity = entity;
+        criteriaBuilder=new CriteriaBuilder(entity);
     }
 
     public Entity getEntityType() {
@@ -46,25 +48,6 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     public QueryBuilder byExpression(String expression) {
         return byExpression(expression == null ? null : new UserExpression(expression));
-    }
-
-    public QueryBuilder byExpression(Expression expression) {
-        if (this.expression == null) {
-            this.expression = expression;
-        } else if (expression != null) {
-            this.expression = new And(this.expression, expression);
-        }
-        return this;
-    }
-
-    @Override
-    public QueryBuilder byExpression(Expression expression, boolean applyAndOp) {
-        if (applyAndOp || this.expression == null) {
-            this.expression = expression;
-        } else {
-            this.expression = new And(this.expression, expression);
-        }
-        return this;
     }
 
     @Override
@@ -81,35 +64,61 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder byId(Object id) {
-        if (id instanceof Key) {
-            byKey((Key) id);
-        } else {
-            this.id = id;
-        }
+        criteriaBuilder.byId(id);
+        return this;
+    }
+
+    public QueryBuilder byExpression(Expression expression) {
+        criteriaBuilder.byExpression(expression);
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byExpression(Expression expression, boolean applyAndOp) {
+        criteriaBuilder.byExpression(expression,applyAndOp);
         return this;
     }
 
     @Override
     public QueryBuilder byKey(Key key) {
-        this.key = key;
+        criteriaBuilder.byKey(key);
         return this;
     }
 
     @Override
     public QueryBuilder byPrototype(Object prototype) {
-        this.prototype = prototype;
+        criteriaBuilder.byPrototype(prototype);
         return this;
     }
 
     @Override
     public QueryBuilder byDocumentPrototype(Document prototype) {
-        this.documentPrototype = prototype;
+        criteriaBuilder.byDocumentPrototype(prototype);
         return this;
     }
 
     @Override
     public Expression getExpression() {
-        return expression;
+        return criteriaBuilder.getExpression();
+    }
+
+    @Override
+    public Object getId() {
+        return criteriaBuilder.getId();
+    }
+
+    @Override
+    public Key getKey() {
+        return criteriaBuilder.getKey();
+    }
+
+    @Override
+    public Object getPrototype() {
+        return criteriaBuilder.getPrototype();
+    }
+
+    public Document getDocumentPrototype() {
+        return criteriaBuilder.getDocumentPrototype();
     }
 
     @Override
@@ -120,25 +129,6 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     @Override
     public FieldFilter getFieldFilter() {
         return fieldFilter;
-    }
-
-    @Override
-    public Object getId() {
-        return id;
-    }
-
-    @Override
-    public Key getKey() {
-        return key;
-    }
-
-    @Override
-    public Object getPrototype() {
-        return prototype;
-    }
-
-    public Document getDocumentPrototype() {
-        return documentPrototype;
     }
 
     public String getEntityAlias() {
@@ -162,28 +152,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
                 }
             }
         }
-        Expression criteria = null;
-        if (getId() != null) {
-            Expression e = entity.getBuilder().idToExpression(getId(), UQLUtils.THIS);
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        if (getKey() != null) {
-            Expression e = (entity.getBuilder().idToExpression(entity.getBuilder().keyToId(getKey()), UQLUtils.THIS));
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        if (getPrototype() != null) {
-            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, UQLUtils.THIS);
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        if (getDocumentPrototype() != null) {
-            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), UQLUtils.THIS));
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        if (getExpression() != null) {
-            Expression e = getExpression();
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        s.setWhere(criteria);
+        s.setWhere(criteriaBuilder.createExpression());
         s.orderBy(getOrder());
         s.top(getTop());
         query = (QueryExt) entity.createQuery(s);
@@ -462,6 +431,19 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
                         new Param(entity.getField(field).getName(), value))
         );
     }
+
+    @Override
+    public QueryBuilder byKeyList(List<Key> expr) {
+        criteriaBuilder.byKeyList(expr);
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byExpressionList(List<Expression> expr) {
+        criteriaBuilder.byExpressionList(expr);
+        return this;
+    }
+
 
     public boolean isEmpty() throws UPAException {
         return build().isEmpty();

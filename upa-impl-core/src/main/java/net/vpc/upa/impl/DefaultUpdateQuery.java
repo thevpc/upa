@@ -1,11 +1,15 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
+import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.Param;
+import net.vpc.upa.expressions.Var;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldOrFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.ext.EntityExt;
+import net.vpc.upa.impl.persistence.CriteriaBuilder;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 
 import java.util.*;
@@ -15,8 +19,9 @@ import java.util.*;
  */
 public class DefaultUpdateQuery implements UpdateQuery{
     private EntityExt entity;
-    private ConditionType updateConditionType = ConditionType.EXPRESSION;
-    private Object updateCondition;
+    private CriteriaBuilder criteriaBuilder;
+//    private ConditionType updateConditionType = ConditionType.EXPRESSION;
+//    private Object updateCondition;
     private Object updatesValue;
     private boolean ignoreUnspecified;
     private Set<String> partialUpdateFields;
@@ -25,6 +30,7 @@ public class DefaultUpdateQuery implements UpdateQuery{
 
     public DefaultUpdateQuery(EntityExt entity) {
         this.entity = entity;
+        criteriaBuilder=new CriteriaBuilder(entity);
     }
 
     public UpdateQuery setNone() {
@@ -36,86 +42,62 @@ public class DefaultUpdateQuery implements UpdateQuery{
     }
 
     @Override
-    public UpdateQuery byId(Object expr) {
-        return setCondition(ConditionType.ID, expr);
+    public UpdateQuery byIdList(List<Object> expr) {
+        criteriaBuilder.byIdList(expr);
+        return this;
     }
 
-    @Override
-    public <T> UpdateQuery byIdList(List<T> expr) {
-        return setCondition(ConditionType.ID_LIST, expr);
-    }
+//    @Override
+//    public UpdateQuery byObject(Object expr) {
+//        return setCondition(ConditionType.OBJECT, expr);
+//    }
 
-    @Override
-    public UpdateQuery byKey(Key expr) {
-        return setCondition(ConditionType.KEY, expr);
-    }
+//    @Override
+//    public UpdateQuery byPrototype(Object expr) {
+//        if (expr instanceof Document) {
+//            return setCondition(ConditionType.DOCUMENT_PROTOTYPE, expr);
+//        } else {
+//            return setCondition(ConditionType.PROTOTYPE, expr);
+//        }
+//    }
 
-    @Override
-    public UpdateQuery byObject(Object expr) {
-        return setCondition(ConditionType.OBJECT, expr);
-    }
-
-    @Override
-    public UpdateQuery byPrototype(Object expr) {
-        if (expr instanceof Document) {
-            return setCondition(ConditionType.DOCUMENT_PROTOTYPE, expr);
-        } else {
-            return setCondition(ConditionType.PROTOTYPE, expr);
-        }
-    }
-
-    @Override
-    public UpdateQuery byDocument(Document expr) {
-        return setCondition(ConditionType.DOCUMENT, expr);
-    }
-
-    @Override
-    public UpdateQuery byPrototype(Document expr) {
-        return setCondition(ConditionType.DOCUMENT_PROTOTYPE, expr);
-    }
-
-    @Override
-    public UpdateQuery byKeyList(List<Key> expr) {
-        return setCondition(ConditionType.ID_LIST, expr);
-    }
-
-    @Override
-    public UpdateQuery byExpressionList(List<Expression> expr) {
-        return setCondition(ConditionType.EXPRESSION_LIST, expr);
-    }
-
-    @Override
-    public UpdateQuery byExpression(Expression expr) {
-        return setCondition(ConditionType.EXPRESSION, expr);
-    }
-
-    @Override
-    public UpdateQuery byAll() {
-        return setCondition(ConditionType.EXPRESSION, null);
-    }
+//    @Override
+//    public UpdateQuery byExpression(Expression expr) {
+//        return setCondition(ConditionType.EXPRESSION, expr);
+//    }
+//
+//    @Override
+//    public UpdateQuery byAll() {
+//        return setCondition(ConditionType.EXPRESSION, null);
+//    }
 
     private UpdateQuery setUpdates(Object updatesValue) {
         this.updatesValue=updatesValue;
         return this;
     }
 
-    private UpdateQuery setCondition(ConditionType updateConditionType, Object updateCondition) {
-        this.updateConditionType = updateConditionType;
-        this.updateCondition = updateCondition;
+//    private UpdateQuery setCondition(ConditionType updateConditionType, Object updateCondition) {
+//        this.updateConditionType = updateConditionType;
+//        this.updateCondition = updateCondition;
+//        return this;
+//    }
+
+    public UpdateQuery byField(String field, Object value) {
+        criteriaBuilder.byField(field,value);
         return this;
     }
 
 
-    @Override
-    public ConditionType getUpdateConditionType() {
-        return updateConditionType;
-    }
-
-    @Override
-    public Object getUpdateCondition() {
-        return updateCondition;
-    }
-
+//    @Override
+//    public ConditionType getUpdateConditionType() {
+//        return updateConditionType;
+//    }
+//
+//    @Override
+//    public Object getUpdateCondition() {
+//        return updateCondition;
+//    }
+//
     @Override
     public Map<String, Object> getHints() {
         return hints;
@@ -324,5 +306,80 @@ public class DefaultUpdateQuery implements UpdateQuery{
     @Override
     public UpdateQuery validate(String... formulaFields) {
         return validate(Arrays.asList(formulaFields));
+    }
+
+    @Override
+    public UpdateQuery byId(Object id) {
+        criteriaBuilder.byId(id);
+        return this;
+    }
+
+    public UpdateQuery byExpression(Expression expression) {
+        criteriaBuilder.byExpression(expression);
+        return this;
+    }
+
+//    @Override
+//    public UpdateQuery byExpression(Expression expression, boolean applyAndOp) {
+//        criteriaBuilder.byExpression(expression,applyAndOp);
+//        return this;
+//    }
+
+    @Override
+    public UpdateQuery byKey(Key key) {
+        criteriaBuilder.byKey(key);
+        return this;
+    }
+
+    @Override
+    public UpdateQuery byPrototype(Object prototype) {
+        criteriaBuilder.byPrototype(prototype);
+        return this;
+    }
+
+    @Override
+    public UpdateQuery byDocumentPrototype(Document prototype) {
+        criteriaBuilder.byDocumentPrototype(prototype);
+        return this;
+    }
+
+    public Expression getUpdateExpression() {
+        return criteriaBuilder.createExpression();
+    }
+
+    //    @Override
+    public Expression getExpression() {
+        return criteriaBuilder.getExpression();
+    }
+
+//    @Override
+    public Object getId() {
+        return criteriaBuilder.getId();
+    }
+
+//    @Override
+    public Key getKey() {
+        return criteriaBuilder.getKey();
+    }
+
+//    @Override
+    public Object getPrototype() {
+        return criteriaBuilder.getPrototype();
+    }
+
+    public Document getDocumentPrototype() {
+        return criteriaBuilder.getDocumentPrototype();
+    }
+
+    @Override
+    public UpdateQuery byKeyList(List<Key> expr) {
+        criteriaBuilder.byKeyList(expr);
+        return this;
+    }
+
+    @Override
+    public UpdateQuery byExpressionList(List<Expression> expr) {
+        criteriaBuilder.byExpressionList(expr);
+        return this;
     }
 }

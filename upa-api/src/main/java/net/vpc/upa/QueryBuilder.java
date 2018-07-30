@@ -56,6 +56,10 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     QueryBuilder byExpression(Expression expression, boolean applyAndOp);
 
+    QueryBuilder byKeyList(List<Key> expr);
+
+    QueryBuilder byExpressionList(List<Expression> expr);
+
     QueryBuilder orderBy(Order order);
 
     QueryBuilder setFieldFilter(FieldFilter fieldFilter);
@@ -94,71 +98,76 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     void setTop(int top);
 
-    Date getDate() ;
+    Date getDate();
 
-    Boolean getBoolean() ;
+    Boolean getBoolean();
 
-    Integer getInteger() ;
+    Integer getInteger();
 
-    Long getLong() ;
+    Long getLong();
 
-    Double getDouble() ;
+    Double getDouble();
 
-    String getString() ;
+    String getString();
 
-    Number getNumber() ;
+    Number getNumber();
 
-    Object getSingleValue() ;
+    Object getSingleValue();
 
-    Object getSingleValue(Object defaultValue) ;
+    Object getSingleValue(Object defaultValue);
 
-    MultiDocument getMultiDocument() ;
+    MultiDocument getMultiDocument();
 
-    Document getDocument() ;
+    Document getDocument();
 
     /**
      * Executes a Select query and returns a single result.
+     *
      * @param <R> Result Type
      * @return Single result if unique
      * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
-     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned by query
+     * @throws net.vpc.upa.exceptions.NoResultException        if no result if returned by query
      */
-    <R> R getSingleResult() ;
+    <R> R getSingleResult();
 
     /**
      * Executes a Select query and returns a single result if found.
      * If query returns no result null is returned.
      * When Multiple results NonUniqueResultException will be thrown
+     *
      * @param <R> Result Type
      * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
      * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
      */
-    <R> R getSingleResultOrNull() ;
+    <R> R getSingleResultOrNull();
 
     <R> R getSingleResultOrNull(Class<R> type, String... fields);
+
     <R> R getFirstResultOrNull(Class<R> type, String... fields);
+
     <R> R getSingleResult(Class<R> type, String... fields);
 
     /**
      * Executes a Select query and returns a single result if found.
      * If query returns no result null is returned.
      * When Multiple results, the first result will be returned
+     *
      * @param <R> Result Type
      * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
      */
-    <R> R getFirstResultOrNull() ;
+    <R> R getFirstResultOrNull();
 
-    boolean isEmpty() ;
+    boolean isEmpty();
 
-    <K> List<K> getIdList() ;
+    <K> List<K> getIdList();
 
-    <K> Set<K> getIdSet() ;
+    <K> Set<K> getIdSet();
 
-    List<Key> getKeyList() ;
+    List<Key> getKeyList();
 
-    Set<Key> getKeySet() ;
+    Set<Key> getKeySet();
 
-    List<MultiDocument> getMultiDocumentList() ;
+    List<MultiDocument> getMultiDocumentList();
 
     <T> List<T> getResultList(Class<T> type, String... fields);
 
@@ -168,17 +177,17 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     <T> Set<T> getResultSet();
 
-    List<Document> getDocumentList() ;
+    List<Document> getDocumentList();
 
-    <T> List<T> getValueList(int index) ;
+    <T> List<T> getValueList(int index);
 
-    <T> Set<T> getValueSet(int index) ;
+    <T> Set<T> getValueSet(int index);
 
-    <T> Set<T> getValueSet(String name) ;
+    <T> Set<T> getValueSet(String name);
 
-    <T> List<T> getValueList(String name) ;
+    <T> List<T> getValueList(String name);
 
-    ResultMetaData getMetaData() ;
+    ResultMetaData getMetaData();
 
     QueryBuilder setParameter(String name, Object value);
 

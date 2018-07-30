@@ -24,7 +24,7 @@ public class ConnectionProfileParser {
             ConnectionOption.DATABASE_PRODUCT_VERSION.toLowerCase()};
     private static Set<String> IGNORED_OPTIONS_SET = new HashSet<String>(Arrays.asList(IGNORED_OPTIONS));
 
-    public List<ConnectionProfile> parseEnabled(Properties p2, ConnectionConfig[] connectionConfigsArr, String prefix0) {
+    public List<ConnectionProfile> parse(Properties p2, ConnectionConfig[] connectionConfigsArr, String prefix0,boolean enabledOnly) {
         List<ConnectionProfile> found = new ArrayList<ConnectionProfile>();
         for (int i = 0; i < connectionConfigsArr.length; i++) {
             ConnectionConfig connectionConfig = connectionConfigsArr[i];
@@ -42,7 +42,7 @@ public class ConnectionProfileParser {
         while (true) {
             String prefix = prefix0 + "[" + i2 + "]";
             if (p2.isSet(prefix)) {
-                if (Boolean.parseBoolean(p2.getString(prefix + ".enabled", "true"))) {
+                if (!enabledOnly || Boolean.parseBoolean(p2.getString(prefix + ".enabled", "true"))) {
                     ConnectionProfile a = parse(p2, prefix);
                     //if (isValidConnectionProfile(a)) {
                     found.add(a);
@@ -54,7 +54,7 @@ public class ConnectionProfileParser {
             }
         }
         if (p2.isSet(prefix0)) {
-            if (Boolean.parseBoolean(p2.getString(prefix0 + ".enabled", "true"))) {
+            if (!enabledOnly || Boolean.parseBoolean(p2.getString(prefix0 + ".enabled", "true"))) {
                 ConnectionProfile a = parse(p2, prefix0);
                 //if (isValidConnectionProfile(a)) {
                 found.add(a);

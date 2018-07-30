@@ -2917,10 +2917,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        if(updateConditionType ==null /*|| updateConditionType==UpdateConditionType.DEFAULT*/){
 //            updateConditionType =
 //        }
-        Object updateCondition = updateQuery.getUpdateCondition();
         Object updatesValue = updateQuery.getValues();
         FieldFilter formulaFields = updateQuery.getFormulaFields();
-        Expression whereExpression = objToExpression(updateQuery.getUpdateConditionType(), updateCondition, UQLUtils.THIS);
+        Expression whereExpression = updateQuery.getUpdateExpression();
 
         Object idToUpdate = getBuilder().objectToId(updatesValue);
         Expression idExpression = null;
@@ -2928,33 +2927,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             idExpression = getBuilder().idToExpression(idToUpdate, UQLUtils.THIS);
             updateSingleObject = true;
         }
-        if (updateQuery.getUpdateConditionType() == null /*|| options.getUpdateConditionType()==ConditionType.DEFAULT*/) {
-            throw new UPAException("MissingConditionType");
-        }
         if (!updateSingleObject) {
-            switch (updateQuery.getUpdateConditionType()) {
-                case ID:
-                case KEY: {
-                    updateSingleObject = true;
-                    break;
-                }
-                case OBJECT: {
-                    Object i2 = getBuilder().objectToId(updateCondition);
-                    updateSingleObject = i2 != null;
-                    break;
-                }
-                case DOCUMENT: {
-                    Object i2 = getBuilder().documentToId((Document) updateCondition);
-                    updateSingleObject = i2 != null;
-                    break;
-                }
-                case EXPRESSION: {
-                    if (updateCondition instanceof IdExpression) {
-                        //Object id = ((IdExpression) updateCondition1).getId();
-                        updateSingleObject = true;
-                    }
-                    break;
-                }
+            if(whereExpression instanceof IdExpression){
+                updateSingleObject = true;
             }
         }
         if (whereExpression == null) {

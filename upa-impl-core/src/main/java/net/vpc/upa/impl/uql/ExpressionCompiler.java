@@ -1394,7 +1394,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         switch (ref.getReferrerType()) {
                             case ENTITY: {
                                 Entity ee = persistenceUnit.getEntity((String) ref.getReferrerName());
-                                if (ee.containsField(var.getName())) {
+                                if (var.getName().equals(ref.getName())) {
+                                    var.setReferrer(ee);
+                                }else if (ee.containsField(var.getName())) {
                                     if (var.getParentExpression() instanceof CompiledVarVal) {
                                         //need no alias
                                         var.setReferrer(ee.getField(var.getName()));

@@ -13,10 +13,10 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="upa-impl-core" />
     <orderEntry type="module" module-name="upa-api" />
-    <orderEntry type="library" name="Maven: cglib:cglib:3.2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.ow2.asm:asm:6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.9.6" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib:3.2.7" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant:1.10.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.10.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.9" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.5" level="project" />
