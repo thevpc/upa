@@ -1,5 +1,6 @@
 package net.vpc.upa.test;
 
+import net.vpc.upa.Document;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
 import net.vpc.upa.config.*;
@@ -8,6 +9,9 @@ import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -35,6 +39,16 @@ public class UserInClientUC {
         @Sequence
         private int id;
         private AppUser client;
+        private Date date;
+
+        public Date getDate() {
+            return date;
+        }
+
+        public Client setDate(Date date) {
+            this.date = date;
+            return this;
+        }
 
         public int getId() {
             return id;
@@ -103,6 +117,11 @@ public class UserInClientUC {
             Object uu = pu.findById(Client.class, ic.getId());
             System.out.println(uu.getClass());
             Assert.assertEquals(Client.class,uu.getClass());
+
+            List<Document> r = pu.createQuery("Select year(currentDate()) from AppUser a").getDocumentList();
+            r.size();
+            System.out.println(r);
+
         }
 
     }

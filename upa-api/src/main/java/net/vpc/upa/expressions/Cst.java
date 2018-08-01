@@ -71,4 +71,8 @@ public final class Cst extends DefaultExpression
         return new Cst(value);
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

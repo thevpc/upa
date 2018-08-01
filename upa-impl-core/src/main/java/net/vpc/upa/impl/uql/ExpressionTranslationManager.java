@@ -129,6 +129,13 @@ public class ExpressionTranslationManager {
         register0(DateDiff.class, new DateDiffExpressionTranslator());
         register0(DateAdd.class, new DateAddExpressionTranslator());
         register0(DateTrunc.class, new DateTruncExpressionTranslator());
+        register0(Second.class, new SecondExpressionTranslator());
+        register0(Minute.class, new MinuteExpressionTranslator());
+        register0(Hour.class, new HourExpressionTranslator());
+        register0(Day.class, new DayExpressionTranslator());
+        register0(Month.class, new MonthExpressionTranslator());
+        register0(Month.class, new MonthExpressionTranslator());
+        register0(Year.class, new YearExpressionTranslator());
         register0(QLFunctionExpression.class, new QLFunctionExpressionExpressionTranslator());
         register0(InSelection.class, new InSelectionExpressionTranslator());
         register0(InCollection.class, new InCollectionExpressionTranslator());

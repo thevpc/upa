@@ -136,6 +136,36 @@ public class FunctionFactory {
             Expression e = (Expression) args.get(1);
             return new DatePart(DatePartType.valueOf(((Var) type).getName().toUpperCase()), e);
         }
+        if (uniformName.equals("year")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Year(e);
+        }
+        if (uniformName.equals("month")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Month(e);
+        }
+        if (uniformName.equals("day")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Day(e);
+        }
+        if (uniformName.equals("hour")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Hour(e);
+        }
+        if (uniformName.equals("minute")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Minute(e);
+        }
+        if (uniformName.equals("second")) {
+            checkArgCount(name, args, 1);
+            Expression e = (Expression) args.get(0);
+            return new Second(e);
+        }
         if (uniformName.equals("monthstart")) {
             switch (args.size()) {
                 case 0: {

@@ -4,9 +4,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
+import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -103,7 +101,45 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             case PLUS: {
-                s = leftValue + " + " + rightValue;
+                if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
+                        ) {
+                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(), o.getRight().copy()), qlContext, declarations);
+                }else if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class)
+                        ){
+                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledD2V(o.getRight().copy())), qlContext, declarations);
+                }else if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Integer.class)
+                        ){
+                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledI2V(o.getRight().copy())), qlContext, declarations);
+                }else if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class)
+                        ){
+                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledD2V(o.getRight().copy())), qlContext, declarations);
+                }else if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
+                        ){
+                    s = sqlManager.getSQL(new CompiledConcat(new CompiledD2V(o.getLeft().copy()),o.getRight().copy()), qlContext, declarations);
+                }else if(
+                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
+                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(Integer.class))
+                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
+                        ){
+                    s = sqlManager.getSQL(new CompiledConcat(new CompiledI2V(o.getLeft().copy()),o.getRight().copy()), qlContext, declarations);
+                }else {
+                    s = leftValue + " + " + rightValue;
+                }
                 break;
             }
             case MINUS: {
