@@ -1,15 +1,12 @@
 package net.vpc.upa.test;
 
 import net.vpc.upa.*;
-import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

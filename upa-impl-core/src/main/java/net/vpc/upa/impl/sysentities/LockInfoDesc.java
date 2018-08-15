@@ -6,7 +6,7 @@
  * To change template for new class use
  * Code Style | Class Templates options (Tools | IDE Options).
  */
-package net.vpc.upa.impl;
+package net.vpc.upa.impl.sysentities;
 
 import net.vpc.upa.Document;
 import net.vpc.upa.types.DateTime;

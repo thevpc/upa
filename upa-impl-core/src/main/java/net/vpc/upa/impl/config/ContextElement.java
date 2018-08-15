@@ -15,14 +15,6 @@ public class ContextElement {
     private LinkedHashMap<String, PersistenceGroupElement> persistenceGroups = new LinkedHashMap<String, PersistenceGroupElement>();
     private List<ScanElement> scanElements = new ArrayList<ScanElement>();
 
-//    public ContextAnnotationStrategy getConfigurationStrategy() {
-//        LinkedHashSet<ContextAnnotationStrategyFilter> filters = new LinkedHashSet<ContextAnnotationStrategyFilter>();
-//        for (ConfigureElement configureElement : configElements) {
-//            filters.add(new ContextAnnotationStrategyFilter(configureElement.libs, configureElement.types, configureElement.propagate));
-//        }
-//        return (new ContextAnnotationStrategy(filters.toArray(new ContextAnnotationStrategyFilter[filters.size()])));
-//    }
-
     public void addScanElement(ScanElement e) {
         scanElements.add(e);
     }

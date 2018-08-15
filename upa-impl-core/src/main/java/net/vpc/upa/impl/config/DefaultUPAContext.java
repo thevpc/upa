@@ -552,7 +552,7 @@ public class DefaultUPAContext implements UPAContext {
         filters.remove(filter);
     }
 
-    public ScanFilter[] getContextAnnotationStrategyFilters() {
+    public ScanFilter[] getScanFilters() {
         return filters.toArray(new ScanFilter[filters.size()]);
     }
 

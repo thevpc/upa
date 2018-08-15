@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.uql.util.UQLUtils;
 import net.vpc.upa.types.DateTime;

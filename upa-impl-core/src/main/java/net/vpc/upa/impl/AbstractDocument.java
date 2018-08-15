@@ -163,6 +163,9 @@ public abstract class AbstractDocument implements Document {
     @Override
     public double getDouble(String key, double defaultValue) {
         Number object = getObject(key, defaultValue);
+        if(object==null){
+            return defaultValue;
+        }
         return object.doubleValue();
     }
 
@@ -199,6 +202,9 @@ public abstract class AbstractDocument implements Document {
     @Override
     public float getFloat(String key, float defaultValue) {
         Number object = getObject(key, defaultValue);
+        if(object==null){
+            return defaultValue;
+        }
         return object.floatValue();
     }
 
@@ -309,6 +315,9 @@ public abstract class AbstractDocument implements Document {
     @Override
     public Number getNumber(String key, Number defaultValue) {
         Number object = getObject(key, defaultValue);
+        if(object==null){
+            return defaultValue;
+        }
         return object.intValue();
     }
 

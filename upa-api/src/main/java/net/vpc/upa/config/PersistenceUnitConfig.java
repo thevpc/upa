@@ -49,6 +49,7 @@ public @interface PersistenceUnitConfig {
 
     String name() default "";
     BoolEnum autoScan() default BoolEnum.UNDEFINED;
+    BoolEnum inheritScanFilters() default BoolEnum.UNDEFINED;
 
     ScanConfig[] scan() default {};
 

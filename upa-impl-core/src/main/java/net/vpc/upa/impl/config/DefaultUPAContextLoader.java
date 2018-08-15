@@ -69,12 +69,13 @@ public class DefaultUPAContextLoader {
             gc.setConfigOrder(UPAContextConfig.XML_ORDER);
             gc.setName(e.name);
             gc.setAutoScan(e.autoScan);
+            gc.setAutoScan(e.inheritScanFilters);
 
             filters = new LinkedHashSet<ScanFilter>();
             for (ScanElement scanElement : e.getScanElements()) {
                 filters.add(new ScanFilter(scanElement.libs, scanElement.types, scanElement.propagate, UPAContextConfig.XML_ORDER));
             }
-            gc.setContextAnnotationStrategyFilters(new ArrayList<ScanFilter>(filters));
+            gc.setScanFilters(new ArrayList<ScanFilter>(filters));
             Map<String, Object> parameters = gc.getProperties();
             if (parameters == null) {
                 parameters = new HashMap<String, Object>();
@@ -89,6 +90,7 @@ public class DefaultUPAContextLoader {
                 pu.setName(pue.name);
                 pu.setAutoStart(pue.start);
                 pu.setAutoScan(pue.autoScan);
+                pu.setInheritScanFilters(pue.inheritScanFilters);
 
                 filters = new LinkedHashSet<ScanFilter>();
                 for (ScanElement scanElement : pue.getScanElements()) {
@@ -449,6 +451,7 @@ public class DefaultUPAContextLoader {
         String name = nullify(attrs.get(XMLUtils.uniformName("name")));
         PersistenceGroupElement c = context.getOrAddPersistenceGroupElement(name);
         c.autoScan = parseBoolean(attrs.get(XMLUtils.uniformName("autoScan")), c.autoScan, gvarContext);
+        c.inheritScanFilters = parseBoolean(attrs.get(XMLUtils.uniformName("inheritScanFilters")), c.autoScan, gvarContext);
         List<XmlDomNode> nl = e.getChildren();
             for (XmlDomNode item:nl) {
                 if (item instanceof XmlDomElement) {
@@ -497,6 +500,7 @@ public class DefaultUPAContextLoader {
         PersistenceUnitElement s = persistenceGroupElement.getOrAddPersistenceUnitElement(name);
         s.start = parseBoolean(attrs.get(XMLUtils.uniformName("start")), s.start, uvarContext);
         s.autoScan = parseBoolean(attrs.get(XMLUtils.uniformName("autoScan")), s.autoScan, uvarContext);
+        s.inheritScanFilters = parseBoolean(attrs.get(XMLUtils.uniformName("inheritScanFilters")), s.inheritScanFilters, uvarContext);
 
         List<XmlDomNode> nl = e.getChildren();
             for (XmlDomNode item:nl) {

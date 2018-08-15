@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.expressions.QueryStatement;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -151,7 +153,7 @@ public class DecorationEntityDescriptorResolver {
 //            }
             return entityInfo;
         } catch (Exception e) {
-            throw new UPAIllegalArgumentException("UnableToBuildEntity "+entityInfo.getName(),e);
+            throw new UPAIllegalArgumentException("UnableToBuildEntity " + entityInfo.getName(), e);
         }
     }
 
@@ -169,9 +171,6 @@ public class DecorationEntityDescriptorResolver {
 //            }
 //        }
 //    }
-
-
-
     void parseEntityType(DecorationEntityDescriptor entityInfo, Class type, boolean parseFields, boolean parseModifiers, boolean parseExtensions, ObjectFactory factory) {
         Decoration ue = repo.getTypeDecoration(type, Entity.class);
         entityInfo.idType = AnnotationParserUtils.validClass(ue == null ? null : ue.getType("idType"), entityInfo.idType, Object.class);
@@ -216,7 +215,7 @@ public class DecorationEntityDescriptorResolver {
             }
         }
 
-        for (Decoration indexAnn : repo.getTypeRepeatableDecorations(type, net.vpc.upa.config.Index.class,net.vpc.upa.config.Indexes.class)) {
+        for (Decoration indexAnn : repo.getTypeRepeatableDecorations(type, net.vpc.upa.config.Index.class, net.vpc.upa.config.Indexes.class)) {
             //net.vpc.upa.config.Index 
             List<String> rr = new ArrayList<String>();
             rr.addAll(Arrays.asList(indexAnn.getPrimitiveArray("fields", String.class)));
@@ -317,7 +316,8 @@ public class DecorationEntityDescriptorResolver {
             if (view != null) {
                 Class<ViewEntityExtensionDefinition> spec = view.getType("spec");
                 if (spec.equals(ViewEntityExtensionDefinition.class)) {
-                    throw new UPAIllegalArgumentException("Unsupported");
+                    String query = view.getString("query");
+                    entityInfo.specs.add(new SimpleViewEntityExtensionDefinition(query));
                 } else {
                     entityInfo.specs.add(factory.createObject(spec));
                 }
@@ -347,5 +347,6 @@ public class DecorationEntityDescriptorResolver {
                 && !PlatformUtils.isTransient(field)
                 && repo.getFieldDecoration(field, Transient.class) == null;
     }
+
 
 }

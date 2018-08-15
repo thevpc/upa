@@ -28,8 +28,8 @@ public class DefaultConfigFilter implements ClassPathFilter {
     private Map<URL, List<DefaultConfigFilterItem>> cache = new HashMap<URL, List<DefaultConfigFilterItem>>();
 
     public DefaultConfigFilter(ScanFilter[] filterList) {
-        //always add upa classes
-        add(new ScanFilter("", "net.vpc.upa.**", true, Integer.MIN_VALUE));
+        //always add upa classes (why?)
+        add(new ScanFilter("", "net.vpc.upa.impl.sysentities.**", true, Integer.MIN_VALUE));
         for (ScanFilter filter : filterList) {
             add(filter);
         }

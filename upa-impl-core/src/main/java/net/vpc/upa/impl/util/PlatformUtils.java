@@ -1240,7 +1240,7 @@ public class PlatformUtils {
         return bestFact.createClassPathFilter(url, configFilter, classFilter, contextClassLoader);
     }
 
-    public static boolean toBool(BoolEnum b, Boolean defaultValue) {
+    public static Boolean toBool(BoolEnum b, Boolean defaultValue) {
         if (b == null || b == BoolEnum.UNDEFINED) {
             return defaultValue;
         }

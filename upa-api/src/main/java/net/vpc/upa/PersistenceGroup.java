@@ -34,7 +34,6 @@ package net.vpc.upa;
 import net.vpc.upa.callbacks.PersistenceUnitDefinitionListener;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
-import net.vpc.upa.exceptions.UPAException;
 
 import java.util.List;
 
@@ -56,6 +55,10 @@ public interface PersistenceGroup extends Closeable {
     boolean isAutoScan();
 
     void setAutoScan(boolean autoScan);
+
+    boolean isInheritScanFilters();
+
+    void setInheritScanFilters(boolean inheritScanFilters);
 
     UPAContext getContext();
 
@@ -92,11 +95,11 @@ public interface PersistenceGroup extends Closeable {
 
     void removePersistenceUnitDefinitionListener(PersistenceUnitDefinitionListener definitionListener);
 
-    void addContextAnnotationStrategyFilter(ScanFilter filter);
+    void addScanFilter(ScanFilter filter);
 
-    void removeContextAnnotationStrategyFilter(ScanFilter filter);
+    void removeScanFilter(ScanFilter filter);
 
-    ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getScanFilters();
 
     UPASecurityManager getSecurityManager();
 

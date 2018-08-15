@@ -51,6 +51,8 @@ public @interface PersistenceGroupConfig {
 
     BoolEnum autoScan() default BoolEnum.UNDEFINED;
 
+    BoolEnum inheritScanFilters() default BoolEnum.UNDEFINED;
+
     ScanConfig[] scan() default {};
 
     Property[] properties() default {};

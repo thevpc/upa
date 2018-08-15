@@ -194,8 +194,11 @@ public class URLAnnotationStrategySupport {
                         if (pgc.getAutoScan() != null) {
                             g.setAutoScan(pgc.getAutoScan());
                         }
-                        for (ScanFilter a : pgc.getContextAnnotationStrategyFilters()) {
-                            g.addContextAnnotationStrategyFilter(a);
+                        if (pgc.getInheritScanFilters() != null) {
+                            g.setInheritScanFilters(pgc.getInheritScanFilters());
+                        }
+                        for (ScanFilter a : pgc.getScanFilters()) {
+                            g.addScanFilter(a);
                         }
                         for (Map.Entry<String, Object> stringObjectEntry : pgc.getProperties().entrySet()) {
                             g.getProperties().setObject(stringObjectEntry.getKey(), stringObjectEntry.getValue());
@@ -219,9 +222,12 @@ public class URLAnnotationStrategySupport {
                                 if ((puc.getAutoScan() != null)) {
                                     pu.setAutoScan(puc.getAutoScan());
                                 }
+                                if ((puc.getInheritScanFilters() != null)) {
+                                    pu.setInheritScanFilters(puc.getInheritScanFilters());
+                                }
                                 pu.setAutoStart(puc.getAutoStart() == null ? Boolean.TRUE : puc.getAutoStart().booleanValue());
                                 for (ScanFilter a : puc.getFilters()) {
-                                    puc.addFilter(a);
+                                    pu.addScanFilter(a);
                                 }
                                 for (ConnectionConfig connectionConfig : puc.getConnections()) {
                                     pu.addConnectionConfig(connectionConfig);
@@ -776,16 +782,19 @@ public class URLAnnotationStrategySupport {
             if (c.getAutoStart() != null) {
                 old.setAutoStart(c.getAutoStart());
             }
-            if (StringUtils.isNullOrEmpty(c.getPersistenceNameEscape())) {
+            if (c.getInheritScanFilters()!= null) {
+                old.setInheritScanFilters(c.getInheritScanFilters());
+            }
+            if (!StringUtils.isNullOrEmpty(c.getPersistenceNameEscape())) {
                 old.setPersistenceNameEscape(c.getPersistenceNameEscape());
             }
-            if (StringUtils.isNullOrEmpty(c.getGlobalPersistenceNameFormat())) {
+            if (!StringUtils.isNullOrEmpty(c.getGlobalPersistenceNameFormat())) {
                 old.setGlobalPersistenceNameFormat(c.getGlobalPersistenceNameFormat());
             }
-            if (c.getGlobalPersistenceNameFormat() != null) {
-                old.setGlobalPersistenceNameFormat(c.getGlobalPersistenceNameFormat());
-            }
-            if (c.getLocalPersistenceNameFormat() != null) {
+//            if (c.getGlobalPersistenceNameFormat() != null) {
+//                old.setGlobalPersistenceNameFormat(c.getGlobalPersistenceNameFormat());
+//            }
+            if (!StringUtils.isNullOrEmpty(c.getLocalPersistenceNameFormat())) {
                 old.setLocalPersistenceNameFormat(c.getLocalPersistenceNameFormat());
             }
             for (net.vpc.upa.persistence.PersistenceNameFormat v : c.getNameFormats()) {
@@ -827,6 +836,10 @@ public class URLAnnotationStrategySupport {
                 } else {
                     merge(connectionConfig, oldConnectionConfig);
                 }
+            }
+            ScanFilter[] filters = c.getFilters();
+            for (ScanFilter scanFilter : filters) {
+                old.addFilter(scanFilter);
             }
         }
         return new ArrayList<PersistenceUnitConfig>(t.values());

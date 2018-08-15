@@ -38,7 +38,6 @@ import net.vpc.upa.callbacks.PersistenceUnitListener;
 import net.vpc.upa.callbacks.Trigger;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.EntityStatement;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QLParameterProcessor;
@@ -69,6 +68,10 @@ public interface PersistenceUnit extends Closeable {
     boolean isAutoScan();
 
     void setAutoScan(boolean autoScan);
+
+    boolean isInheritScanFilters();
+
+    void setInheritScanFilters(boolean inheritScanFilters);
 
     Session openSession();
 
@@ -483,11 +486,11 @@ public interface PersistenceUnit extends Closeable {
 
     void removeRootConnectionConfig(int index);
 
-    void addContextAnnotationStrategyFilter(ScanFilter filter);
+    void addScanFilter(ScanFilter filter);
 
-    void removeContextAnnotationStrategyFilter(ScanFilter filter);
+    void removeScanFilter(ScanFilter filter);
 
-    ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getScanFilters();
 
     UserPrincipal getUserPrincipal();
 

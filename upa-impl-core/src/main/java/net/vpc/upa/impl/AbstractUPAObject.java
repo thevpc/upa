@@ -60,7 +60,6 @@ public abstract class AbstractUPAObject implements UPAObject {
 //        this.persistenceName = persistenceName;
 //        afterPropertyChangeSupport.firePropertyChange("persistenceName", old, recent);
 //    }
-
     public I18NString getI18NTitle() {
         return title;
     }
@@ -99,7 +98,7 @@ public abstract class AbstractUPAObject implements UPAObject {
 
     @Override
     public PersistenceGroup getPersistenceGroup() {
-        return persistenceUnit==null?null:persistenceUnit.getPersistenceGroup();
+        return persistenceUnit == null ? null : persistenceUnit.getPersistenceGroup();
     }
 
     //--------------------------- PROPERTIES SUPPORT
@@ -110,7 +109,7 @@ public abstract class AbstractUPAObject implements UPAObject {
 //    @Override
     public void setPersistenceState(PersistenceState persistenceState) {
         PersistenceState old = this.persistenceState;
-        persistenceState = PlatformUtils.isUndefinedEnumValue(PersistenceState.class,persistenceState) ? PersistenceState.UNDEFINED : persistenceState;
+        persistenceState = PlatformUtils.isUndefinedEnumValue(PersistenceState.class, persistenceState) ? PersistenceState.UNDEFINED : persistenceState;
         PersistenceState recent = persistenceState;
 
         beforePropertyChangeSupport.firePropertyChange("persistenceState", old, recent);
@@ -173,21 +172,21 @@ public abstract class AbstractUPAObject implements UPAObject {
     }
 
     public UPAObjectListener[] getObjectListeners() {
-        return objectListeners==null?new UPAObjectListener[0]:objectListeners.toArray(new UPAObjectListener[objectListeners.size()]);
+        return objectListeners == null ? new UPAObjectListener[0] : objectListeners.toArray(new UPAObjectListener[objectListeners.size()]);
     }
 
-    public void addPropertyChangeListener(String property, EventPhase phase,PropertyChangeListener listener) {
-        switch (phase){
-            case DEFAULT:{
+    public void addPropertyChangeListener(String property, EventPhase phase, PropertyChangeListener listener) {
+        switch (phase) {
+            case DEFAULT: {
                 beforePropertyChangeSupport.addPropertyChangeListener(property, listener);
                 afterPropertyChangeSupport.addPropertyChangeListener(property, listener);
                 break;
             }
-            case BEFORE:{
+            case BEFORE: {
                 beforePropertyChangeSupport.addPropertyChangeListener(property, listener);
                 break;
             }
-            case AFTER:{
+            case AFTER: {
                 afterPropertyChangeSupport.addPropertyChangeListener(property, listener);
                 break;
             }
@@ -195,53 +194,53 @@ public abstract class AbstractUPAObject implements UPAObject {
     }
 
     public void removePropertyChangeListener(String property, EventPhase phase, PropertyChangeListener listener) {
-        switch (phase){
-            case DEFAULT:{
+        switch (phase) {
+            case DEFAULT: {
                 beforePropertyChangeSupport.removePropertyChangeListener(property, listener);
                 afterPropertyChangeSupport.removePropertyChangeListener(property, listener);
                 break;
             }
-            case BEFORE:{
+            case BEFORE: {
                 beforePropertyChangeSupport.removePropertyChangeListener(property, listener);
                 break;
             }
-            case AFTER:{
+            case AFTER: {
                 afterPropertyChangeSupport.removePropertyChangeListener(property, listener);
                 break;
             }
         }
     }
 
-    public void addPropertyChangeListener(EventPhase phase,PropertyChangeListener listener) {
-        switch (phase){
-            case DEFAULT:{
+    public void addPropertyChangeListener(EventPhase phase, PropertyChangeListener listener) {
+        switch (phase) {
+            case DEFAULT: {
                 beforePropertyChangeSupport.addPropertyChangeListener(listener);
                 afterPropertyChangeSupport.addPropertyChangeListener(listener);
                 break;
             }
-            case BEFORE:{
+            case BEFORE: {
                 beforePropertyChangeSupport.addPropertyChangeListener(listener);
                 break;
             }
-            case AFTER:{
+            case AFTER: {
                 afterPropertyChangeSupport.addPropertyChangeListener(listener);
                 break;
             }
         }
     }
 
-    public void removePropertyChangeListener(EventPhase phase,PropertyChangeListener listener) {
-        switch (phase){
-            case DEFAULT:{
+    public void removePropertyChangeListener(EventPhase phase, PropertyChangeListener listener) {
+        switch (phase) {
+            case DEFAULT: {
                 beforePropertyChangeSupport.removePropertyChangeListener(listener);
                 afterPropertyChangeSupport.removePropertyChangeListener(listener);
                 break;
             }
-            case BEFORE:{
+            case BEFORE: {
                 beforePropertyChangeSupport.removePropertyChangeListener(listener);
                 break;
             }
-            case AFTER:{
+            case AFTER: {
                 afterPropertyChangeSupport.removePropertyChangeListener(listener);
                 break;
             }
@@ -273,24 +272,28 @@ public abstract class AbstractUPAObject implements UPAObject {
         }
     }
 
-    public String getTitle(){
-        return getPersistenceGroup().getI18nOrDefault().get(getI18NTitle(),this);
+    public String getTitle() {
+        Map<String, Object> args = new HashMap();
+        args.put("name", getName());
+        return getPersistenceGroup().getI18nOrDefault().get(getI18NTitle(), args);
     }
 
-    public String getDescription(){
-        return getPersistenceGroup().getI18nOrDefault().get(getI18NDescription(),this);
+    public String getDescription() {
+        Map<String, Object> args = new HashMap();
+        args.put("name", getName());
+        return getPersistenceGroup().getI18nOrDefault().get(getI18NDescription(), args);
     }
 
-    protected void fillObjectInfo(UPAObjectInfo i){
-        UPAObject f=this;
+    protected void fillObjectInfo(UPAObjectInfo i) {
+        UPAObject f = this;
         i.setName(f.getName());
         i.setTitle(getTitle());
-        Map<String,Object> sp=new HashMap<String, Object>();
+        Map<String, Object> sp = new HashMap<String, Object>();
         for (Map.Entry<String, Object> e : f.getProperties().toMap().entrySet()) {
             String k = e.getKey();
             Object v = e.getValue();
-            if(v instanceof Number || v instanceof String || v instanceof Date){
-                sp.put(k,v);
+            if (v instanceof Number || v instanceof String || v instanceof Date) {
+                sp.put(k, v);
             }
         }
         i.setSimpleProperties(sp);

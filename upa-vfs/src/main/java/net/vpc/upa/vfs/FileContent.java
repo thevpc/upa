@@ -5,7 +5,6 @@
  */
 package net.vpc.upa.vfs;
 
-import net.vpc.upa.UserFieldModifier;
 import net.vpc.upa.config.*;
 
 /**

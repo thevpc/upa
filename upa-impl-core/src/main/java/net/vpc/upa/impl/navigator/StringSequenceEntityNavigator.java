@@ -11,7 +11,7 @@ import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Var;
 import net.vpc.upa.impl.EntitySequenceManager;
 import net.vpc.upa.impl.SequenceManager;
-import net.vpc.upa.impl.PrivateSequence;
+import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.impl.persistence.SequencePatternEvaluator;
 import net.vpc.upa.impl.util.StringUtils;
 

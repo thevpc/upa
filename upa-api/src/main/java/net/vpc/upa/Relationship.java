@@ -34,9 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.types.DataType;
 
 import java.util.Map;

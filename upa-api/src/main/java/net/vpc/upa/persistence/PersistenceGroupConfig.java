@@ -49,6 +49,7 @@ public class PersistenceGroupConfig {
     private int configOrder;
     private String name;
     private Boolean autoScan;
+    private Boolean inheritScanFilters;
     private List<PersistenceUnitConfig> persistenceUnits = new ArrayList<PersistenceUnitConfig>(2);
     private List<ScanFilter> filters = new ArrayList<ScanFilter>(2);
     private Map<String, Object> properties = new HashMap<String, Object>();
@@ -68,6 +69,16 @@ public class PersistenceGroupConfig {
         this.configOrder = configOrder;
         return this;
     }
+
+    public Boolean getInheritScanFilters() {
+        return inheritScanFilters;
+    }
+
+    public PersistenceGroupConfig setInheritScanFilters(Boolean inheritScanFilters) {
+        this.inheritScanFilters = inheritScanFilters;
+        return this;
+    }
+    
 
     public Boolean getAutoScan() {
         return autoScan;
@@ -122,11 +133,11 @@ public class PersistenceGroupConfig {
         return this;
     }
 
-    public List<ScanFilter> getContextAnnotationStrategyFilters() {
+    public List<ScanFilter> getScanFilters() {
         return filters;
     }
 
-    public PersistenceGroupConfig setContextAnnotationStrategyFilters(List<ScanFilter> filters) {
+    public PersistenceGroupConfig setScanFilters(List<ScanFilter> filters) {
         this.filters = filters == null ? new ArrayList<ScanFilter>() : new ArrayList<ScanFilter>(filters);
         return this;
     }

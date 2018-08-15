@@ -133,7 +133,7 @@ public class ScanFilter {
 
     @Override
     public String toString() {
-        return "ContextAnnotationStrategyFilter{" + "libs=" + libs + ", types=" + types + ", propagate=" + propagate + '}';
+        return "ScanFilter{" + "libs=" + libs + ", types=" + types + ", propagate=" + propagate + '}';
     }
 
 }

@@ -7,7 +7,6 @@ import net.vpc.upa.impl.util.DefaultVarContext;
 import net.vpc.upa.impl.util.xml.DefaultXmlFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -19,7 +18,7 @@ import java.net.URL;
 public class UpaXmlValidator {
 
     @Test
-    public void main() throws ParserConfigurationException, SAXException, IOException {
+    public void main() throws ParserConfigurationException, IOException {
         DefaultUPAContextLoader loader = new DefaultUPAContextLoader(null);
         ContextElement contextElement = new ContextElement();
         URL xsdURL = UPA.class.getResource("/net/vpc/upa/upa-1.0.xsd");

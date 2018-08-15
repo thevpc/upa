@@ -34,7 +34,6 @@ package net.vpc.upa;
 import net.vpc.upa.callbacks.PersistenceGroupDefinitionListener;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.persistence.UPAContextConfig;
 
 import java.lang.annotation.Annotation;
@@ -125,7 +124,7 @@ public interface UPAContext {
 
     void removeScanFilter(ScanFilter filter);
 
-    ScanFilter[] getContextAnnotationStrategyFilters();
+    ScanFilter[] getScanFilters();
 
     Map<String, Object> getProperties();
 

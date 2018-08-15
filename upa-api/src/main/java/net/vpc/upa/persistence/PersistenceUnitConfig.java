@@ -52,6 +52,7 @@ public class PersistenceUnitConfig {
     private String persistenceGroup;
     private Boolean autoStart;
     private Boolean autoScan;
+    private Boolean inheritScanFilters;
     private List<ConnectionConfig> rootConnections = new ArrayList<ConnectionConfig>(2);
     private List<ConnectionConfig> connections = new ArrayList<ConnectionConfig>(2);
     private Map<String, Object> properties = new HashMap<String, Object>(5);
@@ -106,7 +107,7 @@ public class PersistenceUnitConfig {
     }
 
     public PersistenceUnitConfig setProperty(String property, Object value) {
-        getProperties().put(property,value);
+        getProperties().put(property, value);
         return this;
     }
 
@@ -125,6 +126,15 @@ public class PersistenceUnitConfig {
 
     public PersistenceUnitConfig setAutoScan(Boolean autoScan) {
         this.autoScan = autoScan;
+        return this;
+    }
+
+    public Boolean getInheritScanFilters() {
+        return inheritScanFilters;
+    }
+
+    public PersistenceUnitConfig setInheritScanFilters(Boolean inheritScanFilters) {
+        this.inheritScanFilters = inheritScanFilters;
         return this;
     }
 
@@ -175,8 +185,8 @@ public class PersistenceUnitConfig {
 
     public PersistenceUnitConfig addConnectionConfig(ConnectionConfig connectionConfig) {
         if (connectionConfig != null) {
-            if(connections==null){
-                connections=new ArrayList<ConnectionConfig>();
+            if (connections == null) {
+                connections = new ArrayList<ConnectionConfig>();
             }
             connections.add(connectionConfig);
         }
@@ -185,8 +195,8 @@ public class PersistenceUnitConfig {
 
     public PersistenceUnitConfig addRootConnectionConfig(ConnectionConfig connectionConfig) {
         if (connectionConfig != null) {
-            if(rootConnections==null){
-                rootConnections=new ArrayList<ConnectionConfig>();
+            if (rootConnections == null) {
+                rootConnections = new ArrayList<ConnectionConfig>();
             }
             rootConnections.add(connectionConfig);
         }

@@ -37,6 +37,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     private String name="";
     private boolean closed;
     private boolean autoScan = true;
+    private boolean inheritScanFilters = true;
 //    private List<PersistenceUnitDefinitionListener> persistenceUnitDefinitionListeners;
     private final List<ScanFilter> filters = new ArrayList<ScanFilter>();
     private DecorationRepository decorationRepository;
@@ -64,6 +65,14 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public Properties getProperties() {
         return properties;
+    }
+
+    public boolean isInheritScanFilters() {
+        return inheritScanFilters;
+    }
+
+    public void setInheritScanFilters(boolean inheritScanFilters) {
+        this.inheritScanFilters = inheritScanFilters;
     }
 
     @Override
@@ -347,15 +356,15 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
         listeners.removePersistenceUnitDefinitionListener(definitionListener);
     }
 
-    public void addContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void addScanFilter(ScanFilter filter) {
         filters.add(filter);
     }
 
-    public void removeContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void removeScanFilter(ScanFilter filter) {
         filters.remove(filter);
     }
 
-    public ScanFilter[] getContextAnnotationStrategyFilters() {
+    public ScanFilter[] getScanFilters() {
         return filters.toArray(new ScanFilter[filters.size()]);
     }
 

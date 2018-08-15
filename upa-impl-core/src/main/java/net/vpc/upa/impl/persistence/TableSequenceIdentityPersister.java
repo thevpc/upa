@@ -8,7 +8,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.EntitySequenceManager;
 import net.vpc.upa.impl.SequenceManager;
-import net.vpc.upa.impl.PrivateSequence;
+import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.FieldPersister;

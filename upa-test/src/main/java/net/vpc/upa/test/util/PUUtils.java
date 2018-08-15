@@ -4,6 +4,8 @@
  */
 package net.vpc.upa.test.util;
 
+import java.io.File;
+import java.io.IOException;
 import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
@@ -15,6 +17,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -59,7 +62,7 @@ public class PUUtils {
 
     public static PersistenceUnit createTestPersistenceUnit(Class clz,Store type,String desc) {
         String v = getVersion().replace(".","_");
-        String puId = clz == null ? "test" : clz.getName();
+        String puId = clz == null ? "test" : clz.getSimpleName();
         if(type==null){
             type=Store.EMBEDDED;
         }
@@ -85,6 +88,12 @@ public class PUUtils {
             cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
         }else if(Store.EMBEDDED.equals(type)){
             cc.setConnectionString("derby:embedded://db-embedded/upatest"+v+";structure=create;userName=upatest;password=upatest");
+            File embedded=new File("db-embedded/upatest"+v);
+            try {
+                System.out.println("Local Database at "+embedded.getCanonicalPath());
+            } catch (IOException ex) {
+                System.out.println("Local Database at "+embedded.getAbsolutePath());
+            }
         }else{
             throw new IllegalArgumentException("Not Supported "+type);
         }

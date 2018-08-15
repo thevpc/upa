@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.exceptions.UPAException;
 
 /**

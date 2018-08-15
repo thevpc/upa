@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.vpc.upa.impl;
+package net.vpc.upa.impl.sysentities;
 
 import net.vpc.upa.config.*;
 import net.vpc.upa.types.DateTime;

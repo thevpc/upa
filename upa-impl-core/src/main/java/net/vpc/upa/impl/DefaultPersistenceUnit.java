@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.impl.sysentities.LockInfoDesc;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
 import net.vpc.upa.Properties;
@@ -87,6 +88,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     private boolean starting;
     private boolean closed;
     private boolean autoScan = true;
+    private boolean inheritScanFilters = true;
     private PropertyChangeSupport propertyChangeSupport;
     private PersistenceUnitListenerManager persistenceUnitListenerManager;
     private ObjectRegistrationModel registrationModel;
@@ -127,6 +129,14 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     public void setAutoScan(boolean autoScan) {
         this.autoScan = autoScan;
+    }
+
+    public boolean isInheritScanFilters() {
+        return inheritScanFilters;
+    }
+
+    public void setInheritScanFilters(boolean inheritScanFilters) {
+        this.inheritScanFilters = inheritScanFilters;
     }
 
     public void init(String name, PersistenceGroup persistenceGroup) {
@@ -2564,17 +2574,17 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     @Override
-    public void addContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void addScanFilter(ScanFilter filter) {
         filters.add(filter);
     }
 
     @Override
-    public void removeContextAnnotationStrategyFilter(ScanFilter filter) {
+    public void removeScanFilter(ScanFilter filter) {
         filters.remove(filter);
     }
 
     @Override
-    public ScanFilter[] getContextAnnotationStrategyFilters() {
+    public ScanFilter[] getScanFilters() {
         return filters.toArray(new ScanFilter[filters.size()]);
     }
 

@@ -19,6 +19,7 @@ import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.UPAContextConfigAnnotationParser;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.UPAContextConfig;
 
@@ -32,9 +33,8 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
     public UPAContextConfig parse(Class clazz) {
         UPAContextConfig c = new UPAContextConfig();
         boolean ok = false;
-        net.vpc.upa.persistence.PersistenceUnitConfig defaultPersistenceUnit=null;
-        net.vpc.upa.persistence.PersistenceGroupConfig defaultPersistenceGroup=null;
-        
+        net.vpc.upa.persistence.PersistenceGroupConfig defaultPersistenceGroup = null;
+
         for (Annotation annotation : clazz.getAnnotations()) {
             if (annotation instanceof Config) {
                 ok = true;
@@ -46,27 +46,12 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
             }
             if (annotation instanceof PersistenceUnitConfig) {
                 ok = true;
-                if (defaultPersistenceGroup == null) {
-                    defaultPersistenceGroup = new net.vpc.upa.persistence.PersistenceGroupConfig();
-                    defaultPersistenceGroup.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
-                    c.getPersistenceGroups().add(defaultPersistenceGroup);
-                }
-                parse((PersistenceUnitConfig) annotation);
+                getOrAddDefaultPersistenceGroup(c).addPersistenceUnit(parse((PersistenceUnitConfig) annotation));
             }
             if (annotation instanceof ConnectionConfig) {
                 ok = true;
-                if (defaultPersistenceGroup == null) {
-                    defaultPersistenceGroup = new net.vpc.upa.persistence.PersistenceGroupConfig();
-                    defaultPersistenceGroup.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
-                    c.getPersistenceGroups().add(defaultPersistenceGroup);
-                }
-                if (defaultPersistenceUnit == null) {
-                    defaultPersistenceUnit = new net.vpc.upa.persistence.PersistenceUnitConfig();
-                    defaultPersistenceUnit.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
-                    defaultPersistenceGroup.getPersistenceUnits().add(defaultPersistenceUnit);
-                }
                 net.vpc.upa.persistence.ConnectionConfig cnx = parse((ConnectionConfig) annotation);
-                defaultPersistenceUnit.getConnections().add(cnx);
+                getOrAddDefaultPersistenceUnit(c).getConnections().add(cnx);
             }
         }
         if (!ok) {
@@ -75,14 +60,57 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
         return c;
     }
 
+    private net.vpc.upa.persistence.PersistenceGroupConfig getOrAddDefaultPersistenceGroup(UPAContextConfig c) {
+        net.vpc.upa.persistence.PersistenceGroupConfig defaultPersistenceGroup = null;
+        for (net.vpc.upa.persistence.PersistenceGroupConfig persistenceGroup : c.getPersistenceGroups()) {
+            if (StringUtils.isNullOrEmpty(persistenceGroup.getName())) {
+                defaultPersistenceGroup = persistenceGroup;
+                break;
+            }
+        }
+        if (defaultPersistenceGroup == null) {
+            defaultPersistenceGroup = new net.vpc.upa.persistence.PersistenceGroupConfig();
+            defaultPersistenceGroup.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
+            c.getPersistenceGroups().add(defaultPersistenceGroup);
+        }
+        return defaultPersistenceGroup;
+    }
+
+    private net.vpc.upa.persistence.PersistenceUnitConfig getOrAddDefaultPersistenceUnit(UPAContextConfig c) {
+        return getOrAddDefaultPersistenceUnit(getOrAddDefaultPersistenceGroup(c));
+    }
+
+    private net.vpc.upa.persistence.PersistenceUnitConfig getOrAddDefaultPersistenceUnit(net.vpc.upa.persistence.PersistenceGroupConfig c) {
+        net.vpc.upa.persistence.PersistenceUnitConfig defaultPersistenceUnit = null;
+        for (net.vpc.upa.persistence.PersistenceUnitConfig pu : c.getPersistenceUnits()) {
+            if (StringUtils.isNullOrEmpty(pu.getName())) {
+                defaultPersistenceUnit = pu;
+                break;
+            }
+        }
+        if (defaultPersistenceUnit == null) {
+            defaultPersistenceUnit = new net.vpc.upa.persistence.PersistenceUnitConfig();
+            defaultPersistenceUnit.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
+            c.getPersistenceUnits().add(defaultPersistenceUnit);
+        }
+        return defaultPersistenceUnit;
+    }
+
     private void parse(Config c, UPAContextConfig config) {
         if (c != null) {
-            config.setAutoScan(c.autoScan() == BoolEnum.TRUE ? true : c.autoScan() == BoolEnum.FALSE ? false : null);
+            Boolean tt = c.autoScan() == BoolEnum.TRUE ? Boolean.TRUE : c.autoScan() == BoolEnum.FALSE ? Boolean.FALSE : null;
+            config.setAutoScan(tt);
             for (ScanConfig scanConfig : c.scan()) {
                 config.getFilters().add(new ScanFilter(scanConfig.libs(), scanConfig.types(), scanConfig.propagate() == BoolEnum.TRUE ? true : false, UPAContextConfig.BOOT_TYPE_ORDER));
             }
             for (PersistenceGroupConfig persistenceGroup : c.persistenceGroups()) {
                 config.getPersistenceGroups().add(parse(persistenceGroup));
+            }
+            if (c.persistenceUnits().length > 0) {
+                net.vpc.upa.persistence.PersistenceGroupConfig defaultPersistenceGroup = getOrAddDefaultPersistenceGroup(config);
+                for (PersistenceUnitConfig persistenceUnit : c.persistenceUnits()) {
+                    defaultPersistenceGroup.addPersistenceUnit(parse(persistenceUnit));
+                }
             }
         }
     }
@@ -92,6 +120,7 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
         cc.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
         cc.setName(c.name());
         cc.setAutoScan(PlatformUtils.toBool(c.autoScan(), null));
+        cc.setInheritScanFilters(PlatformUtils.toBool(c.inheritScanFilters(), null));
         for (PersistenceUnitConfig persistenceUnit : c.persistenceUnits()) {
             cc.getPersistenceUnits().add(parse(persistenceUnit));
         }
@@ -134,6 +163,7 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
         net.vpc.upa.persistence.PersistenceUnitConfig cc = new net.vpc.upa.persistence.PersistenceUnitConfig();
         cc.setConfigOrder(UPAContextConfig.BOOT_TYPE_ORDER);
         cc.setAutoScan(PlatformUtils.toBool(c.autoScan(), null));
+        cc.setInheritScanFilters(PlatformUtils.toBool(c.inheritScanFilters(), null));
         for (ConnectionConfig cnx : c.connections()) {
             cc.getConnections().add(parse(cnx));
         }

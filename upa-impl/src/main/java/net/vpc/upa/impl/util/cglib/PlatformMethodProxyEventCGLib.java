@@ -9,13 +9,13 @@ import net.vpc.upa.impl.util.PlatformMethodProxyEvent;
  * Created by vpc on 8/6/15.
  */
 @PortabilityHint(target = "C#", name = "suppress")
-public class PlatformMethodProxyEventCGLibJava<T> implements PlatformMethodProxyEvent<T> {
+public class PlatformMethodProxyEventCGLib<T> implements PlatformMethodProxyEvent<T> {
     private final T object;
     private final Object[] arguments;
     private final Method method;
     net.sf.cglib.proxy.MethodProxy methodProxy;
 
-    public PlatformMethodProxyEventCGLibJava(T object, Object[] arguments, Method method, net.sf.cglib.proxy.MethodProxy methodProxy) {
+    public PlatformMethodProxyEventCGLib(T object, Object[] arguments, Method method, net.sf.cglib.proxy.MethodProxy methodProxy) {
         this.object = object;
         this.arguments = arguments;
         this.method = method;

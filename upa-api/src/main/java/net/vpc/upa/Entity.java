@@ -106,8 +106,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     int indexOfPart(String partName);
 
     int indexOfPart(String partName, boolean countSections,
-                    boolean countCompoundFields, boolean countFieldsInCompoundFields,
-                    boolean countFieldsInSections);
+            boolean countCompoundFields, boolean countFieldsInCompoundFields,
+            boolean countFieldsInSections);
 
     List<Section> getSections();
 
@@ -118,9 +118,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     Section getSection(String path, MissingStrategy missingStrategy);
 
 //    Section addSection(String name, String parentPath);
-
 //    Section addSection(String name, String parentPath, int index);
-
     Section addSection(String path, int index);
 
     Section addSection(String path);
@@ -139,7 +137,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     DataType getDataType();
 
 //    void setDataType(DataType newDataType);
-
     boolean isDependentOnEntity(String entityName);
 
     Set<String> getDependencyEntities();
@@ -265,13 +262,11 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //    int updateDocuments(Document document, Expression condition,Map<String,Object> hints) ;
 //
 //    int updateDocuments(Document document, Expression condition) ;
-
 //    void updateFormulas(FieldFilter filter, Expression expr) ;
 //    void updateFormulas(FieldFilter filter, Expression expr,Map<String,Object> hints) ;
 //
 //    void updateFormulasById(FieldFilter filter, Object key) ;
 //    void updateFormulasById(FieldFilter filter, Object key,Map<String,Object> hints) ;
-
     void merge(Object objectOrDocument);
 //    void updateFormulas(Map<String,Object> hints) ;
 
@@ -281,7 +276,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //
 //    void updateFormulas(Expression condition) ;
 //    void updateFormulas(Expression condition,Map<String,Object> hints) ;
-
     void updateFormulas();
 
     Order getUpdateFormulasOrder();
@@ -404,7 +398,6 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     void removeDefinitionListener(DefinitionListener definitionListener);
 
-
     Object compile(Expression expression, String alias);
 
     void addFilter(String name, String expression);
@@ -450,4 +443,7 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     PlatformBeanType getPlatformBeanType();
 
     EntityInfo getInfo();
+
+    public List<EntityUsage> findUsage(Object id);
+
 }

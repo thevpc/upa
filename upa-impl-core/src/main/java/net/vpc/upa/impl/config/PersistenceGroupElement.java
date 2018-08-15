@@ -15,6 +15,7 @@ public class PersistenceGroupElement {
     String name;
     ContextElement parent;
     boolean autoScan=true;
+    boolean inheritScanFilters=true;
     List<Property> properties = new ArrayList<Property>();
     private List<ScanElement> scanElements = new ArrayList<ScanElement>();
     private LinkedHashMap<String, PersistenceUnitElement> persistenceUnitElements = new LinkedHashMap<String, PersistenceUnitElement>();
@@ -41,12 +42,4 @@ public class PersistenceGroupElement {
     public List<PersistenceUnitElement> getPersistenceUnitElements(){
         return new ArrayList<PersistenceUnitElement>(persistenceUnitElements.values());
     }
-
-//    public ContextAnnotationStrategy getConfigurationStrategy() {
-//        LinkedHashSet<ContextAnnotationStrategyFilter> filters = new LinkedHashSet<ContextAnnotationStrategyFilter>();
-//        for (ConfigureElement configureElement : configElements) {
-//            filters.add(new ContextAnnotationStrategyFilter(configureElement.libs, configureElement.types, configureElement.propagate));
-//        }
-//        return (new ContextAnnotationStrategy(filters.toArray(new ContextAnnotationStrategyFilter[filters.size()])));
-//    }
 }

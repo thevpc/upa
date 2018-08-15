@@ -113,9 +113,9 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             this.sourceToTargetKeyMap.put(sourceFields[i].getName(), targetFields[i].getName());
             this.targetToSourceKeyMap.put(targetFields[i].getName(), sourceFields[i].getName());
 //            targetFields[i].addManyToOneRelation(this);
-            ((AbstractField)sourceFields[i]).setEffectiveModifiers(sourceFields[i].getModifiers().add(FieldModifier.FOREIGN));
+            ((AbstractField) sourceFields[i]).setEffectiveModifiers(sourceFields[i].getModifiers().add(FieldModifier.FOREIGN));
 
-            ((AbstractField)targetFields[i]).setEffectiveModifiers(targetFields[i].getModifiers().add(FieldModifier.REFERENCED));
+            ((AbstractField) targetFields[i]).setEffectiveModifiers(targetFields[i].getModifiers().add(FieldModifier.REFERENCED));
 //            if (sourceFields[i].getTitle() == null) {
 //                sourceFields[i].setTitle(targetFields[i].getTitle());
 //            }
@@ -191,7 +191,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             case FLAT: {
                 Field f = getSourceRole().getEntityField();
                 if (f != null) {
-                    ((AbstractField)f).setEffectiveModifiers(f.getModifiers().removeAll(modifierstoRemove));
+                    ((AbstractField) f).setEffectiveModifiers(f.getModifiers().removeAll(modifierstoRemove));
                 }
                 break;
             }
@@ -199,7 +199,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 List<Field> fields = getSourceRole().getFields();
                 if (fields != null) {
                     for (Field f : fields) {
-                        ((AbstractField)f).setEffectiveModifiers(f.getModifiers().removeAll(modifierstoRemove));
+                        ((AbstractField) f).setEffectiveModifiers(f.getModifiers().removeAll(modifierstoRemove));
                     }
                 }
                 break;
@@ -293,7 +293,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             return false;
         } else {
             DefaultRelationship o = (DefaultRelationship) other;
-            return NamingStrategyHelper.equals(getPersistenceUnit().isCaseSensitiveIdentifiers(),getName(), o.getName());
+            return NamingStrategyHelper.equals(getPersistenceUnit().isCaseSensitiveIdentifiers(), getName(), o.getName());
         }
     }
 
@@ -345,12 +345,12 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             Key Rkey = targetRole.getEntity().getBuilder().idToKey(((IdExpression) targetCondition).getId());
             if (sourceFields.length == 1) {
                 Var lvar = (sourceAlias == null) ? new Var(sourceFields[0].getName()) : new Var(new Var(sourceAlias), sourceFields[0].getName());
-                return new Equals(lvar, new Literal(Rkey==null?null:Rkey.getValue()[0], targetFields[0].getDataType()));
+                return new Equals(lvar, new Literal(Rkey == null ? null : Rkey.getValue()[0], targetFields[0].getDataType()));
             } else {
                 Expression a = null;
                 for (int i = 0; i < sourceFields.length; i++) {
                     Var lvar = (sourceAlias == null) ? new Var(sourceFields[i].getName()) : new Var(new Var(sourceAlias), sourceFields[i].getName());
-                    Expression rvar = new Literal(Rkey==null?null:Rkey.getObjectAt(i), targetFields[i].getDataType());
+                    Expression rvar = new Literal(Rkey == null ? null : Rkey.getObjectAt(i), targetFields[i].getDataType());
                     Expression e = new Equals(lvar, rvar);
                     a = a == null ? e : a;
                 }
@@ -466,17 +466,16 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return targetRole;
     }
 
-
     public RelationshipRole getSourceRole() {
         return sourceRole;
     }
 
     public Entity getTargetEntity() throws UPAException {
-        return targetRole==null?null:targetRole.getEntity();
+        return targetRole == null ? null : targetRole.getEntity();
     }
 
     public Entity getSourceEntity() throws UPAException {
-        return sourceRole==null?null:sourceRole.getEntity();
+        return sourceRole == null ? null : sourceRole.getEntity();
     }
 
     //    public void setRelationType(RelationType relationType) {
@@ -587,22 +586,30 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         return null;
     }
 
-
-
-    public Expression createTargetListExpression(Object currentInstance, String alias){
-        if(filter==null){
+    public Expression createTargetListExpression(Object currentInstance, String alias) {
+        if (filter == null) {
             return null;
         }
-        HashMap<String,Object> v=new HashMap<String,Object>();
-        v.put(UQLUtils.THIS,currentInstance);
-        if(StringUtils.isNullOrEmpty(alias)){
-            alias=getTargetEntity().getName();
+        HashMap<String, Object> v = new HashMap<String, Object>();
+        v.put(UQLUtils.THIS, currentInstance);
+        if (StringUtils.isNullOrEmpty(alias)) {
+            alias = getTargetEntity().getName();
         }
-        final String alias2=alias;
+        final String alias2 = alias;
         ExpressionManager expressionManager = getPersistenceUnit().getExpressionManager();
-        Expression filter2= expressionManager.simplifyExpression(filter.copy(),v);
-        filter2=expressionManager.createEvaluator().evalObject(filter2,null);
+        Expression filter2 = expressionManager.simplifyExpression(filter.copy(), v);
+        filter2 = expressionManager.createEvaluator().evalObject(filter2, null);
         filter2.visit(new ThatExpressionReplacer(alias2));
+        if (filter2 instanceof Literal) {
+            if (((Literal) filter2).getValue() instanceof Boolean) {
+                boolean b = (Boolean) ((Literal) filter2).getValue();
+                if (b) {
+                    filter2 = new Equals(new Literal(1), new Literal(1));
+                } else {
+                    filter2 = new Different(new Literal(1), new Literal(1));
+                }
+            }
+        }
         return filter2;
 
     }
@@ -613,26 +620,26 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         fillObjectInfo(i);
         i.setAskForConfirm(isAskForConfirm());
         i.setFollowLinks(isFollowLinks());
-        i.setFiltered(getFilter()!=null);
+        i.setFiltered(getFilter() != null);
         i.setLive(isTransient());
         i.setRelationshipType(getRelationshipType());
         i.setNullable(nullable);
-        i.setSource(getSourceEntity()==null?null:getSourceEntity().getName());
-        i.setTarget(getTargetEntity()==null?null:getTargetEntity().getName());
-        i.setSourceField(getTargetEntity()==null||getSourceRole().getEntityField()==null?null:getSourceRole().getEntityField().getName());
-        i.setTargetField(getTargetEntity()==null||getTargetRole().getEntityField()==null?null:getTargetRole().getEntityField().getName());
-        i.setSourceFields(getTargetEntity()==null?new String[0]:toString(getSourceRole().getFields()));
-        i.setTargetFields(getTargetEntity()==null?new String[0]:toString(getTargetRole().getFields()));
+        i.setSource(getSourceEntity() == null ? null : getSourceEntity().getName());
+        i.setTarget(getTargetEntity() == null ? null : getTargetEntity().getName());
+        i.setSourceField(getTargetEntity() == null || getSourceRole().getEntityField() == null ? null : getSourceRole().getEntityField().getName());
+        i.setTargetField(getTargetEntity() == null || getTargetRole().getEntityField() == null ? null : getTargetRole().getEntityField().getName());
+        i.setSourceFields(getTargetEntity() == null ? new String[0] : toString(getSourceRole().getFields()));
+        i.setTargetFields(getTargetEntity() == null ? new String[0] : toString(getTargetRole().getFields()));
         return i;
     }
 
-    private String[] toString(List<Field> f){
-        if(f==null){
-            f= Collections.EMPTY_LIST;
+    private String[] toString(List<Field> f) {
+        if (f == null) {
+            f = Collections.EMPTY_LIST;
         }
-        String[] all=new String[f.size()];
+        String[] all = new String[f.size()];
         for (int i = 0; i < all.length; i++) {
-            all[i]=f.get(i).getName();
+            all[i] = f.get(i).getName();
         }
         return all;
     }

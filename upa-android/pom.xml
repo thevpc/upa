@@ -5,7 +5,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-android</artifactId>
     <name>net.vpc.upa.upa-android</name>
-    <version>1.2.0.46.0</version>
+    <version>1.2.0.47.0</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 
@@ -62,12 +62,12 @@
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-api</artifactId>
-            <version>1.2.0.46</version>
+            <version>1.2.0.47</version>
         </dependency>
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-impl-core</artifactId>
-            <version>1.2.0.46.0</version>
+            <version>1.2.0.47.0</version>
         </dependency>
         <dependency>
             <groupId>org.smali</groupId>

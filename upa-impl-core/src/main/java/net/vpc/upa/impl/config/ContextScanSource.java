@@ -23,7 +23,7 @@ public class ContextScanSource extends BaseScanSource {
     private boolean noIgnore;
     private URL[] urls;
 
-    public ContextScanSource(String name,boolean noIgnore) {
+    public ContextScanSource(String name, boolean noIgnore) {
         this.name = name;
         this.noIgnore = noIgnore;
 //        this.staticConfig = staticConfig;
@@ -52,46 +52,52 @@ public class ContextScanSource extends BaseScanSource {
     @Override
     public Iterable<Class> toIterable(Object context) {
         List<ScanFilter> _filters = new ArrayList<ScanFilter>();
-        String contextString="<unknown>";
+        String contextString = "<unknown>";
         if (context instanceof UPAContext) {
             UPAContext pg = (UPAContext) context;
-            _filters.addAll(Arrays.asList(pg.getContextAnnotationStrategyFilters()));
-            contextString="UPAContext";
+            _filters.addAll(Arrays.asList(pg.getScanFilters()));
+            contextString = "UPAContext";
         } else if (context instanceof PersistenceGroup) {
             PersistenceGroup pg = (PersistenceGroup) context;
-            for (ScanFilter filter : pg.getContext().getContextAnnotationStrategyFilters()) {
-                if (filter.isPropagate()) {
-                    _filters.add(filter);
+            if (pg.isInheritScanFilters()) {
+                for (ScanFilter filter : pg.getContext().getScanFilters()) {
+                    if (filter.isPropagate()) {
+                        _filters.add(filter);
+                    }
                 }
             }
-            _filters.addAll(Arrays.asList(pg.getContextAnnotationStrategyFilters()));
-            contextString="PersistenceGroup["+pg.getName()+"]";
+            _filters.addAll(Arrays.asList(pg.getScanFilters()));
+            contextString = "PersistenceGroup[" + pg.getName() + "]";
         } else if (context instanceof PersistenceUnit) {
             PersistenceUnit pu = (PersistenceUnit) context;
-            for (ScanFilter filter : pu.getPersistenceGroup().getContext().getContextAnnotationStrategyFilters()) {
-                if (filter.isPropagate()) {
-                    _filters.add(filter);
+            if (pu.isInheritScanFilters()) {
+                if (pu.getPersistenceGroup().isInheritScanFilters()) {
+                    for (ScanFilter filter : pu.getPersistenceGroup().getContext().getScanFilters()) {
+                        if (filter.isPropagate()) {
+                            _filters.add(filter);
+                        }
+                    }
+                }
+                for (ScanFilter filter : pu.getPersistenceGroup().getScanFilters()) {
+                    if (filter.isPropagate()) {
+                        _filters.add(filter);
+                    }
                 }
             }
-            for (ScanFilter filter : pu.getPersistenceGroup().getContextAnnotationStrategyFilters()) {
-                if (filter.isPropagate()) {
-                    _filters.add(filter);
-                }
-            }
-            for (ScanFilter filter : pu.getContextAnnotationStrategyFilters()) {
+            for (ScanFilter filter : pu.getScanFilters()) {
                 _filters.add(filter);
             }
-            contextString="PersistenceUnit["+pu.getAbsoluteName()+"]";
+            contextString = "PersistenceUnit[" + pu.getAbsoluteName() + "]";
         } else {
             throw new UPAIllegalArgumentException("Unsupported context " + context);
         }
-        return new URLClassIterable(name+":"+contextString,getUrls(),
+        return new URLClassIterable(name + ":" + contextString, getUrls(),
                 new DefaultConfigFilter(_filters.toArray(new ScanFilter[_filters.size()])),
                 null);
     }
 
     private URL[] getUrls() {
-        if(urls==null) {
+        if (urls == null) {
             urls = ClassPathUtils.resolveClassPathLibs();
         }
         return urls;

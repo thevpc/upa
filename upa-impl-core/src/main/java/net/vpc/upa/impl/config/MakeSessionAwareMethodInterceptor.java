@@ -29,7 +29,7 @@ public class MakeSessionAwareMethodInterceptor<T> implements PlatformMethodProxy
     @Override
     public Object intercept(final PlatformMethodProxyEvent<T> event) throws Throwable {
         if (methodFilter == null || methodFilter.accept(event.getMethod())) {
-            HashMap<String, Object> properties = new HashMap<String, Object>();
+//            HashMap<String, Object> properties = new HashMap<String, Object>();
             try {
                 return UPA.getContext().invoke(new MakeSessionAwareMethodInterceptorAction<T>(this, event));
             }catch(ExecutionException e){

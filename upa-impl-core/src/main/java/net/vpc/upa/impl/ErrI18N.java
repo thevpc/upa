@@ -1,5 +1,6 @@
 package net.vpc.upa.impl;
 
+import java.util.Map;
 import net.vpc.upa.UPAI18n;
 import net.vpc.upa.UPAObject;
 import net.vpc.upa.types.I18NString;
@@ -10,12 +11,12 @@ public class ErrI18N implements UPAI18n{
 
     }
     @Override
-    public String get(UPAObject s, Object... params) {
-        return get(s.getI18NTitle(),s);
+    public String get(UPAObject s, Map<String,Object> params) {
+        return get(s.getI18NTitle(),params);
     }
 
     @Override
-    public String get(I18NString s, Object... params) {
+    public String get(I18NString s, Map<String,Object> params) {
         if(s==null){
             return "null!!";
         }

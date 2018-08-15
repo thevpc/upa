@@ -4,6 +4,8 @@
  */
 package net.vpc.upa.impl;
 
+import net.vpc.upa.impl.sysentities.LockInfoDesc;
+import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Sequence;
