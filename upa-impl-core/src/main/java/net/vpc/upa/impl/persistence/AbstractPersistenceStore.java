@@ -1412,21 +1412,21 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public PersistenceState getEntityPersistenceState(Entity object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         String persistenceName = getPersistenceName(object, spec);
         if (spec == PersistenceNameType.TABLE) {
-            PersistenceState persistenceState = PersistenceState.UNDEFINED;
+            PersistenceState persistenceState = PersistenceState.DEFAULT;
             if (tableExists(persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return persistenceState;
         } else if (PersistenceNameType.IMPLICIT_VIEW.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.UNDEFINED;
+            PersistenceState persistenceState = PersistenceState.DEFAULT;
             if (viewExists(persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return persistenceState;
         } else if (PersistenceNameType.PK_CONSTRAINT.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.UNDEFINED;
+            PersistenceState persistenceState = PersistenceState.DEFAULT;
             if (pkConstraintsExists(getPersistenceName(object, null), persistenceName, entityExecutionContext)) {
                 persistenceState = PersistenceState.VALID;
             }
@@ -1439,7 +1439,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public PersistenceState getIndexPersistenceState(Index object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         if (spec == PersistenceNameType.INDEX) {
             ResultSet rs = null;
-            PersistenceState status = PersistenceState.UNDEFINED;
+            PersistenceState status = PersistenceState.DEFAULT;
             String indexName = getPersistenceName(object, spec);
             String tableName = getPersistenceName(object.getEntity(), null);
             boolean unique = object.isUnique();
@@ -1490,7 +1490,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getFieldPersistenceState(Field object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.UNDEFINED;
+        PersistenceState status = PersistenceState.DEFAULT;
         FlagSet<FieldModifier> fieldModifiers = object.getModifiers();
         if (object.isManyToOne()) {
 //            status = PersistenceState.VALID;
@@ -1500,7 +1500,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } else {
             String tableName = getPersistenceName(object.getEntity());
             String columnName = getPersistenceName(object);
-            status = PersistenceState.UNDEFINED;
+            status = PersistenceState.DEFAULT;
             /**
              * @PortabilityHint(target = "C#", name = "todo")
              */
@@ -1533,7 +1533,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getRelationshipPersistenceState(Relationship object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.UNDEFINED;
+        PersistenceState status = PersistenceState.DEFAULT;
         if (isView(object.getTargetRole().getEntity()) || isView(object.getSourceRole().getEntity())) {
             status = PersistenceState.TRANSIENT;
         } else {

@@ -544,7 +544,7 @@ public final class StringUtils {
     }
 
     public static boolean isUndefined(BoolEnum value) {
-        return BoolEnum.UNDEFINED.equals(value);
+        return BoolEnum.DEFAULT.equals(value);
     }
 
     public static boolean isUndefined(Class value) {

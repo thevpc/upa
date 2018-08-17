@@ -9,7 +9,10 @@ package net.vpc.upa.impl.uql;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum DecObjectType {
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     ENTITY,
     FIELD,
     SELECT,

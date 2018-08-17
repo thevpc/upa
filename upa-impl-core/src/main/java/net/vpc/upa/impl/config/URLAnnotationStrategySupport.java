@@ -549,7 +549,7 @@ public class URLAnnotationStrategySupport {
             )) {
                 String entityName = null;
                 switch (d.getTarget()) {
-                    case UNDEFINED:
+                    case DEFAULT:
                     case TYPE: {
                         entityName = d.getString("entityName");
                         if (StringUtils.isNullOrEmpty(entityName)) {
@@ -607,7 +607,7 @@ public class URLAnnotationStrategySupport {
 //                        }
                         break;
                     }
-                    case UNDEFINED:
+                    case DEFAULT:
                     case METHOD:
                     case FIELD: {
                         ignore = true;

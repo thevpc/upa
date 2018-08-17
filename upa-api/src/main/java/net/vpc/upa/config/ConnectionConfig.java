@@ -56,7 +56,7 @@ public @interface ConnectionConfig {
 
     StructureStrategy structureStrategy() default StructureStrategy.CREATE;
 
-//    BoolEnum enabled() default BoolEnum.UNDEFINED;
+//    BoolEnum enabled() default BoolEnum.DEFAULT;
     Property[] properties() default {};
 
 }

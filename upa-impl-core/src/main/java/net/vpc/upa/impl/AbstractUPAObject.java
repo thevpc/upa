@@ -26,7 +26,7 @@ public abstract class AbstractUPAObject implements UPAObject {
 //    private I18NString i18NString;
     private PersistenceUnit persistenceUnit;
     private final Properties parameters = new DefaultProperties();
-    private PersistenceState persistenceState = PersistenceState.UNDEFINED;
+    private PersistenceState persistenceState = PersistenceState.DEFAULT;
     protected PropertyChangeSupport beforePropertyChangeSupport;
     protected PropertyChangeSupport afterPropertyChangeSupport;
     protected List<UPAObjectListener> objectListeners;
@@ -109,7 +109,7 @@ public abstract class AbstractUPAObject implements UPAObject {
 //    @Override
     public void setPersistenceState(PersistenceState persistenceState) {
         PersistenceState old = this.persistenceState;
-        persistenceState = PlatformUtils.isUndefinedEnumValue(PersistenceState.class, persistenceState) ? PersistenceState.UNDEFINED : persistenceState;
+        persistenceState = PlatformUtils.isUndefinedEnumValue(PersistenceState.class, persistenceState) ? PersistenceState.DEFAULT : persistenceState;
         PersistenceState recent = persistenceState;
 
         beforePropertyChangeSupport.firePropertyChange("persistenceState", old, recent);

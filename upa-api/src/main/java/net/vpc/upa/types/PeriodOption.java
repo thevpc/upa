@@ -43,5 +43,11 @@ package net.vpc.upa.types;
  * 
  */
 public enum PeriodOption {
-    UNDEFINED,DAY, MONTH, YEAR
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
+    DAY, 
+    MONTH, 
+    YEAR
 }

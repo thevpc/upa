@@ -50,6 +50,6 @@ public @interface ScanConfig {
 
     String libs() default "";
 
-    BoolEnum propagate() default BoolEnum.UNDEFINED;
+    BoolEnum propagate() default BoolEnum.DEFAULT;
 
 }

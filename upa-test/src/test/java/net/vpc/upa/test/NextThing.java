@@ -18,7 +18,6 @@ public class NextThing {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        UPAImplDefaults.PRODUCTION_MODE=false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(NextThing.class);
         pu.addEntity(SharedClient.class);
         pu.start();

@@ -25,7 +25,6 @@ public class RelationUC5 {
 
     @BeforeClass
     public static void setup() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationUC5.class);
         pu.addEntity(A.class);
         pu.addEntity(B.class);

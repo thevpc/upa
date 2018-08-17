@@ -40,7 +40,10 @@ package net.vpc.upa.config;
  */
 public enum PersistenceNameType {
 
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     TABLE,
     UNION_TABLE,
     VIEW,

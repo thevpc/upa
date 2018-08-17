@@ -33,8 +33,7 @@ public class StaticConfigureUC3 {
 
     @Test
     public void testMe() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
-        PUUtils.drawBox("Test");
+        PUUtils.configure();
         UPA.configure(StaticConfigureUC3.class);
         System.out.println(UPA.getPersistenceUnit());
     }

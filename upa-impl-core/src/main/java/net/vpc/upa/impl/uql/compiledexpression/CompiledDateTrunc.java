@@ -9,10 +9,10 @@ import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 22 mai 2003
  * Time: 12:07:34
- * To change this template use Options | File Templates.
+ * 
  */
 public class CompiledDateTrunc extends CompiledFunction {
     private static final long serialVersionUID = 1L;

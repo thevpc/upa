@@ -38,7 +38,10 @@ package net.vpc.upa;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public enum RelationshipUpdateType {
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     FLAT,
     COMPOSED
 }

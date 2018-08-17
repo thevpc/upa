@@ -39,7 +39,10 @@ package net.vpc.upa.persistence;
  * @creationdate 9/12/12 8:03 AM
  */
 public enum DatabaseProduct {
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     ORACLE,
     INTERBASE,
     MSSQLSERVER,

@@ -102,7 +102,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
             Sequence sequence = (Sequence) UPAUtils.getPersistFormula(field);
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
             switch (strategy) {
-                case UNDEFINED:
+                case DEFAULT:
                 case AUTO:
                 case IDENTITY: {
                     DataType d = (field.getDataType());
@@ -128,7 +128,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
             f = sequence.getFormat();
         }
         switch (strategy) {
-            case UNDEFINED:
+            case DEFAULT:
             case AUTO:
             case IDENTITY: {
                 DataType d = (field.getDataType());

@@ -11,7 +11,7 @@ public class UPAImplDefaults {
     public static final int QueryHints_MAX_HIERARCHY_NAVIGATION_DEPTH=1;
     public static final int QueryHints_REDUCE_BUFFER_SIZE=10000000;
     public static final int QueryHints_CACHE_SIZE=100000;
-    public static boolean PRODUCTION_MODE=true;
+    public static boolean DEBUG_MODE=false;
 
     private UPAImplDefaults() {
     }

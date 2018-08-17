@@ -1,6 +1,5 @@
 package net.vpc.upa.test;
 
-import net.vpc.upa.Document;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
 import net.vpc.upa.config.Formula;
@@ -8,12 +7,9 @@ import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Sequence;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.util.PUUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -26,7 +22,6 @@ public class StringConcatUC {
 
     @BeforeClass
     public static void setup() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(StringConcatUC.class);
         pu.addEntity(Client.class);
         pu.start();

@@ -85,7 +85,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
     public CompiledExpression compile() {
         //will not create a copy in production mode
-        CompiledExpression expression = UPAImplDefaults.PRODUCTION_MODE ? rootExpression : ((CompiledExpressionExt) rootExpression).copy();
+        CompiledExpression expression = UPAImplDefaults.DEBUG_MODE ? ((CompiledExpressionExt) rootExpression).copy():rootExpression;
         log.log(Level.FINEST, "Validate Compiled Expression {0}\n\t using config {1}", new Object[]{expression, config});
 
         CompiledExpressionExt dce = (CompiledExpressionExt) expression;

@@ -72,7 +72,7 @@ class SequenceInfo {
             if (gid.getString("name").length() > 0) {
                 name = gid.getString("name");
             }
-            if (gid.getEnum("strategy", SequenceStrategy.class) != SequenceStrategy.UNDEFINED) {
+            if (gid.getEnum("strategy", SequenceStrategy.class) != SequenceStrategy.DEFAULT) {
                 strategy = gid.getEnum("strategy", SequenceStrategy.class);
             }
             if (gid.getInt("formulaOrder") != Integer.MIN_VALUE) {

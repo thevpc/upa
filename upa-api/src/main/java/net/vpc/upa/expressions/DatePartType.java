@@ -40,7 +40,10 @@ package net.vpc.upa.expressions;
  */
 public enum DatePartType {
 
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     TIME,
     DATE, YEAR, MONTH, MONTHNAME,
     DAYOFMONTH, DAYOFYEAR, DAYOFWEEK,

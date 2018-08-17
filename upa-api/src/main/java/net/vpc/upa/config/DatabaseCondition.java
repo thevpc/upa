@@ -47,7 +47,7 @@ public @interface DatabaseCondition {
      *
      * @return dbtype
      */
-    DatabaseProduct databaseProduct() default DatabaseProduct.UNDEFINED;
+    DatabaseProduct databaseProduct() default DatabaseProduct.DEFAULT;
 
     String databaseVersion() default "";
 

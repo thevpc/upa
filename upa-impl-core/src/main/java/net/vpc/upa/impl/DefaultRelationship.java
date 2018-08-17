@@ -17,10 +17,8 @@ import net.vpc.upa.expressions.IdCollectionExpression;
 import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.UPAUtils;
 
-import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.util.PlatformUtils;
 
-import net.vpc.upa.types.ManyToOneType;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.RelationDataType;
 
@@ -109,7 +107,9 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 // Log. System.err.println("Type should be either VIEW or SHADOW for " + name);
                 this.relationType = RelationshipType.SHADOW_ASSOCIATION;
             }
-
+            if (((getTargetRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0) || (getSourceRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0)) && relationType != RelationshipType.TRANSIENT) {
+                this.relationType = RelationshipType.TRANSIENT;
+            }
             this.sourceToTargetKeyMap.put(sourceFields[i].getName(), targetFields[i].getName());
             this.targetToSourceKeyMap.put(targetFields[i].getName(), sourceFields[i].getName());
 //            targetFields[i].addManyToOneRelation(this);
@@ -171,10 +171,10 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         UPAUtils.prepare(getPersistenceUnit(), sourceRole, this.getName() + "_" + sourceRole.getRelationshipRoleType());
 
         if (((getTargetRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0) || (getSourceRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0)) && relationType != RelationshipType.TRANSIENT) {
-            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TYPE_VIEW");
+            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
         }
         if (((getTargetRole().getEntity().getShield().isTransient()) || (getSourceRole().getEntity().getShield().isTransient())) && relationType != RelationshipType.TRANSIENT) {
-            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TYPE_VIEW");
+            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
         }
 
         FlagSet<FieldModifier> modifierstoRemove = FlagSets.ofType(FieldModifier.class)

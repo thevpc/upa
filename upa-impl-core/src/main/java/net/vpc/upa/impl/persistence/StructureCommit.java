@@ -40,7 +40,7 @@ public abstract class StructureCommit {
                         //do nothing
                         break;
                     }
-                    case UNDEFINED:
+                    case DEFAULT:
                     case DIRTY: {
                         //throw new UPAException(new I18NString("DirtyObject"),object);
                         try {
@@ -62,7 +62,7 @@ public abstract class StructureCommit {
             }
             case MANDATORY: {
                 switch (status) {
-                    case UNDEFINED: {
+                    case DEFAULT: {
                         throw new UPAException(new I18NString("MandatoryObject"), object);
                     }
                     case VALID: {

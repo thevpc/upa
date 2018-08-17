@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.Field;
-import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.PrimitiveId;
 import net.vpc.upa.types.DataType;
 

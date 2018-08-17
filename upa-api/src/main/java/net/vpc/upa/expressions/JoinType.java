@@ -40,5 +40,13 @@ package net.vpc.upa.expressions;
 
 
 public enum JoinType {
-    UNDEFINED,INNER_JOIN, FULL_JOIN, LEFT_JOIN, RIGHT_JOIN, CROSS_JOIN
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
+    INNER_JOIN, 
+    FULL_JOIN, 
+    LEFT_JOIN, 
+    RIGHT_JOIN, 
+    CROSS_JOIN
 }

@@ -9,7 +9,6 @@ import net.vpc.upa.UPA;
 import net.vpc.upa.config.BoolEnum;
 import net.vpc.upa.config.Config;
 import net.vpc.upa.config.ConnectionConfig;
-import net.vpc.upa.config.PersistenceGroupConfig;
 import net.vpc.upa.config.PersistenceUnitConfig;
 import net.vpc.upa.config.ScanConfig;
 import net.vpc.upa.impl.UPAImplDefaults;
@@ -39,8 +38,7 @@ public class StaticConfigureUC2 {
 
     @Test
     public void testMe() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
-        PUUtils.drawBox("Test");
+        PUUtils.configure();
         UPA.configure(StaticConfigureUC2.class);
         System.out.println(UPA.getPersistenceUnit());
     }

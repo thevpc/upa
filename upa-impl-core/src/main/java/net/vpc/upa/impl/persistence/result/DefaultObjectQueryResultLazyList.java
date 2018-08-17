@@ -250,7 +250,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         }
                     }
                     if (itemsToReduce2.size() > 0) {
-                        if (!UPAImplDefaults.PRODUCTION_MODE) {
+                        if (UPAImplDefaults.DEBUG_MODE) {
                             net.vpc.upa.Properties properties = persistenceUnit.getProperties();
                             long oldMaxReduceSize = properties.getLong(UPAImplKeys.System_Perf_ResultList_MaxReduceSize, 0);
                             if (oldMaxReduceSize < itemsToReduce2.size()) {

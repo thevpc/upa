@@ -64,7 +64,7 @@ public abstract class AbstractUConnection implements UConnection {
         if (closed) {
             throw new UPAIllegalArgumentException("Connection closed");
         }
-        if (!UPAImplDefaults.PRODUCTION_MODE) {
+        if (UPAImplDefaults.DEBUG_MODE) {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Query, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Query, 0) + 1);
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Statement, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Statement, 0) + 1);
         }
@@ -100,7 +100,7 @@ public abstract class AbstractUConnection implements UConnection {
         if (closed) {
             throw new UPAIllegalArgumentException("Connection closed");
         }
-        if (!UPAImplDefaults.PRODUCTION_MODE) {
+        if (UPAImplDefaults.DEBUG_MODE) {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_NonQuery, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_NonQuery, 0) + 1);
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Statement, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Statement, 0) + 1);
         }

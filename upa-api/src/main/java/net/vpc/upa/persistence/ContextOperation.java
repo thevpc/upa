@@ -39,7 +39,10 @@ package net.vpc.upa.persistence;
  * @creationdate 9/8/12 10:54 PM
  */
 public enum ContextOperation {
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     INITIALIZE,
     PERSIST,
     UPDATE,

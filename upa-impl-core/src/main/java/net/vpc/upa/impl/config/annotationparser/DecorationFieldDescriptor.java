@@ -489,13 +489,13 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 AnnotationParserUtils.validStr(fieldDeco.getString("layout"), overriddenLayout, processOrder);
                 AnnotationParserUtils.validInt(fieldDeco.getInt("scale"), overriddenScale, -1, processOrder);
                 AnnotationParserUtils.validInt(fieldDeco.getInt("precision"), overriddenPrec, -1, processOrder);
-                if (fieldDeco.getEnum("nullable", BoolEnum.class) != BoolEnum.UNDEFINED) {
+                if (fieldDeco.getEnum("nullable", BoolEnum.class) != BoolEnum.DEFAULT) {
                     overriddenNullable.setBetterValue(fieldDeco.getEnum("nullable", BoolEnum.class), processOrder);
                 }
                 if (fieldDeco.getInt("position") != Integer.MIN_VALUE) {
                     overriddenPosition.setBetterValue(fieldDeco.getInt("position"), processOrder);
                 }
-//                if (fieldDeco.getEnum("end", BoolEnum.class) != BoolEnum.UNDEFINED) {
+//                if (fieldDeco.getEnum("end", BoolEnum.class) != BoolEnum.DEFAULT) {
 //                    overriddenEnd.setBetterValue(fieldDeco.getEnum("nullable", BoolEnum.class), processOrder);
 //                }
                 if (!PlatformUtils.isUndefinedEnumValue(AccessLevel.class, fieldDeco.getEnum("accessLevel", AccessLevel.class))) {
@@ -560,7 +560,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         for (Property parameterInfo : parameterInfos) {
             fieldParams.put(parameterInfo.getName(), UPAUtils.createValue(parameterInfo));
         }
-        if (overriddenNullable.specified && (overriddenNullable.value != BoolEnum.UNDEFINED)) {
+        if (overriddenNullable.specified && (overriddenNullable.value != BoolEnum.DEFAULT)) {
             nullableOk = overriddenNullable.value.equals(BoolEnum.TRUE);
             if (nullableOk && (!PlatformUtils.isNullableType(nativeClass) || modifiers.contains(UserFieldModifier.ID))) {
                 throw new UPAException("NonNullableTypeForcedToNull",entityName+"."+name);
@@ -578,7 +578,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         foreignInfo.parse(fields, nullableOk);
 
 //        boolean endOk = false;
-//        if (overriddenEnd.specified && (overriddenEnd.value != BoolEnum.UNDEFINED)) {
+//        if (overriddenEnd.specified && (overriddenEnd.value != BoolEnum.DEFAULT)) {
 //            endOk = overriddenEnd.value.equals(BoolEnum.TRUE);
 //        }
         if (overriddenNativeType.specified && !overriddenNativeType.value.equals(Object.class)

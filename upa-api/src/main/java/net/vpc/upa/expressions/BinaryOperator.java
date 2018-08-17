@@ -40,7 +40,10 @@ package net.vpc.upa.expressions;
  */
 public enum BinaryOperator {
 
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     PLUS,
     MINUS,
     DIV,

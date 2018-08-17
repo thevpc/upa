@@ -8,10 +8,10 @@ import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 22 mai 2003
  * Time: 17:17:34
- * To change this template use Options | File Templates.
+ * 
  */
 public class AvgANSISQLProvider extends ANSIFunctionSQLProvider {
     public AvgANSISQLProvider() {

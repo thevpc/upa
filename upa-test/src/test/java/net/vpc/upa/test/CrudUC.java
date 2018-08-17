@@ -21,7 +21,6 @@ public class CrudUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        UPAImplDefaults.PRODUCTION_MODE=false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(CrudUC.class);
         pu.addEntity(SharedClient.class);
         pu.start();

@@ -39,7 +39,7 @@ package net.vpc.upa;
  * @creationdate 12/24/12 1:04 AM
  */
 public enum VetoableOperation {
-    UNDEFINED,
+    DEFAULT,
     checkPersist,
     checkUpdate,
     checkClone,

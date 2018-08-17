@@ -117,7 +117,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             Sequence sequence = (Sequence) UPAUtils.getPersistFormula(field);
             SequenceStrategy strategy = sequence == null ? SequenceStrategy.AUTO : sequence.getStrategy();
             switch (strategy) {
-                case UNDEFINED:
+                case DEFAULT:
                 case AUTO:
                 case IDENTITY: {
                     DataType d = (field.getDataType());
@@ -143,7 +143,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             f = sequence.getFormat();
         }
         switch (strategy) {
-            case UNDEFINED:
+            case DEFAULT:
             case AUTO:
             case IDENTITY: {
                 DataType d = (field.getDataType());

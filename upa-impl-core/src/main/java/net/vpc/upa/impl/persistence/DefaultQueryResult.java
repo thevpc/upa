@@ -48,7 +48,7 @@ public class DefaultQueryResult implements QueryResult {
             lastNativePos += marshaller.getSize();
             np++;
         }
-        if (!UPAImplDefaults.PRODUCTION_MODE) {
+        if (UPAImplDefaults.DEBUG_MODE) {
             mon = UPADeadLock.addMonitor("QueryResult", query, 20, new Throwable());
         }
 //        try {
@@ -121,7 +121,7 @@ public class DefaultQueryResult implements QueryResult {
 
     public void close() {
         try {
-            if (!UPAImplDefaults.PRODUCTION_MODE) {
+            if (UPAImplDefaults.DEBUG_MODE) {
                 if (!closed) {
                     mon.release();
 //                log.log(Level.FINE, nameDebugString+" executeQuery     : "+query);

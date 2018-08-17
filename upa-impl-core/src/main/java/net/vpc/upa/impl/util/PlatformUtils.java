@@ -1241,7 +1241,7 @@ public class PlatformUtils {
     }
 
     public static Boolean toBool(BoolEnum b, Boolean defaultValue) {
-        if (b == null || b == BoolEnum.UNDEFINED) {
+        if (b == null || b == BoolEnum.DEFAULT) {
             return defaultValue;
         }
         return b == BoolEnum.TRUE;

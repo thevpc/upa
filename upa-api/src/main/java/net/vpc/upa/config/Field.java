@@ -81,9 +81,9 @@ public @interface Field {
 
     int scale() default -1;
 
-    BoolEnum nullable() default BoolEnum.UNDEFINED;
+    BoolEnum nullable() default BoolEnum.DEFAULT;
 
-    //    BoolEnum end() default BoolEnum.UNDEFINED;
+    //    BoolEnum end() default BoolEnum.DEFAULT;
     UserFieldModifier[] modifiers() default {};
 
     UserFieldModifier[] excludeModifiers() default {};

@@ -7,10 +7,10 @@ import net.vpc.upa.types.DataTypeTransform;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 10 juin 2003
  * Time: 16:29:33
- * To change this template use Options | File Templates.
+ * 
  */
 public class CompiledUplet extends DefaultCompiledExpressionImpl {
     private static final long serialVersionUID = 1L;

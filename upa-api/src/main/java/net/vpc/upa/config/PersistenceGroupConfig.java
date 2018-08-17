@@ -49,9 +49,9 @@ public @interface PersistenceGroupConfig {
 
     String name() default "";
 
-    BoolEnum autoScan() default BoolEnum.UNDEFINED;
+    BoolEnum autoScan() default BoolEnum.DEFAULT;
 
-    BoolEnum inheritScanFilters() default BoolEnum.UNDEFINED;
+    BoolEnum inheritScanFilters() default BoolEnum.DEFAULT;
 
     ScanConfig[] scan() default {};
 

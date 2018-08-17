@@ -15,10 +15,10 @@ import net.vpc.upa.impl.context.DefaultEntityTriggerContext;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 29 avr. 2003
  * Time: 12:59:47
- * To change this template use Options | File Templates.
+ * 
  */
 public class SingleDataInterceptorSupport extends EntityListenerAdapter {
     private SingleEntityListener keyInterceptor;

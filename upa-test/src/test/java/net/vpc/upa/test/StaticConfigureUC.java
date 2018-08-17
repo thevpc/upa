@@ -48,7 +48,6 @@ public class StaticConfigureUC {
 
     @Test
     public void testMe() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
         PUUtils.drawBox("Test");
         UPA.configure(StaticConfigureUC.class);
         System.out.println(UPA.getPersistenceUnit());

@@ -47,7 +47,7 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Config {
 
-    BoolEnum autoScan() default BoolEnum.UNDEFINED;
+    BoolEnum autoScan() default BoolEnum.DEFAULT;
 
     ScanConfig[] scan() default {};
 

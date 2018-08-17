@@ -43,8 +43,10 @@ package net.vpc.upa.persistence;
 
 
 public enum StructureStrategy {
-
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     DROP,
     IGNORE,
     CREATE,

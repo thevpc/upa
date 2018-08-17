@@ -24,7 +24,6 @@ public class UserInClientUC {
 
     @BeforeClass
     public static void setup() {
-        UPAImplDefaults.PRODUCTION_MODE = false;
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(UserInClientUC.class);
         pu.addEntity(AppUser.class);
         pu.addEntity(Client.class);

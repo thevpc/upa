@@ -42,7 +42,10 @@ package net.vpc.upa;
  * To change this template use File | Settings | File Templates.
  */
 public enum TransactionType {
-    UNDEFINED,
+    /**
+     * Undefined value, treated as null
+     */
+    DEFAULT,
     REQUIRED,
     REQUIRES_NEW,
     MANDATORY,

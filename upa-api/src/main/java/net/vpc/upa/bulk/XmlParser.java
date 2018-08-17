@@ -45,7 +45,7 @@ public abstract class XmlParser extends AbstractDataParser {
     private boolean containsHeader;
     private boolean trimValues = true;
     private int skipRows = 0;
-    private List<XmlColumn> columns = new ArrayList<XmlColumn>();
+    private final List<XmlColumn> columns = new ArrayList<XmlColumn>();
 
     public List<XmlColumn> getColumns() {
         return columns;

@@ -17,8 +17,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.UPAImplDefaults;
 
 /**
  *
@@ -30,12 +30,21 @@ public class PUUtils {
     }
 
     static{
+        UPAImplDefaults.DEBUG_MODE = true;
         System.out.println("*************************************");
         System.out.println(""+getVersion());
         System.out.println("*************************************");
         LogUtils.prepare();
     }
     private static final Logger log = Logger.getLogger(PUUtils.class.getName());
+    
+    public static void configure(){
+        //do nothing, ust to enable static bloc!
+    }
+    
+    public static void deleteTestPersistenceUnit(Class clz) {
+        deleteTestPersistenceUnit(clz,null,null);
+    }
     public static PersistenceUnit createTestPersistenceUnit(Class clz,String desc) {
         return createTestPersistenceUnit(clz,null,desc);
     }
@@ -60,6 +69,36 @@ public class PUUtils {
         log.fine(new String(row));
     }
 
+    public static void deleteTestPersistenceUnit(Class clz,Store type,String desc) {
+        String v = getVersion().replace(".","_");
+        String puId = clz == null ? "test" : clz.getSimpleName();
+        if(type==null){
+            type=Store.EMBEDDED;
+        }
+        StringBuilder header=new StringBuilder();
+        header.append("Delete Persistence Unit ").append(puId);
+        if(desc!=null && desc.trim().length()>0){
+            header.append(desc);
+        }
+        drawBox(header);
+        if(Store.MYSQL.equals(type)){
+            //cc.setConnectionString("mysql:default://localhost/UPA_TEST"+v+";structure=create;userName=root;password=''");
+            throw new IllegalArgumentException("Not Supported Delete "+type);
+        }else if(Store.DERBY.equals(type)){
+            //cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
+            throw new IllegalArgumentException("Not Supported Delete "+type);
+        }else if(Store.EMBEDDED.equals(type)){
+            File embedded=new File("db-embedded/upatest"+v);
+            try {
+                System.out.println("Local Database at "+embedded.getCanonicalPath());
+            } catch (IOException ex) {
+                System.out.println("Local Database at "+embedded.getAbsolutePath());
+            }
+            deleteFile(embedded);
+        }else{
+            throw new IllegalArgumentException("Not Supported "+type);
+        }
+    }
     public static PersistenceUnit createTestPersistenceUnit(Class clz,Store type,String desc) {
         String v = getVersion().replace(".","_");
         String puId = clz == null ? "test" : clz.getSimpleName();
@@ -107,6 +146,27 @@ public class PUUtils {
         }
         grp.setPersistenceUnit(puId);
         return pu;
+    }
+
+    private static void deleteFile(File file) {
+        if(file.exists()){
+            if(file.isFile()){
+                if(!file.delete()){
+                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+                }
+            }else if(file.isDirectory()){
+                for (File ch : file.listFiles()) {
+                    deleteFile(ch);
+                }
+                if(!file.delete()){
+                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+                }
+            }else{
+                if(!file.delete()){
+                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+                }
+            }
+        }
     }
 
     public enum Store{

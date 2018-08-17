@@ -97,7 +97,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         }
         ExpressionCompiler w=new ExpressionCompiler(expression,config, persistenceUnit);
         CompiledExpression compiledExpression = w.compile();
-        if(!UPAImplDefaults.PRODUCTION_MODE) {
+        if(UPAImplDefaults.DEBUG_MODE) {
             System.out.println("==========DefaultExpressionManager==============");
             System.out.println(expression);
             System.out.println(compiledExpression);
