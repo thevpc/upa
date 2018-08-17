@@ -39,10 +39,10 @@ import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 22 mai 2003
  * Time: 17:00:10
- * To change this template use Options | File Templates.
+ * 
  */
 public class CurrentTimestamp extends FunctionExpression {
     private static final long serialVersionUID = 1L;

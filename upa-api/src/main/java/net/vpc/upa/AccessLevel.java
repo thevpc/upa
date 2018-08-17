@@ -59,7 +59,7 @@ package net.vpc.upa;
  */
 public enum AccessLevel {
     /**
-     * Default access level is a synonym  of READ_WRITE access level.
+     * Default access level is a synonym of READ_WRITE access level.
      * Particularly when used in @Field annotation, the default value is ignored and older value is retained.
      */
     DEFAULT,

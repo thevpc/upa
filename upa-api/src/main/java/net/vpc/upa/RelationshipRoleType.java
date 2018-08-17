@@ -35,10 +35,10 @@
 package net.vpc.upa;
 
 /**
- * User: root
+ * User: vpc
  * Date: 22 mai 2003
  * Time: 16:19:45
- * To change this template use Options | File Templates.
+ * 
  */
 
 

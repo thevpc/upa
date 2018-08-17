@@ -36,10 +36,10 @@ package net.vpc.upa.types;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 1 mai 2003
  * Time: 21:09:55
- * To change this template use Options | File Templates.
+ * 
  */
 
 public enum TemporalOption {

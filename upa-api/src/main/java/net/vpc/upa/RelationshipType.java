@@ -35,17 +35,27 @@
 package net.vpc.upa;
 
 /**
- * User: root
+ * User: vpc
  * Date: 19 avr. 2003
  * Time: 19:50:17
- * To change this template use Options | File Templates.
  */
 public enum RelationshipType {
     DEFAULT,
     ASSOCIATION,
     AGGREGATION,
+    /**
+     * if delete parent, delete all references (children)
+     */
     COMPOSITION,
+    /**
+     * do not add store constraints (like foreign keys)
+     * if delete, reset (to zero) all references
+     */
     SHADOW_ASSOCIATION,
+    /**
+     * do not add store constraints (like foreign keys)
+     * if delete, do nothing
+     * used for relations with View entities
+     */
     TRANSIENT
-    //,RIGID
 }

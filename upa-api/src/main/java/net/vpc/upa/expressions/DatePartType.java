@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 /**
- * User: root Date: 22 mai 2003 Time: 12:10:21 To change this template use
+ * User: vpc Date: 22 mai 2003 Time: 12:10:21 To change this template use
  * Options | File Templates.
  */
 public enum DatePartType {

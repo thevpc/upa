@@ -41,10 +41,10 @@ import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 29 avr. 2003
  * Time: 10:38:06
- * To change this template use Options | File Templates.
+ * 
  */
 public class DatePeriodType extends DefaultDataType implements CompoundDataType {
     private String countName;

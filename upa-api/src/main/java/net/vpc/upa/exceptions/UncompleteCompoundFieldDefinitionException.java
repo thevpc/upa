@@ -36,10 +36,10 @@ package net.vpc.upa.exceptions;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 25 avr. 2003
  * Time: 12:56:55
- * To change this template use Options | File Templates.
+ * 
  */
 public class UncompleteCompoundFieldDefinitionException extends RuntimeException {
     public UncompleteCompoundFieldDefinitionException() {

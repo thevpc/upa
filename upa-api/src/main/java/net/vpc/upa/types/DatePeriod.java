@@ -42,10 +42,10 @@ import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
- * User: root
+ * User: vpc
  * Date: 29 avr. 2003
  * Time: 09:16:24
- * To change this template use Options | File Templates.
+ * 
  */
 @PortabilityHint(target = "C#", name = "partial")
 public class DatePeriod implements Serializable {

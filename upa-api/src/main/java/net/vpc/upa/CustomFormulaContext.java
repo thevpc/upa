@@ -1,10 +1,5 @@
 package net.vpc.upa;
 
-import net.vpc.upa.persistence.ContextOperation;
-import net.vpc.upa.persistence.EntityExecutionContext;
-import net.vpc.upa.persistence.PersistenceStore;
-import net.vpc.upa.persistence.UConnection;
-
 /**
  * Interface to be used as a single param in methods annotated with
  *
