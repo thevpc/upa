@@ -18,33 +18,17 @@ import net.vpc.upa.impl.util.classpath.URLClassIterable;
  * @creationdate 9/24/12 3:01 AM
  */
 public class ContextScanSource extends BaseScanSource {
-
-    private String name;
-    private boolean noIgnore;
     private URL[] urls;
-
-    public ContextScanSource(String name, boolean noIgnore) {
-        this.name = name;
-        this.noIgnore = noIgnore;
-//        this.staticConfig = staticConfig;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public boolean isNoIgnore() {
-        return noIgnore;
+    public ContextScanSource() {
     }
 
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder(getClass().getSimpleName());
         s.append("[");
-        s.append(name);
+        s.append(getName());
         s.append(",noIgnore=");
-        s.append(noIgnore);
+        s.append(isNoIgnore());
         s.append("]");
         return s.toString();
     }
@@ -91,7 +75,7 @@ public class ContextScanSource extends BaseScanSource {
         } else {
             throw new UPAIllegalArgumentException("Unsupported context " + context);
         }
-        return new URLClassIterable(name + ":" + contextString, getUrls(),
+        return new URLClassIterable(getName() + ":" + contextString, getUrls(),
                 new DefaultConfigFilter(_filters.toArray(new ScanFilter[_filters.size()])),
                 null);
     }

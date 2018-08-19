@@ -1,8 +1,14 @@
 package net.vpc.upa.impl.ext.expressions;
 
+import net.vpc.upa.impl.upql.DecObjectType;
+import net.vpc.upa.impl.upql.ExpressionDeclaration;
+import net.vpc.upa.impl.upql.CompiledExpressionFilteredReplacer;
+import net.vpc.upa.impl.upql.ReplaceResult;
+import net.vpc.upa.impl.upql.CompiledExpressionVisitor;
+import net.vpc.upa.impl.upql.CompiledExpressionFilter;
+import net.vpc.upa.impl.upql.CompiledExpressionReplacer;
 import net.vpc.upa.Properties;
 import net.vpc.upa.expressions.CompiledExpression;
-import net.vpc.upa.impl.uql.*;
 import net.vpc.upa.types.DataTypeTransform;
 
 import java.util.List;
@@ -10,7 +16,6 @@ import java.util.Map;
 
 public interface CompiledExpressionExt extends Cloneable, java.io.Serializable, net.vpc.upa.expressions.CompiledExpression {
 
-    //    public static CompiledExpression[] EMPTY_ERRAY = new CompiledExpression[0];
     boolean isValid();
 
     CompiledExpressionExt[] getSubExpressions();
@@ -21,13 +26,10 @@ public interface CompiledExpressionExt extends Cloneable, java.io.Serializable, 
 
     void setSubExpression(int index, CompiledExpressionExt expression);
 
-    //    public abstract String toSQL(boolean integrated, PersistenceUnitFilter database);
-//    public String toSQL(PersistenceUnitFilter database) ;
     CompiledExpressionExt copy();
 
     String getDescription();
 
-    //    public String getDescriptionOrSQL(Resources resources) ;
     CompiledExpressionExt setDescription(String newDesc);
 
     DataTypeTransform getTypeTransform();
@@ -51,7 +53,6 @@ public interface CompiledExpressionExt extends Cloneable, java.io.Serializable, 
     <T extends CompiledExpression> T findFirstExpression(CompiledExpressionFilter filter);
 
 //    public void setDeclarationList(ExpressionDeclarationList declarationList);
-
     /**
      * @param visitor
      * @return true if should continue visiting false otherwise

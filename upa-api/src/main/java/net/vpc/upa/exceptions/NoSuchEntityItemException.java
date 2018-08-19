@@ -34,18 +34,14 @@
  */
 package net.vpc.upa.exceptions;
 
-import net.vpc.upa.types.I18NString;
+import net.vpc.upa.Entity;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class NoSuchEntityItemException extends EntityException {
-    public NoSuchEntityItemException(String name) {
-        this(name, null);
-    }
-
-    public NoSuchEntityItemException(String name, Exception cause) {
-        super(cause, new I18NString("NoSuchEntityItem"), name);
+    public NoSuchEntityItemException(Entity entity,String name) {
+        super(entity, "parts","NoSuchEntityItem", name);
     }
 
 }

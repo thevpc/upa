@@ -5,7 +5,6 @@ import net.vpc.upa.callbacks.EntityEvent;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Main;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
 import net.vpc.upa.types.TypesFactory;
 import org.junit.BeforeClass;
@@ -24,6 +23,7 @@ public class RelationFormulaUC3 {
     private static Business bo;
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC3.class);
         pu.addCallback(new AbstractCallback(CallbackType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
             @Override
@@ -36,7 +36,7 @@ public class RelationFormulaUC3 {
                             new DefaultFieldBuilder()
                                     .setName("contactEmail")
                                     .addModifier(UserFieldModifier.SUMMARY)
-                                    .setLiveSelectFormula("this.user.contact.email")
+                                    .setLiveSelectFormula("this.contact.email")
                                     .setDataType(TypesFactory.STRING)
                     );
                 }

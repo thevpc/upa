@@ -35,7 +35,6 @@
 package net.vpc.upa.persistence;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 
 /**

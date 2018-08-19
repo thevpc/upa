@@ -6,8 +6,8 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.persistence.ContextOperation;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -59,7 +59,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
         String pathFieldName = support.getHierarchyPathField();
         Entity entity = relation.getSourceRole().getEntity();
         if (parent_id != null) {
-            Document r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, UQLUtils.THIS)).setFieldFilter(FieldFilters.byName(pathFieldName)).getDocument();
+            Document r = entity.createQueryBuilder().byExpression(entity.getBuilder().idToExpression(parent_id, UPQLUtils.THIS)).setFieldFilter(FieldFilters.byName(pathFieldName)).getDocument();
             if (r != null) {
                 path = r.getString(pathFieldName) + path;
             }
@@ -72,7 +72,7 @@ public class HierarchicalRelationshipDataInterceptor extends EntityListenerAdapt
 
         Document u2 = entity.getBuilder().createDocument();
         u2.setString(pathFieldName, path);
-        ((EntityExt)entity).updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), UQLUtils.THIS), updateContext);
+        ((EntityExt)entity).updateCore(u2, entity.getBuilder().idToExpression(event.getPersistedId(), UPQLUtils.THIS), updateContext);
 
         //context.getExecutionContext().getPersistenceStore().executeUpdate(new Update().entity(entity.getName()).set(pathFieldName, path).where(new KeyExpression(entity, insertedId, null)), executionContext2);
     }

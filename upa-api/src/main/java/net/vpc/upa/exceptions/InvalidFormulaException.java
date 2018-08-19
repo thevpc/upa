@@ -34,13 +34,14 @@
  */
 package net.vpc.upa.exceptions;
 
-import net.vpc.upa.types.I18NString;
+import net.vpc.upa.Field;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class InvalidFormulaException extends EntityException {
-    public InvalidFormulaException(String expression, Throwable cause) {
-        super(cause, new I18NString("InvalidFormulaException"), expression);
+
+    public InvalidFormulaException(Field field, String expression, Throwable cause) {
+        super(cause, field.getEntity(), "formula", "InvalidFormula", field.getEntity(), field, expression);
     }
 }

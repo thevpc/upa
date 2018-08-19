@@ -92,15 +92,6 @@ public class MonthEnd extends FunctionExpression {
         expressions.set(index, e);
     }
 
-
-//    public String toSQL(boolean integrated, PersistenceUnit database) {
-//        return "i2v("+e.toSQL(true, database)+")";
-//    }
-
-//    public static Expression toExpression(Object value) {
-//        return ((Expression) (value == null || !(value instanceof Expression) ? new I2V((String)(value)) : (Expression) value));
-//    }
-
     @Override
     public String getName() {
         return "MonthEnd";

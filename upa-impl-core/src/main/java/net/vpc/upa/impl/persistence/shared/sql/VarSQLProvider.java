@@ -5,8 +5,8 @@ import net.vpc.upa.Field;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
 
@@ -35,7 +35,7 @@ public class VarSQLProvider extends AbstractSQLProvider {
             sb.append(persistenceStore.getValidIdentifier(name));
         } else if (referrer instanceof Entity) {
             Entity entity = (Entity) referrer;
-//            if (UQLUtils.THIS.equals(o.getName())) {
+//            if (UPQLUtils.THIS.equals(o.getName())) {
 //                throw new UPAIllegalArgumentException("Unexpected this alias");
 //                //this must be resolved to the ancestor alias
 //                ExpressionDeclarationList declarationList = o.getDeclarationList();

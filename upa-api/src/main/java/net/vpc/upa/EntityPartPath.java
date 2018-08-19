@@ -42,24 +42,24 @@ import java.util.List;
  */
 public class EntityPartPath {
     private Entity entity;
-    private List<EntityPart> path;
+    private List<EntityItem> path;
 
-    public EntityPartPath(Entity entity, List<EntityPart> path) {
+    public EntityPartPath(Entity entity, List<EntityItem> path) {
         this.entity = entity;
         if (path == null) {
-            this.path = new ArrayList<EntityPart>(5);
+            this.path = new ArrayList<EntityItem>(5);
         } else {
-            this.path = new ArrayList<EntityPart>(path);
+            this.path = new ArrayList<EntityItem>(path);
         }
     }
 
-    public void add(EntityPart part) {
+    public void add(EntityItem part) {
         path.add(part);
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder(entity.getName());
-        for (EntityPart p : path) {
+        for (EntityItem p : path) {
             sb.append("/");
             sb.append(p.getName());
         }
@@ -70,7 +70,7 @@ public class EntityPartPath {
         return entity;
     }
 
-    public List<EntityPart> getPath() {
+    public List<EntityItem> getPath() {
         return path;
     }
 }

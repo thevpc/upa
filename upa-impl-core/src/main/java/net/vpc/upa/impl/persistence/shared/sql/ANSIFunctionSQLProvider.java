@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
-import net.vpc.upa.impl.uql.parser.FunctionSQLProvider;
+import net.vpc.upa.impl.upql.parser.FunctionSQLProvider;
 
 /**
  * Created by IntelliJ IDEA.

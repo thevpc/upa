@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.impl.persistence.shared.sql.ANSIFunctionSQLProvider;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledCast;
+import net.vpc.upa.impl.upql.ext.expr.CompiledCast;
 
 import java.util.Map;
 

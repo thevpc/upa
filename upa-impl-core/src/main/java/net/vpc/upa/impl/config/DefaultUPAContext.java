@@ -137,7 +137,7 @@ public class DefaultUPAContext implements UPAContext {
                 addScanFilter(new ScanFilter(null, null, false, UPAContextConfig.XML_ORDER));
             }
         }
-        scan(contextConfig, getFactory().createContextScanSource("UPAContext", false), null, true);
+        scan(contextConfig, getFactory().createContextScanSource().setName("UPAContext").setNoIgnore(false), null, true);
         for (PersistenceGroup g : getPersistenceGroups()) {
             for (PersistenceUnit u : g.getPersistenceUnits()) {
                 if (!u.isStarted() && u.isAutoStart()) {
@@ -235,14 +235,21 @@ public class DefaultUPAContext implements UPAContext {
 
     @Override
     public void removePersistenceGroup(String name) throws UPAException {
+        if (name == null) {
+            name = "";
+        }
         PersistenceGroup persistenceGroup = getPersistenceGroup(name);
+        String oldName = getPersistenceGroupProvider().getPersistenceGroup();
 
         PersistenceGroupEvent event = new PersistenceGroupEvent(persistenceGroup, this);
         listeners.fireOnDropPersistenceGroup(event, EventPhase.BEFORE);
-        if (persistenceGroup.isClosed()) {
+        if (!persistenceGroup.isClosed()) {
             persistenceGroup.close();
         }
         persistenceGroups.remove(name);
+        if(oldName!=null && oldName.equals(name)){
+            getPersistenceGroupProvider().setPersistenceGroup(null);
+        }
         listeners.fireOnDropPersistenceGroup(event, EventPhase.AFTER);
     }
 
@@ -428,6 +435,7 @@ public class DefaultUPAContext implements UPAContext {
         for (CloseListener listener : li) {
             listener.afterClose(this);
         }
+        setPersistenceGroup(null);
     }
 
     public void addCloseListener(CloseListener listener) {

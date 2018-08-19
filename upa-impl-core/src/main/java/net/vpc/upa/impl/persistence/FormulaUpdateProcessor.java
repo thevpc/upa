@@ -11,8 +11,8 @@ import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.eval.DefaultCustomMultiFormulaContext;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -91,7 +91,7 @@ public class FormulaUpdateProcessor {
             Expression fe = getFieldExpression(f, onPersist);
 
             CompiledExpressionExt ce = (CompiledExpressionExt) entity.compile(fe, null);
-            boolean found = ce.findFirstExpression(UQLCompiledUtils.QUERY_STATEMENT_FILTER) != null;
+            boolean found = ce.findFirstExpression(UPQLCompiledUtils.QUERY_STATEMENT_FILTER) != null;
             if (found) {
                 pass = passArray[ValidationPassType.ITERATIVE_VALIDATION.ordinal()];
                 if (pass == null) {
@@ -263,7 +263,7 @@ public class FormulaUpdateProcessor {
                 Object v = cf.getValue(new DefaultCustomFormulaContext(field, aKeysToUpdate, context));
                 u.setObject(field.getName(), new Cast(new Param(null, v), field.getDataType()));
             }
-            x += ((EntityExt) entity).updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS), context);
+            x += ((EntityExt) entity).updateCore(u, entity.getBuilder().idToExpression(aKeysToUpdate, UPQLUtils.THIS), context);
         }
 //                        if (monitor != null) {
 //                            monitor.stepOut();
@@ -300,7 +300,7 @@ public class FormulaUpdateProcessor {
             // System.out.println("ITERATIVE_VALIDATION = " +
             // validationPass.pass+" : "+validationPass.fields+" :
             // "+keysToUpdate[r]);
-            x += validateDefault(fields, entity.getBuilder().idToExpression(aKeysToUpdate, UQLUtils.THIS));
+            x += validateDefault(fields, entity.getBuilder().idToExpression(aKeysToUpdate, UPQLUtils.THIS));
         }
 //                        if (monitor != null) {
 //                            monitor.stepOut();
@@ -447,7 +447,7 @@ public class FormulaUpdateProcessor {
 //        }
 //        int count2=0;
 //        if (selectBasedFields.size() > 0) {
-//            Select s = new Select().from(entity.getName(),UQLUtils.THIS);
+//            Select s = new Select().from(entity.getName(),UPQLUtils.THIS);
 //            for (Field primaryField : entity.getIdFields()) {
 //                s.field(primaryField.getName());
 //            }
@@ -459,7 +459,7 @@ public class FormulaUpdateProcessor {
 //                for (Map.Entry<String, Expression> f : selectBasedFields.entrySet()) {
 //                    u.setObject(f.getKey(),document.getObject(f.getKey()));
 //                }
-//                Expression exprId=eb.objectToIdExpression(document, UQLUtils.THIS);
+//                Expression exprId=eb.objectToIdExpression(document, UPQLUtils.THIS);
 //                count2+= entity.updateCore(u, exprId, context);
 //            }
 //        }

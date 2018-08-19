@@ -13,6 +13,7 @@ import net.vpc.upa.persistence.PersistenceStore;
  * Created by vpc on 7/6/17.
  */
 public interface EntityExecutionContextExt extends EntityExecutionContext {
+
     void initPersistenceUnit(PersistenceUnit persistenceUnit, PersistenceStore persistenceStore, ContextOperation contextOperation);
 
     void initEntity(Entity currentEntity, EntityOperationManager entityOperationManager);

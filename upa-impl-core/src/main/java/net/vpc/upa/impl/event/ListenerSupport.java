@@ -21,8 +21,8 @@ public class ListenerSupport<T> {
     private Map<String, List<T>> someSystem = new HashMap<String, List<T>>();
 
     public void add(boolean system, String name, T t) {
-        if(name!=null && name.length()==0){
-            name=null;
+        if (name != null && name.length() == 0) {
+            name = null;
         }
         if (system) {
             if (name == null) {
@@ -53,7 +53,7 @@ public class ListenerSupport<T> {
         remove(true, n, t);
         remove(false, n, t);
     }
-    
+
     public void remove(boolean system, String n, T t) {
         if (system) {
             if (n == null) {
@@ -150,6 +150,37 @@ public class ListenerSupport<T> {
                     sum.addAll(v);
                 }
                 return sum.toArray(arr);
+            }
+        }
+    }
+
+    public void close() {
+        for (Object object : allCommun.toArray()) {
+            T t = (T) object;
+            remove(false, null, t);
+        }
+        String[] keys = someCommun.keySet().toArray(new String[someCommun.size()]);
+        for (String key : keys) {
+            List<T> list = someCommun.get(key);
+            if (list != null) {
+                for (Object object : list.toArray(new Object[list.size()])) {
+                    T t = (T) object;
+                    remove(false, key, t);
+                }
+            }
+        }
+        for (Object object : allSystem.toArray()) {
+            T t = (T) object;
+            remove(true, null, t);
+        }
+        keys = someSystem.keySet().toArray(new String[someSystem.size()]);
+        for (String key : keys) {
+            List<T> list = someSystem.get(key);
+            if (list != null) {
+                for (Object object : list.toArray(new Object[list.size()])) {
+                    T t = (T) object;
+                    remove(true, key, t);
+                }
             }
         }
     }

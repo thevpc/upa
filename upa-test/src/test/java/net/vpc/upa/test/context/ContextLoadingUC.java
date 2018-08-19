@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.CurrentSessionNotFoundException;
 import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,6 +19,7 @@ public class ContextLoadingUC {
 
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(ContextLoadingUC.class);
         pu.addEntity(SharedClient.class);
         pu.start();

@@ -28,7 +28,7 @@ public class SharedClient {
     private Long longValue;
     private SharedClientType clientType;
     /**
-     * uql keyword
+     * UPQL keyword
      */
     private String right;
 

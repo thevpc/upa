@@ -48,7 +48,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
 //            }
         }
         if (userValueFound) {
-            DataTypeTransform typeTransform = UPAUtils.getTypeTransformOrIdentity(field);
+            DataTypeTransform typeTransform = field.getEffectiveTypeTransform();
             PasswordDataTypeTransform t = UPAUtils.findPasswordTransform(typeTransform);
             Object v = convertCypherValue(t.getCipherValue(), field.getDataType());
             if (UPAUtils.equals(userValue, v)) {
@@ -139,7 +139,7 @@ public class PasswordTypeFieldPersister implements FieldPersister {
 //            }
         }
         if (userValueFound) {
-            PasswordDataTypeTransform t = UPAUtils.findPasswordTransform(UPAUtils.getTypeTransformOrIdentity(field));
+            PasswordDataTypeTransform t = UPAUtils.findPasswordTransform(field.getEffectiveTypeTransform());
             Object v = t.getCipherValue();
             if (UPAUtils.equals(userValue, v)) {
                 return;//ignore insert

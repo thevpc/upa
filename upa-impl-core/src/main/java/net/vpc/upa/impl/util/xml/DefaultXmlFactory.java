@@ -3,7 +3,6 @@ package net.vpc.upa.impl.util.xml;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

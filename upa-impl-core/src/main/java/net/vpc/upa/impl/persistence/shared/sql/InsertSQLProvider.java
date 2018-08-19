@@ -4,8 +4,8 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledInsert;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledInsert;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

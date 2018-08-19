@@ -11,7 +11,7 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.expressions.UnaryOperatorExpression;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.impl.util.XNumber;
 
@@ -32,7 +32,7 @@ class UnaryOperatorExpressionEvaluator implements QLTypeEvaluator {
         Expression expr = evaluator.evalObject(eq.getExpression(), context);
         Object a = UPAUtils.unwrapLiteral(expr);
         if(a instanceof Expression){
-            return UQLUtils.createUnaryExpr(eq.getOperator(),expr);
+            return UPQLUtils.createUnaryExpr(eq.getOperator(),expr);
         }
         switch (eq.getOperator()) {
             case POSITIVE: {

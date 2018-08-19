@@ -37,7 +37,7 @@ package net.vpc.upa;
 import java.util.List;
 
 public class EntityInfo extends PersistenceUnitPartInfo{
-    private List<EntityPartInfo> children;
+    private List<EntityItemInfo> children;
     private EntityModifier[] modifiers;
     private boolean hierarchical;
     private boolean hasAssociatedView;
@@ -151,11 +151,11 @@ public class EntityInfo extends PersistenceUnitPartInfo{
         this.parentEntity = parentEntity;
     }
 
-    public List<EntityPartInfo> getChildren() {
+    public List<EntityItemInfo> getChildren() {
         return children;
     }
 
-    public void setChildren(List<EntityPartInfo> children) {
+    public void setChildren(List<EntityItemInfo> children) {
         this.children = children;
     }
 }

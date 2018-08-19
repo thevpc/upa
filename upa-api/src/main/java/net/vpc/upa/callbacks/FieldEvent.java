@@ -47,11 +47,11 @@ public class FieldEvent extends UPAEvent {
     private int oldIndex;
     private Field field;
     private Entity entity;
-    private EntityPart parent;
-    private EntityPart oldParent;
+    private EntityItem parent;
+    private EntityItem oldParent;
     private EventPhase phase;
 
-    public FieldEvent(Field field, PersistenceUnit persistenceUnit, Entity entity, EntityPart parent, int index, EntityPart oldParent, int oldIndex, EventPhase phase) {
+    public FieldEvent(Field field, PersistenceUnit persistenceUnit, Entity entity, EntityItem parent, int index, EntityItem oldParent, int oldIndex, EventPhase phase) {
         this.persistenceUnit = persistenceUnit;
         this.field = field;
         this.parent = parent;
@@ -78,11 +78,11 @@ public class FieldEvent extends UPAEvent {
         return field;
     }
 
-    public EntityPart getParent() {
+    public EntityItem getParent() {
         return parent;
     }
 
-    public EntityPart getOldParent() {
+    public EntityItem getOldParent() {
         return oldParent;
     }
 

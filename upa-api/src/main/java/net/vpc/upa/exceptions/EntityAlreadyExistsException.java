@@ -46,6 +46,6 @@ public class EntityAlreadyExistsException extends EntityException {
      * @param registererSource Source for already registered Entity
      */
     public EntityAlreadyExistsException(String entityName, Object source, Object registererSource) {
-        super("EntityAlreadyExistsException", entityName, source, registererSource);
+        super(entityName,"create","EntityAlreadyExists", entityName, source, registererSource);
     }
 }

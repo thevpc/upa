@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence.result;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.impl.persistence.NativeField;
-import net.vpc.upa.impl.uql.BindingId;
+import net.vpc.upa.impl.upql.BindingId;
 
 /**
 * Created by vpc on 1/4/14.

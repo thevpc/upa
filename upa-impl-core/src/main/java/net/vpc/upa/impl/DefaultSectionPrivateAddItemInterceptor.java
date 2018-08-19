@@ -1,15 +1,15 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.EntityPart;
 import net.vpc.upa.Section;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
+import net.vpc.upa.EntityItem;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/8/13 2:27 PM
  */
-class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityPart> {
+class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityItem> {
 
     private DefaultSection defaultSection;
 
@@ -18,13 +18,13 @@ class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityP
     }
 
     @Override
-    public void before(EntityPart child, int index) {
-        EntityPart oldParent = child.getParent();
+    public void before(EntityItem child, int index) {
+        EntityItem oldParent = child.getParent();
 //        ((DefaultEntity) defaultSection.getEntity()).beforePartAdded(defaultSection, child, index);
         if (oldParent != null && oldParent != defaultSection) {
             if (oldParent instanceof Section) {
                 Section x = (Section) oldParent;
-                x.removePartAt(x.indexOfPart(child));
+                x.removeItemAt(x.indexOfItem(child));
             }
         }
         DefaultBeanAdapter adapter = new DefaultBeanAdapter(child);
@@ -35,7 +35,7 @@ class DefaultSectionPrivateAddItemInterceptor implements ItemInterceptor<EntityP
     }
 
     @Override
-    public void after(EntityPart entityItem, int index) {
+    public void after(EntityItem entityItem, int index) {
 //        ((DefaultEntity) defaultSection.getEntity()).afterPartAdded(defaultSection, entityItem, index);
     }
 }

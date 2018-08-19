@@ -41,6 +41,11 @@ import net.vpc.upa.types.I18NString;
  * @creationdate 9/7/12 9:27 PM
  */
 public class UnexpectedException extends UPAException {
+
+    public UnexpectedException() {
+        super((Throwable) null, new I18NString("UnexpectedException"));
+    }
+
     public UnexpectedException(String message) {
         super((Throwable) null, new I18NString("UnexpectedException"), message);
     }

@@ -4,8 +4,8 @@ import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -32,14 +32,14 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
     }
 
     public String getSqlTypeName(DataType datatype,EntityExecutionContext qlContext) {
-        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
-        if(databaseProductVersion==null){
-            databaseProductVersion="";
-        }
+//        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
+//        if(databaseProductVersion==null){
+//            databaseProductVersion="";
+//        }
         Class platformType = datatype.getPlatformType();
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
-        if (platformType.equals(String.class)) {
+        if (PlatformUtils.isString(platformType)) {
             if (length <= 0) {
                 length = 255;
             }
@@ -63,14 +63,14 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
                 return "LONGTEXT";
             }
         }
-        if (PlatformUtils.isInt32(platformType)) {
-            return "INT";
+        if (PlatformUtils.isInt8(platformType)) {
+            return "SMALLINT";
         }
         if (PlatformUtils.isInt16(platformType)) {
             return "SMALLINT";
         }
-        if (PlatformUtils.isInt8(platformType)) {
-            return "SMALLINT";
+        if (PlatformUtils.isInt32(platformType)) {
+            return "INT";
         }
         if (PlatformUtils.isInt64(platformType)) {
             return "NUMERIC";
@@ -81,12 +81,13 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
         if (PlatformUtils.isFloat64(platformType)) {
             return "FLOAT";
         }
-        if ((Number.class).isAssignableFrom(platformType)) {
+        if (PlatformUtils.isAnyNumber(platformType)) {
             return "NUMERIC";
         }
         if (PlatformUtils.isBool(platformType)) {
             return "INT";
         }
+
         if(datatype instanceof TemporalType){
             TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
             if(temporalOption==null){
@@ -108,6 +109,7 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
             //TODO should support marshalling types
             return "INT";
         }
+
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }

@@ -22,18 +22,16 @@ import net.vpc.upa.impl.util.PlatformUtils;
  */
 public class DefaultDecorationRepository implements DecorationRepository {
 
-    private Map<String, DefaultDecorationRepositoryTypeInfo> decorationsByType = new HashMap<String, DefaultDecorationRepositoryTypeInfo>();
-    private Map<String, Set<String>> typesByDecoration = new HashMap<String, Set<String>>();
     private static final Logger log = Logger.getLogger(DefaultDecorationRepository.class.getName());
-    private String name;
-    private boolean enableLog;
-
+    private final Map<String, DefaultDecorationRepositoryTypeInfo> decorationsByType = new HashMap<String, DefaultDecorationRepositoryTypeInfo>();
+    private final Map<String, Set<String>> typesByDecoration = new HashMap<String, Set<String>>();
+    private final String name;
+    private final boolean enableLog;
 
     public DefaultDecorationRepository(String name, boolean enableLog) {
         this.name = name;
         this.enableLog = enableLog;
     }
-
 
     public Decoration[] getMethodDecorations(Method method) {
         return getMethodDecorations(method.getDeclaringClass().getName(), PlatformUtils.getMethodSignature(method));
@@ -71,7 +69,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
 
     @Override
     public Decoration[] getTypeRepeatableDecorations(Class type, Class decorationType, Class arrayDecorationType) {
-        return getTypeRepeatableDecorations(type.getName(),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+        return getTypeRepeatableDecorations(type.getName(), decorationType.getName(), arrayDecorationType == null ? null : arrayDecorationType.getName());
     }
 
     @Override
@@ -80,7 +78,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
         for (Decoration decoration : getTypeDecorations(type)) {
             if (decoration.getName().equals(decorationType)) {
                 found.add(decoration);
-            }else if(arrayDecorationType!=null && decoration.getName().equals(arrayDecorationType)){
+            } else if (arrayDecorationType != null && decoration.getName().equals(arrayDecorationType)) {
                 found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
             }
         }
@@ -107,7 +105,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
     }
 
     public Decoration[] getMethodRepeatableDecorations(Method method, Class decorationType, Class arrayDecorationType) {
-        return getMethodRepeatableDecorations(method.getDeclaringClass().getName(),PlatformUtils.getMethodSignature(method),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+        return getMethodRepeatableDecorations(method.getDeclaringClass().getName(), PlatformUtils.getMethodSignature(method), decorationType.getName(), arrayDecorationType == null ? null : arrayDecorationType.getName());
     }
 
     public Decoration[] getMethodRepeatableDecorations(String type, String method, String decorationType, String arrayDecorationType) {
@@ -115,7 +113,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
         for (Decoration decoration : getMethodDecorations(type, method)) {
             if (decoration.getName().equals(decorationType)) {
                 found.add(decoration);
-            }else if(arrayDecorationType!=null && arrayDecorationType.equals(decoration.getName())){
+            } else if (arrayDecorationType != null && arrayDecorationType.equals(decoration.getName())) {
                 found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
             }
         }
@@ -151,11 +149,11 @@ public class DefaultDecorationRepository implements DecorationRepository {
 
     @Override
     public Decoration[] getFieldRepeatableDecorations(String type, String field, String decorationType, String arrayDecorationType) {
-        List<Decoration> found=new ArrayList<>();
+        List<Decoration> found = new ArrayList<>();
         for (Decoration decoration : getFieldDecorations(type, field)) {
             if (decoration.getName().equals(decorationType)) {
                 found.add(decoration);
-            }else if(arrayDecorationType!=null && decoration.getName().equals(arrayDecorationType)){
+            } else if (arrayDecorationType != null && decoration.getName().equals(arrayDecorationType)) {
                 found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
             }
         }
@@ -164,11 +162,11 @@ public class DefaultDecorationRepository implements DecorationRepository {
 
     @Override
     public Decoration[] getFieldRepeatableDecorations(Field field, Class decorationType, Class arrayDecorationType) {
-        return getFieldRepeatableDecorations(field.getDeclaringClass().getName(),field.getName(),decorationType.getName(),arrayDecorationType==null?null:arrayDecorationType.getName());
+        return getFieldRepeatableDecorations(field.getDeclaringClass().getName(), field.getName(), decorationType.getName(), arrayDecorationType == null ? null : arrayDecorationType.getName());
     }
 
     public Decoration getFieldDecoration(Field field, Class decorationType) {
-        return getFieldDecoration(field.getDeclaringClass().getName(),field.getName(), decorationType.getName());
+        return getFieldDecoration(field.getDeclaringClass().getName(), field.getName(), decorationType.getName());
     }
 
     public void visit(Decoration d) {
@@ -183,7 +181,16 @@ public class DefaultDecorationRepository implements DecorationRepository {
         String methodOrFieldName = d.getLocation();
         DecorationTarget targetType = d.getTarget();
         if (enableLog && log.isLoggable(Level.FINE)) {
-            log.log(Level.FINE, "\t[{0}] register Decoration {1}", new Object[]{name, d});
+            String dName = d.getName();
+            String dLoc = d.getLocationType();
+            if(d.getLocation()!=null){
+                dLoc+="#"+d.getLocation();
+            }
+            String simpleName = dName;
+            if (simpleName.startsWith("net.vpc.upa.config.")) {
+                simpleName = "@" + simpleName.substring("net.vpc.upa.config.".length());
+            }
+            log.log(Level.FINE, "\t[{0}] Register Decoration {1}[{2}]", new Object[]{name, simpleName,dLoc});
         }
 
         DefaultDecorationRepositoryTypeInfo typeInfo = decorationsByType.get(typeName);
@@ -289,14 +296,15 @@ public class DefaultDecorationRepository implements DecorationRepository {
         return found.toArray(new Decoration[found.size()]);
     }
 
-    private Decoration[] expandRepeatableDecorations(Decoration[] decorations){
+    private Decoration[] expandRepeatableDecorations(Decoration[] decorations) {
         List<Decoration> found = new ArrayList<>();
         for (Decoration decoration : decorations) {
             found.addAll(Arrays.asList(expandRepeatableDecorations(decoration)));
         }
         return found.toArray(new Decoration[found.size()]);
     }
-    private Decoration[] expandRepeatableDecorations(Decoration decoration){
+
+    private Decoration[] expandRepeatableDecorations(Decoration decoration) {
         List<Decoration> found = new ArrayList<>();
         DecorationValue[] value = decoration.getArray("value");
         if (value != null) {
@@ -358,8 +366,7 @@ public class DefaultDecorationRepository implements DecorationRepository {
 
     @Override
     public Decoration[] getDeclaredRepeatableDecorations(Class decorationName, Class arrayDecorationName) {
-        return getDeclaredRepeatableDecorations(decorationName.getName(),arrayDecorationName.getName());
+        return getDeclaredRepeatableDecorations(decorationName.getName(), arrayDecorationName.getName());
     }
-
 
 }

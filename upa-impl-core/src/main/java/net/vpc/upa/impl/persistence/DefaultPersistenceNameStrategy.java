@@ -126,14 +126,11 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         TablePersistenceNameRule tableRule = persistenceNameRuleSet.getTableRule(entity.getName(), condition);
         String preferredPersistenceName = tableRule == null ? null : tableRule.getPersistenceName();
         List<PersistenceNameType> types = new ArrayList<PersistenceNameType>();
-        UPAObjectAndSpec upaObjectAndSpec = new UPAObjectAndSpec(entity, spec);
-        for (EntityExtensionDefinition extension : entity.getExtensionDefinitions()) {
-            if (extension instanceof ViewEntityExtensionDefinition) {
-                types.add(PersistenceNameType.VIEW);
-            }
-            if (extension instanceof UnionEntityExtensionDefinition) {
-                types.add(PersistenceNameType.UNION_TABLE);
-            }
+        if (entity.isView()) {
+            types.add(PersistenceNameType.VIEW);
+        }
+        if (entity.isUnion()) {
+            types.add(PersistenceNameType.UNION_TABLE);
         }
         types.add(PersistenceNameType.TABLE);
         return getBestName(preferredPersistenceName, entity.getName());
@@ -145,13 +142,11 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         String preferredPersistenceName = tableRule == null ? null : tableRule.getPersistenceName();
         List<PersistenceNameType> types = new ArrayList<PersistenceNameType>();
         UPAObjectAndSpec upaObjectAndSpec = new UPAObjectAndSpec(entity, spec);
-        for (EntityExtensionDefinition extension : entity.getExtensionDefinitions()) {
-            if (extension instanceof ViewEntityExtensionDefinition) {
-                types.add(PersistenceNameType.VIEW);
-            }
-            if (extension instanceof UnionEntityExtensionDefinition) {
-                types.add(PersistenceNameType.UNION_TABLE);
-            }
+        if (entity.isView()) {
+            types.add(PersistenceNameType.VIEW);
+        }
+        if (entity.isUnion()) {
+            types.add(PersistenceNameType.UNION_TABLE);
         }
         types.add(PersistenceNameType.TABLE);
         return validatePersistenceName(getBestName(preferredPersistenceName, entity.getName()), PersistenceNameType.TABLE, entity.getName(), upaObjectAndSpec, types);
@@ -300,7 +295,7 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
             persistenceName = replacePersistenceName("*", persistenceName);
         }
 
-        persistenceName=convertName(persistenceName,e);
+        persistenceName = convertName(persistenceName, e);
 
         if (getPersistenceStore().isReservedKeyword(persistenceName)) {
             if (escapedNamePattern == null) {
@@ -322,12 +317,12 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         return persistenceName;
     }
 
-    protected String convertName(String persistenceName,UPAObjectAndSpec e) {
+    protected String convertName(String persistenceName, UPAObjectAndSpec e) {
         PersistenceNameTransformer o = getPersistenceNameTransformer();
-        if(o==null){
+        if (o == null) {
             return persistenceName;
         }
-        return o.transformName(persistenceName,e.getObject(),e.getSpec());
+        return o.transformName(persistenceName, e.getObject(), e.getSpec());
     }
 
     protected static String replacePersistenceName(String pattern, String objectName) {
@@ -608,11 +603,11 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
 
     @Override
     public void setPersistenceNameTransformer(PersistenceNameTransformer persistenceNameTransformer) {
-        if(this.persistenceNameTransformer !=null){
+        if (this.persistenceNameTransformer != null) {
             this.persistenceNameTransformer.close();
         }
         this.persistenceNameTransformer = persistenceNameTransformer;
-        if(this.persistenceNameTransformer !=null){
+        if (this.persistenceNameTransformer != null) {
             this.persistenceNameTransformer.start(persistenceStore);
         }
     }

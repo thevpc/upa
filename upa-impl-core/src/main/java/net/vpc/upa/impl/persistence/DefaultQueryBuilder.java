@@ -7,7 +7,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
 import net.vpc.upa.impl.ext.QueryExt;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.ResultMetaData;
@@ -422,7 +422,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
         if (entity == null) {
             throw new UPAIllegalArgumentException("Missing Entity");
         }
-        return byExpression(entity.getBuilder().idListToExpression(ids, UQLUtils.THIS));
+        return byExpression(entity.getBuilder().idListToExpression(ids, UPQLUtils.THIS));
     }
 
     public QueryBuilder byField(String field, Object value) {

@@ -39,13 +39,13 @@ public class DefaultUConnection extends AbstractUConnection {
     }
 
     public QueryResult executeQueryImpl(String query, String tableDebugString, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws Exception {
-        PreparedSQLUQLStatement s = null;
+        PreparedSQLUPQLStatement s = null;
         /**
          * @PortabilityHint(target="C#",name="replace") s
          * =connection.CreateCommand(); s.CommandText=query;
          * s.CommandType=System.Data.CommandType.Text;
          */
-        s = new PreparedSQLUQLStatement(connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY));
+        s = new PreparedSQLUPQLStatement(connection.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY));
 
         int mi = 0;
         int index = 1;
@@ -58,7 +58,7 @@ public class DefaultUConnection extends AbstractUConnection {
                 mi++;
             }
         }
-        final PreparedSQLUQLStatement finalS = s;
+        final PreparedSQLUPQLStatement finalS = s;
         NativeResult resultSet = UPADeadLock.monitor("executeQuery " + tableDebugString, query, 20, new Throwable(), new UPADeadLock.TAction<NativeResult, RuntimeException>() {
             @Override
             public NativeResult run() throws RuntimeException {
@@ -111,7 +111,7 @@ public class DefaultUConnection extends AbstractUConnection {
          * connection.CreateCommand(); s.CommandText=query;
          * s.CommandType=System.Data.CommandType.Text;
          */
-        s = new PreparedSQLUQLStatement(connection.prepareStatement(query, gen ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS));
+        s = new PreparedSQLUPQLStatement(connection.prepareStatement(query, gen ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS));
 
         int index = 1;
         if (queryParameters != null) {

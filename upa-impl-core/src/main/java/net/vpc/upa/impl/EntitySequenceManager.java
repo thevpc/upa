@@ -2,7 +2,7 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.Entity;
 import net.vpc.upa.QueryBuilder;
@@ -116,10 +116,10 @@ public class EntitySequenceManager implements SequenceManager {
         r.setLocked(false);
         r.setLockUserId(null);
         r.setLockDate(null);
-        Expression idToExpression = entity.getBuilder().idToExpression(entity.createId(name, pattern), UQLUtils.THIS);
+        Expression idToExpression = entity.getBuilder().idToExpression(entity.createId(name, pattern), UPQLUtils.THIS);
         And condition = new And(idToExpression.copy(), new Or(
-                new Different(new Var(new Var(UQLUtils.THIS),"locked"), Literal.TRUE),
-                new Equals(new Var(new Var(UQLUtils.THIS),"lockUserId"),
+                new Different(new Var(new Var(UPQLUtils.THIS),"locked"), Literal.TRUE),
+                new Equals(new Var(new Var(UPQLUtils.THIS),"lockUserId"),
                         new Param("lockUserId", entity.getPersistenceUnit().getUserPrincipal().getName()))));
         QueryBuilder q = null;
         try {
@@ -140,7 +140,7 @@ public class EntitySequenceManager implements SequenceManager {
         }
         //not found !
         //check if problem of locking
-        if (entity.getEntityCount(new And(idToExpression.copy(), new Equals(new Var(new Var(UQLUtils.THIS),"locked"), Literal.TRUE))) > 0) {
+        if (entity.getEntityCount(new And(idToExpression.copy(), new Equals(new Var(new Var(UPQLUtils.THIS),"locked"), Literal.TRUE))) > 0) {
             throw new UPAException("Already locked");
         }
         throw new UPAException("Unexpected error");

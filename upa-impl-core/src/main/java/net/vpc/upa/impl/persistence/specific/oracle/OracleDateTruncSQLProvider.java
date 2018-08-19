@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledDateTrunc;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDateTrunc;
 
 import java.util.Map;
 

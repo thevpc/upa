@@ -84,7 +84,7 @@ public class FormulaUC2 {
         @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,this.name)")
         private String goodName;
 
-        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,i2v(this.id))")
+        @net.vpc.upa.config.Formula(type = FormulaType.LIVE, value = "concat(this.name,this.id)")
         private String goodName2;
 
         public Integer getId() {

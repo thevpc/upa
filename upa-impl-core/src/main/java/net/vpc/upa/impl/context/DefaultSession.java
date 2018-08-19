@@ -88,7 +88,7 @@ public class DefaultSession implements Session {
                 sessionListener.closeSession(this);
             }
         }
-        log.log(Level.FINE, "Session '{'{0}'}' : Closed", this);
+        log.log(Level.FINE, "Session [{0}] : Closed", this);
     }
 
     @Override

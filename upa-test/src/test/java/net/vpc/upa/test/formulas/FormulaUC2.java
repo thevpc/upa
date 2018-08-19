@@ -3,7 +3,6 @@ package net.vpc.upa.test.formulas;
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -22,6 +21,7 @@ public class FormulaUC2 {
     private static Business bo;
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(FormulaUC2.class);
         pu.addEntity(Person.class);
         pu.start();
@@ -85,7 +85,7 @@ public class FormulaUC2 {
         @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "concat(this.name,this.name)")
         private String goodName;
 
-        @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "concat(this.name,i2v(this.id))")
+        @net.vpc.upa.config.Formula(formulaType = FormulaType.LIVE, value = "concat(this.name,this.id)")
         private String goodName2;
 
         public Integer getId() {

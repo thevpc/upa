@@ -11,11 +11,12 @@ import net.vpc.upa.types.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 
 public abstract class AbstractField extends AbstractUPAObject implements Field, Comparable<Object> {
 
     protected Entity entity;
-    protected EntityPart parent;
+    protected EntityItem parent;
     protected DataType dataType;
     protected Formula persistFormula;
     protected int persistFormulaOrder;
@@ -53,13 +54,13 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return (getEntity() == null ? "?" : getEntity().getName()) + "." + getName();
     }
 
-    public EntityPart getParent() {
+    public EntityItem getParent() {
         return parent;
     }
 
-    public void setParent(EntityPart item) {
-        EntityPart old = this.parent;
-        EntityPart recent = item;
+    public void setParent(EntityItem item) {
+        EntityItem old = this.parent;
+        EntityItem recent = item;
         beforePropertyChangeSupport.firePropertyChange("parent", old, recent);
         this.parent = item;
         afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
@@ -213,7 +214,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 //        return (!isReadOnlyOnPersist() || !isReadOnlyOnUpdate()) && !getDataType().isNullable();
 //    }
     public String getPath() {
-        EntityPart parent = getParent();
+        EntityItem parent = getParent();
         return parent == null ? ("/" + getName()) : (parent.getPath() + "/" + getName());
     }
 
@@ -505,6 +506,18 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         return typeTransform;
     }
 
+    @Override
+    public DataTypeTransform getEffectiveTypeTransform() {
+        DataTypeTransform t = getTypeTransform();
+        if (t == null) {
+            DataType d = getDataType();
+            if (d != null) {
+                t = new IdentityDataTypeTransform(d);
+            }
+        }
+        return t;
+    }
+
     public void setTypeTransform(DataTypeTransform transform) {
         this.typeTransform = transform;
     }
@@ -617,7 +630,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public AccessLevel getEffectiveAccessLevel(AccessMode mode) {
-        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class, mode)) {
             switch (mode) {
                 case READ:
                     return getEffectiveReadAccessLevel();
@@ -632,7 +645,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public AccessLevel getAccessLevel(AccessMode mode) {
-        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class, mode)) {
             switch (mode) {
                 case READ:
                     return getReadAccessLevel();
@@ -647,7 +660,7 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
 
     @Override
     public ProtectionLevel getProtectionLevel(AccessMode mode) {
-        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class,mode)) {
+        if (!PlatformUtils.isUndefinedEnumValue(AccessMode.class, mode)) {
             switch (mode) {
                 case READ:
                     return getReadProtectionLevel();

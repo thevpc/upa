@@ -110,7 +110,7 @@ public class IdExpression extends DefaultExpression implements Cloneable {
 
     @Override
     public String toString() {
-        return "Key(" + entityName + "," + alias + "," + id + ")";
+        return "IdExpression(" + entityName + "," + alias + "," + id + ")";
     }
 
     @Override

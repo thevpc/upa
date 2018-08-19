@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.*;
-import net.vpc.upa.impl.uql.BindingId;
+import net.vpc.upa.impl.upql.BindingId;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 import java.util.*;

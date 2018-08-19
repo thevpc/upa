@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.persistence.specific.mckoi;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledDatePart;
-import net.vpc.upa.impl.uql.parser.FunctionSQLProvider;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDatePart;
+import net.vpc.upa.impl.upql.parser.FunctionSQLProvider;
 
 import java.util.Map;
 

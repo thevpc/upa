@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
-import net.vpc.upa.impl.uql.BindingId;
+import net.vpc.upa.impl.upql.BindingId;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**

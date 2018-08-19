@@ -1,5 +1,10 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledVarVal;
+import net.vpc.upa.impl.upql.ext.expr.CompiledBinaryOperatorExpression;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledParam;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVarOrMethod;
 import net.vpc.upa.Closeable;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
@@ -16,8 +21,7 @@ import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.transform.DataTypeTransformList;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.transform.PasswordDataTypeTransform;
-import net.vpc.upa.impl.uql.ReplaceResultType;
-import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.upql.ReplaceResultType;
 import net.vpc.upa.impl.util.eq.ByteArrayEq;
 import net.vpc.upa.impl.util.eq.EqualHelper;
 import net.vpc.upa.impl.util.stringvalueparser.*;
@@ -122,10 +126,10 @@ public class UPAUtils {
         addNamedType(Long.class, "long");
         addNamedType(Double.class, "double");
         addNamedType(Float.class, "float");
-        addNamedType(net.vpc.upa.types.Date.class, "date","dateOnly");
-        addNamedType(net.vpc.upa.types.Time.class, "timeOnly","time");
-        addNamedType(net.vpc.upa.types.Month.class, "monthOnly","month");
-        addNamedType(net.vpc.upa.types.Year.class, "yearOnly","year");
+        addNamedType(net.vpc.upa.types.Date.class, "date", "dateOnly");
+        addNamedType(net.vpc.upa.types.Time.class, "timeOnly", "time");
+        addNamedType(net.vpc.upa.types.Month.class, "monthOnly", "month");
+        addNamedType(net.vpc.upa.types.Year.class, "yearOnly", "year");
         addNamedType(net.vpc.upa.types.DateTime.class, "dateTime");
         addNamedType(net.vpc.upa.types.Timestamp.class, "TimeStamp");
 
@@ -139,7 +143,6 @@ public class UPAUtils {
             addTypeParser(new StringValueParserSqlTime(), java.sql.Time.class);
             addTypeParser(new StringValueParserSqlTimestamp(), java.sql.Timestamp.class);
         }
-
 
         equalsHelpers.put(byte[].class, ByteArrayEq.INSTANCE);
     }
@@ -428,11 +431,11 @@ public class UPAUtils {
         item.setName(name);
         adapter.setProperty("persistenceState", PersistenceState.DIRTY);
 
-        if (parent!=null && (item instanceof EntityPart || item instanceof Index)) {
-            if(parent instanceof Entity) {
+        if (parent != null && (item instanceof EntityItem || item instanceof Index)) {
+            if (parent instanceof Entity) {
                 adapter.setProperty("entity", parent);
-            }else if(parent instanceof EntityPart) {
-                adapter.setProperty("entity", ((EntityPart) parent).getEntity());
+            } else if (parent instanceof EntityItem) {
+                adapter.setProperty("entity", ((EntityItem) parent).getEntity());
             }
         }
 
@@ -523,7 +526,7 @@ public class UPAUtils {
             e = ((CompiledVarOrMethod) e).getDeepest();
             final Object r = ((CompiledVarOrMethod) e).getReferrer();
             if (r instanceof Field) {
-                DataTypeTransform tr = getTypeTransformOrIdentity(((Field) r));
+                DataTypeTransform tr = (((Field) r)).getEffectiveTypeTransform();
                 ExprTypeInfo i = new ExprTypeInfo();
                 i.setReferrer(r);
                 i.setTransform(tr);
@@ -535,8 +538,8 @@ public class UPAUtils {
             return resolveExprTypeInfo(v);
         }
         DataTypeTransform typeTransform = e.getTypeTransform();
-        if(typeTransform==null){
-            throw new NullPointerException("Unexpected Null typeTransform for "+e);
+        if (typeTransform == null) {
+            throw new NullPointerException("Unexpected Null typeTransform for " + e);
         }
         if (e instanceof CompiledParam || e instanceof CompiledLiteral) {
             CompiledExpressionExt p = e.getParentExpression();
@@ -546,10 +549,8 @@ public class UPAUtils {
                 Object object = (e instanceof CompiledParam) ? ((CompiledParam) e).getValue() : ((CompiledLiteral) e).getValue();
                 DataType sourceType = typeTransform.getSourceType();
                 DataTypeTransform bestType = typeTransform;
-                if (
-                        (p instanceof CompiledBinaryOperatorExpression)
-                                && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())
-                        ) {
+                if ((p instanceof CompiledBinaryOperatorExpression)
+                        && (((CompiledBinaryOperatorExpression) p).isSameOperandsType())) {
                     CompiledExpressionExt o = ((CompiledBinaryOperatorExpression) p).getOther(e);
                     if (byBrother) {
                         return resolveExprTypeInfo(o, false);
@@ -557,11 +558,9 @@ public class UPAUtils {
                 }
                 if (object != null
                         //too generic
-                        && (
-                        typeTransform.equals(IdentityDataTypeTransform.OBJECT)
-                                //or specified type is not accurate
-                                || !sourceType.isInstance(object))
-                        ) {
+                        && (typeTransform.equals(IdentityDataTypeTransform.OBJECT)
+                        //or specified type is not accurate
+                        || !sourceType.isInstance(object))) {
 
                     bestType = IdentityDataTypeTransform.ofType(object.getClass());
                 }
@@ -613,7 +612,7 @@ public class UPAUtils {
         return createValue(value, type, format);
     }
 
-    public static BaseScanSource toConfigurationStrategy(ScanSource source) {
+    public static BaseScanSource toBaseScanSource(ScanSource source) {
         if (source == null) {
             throw new UPAIllegalArgumentException("ScanSource could not be null; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
         }
@@ -661,14 +660,13 @@ public class UPAUtils {
         return false;
     }
 
-    public static DataTypeTransform getTypeTransformOrIdentity(net.vpc.upa.Field f) {
-        DataTypeTransform t = f.getTypeTransform();
-        if (t == null) {
-            return IdentityDataTypeTransform.ofType(f.getDataType());
-        }
-        return t;
-    }
-
+//    public static DataTypeTransform getTypeTransformOrIdentity(net.vpc.upa.Field f) {
+//        DataTypeTransform t = f.getTypeTransform();
+//        if (t == null) {
+//            return IdentityDataTypeTransform.ofType(f.getDataType());
+//        }
+//        return t;
+//    }
     public static String dotConcat(String... all) {
         StringBuilder sb = new StringBuilder();
         for (String s : all) {
@@ -726,13 +724,13 @@ public class UPAUtils {
         return null;
     }
 
-    public static void setQueryExecutorParams(QueryExecutor lastQueryExecutor,Map<Integer, Object> parametersByIndex,Map<String, Object> parametersByName){
-        if(parametersByIndex!=null) {
+    public static void setQueryExecutorParams(QueryExecutor lastQueryExecutor, Map<Integer, Object> parametersByIndex, Map<String, Object> parametersByName) {
+        if (parametersByIndex != null) {
             for (Map.Entry<Integer, Object> ee : parametersByIndex.entrySet()) {
                 lastQueryExecutor.setParam(ee.getKey(), ee.getValue());
             }
         }
-        if(parametersByName!=null) {
+        if (parametersByName != null) {
             for (Map.Entry<String, Object> ee : parametersByName.entrySet()) {
                 lastQueryExecutor.setParam(ee.getKey(), ee.getValue());
             }
@@ -743,7 +741,7 @@ public class UPAUtils {
     public static <T> List<T> sortPreserveIndex(List<T> list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.size()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<T>(list.get(i), i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list.get(i), i, comp);
         }
         Arrays.sort(items);
         for (int i = 0; i < items.length; i++) {
@@ -751,55 +749,57 @@ public class UPAUtils {
         }
         return list;
     }
+
     public static <T> T[] sortPreserveIndex(T[] list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i, comp);
         }
         Arrays.sort(items);
         for (int i = 0; i < items.length; i++) {
-            list[i]=items[i].item;
+            list[i] = items[i].item;
         }
         return list;
     }
+
     public static <T> SortPreserveIndexIndexedItem<T>[] sortPreserveIndex0(T[] list, final Comparator<T> comp) {
         SortPreserveIndexIndexedItem<T>[] items = new SortPreserveIndexIndexedItem[list.length];
         for (int i = 0; i < items.length; i++) {
-            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i,comp);
+            items[i] = new SortPreserveIndexIndexedItem<T>(list[i], i, comp);
         }
         Arrays.sort(items);
         return items;
     }
 
-    public static String formatLeft(String number,int size){
-        StringBuilder sb=new StringBuilder();
+    public static String formatLeft(String number, int size) {
+        StringBuilder sb = new StringBuilder();
         sb.append(number);
-        while (sb.length()<size){
+        while (sb.length() < size) {
             sb.append(' ');
         }
         return sb.toString();
     }
 
-    public static int convertToInt(Object value,int nullValue){
-        if(value==null){
-            value=nullValue;
-        }else if(value instanceof Number && !(value instanceof Integer)){
-            value=((Number) value).intValue();
-        }else if(value instanceof String){
-            value=Integer.parseInt((String) value);
+    public static int convertToInt(Object value, int nullValue) {
+        if (value == null) {
+            value = nullValue;
+        } else if (value instanceof Number && !(value instanceof Integer)) {
+            value = ((Number) value).intValue();
+        } else if (value instanceof String) {
+            value = Integer.parseInt((String) value);
         }
-        return ((Integer)value).intValue();
+        return ((Integer) value).intValue();
     }
 
-    public static long convertToLong(Object value,long nullValue){
-        if(value==null){
-            value=nullValue;
-        }else if(value instanceof Number && !(value instanceof Long)){
-            value=((Long) value).longValue();
-        }else if(value instanceof String){
-            value=Long.parseLong((String) value);
+    public static long convertToLong(Object value, long nullValue) {
+        if (value == null) {
+            value = nullValue;
+        } else if (value instanceof Number && !(value instanceof Long)) {
+            value = ((Long) value).longValue();
+        } else if (value instanceof String) {
+            value = Long.parseLong((String) value);
         }
-        return ((Long)value).longValue();
+        return ((Long) value).longValue();
     }
 
     public static boolean isManyToOne(DataType dataType) {
@@ -807,17 +807,16 @@ public class UPAUtils {
     }
 
     public static boolean isSystemForManyToOne(Field field) {
-        return !(field.getDataType() instanceof ManyToOneType) &&
-                field.getManyToOneRelationships().size()>0 &&
-                field.getManyToOneRelationships().get(0).getSourceRole().getEntityField()!=null;
+        return !(field.getDataType() instanceof ManyToOneType)
+                && field.getManyToOneRelationships().size() > 0
+                && field.getManyToOneRelationships().get(0).getSourceRole().getEntityField() != null;
     }
 
     public static boolean isEntityWithSimpleRelationId(Entity entity) {
-        return entity.getIdFields().size()==1 && entity.getIdFields().get(0).isManyToOne();
+        return entity.getIdFields().size() == 1 && entity.getIdFields().get(0).isManyToOne();
     }
 
-    
-    public static Property createProperty(Decoration propertyDeco){
+    public static Property createProperty(Decoration propertyDeco) {
         return new Property(
                 propertyDeco.getString("name"),
                 propertyDeco.getString("value"),
@@ -826,53 +825,64 @@ public class UPAUtils {
         );
     }
 
-    public static Formula getFormula(Field field,boolean insert){
-        return insert?getPersistFormula(field) : getUpdateFormula(field);
+    public static Formula getFormula(Field field, boolean insert) {
+        return insert ? getPersistFormula(field) : getUpdateFormula(field);
     }
 
-    public static Formula getPersistFormula(Field f){
+    public static Formula getPersistFormula(Field f) {
         Formula a = f.getPersistFormula();
-        if(a==null){
+        if (a == null) {
             return null;
         }
-        if(a instanceof NamedFormula){
+        if (a instanceof NamedFormula) {
             return f.getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
         }
         return a;
     }
 
-    public static Formula getUpdateFormula(Field f){
+    public static Formula getUpdateFormula(Field f) {
         Formula a = f.getUpdateFormula();
-        if(a==null){
+        if (a == null) {
             return null;
         }
-        if(a instanceof NamedFormula){
+        if (a instanceof NamedFormula) {
             return f.getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
         }
         return a;
     }
-    public static Formula getSelectFormula(Field f){
+
+    public static Formula getSelectFormula(Field f) {
         Formula a = f.getSelectFormula();
-        if(a==null){
+        if (a == null) {
             return null;
         }
-        if(a instanceof NamedFormula){
+        if (a instanceof NamedFormula) {
             return f.getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
         }
         return a;
     }
 
-    public static ReplaceResultType max(ReplaceResultType one, ReplaceResultType two){
-        if(one.ordinal()>two.ordinal()){
+    public static ReplaceResultType max(ReplaceResultType one, ReplaceResultType two) {
+        if (one.ordinal() > two.ordinal()) {
             return one;
         }
         return two;
     }
 
-    public static ReplaceResultType min(ReplaceResultType one, ReplaceResultType two){
-        if(one.ordinal()<two.ordinal()){
+    public static ReplaceResultType min(ReplaceResultType one, ReplaceResultType two) {
+        if (one.ordinal() < two.ordinal()) {
             return one;
         }
         return two;
+    }
+
+    public static Object castId(Entity entity, Object id) {
+        if (id == null) {
+            return id;
+        }
+        if (!PlatformUtils.isInstance(entity.getIdType(), id)) {
+            throw new UPAIllegalArgumentException("InvalidEntityIdType", entity.getName(), entity.getIdType().getName(), id.getClass().getName());
+        }
+        return id;
     }
 }

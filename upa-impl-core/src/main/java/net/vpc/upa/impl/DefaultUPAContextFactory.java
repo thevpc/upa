@@ -59,23 +59,21 @@ public class DefaultUPAContextFactory extends AbstractObjectFactory implements U
     }
 
     @Override
-    public ScanSource createURLScanSource(String sourceName,URL[] urls, ScanFilter[] filters, boolean noIgnore) {
-        return new URLScanSource(sourceName,urls, filters, noIgnore);
+    public ScanSource createURLScanSource(URL[] urls, ScanFilter[] filters) {
+        return new URLScanSource(urls, filters);
     }
 
     /**
-     *
-     * @param noIgnore
      * @return
      */
     @Override
-    public ScanSource createContextScanSource(String sourceName,boolean noIgnore) {
-        return new ContextScanSource(sourceName,noIgnore);
+    public ScanSource createContextScanSource() {
+        return new ContextScanSource();
     }
 
     @Override
-    public ScanSource createClassScanSource(String sourceName,Class[] classes, boolean noIgnore) {
-        return new ClassesScanSource(sourceName,classes, noIgnore);
+    public ScanSource createClassScanSource(Class[] classes) {
+        return new ClassesScanSource(classes);
     }
 
     @Override

@@ -34,8 +34,8 @@ import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.persistence.CloseOnContextPopSessionListener;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.DefaultPasswordStrategy;
-import net.vpc.upa.impl.uql.DefaultExpressionManager;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.DefaultExpressionManager;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.*;
@@ -62,11 +62,12 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public static final int COMMIT_ORDER_TRIGGER = 20;
     public static final int COMMIT_ORDER_RELATION = 20;
     public static final int COMMIT_ORDER_INDEX = 20;
+    public static final int COMMIT_ORDER_VIEW = 30;
 
     private net.vpc.upa.Properties properties;
-    private net.vpc.upa.Properties systemParameters;
+//    private net.vpc.upa.Properties systemParameters;
     private ConnectionProfile connectionProfile;
-    private UUID privateUUID = UUID.randomUUID();
+    private final UUID privateUUID = UUID.randomUUID();
     private EntityDescriptorResolver entityDescriptorResolver;
     private boolean triggersEnabled = true;
     private I18NString title = new I18NString("PersistenceUnitFilter.title");
@@ -168,50 +169,6 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         this.persistenceNameStrategy = getFactory().createObject(PersistenceNameStrategy.class);
     }
 
-    //    private void add(PersistenceUnitItem item, int index) {
-//        if (index < 0) {
-//            persistenceUnitItems.add(item);
-//        } else {
-//            persistenceUnitItems.add(index, item);
-//        }
-//        BeanAdapter a = new BeanAdapter(item);
-//        a.injectNull("parent");
-//    }
-//    @Override
-//    public void remove(int index) {
-//        PersistenceUnitItem item = persistenceUnitItems.get(index);
-//
-//        persistenceUnitListenerManager.itemRemoved(item, index, true);
-//        persistenceUnitItems.remove(index);
-//        if (item != null) {
-//            BeanAdapter a = new BeanAdapter(item);
-//            a.injectNull("parent");
-//        }
-//        if (item instanceof Entity) {
-//            Entity entity = (Entity) item;
-//            String n = namingStrategy.getUniformValue(entity.getName());
-//            String sn = entity.getShortName();
-//            if (sn == null) {
-//                sn = n;
-//            }
-//            sn = namingStrategy.getUniformValue(sn);
-//
-//            allEntities.remove(n);
-//            entityShortNames.remove(sn);
-//            entityManagerByEntityType.remove(entity.getIdType());
-//            //TODO process entityManagerByIdTypeAmbiguity
-//        }
-//        persistenceUnitListenerManager.itemRemoved(item, index, false);
-//        invalidate();
-//    }
-//    @Override
-//    public void move(int index, int newIndex) {
-//        persistenceUnitListenerManager.itemMoved(persistenceUnitItems.get(index), index, newIndex, true);
-//        ListUtils.moveTo(persistenceUnitItems, index, newIndex);
-//        persistenceUnitListenerManager.itemMoved(persistenceUnitItems.get(index), index, newIndex, false);
-//        invalidate();
-//    }
-    //    @Override
     private void invalidate() {
         //needsRevalidateCache=true;
     }
@@ -438,7 +395,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 if (field.getDataType() instanceof SerializableOrManyToOneType) {
                     Class entityType = ((SerializableOrManyToOneType) field.getDataType()).getEntityType();
 //                    if(findEntity(entityType)!=null){
-                    throw new UnexpectedException("Field "+field.toString()+" could not be resolved to an Entity type : "+entityType+" is not actually an entity... is it?");
+                    throw new UnexpectedException("Field " + field.toString() + " could not be resolved to an Entity type : " + entityType + " is not actually an entity... is it?");
 //                    }
                 }
             }
@@ -691,9 +648,15 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     public Entity getEntity(String entityName, boolean check) {
+        if (entityName == null) {
+            if (check) {
+                throw new UPAIllegalArgumentException("NullEntityName");
+            }
+            return null;
+        }
         Entity e = registrationModel.findEntity(entityName);
         if (e == null && check) {
-            throw new NoSuchEntityException(entityName, null);
+            throw new NoSuchEntityException(entityName);
         }
         return e;
     }
@@ -1167,7 +1130,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         persistenceStoreFactory = getPersistenceGroup().getFactory().createObject(PersistenceStoreFactory.class);
         persistenceStoreFactory.configure(getPersistenceGroup().getFactory());
         PersistenceStoreExt validPersistenceStore = null;
-        List<ConnectionProfile> validConnectionProfiles = getConnectionProfiles(false,true);
+        List<ConnectionProfile> validConnectionProfiles = getConnectionProfiles(false, true);
         List<Object[]> errors = new ArrayList<Object[]>();
         for (ConnectionProfile p : validConnectionProfiles) {
             PersistenceStoreExt pm0 = (PersistenceStoreExt) persistenceStoreFactory.createPersistenceStore(p, getPersistenceGroup().getFactory(), getProperties());
@@ -1185,13 +1148,13 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (getConnectionProfile() == null || validPersistenceStore == null) {
             Throwable cause = null;
             if (validConnectionProfiles.isEmpty()) {
-                List<ConnectionProfile> anyConnectionProfiles = getConnectionProfiles(false,false);
-                if(anyConnectionProfiles.isEmpty()) {
-                    log.log(Level.SEVERE, "["+getName()+"] Unable to create Store because no valid ConnectionProfile was found. Actually no ConnectionProfile found at all.");
-                }else{
-                    StringBuilder sb = new StringBuilder("["+getName()+"] Unable to create Store because no valid ConnectionProfile was found. " + anyConnectionProfiles.size() + " ConnectionProfile(s) found : ");
+                List<ConnectionProfile> anyConnectionProfiles = getConnectionProfiles(false, false);
+                if (anyConnectionProfiles.isEmpty()) {
+                    log.log(Level.SEVERE, "[" + getName() + "] Unable to create Store because no valid ConnectionProfile was found. Actually no ConnectionProfile found at all.");
+                } else {
+                    StringBuilder sb = new StringBuilder("[" + getName() + "] Unable to create Store because no valid ConnectionProfile was found. " + anyConnectionProfiles.size() + " ConnectionProfile(s) found : ");
                     for (int i = 0; i < anyConnectionProfiles.size(); i++) {
-                        if(i>0){
+                        if (i > 0) {
                             sb.append(" ; ");
                         }
                         ConnectionProfile anyConnectionProfile = anyConnectionProfiles.get(i);
@@ -1263,10 +1226,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     }
 
-    private List<ConnectionProfile> getConnectionProfiles(boolean root,boolean enabledOnly) {
+    private List<ConnectionProfile> getConnectionProfiles(boolean root, boolean enabledOnly) {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         Properties p2 = new DefaultProperties(getProperties());
-        return connectionProfileParser.parse(p2, getConnectionConfigs(), (root ? UPA.ROOT_CONNECTION_STRING : UPA.CONNECTION_STRING),enabledOnly);
+        return connectionProfileParser.parse(p2, getConnectionConfigs(), (root ? UPA.ROOT_CONNECTION_STRING : UPA.CONNECTION_STRING), enabledOnly);
     }
 
     @Override
@@ -1279,96 +1242,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         this.persistenceName = persistenceName;
     }
 
-    //    @Override
-//    public List<Entity> getAllPersistentEntities()  {
-//        ArrayList<Entity> v = new ArrayList<Entity>(allEntities.size());
-//        for (Entity entity : allEntities.values()) {
-//            if (!entity.getShield().isTransient()) {
-//                v.add(entity);
-//            }
-//        }
-//        return v.toArray(new Entity[v.size()]);
-//    }
-//
-//    @Override
-//    public Entity[] getAllViewEntities() {
-//        ArrayList<Entity> v = new ArrayList<Entity>(allEntities.size());
-//        for (Entity entity : allEntities.values()) {
-//            if (entity.getExtensionList(ViewEntityExtension.class).size() > 0) {
-//                v.add(entity);
-//            }
-//        }
-//        return v.toArray(new Entity[v.size()]);
-//    }
-    //    @Override
-//    public boolean checkCreatedSilently()  {
-//        if (!isValidPersistenceUnit()) {
-//            createSchemaStructure();
-//            return true;
-//        }
-//        return false;
-//    }
-//    @Override
-//    public boolean checkCreatedSchema(boolean ask)  {
-//        if (!isValidPersistenceUnit()) {
-//            if (ask) {
-//                for (SchemaPersistenceManagerProvider p : persistenceManagerProviders) {
-//                    if (!p.acceptCreatingDatabase(this)) {
-//                        ask = false;
-//                        break;
-//                    }
-//                }
-//            } else {
-//                ask = true;
-//            }
-//            if (ask) {
-//                createSchemaStructure();
-//            }
-//            return ask;
-//        }
-//        return false;
-//    }
-    public void dropStorage(EntityExecutionContext context) {
+   public void dropStorage(EntityExecutionContext context) {
     }
 
-    //    protected void createSchemaStructure()  {
-//        ExecutionContext context = getPersistenceStore().createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
-//        for (PersistenceUnitTrigger schemaTrigger : persistenceUnitTriggers.values()) {
-//            schemaTrigger.getInterceptor().beforeCreate(context);
-//        }
-//        getPersistenceStore().createStructure(this, context);
-//        changeAllStatus(PersistenceState.VALID);
-//        for (PersistenceUnitTrigger schemaTrigger : persistenceUnitTriggers.values()) {
-//            schemaTrigger.getInterceptor().afterCreate(context);
-//        }
-//    }
-//    protected void changeAllStatus(PersistenceState status)  {
-//        for (Entity entityManager : getEntities()) {
-//            List<Field> fields = entityManager.getFields();
-//            for (Field field : fields) {
-//                field.setPersistenceState(status);
-//            }
-//            List<Index> indexes = entityManager.getIndexes();
-//            for (Index index : indexes) {
-//                index.setPersistenceState(status);
-//            }
-//            entityManager.setPersistenceState(status);
-//            for (Trigger trigger : getEntityTriggers(entityManager.getName())) {
-//                trigger.setPersistenceState(status);
-//            }
-//        }
-//        for (Relationship relation : getRelations()) {
-//            relation.getSourceRole().setPersistenceState(status);
-//            relation.getTargetRole().setPersistenceState(status);
-//            relation.setPersistenceState(status);
-//        }
-//        for (PersistenceUnitTrigger trigger : getPersistenceUnitTriggers()) {
-//            trigger.setPersistenceState(status);
-//        }
-//        for (Trigger trigger : getEntityTriggers(null)) {
-//            trigger.setPersistenceState(status);
-//        }
-//    }
+ 
     @Override
     public boolean isValidPersistenceUnit() {
         //TODO
@@ -1628,7 +1505,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             Document r = entity.getBuilder().createDocument();
             r.setObject("lockId", id);
             long i = entity.createUpdateQuery().setValues(r)
-                    .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), UQLUtils.THIS)))
+                    .byExpression(new And(entity.getBuilder().idToExpression(key, null), new Equals(new Var("lockId"), UPQLUtils.THIS)))
                     .execute();
             if (i != 1) {
                 throw new AlreadyLockedPersistenceUnitException("Already Locked Document");
@@ -1719,7 +1596,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     private void ensureLockDef(String entityName) {
         Entity lockInfoEntity = getLockInfoEntity();
-        if (lockInfoEntity.getEntityCount(lockInfoEntity.getBuilder().idToExpression(lockInfoEntity.createId(entityName), UQLUtils.THIS)) == 0) {
+        if (lockInfoEntity.getEntityCount(lockInfoEntity.getBuilder().idToExpression(lockInfoEntity.createId(entityName), UPQLUtils.THIS)) == 0) {
             Document r = lockInfoEntity.getBuilder().createDocument();
             r.setString("lockedEntity", entityName);
             lockInfoEntity.persist(r);
@@ -2053,14 +1930,6 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public void update(String entityName, Object objectOrDocument) {
         getEntity(entityName).update(objectOrDocument);
     }
-//    @Override
-//    public void update(String entityName, Object objectOrDocument,Map<String,Object> hints)  {
-//        if (!checkSession()) {
-//            sessionAwarePU.update(entityName, objectOrDocument);
-//            return;
-//        }
-//        getEntity(entityName).update(objectOrDocument);
-//    }
 
     //    @Override
 //    public void updatePartial(String entityName, Object objectOrDocument, String... fields)  {
@@ -2249,6 +2118,39 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public <T> T findById(String entityType, Object id) {
         return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
+    }
+
+    @Override
+    public <T> T reloadObject(T object) {
+        if (object == null) {
+            throw new UPAIllegalArgumentException("NullObject");
+        }
+        Entity entity = getEntity(object.getClass());
+        return (T) entity.findById(entity.getBuilder().objectToId(object));
+    }
+
+    @Override
+    public <T> T reloadObject(String entityName, Object object) {
+        if (object == null) {
+            throw new UPAIllegalArgumentException("NullObject");
+        }
+        Entity entity = getEntity(entityName);
+        return (T) entity.findById(entity.getBuilder().objectToId(object));
+    }
+
+    @Override
+    public Document reloadDocument(String entityName, Object object) {
+        if (object == null) {
+            throw new UPAIllegalArgumentException("NullObject");
+        }
+        Entity entity = getEntity(entityName);
+        return findDocumentById(entityName, entity.getBuilder().objectToId(object));
+    }
+
+    @Override
+    public Document reloadDocument(Class entityType, Object object) {
+        Entity entity = getEntity(entityType);
+        return findDocumentById(entityType, entity.getBuilder().objectToId(object));
     }
 
     @Override
@@ -2472,13 +2374,14 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public void close() {
-        EntityExecutionContext context = createContext(ContextOperation.CLOSE, defaultHints);
+//        EntityExecutionContext context = createContext(ContextOperation.CLOSE, defaultHints);
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
         getDefaultPackage().close();
         closed = true;
 
         persistenceUnitListenerManager.fireOnClose(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
+        persistenceUnitListenerManager.close();
     }
 
     @Override

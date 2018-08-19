@@ -74,6 +74,7 @@ public final class UPA {
     private static final int CONTEXT_NOT_INITIALIZED = 0;
     private static final int CONTEXT_INITIALIZING = 1;
     private static final int CONTEXT_INITIALIZED = 2;
+    private static final int CONTEXT_INITIALIZATION_ERROR = 3;
     private static int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
 
     private static final List<UPAContextConfig> configInstances = new ArrayList<UPAContextConfig>();
@@ -90,7 +91,7 @@ public final class UPA {
      *
      * @return current PersistenceGroup of the current context
      */
-    public static PersistenceGroup getPersistenceGroup()  {
+    public static PersistenceGroup getPersistenceGroup() {
         return getContext().getPersistenceGroup();
     }
 
@@ -103,7 +104,7 @@ public final class UPA {
      * @return current PersistenceGroup of the current context
      * @
      */
-    public static PersistenceGroup getPersistenceGroup(String name)  {
+    public static PersistenceGroup getPersistenceGroup(String name) {
         return getContext().getPersistenceGroup(name);
     }
 
@@ -118,7 +119,7 @@ public final class UPA {
      * current context
      * @
      */
-    public static PersistenceUnit getPersistenceUnit()  {
+    public static PersistenceUnit getPersistenceUnit() {
         return getContext().getPersistenceGroup().getPersistenceUnit();
     }
 
@@ -134,7 +135,7 @@ public final class UPA {
      * PersistenceGroup of the current context
      * @
      */
-    public static PersistenceUnit getPersistenceUnit(String name)  {
+    public static PersistenceUnit getPersistenceUnit(String name) {
         return getContext().getPersistenceGroup().getPersistenceUnit(name);
     }
 
@@ -151,19 +152,19 @@ public final class UPA {
      * PersistenceGroup of the current context
      * @
      */
-    public static PersistenceUnit getPersistenceUnit(String persistenceGroup, String persistenceUnit)  {
+    public static PersistenceUnit getPersistenceUnit(String persistenceGroup, String persistenceUnit) {
         return getContext().getPersistenceGroup(persistenceGroup).getPersistenceUnit(persistenceUnit);
     }
 
-    public static <T> T makeSessionAware(T instance)  {
+    public static <T> T makeSessionAware(T instance) {
         return makeSessionAware(instance, (MethodFilter) null);
     }
 
-    public static <T> T makeSessionAware(T instance, final Class<Annotation> sessionAwareMethodAnnotation)  {
+    public static <T> T makeSessionAware(T instance, final Class<Annotation> sessionAwareMethodAnnotation) {
         return getContext().makeSessionAware(instance, sessionAwareMethodAnnotation);
     }
 
-    public static <T> T makeSessionAware(T instance, MethodFilter methodFilter)  {
+    public static <T> T makeSessionAware(T instance, MethodFilter methodFilter) {
         return getContext().makeSessionAware(instance, methodFilter);
     }
 
@@ -172,9 +173,12 @@ public final class UPA {
      *
      * @return current UPAContext
      */
-    public static UPAContext getContext()  {
+    public static UPAContext getContext() {
         if (bootstrapStatus == CONTEXT_INITIALIZING) {
             throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+            throw new UPAException("UPAInitializationError.TryClose");
         }
         UPAContextProvider contextProvider = null;
         /**
@@ -214,14 +218,22 @@ public final class UPA {
                 context = contextProvider.getContext();
                 if (context == null) {
                     bootstrapStatus = CONTEXT_INITIALIZING;
-                    long start = System.currentTimeMillis();
-                    ObjectFactory bootstrapFactory = BOOTSTRAP.getFactory();
-                    context = bootstrapFactory.createObject(UPAContext.class);
-                    context.start(bootstrapFactory, configInstances.toArray(new UPAContextConfig[configInstances.size()]), configClasses.toArray(new Class[configClasses.size()]));
-                    contextProvider.setContext(context);
-                    long end = System.currentTimeMillis();
-                    log.log(Level.FINE, "UPA Context Loaded in {0} ms", end - start);
-                    bootstrapStatus = CONTEXT_INITIALIZED;
+                    try {
+                        long start = System.currentTimeMillis();
+                        ObjectFactory bootstrapFactory = BOOTSTRAP.getFactory();
+                        context = bootstrapFactory.createObject(UPAContext.class);
+                        context.start(bootstrapFactory, configInstances.toArray(new UPAContextConfig[configInstances.size()]), configClasses.toArray(new Class[configClasses.size()]));
+                        contextProvider.setContext(context);
+                        long end = System.currentTimeMillis();
+                        log.log(Level.FINE, "UPA Context Loaded in {0} ms", end - start);
+                        bootstrapStatus = CONTEXT_INITIALIZED;
+                    } finally {
+                        //startup failed!
+                        //reset status
+                        if (bootstrapStatus == CONTEXT_INITIALIZING) {
+                            bootstrapStatus = CONTEXT_INITIALIZATION_ERROR;
+                        }
+                    }
                 }
             }
         } else {
@@ -235,22 +247,33 @@ public final class UPA {
     public static ObjectFactory getBootstrapFactory() {
         return BOOTSTRAP.getFactory();
     }
-    
+
     public static UPABootstrap getBootstrap() {
         return BOOTSTRAP;
     }
 
     public static void close() {
-        if (BOOTSTRAP.isContextInitialized()) {
+        if (BOOTSTRAP.isContextInitialized()
+                || bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            log.log(Level.WARNING, "Closing UPA context.");
             UPAContext context = UPAContextProviderLazyHolder.INSTANCE.getContext();
             if (context != null) {
                 context.close();
             }
+            UPAContextProviderLazyHolder.INSTANCE.close();
+            bootstrapStatus = CONTEXT_NOT_INITIALIZED;
+            configInstances.clear();
+            configClasses.clear();
+            BOOTSTRAP.close();
+            log.log(Level.WARNING, "Closing UPA closed successfully.");
         }
     }
 
     public static void configure(UPAContextConfig config) {
         if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+                throw new UPAException("UPAContexError");
+            }
             throw new UPAException("UPAAlreadyInitializing");
         }
         if (config != null) {
@@ -260,6 +283,9 @@ public final class UPA {
 
     public static void configure(Class config) {
         if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+                throw new UPAException("UPAContexError");
+            }
             throw new UPAException("UPAAlreadyInitializing");
         }
         if (config != null) {

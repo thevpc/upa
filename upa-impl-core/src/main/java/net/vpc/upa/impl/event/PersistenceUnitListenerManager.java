@@ -54,15 +54,15 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         this.decorationRepository = decorationRepository;
     }
 
-    public void itemRenamed(UPAObject object, String oldName, String newName,EventPhase phase) {
+    public void itemRenamed(UPAObject object, String oldName, String newName, EventPhase phase) {
         if (object instanceof Entity) {
-            if(StringUtils.isNullOrEmpty(newName)){
-                throw new UPAIllegalArgumentException("Empty New Name for "+oldName);
+            if (StringUtils.isNullOrEmpty(newName)) {
+                throw new UPAIllegalArgumentException("Empty New Name for " + oldName);
             }
-            model.renameEntity(oldName,newName);
+            model.renameEntity(oldName, newName);
             return;
         }
-        throw new UPAIllegalArgumentException("Renaming "+object+" is not yet Supported");
+        throw new UPAIllegalArgumentException("Renaming " + object + " is not yet Supported");
     }
 
     public void itemAdded(UPAObject object, int position, UPAObject parent, EventPhase phase) {
@@ -297,7 +297,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             Entity entity = (Entity) object;
             if (phase == EventPhase.BEFORE) {
                 if (!model.containsEntity(entity, entity.getParent())) {
-                    throw new NoSuchEntityException(entity.getName(), null);
+                    throw new NoSuchEntityException(entity.getName());
                 }
                 fireOnDropEntity(entity, position, phase);
             } else {
@@ -309,7 +309,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             Field field = (Field) object;
             if (phase == EventPhase.BEFORE) {
                 if (!model.containsField(field)) {
-                    throw new net.vpc.upa.exceptions.NoSuchFieldException(field.getEntity()==null?null:field.getEntity().getName(), field.getAbsoluteName(),field.getName(),null);
+                    throw new net.vpc.upa.exceptions.NoSuchFieldException(field.getEntity() == null ? null : field.getEntity().getName(), field.getAbsoluteName(), field.getName());
                 }
                 fireFieldRemoved(field, position, phase);
             } else {
@@ -333,7 +333,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             Section section = (Section) object;
             if (phase == EventPhase.BEFORE) {
                 if (!model.containsSection(section)) {
-                    throw new net.vpc.upa.exceptions.NoSuchSectionException(section.getAbsoluteName(), null);
+                    throw new net.vpc.upa.exceptions.NoSuchSectionException(section.getEntity().getName(), section.getAbsoluteName(), null);
                 }
                 fireOnDropSection(section, position, phase);
             } else {
@@ -562,7 +562,6 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 //            }
 //        }
 //    }
-
     protected void fireOnPrepareEntity(Entity entity, int position, EventPhase phase) {
         EntityEvent evt = new EntityEvent(entity, entity.getPersistenceUnit(), entity.getParent(), position, null, -1, phase);
         String entityTypeListenerId = getEntityTypeListenerId(entity.getEntityType());
@@ -663,7 +662,6 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             }
         }
     }
-
 
     protected void fireOnCreatePackage(Package module, Package parent, int position, EventPhase phase) {
         PackageEvent evt = null;
@@ -1178,4 +1176,19 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         }
     }
 
+    public void close() {
+        fields.close();
+        sections.close();
+        entities.close();
+        indexes.close();
+        relationships.close();
+        entityTriggers.close();
+        for (PersistenceUnitListener persistenceUnitListener : persistenceUnitListeners.toArray(new PersistenceUnitListener[persistenceUnitListeners.size()])) {
+            persistenceUnitListeners.remove(persistenceUnitListener);
+        }
+        for (PackageDefinitionListener persistenceUnitListener : packages.toArray(new PackageDefinitionListener[packages.size()])) {
+            packages.remove(persistenceUnitListener);
+        }
+        callbackManager.close();
+    }
 }

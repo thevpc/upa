@@ -231,7 +231,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
 
         Entity item = entities.get(name);
         if (item == null) {
-            throw new NoSuchEntityException(s, null);
+            throw new NoSuchEntityException(s);
         }
         return item;
     }
@@ -261,7 +261,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         if (entityManagerByIdTypeAmbiguity.contains(idType)) {
             throw new MultipleEntityMatchForTypeException(entityManagerByIdTypeAmbiguity.toArray(new Class[0])[0], new String[0]);
         }
-        throw new NoSuchEntityException(idType.getName(), null);
+        throw new NoSuchEntityException(idType.getName());
     }
 
     public boolean containsField(Field item) {
@@ -340,7 +340,7 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     public Entity getEntity(Class entityType) throws UPAException {
         Entity e = findEntity(entityType);
         if (e == null) {
-            throw new NoSuchEntityException(entityType == null ? "<null>" : entityType.getName(), null);
+            throw new NoSuchEntityException(entityType == null ? "<null>" : entityType.getName());
         }
         return e;
     }

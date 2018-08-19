@@ -5,7 +5,6 @@ import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.*;
 import net.vpc.upa.config.Formula;
 import net.vpc.upa.config.*;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +22,7 @@ public class RelationFormulaUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);

@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.EntityUpdateOperation;
@@ -145,7 +145,7 @@ public class DefaultEntityUpdateOperation implements EntityUpdateOperation {
             if (idc.getEntity() == null) {
                 idc.setEntity(entity);
             }
-            u.where(UQLUtils.expandIdExpression("upa_id", idc));
+            u.where(UPQLUtils.expandIdExpression("upa_id", idc));
         } else {
             enableCache = false;
             u.where(condition);

@@ -2,8 +2,8 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledParam;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

@@ -35,11 +35,9 @@
 package net.vpc.upa.persistence;
 
 import net.vpc.upa.CloseListener;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryScript;
 import net.vpc.upa.types.DataTypeTransform;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 

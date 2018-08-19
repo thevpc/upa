@@ -4,27 +4,27 @@
  */
 package net.vpc.upa.impl;
 
-import net.vpc.upa.EntityPart;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
+import net.vpc.upa.EntityItem;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-class DefaultSectionPrivateRemoveItemInterceptor implements ItemInterceptor<EntityPart> {
+class DefaultSectionPrivateRemoveItemInterceptor implements ItemInterceptor<EntityItem> {
 
     public DefaultSectionPrivateRemoveItemInterceptor() {
     }
 
     @Override
-    public void before(EntityPart child, int index) {
+    public void before(EntityItem child, int index) {
         DefaultBeanAdapter adapter = new DefaultBeanAdapter(child);
         adapter.injectNull("parent");
     }
 
     @Override
-    public void after(EntityPart entityItem, int index) {
+    public void after(EntityItem entityItem, int index) {
     }
     
 }

@@ -6,7 +6,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 
 public class IntegerKeyEntityNavigator extends DefaultEntityNavigator {
 
@@ -16,10 +16,10 @@ public class IntegerKeyEntityNavigator extends DefaultEntityNavigator {
 
     public int getNewValue(Field field) throws UPAException {
         Entity entity = field.getEntity();
-        Select s = new Select().from(entity.getName(), UQLUtils.THIS);
+        Select s = new Select().from(entity.getName(), UPQLUtils.THIS);
         s.field(new Plus(
                         new Coalesce(
-                                new Max(new Var(new Var(UQLUtils.THIS), field.getName())),
+                                new Max(new Var(new Var(UPQLUtils.THIS), field.getName())),
                                 new Literal(0)
                         ),
                         new Literal(1))

@@ -1,9 +1,9 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.Field;
-import net.vpc.upa.impl.uql.CompiledExpressionVisitor;
+import net.vpc.upa.impl.upql.CompiledExpressionVisitor;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 
 import java.util.Set;
 

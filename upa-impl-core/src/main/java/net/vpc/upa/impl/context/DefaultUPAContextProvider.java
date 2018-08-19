@@ -11,7 +11,8 @@ import net.vpc.upa.UPAContextProvider;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class DefaultUPAContextProvider implements UPAContextProvider{
+public class DefaultUPAContextProvider implements UPAContextProvider {
+
     private static UPAContext instance;
 
     public UPAContext getContext() {
@@ -19,7 +20,15 @@ public class DefaultUPAContextProvider implements UPAContextProvider{
     }
 
     public void setContext(UPAContext newInstance) {
-        instance=newInstance;
+        instance = newInstance;
     }
-    
+
+    @Override
+    public void close() {
+        if (instance != null) {
+            instance.close();
+            DefaultUPAContextProvider.instance = null;
+        }
+    }
+
 }

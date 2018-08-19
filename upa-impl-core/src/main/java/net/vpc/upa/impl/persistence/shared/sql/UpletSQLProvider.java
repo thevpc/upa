@@ -2,11 +2,11 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledConcat;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledConcat;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledUplet;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledUplet;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

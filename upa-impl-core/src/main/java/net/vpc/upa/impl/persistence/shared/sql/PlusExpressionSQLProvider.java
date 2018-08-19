@@ -1,11 +1,13 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledConcat;
+import net.vpc.upa.impl.upql.ext.expr.CompiledPlus;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
@@ -34,34 +36,11 @@ public class PlusExpressionSQLProvider extends AbstractSQLProvider {
         }
         Class t1 = left0.getTypeTransform().getTargetType().getPlatformType();
         Class t2 = right0.getTypeTransform().getTargetType().getPlatformType();
-        boolean s0 = o.getTypeTransform().getTargetType().getPlatformType().equals(String.class);
-        boolean s1 = t1.equals(String.class);
-        boolean s2 = t2.equals(String.class);
+        boolean s0 = PlatformUtils.isString(o.getTypeTransform().getTargetType().getPlatformType());
+        boolean s1 = PlatformUtils.isString(t1);
+        boolean s2 = PlatformUtils.isString(t2);
         if (s0 || s1 || s2) {
-            CompiledExpressionExt c1 = left.copy();
-            CompiledExpressionExt c2 = right.copy();
-            c1.unsetParent();
-            c2.unsetParent();
-            if (!s1) {
-                if (PlatformUtils.isAnyInteger(t1)) {
-                    c1 = new CompiledI2V(c1.copy());
-                } else if (PlatformUtils.isAnyFloat(t1)) {
-                    c1 = new CompiledI2V(c1.copy());
-                } else {
-                    throw new UPAIllegalArgumentException("Unsupported");
-                }
-            }
-            if (!s2) {
-                if (PlatformUtils.isAnyInteger(t2)) {
-                    c2 = new CompiledI2V(c2.copy());
-                } else if (PlatformUtils.isAnyFloat(t2)) {
-                    c2 = new CompiledI2V(c2.copy());
-                } else {
-                    throw new UPAIllegalArgumentException("Unsupported");
-                }
-            }
-            CompiledConcat cc = new CompiledConcat(c1, c2);
-            return sqlManager.getSQL(cc, qlContext, declarations);
+            return sqlManager.getSQL(new CompiledConcat(left.copy(), right.copy()), qlContext, declarations);
         }
         String leftValue = left != null ? sqlManager.getSQL(left, qlContext, declarations) : "NULL";
         String rightValue = right != null ? sqlManager.getSQL(right, qlContext, declarations) : "NULL";

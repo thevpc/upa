@@ -44,7 +44,7 @@ import net.vpc.upa.impl.persistence.specific.mckoi.McKoiPersistenceStore;
 import net.vpc.upa.impl.persistence.specific.mssqlserver.MSSQLServerPersistenceStore;
 import net.vpc.upa.impl.persistence.specific.mysql.MySQLPersistenceStore;
 import net.vpc.upa.impl.persistence.specific.oracle.OraclePersistenceStore;
-import net.vpc.upa.impl.uql.DefaultQLExpressionParser;
+import net.vpc.upa.impl.upql.DefaultQLExpressionParser;
 import net.vpc.upa.impl.util.DefaultBeanAdapterFactory;
 import net.vpc.upa.types.DataTypeTransformFactory;
 

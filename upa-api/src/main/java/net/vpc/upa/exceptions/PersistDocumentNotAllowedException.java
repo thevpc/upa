@@ -39,10 +39,6 @@ import net.vpc.upa.Entity;
 
 public class PersistDocumentNotAllowedException extends EntityException {
     public PersistDocumentNotAllowedException(Entity entity) {
-        super(entity, "insert.NotAllowed");
-    }
-
-    public PersistDocumentNotAllowedException(Entity entity, String operationName) {
-        super(entity, operationName);
+        super(entity, "persist", "NotAllowed");
     }
 }

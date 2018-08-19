@@ -5,8 +5,8 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -29,27 +29,31 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
     }
 
     public String getSqlTypeName(DataType datatype) {
+//        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
+//        if(databaseProductVersion==null){
+//            databaseProductVersion="";
+//        }
         Class platformType = datatype.getPlatformType();
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
-        if (platformType.equals(String.class)) {
+        if (PlatformUtils.isString(platformType)) {
             if (length <= 0) {
                 length = 255;
             }
             if (length <= 32672) {
                 return "VARCHAR(" + length + ")";
             } else {
-                return "BLOB";//return "NTEXT";
+                return "CLOB";
             }
-        }
-        if (PlatformUtils.isInt32(platformType)) {
-            return "INT";
         }
         if (PlatformUtils.isInt8(platformType)) {
             return "SMALLINT";
         }
         if (PlatformUtils.isInt16(platformType)) {
             return "SMALLINT";
+        }
+        if (PlatformUtils.isInt32(platformType)) {
+            return "INT";
         }
         if (PlatformUtils.isInt64(platformType)) {
             return "BIGINT";
@@ -58,15 +62,9 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
             return "FLOAT";
         }
         if (PlatformUtils.isFloat64(platformType)) {
-            if (datatype instanceof NumberType) {
-                NumberType n = ((NumberType) datatype);
                 return "DOUBLE";
-                //return n.isFixedDigits() ? "DECIMAL(" + (n.getMaximumIntegerDigits() + n.getMaximumFractionDigits()) + "," + n.getMaximumFractionDigits() + ")" : "DOUBLE";
-            } else {
-                return "DOUBLE";
-            }
         }
-        if (PlatformUtils.isNumber(platformType)) {
+        if (PlatformUtils.isAnyNumber(platformType)) {
             return "NUMBER";
         }
         if (PlatformUtils.isBool(platformType)) {
@@ -90,10 +88,6 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
                 }
             }
         }
-//        if (platformType.equals(java.util.Date.class) || platformType.equals(Date.class)) {
-//            return "DATE";
-//        }
-
         if (datatype instanceof EnumType) {
             //TODO should support marshalling types
             return "INT";

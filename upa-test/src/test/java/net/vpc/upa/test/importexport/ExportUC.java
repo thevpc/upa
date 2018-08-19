@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import net.vpc.upa.*;
 import net.vpc.upa.bulk.*;
 import net.vpc.upa.bulk.TextFixedWidthFormatter;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;

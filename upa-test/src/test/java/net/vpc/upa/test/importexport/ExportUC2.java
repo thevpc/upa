@@ -45,7 +45,7 @@ public class ExportUC2 {
 
         public void process() throws IOException {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            Assert.assertEquals(ExportUC2.class.getName(),pu.getName());
+            Assert.assertEquals(ExportUC2.class.getSimpleName(),pu.getName());
 
             Entity entityManager = pu.getEntity("Client");
             Client c = entityManager.createObject();

@@ -47,11 +47,20 @@ public class UPABootstrap {
     private final Properties properties = new BootstrapProperties();
 
     UPABootstrap() {
+        init();
+    }
+
+    private void init() {
+        contextProviderCreated=false;
         for (Map.Entry<Object, Object> ee : System.getProperties().entrySet()) {
             properties.setString((String) ee.getKey(), (String) ee.getValue());
         }
     }
-
+    
+    public void close() {
+        init();
+    }
+    
     public boolean isContextInitialized() {
         return contextProviderCreated;
     }

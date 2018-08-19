@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.shared.sql.*;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -36,6 +36,7 @@ public class DefaultSQLManager implements SQLManager {
         register0(new InCollectionSQLProvider());
         register0(new InSelectionSQLProvider());
         register0(new ExistsSQLProvider());
+        register0(new UnionSQLProvider());
         register0(new ParamSQLProvider());
         register0(new UpletSQLProvider());
         register0(new ValueSQLProvider());

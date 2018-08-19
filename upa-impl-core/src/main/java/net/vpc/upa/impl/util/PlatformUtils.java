@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.PlatformBeanType;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
@@ -31,7 +30,6 @@ import net.vpc.upa.impl.util.classpath.ClassFileIterator;
 import net.vpc.upa.impl.util.classpath.ClassFileIteratorFactory;
 import net.vpc.upa.impl.util.classpath.ClassFilter;
 import net.vpc.upa.impl.util.classpath.ClassPathFilter;
-import net.vpc.upa.types.Temporal;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -45,36 +43,50 @@ public class PlatformUtils {
     public final static Map<Class, Class> PRIMITIVE_TO_REF_TYPES = new HashMap<Class, Class>();
     public final static Map<Class, Class> REF_TO_PRIMITIVE_TYPES = new HashMap<Class, Class>();
     public final static java.util.Date MIN_DATE = new java.util.Date(0);
-    public static final String METHOD_GET_PREFIX="get";
-    public static final String METHOD_SET_PREFIX="set";
-    public static final String METHOD_IS_PREFIX="is";
-    public static final int TYPE_NULLABLE = 1;
-    public static final int TYPE_NUMBER = 2;
-    public static final int TYPE_BOOLEAN = 3;
-    public static final int TYPE_STRING = 4;
-    public static final int TYPE_TEMPORAL = 5;
-    public static final int TYPE_OTHER = 6;
-    public static final int TYPE_INT = (1 << 3) + TYPE_NUMBER;
-    public static final int TYPE_FLOAT = (2 << 3) + TYPE_NUMBER;
-    public static final int TYPE_DECIMAL = (3 << 3) + TYPE_NUMBER;
-    public static final int TYPE_TIME = (1 << 3) + TYPE_NUMBER;
-    public static final int TYPE_DATE = (2 << 3) + TYPE_NUMBER;
-    public static final int TYPE_DATETIME = (3 << 3) + TYPE_NUMBER;
-    public static final int TYPE_TIMESTAMP = (4 << 3) + TYPE_NUMBER;
-    public static final int TYPE_MONTH = (5 << 3) + TYPE_NUMBER;
-    public static final int TYPE_YEAR = (6 << 3) + TYPE_NUMBER;
-    public static final int TYPE_8 = (1 << 5);
-    public static final int TYPE_16 = (2 << 5);
-    public static final int TYPE_32 = (3 << 5);
-    public static final int TYPE_64 = (4 << 5);
-    public static final int TYPE_128 = (5 << 5);
-    public static final int TYPE_BIG = (6 << 5);
+    public static final String METHOD_GET_PREFIX = "get";
+    public static final String METHOD_SET_PREFIX = "set";
+    public static final String METHOD_IS_PREFIX = "is";
+
+    public static final int TYPE_MASK_FLAGS = ((1 << 4) - 1);
+    public static final int TYPE_FLAGS_NULLABLE = 1;
+    public static final int TYPE_FLAGS_ARRAY = 2;
+
+    public static final int TYPE_MASK_MAJOR = ((1 << 3) - 1) << 4;
+    public static final int TYPE_MAJOR_BOOLEAN = 1 << 4;
+    public static final int TYPE_MAJOR_NUMBER = 2 << 4;
+    public static final int TYPE_MAJOR_STRING = 3 << 4;
+    public static final int TYPE_MAJOR_TEMPORAL = 4 << 4;
+    public static final int TYPE_MAJOR_OTHER = 5 << 4;
+
+    public static final int TYPE_MASK_MINOR = (((1 << 4) - 1) << 7);
+    public static final int TYPE_MINOR_INT = (1 << 7);
+    public static final int TYPE_MINOR_FLOAT = (2 << 7);
+    public static final int TYPE_MINOR_DECIMAL = (3 << 7);
+
+    public static final int TYPE_MINOR_CHAR = (1 << 7);
+    public static final int TYPE_MINOR_CHARS = (2 << 7);
+
+    public static final int TYPE_MINOR_TIME = (1 << 7);
+    public static final int TYPE_MINOR_DATE = (2 << 7);
+    public static final int TYPE_MINOR_DATETIME = (3 << 7);
+    public static final int TYPE_MINOR_TIMESTAMP = (4 << 7);
+    public static final int TYPE_MINOR_MONTH = (5 << 7);
+    public static final int TYPE_MINOR_YEAR = (6 << 7);
+
+    public static final int TYPE_MASK_SIZE = (((1 << 3) - 1) << 11);
+    public static final int TYPE_SIZE_1 = (1 << 11);
+    public static final int TYPE_SIZE_8 = (2 << 11);
+    public static final int TYPE_SIZE_16 = (3 << 11);
+    public static final int TYPE_SIZE_32 = (4 << 11);
+    public static final int TYPE_SIZE_64 = (5 << 11);
+    public static final int TYPE_SIZE_128 = (6 << 11);
+    public static final int TYPE_SIZE_BIG = (7 << 11);
 
     private static final Logger log = Logger.getLogger(PlatformUtils.class.getName());
     private static final Map<Class, String> typeNames = new HashMap<Class, String>();
     private static PlatformTypeProxy proxyFactory;
     private static ClassFileIteratorFactory[] classFileIteratorFactories = null;
-    private static final Map<Class,PlatformBeanTypeCache> classBeanTypeReflectorMap=new HashMap<Class, PlatformBeanTypeCache>();
+    private static final Map<Class, PlatformBeanTypeCache> classBeanTypeReflectorMap = new HashMap<Class, PlatformBeanTypeCache>();
 
     static {
         PlatformUtils.DEFAULT_VALUES_BY_TYPE.put(Short.TYPE, (short) 0);
@@ -265,8 +277,43 @@ public class PlatformUtils {
         return java.util.Date.class.isAssignableFrom(clazz);
     }
 
+    public static boolean isIntAny(Class clazz) {
+        return 
+                   clazz.equals(Byte.class)
+                || clazz.equals(Byte.TYPE)
+                || clazz.equals(Short.class)
+                || clazz.equals(Short.TYPE)
+                || clazz.equals(Integer.class)
+                || clazz.equals(Integer.TYPE)
+                || clazz.equals(Long.class)
+                || clazz.equals(Long.TYPE)
+                || clazz.equals(BigInteger.class)
+                ;
+    }
+
+    public static boolean isFloatAny(Class clazz) {
+        return 
+                   clazz.equals(Float.class)
+                || clazz.equals(Float.TYPE)
+                || clazz.equals(Double.class)
+                || clazz.equals(Double.TYPE)
+                || clazz.equals(BigDecimal.class)
+                ;
+    }
+
+    public static boolean isString(Class clazz) {
+        return  
+                   clazz.equals(String.class)
+                || clazz.equals(Character.class)
+                || clazz.equals(Character.TYPE);
+    }
+
+    public static boolean isDecimal128(Class clazz) {
+        return BigDecimal.class.equals(clazz);
+    }
+
     public static boolean isInt128(Class clazz) {
-        return false;
+        return BigInteger.class.equals(clazz);
     }
 
     public static boolean isInt64(Class clazz) {
@@ -289,8 +336,17 @@ public class PlatformUtils {
                 || Byte.TYPE.equals(clazz);
     }
 
+    public static boolean isEnum(Class clazz) {
+        return Enum.class.isInstance(clazz);
+    }
+
     public static DataTypeTransform getDataTypeTransformAfterImplicitConversion(DataTypeTransform cls1, DataTypeTransform cls2) {
         Class platformTypeAfterImplicitConversion = getPlatformTypeAfterImplicitConversion(cls1.getTargetType().getPlatformType(), cls2.getTargetType().getPlatformType());
+        return IdentityDataTypeTransform.ofType(platformTypeAfterImplicitConversion);
+    }
+
+    public static DataTypeTransform getDataTypeTransformAfterImplicitConversionPlus(DataTypeTransform cls1, DataTypeTransform cls2) {
+        Class platformTypeAfterImplicitConversion = getPlatformTypeAfterImplicitConversionPlus(cls1.getTargetType().getPlatformType(), cls2.getTargetType().getPlatformType());
         return IdentityDataTypeTransform.ofType(platformTypeAfterImplicitConversion);
     }
 
@@ -300,60 +356,60 @@ public class PlatformUtils {
         }
         int t1 = getPlatformType(cls1);
         int t2 = getPlatformType(cls2);
-        boolean nullable = ((t1 & TYPE_NULLABLE) == TYPE_NULLABLE) || ((t2 & TYPE_NULLABLE) == TYPE_NULLABLE);
-        if ((t1 & TYPE_NUMBER) == TYPE_NUMBER && (t1 & TYPE_NUMBER) == TYPE_NUMBER) {
-            if ((t1 & TYPE_FLOAT) == TYPE_FLOAT || (t1 & TYPE_FLOAT) == TYPE_FLOAT) {
-                if ((t1 & TYPE_BIG) == TYPE_BIG || (t2 & TYPE_BIG) == TYPE_BIG) {
+        boolean nullable = ((t1 & TYPE_FLAGS_NULLABLE) == TYPE_FLAGS_NULLABLE) || ((t2 & TYPE_FLAGS_NULLABLE) == TYPE_FLAGS_NULLABLE);
+        if ((t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER && (t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER) {
+            if ((t1 & TYPE_MINOR_FLOAT) == TYPE_MINOR_FLOAT || (t1 & TYPE_MINOR_FLOAT) == TYPE_MINOR_FLOAT) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
                     return BigDecimal.class;//no other possibilities
-                } else if ((t1 & TYPE_128) == TYPE_128 || (t2 & TYPE_128) == TYPE_128) {
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
                     return BigDecimal.class;//no other possibilities
-                } else if ((t1 & TYPE_64) == TYPE_64 || (t2 & TYPE_64) == TYPE_64) {
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
                     return nullable ? Double.class : Double.TYPE;
-                } else if ((t1 & TYPE_32) == TYPE_32 || (t2 & TYPE_32) == TYPE_32) {
-                    if ((t1 & TYPE_INT) == TYPE_INT || (t2 & TYPE_INT) == TYPE_INT) {
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
                         return nullable ? Double.class : Double.TYPE;
                     } else {
                         return nullable ? Float.class : Float.TYPE;
                     }
                 } else {
-                    if ((t1 & TYPE_INT) == TYPE_INT || (t2 & TYPE_INT) == TYPE_INT) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
                         return nullable ? Double.class : Double.TYPE;
                     } else {
                         return nullable ? Float.class : Float.TYPE;
                     }
                 }
-            } else if ((t1 & TYPE_DECIMAL) == TYPE_DECIMAL || (t1 & TYPE_DECIMAL) == TYPE_DECIMAL) {
-                if ((t1 & TYPE_BIG) == TYPE_BIG || (t2 & TYPE_BIG) == TYPE_BIG) {
+            } else if ((t1 & TYPE_MINOR_DECIMAL) == TYPE_MINOR_DECIMAL || (t1 & TYPE_MINOR_DECIMAL) == TYPE_MINOR_DECIMAL) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
                     return BigDecimal.class;//no other possibilities
-                } else if ((t1 & TYPE_128) == TYPE_128 || (t2 & TYPE_128) == TYPE_128) {
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
                     return BigDecimal.class;//no other possibilities
-                } else if ((t1 & TYPE_64) == TYPE_64 || (t2 & TYPE_64) == TYPE_64) {
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
                     return nullable ? Double.class : Double.TYPE;
-                } else if ((t1 & TYPE_32) == TYPE_32 || (t2 & TYPE_32) == TYPE_32) {
-                    if ((t1 & TYPE_INT) == TYPE_INT || (t2 & TYPE_INT) == TYPE_INT) {
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
                         return nullable ? Double.class : Double.TYPE;
                     } else {
                         return nullable ? Float.class : Float.TYPE;
                     }
                 } else {
-                    if ((t1 & TYPE_INT) == TYPE_INT || (t2 & TYPE_INT) == TYPE_INT) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
                         return nullable ? Double.class : Double.TYPE;
                     } else {
                         return nullable ? Float.class : Float.TYPE;
                     }
                 }
-            } else if ((t1 & TYPE_INT) == TYPE_INT || (t1 & TYPE_INT) == TYPE_INT) {
-                if ((t1 & TYPE_BIG) == TYPE_BIG || (t2 & TYPE_BIG) == TYPE_BIG) {
+            } else if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
                     return BigInteger.class;//no other possibilities
-                } else if ((t1 & TYPE_128) == TYPE_128 || (t2 & TYPE_128) == TYPE_128) {
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
                     return BigInteger.class;//no other possibilities
-                } else if ((t1 & TYPE_64) == TYPE_64 || (t2 & TYPE_64) == TYPE_64) {
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
                     return nullable ? Long.class : Long.TYPE;
-                } else if ((t1 & TYPE_32) == TYPE_32 || (t2 & TYPE_32) == TYPE_32) {
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
                     return nullable ? Integer.class : Integer.TYPE;
-                } else if ((t1 & TYPE_16) == TYPE_16 || (t2 & TYPE_16) == TYPE_16) {
+                } else if ((t1 & TYPE_SIZE_16) == TYPE_SIZE_16 || (t2 & TYPE_SIZE_16) == TYPE_SIZE_16) {
                     return nullable ? Short.class : Short.TYPE;
-                } else if ((t1 & TYPE_8) == TYPE_8 || (t2 & TYPE_8) == TYPE_8) {
+                } else if ((t1 & TYPE_SIZE_8) == TYPE_SIZE_8 || (t2 & TYPE_SIZE_8) == TYPE_SIZE_8) {
                     return nullable ? Byte.class : Byte.TYPE;
                 } else {
                     throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
@@ -366,45 +422,135 @@ public class PlatformUtils {
         }
     }
 
+    public static Class getPlatformTypeAfterImplicitConversionPlus(Class cls1, Class cls2) {
+        if (cls1.equals(cls2)) {
+            return cls1;
+        }
+        int t1 = getPlatformType(cls1);
+        int t2 = getPlatformType(cls2);
+        boolean nullable = ((t1 & TYPE_FLAGS_NULLABLE) == TYPE_FLAGS_NULLABLE) || ((t2 & TYPE_FLAGS_NULLABLE) == TYPE_FLAGS_NULLABLE);
+        if ((t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER && (t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER) {
+            if ((t1 & TYPE_MINOR_FLOAT) == TYPE_MINOR_FLOAT || (t1 & TYPE_MINOR_FLOAT) == TYPE_MINOR_FLOAT) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
+                    return BigDecimal.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
+                    return BigDecimal.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
+                    return nullable ? Double.class : Double.TYPE;
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                        return nullable ? Double.class : Double.TYPE;
+                    } else {
+                        return nullable ? Float.class : Float.TYPE;
+                    }
+                } else {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                        return nullable ? Double.class : Double.TYPE;
+                    } else {
+                        return nullable ? Float.class : Float.TYPE;
+                    }
+                }
+            } else if ((t1 & TYPE_MINOR_DECIMAL) == TYPE_MINOR_DECIMAL || (t1 & TYPE_MINOR_DECIMAL) == TYPE_MINOR_DECIMAL) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
+                    return BigDecimal.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
+                    return BigDecimal.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
+                    return nullable ? Double.class : Double.TYPE;
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                        return nullable ? Double.class : Double.TYPE;
+                    } else {
+                        return nullable ? Float.class : Float.TYPE;
+                    }
+                } else {
+                    if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t2 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                        return nullable ? Double.class : Double.TYPE;
+                    } else {
+                        return nullable ? Float.class : Float.TYPE;
+                    }
+                }
+            } else if ((t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT || (t1 & TYPE_MINOR_INT) == TYPE_MINOR_INT) {
+                if ((t1 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG || (t2 & TYPE_SIZE_BIG) == TYPE_SIZE_BIG) {
+                    return BigInteger.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_128) == TYPE_SIZE_128 || (t2 & TYPE_SIZE_128) == TYPE_SIZE_128) {
+                    return BigInteger.class;//no other possibilities
+                } else if ((t1 & TYPE_SIZE_64) == TYPE_SIZE_64 || (t2 & TYPE_SIZE_64) == TYPE_SIZE_64) {
+                    return nullable ? Long.class : Long.TYPE;
+                } else if ((t1 & TYPE_SIZE_32) == TYPE_SIZE_32 || (t2 & TYPE_SIZE_32) == TYPE_SIZE_32) {
+                    return nullable ? Integer.class : Integer.TYPE;
+                } else if ((t1 & TYPE_SIZE_16) == TYPE_SIZE_16 || (t2 & TYPE_SIZE_16) == TYPE_SIZE_16) {
+                    return nullable ? Short.class : Short.TYPE;
+                } else if ((t1 & TYPE_SIZE_8) == TYPE_SIZE_8 || (t2 & TYPE_SIZE_8) == TYPE_SIZE_8) {
+                    return nullable ? Byte.class : Byte.TYPE;
+                } else {
+                    throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+            }
+        } else if ((t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER && (t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING) {
+            return String.class;
+        } else if ((t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING && (t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER) {
+            return String.class;
+        } else if ((t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING && (t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING) {
+            return String.class;
+        } else {
+            throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+        }
+    }
+
     public static int getPlatformType(Class cls) {
         Integer value = TYPE_TO_INT_FLAGS.get(cls);
         if (value == null) {
             if (Boolean.class.equals(cls)) {
-                value = TYPE_BOOLEAN | TYPE_NULLABLE;
+                value = TYPE_MAJOR_BOOLEAN | TYPE_FLAGS_NULLABLE;
             } else if (Boolean.TYPE.equals(cls)) {
-                value = TYPE_BOOLEAN | TYPE_NULLABLE;
+                value = TYPE_MAJOR_BOOLEAN;
             } else if (Byte.class.equals(cls)) {
-                value = TYPE_INT | TYPE_8 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_NULLABLE;
             } else if (Byte.TYPE.equals(cls)) {
-                value = TYPE_INT | TYPE_8;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8;
             } else if (Short.class.equals(cls)) {
-                value = TYPE_INT | TYPE_16 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16 | TYPE_FLAGS_NULLABLE;
             } else if (Short.TYPE.equals(cls)) {
-                value = TYPE_INT | TYPE_16;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16;
             } else if (Integer.class.equals(cls)) {
-                value = TYPE_INT | TYPE_32 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
             } else if (Integer.TYPE.equals(cls)) {
-                value = TYPE_INT | TYPE_32;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32;
             } else if (Long.class.equals(cls)) {
-                value = TYPE_INT | TYPE_64 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
             } else if (Long.TYPE.equals(cls)) {
-                value = TYPE_INT | TYPE_64;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64;
             } else if (BigInteger.class.equals(cls)) {
-                value = TYPE_INT | TYPE_BIG | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
             } else if (Float.class.equals(cls)) {
-                value = TYPE_FLOAT | TYPE_32 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
             } else if (Float.TYPE.equals(cls)) {
-                value = TYPE_FLOAT | TYPE_32;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32;
             } else if (Double.class.equals(cls)) {
-                value = TYPE_FLOAT | TYPE_64 | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
             } else if (Double.TYPE.equals(cls)) {
-                value = TYPE_FLOAT | TYPE_64;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64;
             } else if (BigDecimal.class.equals(cls)) {
-                value = TYPE_DECIMAL | TYPE_BIG | TYPE_NULLABLE;
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_DECIMAL | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
             } else if (String.class.equals(cls)) {
-                value = TYPE_STRING | TYPE_NULLABLE;
+                value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_BIG | TYPE_MINOR_CHARS;
+            } else if (Character.class.equals(cls)) {
+                value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
+            } else if (Character.TYPE.equals(cls)) {
+                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
+            } else if (char[].class.equals(cls)) {
+                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+            } else if (Character[].class.equals(cls)) {
+                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+            } else if (byte[].class.equals(cls)) {
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+            } else if (Byte[].class.equals(cls)) {
+                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
             } else {
-                value = TYPE_OTHER | TYPE_NULLABLE;
+                value = TYPE_MAJOR_OTHER | TYPE_FLAGS_NULLABLE;
             }
 
             TYPE_TO_INT_FLAGS.put(cls, value);
@@ -435,10 +581,6 @@ public class PlatformUtils {
                 || Boolean.TYPE.equals(clazz);
     }
 
-    public static boolean isAnyNumber(Class clazz) {
-        return Number.class.isAssignableFrom(clazz);
-    }
-
     public static boolean isAnyInteger(Class clazz) {
         return Integer.class.equals(clazz)
                 || Integer.TYPE.equals(clazz)
@@ -459,8 +601,8 @@ public class PlatformUtils {
                 || BigDecimal.class.equals(clazz);
     }
 
-    public static boolean isNumber(Class clazz) {
-        return (Number.class).isAssignableFrom(clazz);
+    public static boolean isAnyNumber(Class clazz) {
+        return Number.class.isAssignableFrom(clazz);
     }
 
     public static ClassLoader getContextClassLoader() {
@@ -509,12 +651,12 @@ public class PlatformUtils {
         return type.isPrimitive();
     }
 
-    public static Class toTemporalType(TemporalOption option, Class baseType) {
+    public static Class toTemporalType(TemporalOption temporalOption, Class baseType) {
         Class upaBaseType = net.vpc.upa.types.Temporal.class;
         Class osBaseType = java.util.Date.class;
         Class upaType = null;
         Class osType = null;
-        switch (option) {
+        switch (temporalOption) {
             case TIME: {
                 upaType = net.vpc.upa.types.Time.class;
                 osType = java.sql.Time.class;
@@ -551,7 +693,7 @@ public class PlatformUtils {
                 break;
             }
             default: {
-                throw new UPAIllegalArgumentException("Unsupported Temperal " + option);
+                throw new UPAIllegalArgumentException("Unsupported Temperal " + temporalOption);
             }
         }
         if (baseType == null) {
@@ -731,8 +873,8 @@ public class PlatformUtils {
         return METHOD_GET_PREFIX + adjustTypeFirstChar(name);
     }
 
-    public static boolean isCamelPrefixed(String word,String prefix){
-        return word.length()>prefix.length()+1 && word.startsWith(prefix) && Character.isUpperCase(word.charAt(prefix.length()));
+    public static boolean isCamelPrefixed(String word, String prefix) {
+        return word.length() > prefix.length() + 1 && word.startsWith(prefix) && Character.isUpperCase(word.charAt(prefix.length()));
     }
 
     public static String toCamelCase(String name) {
@@ -774,16 +916,16 @@ public class PlatformUtils {
 
     public static String adjustTypeFirstChar(String name) {
         char[] c = name.toCharArray();
-        if(c.length>0){
-            c[0]=Character.toUpperCase(c[0]);
+        if (c.length > 0) {
+            c[0] = Character.toUpperCase(c[0]);
         }
         return new String(c);
     }
 
     public static String adjustVarFirstChar(String name) {
         char[] c = name.toCharArray();
-        if(c.length>0){
-            c[0]=Character.toLowerCase(c[0]);
+        if (c.length > 0) {
+            c[0] = Character.toLowerCase(c[0]);
         }
         return new String(c);
     }
@@ -838,7 +980,7 @@ public class PlatformUtils {
 
     public static PlatformMethodInfo getMethodInfo(Method m) {
         String name = m.getName();
-        if(isCamelPrefixed(name,METHOD_SET_PREFIX)){
+        if (isCamelPrefixed(name, METHOD_SET_PREFIX)) {
             if (m.getParameterTypes().length == 1) {
                 return new PlatformMethodInfo(
                         m,
@@ -847,8 +989,8 @@ public class PlatformUtils {
                         m.getParameterTypes()[0]
                 );
             }
-        }else if(isCamelPrefixed(name,METHOD_GET_PREFIX)){
-            if (m.getParameterTypes().length==0 && m.getReturnType().equals(Void.TYPE)) {
+        } else if (isCamelPrefixed(name, METHOD_GET_PREFIX)) {
+            if (m.getParameterTypes().length == 0 && m.getReturnType().equals(Void.TYPE)) {
                 return new PlatformMethodInfo(
                         m,
                         PlatformMethodType.GETTER,
@@ -856,8 +998,8 @@ public class PlatformUtils {
                         m.getReturnType()
                 );
             }
-        }else if(isCamelPrefixed(name,METHOD_IS_PREFIX)){
-            if (m.getParameterTypes().length==0 && (m.getReturnType().equals(Boolean.TYPE) || m.getReturnType().equals(Boolean.class))) {
+        } else if (isCamelPrefixed(name, METHOD_IS_PREFIX)) {
+            if (m.getParameterTypes().length == 0 && (m.getReturnType().equals(Boolean.TYPE) || m.getReturnType().equals(Boolean.class))) {
                 return new PlatformMethodInfo(
                         m,
                         PlatformMethodType.GETTER,
@@ -867,23 +1009,22 @@ public class PlatformUtils {
             }
         }
         return new PlatformMethodInfo(
-                m,PlatformMethodType.METHOD, null,null
+                m, PlatformMethodType.METHOD, null, null
         );
     }
 
     public static boolean isSetterMethod(Method m) {
-        return isCamelPrefixed(m.getName(),METHOD_SET_PREFIX);
+        return isCamelPrefixed(m.getName(), METHOD_SET_PREFIX);
     }
 
     public static boolean isGetterMethod(Method m) {
-        return isCamelPrefixed(m.getName(),METHOD_GET_PREFIX) || isCamelPrefixed(m.getName(),METHOD_IS_PREFIX);
+        return isCamelPrefixed(m.getName(), METHOD_GET_PREFIX) || isCamelPrefixed(m.getName(), METHOD_IS_PREFIX);
     }
 
     public static String setterName(String name) {
         //Class<?> type = field.getDataType();
         return METHOD_SET_PREFIX + adjustTypeFirstChar(name);
     }
-
 
     public static boolean isStatic(Method method) {
         return Modifier.isStatic(method.getModifiers());
@@ -1051,8 +1192,6 @@ public class PlatformUtils {
         return proxyFactory;
     }
 
-
-
     public static <T> T createObjectInterceptor(Class<T> type, final PlatformMethodProxy<T> methodProxy) {
         return getProxyFactory().create(type, methodProxy);
     }
@@ -1169,11 +1308,9 @@ public class PlatformUtils {
 //        }
 //        return null;
 //    }
-
 //    public static Method findPlatformMethod(Class type, String name, Class ret, Class... args) {
 //        return PlatformUtils.getBeanType(type).getMethod(type, name, ret, args);
 //    }
-
     public static <T> List<T> trimToSize(List<T> list) {
         if (list instanceof ArrayList) {
             ((ArrayList<T>) list).trimToSize();
@@ -1247,7 +1384,7 @@ public class PlatformUtils {
         return b == BoolEnum.TRUE;
     }
 
-    public static boolean isDefaultTypeValue(Object fieldValue,Class type) {
+    public static boolean isDefaultTypeValue(Object fieldValue, Class type) {
         Object fieldDefaultValue = PlatformUtils.DEFAULT_VALUES_BY_TYPE.get(type);
         if (fieldDefaultValue == null) {
             return fieldValue == null;
@@ -1256,13 +1393,13 @@ public class PlatformUtils {
         }
     }
 
-    public static PlatformBeanTypeCache getBeanType(Class cls){
+    public static PlatformBeanTypeCache getBeanType(Class cls) {
         PlatformBeanTypeCache platformBeanType = classBeanTypeReflectorMap.get(cls);
-        if(platformBeanType ==null){
-            synchronized (classBeanTypeReflectorMap){
+        if (platformBeanType == null) {
+            synchronized (classBeanTypeReflectorMap) {
                 platformBeanType = classBeanTypeReflectorMap.get(cls);
-                if(platformBeanType ==null){
-                    platformBeanType =new PlatformBeanTypeCache(cls);
+                if (platformBeanType == null) {
+                    platformBeanType = new PlatformBeanTypeCache(cls);
                     classBeanTypeReflectorMap.put(cls, platformBeanType);
                     platformBeanType.getPropertyNames();// just to build the type
                 }
@@ -1271,12 +1408,11 @@ public class PlatformUtils {
         return platformBeanType;
     }
 
-
-    public static Map<String,DecorationValue> getAnnotationDefaultDecorationValues(Class annotationClass) {
-        Map<String,DecorationValue> a=new HashMap<>();
+    public static Map<String, DecorationValue> getAnnotationDefaultDecorationValues(Class annotationClass) {
+        Map<String, DecorationValue> a = new HashMap<>();
         for (Method method : annotationClass.getDeclaredMethods()) {
-            if(method.getParameterTypes().length==0){
-                a.put(method.getName(),getAnnotationDefaultDecorationValue(annotationClass,method.getName()));
+            if (method.getParameterTypes().length == 0) {
+                a.put(method.getName(), getAnnotationDefaultDecorationValue(annotationClass, method.getName()));
             }
         }
         return a;
@@ -1285,25 +1421,127 @@ public class PlatformUtils {
     @SuppressWarnings("unchecked")
     public static DecorationValue getAnnotationDefaultDecorationValue(Class annotationClass, String element) {
         Object annotationDefault = getAnnotationDefault(annotationClass, element);
-        if(annotationDefault instanceof Annotation){
-            return new AnnotationDecoration((Annotation) annotationDefault, DecorationSourceType.TYPE, null,null,null,-1);
+        if (annotationDefault instanceof Annotation) {
+            return new AnnotationDecoration((Annotation) annotationDefault, DecorationSourceType.TYPE, null, null, null, -1);
         }
         return new DecorationPrimitiveValue(annotationDefault, ConfigInfo.DEFAULT);
     }
 
     @SuppressWarnings("unchecked")
-    public static<T> T getAnnotationDefault(Class annotationClass, String element) {
+    public static <T> T getAnnotationDefault(Class annotationClass, String element) {
         Method method = null;
         try {
-            method = annotationClass.getMethod(element,(Class[])null);
+            method = annotationClass.getMethod(element, (Class[]) null);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        return ((T)method.getDefaultValue());
+        return ((T) method.getDefaultValue());
     }
 
     public static boolean equals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
     }
 
+    public static int getPlatformType(int flags, int type, int subType, int size) {
+        int x = flags & PlatformUtils.TYPE_MASK_FLAGS;
+        x |= (size & PlatformUtils.TYPE_MASK_SIZE);
+        x |= (type & PlatformUtils.TYPE_MASK_MAJOR);
+        x |= (subType & PlatformUtils.TYPE_MASK_MINOR);
+        return x;
+    }
+
+    public static boolean isPlatformType(int id, int flags, int type, int subType, int size) {
+        return getPlatformType(flags, type, subType, size) == id;
+    }
+
+    public static String getPlatformTypeName(int id) {
+        Set<String> all = new TreeSet<>();
+//        int type = id & PlatformUtils.TYPE_MASK_MAJOR;
+//        int subtype = id & PlatformUtils.TYPE_MASK_MINOR;
+//        int size = id & PlatformUtils.TYPE_MASK_SIZE;
+        if (isSet(id, PlatformUtils.TYPE_SIZE_128, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_128");
+        }
+        if (isSet(id, PlatformUtils.TYPE_SIZE_64, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_64");
+        }
+        if (isSet(id, PlatformUtils.TYPE_SIZE_32, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_32");
+        }
+        if (isSet(id, PlatformUtils.TYPE_SIZE_16, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_16");
+        }
+        if (isSet(id, PlatformUtils.TYPE_SIZE_8, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_8");
+        }
+        if (isSet(id, PlatformUtils.TYPE_SIZE_BIG, PlatformUtils.TYPE_MASK_SIZE)) {
+            all.add("SIZE_BIG");
+        }
+        if (isSet(id, PlatformUtils.TYPE_MAJOR_BOOLEAN, PlatformUtils.TYPE_MASK_MAJOR)) {
+            all.add("BOOLEAN");
+        }
+        if (isSet(id, PlatformUtils.TYPE_FLAGS_NULLABLE, PlatformUtils.TYPE_FLAGS_NULLABLE)) {
+            all.add("NULLABLE");
+        }
+        if (isSet(id, PlatformUtils.TYPE_MAJOR_NUMBER, PlatformUtils.TYPE_MASK_MAJOR)) {
+            all.add("NUMBER");
+            if (isSet(id, PlatformUtils.TYPE_MINOR_DECIMAL, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("DECIMAL");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_FLOAT, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("FLOAT");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_INT, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("INT");
+            }
+        }
+        if (isSet(id, PlatformUtils.TYPE_MAJOR_STRING, PlatformUtils.TYPE_MASK_MAJOR)) {
+            all.add("STRING");
+            if (isSet(id, PlatformUtils.TYPE_MINOR_CHAR, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("CHAR");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_CHARS, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("CHARS");
+            }
+        }
+        if (isSet(id, PlatformUtils.TYPE_MAJOR_TEMPORAL, PlatformUtils.TYPE_MASK_MAJOR)) {
+            all.add("TEMPORAL");
+            if (isSet(id, PlatformUtils.TYPE_MINOR_DATE, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("DATE");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_DATETIME, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("DATETIME");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_MONTH, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("MONTH");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_TIME, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("TIME");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_TIMESTAMP, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("TIMESTAMP");
+            }
+            if (isSet(id, PlatformUtils.TYPE_MINOR_YEAR, PlatformUtils.TYPE_MASK_MINOR)) {
+                all.add("YEAR");
+            }
+        }
+        if (isSet(id, PlatformUtils.TYPE_MAJOR_OTHER, PlatformUtils.TYPE_MASK_MAJOR)) {
+            all.add("OTHER");
+        }
+        if (all.isEmpty()) {
+            all.add("?");
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String string : all) {
+            if (sb.length() > 0) {
+                sb.append("|");
+            }
+            sb.append(string);
+        }
+        return sb.toString();
+    }
+
+    private static boolean isSet(int id, int portion, int mask) {
+        return (id & mask) == portion;
+    }
 }

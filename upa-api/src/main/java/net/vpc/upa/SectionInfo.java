@@ -36,18 +36,18 @@ package net.vpc.upa;
 
 import java.util.List;
 
-public class SectionInfo extends EntityPartInfo {
-    private List<EntityPartInfo> children;
+public class SectionInfo extends EntityItemInfo {
+    private List<EntityItemInfo> children;
 
     public SectionInfo() {
         super("section");
     }
 
-    public List<EntityPartInfo> getChildren() {
+    public List<EntityItemInfo> getChildren() {
         return children;
     }
 
-    public void setChildren(List<EntityPartInfo> children) {
+    public void setChildren(List<EntityItemInfo> children) {
         this.children = children;
     }
 }

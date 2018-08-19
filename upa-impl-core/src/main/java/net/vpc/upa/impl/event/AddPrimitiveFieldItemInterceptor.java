@@ -1,12 +1,12 @@
 package net.vpc.upa.impl.event;
 
 import net.vpc.upa.CompoundField;
-import net.vpc.upa.EntityPart;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.Section;
 import net.vpc.upa.impl.DefaultCompoundField;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
+import net.vpc.upa.EntityItem;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -25,11 +25,11 @@ public class AddPrimitiveFieldItemInterceptor implements ItemInterceptor<Primiti
 
     @Override
     public void after(PrimitiveField child, int index) {
-        EntityPart oldParent = child.getParent();
+        EntityItem oldParent = child.getParent();
         if (oldParent != null && oldParent != defaultCompoundField) {
             if (oldParent instanceof Section) {
                 Section x = (Section) oldParent;
-                x.removePartAt(x.indexOfPart(child));
+                x.removeItemAt(x.indexOfItem(child));
             } else if (oldParent instanceof CompoundField) {
                 CompoundField x = (CompoundField) oldParent;
                 ((DefaultCompoundField)x).dropFieldAt(x.indexOfField(child));

@@ -6,14 +6,14 @@ import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclaration;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledAnd;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEquals;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledIdEnumerationExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledOr;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
+import net.vpc.upa.impl.upql.ExpressionDeclaration;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledAnd;
+import net.vpc.upa.impl.upql.ext.expr.CompiledEquals;
+import net.vpc.upa.impl.upql.ext.expr.CompiledIdEnumerationExpression;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledOr;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -81,7 +81,7 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
                             } else {
                                 p2.setChild(rr);
                             }
-                            CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(key2.getObjectAt(j), UPAUtils.getTypeTransformOrIdentity(f)));
+                            CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(key2.getObjectAt(j), f.getEffectiveTypeTransform()));
                             if (a == null) {
                                 a = v;
                             } else {
@@ -108,7 +108,7 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
                     } else {
                         p2.setChild(rr);
                     }
-                    CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(uKey.getObjectAt(j), UPAUtils.getTypeTransformOrIdentity(f)));
+                    CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(uKey.getObjectAt(j), f.getEffectiveTypeTransform()));
                     if (a == null) {
                         a = v;
                     } else {

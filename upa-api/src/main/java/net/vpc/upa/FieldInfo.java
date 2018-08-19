@@ -38,7 +38,7 @@ package net.vpc.upa;
  * 
  * @author vpc
  */
-public abstract class FieldInfo extends EntityPartInfo {
+public abstract class FieldInfo extends EntityItemInfo {
     private DataTypeInfo dataType;
     private final String kind;
     private PropertyAccessType propertyAccessType;

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledD2V;
+import net.vpc.upa.impl.upql.ext.expr.CompiledToString;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 @PortabilityHint(target = "C#",name = "suppress")
 class MSSQLServerD2VSQLProvider extends MSSQLServerFunctionSQLProvider {
     public MSSQLServerD2VSQLProvider() {
-        super(CompiledD2V.class);
+        super(CompiledToString.class);
     }
 
     @Override

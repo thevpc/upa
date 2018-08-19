@@ -1,6 +1,5 @@
 package net.vpc.upa.impl.context;
 
-import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceGroupProvider;
 
 /**

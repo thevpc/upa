@@ -3,8 +3,8 @@ package net.vpc.upa.impl.persistence.specific.derby;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledDatePart;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDatePart;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

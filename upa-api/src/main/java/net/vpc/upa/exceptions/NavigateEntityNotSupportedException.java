@@ -42,6 +42,6 @@ import net.vpc.upa.Entity;
 
 public class NavigateEntityNotSupportedException extends EntityException {
     public NavigateEntityNotSupportedException(Entity entity) {
-        super(entity, "navigate.NotSupported");
+        super(entity, "navigate", "NotSupported");
     }
 }

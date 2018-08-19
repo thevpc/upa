@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.shared.sql.ANSIFunctionSQLProvider;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledCount;
+import net.vpc.upa.impl.upql.ext.expr.CompiledCount;
 import net.vpc.upa.impl.util.StringUtils;
 
 import java.util.Map;

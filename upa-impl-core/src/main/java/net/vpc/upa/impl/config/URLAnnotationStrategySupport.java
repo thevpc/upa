@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.config.annotationparser.DecorationComparator;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -32,12 +33,13 @@ public class URLAnnotationStrategySupport {
 
     private static final Logger log = Logger.getLogger(URLAnnotationStrategySupport.class.getName());
     private static final Class[] persistenceUnitItemDefinitionListenerTypes = new Class[]{
-            PackageDefinitionListener.class, SectionDefinitionListener.class, EntityDefinitionListener.class, FieldDefinitionListener.class, IndexDefinitionListener.class, TriggerDefinitionListener.class //            , PersistenceUnitTriggerDefinitionListener.class
-            , RelationshipDefinitionListener.class
+        PackageDefinitionListener.class, SectionDefinitionListener.class, EntityDefinitionListener.class, FieldDefinitionListener.class, IndexDefinitionListener.class, TriggerDefinitionListener.class //            , PersistenceUnitTriggerDefinitionListener.class
+        ,
+         RelationshipDefinitionListener.class
     };
     /**
-     * @PortabilityHint(target = "C#", name = "replace")
-     * private String[] EXTRA_ANNOTATIONS={};
+     * @PortabilityHint(target = "C#", name = "replace") private String[]
+     * EXTRA_ANNOTATIONS={};
      */
     private String[] EXTRA_ANNOTATIONS = JPAAnnotationsAdapter.JPA_ANNOTATIONS;
 
@@ -63,11 +65,10 @@ public class URLAnnotationStrategySupport {
     public void scan(UPAContext context, UPAContextConfig bootstrapContextConfig, ScanSource source, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
 //            UPAContextConfig bootstrapContextConfig = context.getBootstrapContextConfig();
-            DecorationParser parser = new DecorationParser(UPAUtils.toConfigurationStrategy(source).toIterable(context),
+            DecorationParser parser = new DecorationParser(UPAUtils.toBaseScanSource(source).toIterable(context),
                     new DefaultDecorationFilter()
                             .addDecorations(
                                     Callback.class,
-
                                     OnAlter.class,
                                     OnPreAlter.class,
                                     OnPreCreate.class,
@@ -91,7 +92,6 @@ public class URLAnnotationStrategySupport {
                                     OnPrepare.class,
                                     OnPreReset.class,
                                     OnReset.class,
-
                                     SecurityContext.class,
                                     net.vpc.upa.config.PersistenceUnit.class,
                                     net.vpc.upa.config.PersistenceNameStrategy.class,
@@ -257,7 +257,6 @@ public class URLAnnotationStrategySupport {
                 }
             }
 
-
         } catch (UPAException e) {
             throw e;
         } catch (Exception e) {
@@ -267,7 +266,7 @@ public class URLAnnotationStrategySupport {
 
     public void scan(PersistenceGroup persistenceGroup, ScanSource strategy, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
-            DecorationParser parser = new DecorationParser(UPAUtils.toConfigurationStrategy(strategy).toIterable(persistenceGroup),
+            DecorationParser parser = new DecorationParser(UPAUtils.toBaseScanSource(strategy).toIterable(persistenceGroup),
                     new DefaultDecorationFilter()
                             .addDecorations(
                                     Callback.class,
@@ -349,11 +348,10 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    public void scan(net.vpc.upa.PersistenceUnit persistenceUnit, ScanSource strategy, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(net.vpc.upa.PersistenceUnit persistenceUnit, ScanSource scanSource, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
         try {
-            EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, decorationRepository);
             DecorationParser parser = new DecorationParser(
-                    UPAUtils.toConfigurationStrategy(strategy).toIterable(persistenceUnit),
+                    UPAUtils.toBaseScanSource(scanSource).toIterable(persistenceUnit),
                     new DefaultDecorationFilter()
                             .addDecorations(
                                     net.vpc.upa.config.SecurityContext.class,
@@ -373,7 +371,7 @@ public class URLAnnotationStrategySupport {
                                     net.vpc.upa.config.Init.class,
                                     net.vpc.upa.config.ManyToOne.class,
                                     net.vpc.upa.config.OneToOne.class,
-                                    net.vpc.upa.config.Partial.class,
+                                    //                                    net.vpc.upa.config.Partial.class,
                                     net.vpc.upa.config.Password.class,
                                     net.vpc.upa.config.ToString.class,
                                     net.vpc.upa.config.ToByteArray.class,
@@ -429,10 +427,10 @@ public class URLAnnotationStrategySupport {
             parser.parse();
             DecorationRepository repo = parser.getDecorationRepository();
             DecorationRepository newrepo = parser.getNewDecorationRepository();
-            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, scanSource.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
+                Decoration ignored = scanSource.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
                 if (ignored != null) {
                     continue;
                 }
@@ -467,85 +465,134 @@ public class URLAnnotationStrategySupport {
                     }
                 }
             }
-            Map<Class, Set<Class>> entityClasses = new LinkedHashMap<Class, Set<Class>>();
-            Map<Class, Class> partialEntities = new LinkedHashMap<Class, Class>();
+//            Map<Class, Set<Class>> entityClassesByType = new LinkedHashMap<Class, Set<Class>>();
+//            Map<Class, String> classNameToEntityName = new LinkedHashMap<Class, String>();
 
+//            Map<Class, Class> partialEntities = new LinkedHashMap<Class, Class>();
+            Set<Class> classWithEntityAnnotations = new HashSet<>();
             for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.Entity.class.getName())) {
-                Class tt = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
+                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
+            }
+//            for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.Partial.class.getName())) {
+//                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
+//            }            
+            for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.View.class.getName())) {
+                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
+            }
+            for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.UnionEntity.class.getName())) {
+                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
+            }
+            for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.Singleton.class.getName())) {
+                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
+            }
+
+            for (Class tt : classWithEntityAnnotations.toArray(new Class[classWithEntityAnnotations.size()])) {
+                Decoration ignored = scanSource.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
                 if (ignored != null) {
-                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
+                    log.log(Level.FINE, "\t Ignored Entity Class {0}", tt);
+                    classWithEntityAnnotations.remove(tt);
                     continue;
-                }
-                Class entityType = at.getType("entityType");
-                if (entityType != null && (Void.TYPE.equals(entityType) || Void.class.equals(entityType))) {
-                    entityType = tt;
-                }
-                Set<Class> s = entityClasses.get(entityType);
-                if (s == null) {
-                    s = new LinkedHashSet<Class>();
-                    entityClasses.put(entityType, s);
-                }
-                if (tt.equals(entityType)) {
-                    log.log(Level.FINEST, "\t Detect Entity {0}", tt);
-                } else {
-                    log.log(Level.FINEST, "\t Detect Entity {0} as {1}", entityType);
                 }
                 if (listener != null) {
                     listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, net.vpc.upa.config.Entity.class, tt,
                             null
                     ));
                 }
-                s.add(tt);
             }
+//            for (Map.Entry<Class, Set<Class>> entry : entityClassesByType.entrySet()) {
+//                Set<Class> v = entry.getValue();
+//                for (Class class1 : v) {
+//                    
+//                }
+//            }
 
-            for (Decoration at : newrepo.getDeclaredDecorations(Partial.class.getName())) {
-                Class tt = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = newrepo.getTypeDecoration(tt, Ignore.class);
-                if (ignored != null) {
-                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
-                    continue;
-                }
-                Decoration entityAnnotation = newrepo.getTypeDecoration(tt, net.vpc.upa.config.Entity.class);
-                if (entityAnnotation == null) {
-                    throw new UPAIllegalArgumentException("Missing @Entity along with @Partial for " + tt);
-                }
-                partialEntities.put(tt, at.getType("value"));
-                entityClasses.remove(tt);
-                log.log(Level.FINE, "\t Detect Partial Entity {0} as {1}", new Object[]{at.getType("value"), tt});
-                if (listener != null) {
-                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, Partial.class, tt,
-                            null
-                    ));
-                }
-            }
-
-            for (Map.Entry<Class, Class> entry : partialEntities.entrySet()) {
-                Class rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
-                if (rootEntity == null) {
-//                    rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
-                    throw new UPAIllegalArgumentException("Partial Entity " + entry.getKey() + " references invalid Entity or Partial (" + entry.getValue() + ")");
-                }
-                entityClasses.get(rootEntity).add(entry.getKey());
-            }
-
+//            for (Decoration entityDecoration : newrepo.getDeclaredDecorations(net.vpc.upa.config.Entity.class.getName())) {
+//                Class tt = PlatformUtils.forName(entityDecoration.getLocationType());
+//                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
+//                if (ignored != null) {
+//                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
+//                    continue;
+//                }
+//                Class entityType = entityDecoration.getType("entityType");
+//                if (entityType != null && (Void.TYPE.equals(entityType) || Void.class.equals(entityType))) {
+//                    entityType = tt;
+//                }
+//                Set<Class> s = entityClasses.get(entityType);
+//                if (s == null) {
+//                    s = new LinkedHashSet<Class>();
+//                    entityClasses.put(entityType, s);
+//                }
+//                if (tt.equals(entityType)) {
+//                    log.log(Level.FINEST, "\t Detect Entity {0}", tt);
+//                } else {
+//                    log.log(Level.FINEST, "\t Detect Entity {0} as {1}", entityType);
+//                }
+//                if (listener != null) {
+//                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, net.vpc.upa.config.Entity.class, tt,
+//                            null
+//                    ));
+//                }
+//                s.add(tt);
+//            }
+//
+//            for (Decoration at : newrepo.getDeclaredDecorations(Partial.class.getName())) {
+//                Class tt = PlatformUtils.forName(at.getLocationType());
+//                Decoration ignored = newrepo.getTypeDecoration(tt, Ignore.class);
+//                if (ignored != null) {
+//                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
+//                    continue;
+//                }
+//                Decoration entityAnnotation = newrepo.getTypeDecoration(tt, net.vpc.upa.config.Entity.class);
+//                if (entityAnnotation == null) {
+//                    throw new UPAIllegalArgumentException("Missing @Entity along with @Partial for " + tt);
+//                }
+//                partialEntities.put(tt, at.getType("value"));
+//                entityClasses.remove(tt);
+//                log.log(Level.FINE, "\t Detect Partial Entity {0} as {1}", new Object[]{at.getType("value"), tt});
+//                if (listener != null) {
+//                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, Partial.class, tt,
+//                            null
+//                    ));
+//                }
+//            }
+//
+//            for (Map.Entry<Class, Class> entry : partialEntities.entrySet()) {
+//                Class rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
+//                if (rootEntity == null) {
+////                    rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
+//                    throw new UPAIllegalArgumentException("Partial Entity " + entry.getKey() + " references invalid Entity or Partial (" + entry.getValue() + ")");
+//                }
+//                entityClasses.get(rootEntity).add(entry.getKey());
+//            }
             Map<String, String> typeToEntityNameMap = new HashMap<>();
-            for (Set<Class> ee : entityClasses.values()) {
-                if (listener != null) {
-                    EntityDescriptor resolved = r.resolve(ee.toArray(new Class[ee.size()]));
-                    for (Class aClass : ee) {
-                        typeToEntityNameMap.put(aClass.getName(), resolved.getName());
+            if (listener != null) {
+//                EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, decorationRepository);
+                EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, newrepo);
+                for (EntityDescriptor resolved : r.resolveAll(classWithEntityAnnotations.toArray())) {
+                    Object source = resolved.getSource();
+                    if (source instanceof Class[]) {
+                        for (Class aClass : ((Class[]) source)) {
+                            typeToEntityNameMap.put(aClass.getName(), resolved.getName());
+                        }
                     }
                     listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, EntityDescriptor.class, EntityDescriptor.class,
                             resolved
                     ));
                 }
+//                for (Set<Class> ee : entityClassesByName.values()) {
+//                    EntityDescriptor resolved = r.resolve(ee.toArray(new Class[ee.size()]));
+//                    for (Class aClass : ee) {
+//                        typeToEntityNameMap.put(aClass.getName(), resolved.getName());
+//                    }
+//                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, EntityDescriptor.class, EntityDescriptor.class,
+//                            resolved
+//                    ));
+//                }
             }
 
             for (Decoration d : newrepo.getDeclaredRepeatableDecorations(
                     net.vpc.upa.config.Table.class.getName(),
                     net.vpc.upa.config.Tables.class.getName()
-
             )) {
                 String entityName = null;
                 switch (d.getTarget()) {
@@ -588,7 +635,6 @@ public class URLAnnotationStrategySupport {
             for (Decoration d : newrepo.getDeclaredRepeatableDecorations(
                     net.vpc.upa.config.Column.class.getName(),
                     net.vpc.upa.config.Columns.class.getName()
-
             )) {
                 String entityName = null;
                 String fieldName = null;
@@ -647,10 +693,9 @@ public class URLAnnotationStrategySupport {
                 }
             }
 
-
             for (Decoration d : newrepo.getDeclaredDecorations(net.vpc.upa.config.Function.class.getName())) {
                 final Class tt = PlatformUtils.forName(d.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
+                Decoration ignored = scanSource.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
                 if (ignored != null) {
                     log.log(Level.FINE, "\t Ignored QLFunction {0}", tt);
                     continue;
@@ -662,7 +707,7 @@ public class URLAnnotationStrategySupport {
             }
             for (Decoration at : newrepo.getDeclaredDecorations(SecurityContext.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
+                Decoration ignored = scanSource.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
                 boolean ok = false;
                 if (ignored == null) {
                     if (EntitySecurityManager.class.isAssignableFrom(t)) {
@@ -686,7 +731,6 @@ public class URLAnnotationStrategySupport {
             throw new UPAException(e, new I18NString("URLAnnotationStrategySupportConfigureException"));
         }
     }
-
 
     private Class getRootEntity(Class c, Map<Class, Set<Class>> entityClasses, Map<Class, Class> partialEntities) {
         if (entityClasses.containsKey(c)) {
@@ -782,7 +826,7 @@ public class URLAnnotationStrategySupport {
             if (c.getAutoStart() != null) {
                 old.setAutoStart(c.getAutoStart());
             }
-            if (c.getInheritScanFilters()!= null) {
+            if (c.getInheritScanFilters() != null) {
                 old.setInheritScanFilters(c.getInheritScanFilters());
             }
             if (!StringUtils.isNullOrEmpty(c.getPersistenceNameEscape())) {
@@ -844,4 +888,5 @@ public class URLAnnotationStrategySupport {
         }
         return new ArrayList<PersistenceUnitConfig>(t.values());
     }
+
 }

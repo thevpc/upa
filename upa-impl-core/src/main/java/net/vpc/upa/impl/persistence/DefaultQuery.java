@@ -1,10 +1,11 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledEntityStatement;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.persistence.result.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
@@ -13,7 +14,6 @@ import net.vpc.upa.exceptions.FindException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.IdToKeyConverter;
-import net.vpc.upa.impl.uql.compiledexpression.*;
 import net.vpc.upa.impl.util.ConvertedList;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.Query;
@@ -283,7 +283,7 @@ public class DefaultQuery extends AbstractQuery {
     }
 
     private Entity resolveDefaultEntity() {
-        String[] a = UQLUtils.resolveEntityAndAlias((QueryStatement) query);
+        String[] a = UPQLUtils.resolveEntityAndAlias((QueryStatement) query);
         Entity entity = null;
         if (a != null) {
             entity = context.getPersistenceUnit().getEntity(a[0]);

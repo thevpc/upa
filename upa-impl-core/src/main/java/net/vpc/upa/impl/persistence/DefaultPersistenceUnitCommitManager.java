@@ -78,26 +78,26 @@ public class DefaultPersistenceUnitCommitManager {
         }
         if (object instanceof Entity) {
             if (persistenceStore.isView((Entity) object)) {
-                storage.add(new ViewStructureCommit((Entity)object, this));
+                storage.add(new ViewStructureCommit((Entity) object, this));
             } else {
-                storage.add(new EntityStructureCommit((Entity)object, this));
-                storage.add(new EntityPKStructureCommit((Entity)object, this));
-                storage.add(new EntityImplicitViewStructureCommit((Entity)object, this));
+                storage.add(new EntityStructureCommit((Entity) object, this));
+                storage.add(new EntityPKStructureCommit((Entity) object, this));
+                storage.add(new EntityImplicitViewStructureCommit((Entity) object, this));
             }
             return;
         }
 
         if (object instanceof Relationship) {
-            storage.add(new RelationshipStructureCommit((Relationship)object,this));
+            storage.add(new RelationshipStructureCommit((Relationship) object, this));
             return;
         }
         if (object instanceof Index) {
-            storage.add(new IndexStructureCommit((Index)object,this) );
+            storage.add(new IndexStructureCommit((Index) object, this));
         }
     }
 
     public boolean commitStructure(PersistenceUnit persistenceUnit) throws UPAException {
-        EntityExecutionContext context = ((PersistenceUnitExt)persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME,null);
+        EntityExecutionContext context = ((PersistenceUnitExt) persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME, null);
         Collections.sort(storage, structureCommitComparator);
         boolean someCommit = false;
         for (StructureCommit next : storage) {

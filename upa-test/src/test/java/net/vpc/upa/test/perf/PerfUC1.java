@@ -12,6 +12,10 @@ import net.vpc.upa.types.Month;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import net.vpc.upa.VoidAction;
+import net.vpc.upa.impl.UPAImplDefaults;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -19,92 +23,174 @@ import java.util.Date;
  */
 public class PerfUC1 {
 
-    static int expand = 1000;
-    static int stability = 20;
+    static int count = 1000;
+    static int stability = 3;
 
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(PerfUC1.class.getName());
 
+    private static Business bo;
+    
+    //added main to profile perfs
     public static void main(String[] args) {
         setup();
-        new PerfUC1().testPerf2();
-        stability = 5;
-        new PerfUC1().testPerf();
+        PerfUC1 v = new PerfUC1();
+        v.testPerfPersistSingleEntry();
+        v.testPerfMultiEntryInitialized();
+        v.testPerfMultiEntryNop();
+        v.testPerfMultiEntryPersist();
     }
-    private static Business bo;
-
+    
+    @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(PerfUC1.class);
         pu.addEntity(Client.class);
         pu.start();
         bo = UPA.makeSessionAware(new Business());
+        bo.init();
+        UPAImplDefaults.DEBUG_MODE = false;
     }
 
-    public void testPerf2() {
-        bo.testPerf2();
+    @Test
+    public void testPerfPersistSingleEntry() {
+//        stability = 20;
+        bo.persistMany();
     }
 
-    public void testPerf() {
+    @Test
+    public void testPerfMultiEntryPersist() {
+//        stability = 5;
         LogUtils.silence();
         bo.clear();
-        evalPerf(new Runnable() {
-                     @Override
-                     public void run() {
-                         bo.testPerf();
-                     }
-                 },
+        evalPerf("MultiEntryPersist", new Runnable() {
+            @Override
+            public void run() {
+                bo.persistOne();
+            }
+        },
                 new Runnable() {
+            @Override
+            public void run() {
+                bo.clear();
+            }
+        }
+        );
+    }
+    @Test
+    public void testPerfMultiEntryNop() {
+//        stability = 5;
+        LogUtils.silence();
+        bo.clear();
+        evalPerf("MultiEntryNop", new Runnable() {
+            @Override
+            public void run() {
+                bo.nop();
+            }
+        },
+                new Runnable() {
+            @Override
+            public void run() {
+                bo.clear();
+            }
+        }
+        );
+    }
+
+    @Test
+    public void testPerfMultiEntryInitialized() {
+        UPA.getPersistenceUnit().invoke(new VoidAction() {
+            @Override
+            public void run() {
+//        stability = 5;
+                LogUtils.silence();
+                bo.clear();
+                evalPerf("MultiEntryInitializedPersist", new Runnable() {
+                    @Override
+                    public void run() {
+                        bo.persistOne();
+                    }
+                },
+                        new Runnable() {
                     @Override
                     public void run() {
                         bo.clear();
                     }
                 }
-        );
+                );
+            }
+        });
     }
 
     /**
      * 1.2.0.31.0 :: all-min/avg/max=1178/2130/5123 :: one-min/avg/max=11/21/51
      * 1.2.0.33.0 :: all-min/avg/max=1245/2097/3334 :: one-min/avg/max=12/20/33
-                     all-min/avg/max=1252/2259/4572 :: one-min/avg/max=12/22/45
+     * all-min/avg/max=1252/2259/4572 :: one-min/avg/max=12/22/45
      */
-
-    public static void evalPerf(Runnable r,Runnable c) {
-        long min=Long.MAX_VALUE;
-        long max=0;
-        long all=0;
+    public static void evalPerf(String name, Runnable r, Runnable c) {
+        long min = Long.MAX_VALUE;
+        long max = 0;
+        long all = 0;
+        int w = 6;
         for (int i = 0; i < stability; i++) {
             long start = System.currentTimeMillis();
-            for (int j = 0; j < expand; j++) {
+            for (int j = 0; j < count; j++) {
                 r.run();
             }
             c.run();
-            long end= System.currentTimeMillis();
-            long v=end-start;
-            if(v<min){
-                min=v;
+            long end = System.currentTimeMillis();
+            long v = end - start;
+            if (v < min) {
+                min = v;
             }
-            if(v>max){
-                max=v;
+            if (v > max) {
+                max = v;
             }
-            all+=v;
-            System.out.println("\t\tall-curr/min/avg/max="+v+"/"+min+"/"+(all/(i+1))+"/"+max+" :: one-curr/min/avg/max="+(v/expand)+"/"+(min/expand)+"/"+(all/(i+1)/expand)+"/"+(max/expand));
+            all += v;
+            System.out.println("\t\t["+PUUtils.getVersion()+"][" + PUUtils.formatLeft(name,30) + "][stability=" + stability + " ; count=" + count + "] all-curr/min/avg/max="
+                    + " | " + PUUtils.formatLeft(v, w)
+                    + " | " + PUUtils.formatLeft(min, w)
+                    + " | " + PUUtils.formatLeft((all / (i + 1)), w)
+                    + " | " + PUUtils.formatLeft(max, w)
+                    + " :: one-curr/min/avg/max="
+                    + " | " + PUUtils.formatLeft((v / count), w)
+                    + " | " + PUUtils.formatLeft((min / count), w)
+                    + " | " + PUUtils.formatLeft((all / (i + 1) / count), w)
+                    + " | " + PUUtils.formatLeft((max / count), w)
+                    + " | "
+            );
         }
-        System.out.println("all-min/avg/max="+min+"/"+(all/stability)+"/"+max+" :: one-min/avg/max="+(min/expand)+"/"+(all/stability/expand)+"/"+(max/expand));
+        System.out.println("["+PUUtils.getVersion()+"][" + PUUtils.formatLeft(name,30) + "][stability=" + stability + " ; count=" + count + "] all-min/avg/max="
+                + " | " + PUUtils.formatLeft(min, w)
+                + " | " + PUUtils.formatLeft((all / stability), w)
+                + " | " + PUUtils.formatLeft(max, w)
+                + " :: one-min/avg/max="
+                + " | " + PUUtils.formatLeft((min / count), w)
+                + " | " + PUUtils.formatLeft((all / stability / count), w)
+                + " | " + PUUtils.formatLeft((max / count), w)
+                + " | "
+        );
     }
 
     public static class Business {
+
+        public void init() {
+        }
 
         public void clear() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             pu.createQuery("Delete from Client").executeNonQuery();
         }
 
-        public void testPerf2() {
+        public void nop() {
+            
+        }
+        public void persistMany() {
             LogUtils.silence();
             clear();
-            evalPerf(new Runnable() {
+            evalPerf("PersistMany", new Runnable() {
                 @Override
                 public void run() {
-                    testPerf();
+                    persistOne();
                 }
             },
                     new Runnable() {
@@ -116,7 +202,7 @@ public class PerfUC1 {
             );
         }
 
-        public void testPerf() {
+        public void persistOne() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 
             Entity entityManager = pu.getEntity(Client.class);

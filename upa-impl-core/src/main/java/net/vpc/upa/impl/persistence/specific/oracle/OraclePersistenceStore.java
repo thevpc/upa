@@ -57,7 +57,6 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new OracleMonthStartSQLProvider());
         getSqlManager().register(new OracleMonthEndSQLProvider());
         getSqlManager().register(new OracleCastSQLProvider());
-        getSqlManager().register(new OracleI2VSQLProvider());
         getSqlManager().register(new OracleD2VSQLProvider());
         getSqlManager().register(new NullValANSISQLProvider());
         getSqlManager().register(new OracleTypeNameSQLProvider());

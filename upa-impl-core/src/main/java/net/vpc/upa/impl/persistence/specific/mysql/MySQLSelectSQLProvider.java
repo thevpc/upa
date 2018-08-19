@@ -4,8 +4,8 @@ import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.SelectSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

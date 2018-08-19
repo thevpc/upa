@@ -42,13 +42,14 @@ import java.lang.annotation.Target;
 
 /**
  * corresponds to the JPA
- *
+ * Should use @Entity(entityType=?) instead!
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @Id
  * @creationdate 8/28/12 10:17 PM
  */
 @Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
+@Deprecated
 public @interface Partial {
 
     Class value();

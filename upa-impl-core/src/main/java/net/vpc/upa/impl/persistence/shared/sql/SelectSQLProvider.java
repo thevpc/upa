@@ -1,12 +1,17 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledQueryField;
+import net.vpc.upa.impl.upql.ext.expr.CompiledNameOrSelect;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
+import net.vpc.upa.impl.upql.ext.expr.CompiledJoinCriteria;
+import net.vpc.upa.impl.upql.ext.expr.CompiledEntityName;
+import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
 import net.vpc.upa.Entity;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Select;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
 

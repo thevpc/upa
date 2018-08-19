@@ -9,7 +9,7 @@ import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.PatternType;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -40,7 +40,7 @@ class BinaryOperatorExpressionEvaluator implements QLTypeEvaluator {
 //            if(!(b instanceof Expression)){
 //                b=new Literal(a,null);
 //            }
-            return UQLUtils.createBinaryExpr(eq.getOperator(),a0,b0);
+            return UPQLUtils.createBinaryExpr(eq.getOperator(),a0,b0);
         }
         switch (eq.getOperator()) {
             case AND:

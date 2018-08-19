@@ -42,6 +42,6 @@ import net.vpc.upa.Entity;
 
 public class RenameDocumentNotAllowedException extends EntityException {
     public RenameDocumentNotAllowedException(Entity entity) {
-        super(entity, "rename.NotAllowed");
+        super(entity, "rename", "NotAllowed");
     }
 }

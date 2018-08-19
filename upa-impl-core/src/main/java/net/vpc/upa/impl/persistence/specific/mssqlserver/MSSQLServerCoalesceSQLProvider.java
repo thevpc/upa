@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mssqlserver;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledCoalesce;
+import net.vpc.upa.impl.upql.ext.expr.CompiledCoalesce;
 
 import java.util.Map;
 

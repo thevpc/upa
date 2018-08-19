@@ -19,7 +19,7 @@ public class LockInfoDesc {
     public static final String LOCK_INFO_ENTITY_NAME = "UPALockInfo";
 
     @Id
-    @Field(valueType = String.class, max = "64", nullable = BoolEnum.TRUE, path = "lock_infos")
+    @Field(valueType = String.class, max = "64", nullable = BoolEnum.FALSE, path = "lock_infos")
     private FieldDesc lockedEntity;
 
     @Field(valueType = String.class, max = "64", nullable = BoolEnum.TRUE, path = "lock_infos")

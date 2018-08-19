@@ -17,6 +17,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.UPAImplDefaults;
 
@@ -25,121 +26,120 @@ import net.vpc.upa.impl.UPAImplDefaults;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class PUUtils {
-    public static final String getVersion(){
-        return "1.2.0.36";
+
+    public static final String getVersion() {
+        return "1.2.0.48";
     }
 
-    static{
+    static {
         UPAImplDefaults.DEBUG_MODE = true;
         System.out.println("*************************************");
-        System.out.println(""+getVersion());
+        System.out.println("" + getVersion());
         System.out.println("*************************************");
         LogUtils.prepare();
+        configure();
     }
     private static final Logger log = Logger.getLogger(PUUtils.class.getName());
-    
-    public static void configure(){
-        //do nothing, ust to enable static bloc!
+
+    public static void configure() {
+        //reset UPA context!
+        UPA.close();
     }
-    
-    public static void deleteTestPersistenceUnit(Class clz) {
-        deleteTestPersistenceUnit(clz,null,null);
+
+    public static String getFullPath(File file) {
+        try {
+            return (file.getCanonicalPath());
+        } catch (IOException ex) {
+            return (file.getAbsolutePath());
+        }
     }
-    public static PersistenceUnit createTestPersistenceUnit(Class clz,String desc) {
-        return createTestPersistenceUnit(clz,null,desc);
+
+    public static void deleteTestPersistenceUnits() {
+        String v = getVersion().replace(".", "_");
+        File folder = new File("db-embedded/upatest" + v);
+        log.log(Level.WARNING, "Delete Local Database at " + getFullPath(folder));
+        deleteFile(folder);
     }
+
+    public static PersistenceUnit createTestPersistenceUnit(Class clz, String desc) {
+        return createTestPersistenceUnit(clz, null, desc);
+    }
+
     public static PersistenceUnit createTestPersistenceUnit(Class clz) {
-        return createTestPersistenceUnit(clz,null,null);
+        return createTestPersistenceUnit(clz, null, null);
     }
 
     public static void drawBox(CharSequence str) {
-        String[] lines=str.toString().split("\n");
-        int max=0;
+        String[] lines = str.toString().split("\n");
+        int max = 0;
         for (String line : lines) {
-            if(line.length()>max){
-                max=line.length();
+            if (line.length() > max) {
+                max = line.length();
             }
         }
-        char[] row=new char[max+4];
-        Arrays.fill(row,'*');
+        char[] row = new char[max + 4];
+        Arrays.fill(row, '*');
         log.fine(new String(row));
         for (String line : lines) {
-            log.fine("* " + line+" *");
+            log.log(Level.FINE, "* {0} *", line);
         }
         log.fine(new String(row));
     }
 
-    public static void deleteTestPersistenceUnit(Class clz,Store type,String desc) {
-        String v = getVersion().replace(".","_");
-        String puId = clz == null ? "test" : clz.getSimpleName();
-        if(type==null){
-            type=Store.EMBEDDED;
+    public static void deleteTestPersistenceUnit(Store type) {
+        if (type == null) {
+            type = Store.EMBEDDED;
         }
-        StringBuilder header=new StringBuilder();
-        header.append("Delete Persistence Unit ").append(puId);
-        if(desc!=null && desc.trim().length()>0){
-            header.append(desc);
-        }
-        drawBox(header);
-        if(Store.MYSQL.equals(type)){
+        if (Store.MYSQL.equals(type)) {
             //cc.setConnectionString("mysql:default://localhost/UPA_TEST"+v+";structure=create;userName=root;password=''");
-            throw new IllegalArgumentException("Not Supported Delete "+type);
-        }else if(Store.DERBY.equals(type)){
+            throw new IllegalArgumentException("Not Supported Delete " + type);
+        } else if (Store.DERBY.equals(type)) {
             //cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
-            throw new IllegalArgumentException("Not Supported Delete "+type);
-        }else if(Store.EMBEDDED.equals(type)){
-            File embedded=new File("db-embedded/upatest"+v);
-            try {
-                System.out.println("Local Database at "+embedded.getCanonicalPath());
-            } catch (IOException ex) {
-                System.out.println("Local Database at "+embedded.getAbsolutePath());
-            }
-            deleteFile(embedded);
-        }else{
-            throw new IllegalArgumentException("Not Supported "+type);
+            throw new IllegalArgumentException("Not Supported Delete " + type);
+        } else if (Store.EMBEDDED.equals(type)) {
+            deleteTestPersistenceUnits();
+        } else {
+            throw new IllegalArgumentException("Not Supported " + type);
         }
     }
-    public static PersistenceUnit createTestPersistenceUnit(Class clz,Store type,String desc) {
-        String v = getVersion().replace(".","_");
+
+    public static PersistenceUnit createTestPersistenceUnit(Class clz, Store type, String desc) {
+        String v = getVersion().replace(".", "_");
         String puId = clz == null ? "test" : clz.getSimpleName();
-        if(type==null){
-            type=Store.EMBEDDED;
+        if (type == null) {
+            type = Store.EMBEDDED;
         }
-        StringBuilder header=new StringBuilder();
+        StringBuilder header = new StringBuilder();
         header.append("Create Persistence Unit ").append(puId);
-        if(desc!=null && desc.trim().length()>0){
+        if (desc != null && desc.trim().length() > 0) {
             header.append(desc);
         }
         drawBox(header);
-        System.setProperty("derby.locks.deadlockTrace","true");
+        System.setProperty("derby.locks.deadlockTrace", "true");
         System.setProperty("derby.locks.monitor", "true");
         PersistenceGroup grp = UPA.getPersistenceGroup();
-        if(grp.containsPersistenceUnit(puId)){
+        if (grp.containsPersistenceUnit(puId)) {
             grp.setPersistenceUnit(puId);
             return grp.getPersistenceUnit(puId);
         }
         PersistenceUnit pu = grp.addPersistenceUnit(puId);
 //        pu.scan(null);
         final ConnectionConfig cc = new ConnectionConfig();
-        if(Store.MYSQL.equals(type)){
-            cc.setConnectionString("mysql:default://localhost/UPA_TEST"+v+";structure=create;userName=root;password=''");
-        }else if(Store.DERBY.equals(type)){
-            cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
-        }else if(Store.EMBEDDED.equals(type)){
-            cc.setConnectionString("derby:embedded://db-embedded/upatest"+v+";structure=create;userName=upatest;password=upatest");
-            File embedded=new File("db-embedded/upatest"+v);
-            try {
-                System.out.println("Local Database at "+embedded.getCanonicalPath());
-            } catch (IOException ex) {
-                System.out.println("Local Database at "+embedded.getAbsolutePath());
-            }
-        }else{
-            throw new IllegalArgumentException("Not Supported "+type);
+        if (Store.MYSQL.equals(type)) {
+            cc.setConnectionString("mysql:default://localhost/UPA_TEST" + v + ";structure=create;userName=root;password=''");
+        } else if (Store.DERBY.equals(type)) {
+            cc.setConnectionString("derby:default://localhost/upatest" + v + ";structure=create;userName=upatest;password=upatest");
+        } else if (Store.EMBEDDED.equals(type)) {
+            cc.setConnectionString("derby:embedded://db-embedded/upatest" + v + ";structure=create;userName=upatest;password=upatest");
+            File embedded = new File("db-embedded/upatest" + v);
+            System.out.println("Local Database at " + getFullPath(embedded));
+        } else {
+            throw new IllegalArgumentException("Not Supported " + type);
         }
         pu.addConnectionConfig(cc);
         if (clz != null) {
             String namePrefix = clz.getSimpleName();
-            pu.getPersistenceNameStrategy().setGlobalPersistenceNameFormat(namePrefix+"_{OBJECT_NAME}");
+            pu.getPersistenceNameStrategy().setGlobalPersistenceNameFormat(namePrefix + "_{OBJECT_NAME}");
             pu.getPersistenceNameStrategy().setLocalPersistenceNameFormat("{OBJECT_NAME}");
 //        pu.getParameters().setString(UPA.CONNECTION_STRING, "derby:embedded://upatest;structure=create;userName=upatest;password=upatest");
 //        pu.getParameters().setString(UPA.CONNECTION_STRING+"."+ ConnectionOption.USER_NAME, "upatest");
@@ -149,103 +149,106 @@ public class PUUtils {
     }
 
     private static void deleteFile(File file) {
-        if(file.exists()){
-            if(file.isFile()){
-                if(!file.delete()){
-                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+        if (file.exists()) {
+            if (file.isFile()) {
+                if (!file.delete()) {
+                    throw new IllegalArgumentException("Unable to delete " + file.getPath());
                 }
-            }else if(file.isDirectory()){
+            } else if (file.isDirectory()) {
                 for (File ch : file.listFiles()) {
                     deleteFile(ch);
                 }
-                if(!file.delete()){
-                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+                if (!file.delete()) {
+                    throw new IllegalArgumentException("Unable to delete " + file.getPath());
                 }
-            }else{
-                if(!file.delete()){
-                    throw new IllegalArgumentException("Unable to delete "+file.getPath());
+            } else {
+                if (!file.delete()) {
+                    throw new IllegalArgumentException("Unable to delete " + file.getPath());
                 }
             }
         }
     }
 
-    public enum Store{
+    public enum Store {
         MYSQL,
         DERBY,
         EMBEDDED
     }
-    public static void println(QueryResult r){
-        println(r,System.out);
+
+    public static void println(QueryResult r) {
+        println(r, System.out);
     }
 
-    public static void println(QueryResult r, PrintStream out){
+    public static void println(QueryResult r, PrintStream out) {
         int count = r.getColumnsCount();
         int[] width = new int[count];
         StringTable strings = toStringTable(r);
         for (int i = 0; i < count; i++) {
-            width[i]=Math.max(width[i],strings.header[i].length());
+            width[i] = Math.max(width[i], strings.header[i].length());
         }
         for (String[] row : strings.rows) {
             for (int i = 0; i < count; i++) {
-                width[i]=Math.max(width[i],row[i].length());
+                width[i] = Math.max(width[i], row[i].length());
             }
         }
-        int allWidth=4+(width.length-1)*3;
+        int allWidth = 4 + (width.length - 1) * 3;
         for (int i : width) {
-            allWidth+=i;
+            allWidth += i;
         }
-        char[] br=new char[allWidth];
-        Arrays.fill(br,'-');
-
+        char[] br = new char[allWidth];
+        Arrays.fill(br, '-');
 
         out.println(br);
         out.print("| ");
         for (int i = 0; i < count; i++) {
-            if(i>0){
+            if (i > 0) {
                 out.print(" | ");
             }
-            out.print(formatLeft(strings.header[i],width[i]));
+            out.print(formatLeft(strings.header[i], width[i]));
         }
         out.println(" |");
         out.println(br);
         for (String[] row : strings.rows) {
             out.print("| ");
             for (int i = 0; i < count; i++) {
-                if(i>0){
+                if (i > 0) {
                     out.print(" | ");
                 }
-                out.print(formatLeft(row[i],width[i]));
+                out.print(formatLeft(row[i], width[i]));
             }
             out.println(" |");
         }
         out.println(br);
     }
 
-    private static String formatLeft(String str,int len){
-        StringBuilder sb=new StringBuilder(str);
-        while(sb.length()<len){
+    public static String formatLeft(Object str, int len) {
+        StringBuilder sb = new StringBuilder(len);
+        sb.append(str);
+        while (sb.length() < len) {
             sb.append(' ');
         }
         return sb.toString();
     }
 
-    private static StringTable toStringTable(QueryResult r){
+    private static StringTable toStringTable(QueryResult r) {
         int count = r.getColumnsCount();
-        List<String[]> rows=new ArrayList<>();
-        String[] header=new String[count];
+        List<String[]> rows = new ArrayList<>();
+        String[] header = new String[count];
         for (int i = 0; i < count; i++) {
-            header[i]=String.valueOf(r.getColumnName(i));
+            header[i] = String.valueOf(r.getColumnName(i));
         }
-        while(r.hasNext()) {
+        while (r.hasNext()) {
             String[] row = new String[count];
             for (int i = 0; i < count; i++) {
-                row[i]=String.valueOf(r.read(i));
+                row[i] = String.valueOf(r.read(i));
             }
             rows.add(row);
         }
-        return new StringTable(rows,header);
+        return new StringTable(rows, header);
     }
-    private static class StringTable{
+
+    private static class StringTable {
+
         List<String[]> rows;
         String[] header;
 

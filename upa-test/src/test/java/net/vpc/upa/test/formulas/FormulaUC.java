@@ -3,7 +3,6 @@ package net.vpc.upa.test.formulas;
 import java.util.List;
 import java.util.logging.Logger;
 import net.vpc.upa.*;
-import net.vpc.upa.test.util.LogUtils;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
 import net.vpc.upa.test.util.PUUtils;
@@ -21,6 +20,7 @@ public class FormulaUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(FormulaUC.class);
         pu.addEntity(Person.class);
         pu.start();

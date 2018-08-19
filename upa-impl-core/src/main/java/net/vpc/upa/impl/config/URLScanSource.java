@@ -14,23 +14,10 @@ public class URLScanSource extends BaseScanSource {
 
     private ScanFilter[] filters;
     private URL[] urls;
-    private boolean noIgnore;
-    private String name;
 
-    public URLScanSource(String name, URL[] urls, ScanFilter[] filters, boolean noIgnore) {
-        this.name = name;
+    public URLScanSource(URL[] urls, ScanFilter[] filters) {
         this.urls = urls;
-        this.noIgnore = noIgnore;
         this.filters = filters==null?new ScanFilter[0]:filters;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public boolean isNoIgnore() {
-        return noIgnore;
     }
 
     public URL[] getUrls() {
@@ -43,12 +30,12 @@ public class URLScanSource extends BaseScanSource {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "["+name+"]{" + Arrays.toString(urls) + "," + Arrays.toString(filters) + "}";
+        return getClass().getSimpleName() + "["+getName()+"]{" + Arrays.toString(urls) + "," + Arrays.toString(filters) + "}";
     }
 
     @Override
     public Iterable<Class> toIterable(Object context) {
-        return new URLClassIterable(name,getUrls(),
+        return new URLClassIterable(getName(),getUrls(),
                 new DefaultConfigFilter(getFilters()),
                 null);
     }

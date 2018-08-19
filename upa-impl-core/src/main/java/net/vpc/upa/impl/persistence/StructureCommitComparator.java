@@ -26,6 +26,7 @@ class StructureCommitComparator implements Comparator<StructureCommit> {
         pos.put(new ObjectAndType(Index.class, PersistenceNameType.INDEX), 400);
         pos.put(new ObjectAndType(Relationship.class, PersistenceNameType.FK_CONSTRAINT), 500);
         pos.put(new ObjectAndType(Entity.class, PersistenceNameType.IMPLICIT_VIEW), 800);
+        pos.put(new ObjectAndType(Entity.class, PersistenceNameType.VIEW), 900);
     }
 
     @Override

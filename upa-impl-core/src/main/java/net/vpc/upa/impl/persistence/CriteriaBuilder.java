@@ -3,13 +3,13 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import net.vpc.upa.impl.util.UPAUtils;
 
 public class CriteriaBuilder {
-    private Entity entity;
+    private final Entity entity;
     private Object id;
     private Key key;
     private Object prototype;
@@ -27,12 +27,12 @@ public class CriteriaBuilder {
         }
         Object[] objects = ids.toArray(new Object[ids.size()]);
         if (ids.size() == 1) {
-            return byId(objects[0]);
+            return byId(UPAUtils.castId(entity, objects[0]));
         }
         if (entity == null) {
             throw new UPAIllegalArgumentException("Missing Entity");
         }
-        return byExpression(entity.getBuilder().idListToExpression(ids, UQLUtils.THIS));
+        return byExpression(entity.getBuilder().idListToExpression(ids, UPQLUtils.THIS));
     }
 
     public CriteriaBuilder byExpressionList(List<Expression> condition) {
@@ -58,7 +58,7 @@ public class CriteriaBuilder {
         if (entity == null) {
             throw new UPAIllegalArgumentException("Missing Entity");
         }
-        return byExpression(entity.getBuilder().keyListToExpression(ids, UQLUtils.THIS));
+        return byExpression(entity.getBuilder().keyListToExpression(ids, UPQLUtils.THIS));
     }
 
     public CriteriaBuilder byField(String field, Object value) {
@@ -71,23 +71,19 @@ public class CriteriaBuilder {
     public Expression createExpression(){
         Expression criteria = null;
         if (getId() != null) {
-            Expression e = entity.getBuilder().idToExpression(getId(), UQLUtils.THIS);
-            criteria = criteria == null ? e : new And(criteria, e);
-        }
-        if (getId() != null) {
-            Expression e = entity.getBuilder().idToExpression(getId(), UQLUtils.THIS);
+            Expression e = entity.getBuilder().idToExpression(getId(), UPQLUtils.THIS);
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getKey() != null) {
-            Expression e = (entity.getBuilder().idToExpression(entity.getBuilder().keyToId(getKey()), UQLUtils.THIS));
+            Expression e = (entity.getBuilder().keyToExpression(getKey(), UPQLUtils.THIS));
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getPrototype() != null) {
-            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, UQLUtils.THIS);
+            Expression e = entity.getBuilder().objectToExpression(getPrototype(), true, UPQLUtils.THIS);
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getDocumentPrototype() != null) {
-            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), UQLUtils.THIS));
+            Expression e = (entity.getBuilder().documentToExpression(getDocumentPrototype(), UPQLUtils.THIS));
             criteria = criteria == null ? e : new And(criteria, e);
         }
         if (getExpression() != null) {
@@ -105,7 +101,7 @@ public class CriteriaBuilder {
         if (id instanceof Key) {
             byKey((Key) id);
         } else {
-            this.id = id;
+            this.id = UPAUtils.castId(entity, id);
         }
         return this;
     }

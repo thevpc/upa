@@ -9,7 +9,7 @@ import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.impl.persistence.connection.CloseListenerSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPADeadLock;
 import net.vpc.upa.persistence.Parameter;
@@ -51,12 +51,12 @@ public abstract class AbstractUConnection implements UConnection {
         synchronized (activeConnections) {
             activeConnections.add(this);
             activeConnectionsMaxCount = Math.max(activeConnectionsMaxCount, activeConnections.size());
-            log.log(Level.FINE, "Active Connections " + activeConnections.size() + "/" + activeConnectionsMaxCount);
+            log.log(Level.FINE, "Active Connections {0}/{1}", new Object[]{activeConnections.size(), activeConnectionsMaxCount});
         }
     }
 
     public String resolveMainTableFromSQLQuery(String query) {
-        return UQLUtils.resolveMainTableFromSQLQuery(query);
+        return UPQLUtils.resolveMainTableFromSQLQuery(query);
     }
 
     @Override
@@ -225,7 +225,7 @@ public abstract class AbstractUConnection implements UConnection {
     public void close() throws UPAException {
         synchronized (activeConnections) {
             activeConnections.remove(this);
-            log.log(Level.FINE, "activeConnections {0}/{1}", new Object[]{activeConnections.size(), activeConnectionsMaxCount});
+            log.log(Level.FINE, "Active Connections {0}/{1}", new Object[]{activeConnections.size(), activeConnectionsMaxCount});
         }
 //        try {
 //            connection.rollback();
@@ -239,7 +239,7 @@ public abstract class AbstractUConnection implements UConnection {
         try {
             closePlatformConnection();
         } catch (Exception ex) {
-            throw new UPAIllegalArgumentException("Connection could not be closed");
+            throw new UPAIllegalArgumentException("Connection could not be closed",ex);
         }
         closed = true;
         support.afterClose(this);

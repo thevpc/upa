@@ -33,7 +33,7 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     }
 
     public void addField(PrimitiveField child, int index) throws UPAException {
-        ListUtils.add(fields, child, index, this, this, new AddPrimitiveFieldItemInterceptor(this),true);
+        ListUtils.add(fields, child, index, this, this, new AddPrimitiveFieldItemInterceptor(this), true);
         fieldsMap.put(child.getName(), child);
     }
 
@@ -62,7 +62,7 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     public PrimitiveField getField(String name) throws UPAException {
         int index = indexOfField(name);
         if (index < 0) {
-            throw new NoSuchEntityItemException(name);
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(getEntity().getName(), null, name);
         }
         return fields.get(index);
     }
@@ -129,7 +129,7 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     public FieldInfo getInfo() {
         CompoundFieldInfo i = new CompoundFieldInfo();
         fillFieldInfo(i);
-        List<PrimitiveFieldInfo> list=new ArrayList<PrimitiveFieldInfo>();
+        List<PrimitiveFieldInfo> list = new ArrayList<PrimitiveFieldInfo>();
         for (PrimitiveField field : fields) {
             list.add((PrimitiveFieldInfo) field.getInfo());
         }

@@ -64,7 +64,6 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new MSSQLServerIfSQLProvider());
         getSqlManager().register(new MSSQLServerStrLenSQLProvider());
         getSqlManager().register(new MSSQLServerSystemDateTimeSQLProvider());
-        getSqlManager().register(new MSSQLServerI2VSQLProvider());
         getSqlManager().register(new MSSQLServerD2VSQLProvider());
         getSqlManager().register(new MSSQLServerMonthStartSQLProvider());
         getSqlManager().register(new MSSQLServerMonthEndSQLProvider());

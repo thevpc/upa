@@ -6,13 +6,14 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 public interface EntityExt extends Entity {
+
     void setModifiers(FlagSet<EntityModifier> modifiers);
 
     long update(UpdateQuery updateQuery) throws UPAException;
 
-    void beforePartAdded(EntityPart parent, EntityPart part, int index) throws UPAException;
+    void beforeItemAdded(EntityItem parent, EntityItem part, int index) throws UPAException;
 
-    void afterPartAdded(EntityPart parent, EntityPart item, int index) throws UPAException;
+    void afterItemAdded(EntityItem parent, EntityItem item, int index) throws UPAException;
 
     void setCompositionRelationship(Relationship compositionRelation) throws UPAException;
 

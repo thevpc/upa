@@ -21,4 +21,14 @@ public class WebUPAContextProvider implements UPAContextProvider {
         WebUPAContext.setApplicationAttribute(UPAContext.class.getName(), newInstance);
     }
 
+    @Override
+    public void close() {
+        UPAContext c=(UPAContext) WebUPAContext.getApplicationAttribute(UPAContext.class.getName());
+        if(c!=null){
+            c.close();
+        }
+        WebUPAContext.setApplicationAttribute(UPAContext.class.getName(), null);
+    }
+    
+
 }

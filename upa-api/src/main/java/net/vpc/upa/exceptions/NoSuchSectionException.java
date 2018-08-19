@@ -34,17 +34,11 @@
  */
 package net.vpc.upa.exceptions;
 
-import net.vpc.upa.types.I18NString;
-
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class NoSuchSectionException extends PersistenceUnitException {
-    public NoSuchSectionException(String name) {
-        this(name, null);
-    }
-
-    public NoSuchSectionException(String name, Exception cause) {
-        super(cause, new I18NString("NoSuchSectionException"), name);
+    public NoSuchSectionException(String entityName, String contextName, String sectionName) {
+        super(entityName,"get","NoSuchSection", entityName, contextName, sectionName);
     }
 }

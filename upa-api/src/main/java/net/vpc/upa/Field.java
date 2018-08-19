@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public interface Field extends EntityPart {
+public interface Field extends EntityItem {
 
     PropertyAccessType getPropertyAccessType();
 
@@ -168,6 +168,8 @@ public interface Field extends EntityPart {
 
     DataTypeTransform getTypeTransform();
 
+    DataTypeTransform getEffectiveTypeTransform();
+
     void setTypeTransform(DataTypeTransform transform);
 
     /**
@@ -179,7 +181,8 @@ public interface Field extends EntityPart {
     Object getValue(Object instance);
 
     /**
-     * calls getValue, if the value returned is an Entity will calls getMainValue o the entity. If not will return the result of getValue
+     * calls getValue, if the value returned is an Entity will calls
+     * getMainValue o the entity. If not will return the result of getValue
      *
      * @param instance instance to get value on
      * @return displayable value
@@ -197,7 +200,6 @@ public interface Field extends EntityPart {
     boolean isOneToOne();
 
     boolean isManyToOne();
-
 
     ManyToOneRelationship getManyToOneRelationship();
 

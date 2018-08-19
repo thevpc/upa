@@ -42,6 +42,13 @@ class UPAContextProviderLazyHolder {
 
     static UPAContextProvider INSTANCE = create();
 
+    public static void reset() {
+        if (INSTANCE != null) {
+            INSTANCE.close();
+        }
+        INSTANCE = create();
+    }
+
     public static UPAContextProvider create() {
         UPAContextProvider o = UPA.getBootstrapFactory().createObject(UPAContextProvider.class);
         return o;

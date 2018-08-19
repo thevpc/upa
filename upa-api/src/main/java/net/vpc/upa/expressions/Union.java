@@ -43,7 +43,16 @@ import java.util.List;
  */
 public class Union extends DefaultEntityStatement implements QueryStatement {
 
-    private List<QueryStatement> queryStatements = new ArrayList<QueryStatement>(2);
+    private List<Select> queryStatements = new ArrayList<Select>(2);
+
+    public Union() {
+    }
+
+    public Union(Select[] selects) {
+        for (Select select : selects) {
+            add(select);
+        }
+    }
 
     @Override
     public List<TaggedExpression> getChildren() {
@@ -56,19 +65,29 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        queryStatements.set(((IndexedTag) tag).getIndex(), (QueryStatement) e);
+        queryStatements.set(((IndexedTag) tag).getIndex(), (Select) e);
     }
 
-    public void add(QueryStatement s) {
+    public void add(QueryStatement query) {
+        if (query instanceof Union) {
+            for (Select queryStatement : ((Union) query).queryStatements) {
+                add((Select) queryStatement);
+            }
+        } else {
+            add((Select) query);
+        }
+    }
+
+    public void add(Select s) {
         queryStatements.add(s);
     }
 
-    public List<QueryStatement> getQueryStatements() {
-        return new ArrayList<QueryStatement>(queryStatements);
+    public List<Select> getQueryStatements() {
+        return new ArrayList<Select>(queryStatements);
     }
 
     public String getEntityName() {
-        for (QueryStatement q : queryStatements) {
+        for (Select q : queryStatements) {
             String n = q.getEntityName();
             if (n != null) {
                 return n;
@@ -98,6 +117,9 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
 
     @Override
     public List<QueryField> getFields() {
+        if (queryStatements.isEmpty()) {
+            return new ArrayList<QueryField>();
+        }
         return queryStatements.get(0).getFields();
     }
 
@@ -140,8 +162,8 @@ public class Union extends DefaultEntityStatement implements QueryStatement {
     @Override
     public Expression copy() {
         Union o = new Union();
-        for (QueryStatement queryStatement : queryStatements) {
-            o.add((QueryStatement) queryStatement.copy());
+        for (Select queryStatement : queryStatements) {
+            o.add((Select) queryStatement.copy());
         }
         return o;
     }

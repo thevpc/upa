@@ -8,11 +8,11 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledBinaryOperatorExpression;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledParam;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
+import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledBinaryOperatorExpression;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledParam;
+import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
 import net.vpc.upa.impl.util.ExprTypeInfo;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataTypeTransform;
@@ -66,7 +66,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
         this.noTypeTransform = noTypeTransform;
         this.parameters = new HashMap<String, String>();
         this.hints=hints;
-        this.compiledParams = compiledExpression.findExpressionsList(UQLCompiledUtils.PARAM_FILTER);
+        this.compiledParams = compiledExpression.findExpressionsList(UPQLCompiledUtils.PARAM_FILTER);
 
         this.queryParameters = new ArrayList<Parameter>();
         for (CompiledParam e : this.compiledParams) {
@@ -278,7 +278,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
         if(this.query==null || forceRebuildSQL || nullParameters.size()>0){
             CompiledExpressionExt exprCopy = compiledExpression.copy();
             for (Parameter nullParameter : nullParameters) {
-                UQLCompiledUtils.replaceParam(exprCopy,nullParameter.getName(), new CompiledLiteral(null,nullParameter.getTypeTransform()),null);
+                UPQLCompiledUtils.replaceParam(exprCopy,nullParameter.getName(), new CompiledLiteral(null,nullParameter.getTypeTransform()),null);
             }
             this.queryParameters=nonNullParameters;
             this.query = sqlManager.getSQL(exprCopy, context, new DefaultExpressionDeclarationList(null));

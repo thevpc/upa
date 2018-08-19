@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.vpc.upa.exceptions.NoSuchEntityItemException;
+import net.vpc.upa.exceptions.UnexpectedException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -18,29 +19,29 @@ import net.vpc.upa.impl.util.UPAUtils;
 public class DefaultSection extends AbstractUPAObject implements Section {
 
     private Entity entity;
-    private EntityPart parent;
-    private List<EntityPart> parts;
-//    private Map<String, EntityPart> childrenMap;
+    private EntityItem parent;
+    private List<EntityItem> items;
+//    private Map<String, EntityItem> childrenMap;
     private boolean closed;
 
     public DefaultSection() {
         super();
         this.parent = null;
-        this.parts = new ArrayList<EntityPart>(3);
-//        childrenMap = new HashMap<String, EntityPart>();
+        this.items = new ArrayList<EntityItem>(3);
+//        childrenMap = new HashMap<String, EntityItem>();
     }
 
     @Override
     public void commitModelChanges() {
-        this.parts=PlatformUtils.trimToSize(this.parts);
-        for (EntityPart item : parts) {
+        this.items = PlatformUtils.trimToSize(this.items);
+        for (EntityItem item : items) {
             item.commitModelChanges();
         }
     }
 
     @Override
     public String getAbsoluteName() {
-        EntityPart parentSchemaItem = getParent();
+        EntityItem parentSchemaItem = getParent();
         if (parentSchemaItem == null) {
             return getEntity().getAbsoluteName() + "." + getName();
         }
@@ -55,46 +56,53 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         afterPropertyChangeSupport.firePropertyChange("entity", old, recent);
     }
 
-    public void addPart(EntityPart child) throws UPAException {
-        addPart(child, -1);
+    public void addItem(EntityItem child) throws UPAException {
+        DefaultSection.this.addItem(child, -1);
     }
 
     @Override
-    public void addPart(EntityPart child, int index) throws UPAException {
-        ListUtils.add(parts, child, index, this, this, new DefaultSectionPrivateAddItemInterceptor(this),true);
+    public void addItem(EntityItem child, int index) throws UPAException {
+        ListUtils.add(items, child, index, this, this, new DefaultSectionPrivateAddItemInterceptor(this), true);
     }
 
-    public EntityPart removePart(String name) throws UPAException {
-        int i = indexOfPart(name);
+    public EntityItem removeItem(String name) throws UPAException {
+        int i = DefaultSection.this.indexOfItem(name);
         if (i >= 0) {
-            return removePartAt(i);
+            return removeItemAt(i);
         }
-        throw new NoSuchEntityItemException(name);
+        EntityItem p = getItemAt(i);
+        if (p instanceof Field) {
+            throw new net.vpc.upa.exceptions.NoSuchFieldException(getEntity().getName(), null, name);
+        }
+        if (p instanceof Section) {
+            throw new net.vpc.upa.exceptions.NoSuchSectionException(getEntity().getName(), null, name);
+        }
+        throw new UnexpectedException();
     }
 
-    public EntityPart getPartAt(int index) throws UPAException {
-        return parts.get(index);
+    public EntityItem getItemAt(int index) throws UPAException {
+        return items.get(index);
     }
 
-    public EntityPart getPart(String name) throws UPAException {
-        int i = indexOfPart(name);
+    public EntityItem getItem(String name) throws UPAException {
+        int i = DefaultSection.this.indexOfItem(name);
         if (i >= 0) {
-            return getPartAt(i);
+            return getItemAt(i);
         }
-        throw new NoSuchEntityItemException(name);
+        throw new net.vpc.upa.exceptions.NoSuchFieldException(getEntity().getName(), getAbsoluteName(), name);
     }
 
-    public EntityPart removePartAt(int index) throws UPAException {
-        EntityPart child = ListUtils.remove(parts, index, this, new DefaultSectionPrivateRemoveItemInterceptor());
+    public EntityItem removeItemAt(int index) throws UPAException {
+        EntityItem child = ListUtils.remove(items, index, this, new DefaultSectionPrivateRemoveItemInterceptor());
         return child;
     }
 
-    public void movePart(String itemName, int newIndex) throws UPAException {
-        movePart(indexOfPart(itemName), newIndex);
+    public void moveItem(String itemName, int newIndex) throws UPAException {
+        moveItem(DefaultSection.this.indexOfItem(itemName), newIndex);
     }
 
-    public void movePart(int index, int newIndex) throws UPAException {
-        ListUtils.moveTo(parts, index, newIndex, this, null);
+    public void moveItem(int index, int newIndex) throws UPAException {
+        ListUtils.moveTo(items, index, newIndex, this, null);
     }
 
     public Section getSection(String path, MissingStrategy missingStrategy) throws UPAException {
@@ -110,7 +118,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         for (String n : canonicalPathArray) {
             Section next = null;
             if (module == null) {
-                for (EntityPart schemaItem : parts) {
+                for (EntityItem schemaItem : items) {
                     if (schemaItem instanceof Section) {
                         if (schemaItem.getName().equals(n)) {
                             next = (Section) schemaItem;
@@ -121,7 +129,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                 if (next == null) {
                     switch (missingStrategy) {
                         case ERROR: {
-                            throw new NoSuchSectionException(path);
+                            throw new NoSuchSectionException(getEntity().getName(), null, path);
                         }
                         case CREATE: {
                             next = addSection(n);
@@ -141,10 +149,10 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                 } catch (NoSuchSectionException e) {
                     switch (missingStrategy) {
                         case ERROR: {
-                            throw new NoSuchSectionException(path);
+                            throw new NoSuchSectionException(getEntity().getName(), null, path);
                         }
                         case CREATE: {
-                            next = addSection(module.getPath()+"/"+n);
+                            next = addSection(module.getPath() + "/" + n);
                             break;
                         }
                         case NULL: {
@@ -169,17 +177,17 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return getSection(path, MissingStrategy.NULL);
     }
 
-    public List<EntityPart> getParts() {
-        return PlatformUtils.unmodifiableList(parts);
+    public List<EntityItem> getItems() {
+        return PlatformUtils.unmodifiableList(items);
     }
 
-    public int indexOfPart(EntityPart child) {
-        return parts.indexOf(child);
+    public int indexOfItem(EntityItem child) {
+        return items.indexOf(child);
     }
 
-    public int indexOfPart(String childName) {
+    public int indexOfItem(String childName) {
         int index = 0;
-        for (EntityPart child : parts) {
+        for (EntityItem child : items) {
             if (childName.equals(child.getName())) {
                 return index;
             }
@@ -192,13 +200,13 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return entity;
     }
 
-    public EntityPart getParent() {
+    public EntityItem getParent() {
         return parent;
     }
 
-    public void setParent(EntityPart item) {
-        EntityPart old = this.parent;
-        EntityPart recent = item;
+    public void setParent(EntityItem item) {
+        EntityItem old = this.parent;
+        EntityItem recent = item;
         afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
         this.parent = item;
         afterPropertyChangeSupport.firePropertyChange("parent", old, recent);
@@ -206,13 +214,13 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     // -------------------------- PATH SUPPORT
     public String getPath() {
-        EntityPart parent = getParent();
+        EntityItem parent = getParent();
         return parent == null ? ("/" + getName()) : (parent.getPath() + "/" + getName());
     }
 
     @Override
-    public int getPartsCount() {
-        return parts.size();
+    public int getItemsCount() {
+        return items.size();
     }
 
     @Override
@@ -250,10 +258,10 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     public void close() throws UPAException {
         boolean old = this.closed;
         if (!old) {
-            for (EntityPart child : parts) {
+            for (EntityItem child : items) {
                 child.close();
             }
-            boolean recent=true;
+            boolean recent = true;
             this.closed = true;
             afterPropertyChangeSupport.firePropertyChange("closed", old, recent);
         }
@@ -270,20 +278,20 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     @Override
     public Field addField(FieldDescriptor fieldDescriptor) throws UPAException {
-        DefaultFieldDescriptor f=new DefaultFieldDescriptor();
+        DefaultFieldDescriptor f = new DefaultFieldDescriptor();
         f.setFieldDescriptor(fieldDescriptor);
         String p = f.getPath();
-        f.setPath(p==null?getPath():getPath()+"/"+p);
+        f.setPath(p == null ? getPath() : getPath() + "/" + p);
         return getEntity().addField(f);
     }
 
     public List<Field> getFields() {
         List<Field> fields = new ArrayList<Field>();
-        for (EntityPart part : getParts()) {
-            if (part instanceof Field) {
-                fields.add((Field) part);
-            }else if(part instanceof Section){
-                fields.addAll(((Section) part).getFields());
+        for (EntityItem item : getItems()) {
+            if (item instanceof Field) {
+                fields.add((Field) item);
+            } else if (item instanceof Section) {
+                fields.addAll(((Section) item).getFields());
             }
         }
         return fields;
@@ -292,14 +300,14 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     @Override
     public List<Field> getFields(FieldFilter fieldFilter) throws UPAException {
         List<Field> fields = new ArrayList<Field>();
-        for (EntityPart part : getParts()) {
-            if (part instanceof Field) {
-                Field part1 = (Field) part;
-                if(fieldFilter==null || fieldFilter.accept(part1)) {
-                    fields.add(part1);
+        for (EntityItem item : getItems()) {
+            if (item instanceof Field) {
+                Field field = (Field) item;
+                if (fieldFilter == null || fieldFilter.accept(field)) {
+                    fields.add(field);
                 }
-            }else if(part instanceof Section){
-                fields.addAll(((Section) part).getFields(fieldFilter));
+            } else if (item instanceof Section) {
+                fields.addAll(((Section) item).getFields(fieldFilter));
             }
         }
         return fields;
@@ -308,11 +316,11 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     @Override
     public List<Field> getImmediateFields(FieldFilter fieldFilter) {
         List<Field> fields = new ArrayList<Field>();
-        for (EntityPart part : getParts()) {
-            if (part instanceof Field) {
-                Field part1 = (Field) part;
-                if(fieldFilter==null || fieldFilter.accept(part1)) {
-                    fields.add(part1);
+        for (EntityItem item : getItems()) {
+            if (item instanceof Field) {
+                Field field = (Field) item;
+                if (fieldFilter == null || fieldFilter.accept(field)) {
+                    fields.add(field);
                 }
             }
         }
@@ -321,9 +329,9 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     public List<Field> getImmediateFields() {
         List<Field> fields = new ArrayList<Field>();
-        for (EntityPart part : getParts()) {
-            if (part instanceof Field) {
-                fields.add((Field) part);
+        for (EntityItem item : getItems()) {
+            if (item instanceof Field) {
+                fields.add((Field) item);
             }
         }
         return fields;
@@ -331,9 +339,9 @@ public class DefaultSection extends AbstractUPAObject implements Section {
 
     public List<Section> getSections() {
         List<Section> sections = new ArrayList<Section>();
-        for (EntityPart part : getParts()) {
-            if (part instanceof Section) {
-                sections.add((Section) part);
+        for (EntityItem item : getItems()) {
+            if (item instanceof Section) {
+                sections.add((Section) item);
             }
         }
         return sections;
@@ -345,11 +353,11 @@ public class DefaultSection extends AbstractUPAObject implements Section {
             throw new NullPointerException();
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
-        if(canonicalPathArray.length==0){
+        if (canonicalPathArray.length == 0) {
             throw new UPAIllegalArgumentException("Empty Name");
         }
         Section parentModule = null;
-        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength-1; i++) {
+        for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength - 1; i++) {
             String n = canonicalPathArray[i];
             Section next = null;
             if (parentModule == null) {
@@ -361,12 +369,12 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
-        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), this,currentModule, canonicalPathArray[canonicalPathArray.length-1]);
+        DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), this, currentModule, canonicalPathArray[canonicalPathArray.length - 1]);
 
         if (parentModule == null) {
-            addPart(currentModule, index);
+            DefaultSection.this.addItem(currentModule, index);
         } else {
-            parentModule.addPart(currentModule, index);
+            parentModule.addItem(currentModule, index);
         }
         //invalidateStructureCache();
         return currentModule;
@@ -380,16 +388,16 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     public SectionInfo getInfo() {
         SectionInfo i = new SectionInfo();
         fillObjectInfo(i);
-        List<EntityPartInfo> list=new ArrayList<>();
-        for (EntityPart entityPart : parts) {
-            if(entityPart instanceof Section){
-                list.add(((Section)entityPart).getInfo());
-            }else if(entityPart instanceof CompoundField){
-                list.add(((CompoundField)entityPart).getInfo());
-            }else if(entityPart instanceof DynamicField){
-                list.add(((DynamicField)entityPart).getInfo());
-            }else if(entityPart instanceof PrimitiveField){
-                list.add(((PrimitiveField)entityPart).getInfo());
+        List<EntityItemInfo> list = new ArrayList<>();
+        for (EntityItem item : items) {
+            if (item instanceof Section) {
+                list.add(((Section) item).getInfo());
+            } else if (item instanceof CompoundField) {
+                list.add(((CompoundField) item).getInfo());
+            } else if (item instanceof DynamicField) {
+                list.add(((DynamicField) item).getInfo());
+            } else if (item instanceof PrimitiveField) {
+                list.add(((PrimitiveField) item).getInfo());
             }
         }
         i.setChildren(list);

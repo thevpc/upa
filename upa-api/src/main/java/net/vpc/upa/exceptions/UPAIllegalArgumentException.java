@@ -41,12 +41,17 @@ import net.vpc.upa.types.I18NString;
  * @creationdate 9/7/12 9:27 PM
  */
 public class UPAIllegalArgumentException extends UPAException {
+
     public UPAIllegalArgumentException() {
-        this((String)null);
+        this((String) null);
     }
 
     public UPAIllegalArgumentException(String message) {
-        this(message, null);
+        this(message, (Throwable) null);
+    }
+
+    public UPAIllegalArgumentException(String message, Object... args) {
+        super(new I18NString(message), args);
     }
 
     public UPAIllegalArgumentException(String message, Throwable throwable) {

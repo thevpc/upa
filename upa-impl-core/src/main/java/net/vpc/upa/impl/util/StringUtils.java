@@ -26,37 +26,43 @@ public final class StringUtils {
         if (c == (String.class)) {
             return s;
         }
-        if (c == (Integer.class)) {
+        if (PlatformUtils.isInt32(c)) {
             return Integer.valueOf(s);
         }
-        if (c == Float.class) {
+        if (PlatformUtils.isFloat32(c)) {
             return Float.valueOf(s);
         }
-        if (c == (Long.class)) {
+        if (PlatformUtils.isInt64(c)) {
             return Long.valueOf(s);
         }
-        if (c == Short.class) {
+        if (PlatformUtils.isInt16(c)) {
             return Short.valueOf(s);
         }
-        if (c == Byte.class) {
+        if (PlatformUtils.isInt8(c)) {
             return Byte.valueOf(s);
         }
-        if (c.equals(BigInteger.class)) {
+        if (PlatformUtils.isInt128(c)) {
             return new BigInteger(s);
         }
-        /**
-         * @PortabilityHint(target="C#",name="suppress")
-         */
-        if (c.equals(BigDecimal.class)) {
+        if (PlatformUtils.isDecimal128(c)) {
             return new BigDecimal(s);
         }
-        if (c.equals(Time.class)) {
+        if (PlatformUtils.isTime(c)) {
             return DateUtils.parseUniversalTime(s);
         }
-        if (c.equals(java.sql.Date.class)) {
+        if (PlatformUtils.isDateOnly(c)) {
             return DateUtils.parseUniversalDate(s);
         }
-        if (c.equals(java.util.Date.class)) {
+        if (PlatformUtils.isDateTime(c)) {
+            return DateUtils.parseUniversalDateTime(s);
+        }
+        if (PlatformUtils.isMonth(c)) {
+            return DateUtils.parseUniversalMonth(s);
+        }
+        if (PlatformUtils.isYear(c)) {
+            return DateUtils.parseUniversalYear(s);
+        }
+        if (PlatformUtils.isAnyDate(c)) {
             return DateUtils.parseUniversalDateTime(s);
         }
         return null;

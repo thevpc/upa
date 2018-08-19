@@ -105,7 +105,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public void scan(ScanSource scanSource, ScanListener listener, boolean configure) throws UPAException {
         decorationRepository = new DefaultDecorationRepository("DecoRepo[pg="+getName()+"]", true);
-        log.log(Level.FINE, "\"{0}\" : Configuring PersistenceGroup from {1}", new Object[]{getName(), scanSource});
+        log.log(Level.FINE, "[{0}] : Configuring PersistenceGroup from {1}", new Object[]{getName(), scanSource});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
         s.scan(this, scanSource, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
         if (securityManager == null) {
@@ -257,6 +257,8 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
                 throw new NoSuchPersistenceUnitException(name);
             }
             PersistenceUnit persistenceUnit = persistenceUnits.get(name);
+            String old = getPersistenceUnitProvider().getPersistenceUnitName(this);
+
             if (!persistenceUnit.isClosed()) {
                 persistenceUnit.close();
             }
@@ -264,6 +266,9 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
             persistenceUnits.remove(name);
 
+            if(old!=null && old.equals(name)){
+                getPersistenceUnitProvider().setPersistenceUnitName(this, null);
+            }
             listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
         }
 
@@ -299,7 +304,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             }
         }
         checkManagedSession(session);
-        log.log(Level.FINE, "Session Changed {0} for PersistenceGroup {1}", new Object[]{session, getName()});
+        log.log(Level.FINE, "Session Changed [{0}] for PersistenceGroup [{1}]", new Object[]{session, getName()});
         getSessionContextProvider().setSession(this, session);
     }
 
@@ -337,10 +342,9 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             sessions.clear();
         }
         synchronized (persistenceUnits) {
-            for (PersistenceUnit persistenceUnit : persistenceUnits.values()) {
-                persistenceUnit.close();
+            for (PersistenceUnit persistenceUnit : getPersistenceUnits()) {
+                dropPersistenceUnit(persistenceUnit.getName());
             }
-            persistenceUnits.clear();
         }
         closed = true;
         log.log(Level.FINE, "PersistenceGroup {0} Closed", getName());

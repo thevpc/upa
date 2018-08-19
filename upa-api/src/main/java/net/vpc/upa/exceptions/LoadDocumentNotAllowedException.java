@@ -39,6 +39,6 @@ import net.vpc.upa.Entity;
 
 public class LoadDocumentNotAllowedException extends EntityException {
     public LoadDocumentNotAllowedException(Entity entity) {
-        super(entity, "loadDocument.NotAllowed");
+        super(entity, "load", "NotAllowed");
     }
 }

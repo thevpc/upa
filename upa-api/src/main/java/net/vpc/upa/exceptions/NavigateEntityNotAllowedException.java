@@ -39,6 +39,6 @@ import net.vpc.upa.Entity;
 
 public class NavigateEntityNotAllowedException extends EntityException {
     public NavigateEntityNotAllowedException(Entity entity) {
-        super(entity, "navigate.NotAllowed");
+        super(entity, "navigate", "NotAllowed");
     }
 }

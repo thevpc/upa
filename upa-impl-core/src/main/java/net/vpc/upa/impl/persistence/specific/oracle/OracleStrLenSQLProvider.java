@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledStrLen;
+import net.vpc.upa.impl.upql.ext.expr.CompiledStrLen;
 
 import java.util.Map;
 

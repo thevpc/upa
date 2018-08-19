@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledDecode;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDecode;
 import net.vpc.upa.impl.util.StringUtils;
 
 import java.util.Map;

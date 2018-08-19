@@ -57,7 +57,7 @@ public class FieldListPersistenceInfo {
             }
             if (field.isManyToOne()) {
                 ((AbstractField) field).setFieldPersister(new EntityTypeFieldPersister());
-            } else if (UPAUtils.isPasswordTransform(UPAUtils.getTypeTransformOrIdentity(field))) {
+            } else if (UPAUtils.isPasswordTransform(field.getEffectiveTypeTransform())) {
                 ((AbstractField) field).setFieldPersister(new PasswordTypeFieldPersister());
             } else {
                 ((AbstractField) field).setFieldPersister(new SimpleFieldPersister());

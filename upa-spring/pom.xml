@@ -30,12 +30,12 @@
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-api</artifactId>
-            <version>1.2.0.47</version>
+            <version>1.2.0.48</version>
         </dependency>
         <dependency>
             <groupId>net.vpc.upa</groupId>
             <artifactId>upa-impl</artifactId>
-            <version>1.2.0.47.0</version>
+            <version>1.2.0.48.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>

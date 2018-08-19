@@ -36,7 +36,6 @@ package net.vpc.upa.persistence;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.QualifiedIdentifier;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryStatement;
 
 import java.util.List;

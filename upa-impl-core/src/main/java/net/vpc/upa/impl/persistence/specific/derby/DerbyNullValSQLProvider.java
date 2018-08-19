@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledNullVal;
+import net.vpc.upa.impl.upql.ext.expr.CompiledNullVal;
 
 import java.util.Map;
 

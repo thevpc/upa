@@ -2,13 +2,11 @@ package net.vpc.upa.test.relations;
 
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
-import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +23,7 @@ public class RelationUC5 {
 
     @BeforeClass
     public static void setup() {
+        PUUtils.configure();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationUC5.class);
         pu.addEntity(A.class);
         pu.addEntity(B.class);

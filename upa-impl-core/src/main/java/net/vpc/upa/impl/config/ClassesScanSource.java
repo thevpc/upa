@@ -9,26 +9,9 @@ import java.util.Arrays;
 public class ClassesScanSource extends BaseScanSource {
 
     private final Class[] classes;
-    private boolean noIgnore;
-    private String name;
 
-    public ClassesScanSource(String name,Class[] classes, boolean noIgnore) {
-        this.name = name;
+    public ClassesScanSource(Class[] classes) {
         this.classes = classes;
-        this.noIgnore = noIgnore;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public boolean isNoIgnore() {
-        return noIgnore;
-    }
-
-    public Class[] getClasses() {
-        return classes;
     }
 
     @Override

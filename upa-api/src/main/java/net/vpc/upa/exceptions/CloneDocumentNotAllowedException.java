@@ -39,6 +39,6 @@ import net.vpc.upa.Entity;
 
 public class CloneDocumentNotAllowedException extends EntityException {
     public CloneDocumentNotAllowedException(Entity entity) {
-        super(entity, "cloneDocument.NotAllowed");
+        super(entity, "clone", "NotAllowed");
     }
 }

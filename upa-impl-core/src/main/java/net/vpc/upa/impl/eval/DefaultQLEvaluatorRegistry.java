@@ -34,12 +34,11 @@ public class DefaultQLEvaluatorRegistry implements QLEvaluatorRegistry{
         registerFunctionEvaluator("currentTime", CurrentTimeEvaluator.INSTANCE);
         registerFunctionEvaluator("currentTimestamp", CurrentTimestampEvaluator.INSTANCE);
         registerFunctionEvaluator("currentUser", CurrentUserEvaluator.INSTANCE);
-        registerFunctionEvaluator("d2v", D2VEvaluator.INSTANCE);
+        registerFunctionEvaluator("toString", ToStringEvaluator.INSTANCE);
         registerFunctionEvaluator("dateAdd", DateAddEvaluator.INSTANCE);
         registerFunctionEvaluator("datePart", DatePartEvaluator.INSTANCE);
         registerFunctionEvaluator("decode", DecodeEvaluator.INSTANCE);
 //        registerFunctionEvaluator("if", new IfEvaluator()); //already added as special evaluator
-        registerFunctionEvaluator("i2v", D2VEvaluator.INSTANCE);
         registerFunctionEvaluator("sign", SignEvaluator.INSTANCE);
         registerFunctionEvaluator("strlen", StrLenEvaluator.INSTANCE);
     }

@@ -28,9 +28,9 @@ public class DefaultEntityPrivateListener implements UPAObjectListener {
 
     public void itemAdded(UPAObject object, int position, UPAObject parent, EventPhase eventPhase) {
         if (eventPhase==EventPhase.BEFORE) {
-            entity.beforePartAdded((EntityPart)parent, (EntityPart) object, position);
+            entity.beforeItemAdded((EntityItem)parent, (EntityItem) object, position);
         }else{
-            entity.afterPartAdded((EntityPart)parent, (EntityPart) object, position);
+            entity.afterItemAdded((EntityItem)parent, (EntityItem) object, position);
         }
     }
 }

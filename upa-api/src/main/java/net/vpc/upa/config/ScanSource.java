@@ -39,6 +39,12 @@ package net.vpc.upa.config;
  * @creationdate 9/24/12 2:57 AM
  */
 public interface ScanSource {
+
+    ScanSource setName(String name);
+
+    ScanSource setNoIgnore(boolean value);
+
     String getName();
+
     boolean isNoIgnore();
 }

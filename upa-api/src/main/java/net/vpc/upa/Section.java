@@ -39,23 +39,23 @@ import net.vpc.upa.filters.FieldFilter;
 
 import java.util.List;
 
-public interface Section extends EntityPart {
+public interface Section extends EntityItem {
 
     Field addField(FieldBuilder fieldBuilder) ;
 
     Field addField(FieldDescriptor fieldDescriptor) ;
 
-    void addPart(EntityPart child) ;
+    void addItem(EntityItem child);
 
-    void addPart(EntityPart child, int index) ;
+    void addItem(EntityItem child, int index);
 
-    EntityPart removePartAt(int index) ;
+    EntityItem removeItemAt(int index);
 
-    EntityPart removePart(String name) ;
+    EntityItem removeItem(String name);
 
-    void movePart(int index, int newIndex) ;
+    void moveItem(int index, int newIndex);
 
-    void movePart(String itemName, int newIndex) ;
+    void moveItem(String itemName, int newIndex);
 
     /**
      * @return this section (and it subsequent sub sections) fields
@@ -74,19 +74,19 @@ public interface Section extends EntityPart {
 
     List<Section> getSections() ;
 
-    List<EntityPart> getParts() ;
+    List<EntityItem> getItems();
 
-    EntityPart getPart(String name) ;
+    EntityItem getItem(String name);
 
-    EntityPart getPartAt(int index) ;
+    EntityItem getItemAt(int index);
 
     Section getSection(String name) ;
 
-    int indexOfPart(EntityPart part) ;
+    int indexOfItem(EntityItem part);
 
-    int indexOfPart(String partName) ;
+    int indexOfItem(String partName);
 
-    int getPartsCount() ;
+    int getItemsCount();
 
 
     Section findSection(String path) ;

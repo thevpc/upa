@@ -6,8 +6,8 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -30,29 +30,38 @@ public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
     }
 
     public String getSqlTypeName(DataType datatype) {
+//        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
+//        if(databaseProductVersion==null){
+//            databaseProductVersion="";
+//        }
         Class platformType = datatype.getPlatformType();
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
-        if (platformType.equals(String.class)) {
+        if (PlatformUtils.isString(platformType)) {
             if (length <= 0)
                 length = 256;
-            if (length > 8000) {
-                return "BLOB";//return "NTEXT";
-            } else {
+            if (length <= 8000) {
                 return "VARCHAR2(" + length + ")";
+            } else {
+                return "BLOB";
             }
         }
-        if ((Integer.class).equals(platformType))
+        if (PlatformUtils.isInt8(platformType)) {
+            return "SMALLINT";
+        }
+        if (PlatformUtils.isInt16(platformType)) {
+            return "SMALLINT";
+        }
+        if (PlatformUtils.isInt32(platformType)) {
             return "INT";
-        if (Byte.class.equals(platformType))
-            return "SMALLINT";
-        if (Short.class.equals(platformType))
-            return "SMALLINT";
-        if ((Long.class).equals(platformType))
+        }
+        if (PlatformUtils.isInt64(platformType)) {
             return "NUMBER";
-        if (Float.class.equals(platformType))
+        }
+        if (PlatformUtils.isFloat32(platformType)) {
             return "NUMBER";
-        if ((Double.class).equals(platformType)) {
+        }
+        if (PlatformUtils.isFloat64(platformType)) {
             if (datatype instanceof NumberType) {
                 DoubleType n = ((DoubleType) datatype);
                 return n.isFixedDigits() ? "NUMBER(" + (n.getMaximumIntegerDigits() + n.getMaximumFractionDigits()) + "," + n.getMaximumFractionDigits() + ")" : "NUMBER";
@@ -60,14 +69,31 @@ public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
                 return "NUMBER";
             }
         }
-        if ((Number.class).isAssignableFrom(platformType))
+        if (PlatformUtils.isAnyNumber(platformType)) {
             return "NUMBER";
-        if ((Boolean.class).equals(platformType))
-            return "INT";
-        if (platformType.equals(java.util.Date.class) || platformType.equals(java.sql.Date.class)) {
-            return "DATE";
         }
-        if(datatype instanceof EnumType){
+        if (PlatformUtils.isBool(platformType)) {
+            return "INT";
+        }
+
+        if(datatype instanceof TemporalType){
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if(temporalOption==null){
+                temporalOption=TemporalOption.DEFAULT;
+            }
+            switch (temporalOption){
+                case DATE: return "DATE";
+                case DATETIME: return "TIMESTAMP";
+                case TIMESTAMP: return "TIMESTAMP";
+                case TIME: return "TIME";
+                case MONTH: return "DATE";
+                case YEAR: return "DATE";
+                default:{
+                    throw new IllegalArgumentException("Unsupported "+datatype);
+                }
+            }
+        }
+        if (datatype instanceof EnumType) {
             //TODO should support marshalling types
             return "INT";
         }

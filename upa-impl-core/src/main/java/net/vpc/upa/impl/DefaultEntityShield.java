@@ -7,7 +7,7 @@ import net.vpc.upa.expressions.*;
 import java.util.*;
 import java.util.logging.Logger;
 
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
@@ -240,16 +240,16 @@ public class DefaultEntityShield implements EntityShield {
             return;
         }
         if (!isDeleteSupported()) {
-            throw new UndeletableDocumentException(entity);
+            throw new RemoveDocumentNotSupportedException(entity);
         }
         if (!entity.getPersistenceUnit().getSecurityManager().isAllowedRemove(entity)) {
-            throw new DeleteDocumentNotAllowedException(entity);
+            throw new RemoveDocumentNotAllowedException(entity);
         }
         Expression e = getFullNonDeletableDocumentsExpression();
         if (e != null && e.isValid()) {
             Expression a = (condition == null) ? e : new And(condition, e);
             if (entity.getEntityCount(a) > 0) {
-                throw new UndeletableDocumentException(entity);
+                throw new RemoveDocumentNotSupportedException(entity);
             }
         }
         Entity p = entity.getParentEntity();
@@ -258,7 +258,7 @@ public class DefaultEntityShield implements EntityShield {
 //            p.getShield().checkRemove(ss, recurse);
             try {
                 p.getShield().checkUpdate(p.getBuilder().createDocument(), ss);
-            }catch (UpdateDocumentKeyNotFoundException ex){
+            }catch (UpdateDocumentIdNotFoundException ex){
                 //ignore this error, because no parent to update...
             }
         }
@@ -270,8 +270,8 @@ public class DefaultEntityShield implements EntityShield {
      * @param newId
      * @throws net.vpc.upa.exceptions.UPAException
      * CloneDocumentNotAllowedException, CloneDocumentNotAllowedException,
-     * CloneDocumentNotAllowedException, CloneDocumentOldKeyNotFoundException,
-     * CloneDocumentNewKeyInUseException
+ CloneDocumentNotAllowedException, CloneDocumentOldIdNotFoundException,
+ CloneDocumentNewIdInUseException
      */
     public void checkClone(Object oldId, Object newId) throws UPAException {
         if (!entity.getPersistenceUnit().getSecurityManager().isAllowedClone(entity)) {
@@ -283,19 +283,19 @@ public class DefaultEntityShield implements EntityShield {
         if (oldId != null) {
             Expression e = getFullNonCloneableDocumentsExpression();
             if (e != null && e.isValid()) {
-                And a = new And(entity.getBuilder().idToExpression(oldId, UQLUtils.THIS), e);
+                And a = new And(entity.getBuilder().idToExpression(oldId, UPQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     throw new CloneDocumentNotAllowedException(entity);
                 }
             }
             Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
-                throw new CloneDocumentOldKeyNotFoundException(entity);
+                throw new CloneDocumentOldIdNotFoundException(entity);
             }
         }
         if (newId != null) {
             if (entity.contains(newId)) {
-                throw new CloneDocumentNewKeyInUseException(entity);
+                throw new CloneDocumentNewIdInUseException(entity);
             }
         }
         checkVeto(VetoableOperation.checkClone, oldId, newId);
@@ -310,33 +310,33 @@ public class DefaultEntityShield implements EntityShield {
      * @param oldId old id
      * @param newId new id
      * @throws net.vpc.upa.exceptions.UPAException :
-     * RenameDocumentNotAllowedException, UnrenamableDocumentException,
-     * RenameDocumentOldKeyNotFoundException, RenameDocumentNewKeyInUseException
+ RenameDocumentNotAllowedException, RenameDocumentNotSupportedException,
+ RenameDocumentOldIdNotFoundException, RenameDocumentNewIdInUseException
      */
     public void checkRename(Object oldId, Object newId) throws UPAException {
         if (!entity.getPersistenceUnit().getSecurityManager().isAllowedRename(entity)) {
             throw new RenameDocumentNotAllowedException(entity);
         }
         if (!isRenameSupported()) {
-            throw new UnrenamableDocumentException(entity);
+            throw new RenameDocumentNotSupportedException(entity);
         }
         if (oldId != null) {
             Expression e = getFullNonRenamableDocumentsExpression();
             if (e != null && e.isValid()) {
-                And a = new And(entity.getBuilder().idToExpression(oldId, UQLUtils.THIS), e);
+                And a = new And(entity.getBuilder().idToExpression(oldId, UPQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
-                    throw new UnrenamableDocumentException(entity);
+                    throw new RenameDocumentNotSupportedException(entity);
                 }
             }
 
             Object o = entity.createQueryBuilder().byId(oldId).setFieldFilter(FieldFilters2.PERSISTENT_NON_FORMULA).getSingleResultOrNull();
             if (o == null) {
-                throw new RenameDocumentOldKeyNotFoundException(entity);
+                throw new RenameDocumentOldIdNotFoundException(entity);
             }
         }
         if (newId != null) {
             if (entity.contains(newId)) {
-                throw new RenameDocumentNewKeyInUseException(entity);
+                throw new RenameDocumentNewIdInUseException(entity);
             }
         }
         checkVeto(VetoableOperation.checkRename, oldId, newId);
@@ -349,18 +349,18 @@ public class DefaultEntityShield implements EntityShield {
             throw new UpdateDocumentNotAllowedException(entity);
         }
         if (!isUpdateSupported()) {
-            throw new UnupdatableDocumentException(entity);
+            throw new UpdateDocumentNotSupportedException(entity);
         }
         Expression e = getFullNonUpdatableDocumentsExpression();
         if (e != null && e.isValid()) {
             Expression a = (condition == null) ? e : new And(condition, e);
             if (entity.getEntityCount(a) > 0) {
-                throw new UnupdatableDocumentException(entity);
+                throw new UpdateDocumentNotSupportedException(entity);
             }
         }
         long updated = 0;
         if ((updated = entity.getEntityCount(condition)) == 0) {
-            throw new UpdateDocumentKeyNotFoundException(entity, condition);
+            throw new UpdateDocumentIdNotFoundException(entity, condition);
         }
         //TODO c koa cet unique fields qui n'impose pas toutes les validations
         if (false/*
@@ -391,7 +391,7 @@ public class DefaultEntityShield implements EntityShield {
                     if (or != null) {
                         And and = new And(new Not(condition), or);
                         if (entity.getEntityCount(and) > 0) {
-                            throw new UpdateDocumentDuplicateKeyException(entity);
+                            throw new UpdateDocumentDuplicateIdException(entity);
                         }
                     }
                 }
@@ -402,7 +402,7 @@ public class DefaultEntityShield implements EntityShield {
                     Field[] f = index.getFields();
                     for (Field aF : f) {
                         if (updates.isSet(aF.getName())) {
-                            throw new UpdateDocumentDuplicateKeyException(entity);
+                            throw new UpdateDocumentDuplicateIdException(entity);
                         }
                     }
                 }
@@ -413,7 +413,7 @@ public class DefaultEntityShield implements EntityShield {
             Expression ss = entity.childToParentExpression(condition);
             try{
                 p.getShield().checkUpdate(null, ss);
-            }catch(UpdateDocumentKeyNotFoundException ex){
+            }catch(UpdateDocumentIdNotFoundException ex){
                 log.warning(entity.getName()+"'s parent seems not to be resolvable for condition ("+condition+"): "+ex);
                 //ignore if parent not found!
             }
@@ -431,7 +431,7 @@ public class DefaultEntityShield implements EntityShield {
     @Override
     public void checkClear() throws UPAException {
         if (!isDeleteSupported()) {
-            throw new UndeletableDocumentException(entity);
+            throw new RemoveDocumentNotSupportedException(entity);
         }
     }
 
@@ -441,7 +441,7 @@ public class DefaultEntityShield implements EntityShield {
 ////
 ////        }
 ////        if (!isDeleteSupported()) {
-////            throw new UndeletableDocumentException(entity);
+////            throw new RemoveDocumentNotSupportedException(entity);
 ////        }
 ////        if (!isPersistSupported()) {
 ////            throw new InsertDocumentNotAllowedException(entity);
@@ -453,7 +453,7 @@ public class DefaultEntityShield implements EntityShield {
             throw new PersistDocumentNotAllowedException(entity);
         }
         if (!isPersistSupported()) {
-            throw new PersistDocumentNotAllowedException(entity);
+            throw new PersistDocumentNotSupportedException(entity);
         }
         if (document != null) {
             // check parent is not read only
@@ -468,9 +468,9 @@ public class DefaultEntityShield implements EntityShield {
                         pko[i] = document.getObject(df.get(i).getName());
                     }
                     Object pk = entity.createId(pko);
-                    long c = entity.getParentEntity().getEntityCount(new And(parentUnupdatable, entity.getParentEntity().getBuilder().idToExpression(pk, UQLUtils.THIS)));
+                    long c = entity.getParentEntity().getEntityCount(new And(parentUnupdatable, entity.getParentEntity().getBuilder().idToExpression(pk, UPQLUtils.THIS)));
                     if (c > 0) {
-                        throw new UnupdatableDocumentException(entity.getParentEntity());
+                        throw new UpdateDocumentNotSupportedException(entity.getParentEntity());
                     }
                 }
             }
@@ -479,7 +479,7 @@ public class DefaultEntityShield implements EntityShield {
             Expression keyExpresson = null;
             if (!keyGenerated) {
                 Object key = entity.getBuilder().documentToId(document);
-                keyExpresson = entity.getBuilder().idToExpression(key, UQLUtils.THIS);
+                keyExpresson = entity.getBuilder().idToExpression(key, UPQLUtils.THIS);
             }
             Entity p = entity.getParentEntity();
             if (p != null) {
@@ -493,7 +493,7 @@ public class DefaultEntityShield implements EntityShield {
             if (uniqueIndexes.isEmpty()) {
                 if (!keyGenerated) {
                     if (entity.getEntityCount(keyExpresson) > 0) {
-                        throw new InsertDocumentDuplicateKeyException(entity);
+                        throw new PersistDocumentDuplicateIdException(entity);
                     }
                 }
             } else {
@@ -520,7 +520,7 @@ public class DefaultEntityShield implements EntityShield {
                     // finer lookup of problem
                     if (!keyGenerated) {
                         if (entity.getEntityCount(keyExpresson) > 0) {
-                            throw new InsertDocumentDuplicateKeyException(entity);
+                            throw new PersistDocumentDuplicateIdException(entity);
                         }
                     }
                     for (Index index : uniqueIndexes) {
@@ -538,7 +538,7 @@ public class DefaultEntityShield implements EntityShield {
                             e1 = a;
                         }
                         if (entity.getEntityCount(e1) > 0) {
-                            throw new InsertDocumentDuplicateUniqueFieldsException(entity, index, document.getObject(f[0].getName()));
+                            throw new PersistDocumentDuplicateUniqueFieldsException(entity, index, document.getObject(f[0].getName()));
                         }
                     }
                     throw new RuntimeException("WouldNeverBeThrownException");
@@ -573,7 +573,7 @@ public class DefaultEntityShield implements EntityShield {
             }
             Expression e = getFullNonDeletableDocumentsExpression();
             if (e != null && e.isValid()) {
-                Expression a = new And(entity.getBuilder().idToExpression(k, UQLUtils.THIS), e);
+                Expression a = new And(entity.getBuilder().idToExpression(k, UPQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     return false;
                 }
@@ -594,7 +594,7 @@ public class DefaultEntityShield implements EntityShield {
             }
             Expression e = getFullNonUpdatableDocumentsExpression();
             if (e != null && e.isValid()) {
-                Expression a = new And(entity.getBuilder().idToExpression(id, UQLUtils.THIS), e);
+                Expression a = new And(entity.getBuilder().idToExpression(id, UPQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {
                     return false;
                 }

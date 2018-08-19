@@ -26,9 +26,9 @@ import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterInt;
 import net.vpc.upa.impl.persistence.TableSequenceIdentityPersisterString;
 import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
-import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -58,7 +58,6 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new MySQLDateAddSQLProvider());
         getSqlManager().register(new MySQLDateDiffSQLProvider());
         getSqlManager().register(new MySQLDatePartSQLProvider());
-        getSqlManager().register(new MySQLI2VSQLProvider());
         getSqlManager().register(new MySQLD2VSQLProvider());
         getSqlManager().register(new MySQLDecodeSQLProvider());
         getSqlManager().register(new MySQLIfSQLProvider());
@@ -183,7 +182,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
     @Override
     public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
-        DataTypeTransform cr = UPAUtils.getTypeTransformOrIdentity(field);
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');

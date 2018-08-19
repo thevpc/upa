@@ -42,7 +42,7 @@ public class MultiTenantFeature {
     /**
      * simple implementation of multi tenancy using a thread local field. set
      * the initial value of the tenant. Callback function called when the
-     * persistenceUnit is created. Creates a new Function usable in UQL
+     * persistenceUnit is created. Creates a new Function usable in UPQL
      * (Unstructured Query Language) context. Actually this is needed to call
      * the thread local var from within the tenantId formula
      *

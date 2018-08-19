@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledD2V;
+import net.vpc.upa.impl.upql.ext.expr.CompiledToString;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 @PortabilityHint(target = "C#", name = "suppress")
 class OracleD2VSQLProvider extends OracleFunctionSQLProvider {
     public OracleD2VSQLProvider() {
-        super(CompiledD2V.class);
+        super(CompiledToString.class);
     }
 
     public String simplify(String functionName, String[] params, Map<String, Object> context) {

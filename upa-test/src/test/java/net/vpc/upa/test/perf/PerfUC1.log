@@ -1,0 +1,4 @@
+[1.2.0.48][PersistMany                   ][stability=3 ; count=1000] all-min/avg/max= | 650    | 852    | 1212   :: one-min/avg/max= | 0      | 0      | 1      | 
+[1.2.0.48][MultiEntryInitializedPersist  ][stability=3 ; count=1000] all-min/avg/max= | 445    | 547    | 656    :: one-min/avg/max= | 0      | 0      | 0      | 
+[1.2.0.48][MultiEntryNop                 ][stability=3 ; count=1000] all-min/avg/max= | 183    | 307    | 516    :: one-min/avg/max= | 0      | 0      | 0      | 
+[1.2.0.48][MultiEntryPersist             ][stability=3 ; count=1000] all-min/avg/max= | 15713  | 18002  | 19474  :: one-min/avg/max= | 15     | 18     | 19     | 

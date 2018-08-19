@@ -21,7 +21,6 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.EqualsStringFilter;
 import net.vpc.upa.impl.util.SimpleEntityFilter;
 import net.vpc.upa.impl.util.StringUtils;
-import net.vpc.upa.persistence.DatabaseProduct;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.TypesFactory;
 

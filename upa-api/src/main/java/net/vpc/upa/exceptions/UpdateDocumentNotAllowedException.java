@@ -39,10 +39,6 @@ import net.vpc.upa.Entity;
 
 public class UpdateDocumentNotAllowedException extends EntityException {
     public UpdateDocumentNotAllowedException(Entity entity) {
-        super(entity, "update.NotAllowed");
-    }
-
-    public UpdateDocumentNotAllowedException(Entity entity, String operationName) {
-        super(entity, operationName);
+        super(entity, "update", "NotAllowed");
     }
 }

@@ -4,7 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.impl.uql.util.ThisFilter;
+import net.vpc.upa.impl.upql.util.ThisFilter;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.FieldPersister;
 import net.vpc.upa.persistence.PersistenceStore;

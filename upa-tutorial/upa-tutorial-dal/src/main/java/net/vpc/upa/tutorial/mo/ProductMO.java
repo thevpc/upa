@@ -4,7 +4,6 @@
  */
 package net.vpc.upa.tutorial.mo;
 
-import net.vpc.upa.UserFieldModifier;
 import net.vpc.upa.config.*;
 import net.vpc.upa.tutorial.model.Product;
 

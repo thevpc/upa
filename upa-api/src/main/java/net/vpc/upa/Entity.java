@@ -94,21 +94,21 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     List<Index> getIndexes(Boolean unique);
 
-    void removePart(int index);
+    void removeItem(int index);
 
-    void movePart(int index, int newIndex);
+    void moveItem(int index, int newIndex);
 
-    void movePart(String partName, int newIndex);
+    void moveItem(String partName, int newIndex);
 
-    List<EntityPart> getParts();
+    List<EntityItem> getItems();
 
     int indexOfField(String field);
 
-    int indexOfPart(EntityPart part);
+    int indexOfItem(EntityItem part);
 
-    int indexOfPart(String partName);
+    int indexOfItem(String partName);
 
-    int indexOfPart(String partName, boolean countSections,
+    int indexOfItem(String partName, boolean countSections,
             boolean countCompoundFields, boolean countFieldsInCompoundFields,
             boolean countFieldsInSections);
 
@@ -323,9 +323,9 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     PrimitiveField findPrimitiveField(String fieldName);
 
-    <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(List<T> parts);
+    <T extends EntityItem> List<PrimitiveField> toPrimitiveFields(List<T> parts);
 
-    List<Field> getFields(List<EntityPart> parts);
+    List<Field> getFields(List<EntityItem> parts);
 
     List<PrimitiveField> getPrimitiveFields(String... fieldNames);
 
@@ -415,6 +415,12 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 
     boolean isSystem();
 
+    boolean isView();
+
+    boolean isUnion();
+
+    boolean isSingleton();
+
     void initialize();
 
     void initialize(Map<String, Object> hints);
@@ -430,6 +436,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
 //     */
 //    void setCompositionRelationship(Relationship compositionRelation) ;
     <T> T findById(Object id);
+
+    Document findDocumentById(Object id);
 
     boolean existsById(Object id);
 

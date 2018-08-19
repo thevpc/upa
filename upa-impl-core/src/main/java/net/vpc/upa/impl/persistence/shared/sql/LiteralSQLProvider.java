@@ -6,8 +6,8 @@ import net.vpc.upa.Relationship;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.TypeMarshaller;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledLiteral;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
 import net.vpc.upa.impl.util.ExprTypeInfo;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
@@ -45,7 +45,7 @@ public class LiteralSQLProvider extends AbstractSQLProvider {
                 if(tf.size()!=1){
                     throw new UPAIllegalArgumentException("Unsupported");
                 }
-                d = UPAUtils.getTypeTransformOrIdentity(tf.get(0));
+                d = tf.get(0).getEffectiveTypeTransform();
             }
         }
         if(d==null){

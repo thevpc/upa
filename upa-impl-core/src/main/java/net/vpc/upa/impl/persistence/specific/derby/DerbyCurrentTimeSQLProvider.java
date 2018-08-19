@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence.specific.derby;
 import net.vpc.upa.PortabilityHint;
 
 import java.util.Map;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledCurrentTime;
+import net.vpc.upa.impl.upql.ext.expr.CompiledCurrentTime;
 
 /**
  * Created by IntelliJ IDEA.

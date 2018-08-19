@@ -20,10 +20,10 @@ import net.vpc.upa.impl.ext.persistence.EntityExecutionContextExt;
 import net.vpc.upa.impl.navigator.EntityNavigatorFactory;
 import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.FieldListPersistenceInfo;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledSelect;
-import net.vpc.upa.impl.uql.parser.syntax.ParseException;
-import net.vpc.upa.impl.uql.util.UQLCompiledUtils;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
+import net.vpc.upa.impl.upql.parser.syntax.ParseException;
+import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.impl.util.filters.PersistNonNullableFieldFilter;
@@ -36,6 +36,9 @@ import net.vpc.upa.types.I18NString;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.extensions.SingletonExtensionDefinition;
+import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
+import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
 
 public class DefaultEntity extends AbstractUPAObject implements // for simple
         // use
@@ -61,8 +64,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     private Class idType;
     private Class entityType;
     private DefaultEntityBuilder entityBuilder;
-    private List<EntityPart> items = new ArrayList<EntityPart>();
-    private Map<String, EntityPart> itemsByName = new HashMap<String, EntityPart>();
+    private List<EntityItem> items = new ArrayList<EntityItem>();
+    private Map<String, EntityItem> itemsByName = new HashMap<String, EntityItem>();
     private Map<String, Trigger> triggers = new HashMap<String, Trigger>();
     //    private List<Field> fieldsList = new ArrayList<Field>();
     //    private HashList mappedCompoundFields;
@@ -320,73 +323,73 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    public <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(EntityPart part) throws UPAException {
-        ArrayList<EntityPart> parts = new ArrayList<EntityPart>();
-        parts.add(part);
+    public <T extends EntityItem> List<PrimitiveField> toPrimitiveFields(EntityItem item) throws UPAException {
+        ArrayList<EntityItem> items = new ArrayList<EntityItem>();
+        items.add(item);
         ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>();
-        fillPrimitiveFields(parts, v);
+        fillPrimitiveFields(items, v);
         return v;
     }
 
-    public <T extends EntityPart> List<PrimitiveField> toPrimitiveFields(List<T> parts) throws UPAException {
-        ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>(parts.size());
-        fillPrimitiveFields(parts, v);
+    public <T extends EntityItem> List<PrimitiveField> toPrimitiveFields(List<T> items) throws UPAException {
+        ArrayList<PrimitiveField> v = new ArrayList<PrimitiveField>(items.size());
+        fillPrimitiveFields(items, v);
         return v;
     }
 
     @Override
-    public List<Field> getFields(List<EntityPart> parts) throws UPAException {
-        ArrayList<Field> v = new ArrayList<Field>(parts.size());
-        fillFields(parts, v);
+    public List<Field> getFields(List<EntityItem> items) throws UPAException {
+        ArrayList<Field> v = new ArrayList<Field>(items.size());
+        fillFields(items, v);
         return v;
     }
 
-    private void fillFields(List<EntityPart> parts, List<Field> c) throws UPAException {
-        for (EntityPart part : parts) {
-            if (part instanceof Field) {
-                c.add((Field) part);
-            } else if (part instanceof Section) {
-                fillFields(((Section) part).getParts(), c);
+    private void fillFields(List<EntityItem> items, List<Field> c) throws UPAException {
+        for (EntityItem item : items) {
+            if (item instanceof Field) {
+                c.add((Field) item);
+            } else if (item instanceof Section) {
+                fillFields(((Section) item).getItems(), c);
             }
         }
     }
 
-    private <T extends EntityPart> void fillPrimitiveFields(List<T> parts, List<PrimitiveField> c) throws UPAException {
-        for (EntityPart part : parts) {
-            if (part instanceof PrimitiveField) {
-                c.add((PrimitiveField) part);
-            } else if (part instanceof CompoundField) {
-                List<PrimitiveField> primitiveFields = ((CompoundField) part).getFields();
+    private <T extends EntityItem> void fillPrimitiveFields(List<T> items, List<PrimitiveField> c) throws UPAException {
+        for (EntityItem item : items) {
+            if (item instanceof PrimitiveField) {
+                c.add((PrimitiveField) item);
+            } else if (item instanceof CompoundField) {
+                List<PrimitiveField> primitiveFields = ((CompoundField) item).getFields();
                 for (PrimitiveField f : primitiveFields) {
                     c.add(f);
                 }
-            } else if (part instanceof Section) {
-                fillPrimitiveFields(((Section) part).getParts(), c);
+            } else if (item instanceof Section) {
+                fillPrimitiveFields(((Section) item).getItems(), c);
             }
         }
     }
 
-    private void addPart(EntityPart item, int index) throws UPAException {
+    private void addItem(EntityItem item, int index) throws UPAException {
         ListUtils.add(items, item, index, this, this, new DefaultEntityPrivateAddItemInterceptor(this), true);
         itemsByName.put(item.getName(), item);
         invalidateStructureCache();
     }
 
-    public void removePart(int index) {
-        EntityPart item = ListUtils.remove(items, index, this, new DefaultEntityPrivateRemoveItemInterceptor());
+    public void removeItem(int index) {
+        EntityItem item = ListUtils.remove(items, index, this, new DefaultEntityPrivateRemoveItemInterceptor());
         itemsByName.remove(item.getName());
     }
 
-    public void movePart(int index, int newIndex) {
+    public void moveItem(int index, int newIndex) {
         ListUtils.moveTo(items, index, newIndex, this, null);
         invalidateStructureCache();
     }
 
-    public void movePart(String partName, int newIndex) {
-        movePart(indexOfPart(partName), newIndex);
+    public void moveItem(String itemName, int newIndex) {
+        DefaultEntity.this.moveItem(DefaultEntity.this.indexOfItem(itemName), newIndex);
     }
 
-    public List<EntityPart> getParts() {
+    public List<EntityItem> getItems() {
         return items;
     }
 
@@ -401,14 +404,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return strings.indexOf(field);
     }
 
-    public int indexOfPart(EntityPart child) {
+    public int indexOfItem(EntityItem child) {
         return items.indexOf(child);
     }
 
-    public int indexOfPart(String childName) {
+    public int indexOfItem(String childName) {
         int index = 0;
-        for (EntityPart part : items) {
-            if (childName.equals(part.getName())) {
+        for (EntityItem item : items) {
+            if (childName.equals(item.getName())) {
                 return index;
             }
             index++;
@@ -416,29 +419,29 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return -1;
     }
 
-    public int indexOfPart(String childName, boolean countSections,
+    public int indexOfItem(String childName, boolean countSections,
             boolean countCompoundFields, boolean countFieldsInCompoundFields,
             boolean countFieldsInSections) throws UPAException {
         int index = 0;
-        Stack<EntityPart> stack = new Stack<EntityPart>();
-        int partSize = items.size();
-        for (int i = partSize - 1; i >= 0; i--) {
+        Stack<EntityItem> stack = new Stack<EntityItem>();
+        int itemsSize = items.size();
+        for (int i = itemsSize - 1; i >= 0; i--) {
             stack.push(items.get(i));
         }
         while (!stack.isEmpty()) {
-            EntityPart entityPart = stack.pop();
-            if (childName.equals(entityPart.getName())) {
+            EntityItem entityItem = stack.pop();
+            if (childName.equals(entityItem.getName())) {
                 return index;
-            } else if (entityPart instanceof Section) {
-                List<EntityPart> p = ((Section) entityPart).getParts();
+            } else if (entityItem instanceof Section) {
+                List<EntityItem> p = ((Section) entityItem).getItems();
                 for (int i = 0; i < p.size(); i++) {
                     stack.push(p.get(p.size() - 1 - i));
                 }
                 if (countSections) {
                     index++;
                 }
-            } else if (entityPart instanceof CompoundField) {
-                List<PrimitiveField> p = ((CompoundField) entityPart).getFields();
+            } else if (entityItem instanceof CompoundField) {
+                List<PrimitiveField> p = ((CompoundField) entityItem).getFields();
                 for (int i = 0; i < p.size(); i++) {
                     stack.push(p.get(p.size() - 1 - i));
                 }
@@ -448,10 +451,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             } else // field
             {
                 if (!countFieldsInCompoundFields
-                        && entityPart.getParent() instanceof CompoundField) {
+                        && entityItem.getParent() instanceof CompoundField) {
                     //
                 } else if (!countFieldsInSections
-                        && entityPart.getParent() instanceof Section) {
+                        && entityItem.getParent() instanceof Section) {
                     //
                 } else {
                     index++;
@@ -508,9 +511,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), parentSection == null ? this : parentSection, currentSection, canonicalPathArray[canonicalPathArray.length - 1]);
 
         if (parentSection == null) {
-            addPart(currentSection, index);
+            addItem(currentSection, index);
         } else {
-            parentSection.addPart(currentSection, index);
+            parentSection.addItem(currentSection, index);
         }
         invalidateStructureCache();
         return currentSection;
@@ -592,7 +595,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        if (currentSection != null) {
 //            currentSection.add(currentCompoundField);
 //        } else {
-//            addPart(currentCompoundField, getItemsCount());
+//            addItem(currentCompoundField, getItemsCount());
 //        }
 //        currentCompoundField.init();
 //        return currentCompoundField;
@@ -624,7 +627,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         for (String n : canonicalPathArray) {
             Section next = null;
             if (module == null) {
-                for (EntityPart schemaItem : items) {
+                for (EntityItem schemaItem : items) {
                     if (schemaItem instanceof Section) {
                         if (schemaItem.getName().equals(n)) {
                             next = (Section) schemaItem;
@@ -635,7 +638,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 if (next == null) {
                     switch (missingStrategy) {
                         case ERROR: {
-                            throw new NoSuchSectionException(path);
+                            throw new NoSuchSectionException(getName(), null, path);
                         }
                         case CREATE: {
                             next = addSection(n);
@@ -655,7 +658,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 } catch (NoSuchSectionException e) {
                     switch (missingStrategy) {
                         case ERROR: {
-                            throw new NoSuchSectionException(path);
+                            throw new NoSuchSectionException(getName(), n, path);
                         }
                         case CREATE: {
                             next = addSection(module.getPath() + "/" + n);
@@ -691,27 +694,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        cache_loadDocumentName_query = null;
     }
 
-    //    private void revalidateStructure_addPart(EntityPart part) throws UPAException {
-////        NamingStrategy namesComparator = NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers());
-//        if (part instanceof Section) {
-//            List<EntityPart> children = ((Section) part).getChildren();
-//            for (EntityPart aChildren : children) {
-//                revalidateStructure_addPart(aChildren);
-//            }
-//        } else if (part instanceof PrimitiveField) {
-//            PrimitiveField f = (PrimitiveField) part;
-//            addFieldToCache(f);
-//        } else if (part instanceof CompoundField) {
-//            CompoundField cf = (CompoundField) part;
-//            List<PrimitiveField> fs = cf.getPrimitiveFields();
-//            for (PrimitiveField f : fs) {
-//                addFieldToCache(f);
-//            }
-//            addFieldToCache(cf);
-//        } else {
-//            throw new RuntimeException("WouldNeverBeThrownException");
-//        }
-//    }
     public synchronized void revalidateStructure() throws UPAException {
         if (cache.needsRevalidateCache) {
             cache.needsRevalidateCache = false;
@@ -755,7 +737,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     if (selectFormula instanceof ExpressionFormula) {
                         ExpressionFormula ef = (ExpressionFormula) selectFormula;
                         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) compile(ef.getExpression(), null);
-                        complexFormula = compiledExpression.findFirstExpression(UQLCompiledUtils.SELECT_FILTER) != null;
+                        complexFormula = compiledExpression.findFirstExpression(UPQLCompiledUtils.SELECT_FILTER) != null;
                     } else {
                         complexFormula = true;
                     }
@@ -932,7 +914,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (persistFormula != null) {
                 Set<Field> usedFields = null;
                 try {
-                    usedFields = findUsedFields(persistFormula);
+                    usedFields = findUsedFields(persistFormula, f);
                 } catch (Exception e) {
                     throw new UPAException(e, new I18NString("InvalidFormulaExpression"), f.getAbsoluteName(), "PersistFormula", persistFormula);
                 }
@@ -949,7 +931,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (updateFormula != null) {
                 Set<Field> usedFields = null;
                 try {
-                    usedFields = findUsedFields(updateFormula);
+                    usedFields = findUsedFields(updateFormula, f);
                 } catch (ParseException e) {
                     throw new UPAException("InvalidFormulaExpression", f.getAbsoluteName(), "UpdateFormula", persistFormula);
                 }
@@ -978,7 +960,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         invalidateStructureCache();
         revalidateStructure();
         items = PlatformUtils.trimToSize(items);
-        for (EntityPart item : items) {
+        for (EntityItem item : items) {
             item.commitModelChanges();
         }
         FlagSet<EntityModifier> includedModifiers = getUserModifiers();
@@ -1000,10 +982,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         for (EntityModifier entityModifier : new EntityModifier[]{
             EntityModifier.TRANSIENT,
-             EntityModifier.LOCK,
-             EntityModifier.CLEAR,
-             EntityModifier.PRIVATE,
-             EntityModifier.SYSTEM
+            EntityModifier.LOCK,
+            EntityModifier.CLEAR,
+            EntityModifier.PRIVATE,
+            EntityModifier.SYSTEM
         }) {
             if (includedModifiers.contains(entityModifier)) {
                 _effectiveModifiers = _effectiveModifiers.add(entityModifier);
@@ -1011,11 +993,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         for (EntityModifier entityModifier : new EntityModifier[]{
             EntityModifier.PERSIST,
-             EntityModifier.UPDATE,
-             EntityModifier.REMOVE,
-             EntityModifier.CLONE,
-             EntityModifier.RENAME,
-             EntityModifier.NAVIGATE
+            EntityModifier.UPDATE,
+            EntityModifier.REMOVE,
+            EntityModifier.CLONE,
+            EntityModifier.RENAME,
+            EntityModifier.NAVIGATE
         }) {
             if (includedModifiers.contains(entityModifier) || !excludedModifiers.contains(entityModifier)) {
                 _effectiveModifiers = _effectiveModifiers.add(entityModifier);
@@ -1441,22 +1423,22 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         if (sectionPath == null || sectionPath.length() == 0) {
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            addPart(field, field.getPreferredIndex());
+            addItem(field, field.getPreferredIndex());
         } else {
             Section section = getSection(sectionPath, MissingStrategy.CREATE);
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), section, field, field.getName());
-            section.addPart(field, field.getPreferredIndex());
+            section.addItem(field, field.getPreferredIndex());
         }
         invalidateStructureCache();
         return field;
     }
 
-    public void beforePartAdded(EntityPart parent, EntityPart part, int index) throws UPAException {
-        if (part instanceof Field) {
-            if (part.getName() == null || part.getName().length() == 0) {
+    public void beforeItemAdded(EntityItem parent, EntityItem item, int index) throws UPAException {
+        if (item instanceof Field) {
+            if (item.getName() == null || item.getName().length() == 0) {
                 throw new UPAException(new I18NString("InvalidNameException"), "Field with no name for " + getName());
             }
-            Field field = (Field) part;
+            Field field = (Field) item;
             if (field.getPersistFormula() != null
                     && !(UPAUtils.getPersistFormula(field) instanceof Sequence)
                     && (field.getDefaultObject() == null || field.getDefaultObject() instanceof CustomDefaultObject)
@@ -1474,21 +1456,21 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (fieldsMap.containsKey(NamingStrategyHelper.getNamingStrategy(getPersistenceUnit().isCaseSensitiveIdentifiers()).getUniformValue(field.getName()))) {
                 throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", field.getName(), this);
             }
-        } else if (part instanceof Section) {
-            if (part.getName() == null || part.getName().length() == 0) {
+        } else if (item instanceof Section) {
+            if (item.getName() == null || item.getName().length() == 0) {
                 throw new UPAException(new I18NString("InvalidNameException"), "Section for " + getName());
             }
         }
         if (parent == null) {
-            EntityPart found = itemsByName.get(part.getName());
+            EntityItem found = itemsByName.get(item.getName());
             if (found != null) {
-                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", part.getName());
+                throw new ObjectAlreadyExistsException("EntityItemAlreadyExists", item.getName());
             }
         } else if (parent instanceof Section) {
             Section s = (Section) parent;
             boolean found = false;
             try {
-                s.getPart(part.getName());
+                s.getItem(item.getName());
                 found = true;
             } catch (Exception e) {
                 //
@@ -1500,7 +1482,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             CompoundField s = (CompoundField) parent;
             boolean found = false;
             try {
-                s.getField(part.getName());
+                s.getField(item.getName());
                 found = true;
             } catch (Exception e) {
                 //
@@ -1511,7 +1493,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    public void afterPartAdded(EntityPart parent, EntityPart item, int index) throws UPAException {
+    public void afterItemAdded(EntityItem parent, EntityItem item, int index) throws UPAException {
         if (item instanceof Field) {
             Field field = (Field) item;
             field.addObjectListener(objListener);
@@ -1645,7 +1627,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (persistFormula != null && persistFormula instanceof ExpressionFormula && persistFormulaOrder == 0) {
             //check if expression contains thi. keyword. In that case will change order to 1
             Expression r = ((ExpressionFormula) persistFormula).getExpression();
-            if (UQLUtils.containsThisVar(r, getPersistenceUnit().getExpressionManager())) {
+            if (UPQLUtils.containsThisVar(r, getPersistenceUnit().getExpressionManager())) {
                 persistFormulaOrder = 1;
             }
         }
@@ -1752,12 +1734,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (f != null) {
             return f;
         }
-//            ExtendedField p = (ExtendedField) mappedCompoundFields.get(getPersistenceUnit().getNamesComparator().getUniformValue(fieldName));
-//            if (p == null) {
-//            Log.dev_warning(getName() + " : ExtendedField : " + "Neither Field nor compound field " + fieldName + " was found in Entity " + getName());
-        throw new net.vpc.upa.exceptions.NoSuchFieldException(getName(), null, fieldName, null);
-//            }
-//            return p;
+        throw new net.vpc.upa.exceptions.NoSuchFieldException(getName(), null, fieldName);
     }
 
     public Field findField(String fieldName) throws UPAException {
@@ -1844,8 +1821,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public List<Field> getImmediateFields(FieldFilter filter) {
-        List<Field> e = new ArrayList<Field>(getParts().size());
-        for (EntityPart p : getParts()) {
+        List<Field> e = new ArrayList<Field>(getItems().size());
+        for (EntityItem p : getItems()) {
             if (p instanceof Field) {
                 Field field = (Field) p;
                 if (filter == null || filter.accept(field)) {
@@ -1990,7 +1967,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     // r.getDetailsTable().updateAllDocuments(updates,
                     // condition, check);
                     ((EntityExt) r.getSourceRole().getEntity()).updateCore(updates, condition, context);
-                } catch (UpdateDocumentKeyNotFoundException e) {
+                } catch (UpdateDocumentIdNotFoundException e) {
                     // if no updates no matter
                 }
             }
@@ -1998,7 +1975,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         // remove(toExpression(oldId, null),
         // getPersistenceUnit().isRecurseDelete(), false, new RemoveTrace());
-        removeCore(getBuilder().idToExpression(oldId, UQLUtils.THIS), getPersistenceUnit().isRecurseDelete(), new DefaultRemoveTrace(), context);
+        removeCore(getBuilder().idToExpression(oldId, UPQLUtils.THIS), getPersistenceUnit().isRecurseDelete(), new DefaultRemoveTrace(), context);
 //        transactionSucceeded = true;
 //        return o;
 //    }
@@ -2126,7 +2103,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             if (object == null) {
                 return null;
             }
-            return tb.idToExpression(tb.objectToId(object), UQLUtils.THIS);
+            return tb.idToExpression(tb.objectToId(object), UPQLUtils.THIS);
         } else if (df.size() == 1) {
             return new Equals(new Var(mf.get(0).getName()), child.getObject(df.get(0).getName()));
         } else {
@@ -2142,7 +2119,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     @Override
     public RemoveTrace remove(RemoveOptions options)
             throws UPAException {
-        Expression expression = objToExpression(options.getConditionType(), options.getRemoveCondition(), UQLUtils.THIS);
+        Expression expression = objToExpression(options.getConditionType(), options.getRemoveCondition(), UPQLUtils.THIS);
         boolean recurse = options.isFollowLinks();
         boolean simulate = options.isSimulate();
         RemoveTrace removeInfo = options.getRemoveTrace();
@@ -2220,9 +2197,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                                 + " use first relation " + r;
                         // System.out.println(trace);
                         removeInfo.addTrace(trace);
-                        String newThis = UQLUtils.generateID();
+                        String newThis = UPQLUtils.generateID();
                         Expression expression2 = expression.copy();
-                        UQLUtils.replaceThisVar(expression2, newThis, getPersistenceUnit());
+                        UPQLUtils.replaceThisVar(expression2, newThis, getPersistenceUnit());
                         r.getSourceRole().getEntity().remove(
                                 RemoveOptions.forExpression(((new InSelection(new Var(r.getSourceRole().getField(0).getName()),
                                         (new Select()).from(r.getTargetRole().getEntity().getName(), newThis)
@@ -2317,7 +2294,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         EntityBuilder builder = getBuilder();
         Document rec = builder.objectToDocument(objectOrDocument);
         Object entityToId = builder.documentToId(rec);
-        if (entityToId == null || getEntityCount(builder.idToExpression(entityToId, UQLUtils.THIS)) == 0) {
+        if (entityToId == null || getEntityCount(builder.idToExpression(entityToId, UPQLUtils.THIS)) == 0) {
             persist(objectOrDocument, hints);
             return true;
         } else {
@@ -2343,7 +2320,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         persistCore(document, context);
         Object postPersistId = getBuilder().documentToId(document);
         if (getShield().isUpdateFormulaOnPersistSupported()) {
-            Expression expr = getBuilder().idToExpression(postPersistId, UQLUtils.THIS);
+            Expression expr = getBuilder().idToExpression(postPersistId, UPQLUtils.THIS);
 //            expr.setClientProperty(EXPRESSION_SURELY_EXISTS, true);
             List<Field> fields = getFields(FieldFilters2.PERSIST_FORMULA);
             if (fields.size() > 0) {
@@ -2414,9 +2391,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         Document uDocument = getBuilder().objectToDocument(entity, false);
         List<Index> uniqueIndexes = getIndexes(true);
         if (uniqueIndexes.isEmpty()) {
-            return getBuilder().idToExpression(key, UQLUtils.THIS);
+            return getBuilder().idToExpression(key, UPQLUtils.THIS);
         }
-        Expression or = getBuilder().idToExpression(key, UQLUtils.THIS);
+        Expression or = getBuilder().idToExpression(key, UPQLUtils.THIS);
         for (Index index : uniqueIndexes) {
             Field[] f = index.getFields();
             Expression e1 = null;
@@ -2447,74 +2424,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return false;
     }
 
-    //    public R getPrimitiveDocument(R values) {
-//        if (containsCompoundFields()) {
-//            R newDocument = createEntity();
-//            for (Map.Entry entry : values.entrySet()) {
-//                String fieldName = (String) entry.getKey();
-//                Object fieldValue = entry.getValue();
-//                Field ef = getField(fieldName);
-//                if (ef instanceof CompoundField) {
-//                    CompoundField cf = (CompoundField) ef;
-//                    PrimitiveField[] cfs = cf.getPrimitiveFields();
-//                    Object[] cfs_values = cf.getPrimitiveValues(fieldValue);
-//                    for (int j = 0; j < cfs.length; j++) {
-//                        newDocument.put(cfs[j].getName(),
-//                                cfs_values == null ? null : cfs_values[j]);
-//                    }
-//                } else {
-//                    newDocument.put(fieldName, ef.getDataType().convert(fieldValue));
-//                }
-//            }
-//            return newDocument;
-//        } else {
-//            R newDocument = createEntity();
-//            Set<Map.Entry> entrySet = values.entrySet();
-//            for (Map.Entry entry : entrySet) {
-//                String fieldName = (String) entry.getKey();
-//                Object fieldValue = entry.getValue();
-//                newDocument.put(fieldName, getPrimitiveField(fieldName).getDataType().convert(fieldValue));
-//            }
-//            return newDocument;
-//        }
-//    }
-//
-//    public R getNonPrimitiveDocument(R values) {
-//        if (containsCompoundFields()) {
-//            R newDocument = createEntity();
-//            for (Iterator i = values.entrySet().iterator(); i.hasNext(); ) {
-//                Map.Entry entry = (Map.Entry) i.next();
-//                String fieldName = (String) entry.getKey();
-//                Object fieldValue = entry.getValue();
-//                Field ef = getField(fieldName);
-//                if (ef instanceof CompoundField) {
-//                    newDocument.put(fieldName, fieldValue);
-//                } else {
-//                    EntityPart entityPart = ef.getParent();
-//                    if (entityPart == null || entityPart instanceof Section) {
-//                        newDocument.put(fieldName, fieldValue);
-//                    } else {
-//                        CompoundField cf = (CompoundField) entityPart;
-//                        if (!newDocument.containsKey(cf.getName())) {
-//                            PrimitiveField[] cfs = cf.getPrimitiveFields();
-//                            if (fieldValue == null) {
-//                                newDocument.put(cf.getName(), null);
-//                            } else {
-//                                Object[] cfs_values = new Object[cfs.length];
-//                                for (int j = 0; j < cfs.length; j++) {
-//                                    cfs_values[j] = values.get(cfs[j].getName());
-//                                }
-//                                newDocument.put(cf.getName(), cf.getCompoundObject(cfs_values));
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            return newDocument;
-//        } else {
-//            return values;
-//        }
-//    }
     public void persistCore(Document document, EntityExecutionContext executionContext) throws UPAException {
 
         for (FieldPersistenceInfo gen : fieldListPersistenceInfo.persistSequenceGeneratorFields) {
@@ -2629,14 +2538,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         switch (conditionType) {
             case EXPRESSION: {
                 expr = ((Expression) condition);
-                UQLUtils.replaceThisVar(expr, alias, getPersistenceUnit());
+                UPQLUtils.replaceThisVar(expr, alias, getPersistenceUnit());
                 break;
             }
             case EXPRESSION_LIST: {
 
                 Expression ll = null;
                 for (Expression t : ((List<Expression>) condition)) {
-                    UQLUtils.replaceThisVar(t, alias, getPersistenceUnit());
+                    UPQLUtils.replaceThisVar(t, alias, getPersistenceUnit());
                     if (ll == null) {
                         ll = t;
                     } else {
@@ -2713,7 +2622,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public boolean contains(Object key) throws UPAException {
-        return key != null && getEntityCount(getBuilder().idToExpression(key, UQLUtils.THIS)) > 0;
+        return key != null && getEntityCount(getBuilder().idToExpression(key, UPQLUtils.THIS)) > 0;
     }
 
     public int updateDocuments(Document updates, Expression condition) throws UPAException {
@@ -2729,7 +2638,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public int updateCore(Document updates, Expression condition, EntityExecutionContext executionContext) throws UPAException {
         return getEntityOperationManager().getUpdateOperation().update(this,
                 createContext(ContextOperation.UPDATE, executionContext.getHints()),
-                 updates, condition);
+                updates, condition);
     }
 
     @Override
@@ -2811,16 +2720,16 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             return null;
         }
         if (fieldNames.length == 0) {
-            return toPrimitiveFields(getParts());
+            return toPrimitiveFields(getItems());
         }
         if (containsCompoundFields()) {
             List<PrimitiveField> v = new ArrayList<PrimitiveField>(fieldNames.length);
             for (String fieldName : fieldNames) {
-                EntityPart entityPart = getField(fieldName);
-                if (entityPart instanceof PrimitiveField) {
-                    v.add((PrimitiveField) entityPart);
+                EntityItem entityItem = getField(fieldName);
+                if (entityItem instanceof PrimitiveField) {
+                    v.add((PrimitiveField) entityItem);
                 } else {
-                    CompoundField compoundField = (CompoundField) entityPart;
+                    CompoundField compoundField = (CompoundField) entityItem;
                     List<PrimitiveField> fds = compoundField.getFields();
                     for (PrimitiveField fd : fds) {
                         v.add(fd);
@@ -2854,7 +2763,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             return null;
         }
         if (fieldNames.length == 0) {
-            return getFields(getParts());
+            return getFields(getItems());
         }
         List<Field> flds = new ArrayList<Field>(fieldNames.length);
         for (String fieldName : fieldNames) {
@@ -2864,7 +2773,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public List<Field> getFields() throws UPAException {
-        return getFields(getParts());
+        return getFields(getItems());
     }
 
     //    public final void updateFormulas(Field[] fieldsToUpdate,
@@ -2907,7 +2816,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         Object idToUpdate = getBuilder().objectToId(updatesValue);
         Expression idExpression = null;
         if (idToUpdate != null) {
-            idExpression = getBuilder().idToExpression(idToUpdate, UQLUtils.THIS);
+            idExpression = getBuilder().idToExpression(idToUpdate, UPQLUtils.THIS);
             updateSingleObject = true;
         }
         if (!updateSingleObject) {
@@ -3070,7 +2979,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         if (extraConditions.size() == primaryFields.size()) {
             //all primary are defined
-            Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), UQLUtils.THIS);
+            Expression expression = getBuilder().idToExpression(getBuilder().documentToId(updates), UPQLUtils.THIS);
             if (updateCondition == null || !updateCondition.isValid()) {
                 updateCondition = expression;
             } else if (!expression.equals(updateCondition)) {
@@ -3634,7 +3543,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public void close() throws UPAException {
-        for (EntityPart item : items) {
+        for (EntityItem item : items) {
             item.close();
         }
         this.closed = true;
@@ -3663,7 +3572,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return compiledSelect.getField(0).getExpression();
     }
 
-    private Set<Field> findUsedFields(Formula f) {
+    private Set<Field> findUsedFields(Formula f, Field field) {
         Set<Field> usedFields = new HashSet<Field>();
         if (f instanceof ExpressionFormula) {
             ExpressionFormula expressionFormula = (ExpressionFormula) f;
@@ -3671,7 +3580,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 CompiledExpressionExt compiledExpression = (CompiledExpressionExt) compile(expressionFormula.getExpression(), null);
                 compiledExpression.visit(new FieldCollectorCompiledExpressionVisitor(usedFields));
             } catch (RuntimeException ex) {
-                throw new InvalidFormulaException(String.valueOf(expressionFormula.getExpression()), ex);
+                throw new InvalidFormulaException(field, String.valueOf(expressionFormula.getExpression()), ex);
             }
         }
         return usedFields;
@@ -3736,14 +3645,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     public List<Section> getSections() {
-        List<EntityPart> parts = getParts();
-        if (parts.isEmpty()) {
+        List<EntityItem> items = getItems();
+        if (items.isEmpty()) {
             return Collections.emptyList();
         }
-        List<Section> sections = new ArrayList<Section>(parts.size());
-        for (EntityPart part : parts) {
-            if (part instanceof Section) {
-                sections.add((Section) part);
+        List<Section> sections = new ArrayList<Section>(items.size());
+        for (EntityItem item : items) {
+            if (item instanceof Section) {
+                sections.add((Section) item);
             }
         }
         return sections;
@@ -3755,6 +3664,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public <T> T findById(Object id) throws UPAException {
         return getPersistenceUnit().findById(getName(), id);
+    }
+
+    @Override
+    public Document findDocumentById(Object id) {
+        return getPersistenceUnit().findDocumentById(getName(), id);
     }
 
     @Override
@@ -3841,20 +3755,20 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         i.setOneToManyRelationships(relationships);
 
         i.setSystem(isSystem());
-        i.setSingleton(isSystem());
-        i.setUnion(isSystem());
-        i.setView(isSystem());
+        i.setSingleton(isSingleton());
+        i.setUnion(isUnion());
+        i.setView(isView());
 
-        List<EntityPartInfo> list = new ArrayList<EntityPartInfo>();
-        for (EntityPart entityPart : getParts()) {
-            if (entityPart instanceof Section) {
-                list.add(((Section) entityPart).getInfo());
-            } else if (entityPart instanceof CompoundField) {
-                list.add(((CompoundField) entityPart).getInfo());
-            } else if (entityPart instanceof DynamicField) {
-                list.add(((DynamicField) entityPart).getInfo());
-            } else if (entityPart instanceof PrimitiveField) {
-                list.add(((PrimitiveField) entityPart).getInfo());
+        List<EntityItemInfo> list = new ArrayList<EntityItemInfo>();
+        for (EntityItem item : getItems()) {
+            if (item instanceof Section) {
+                list.add(((Section) item).getInfo());
+            } else if (item instanceof CompoundField) {
+                list.add(((CompoundField) item).getInfo());
+            } else if (item instanceof DynamicField) {
+                list.add(((DynamicField) item).getInfo());
+            } else if (item instanceof PrimitiveField) {
+                list.add(((PrimitiveField) item).getInfo());
             }
         }
         i.setChildren(list);
@@ -3880,6 +3794,18 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             }
         }
         return all;
+    }
+
+    public boolean isSingleton() {
+        return !getExtensionDefinitions(SingletonExtensionDefinition.class).isEmpty();
+    }
+
+    public boolean isUnion() {
+        return !getExtensionDefinitions(UnionEntityExtensionDefinition.class).isEmpty();
+    }
+
+    public boolean isView() {
+        return !getExtensionDefinitions(ViewEntityExtensionDefinition.class).isEmpty();
     }
 
 }

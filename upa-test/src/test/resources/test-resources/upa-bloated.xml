@@ -108,11 +108,11 @@
                         <password>never</password>
                         <structure>create</structure>
                         <enabled>true</enabled>
-                        <property name="intProperty" type="int">18</property>
-                        <property name="persistenceNameFormat" type="string">upa_{ObjectName}</property>
-                        <property name="longProperty" type="long">98556</property>
-                        <property name="dateProperty" type="date" format="yyyy-dd">2016-05</property>
-                        <property name="dateProperty" type="month" format="yyyy-dd">2016-05</property>
+                        <property name="intProperty" valueType="int">18</property>
+                        <property name="persistenceNameFormat" valueType="string">upa_{ObjectName}</property>
+                        <property name="longProperty" valueType="long">98556</property>
+                        <property name="dateProperty" valueType="date" format="yyyy-dd">2016-05</property>
+                        <property name="dateProperty" valueType="month" format="yyyy-dd">2016-05</property>
                     </connection>
                     <property name="persistenceNameFormat">upa_{OBJECT_NAME}</property>
                 </persistenceUnit>

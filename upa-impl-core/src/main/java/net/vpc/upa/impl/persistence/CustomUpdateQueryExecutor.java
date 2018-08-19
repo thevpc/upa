@@ -10,7 +10,7 @@ import net.vpc.upa.expressions.Select;
 import net.vpc.upa.expressions.Update;
 import net.vpc.upa.expressions.VarVal;
 import net.vpc.upa.filters.FieldFilter;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.QueryResult;
@@ -78,12 +78,12 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
         int c2 = 0;
         String oldAlias = baseExpression.getEntityAlias();
         if (oldAlias == null) {
-            oldAlias = UQLUtils.THIS;//entity.getName();
+            oldAlias = UPQLUtils.THIS;//entity.getName();
         }
-        boolean replaceThis = !UQLUtils.THIS.equals(oldAlias);
+        boolean replaceThis = !UPQLUtils.THIS.equals(oldAlias);
         if (baseExpression.countFields() > 0) {
 //            if (replaceThis) {
-//                UQLUtils.replaceThisVar(baseExpression, oldAlias, context.getPersistenceUnit());
+//                UPQLUtils.replaceThisVar(baseExpression, oldAlias, context.getPersistenceUnit());
 //            }
             if (c1Exec == null) {
                 c1Exec = defaultPersistenceStore.createDefaultExecutor(baseExpression, parametersByName, parametersByIndex, updatable, defaultFieldFilter, context);
@@ -102,7 +102,7 @@ class CustomUpdateQueryExecutor implements QueryExecutor {
             for (VarVal f : complexVals) {
                 Expression fieldExpression = f.getVal();
                 if (replaceThis) {
-                    UQLUtils.replaceThisVar(fieldExpression, oldAlias, context.getPersistenceUnit());
+                    UPQLUtils.replaceThisVar(fieldExpression, oldAlias, context.getPersistenceUnit());
                 }
                 q.field(fieldExpression, f.getVar().getName());
             }

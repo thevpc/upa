@@ -5,17 +5,17 @@ import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.UpdateSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledUpdate;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledVar;
+import net.vpc.upa.impl.upql.ext.expr.CompiledUpdate;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
 
 import java.util.Arrays;
 import java.util.List;
 
-import net.vpc.upa.impl.uql.compiledexpression.CompiledEntityName;
+import net.vpc.upa.impl.upql.ext.expr.CompiledEntityName;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/17/12 Time: 12:52 AM To change
@@ -72,7 +72,7 @@ public class MySQLUpdateSQLProvider extends UpdateSQLProvider {
 //            Object referrer = vv.getReferrer();
             Field f = ((Field) fv.getReferrer());
             Entity entityManager = f.getEntity();
-            List<PrimitiveField> primFields = entityManager.toPrimitiveFields(Arrays.asList((EntityPart) f));
+            List<PrimitiveField> primFields = entityManager.toPrimitiveFields(Arrays.asList((EntityItem) f));
 
             for (PrimitiveField primField : primFields) {
                 if (isFirst) {

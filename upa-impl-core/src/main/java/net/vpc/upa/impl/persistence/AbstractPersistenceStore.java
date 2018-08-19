@@ -1,5 +1,10 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledQueryField;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
+import net.vpc.upa.impl.upql.ext.expr.CompiledQueryStatement;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.*;
 import net.vpc.upa.Properties;
 import net.vpc.upa.config.PersistenceNameType;
@@ -19,11 +24,10 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.connection.ConnectionProfileParser;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.uql.BindingId;
-import net.vpc.upa.impl.uql.DefaultExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.*;
-import net.vpc.upa.impl.uql.compiledfilters.TypeCompiledExpressionFilter;
-import net.vpc.upa.impl.uql.filters.ExpressionFilterFactory;
+import net.vpc.upa.impl.upql.BindingId;
+import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.filters.TypeCompiledExpressionFilter;
+import net.vpc.upa.impl.upql.filters.ExpressionFilterFactory;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.*;
@@ -606,7 +610,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 Field referrerField = field.getReferrerField();
                 DataTypeTransform c = null;
                 if (referrerField != null) {
-                    c = UPAUtils.getTypeTransformOrIdentity(referrerField);
+                    c = referrerField.getEffectiveTypeTransform();
                 } else {
                     c = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                 }
@@ -653,7 +657,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
-        DataTypeTransform cr = UPAUtils.getTypeTransformOrIdentity(field);
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
@@ -715,7 +719,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             sb.append("Alter Table ").append(getValidIdentifier(getTableName(table))).append(" Add Constraint ").append(getValidIdentifier(getRelationshipName(relation))).append(" Foreign Key (");
             boolean first1 = true;
             for (int i = 0; i < relation.size(); i++) {
-                List<PrimitiveField> fields = detailRole.getEntity().toPrimitiveFields(Arrays.asList((EntityPart) detailRole.getField(i)));
+                List<PrimitiveField> fields = detailRole.getEntity().toPrimitiveFields(Arrays.asList((EntityItem) detailRole.getField(i)));
                 for (Field field : fields) {
                     if (first1) {
                         first1 = false;
@@ -729,7 +733,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             sb.append(") References ").append(getValidIdentifier(getTableName(masterRole.getEntity()))).append(" (");
             first1 = true;
             for (int i = 0; i < relation.size(); i++) {
-                List<PrimitiveField> fields = masterRole.getEntity().toPrimitiveFields(Arrays.asList((EntityPart) masterRole.getField(i)));
+                List<PrimitiveField> fields = masterRole.getEntity().toPrimitiveFields(Arrays.asList((EntityItem) masterRole.getField(i)));
                 for (Field field : fields) {
                     Relationship manyToOneRelationship = field.getManyToOneRelationship();
                     if (manyToOneRelationship != null) {
@@ -1033,9 +1037,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         for (Entity entity : entities) {
             if (entity.getExtensionDefinitions(FilterEntityExtensionDefinition.class).size() > 0) {
                 updatableQueries.add(entity);
-            } else if (entity.getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0) {
+            } else if (entity.isView()) {
                 queries.add(entity);
-            } else if (entity.getExtensionDefinitions(UnionEntityExtensionDefinition.class).size() > 0) {
+            } else if (entity.isUnion()) {
                 unions.add(entity);
             } else {
                 script.addStatement(getCreateTableStatement(entity, executionContext));
@@ -1544,7 +1548,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             }
         }
         if (status != PersistenceState.VALID) {
-            log.log(Level.FINE, "getRelationPersistenceState {0} {1}", new Object[]{object, status});
+            log.log(Level.FINE, "Persistence for Relation {0} is {1}", new Object[]{object, status});
         }
         return status;
     }

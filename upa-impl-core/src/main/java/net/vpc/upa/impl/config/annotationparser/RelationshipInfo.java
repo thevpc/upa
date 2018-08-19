@@ -42,7 +42,7 @@ class RelationshipInfo implements RelationshipDescriptor {
     private String hierarchyPathSeparator;
     private boolean hierarchy;
     private boolean oneToOne;
-    private boolean manyToOne;
+//    private boolean manyToOne;
     private boolean nullable=true;//TODO FIX ME
     private String hierarchyPathField;
     private boolean specified = false;
@@ -128,7 +128,7 @@ class RelationshipInfo implements RelationshipDescriptor {
         if (gid.getConfig().getOrder() >= hierarchyConfigOrder) {
             specified = true;
             hierarchy = true;
-            manyToOne = true;
+//            manyToOne = true;
             oneToOne = false;
             targetEntity = baseFieldInfo.getEntityInfo().getName();
             Class entityType = baseFieldInfo.getEntityInfo().getEntityType();
@@ -163,7 +163,7 @@ class RelationshipInfo implements RelationshipDescriptor {
     public void mergeAnyToOne(Decoration gid,boolean manyToOne) {
         if (gid.getConfig().getOrder() >= manyToOneConfigOrder) {
             specified = true;
-            this.manyToOne = manyToOne?true:false;
+//            this.manyToOne = manyToOne?true:false;
             oneToOne = manyToOne?false:true;
             Class<?> nativeClass = getFieldType();
             if (nativeClass.isArray()) {
@@ -331,7 +331,7 @@ class RelationshipInfo implements RelationshipDescriptor {
     }
 
     public boolean isManyToOne() {
-        return manyToOne;
+        return !oneToOne ;//|| hierarchy;
     }
 
     public boolean isOneToOne() {

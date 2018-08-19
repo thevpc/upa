@@ -2,12 +2,11 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DatePeriodType;
 import net.vpc.upa.types.TemporalOption;
 import net.vpc.upa.types.TemporalType;
 

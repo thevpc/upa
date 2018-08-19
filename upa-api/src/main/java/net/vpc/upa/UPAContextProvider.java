@@ -42,4 +42,6 @@ public interface UPAContextProvider {
     UPAContext getContext();
 
     void setContext(UPAContext newInstance);
+
+    void close();
 }

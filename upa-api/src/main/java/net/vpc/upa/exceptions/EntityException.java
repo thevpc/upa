@@ -45,23 +45,23 @@ public class EntityException extends UPAException {
         super(message);
     }
 
-    public EntityException(Entity entity, String operationName) {
-        super(entity.getI18NTitle().append(operationName), entity.getI18NTitle());
+    public EntityException(Entity entity, String operationName, String errorName) {
+        super(entity.getI18NTitle().append("Operations").append(operationName).append(errorName), entity.getI18NTitle());
     }
 
-    public EntityException(Entity entity, String operationName, Object... params) {
-        super(entity.getI18NTitle().append(operationName), combineParams(entity.getI18NTitle(), params));
+    public EntityException(Entity entity, String operationName, String errorName, Object... params) {
+        super(entity.getI18NTitle().append("Operations").append(operationName), combineParams(entity.getI18NTitle(), params));
     }
 
-    public EntityException(Throwable cause, Entity entity, String operationName, Object... params) {
-        super(cause, entity.getI18NTitle().append(operationName), combineParams(entity.getI18NTitle(), params));
+    public EntityException(Throwable cause, Entity entity, String operationName, String errorName, Object... params) {
+        super(cause, entity.getI18NTitle().append("Operations").append(operationName), combineParams(entity.getI18NTitle(), params));
     }
 
     public EntityException() {
     }
 
-    public EntityException(String message, Object... parameters) {
-        super(message, parameters);
+    public EntityException(String entityName,String operationName, String errorName, Object... parameters) {
+        super(new I18NString("Entity").append(entityName).append("Operations").append(operationName).append(errorName), parameters);
     }
 
     public EntityException(I18NString message, Object... parameters) {

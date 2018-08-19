@@ -4,8 +4,8 @@ import java.util.*;
 
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.EntityExt;
-import net.vpc.upa.impl.uql.util.ThatExpressionReplacer;
-import net.vpc.upa.impl.uql.util.UQLUtils;
+import net.vpc.upa.impl.upql.util.ThatExpressionReplacer;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.NamingStrategyHelper;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.I18NString;
@@ -107,7 +107,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
                 // Log. System.err.println("Type should be either VIEW or SHADOW for " + name);
                 this.relationType = RelationshipType.SHADOW_ASSOCIATION;
             }
-            if (((getTargetRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0) || (getSourceRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0)) && relationType != RelationshipType.TRANSIENT) {
+            if (((getTargetRole().getEntity().isView()) || (getSourceRole().getEntity().isView())) && relationType != RelationshipType.TRANSIENT) {
                 this.relationType = RelationshipType.TRANSIENT;
             }
             this.sourceToTargetKeyMap.put(sourceFields[i].getName(), targetFields[i].getName());
@@ -170,7 +170,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         UPAUtils.prepare(getPersistenceUnit(), targetRole, this.getName() + "_" + targetRole.getRelationshipRoleType());
         UPAUtils.prepare(getPersistenceUnit(), sourceRole, this.getName() + "_" + sourceRole.getRelationshipRoleType());
 
-        if (((getTargetRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0) || (getSourceRole().getEntity().getExtensionDefinitions(ViewEntityExtensionDefinition.class).size() > 0)) && relationType != RelationshipType.TRANSIENT) {
+        if (((getTargetRole().getEntity().isView()) || (getSourceRole().getEntity().isView())) && relationType != RelationshipType.TRANSIENT) {
             throw new UPAIllegalArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
         }
         if (((getTargetRole().getEntity().getShield().isTransient()) || (getSourceRole().getEntity().getShield().isTransient())) && relationType != RelationshipType.TRANSIENT) {
@@ -591,7 +591,7 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
             return null;
         }
         HashMap<String, Object> v = new HashMap<String, Object>();
-        v.put(UQLUtils.THIS, currentInstance);
+        v.put(UPQLUtils.THIS, currentInstance);
         if (StringUtils.isNullOrEmpty(alias)) {
             alias = getTargetEntity().getName();
         }

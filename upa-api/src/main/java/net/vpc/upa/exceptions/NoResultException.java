@@ -34,13 +34,11 @@
  */
 package net.vpc.upa.exceptions;
 
-import net.vpc.upa.types.I18NString;
-
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class NoResultException extends EntityException {
     public NoResultException() {
-        super(new I18NString("NoResultException"));
+        super("*","find","NoResultException");
     }
 }

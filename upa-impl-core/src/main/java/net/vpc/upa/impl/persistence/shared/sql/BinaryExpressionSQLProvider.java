@@ -1,38 +1,84 @@
+/**
+ * ====================================================================
+ * UPA (Unstructured Persistence API)
+ * Yet another ORM Framework
+ * ++++++++++++++++++++++++++++++++++
+ * Unstructured Persistence API, referred to as UPA, is a genuine effort
+ * to raise programming language frameworks managing relational data in
+ * applications using Java Platform, Standard Edition and Java Platform,
+ * Enterprise Edition and Dot Net Framework equally to the next level of
+ * handling ORM for mutable data structures. UPA is intended to provide
+ * a solid reflection mechanisms to the mapped data structures while
+ * affording to make changes at runtime of those data structures.
+ * Besides, UPA has learned considerably of the leading ORM
+ * (JPA, Hibernate/NHibernate, MyBatis and Entity Framework to name a few)
+ * failures to satisfy very common even known to be trivial requirement in
+ * enterprise applications.
+ * <p>
+ * Copyright (C) 2014-2015 Taha BEN SALAH
+ * <p>
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ * <p>
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * <p>
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * ====================================================================
+ */
 package net.vpc.upa.impl.persistence.shared.sql;
 
+import net.vpc.upa.impl.upql.ext.expr.CompiledConcat;
+import net.vpc.upa.impl.upql.ext.expr.CompiledBinaryOperatorExpression;
+import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.persistence.SQLManager;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.*;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vpc
- * Date: 8/15/12
- * Time: 11:46 PM
- * To change this template use File | Settings | File Templates.
+ * User: vpc Date: 8/15/12 Time: 11:46 PM To change
  */
 public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
+
     public BinaryExpressionSQLProvider() {
         super(CompiledBinaryOperatorExpression.class);
     }
 
-    @Override
-    public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
-        CompiledBinaryOperatorExpression o = (CompiledBinaryOperatorExpression) oo;
+    private String[] getLefAndRight(CompiledBinaryOperatorExpression o, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) {
         String leftValue = o.getLeft() != null ? sqlManager.getSQL(o.getLeft(), qlContext, declarations) : "NULL";
         if (o.getLeft() instanceof CompiledSelect) {
             leftValue = "(" + leftValue + ")";
         }
         String rightValue = "NULL";
-        boolean forceRightISOrISNOT = false;
-        if(o.getRight() != null) {
+        if (o.getRight() != null) {
             rightValue = sqlManager.getSQL(o.getRight(), qlContext, declarations);
         }
         if (o.getRight() instanceof CompiledSelect) {
             rightValue = "(" + rightValue + ")";
+        }
+        return new String[]{leftValue, rightValue};
+    }
+
+    @Override
+    public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
+        CompiledBinaryOperatorExpression o = (CompiledBinaryOperatorExpression) oo;
+        boolean forceRightISOrISNOT = false;
+        String leftValue = null;
+        String rightValue = null;
+        if (o.getOperator() != BinaryOperator.PLUS) {
+            String[] leftAndRight = getLefAndRight(o, qlContext, sqlManager, declarations);
+            leftValue = leftAndRight[0];
+            rightValue = leftAndRight[1];
         }
         String s = null;
         switch (o.getOperator()) {
@@ -101,43 +147,16 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             case PLUS: {
-                if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
-                        ) {
+                Class ltype = (o == null || o.getLeft() == null) ? null : (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType());
+                Class rtype = (o == null || o.getRight() == null) ? null : (o.getRight().getEffectiveDataType().getTargetType().getPlatformType());
+                //string + nonstring
+                if (ltype != null && rtype != null
+                        && (PlatformUtils.isString(ltype) || PlatformUtils.isString(rtype))) {
                     s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(), o.getRight().copy()), qlContext, declarations);
-                }else if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class)
-                        ){
-                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledD2V(o.getRight().copy())), qlContext, declarations);
-                }else if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Integer.class)
-                        ){
-                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledI2V(o.getRight().copy())), qlContext, declarations);
-                }else if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class)
-                        ){
-                    s = sqlManager.getSQL(new CompiledConcat(o.getLeft().copy(),new CompiledD2V(o.getRight().copy())), qlContext, declarations);
-                }else if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(Double.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
-                        ){
-                    s = sqlManager.getSQL(new CompiledConcat(new CompiledD2V(o.getLeft().copy()),o.getRight().copy()), qlContext, declarations);
-                }else if(
-                        o.getLeft().getEffectiveDataType()!=null && o.getRight()!=null &&
-                        (o.getLeft().getEffectiveDataType().getTargetType().getPlatformType().equals(Integer.class))
-                         && o.getRight().getEffectiveDataType().getTargetType().getPlatformType().equals(String.class)
-                        ){
-                    s = sqlManager.getSQL(new CompiledConcat(new CompiledI2V(o.getLeft().copy()),o.getRight().copy()), qlContext, declarations);
-                }else {
+                } else {
+                    String[] leftAndRight = getLefAndRight(o, qlContext, sqlManager, declarations);
+                    leftValue = leftAndRight[0];
+                    rightValue = leftAndRight[1];
                     s = leftValue + " + " + rightValue;
                 }
                 break;
@@ -165,7 +184,7 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             default: {
-                throw new UPAIllegalArgumentException("Not Supported Yet");
+                throw new UPAIllegalArgumentException("Not Supported Binay Operator " + o.getOperator());
             }
         }
         return "(" + s + ")";

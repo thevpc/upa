@@ -6,8 +6,8 @@ import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
-import net.vpc.upa.impl.uql.ExpressionDeclarationList;
-import net.vpc.upa.impl.uql.compiledexpression.CompiledTypeName;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
@@ -33,32 +33,32 @@ public class MSSQLServerTypeNameSQLProvider extends AbstractSQLProvider {
         Class platformType = datatype.getPlatformType();
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
-        if (platformType.equals(String.class)) {
+        if (PlatformUtils.isString(platformType)) {
             if (length <= 0) {
-                length = 256;
+                length = 255;
             }
-            if (length > 8000) {
-                return "NTEXT";
-            } else {
+            if (length <= 8000) {
                 return "VARCHAR(" + length + ")";
+            } else {
+                return "NTEXT";
             }
         }
-        if ((Integer.class).equals(platformType)) {
+        if (PlatformUtils.isInt32(platformType)) {
             return "INT";
         }
-        if (Byte.class.equals(platformType)) {
+        if (PlatformUtils.isInt8(platformType)) {
             return "SMALLINT";
         }
-        if (Short.class.equals(platformType)) {
+        if (PlatformUtils.isInt16(platformType)) {
             return "SMALLINT";
         }
-        if ((Long.class).equals(platformType)) {
+        if (PlatformUtils.isInt64(platformType)) {
             return "NUMERIC";
         }
-        if (Float.class.equals(platformType)) {
+        if (PlatformUtils.isFloat32(platformType)) {
             return "FLOAT";
         }
-        if ((Double.class).equals(platformType)) {
+        if (PlatformUtils.isFloat64(platformType)) {
             if (datatype instanceof DoubleType) {
                 DoubleType n = ((DoubleType) datatype);
                 return n.isFixedDigits() ? "DECIMAL(" + (n.getMaximumIntegerDigits() + n.getMaximumFractionDigits()) + "," + n.getMaximumFractionDigits() + ")" : "FLOAT";
@@ -66,39 +66,34 @@ public class MSSQLServerTypeNameSQLProvider extends AbstractSQLProvider {
                 return "FLOAT";
             }
         }
-        if ((Number.class).isAssignableFrom(platformType)) {
+        if (PlatformUtils.isAnyNumber(platformType)) {
             return "NUMERIC";
         }
-        if ((Boolean.class).equals(platformType)) {
+        if (PlatformUtils.isBool(platformType)) {
             return "INT";
         }
-        if (java.util.Date.class.isAssignableFrom(platformType)) {
-            if (java.sql.Time.class.isAssignableFrom(platformType) || Time.class.isAssignableFrom(platformType)) {
-                return "TIME";
-            } else if (java.sql.Date.class.isAssignableFrom(platformType)
-                    || Date.class.isAssignableFrom(platformType)
-                    || Month.class.isAssignableFrom(platformType)
-                    || Year.class.isAssignableFrom(platformType)
-                    ) {
-                return "DATE";
-            } else if (java.sql.Timestamp.class.isAssignableFrom(platformType)) {
-//                return "DATE";
-                return "TIMESTAMP";
-            } else {
-//                return "DATE";
-                return "DATETIME";
+
+        if(datatype instanceof TemporalType){
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if(temporalOption==null){
+                temporalOption=TemporalOption.DEFAULT;
+            }
+            switch (temporalOption){
+                case DATE: return "DATE";
+                case DATETIME: return "DATETIME";
+                case TIMESTAMP: return "TIMESTAMP";
+                case TIME: return "TIME";
+                case MONTH: return "DATE";
+                case YEAR: return "DATE";
+                default:{
+                    throw new IllegalArgumentException("Unsupported "+datatype);
+                }
             }
         }
-        if(datatype instanceof EnumType){
+        if (datatype instanceof EnumType) {
             //TODO should support marshalling types
             return "INT";
         }
-//        if(ImageData.class.equals(platformType)){
-//            return "IMAGE"; // serialized form
-//        }
-//        if(FileData.class.equals(platformType)){
-//            return "IMAGE"; // serialized form
-//        }
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "IMAGE"; // serialized form
         }

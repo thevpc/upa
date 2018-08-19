@@ -7,7 +7,6 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
-import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.ViewEntityExtension;

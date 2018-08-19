@@ -163,19 +163,36 @@ public interface PersistenceUnit extends Closeable {
     boolean containsEntity(String entityName);
 
     /**
-     * @param source    source to be parsed
-     * @param listener  listener to track scanned items or null
+     *
+     * example :
+     * <pre>
+     * UPA.getPersistenceUnit().scan(UPA.getContext().getFactory().createClassScanSource(new Class[]{
+     *      Client.class,
+     *      ClientView.class,
+     *      ClientOrder.class
+     *  }), null, true);
+     * </pre>
+     *
+     * @param source source to be parsed
+     * @param listener listener to track scanned items or null
      * @param configure if true process configuration (add entities,
-     *                  functions...)
+     * functions...)
      * @
      */
     void scan(ScanSource source, ScanListener listener, boolean configure);
 
+    /**
+     * true if the entity <code>entityName</code> exists AND it contains the
+     * field <code>fieldName</code>.
+     *
+     * @param entityName
+     * @param fieldName
+     * @return
+     */
     boolean containsField(String entityName, String fieldName);
 
     Entity getEntity(String entityName);
 
-    //    <K, R> Entity<K, R> getEntity(String entityName, boolean check);
     boolean containsEntity(Class entityType);
 
     Entity findEntity(Class entityType);
@@ -229,7 +246,8 @@ public interface PersistenceUnit extends Closeable {
     void clear(EntityFilter entityFilter, Map<String, Object> hints);
 
     /**
-     * clears all entities by removing all information (rows, except special rows if any)
+     * clears all entities by removing all information (rows, except special
+     * rows if any)
      */
     void clear();
 
@@ -268,14 +286,14 @@ public interface PersistenceUnit extends Closeable {
 
     /**
      * @param definitionListener
-     * @param trackSystem        when true system entities are also tracked
+     * @param trackSystem when true system entities are also tracked
      */
     void addDefinitionListener(DefinitionListener definitionListener, boolean trackSystem);
 
     /**
      * @param entityName
      * @param definitionListener
-     * @param trackSystem        when true system entities are also tracked
+     * @param trackSystem when true system entities are also tracked
      */
     void addDefinitionListener(String entityName, DefinitionListener definitionListener, boolean trackSystem);
 
@@ -341,7 +359,6 @@ public interface PersistenceUnit extends Closeable {
     // Triggers
     //
     //////////////////////////////////////////////////////////////////
-
     /**
      * if entityNamePattern is a simple Entity name of an existing name call
      * entity.addTrigger if not postpone creation for all entities verifying
@@ -350,7 +367,7 @@ public interface PersistenceUnit extends Closeable {
      * @param triggerName
      * @param interceptor
      * @param entityNamePattern
-     * @param system            if true include system entities
+     * @param system if true include system entities
      * @
      */
     void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system);
@@ -390,7 +407,6 @@ public interface PersistenceUnit extends Closeable {
 
     boolean save(Object objectOrDocument);
 
-
     boolean save(Class entityType, Object objectOrDocument);
 
     boolean save(String entityName, Object objectOrDocument);
@@ -401,7 +417,7 @@ public interface PersistenceUnit extends Closeable {
 
     void updateFormulas();
 
-    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) ;
+    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints);
 
     //////// REMOVE
     RemoveTrace remove(Class entityType, Object object);
@@ -427,6 +443,14 @@ public interface PersistenceUnit extends Closeable {
     <T> T findById(Class entityType, Object id);
 
     <T> T findById(String entityName, Object id);
+
+    <T> T reloadObject(T object);
+
+    <T> T reloadObject(String entityName, Object object);
+
+    Document reloadDocument(String entityName, Object object);
+
+    Document reloadDocument(Class entityType, Object object);
 
     boolean existsById(String entityName, Object id);
 
@@ -500,7 +524,7 @@ public interface PersistenceUnit extends Closeable {
     /**
      * push new user context if login and credentials are valid
      *
-     * @param login       login
+     * @param login login
      * @param credentials credentials
      */
     void login(String login, String credentials);
@@ -529,7 +553,6 @@ public interface PersistenceUnit extends Closeable {
     UConnection getConnection();
 
     void setIdentityConstraintsEnabled(Entity entity, boolean enable);
-
 
     <T> T invoke(Action<T> action, InvokeContext invokeContext);
 
@@ -572,8 +595,6 @@ public interface PersistenceUnit extends Closeable {
     void addNamedFormula(String name, Formula formula);
 
     void removeNamedFormula(String name);
-
-
 
     boolean isCaseSensitiveIdentifiers();
 
