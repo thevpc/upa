@@ -10,7 +10,6 @@ import net.vpc.upa.config.BoolEnum;
 import net.vpc.upa.config.ConnectionConfig;
 import net.vpc.upa.config.PersistenceUnitConfig;
 import net.vpc.upa.config.ScanConfig;
-import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ import org.junit.Test;
  * @author vpc
  */
 @ConnectionConfig(
-        connexionString = "derby:embedded://example",
+        connexionString = "derby:embedded://db-embedded/example",
         userName = "toto",
         password = "toto"
 )

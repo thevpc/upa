@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author vpc
  */
 @ConnectionConfig(
-        connexionString = "derby:embedded://example",
+        connexionString = "derby:embedded://db-embedded/example",
         userName = "toto",
         password = "toto"
 )
