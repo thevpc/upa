@@ -45,19 +45,19 @@ import net.vpc.upa.Field;
  * To change this template use File | Settings | File Templates.
  */
 public class FieldImplTypeFilter extends AbstractFieldFilter {
-    private Class<? extends Field> type;
+    private Class<? extends Field> platformType;
 
     public FieldImplTypeFilter(Class<? extends Field> type) {
-        this.type = type;
+        this.platformType = type;
     }
 
     @Override
     public boolean acceptDynamic() {
-        return DynamicField.class.isAssignableFrom(type);
+        return DynamicField.class.isAssignableFrom(platformType);
     }
 
     @Override
     public boolean accept(Field f) {
-        return type.isAssignableFrom(f.getClass());
+        return platformType.isAssignableFrom(f.getClass());
     }
 }

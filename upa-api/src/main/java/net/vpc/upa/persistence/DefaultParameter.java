@@ -42,13 +42,13 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public class DefaultParameter implements Parameter {
     private String name;
-    private DataTypeTransform type;
+    private DataTypeTransform dataTypeTransform;
     private Object value;
 
     public DefaultParameter(String name, Object value, DataTypeTransform type) {
         this.name = name;
         this.value = value;
-        this.type = type;
+        this.dataTypeTransform = type;
     }
 
     public String getName() {
@@ -56,7 +56,7 @@ public class DefaultParameter implements Parameter {
     }
 
     public DataTypeTransform getTypeTransform() {
-        return type;
+        return dataTypeTransform;
     }
 
     public Object getValue() {
@@ -75,7 +75,7 @@ public class DefaultParameter implements Parameter {
         DefaultParameter that = (DefaultParameter) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (dataTypeTransform != null ? !dataTypeTransform.equals(that.dataTypeTransform) : that.dataTypeTransform != null) return false;
 
         return true;
     }
@@ -83,13 +83,13 @@ public class DefaultParameter implements Parameter {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (dataTypeTransform != null ? dataTypeTransform.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Param(" + ((name == null || name.length() == 0) ? "?" : name) + "=" + value + "," + type + '}';
+        return "Param(" + ((name == null || name.length() == 0) ? "?" : name) + "=" + value + "," + dataTypeTransform + '}';
     }
 
 }

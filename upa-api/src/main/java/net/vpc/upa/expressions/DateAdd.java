@@ -41,7 +41,7 @@ package net.vpc.upa.expressions;
 public class DateAdd extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private DatePartType type;
+    private DatePartType datePartType;
     private Expression count;
     private Expression date;
 
@@ -55,13 +55,13 @@ public class DateAdd extends FunctionExpression {
     }
 
     private void init(DatePartType type, Expression count, Expression date) {
-        this.type = type;
+        this.datePartType = type;
         this.count = count;
         this.date = date;
     }
 
     public DatePartType getDatePartType() {
-        return type;
+        return datePartType;
     }
 
     public Expression getCount() {
@@ -86,7 +86,7 @@ public class DateAdd extends FunctionExpression {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return new Cst(type);
+                return new Cst(datePartType);
             case 1:
                 return count;
             case 2:
@@ -99,7 +99,7 @@ public class DateAdd extends FunctionExpression {
     public void setArgument(int index, Expression e) {
         switch (index) {
             case 0: {
-                type = (DatePartType) ((Cst) e).getValue();
+                datePartType = (DatePartType) ((Cst) e).getValue();
                 break;
             }
             case 1: {
@@ -116,7 +116,7 @@ public class DateAdd extends FunctionExpression {
 
     @Override
     public Expression copy() {
-        DateAdd o = new DateAdd(type, count.copy(), date.copy());
+        DateAdd o = new DateAdd(datePartType, count.copy(), date.copy());
         return o;
     }
 

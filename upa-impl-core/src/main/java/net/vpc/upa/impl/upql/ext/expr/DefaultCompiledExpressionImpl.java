@@ -19,7 +19,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
     public static CompiledExpressionExt[] EMPTY_ERRAY = new DefaultCompiledExpressionImpl[0];
     private String description;
     private Properties clientParameters;
-    private DataTypeTransform type;
+    private DataTypeTransform dataTypeTransform;
     private CompiledExpressionExt parent;
     private List<ExpressionDeclaration> exportedDeclarations;
 
@@ -76,11 +76,11 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
     }
 
     public DataTypeTransform getTypeTransform() {
-        return this.type;
+        return this.dataTypeTransform;
     }
 
     public void setTypeTransform(DataTypeTransform type) {
-        this.type = type;
+        this.dataTypeTransform = type;
     }
 
     public Properties getClientParameters() {
@@ -170,7 +170,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
             ReplaceResult parentUpdate = replacer.update(this, updateContext);
             //if stop will not check children!
             if (parentUpdate.isStop()) {
-                switch (parentUpdate.getType()) {
+                switch (parentUpdate.getReplaceResultType()) {
                     case NEW_INSTANCE: {
                         return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
                     }
@@ -187,7 +187,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                 return parentUpdate;
             }
             CompiledExpressionExt newParent = this;
-            switch (parentUpdate.getType()) {
+            switch (parentUpdate.getReplaceResultType()) {
                 case NEW_INSTANCE: {
                     newParent = parentUpdate.getExpression();
                     break;
@@ -218,7 +218,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                         //System.out.println("Child is null?");
                     } else {
                         ReplaceResult c = child.replaceExpressions(replacer, updateContext);
-                        switch (c.getType()) {
+                        switch (c.getReplaceResultType()) {
                             case NO_UPDATES: {
                                 break;
                             }
@@ -230,7 +230,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                                     child = c.getExpression();
                                     again = true;
                                 }else {
-                                    switch (parentUpdate.getType()) {
+                                    switch (parentUpdate.getReplaceResultType()) {
                                         case NEW_INSTANCE: {
                                             return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
                                         }
@@ -244,7 +244,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                             case UPDATE: {
                                 someChildUpdates = true;
                                 if (c.isStop()) {
-                                    switch (parentUpdate.getType()) {
+                                    switch (parentUpdate.getReplaceResultType()) {
                                         case NEW_INSTANCE: {
                                             return ReplaceResult.stopWithNewObj(parentUpdate.getExpression());
                                         }
@@ -269,7 +269,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                     this.removeSubExpression(toRemove.get(j).getPos());
                 }
             }
-            if (someChildUpdates && parentUpdate.getType() == ReplaceResultType.NO_UPDATES) {
+            if (someChildUpdates && parentUpdate.getReplaceResultType() == ReplaceResultType.NO_UPDATES) {
                 return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
             }
             return parentUpdate;
@@ -291,7 +291,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                     //System.out.println("Child is null?");
                 } else {
                     ReplaceResult c = child.replaceExpressions(replacer, updateContext);
-                    switch (c.getType()) {
+                    switch (c.getReplaceResultType()) {
                         case UPDATE: {
                             someChildUpdates = true;
                             if (c.isStop()) {
@@ -320,7 +320,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                 }
             }
             ReplaceResult update = replacer.update(this, updateContext);
-            switch (update.getType()) {
+            switch (update.getReplaceResultType()) {
                 case NO_UPDATES: {
                     if (someChildUpdates) {
                         return update.isStop() ? ReplaceResult.UPDATE_AND_STOP : ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;

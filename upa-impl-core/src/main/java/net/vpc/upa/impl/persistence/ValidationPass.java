@@ -11,12 +11,12 @@ import java.util.Set;
 */
 public class ValidationPass implements Comparable<Object> {
 
-    private Set<Field> fields = new HashSet<Field>();
-    private int pass;
-    private ValidationPassType type;
+    private final Set<Field> fields = new HashSet<Field>();
+    private final int pass;
+    private final ValidationPassType validationPassType;
 
     public ValidationPass(int pass, ValidationPassType type) {
-        this.type = type;
+        this.validationPassType = type;
         this.pass = pass;
     }
 
@@ -33,7 +33,7 @@ public class ValidationPass implements Comparable<Object> {
         } else if (pass < oth.pass) {
             return -1;
         } else {
-            return (type == oth.type) ? 0 : type.ordinal() > oth.type.ordinal() ? 1 : -1;
+            return (validationPassType == oth.validationPassType) ? 0 : validationPassType.ordinal() > oth.validationPassType.ordinal() ? 1 : -1;
         }
     }
 
@@ -45,7 +45,7 @@ public class ValidationPass implements Comparable<Object> {
         return pass;
     }
 
-    public ValidationPassType getType() {
-        return type;
+    public ValidationPassType getValidationPassType() {
+        return validationPassType;
     }
 }

@@ -43,7 +43,7 @@ import java.util.Date;
 public class DatePart extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private DatePartType type;
+    private DatePartType datePartType;
     private Expression value;
 
     public DatePart(Expression[] expressions) {
@@ -64,12 +64,12 @@ public class DatePart extends FunctionExpression {
     }
 
     private void init(DatePartType type, Expression val) {
-        this.type = type;
+        this.datePartType = type;
         this.value = val;
     }
 
     public DatePartType getDatePartType() {
-        return type;
+        return datePartType;
     }
 
     public Expression getValue() {
@@ -90,7 +90,7 @@ public class DatePart extends FunctionExpression {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return new Cst(type);
+                return new Cst(datePartType);
             case 1:
                 return value;
         }
@@ -102,7 +102,7 @@ public class DatePart extends FunctionExpression {
     public void setArgument(int index, Expression e) {
         switch (index) {
             case 0: {
-                type = (DatePartType) ((Cst) e).getValue();
+                datePartType = (DatePartType) ((Cst) e).getValue();
                 break;
             }
             case 1: {
@@ -115,7 +115,7 @@ public class DatePart extends FunctionExpression {
 
     @Override
     public Expression copy() {
-        DatePart o = new DatePart(type, value);
+        DatePart o = new DatePart(datePartType, value);
         return o;
     }
 }

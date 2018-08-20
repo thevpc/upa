@@ -12,7 +12,7 @@ class FormulaInfo {
 
     public String expression;
     public String name;
-    public Class<net.vpc.upa.Formula> type;
+    public Class<net.vpc.upa.Formula> platformType;
     public Integer order;
     public FormulaType formulaType;
     public boolean specified = false;
@@ -40,15 +40,15 @@ class FormulaInfo {
             if (formulaByName.length() > 0) {
                 this.name = formulaByName;
                 expression = null;
-                type = null;
+                platformType = null;
             }
             if (formulaByExpr.length() > 0) {
                 expression = formulaByExpr;
-                type = null;
+                platformType = null;
                 this.name = null;
             }
             if (formulaByType!=null) {
-                type = formulaByType;
+                platformType = formulaByType;
                 expression = null;
                 this.name = null;
             }

@@ -12,6 +12,7 @@ Version 1.2.0.48 :
     [API ] Added Entity.reloadObject and Entity.reloadDocument utility methods
     [API ] Added Entity.findDocumentById utility method
     [API ] Added UPA.close() to support reinitialization of UPAContext (for test purposes)
+    [API ] Changed 'Part' naming with 'Item' naming. Particularly Entity.getParts() become Entity.getItems()
     [@Dec] Added support for PropertyAccess on Entity (default for PropertyAccess for 
         all fields/methods)
     [Test] Added Test Suite Use Cases
@@ -26,3 +27,5 @@ Version 1.2.0.48 :
     [Impl] Fixed support for View entities
     [Impl] Fixed Query builder issue that duplicates where clause for Id expressions
     [Test] Fixed Test all use cases
+    [API ] replaced all 'type' fields not to fail in C# generation process
+    [Impl] replaced all 'type' fields not to fail in C# generation process

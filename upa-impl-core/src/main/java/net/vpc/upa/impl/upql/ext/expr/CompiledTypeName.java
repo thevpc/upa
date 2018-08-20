@@ -9,15 +9,15 @@ import net.vpc.upa.types.DataTypeTransform;
  */
 public class CompiledTypeName extends DefaultCompiledExpressionImpl {
 
-    private DataTypeTransform type;
+    private DataTypeTransform dataTypeTransform;
 
     public CompiledTypeName(DataTypeTransform type) {
-        this.type = type;
+        this.dataTypeTransform = type;
     }
 
     @Override
     public DataTypeTransform getTypeTransform() {
-        return type;
+        return dataTypeTransform;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CompiledTypeName extends DefaultCompiledExpressionImpl {
 
     @Override
     public CompiledExpressionExt copy() {
-        CompiledTypeName o = new CompiledTypeName(type);
+        CompiledTypeName o = new CompiledTypeName(dataTypeTransform);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;
@@ -45,7 +45,7 @@ public class CompiledTypeName extends DefaultCompiledExpressionImpl {
 
     @Override
     public String toString() {
-        return String.valueOf(type);
+        return String.valueOf(dataTypeTransform);
     }
     
 }

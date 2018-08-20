@@ -41,7 +41,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     Object defaultObject = null;
     Object unspecifiedObject = null;
     AnyFormulaInfo anyFormula;
-    DataType type;
+    DataType dataType;
     //    DataType targetType;
     //    Formula formula;
     Formula persistFormula;
@@ -613,7 +613,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 //            this.formulaupaField.setFormula(insertFormula.value);
 //        }
         if (overriddenDataType.specified) {
-            this.type = (overriddenDataType.value);
+            this.dataType = (overriddenDataType.value);
         }
 //        if (overriddenTargetType.specified) {
 //            this.targetType = (overriddenTargetType.value);
@@ -695,7 +695,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
             }
         }
         if (overriddenDataType.specified) {
-            this.type = (overriddenDataType.value);
+            this.dataType = (overriddenDataType.value);
         }
     }
 
@@ -736,7 +736,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     }
 
     public DataType getDataType() {
-        return type;
+        return dataType;
     }
 
     public Formula getPersistFormula() {
@@ -868,7 +868,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 
     @Override
     public String toString() {
-        return "DecorationFieldDescriptor{" + "name=" + name + ", fields=" + fields + ", type=" + type + '}';
+        return "DecorationFieldDescriptor{" + "name=" + name + ", fields=" + fields + ", type=" + dataType + '}';
     }
 
     private void prepareFormula(Map<String, Object> ctx, String entityName, FormulaType t, Object o) {
@@ -878,9 +878,9 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         if (o instanceof FormulaInfo) {
             FormulaInfo formulaInfo = (FormulaInfo) o;
             if (formulaInfo.specified) {
-                if (formulaInfo.type != null) {
+                if (formulaInfo.platformType != null) {
                     try {
-                        ff = (Formula) PlatformUtils.newInstance(formulaInfo.type);
+                        ff = (Formula) PlatformUtils.newInstance(formulaInfo.platformType);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

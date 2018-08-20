@@ -28,7 +28,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
     private Annotation ann;
     private DecorationSourceType decorationSourceType;
     private DecorationTarget targetType;
-    private String type;
+    private String locationType;
     private String location;
     private ConfigInfo configInfo;
     private Map<String, DecorationValue> values = null;
@@ -38,7 +38,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
         this.ann = ann;
         this.decorationSourceType = locationType;
         this.targetType = targetType;
-        this.type = type;
+        this.locationType = type;
         this.location = location;
         this.configInfo = configInfo;
         this.position = position;
@@ -87,7 +87,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
     }
 
     public String getLocationType() {
-        return type;
+        return locationType;
     }
 
     public ConfigInfo getConfig() {
@@ -145,7 +145,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
         if (targetType == null) {
             b.append("EMBEDDED").append(":");
         }
-        b.append(type);
+        b.append(locationType);
         if (targetType == DecorationTarget.METHOD || targetType == DecorationTarget.FIELD) {
             b.append(".").append(location);
         }

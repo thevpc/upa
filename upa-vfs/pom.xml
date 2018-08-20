@@ -9,7 +9,7 @@
     <groupId>net.vpc.upa.extensions</groupId>
     <artifactId>upa-vfs</artifactId>
     <name>net.vpc.upa.extensions.upa-vfs</name>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 

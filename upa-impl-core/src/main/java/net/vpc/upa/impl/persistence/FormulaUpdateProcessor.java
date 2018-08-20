@@ -185,7 +185,7 @@ public class FormulaUpdateProcessor {
         int allUpdates = 0;
         for (ValidationPass validationPass : getValidationPasses()) {
             int updates = 0;
-            switch (validationPass.getType()) {
+            switch (validationPass.getValidationPassType()) {
                 case DEFAULT_VALIDATION: {
                     updates = validateDefault(validationPass.getFields(), expr);
                     break;

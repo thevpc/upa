@@ -3,9 +3,6 @@ package net.vpc.upa.impl.persistence.shared.marshallers;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -19,12 +16,12 @@ import net.vpc.upa.persistence.NativeStatement;
 public class EnumAsIntMarshaller
         extends SimpleTypeMarshaller {
 
-    private Class<? extends Enum> type;
-    private Object[] values;
+    private final Class<? extends Enum> enumType;
+    private final Object[] values;
 
     public EnumAsIntMarshaller(MarshallManager marshallManager,Class<? extends Enum> type) {
         super(marshallManager);
-        this.type = type;
+        this.enumType = type;
         values = PlatformUtils.getEnumValues(type);
     }
 
@@ -87,7 +84,7 @@ public class EnumAsIntMarshaller
     @Override
     public String toString() {
         return "EnumAsIntMarshaller[" +
-                type +
+                enumType +
                 ']';
     }
 }

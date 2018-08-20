@@ -48,7 +48,7 @@ public class FieldDesc {
 
     private int configOrder = 100;
     private String name;
-    private DataType type;
+    private DataType dataType;
     private FlagSet<UserFieldModifier> modifiers = FlagSets.noneOf(UserFieldModifier.class);
     private FlagSet<UserFieldModifier> excludeModifiers = FlagSets.noneOf(UserFieldModifier.class);
     private net.vpc.upa.Formula persistFormula;
@@ -188,11 +188,11 @@ public class FieldDesc {
     }
 
     public DataType getDataType() {
-        return type;
+        return dataType;
     }
 
     public FieldDesc setDataType(DataType type) {
-        this.type = type;
+        this.dataType = type;
         return this;
     }
 

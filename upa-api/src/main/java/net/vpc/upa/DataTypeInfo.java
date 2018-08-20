@@ -40,7 +40,7 @@ public class DataTypeInfo {
     private String name;
     private boolean nullable;
     private String unitName;
-    private String type;
+    private String typeName;
     private String platformType;
     private Map<String,String> properties;
 
@@ -52,12 +52,12 @@ public class DataTypeInfo {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public String getUnitName() {

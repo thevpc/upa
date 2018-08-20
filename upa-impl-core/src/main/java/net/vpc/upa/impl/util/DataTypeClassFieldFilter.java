@@ -14,10 +14,10 @@ import net.vpc.upa.filters.AbstractFieldFilter;
  */
 public class DataTypeClassFieldFilter extends AbstractFieldFilter {
 
-    private Class type;
+    private Class platformType;
 
     public DataTypeClassFieldFilter(Class type) {
-        this.type = type;
+        this.platformType = type;
     }
 
     @Override
@@ -27,13 +27,13 @@ public class DataTypeClassFieldFilter extends AbstractFieldFilter {
 
     @Override
     public boolean accept(Field f) throws UPAException {
-        return type.isAssignableFrom(f.getDataType().getClass());
+        return platformType.isAssignableFrom(f.getDataType().getClass());
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + (this.type != null ? this.type.hashCode() : 0);
+        hash = 97 * hash + (this.platformType != null ? this.platformType.hashCode() : 0);
         return hash;
     }
 
@@ -46,7 +46,7 @@ public class DataTypeClassFieldFilter extends AbstractFieldFilter {
             return false;
         }
         final DataTypeClassFieldFilter other = (DataTypeClassFieldFilter) obj;
-        if (this.type != other.type && (this.type == null || !this.type.equals(other.type))) {
+        if (this.platformType != other.platformType && (this.platformType == null || !this.platformType.equals(other.platformType))) {
             return false;
         }
         return true;

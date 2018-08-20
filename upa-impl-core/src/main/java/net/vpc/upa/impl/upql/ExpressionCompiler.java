@@ -257,7 +257,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     p.setValue(null);
                 } else if (primitiveIdImpl != null && primitiveIdImpl.size() == 1) {
                     p.setValue(primitiveIdImpl.getValue());
-                    p.setType(primitiveIdImpl.getField(0).getEffectiveTypeTransform());
+                    p.setDataTypeTransform(primitiveIdImpl.getField(0).getEffectiveTypeTransform());
                     return ReplaceResult.UPDATE_AND_STOP;
                 }
             }
@@ -331,7 +331,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             again = false;
             updateContext.put("flattenId", false);
             r = UPQLCompiledUtils.replaceExpressions(ttExpr0, this, updateContext);
-            if (r.getType() != ReplaceResultType.NO_UPDATES) {
+            if (r.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 someUpdates = true;
             }
             if (r.isNewInstance() && !r.isStop()) {
@@ -684,10 +684,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
             ReplaceResult replaceChild = null;
             replaceChild = UPQLCompiledUtils.replaceExpressions(child, this, updateContext);
-            switch (replaceChild.getType()) {
+            switch (replaceChild.getReplaceResultType()) {
                 case NEW_INSTANCE: {
                     ReplaceResult e2 = UPQLCompiledUtils.replaceThisVar(replaceChild.getExpression(), o, updateContext);
-                    switch (UPAUtils.max(e2.getType(), replaceChild.getType())) {
+                    switch (UPAUtils.max(e2.getReplaceResultType(), replaceChild.getReplaceResultType())) {
                         case NO_UPDATES: {
                             return ReplaceResult.NO_UPDATES_STOP;
                         }
@@ -804,7 +804,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             updateContext.put("index", i);
 
             ReplaceResult rqf = updateCompiledQueryField(qf, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 result = ReplaceResult.UPDATE_AND_STOP;
                 CompiledExpressionExt replacement = rqf.getExpression();
                 if (replacement instanceof CompiledQueryFieldsTuple) {
@@ -821,7 +821,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     qf.setExpression(replacement);
                 }
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
@@ -832,10 +832,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         for (int i = 0; i < groupByExpressions.length; i++) {
             CompiledExpressionExt ee = groupByExpressions[i];
             ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(ee, this, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 s.setGroupBy(rqf.getExpression(), i);
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
@@ -843,40 +843,40 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         for (int i = 0; i < orders.length; i++) {
             CompiledExpressionExt ee = orders[i].getExpression();
             ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(ee, this, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 orders[i].setExpression(rqf.getExpression());
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
         CompiledNameOrSelect entity = s.getEntity();
         if (entity != null) {
             ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(entity, this, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 s.from((CompiledNameOrSelect) rqf.getExpression(), s.getEntityAlias());
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
         CompiledExpressionExt where = s.getWhere();
         if (where != null) {
             ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(where, this, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 s.where(rqf.getExpression(where));
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
         CompiledExpressionExt having = s.getHaving();
         if (having != null) {
             ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(having, this, updateContext);
-            if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+            if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                 s.having(rqf.getExpression(having));
             }
-            if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+            if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 result = ReplaceResult.UPDATE_AND_STOP;
             }
         }
@@ -889,11 +889,11 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             CompiledExpressionExt condition = joins[i].getCondition();
             if (condition != null) {
                 ReplaceResult rqf = UPQLCompiledUtils.replaceExpressions(condition, this, updateContext);
-                if (rqf.getType() == ReplaceResultType.NEW_INSTANCE) {
+                if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
                     joins[i].setCondition(rqf.getExpression());
 
                 }
-                if (rqf.getType() != ReplaceResultType.NO_UPDATES) {
+                if (rqf.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                     result = ReplaceResult.UPDATE_AND_STOP;
                 }
             }

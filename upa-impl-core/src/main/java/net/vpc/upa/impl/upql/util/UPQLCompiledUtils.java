@@ -270,7 +270,7 @@ public class UPQLCompiledUtils {
                     //System.out.println("Child is null?");
                 } else {
                     ReplaceResult c = replaceExpressions(child,replacer, updateContext);
-                    switch (c.getType()) {
+                    switch (c.getReplaceResultType()) {
                         case NO_UPDATES: {
                             break;
                         }
@@ -320,7 +320,7 @@ public class UPQLCompiledUtils {
             if(exprUpdate.isStop()){
                 stop=true;
             }
-            switch (exprUpdate.getType()){
+            switch (exprUpdate.getReplaceResultType()){
                 case REMOVE:{
                     remove=true;
                     break;
@@ -375,7 +375,7 @@ public class UPQLCompiledUtils {
             ReplaceResult exprUpdate = replaceExpressionNodeToClean(expr,replacer, updateContext);
             //if stop will not check children!
             if (exprUpdate.isStop()) {
-                switch (exprUpdate.getType()) {
+                switch (exprUpdate.getReplaceResultType()) {
                     case NEW_INSTANCE: {
                         return exprUpdate;
                     }
@@ -393,7 +393,7 @@ public class UPQLCompiledUtils {
             }
 //            CompiledExpressionExt oldParent = expr.getParentExpression();
             CompiledExpressionExt newExpr = exprUpdate.getExpression(expr);
-            switch (exprUpdate.getType()) {
+            switch (exprUpdate.getReplaceResultType()) {
                 case REMOVE: {
                     return ReplaceResult.REMOVE_AND_STOP;
                 }
@@ -404,12 +404,12 @@ public class UPQLCompiledUtils {
             //newExpr.setParentExpression(oldParent);
 
             ReplaceResult creplaceResult = replaceExpressionChildren(newExpr, replacer, updateContext);
-            switch (exprUpdate.getType()) {
+            switch (exprUpdate.getReplaceResultType()) {
                 case NEW_INSTANCE: {
                     return ReplaceResult.stopWithNewObj(exprUpdate.getExpression());
                 }
                 default: {
-                    switch (creplaceResult.getType()){
+                    switch (creplaceResult.getReplaceResultType()){
                         case NO_UPDATES:{
                             return ReplaceResult.NO_UPDATES_STOP;
                         }
@@ -512,7 +512,7 @@ public class UPQLCompiledUtils {
                     //System.out.println("Child is null?");
                 } else {
                     ReplaceResult c = child.replaceExpressions(replacer, updateContext);
-                    switch (c.getType()) {
+                    switch (c.getReplaceResultType()) {
                         case UPDATE: {
                             someChildUpdates = true;
                             if (c.isStop()) {
@@ -541,7 +541,7 @@ public class UPQLCompiledUtils {
                 }
             }
             ReplaceResult update = replacer.update(expr, updateContext);
-            switch (update.getType()) {
+            switch (update.getReplaceResultType()) {
                 case NO_UPDATES: {
                     if (someChildUpdates) {
                         return update.isStop() ? ReplaceResult.UPDATE_AND_STOP : ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;

@@ -8,14 +8,14 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
  * @creationdate 2/3/13 9:16 PM
  */
 public class TypeCompiledExpressionFilter implements CompiledExpressionFilter {
-    private Class type;
+    private final Class platformType;
 
     public TypeCompiledExpressionFilter(Class type) {
-        this.type = type;
+        this.platformType = type;
     }
 
     @Override
     public boolean accept(CompiledExpressionExt e) {
-        return e !=null && type.isInstance(e);
+        return e !=null && platformType.isInstance(e);
     }
 }

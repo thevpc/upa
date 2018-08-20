@@ -10,14 +10,14 @@ import net.vpc.upa.impl.persistence.SQLProvider;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class AbstractSQLProvider implements SQLProvider {
-    private Class type;
+    private Class platformType;
 
     public AbstractSQLProvider(Class type) {
-        this.type = type;
+        this.platformType = type;
     }
 
     @Override
     public Class getExpressionType() {
-        return type;
+        return platformType;
     }
 }

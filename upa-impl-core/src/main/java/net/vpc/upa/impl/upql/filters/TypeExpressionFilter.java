@@ -8,14 +8,14 @@ import net.vpc.upa.expressions.ExpressionFilter;
  * @creationdate 2/3/13 9:16 PM
  */
 public class TypeExpressionFilter implements ExpressionFilter {
-    private Class type;
+    private final Class platformType;
 
     public TypeExpressionFilter(Class type) {
-        this.type = type;
+        this.platformType = type;
     }
 
     @Override
     public boolean accept(Expression e) {
-        return e !=null && type.isInstance(e);
+        return e !=null && platformType.isInstance(e);
     }
 }

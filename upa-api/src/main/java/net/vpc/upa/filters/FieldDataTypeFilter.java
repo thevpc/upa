@@ -44,11 +44,11 @@ import net.vpc.upa.Field;
  * To change this template use File | Settings | File Templates.
  */
 public class FieldDataTypeFilter extends AbstractFieldFilter {
-    private Class type;
-    private boolean dynamic;
+    private final Class platformType;
+    private final boolean dynamic;
 
     public FieldDataTypeFilter(Class type, boolean dynamic) {
-        this.type = type;
+        this.platformType = type;
         this.dynamic = dynamic;
     }
 
@@ -59,6 +59,6 @@ public class FieldDataTypeFilter extends AbstractFieldFilter {
 
     @Override
     public boolean accept(Field f) {
-        return type.isAssignableFrom(f.getDataType().getClass());
+        return platformType.isAssignableFrom(f.getDataType().getClass());
     }
 }

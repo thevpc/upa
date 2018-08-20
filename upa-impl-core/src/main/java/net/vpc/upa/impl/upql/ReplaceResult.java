@@ -13,20 +13,20 @@ public class ReplaceResult {
     public static final ReplaceResult UPDATE_AND_STOP = new ReplaceResult(null, ReplaceResultType.UPDATE, true,true);
 //    public static final ReplaceResult REMOVE_AND_CONTINUE = new ReplaceResult(null, ReplaceResultType.REMOVE, false);
     public static final ReplaceResult REMOVE_AND_STOP = new ReplaceResult(null, ReplaceResultType.REMOVE, true,false);
-    private CompiledExpressionExt expression;
-    private ReplaceResultType type;
+    private final CompiledExpressionExt expression;
+    private final ReplaceResultType replaceResultType;
     /**
      * if true do not process children
      */
-    private boolean stop;
+    private final boolean stop;
     /**
      * if false force re process updating
      */
-    private boolean clean;
+    private final boolean clean;
 
     private ReplaceResult(CompiledExpressionExt expression, ReplaceResultType type, boolean stop, boolean clean) {
         this.expression = expression;
-        this.type = type;
+        this.replaceResultType = type;
         this.stop = stop;
         this.clean = clean;
     }
@@ -65,7 +65,7 @@ public class ReplaceResult {
     }
 
     public CompiledExpressionExt getExpression(CompiledExpressionExt old) {
-        switch (type){
+        switch (replaceResultType){
             case NEW_INSTANCE:return expression;
         }
         return old;
@@ -76,15 +76,15 @@ public class ReplaceResult {
     }
 
     public boolean isNewInstance() {
-        return getType()==ReplaceResultType.NEW_INSTANCE;
+        return getReplaceResultType()==ReplaceResultType.NEW_INSTANCE;
     }
 
-    public ReplaceResultType getType() {
-        return type;
+    public ReplaceResultType getReplaceResultType() {
+        return replaceResultType;
     }
 
     public boolean isUpdateContent() {
-        switch (type) {
+        switch (replaceResultType) {
             case UPDATE: {
                 return true;
             }
@@ -94,7 +94,7 @@ public class ReplaceResult {
 
     @Override
     public String toString() {
-        switch (getType()){
+        switch (getReplaceResultType()){
             case NO_UPDATES:return "NO_UPDATES"+(stop?"!!STOP":"");
             case UPDATE:return "UPDATE"+(stop?"!!STOP":"");
             case REMOVE:return "REMOVE"+(stop?"!!STOP":"");
@@ -102,7 +102,7 @@ public class ReplaceResult {
         }
         return "ReplaceResult{" +
                 "expression=" + expression +
-                ", type=" + type +
+                ", type=" + replaceResultType +
                 ", stop=" + stop +
                 '}';
     }

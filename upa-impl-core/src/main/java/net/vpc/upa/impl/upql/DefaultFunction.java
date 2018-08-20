@@ -9,13 +9,13 @@ import net.vpc.upa.types.DataType;
  * @creationdate 12/14/12 12:19 AM
  */
 public class DefaultFunction implements FunctionDefinition {
-    private String name;
-    private DataType type;
-    private Function handler;
+    private final String name;
+    private final DataType dataType;
+    private final Function handler;
 
     public DefaultFunction(String name, DataType type, Function handler) {
         this.name = name;
-        this.type = type;
+        this.dataType = type;
         this.handler = handler;
     }
 
@@ -24,7 +24,7 @@ public class DefaultFunction implements FunctionDefinition {
     }
 
     public DataType getDataType() {
-        return type;
+        return dataType;
     }
 
     public Function getFunction() {

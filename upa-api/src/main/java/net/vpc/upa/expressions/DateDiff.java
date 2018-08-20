@@ -43,7 +43,7 @@ import java.util.Date;
 public class DateDiff extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private DatePartType type;
+    private DatePartType datePartType;
     private Expression start;
     private Expression end;
 
@@ -61,13 +61,13 @@ public class DateDiff extends FunctionExpression {
     }
 
     private void init(DatePartType datePartType, Expression startDate, Expression endDate) {
-        this.type = datePartType;
+        this.datePartType = datePartType;
         this.start = startDate;
         this.end = endDate;
     }
 
     public DatePartType getDatePartType() {
-        return type;
+        return datePartType;
     }
 
     public Expression getStart() {
@@ -95,7 +95,7 @@ public class DateDiff extends FunctionExpression {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return new Cst(type);
+                return new Cst(datePartType);
             case 1:
                 return start;
             case 2:
@@ -109,7 +109,7 @@ public class DateDiff extends FunctionExpression {
     public void setArgument(int index, Expression e) {
         switch (index) {
             case 0: {
-                type = (DatePartType) ((Cst) e).getValue();
+                datePartType = (DatePartType) ((Cst) e).getValue();
                 break;
             }
             case 1: {
@@ -126,7 +126,7 @@ public class DateDiff extends FunctionExpression {
 
     @Override
     public Expression copy() {
-        DateDiff o = new DateDiff(type, start.copy(), end.copy());
+        DateDiff o = new DateDiff(datePartType, start.copy(), end.copy());
         return o;
     }
 }

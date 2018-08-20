@@ -69,7 +69,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
                 entity.setLastModifed(new DateTime());
                 entity.setName("/");
                 entity.setPath("/");
-                entity.setType(VFileType.DIRECTORY);
+                entity.setFileType(VFileType.DIRECTORY);
                 pu.persist(entity);
             }
         }
@@ -96,13 +96,13 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
     @Override
     public boolean isFile(String file) {
         FileEntry dirEntry = getDirEntry(file);
-        return dirEntry != null && dirEntry.getType() == VFileType.FILE;
+        return dirEntry != null && dirEntry.getFileType() == VFileType.FILE;
     }
 
     @Override
     public VFileType getFileType(String path) {
         FileEntry dirEntry = getDirEntry(path);
-        return dirEntry != null ? null : dirEntry.getType();
+        return dirEntry != null ? null : dirEntry.getFileType();
     }
 
     @Override
@@ -113,7 +113,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
     @Override
     public boolean isDirectory(String file) {
         FileEntry dirEntry = getDirEntry(file);
-        return dirEntry != null && dirEntry.getType() == VFileType.DIRECTORY;
+        return dirEntry != null && dirEntry.getFileType() == VFileType.DIRECTORY;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
             dirEntry.setPath(p.getPath());
             dirEntry.setParentPath(p.getParentPath());
             dirEntry.setParent(getDirEntry(p.getParentFile()));
-            dirEntry.setType(VFileType.FILE);
+            dirEntry.setFileType(VFileType.FILE);
             getPersistenceUnit().persist(dirEntry);
         }
         Integer cid = dirEntry.getContentId();
@@ -213,7 +213,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
         me.setParent(pdir);
         me.setParentPath(pdir.getPath());
         me.setPath(f.getPath());
-        me.setType(VFileType.DIRECTORY);
+        me.setFileType(VFileType.DIRECTORY);
         getPersistenceUnit().persist(me);
         return true;
     }
@@ -233,7 +233,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
             me.setParent(pdir);
             me.setParentPath(pdir.getPath());
             me.setPath(f.getPath());
-            me.setType(VFileType.DIRECTORY);
+            me.setFileType(VFileType.DIRECTORY);
             getPersistenceUnit().persist(me);
             return true;
         }
@@ -243,7 +243,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
     @Override
     public VFile[] listFiles(String path, VFileFilter fileFilter) {
         FileEntry d = getDirEntry(path);
-        if (d == null || d.getType() != VFileType.DIRECTORY) {
+        if (d == null || d.getFileType() != VFileType.DIRECTORY) {
             return new VFile[0];
         }
         List<FileEntry> childen = getPersistenceUnit().createQueryBuilder(FileEntry.class)

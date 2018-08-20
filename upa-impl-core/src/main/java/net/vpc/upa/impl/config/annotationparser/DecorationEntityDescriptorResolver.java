@@ -129,7 +129,7 @@ public class DecorationEntityDescriptorResolver {
                     }
                 }
                 if (pkCount == 1) {
-                    entityInfo.idType = pk.type.getPlatformType();
+                    entityInfo.idType = pk.dataType.getPlatformType();
                 } else {
                     entityInfo.idType = Key.class;
                 }
@@ -218,7 +218,7 @@ public class DecorationEntityDescriptorResolver {
             entityInfo.addIndex(indexAnn.getString("name"), rr, indexAnn.getBoolean("unique"), indexAnn.getConfig().getOrder());
         }
 
-        //        net.vpc.upa.config.Sequence gue = (net.vpc.upa.config.Sequence) type.getAnnotation(Sequence.class);
+        //        net.vpc.upa.config.Sequence gue = (net.vpc.upa.config.Sequence) dataType.getAnnotation(Sequence.class);
 //        if (gue != null) {
 //            if (privateInfo.generatedIdInfo == null) {
 //                privateInfo.generatedIdInfo = new SequenceInfo();

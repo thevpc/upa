@@ -53,7 +53,7 @@ public final class Literal extends DefaultExpression
     public static final Literal FALSE = new Literal(false);
     public static final Literal EMPTY_STRING = new Literal("");
     private static final long serialVersionUID = 1L;
-    private DataType type;
+    private DataType dataType;
     private Object value;
 
     public Literal(Date date) {
@@ -108,7 +108,7 @@ public final class Literal extends DefaultExpression
                 type = TypesFactory.forPlatformType(value.getClass());
             }
         }
-        this.type = type;
+        this.dataType = type;
 //            return;
 //        }
     }
@@ -142,15 +142,15 @@ public final class Literal extends DefaultExpression
     private void setValue(Object o) {
         this.value = o;
         if (o == null) {
-            type = TypesFactory.OBJECT;
+            dataType = TypesFactory.OBJECT;
         } else {
-            type = TypesFactory.forPlatformType(o.getClass());
+            dataType = TypesFactory.forPlatformType(o.getClass());
         }
     }
 
     @Override
     public Expression copy() {
-        return new Literal(value, type);
+        return new Literal(value, dataType);
     }
 
     public static Literal valueOf(boolean value) {

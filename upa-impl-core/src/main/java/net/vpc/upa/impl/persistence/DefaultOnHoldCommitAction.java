@@ -19,7 +19,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 public class DefaultOnHoldCommitAction implements OnHoldCommitAction {
 
     private UPAObject object;
-    private OnHoldCommitActionType type;
+    private OnHoldCommitActionType actionType;
     private UPAObject old;
     private int order;
     private Set<String> updates;
@@ -32,7 +32,7 @@ public class DefaultOnHoldCommitAction implements OnHoldCommitAction {
 
     public DefaultOnHoldCommitAction(UPAObject object, OnHoldCommitActionType type, int order) {
         this.object = object;
-        this.type = type;
+        this.actionType = type;
         this.order = order;
     }
 
@@ -56,7 +56,7 @@ public class DefaultOnHoldCommitAction implements OnHoldCommitAction {
                 break;
             }
             case TRANSIENT: {
-                switch (type) {
+                switch (actionType) {
                     case CREATE: {
                         persistenceStore.alterPersistenceUnitAddObject(object);
                         break;
@@ -86,12 +86,12 @@ public class DefaultOnHoldCommitAction implements OnHoldCommitAction {
     
     @Override
     public String toString() {
-        switch (type) {
+        switch (actionType) {
             case CREATE: {
                 return "Create(" + object + ", impl=" + object.getClass().getSimpleName() + ", order=" + order + ")";
             }
         }
-        return "CommitAction{" + "object=" + object + ", type=" + type + ", old=" + old + ", order=" + order + ", updates=" + updates + '}';
+        return "CommitAction{" + "object=" + object + ", type=" + actionType + ", old=" + old + ", order=" + order + ", updates=" + updates + '}';
     }
 
     public int compareTo(OnHoldCommitAction o) {

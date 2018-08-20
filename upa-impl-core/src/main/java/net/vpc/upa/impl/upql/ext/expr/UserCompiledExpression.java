@@ -7,12 +7,12 @@ public class UserCompiledExpression extends DefaultCompiledExpressionImpl
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private String expression;
-    private DataTypeTransform type;
+    private final String expression;
+    private DataTypeTransform dataTypeTransform;
 
     public UserCompiledExpression(String qlString, DataTypeTransform type) {
         this.expression = qlString;
-        this.type = type;
+        this.dataTypeTransform = type;
     }
 
 //    public String toSQL(boolean integrated, PersistenceUnitFilter database) {
@@ -22,7 +22,7 @@ public class UserCompiledExpression extends DefaultCompiledExpressionImpl
 //    }
     @Override
     public DataTypeTransform getTypeTransform() {
-        return type;
+        return dataTypeTransform;
     }
 
     public String getExpression() {
@@ -31,12 +31,12 @@ public class UserCompiledExpression extends DefaultCompiledExpressionImpl
 
     @Override
     public void setTypeTransform(DataTypeTransform type) {
-        this.type = type;
+        this.dataTypeTransform = type;
     }
 
     @Override
     public CompiledExpressionExt copy() {
-        UserCompiledExpression o = new UserCompiledExpression(expression, type);
+        UserCompiledExpression o = new UserCompiledExpression(expression, dataTypeTransform);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;

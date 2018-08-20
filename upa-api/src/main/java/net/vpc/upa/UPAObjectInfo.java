@@ -40,11 +40,11 @@ import java.util.Map;
 public class UPAObjectInfo implements Serializable{
     private Map<String, Object> simpleProperties;
     private String name;
-    private String type;
+    private String typeName;
     private String title;
 
     public UPAObjectInfo(String type) {
-        this.type = type;
+        this.typeName = type;
     }
 
     public Map<String, Object> getSimpleProperties() {
@@ -63,12 +63,12 @@ public class UPAObjectInfo implements Serializable{
         this.name = name;
     }
 
-    public void setType(String type) {
+    public void setTypeName(String typeName) {
         //
     }
 
-    public String getType() {
-        return type;
+    public String getTypeName() {
+        return typeName;
     }
 
     public String getTitle() {

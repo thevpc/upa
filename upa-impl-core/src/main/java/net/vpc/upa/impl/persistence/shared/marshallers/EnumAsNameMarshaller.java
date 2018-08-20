@@ -3,9 +3,6 @@ package net.vpc.upa.impl.persistence.shared.marshallers;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -21,7 +18,7 @@ import net.vpc.upa.persistence.NativeStatement;
 public class EnumAsNameMarshaller
         extends SimpleTypeMarshaller {
 
-    private Class<? extends Enum> type;
+    private Class<? extends Enum> platformType;
     private Object[] values;
     private StringType persistentDataType;
     public EnumAsNameMarshaller(MarshallManager marshallManager) {
@@ -30,7 +27,7 @@ public class EnumAsNameMarshaller
 
     public EnumAsNameMarshaller(MarshallManager marshallManager,Class<? extends Enum> type) {
         super(marshallManager);
-        this.type = type;
+        this.platformType = type;
         try {
             values = PlatformUtils.getEnumValues(type);
             int max=1;
@@ -57,7 +54,7 @@ public class EnumAsNameMarshaller
                 return null;
             }
             try {
-                return Enum.valueOf(type, n);
+                return Enum.valueOf(platformType, n);
             } catch (IllegalArgumentException e) {
                 return null;
             }

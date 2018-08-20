@@ -5,7 +5,6 @@
  */
 package net.vpc.upa.vfs;
 
-import net.vpc.upa.UserFieldModifier;
 import net.vpc.upa.config.*;
 import net.vpc.upa.types.DateTime;
 import net.vpc.common.vfs.VFileType;
@@ -26,7 +25,7 @@ public class FileEntry {
     @Summary
     private String parentPath;
     @Summary
-    private VFileType type;
+    private VFileType fileType;
     @Hierarchy
     private FileEntry parent;
     @Summary
@@ -68,12 +67,12 @@ public class FileEntry {
         this.parentPath = parentPath;
     }
 
-    public VFileType getType() {
-        return type;
+    public VFileType getFileType() {
+        return fileType;
     }
 
-    public void setType(VFileType type) {
-        this.type = type;
+    public void setFileType(VFileType fileType) {
+        this.fileType = fileType;
     }
 
     public FileEntry getParent() {

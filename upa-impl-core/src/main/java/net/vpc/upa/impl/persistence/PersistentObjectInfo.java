@@ -4,18 +4,27 @@ import net.vpc.upa.PersistenceState;
 import net.vpc.upa.UPAObject;
 
 /**
-* @author Taha BEN SALAH <taha.bensalah@gmail.com>
-* @creationdate 1/8/13 1:54 AM
-*/
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 1/8/13 1:54 AM
+ */
 public class PersistentObjectInfo {
-    private UPAObject object;
-    private String type;
+
+    private final UPAObject object;
+    private final String objectType;
     private PersistenceState persistenceState = PersistenceState.DEFAULT;
     private String persistentName;
 
     PersistentObjectInfo(UPAObject object, String type) {
         this.object = object;
-        this.type = type;
+        this.objectType = type;
+    }
+
+    public UPAObject getObject() {
+        return object;
+    }
+
+    public String getObjectType() {
+        return objectType;
     }
 
     public PersistenceState getPersistenceState() {

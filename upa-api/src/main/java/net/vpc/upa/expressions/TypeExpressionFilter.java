@@ -9,15 +9,15 @@ package net.vpc.upa.expressions;
  * @author taha.bensalah@gmail.com
  */
 public class TypeExpressionFilter implements ExpressionFilter {
-    private Class type;
+    private Class expressionType;
 
     public TypeExpressionFilter(Class type) {
-        this.type = type;
+        this.expressionType = type;
     }
 
     @Override
     public boolean accept(Expression expression) {
-        return type.isInstance(expression);
+        return expressionType.isInstance(expression);
     }
 
 }

@@ -16,12 +16,12 @@ import java.util.Objects;
  * @author taha.bensalah@gmail.com
  */
 public class XNumber {
-    private Class type;
-    private Number number;
+    private final Class platformType;
+    private final Number number;
 
     public XNumber(Number number) {
         this.number = number;
-        this.type = validateType(number.getClass());
+        this.platformType = validateType(number.getClass());
     }
 
     public XNumber add(Number other) {
@@ -29,64 +29,64 @@ public class XNumber {
     }
 
     public XNumber negate() {
-        if (type == Byte.class) {
+        if (platformType == Byte.class) {
             return new XNumber(-byteValue());
-        } else if (type == Short.class) {
+        } else if (platformType == Short.class) {
             return new XNumber(-shortValue());
-        } else if (type == Integer.class) {
+        } else if (platformType == Integer.class) {
             return new XNumber(-intValue());
-        } else if (type == Float.class) {
+        } else if (platformType == Float.class) {
             return new XNumber(-floatValue());
-        } else if (type == Double.class) {
+        } else if (platformType == Double.class) {
             return new XNumber(-doubleValue());
-        } else if (type == BigInteger.class) {
+        } else if (platformType == BigInteger.class) {
             return new XNumber(bigIntegerValue().negate());
-        } else if (type == BigDecimal.class) {
+        } else if (platformType == BigDecimal.class) {
             return new XNumber(bigDecimalValue().negate());
         }
         throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber inv() {
-        if (type == Byte.class) {
+        if (platformType == Byte.class) {
             return new XNumber(1.0/byteValue());
-        } else if (type == Short.class) {
+        } else if (platformType == Short.class) {
             return new XNumber(1.0/shortValue());
-        } else if (type == Integer.class) {
+        } else if (platformType == Integer.class) {
             return new XNumber(1.0/intValue());
-        } else if (type == Float.class) {
+        } else if (platformType == Float.class) {
             return new XNumber(1.0f/floatValue());
-        } else if (type == Double.class) {
+        } else if (platformType == Double.class) {
             return new XNumber(1.0/doubleValue());
-        } else if (type == BigInteger.class) {
+        } else if (platformType == BigInteger.class) {
             return new XNumber(new BigDecimal("1").divide(bigDecimalValue(), BigDecimal.ROUND_UP));
-        } else if (type == BigDecimal.class) {
+        } else if (platformType == BigDecimal.class) {
                 return new XNumber(new BigDecimal("1").divide(bigDecimalValue(), BigDecimal.ROUND_UP));
         }
         throw new UPAIllegalArgumentException("Invalid");
     }
 
     public XNumber complement() {
-        if (type == Byte.class) {
+        if (platformType == Byte.class) {
             return new XNumber(~byteValue());
-        } else if (type == Short.class) {
+        } else if (platformType == Short.class) {
             return new XNumber(~shortValue());
-        } else if (type == Integer.class) {
+        } else if (platformType == Integer.class) {
             return new XNumber(~intValue());
-        } else if (type == Float.class) {
+        } else if (platformType == Float.class) {
 
-        } else if (type == Double.class) {
+        } else if (platformType == Double.class) {
 
-        } else if (type == BigInteger.class) {
+        } else if (platformType == BigInteger.class) {
 
-        } else if (type == BigDecimal.class) {
+        } else if (platformType == BigDecimal.class) {
 
         }
         throw new UPAIllegalArgumentException("Unsupported");
     }
 
     public XNumber add(XNumber other) {
-        Class c = bestFit(type, other.type);
+        Class c = bestFit(platformType, other.platformType);
         if (c == Byte.class) {
             return new XNumber(byteValue() + other.byteValue());
         } else if (c == Short.class) {
@@ -106,7 +106,7 @@ public class XNumber {
     }
 
     public XNumber subtract(XNumber other) {
-        Class c = bestFit(type, other.type);
+        Class c = bestFit(platformType, other.platformType);
         if (c == Byte.class) {
             return new XNumber(byteValue() - other.byteValue());
         } else if (c == Short.class) {
@@ -126,7 +126,7 @@ public class XNumber {
     }
 
     public XNumber multiply(XNumber other) {
-        Class c = bestFit(type, other.type);
+        Class c = bestFit(platformType, other.platformType);
         if (c == Byte.class) {
             return new XNumber(byteValue() * other.byteValue());
         } else if (c == Short.class) {
@@ -146,7 +146,7 @@ public class XNumber {
     }
 
     public XNumber divide(XNumber other) {
-        Class c = bestFit(type, other.type);
+        Class c = bestFit(platformType, other.platformType);
         if (c == Byte.class) {
             return new XNumber(byteValue() / other.byteValue());
         } else if (c == Short.class) {
@@ -166,19 +166,19 @@ public class XNumber {
     }
 
     public Object toNumber() {
-        if (type == Byte.class) {
+        if (platformType == Byte.class) {
             return byteValue();
-        } else if (type == Short.class) {
+        } else if (platformType == Short.class) {
             return shortValue();
-        } else if (type == Integer.class) {
+        } else if (platformType == Integer.class) {
             return intValue();
-        } else if (type == Float.class) {
+        } else if (platformType == Float.class) {
             return floatValue();
-        } else if (type == Double.class) {
+        } else if (platformType == Double.class) {
             return doubleValue();
-        } else if (type == BigInteger.class) {
+        } else if (platformType == BigInteger.class) {
             return bigIntegerValue();
-        } else if (type == BigDecimal.class) {
+        } else if (platformType == BigDecimal.class) {
             return bigDecimalValue();
         }
         throw new UPAIllegalArgumentException("Invalid");
@@ -187,7 +187,7 @@ public class XNumber {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.type);
+        hash = 67 * hash + Objects.hashCode(this.platformType);
         hash = 67 * hash + Objects.hashCode(this.number);
         return hash;
     }
@@ -225,7 +225,7 @@ public class XNumber {
     }
 
     public int compareTo(XNumber other) {
-        Class c = bestFit(type, other.type);
+        Class c = bestFit(platformType, other.platformType);
         if (c == Byte.class) {
             return Byte.compare(byteValue(), other.byteValue());
         } else if (c == Short.class) {

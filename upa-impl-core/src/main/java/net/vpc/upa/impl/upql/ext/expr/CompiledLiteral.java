@@ -7,7 +7,6 @@ import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.StringType;
 
 public final class CompiledLiteral extends DefaultCompiledExpressionImpl
         implements Cloneable {
@@ -17,7 +16,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     public static final CompiledLiteral ZERO = DZERO;
     public static final CompiledLiteral EMPTY_STRING = new CompiledLiteral("");
     private static final long serialVersionUID = 1L;
-    private DataTypeTransform type;
+    private DataTypeTransform dataTypeTransform;
     private Object value;
 
     public CompiledLiteral(Date date) {
@@ -62,7 +61,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
                 type = IdentityDataTypeTransform.ofType(value.getClass());
             }
         }
-        setType(type);
+        setDataTypeTransform(type);
     }
 
 
@@ -87,25 +86,25 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
 
     public void setValue(Object o) {
         this.value = o;
-        setType((o == null)?IdentityDataTypeTransform.OBJECT:IdentityDataTypeTransform.ofType(o.getClass()));
+        setDataTypeTransform((o == null)?IdentityDataTypeTransform.OBJECT:IdentityDataTypeTransform.ofType(o.getClass()));
     }
 
-    public void setType(DataTypeTransform type) {
-        this.type = type;
-        if(type==null){
+    public void setDataTypeTransform(DataTypeTransform dataTypeTransform) {
+        this.dataTypeTransform = dataTypeTransform;
+        if(dataTypeTransform==null){
             throw new UPAIllegalArgumentException("Type cannot be null");
         }
     }
 
     @Override
     public DataTypeTransform getTypeTransform() {
-        return type;
+        return dataTypeTransform;
     }
 
 
     @Override
     public CompiledExpressionExt copy() {
-        CompiledLiteral o = new CompiledLiteral(value, type);
+        CompiledLiteral o = new CompiledLiteral(value, dataTypeTransform);
         o.setDescription(getDescription());
         o.getClientParameters().setAll(getClientParameters());
         return o;

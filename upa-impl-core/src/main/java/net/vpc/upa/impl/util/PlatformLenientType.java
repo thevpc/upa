@@ -1,8 +1,6 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.PlatformBeanProperty;
 import net.vpc.upa.PlatformBeanType;
-import net.vpc.upa.PropertyAccessType;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,8 +9,8 @@ import java.util.logging.Logger;
  * Created by vpc on 5/17/16.
  */
 public class PlatformLenientType implements LenientType {
-    private String typeName;
-    private Class type;
+    private final String typeName;
+    private Class platformType;
     private static final Logger log = Logger.getLogger(PlatformLenientType.class.getName());
 
     public PlatformLenientType(String typeName) {
@@ -36,20 +34,20 @@ public class PlatformLenientType implements LenientType {
     }
 
     public Class getValidType() {
-        if (type == null) {
+        if (platformType == null) {
             try {
-                type = Class.forName(typeName);
-                log.log(Level.INFO, "Lenient Type " + typeName + " loaded successfully");
+                platformType = Class.forName(typeName);
+                log.log(Level.INFO, "Lenient Type {0} loaded successfully", typeName);
             } catch (ClassNotFoundException e) {
 //                e.printStackTrace();
-                type = Void.TYPE;
-                log.log(Level.SEVERE, "Lenient Type " + typeName + " was unable to load : " + e);
+                platformType = Void.TYPE;
+                log.log(Level.SEVERE, "Lenient Type {0} was unable to load : {1}", new Object[]{typeName, e});
             }
         }
-        if (Void.TYPE.equals(type)) {
+        if (Void.TYPE.equals(platformType)) {
             return null;
         }
-        return type;
+        return platformType;
     }
 
     public Object newInstance() {

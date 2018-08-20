@@ -41,23 +41,23 @@ public final class NullVal extends FunctionExpression
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private DataType type;
+    private DataType dataType;
 
     public NullVal(Expression[] expressions) {
         if (expressions.length != 0 && expressions.length != 1 && expressions.length != 2) {
             checkArgCount(getName(), expressions, 1);
         }
-        this.type = (DataType) ((Cst) expressions[0]).getValue();
+        this.dataType = (DataType) ((Cst) expressions[0]).getValue();
     }
 
     public NullVal(DataType type) {
-        this.type = type;
+        this.dataType = type;
     }
 
     @Override
     public void setArgument(int index, Expression e) {
         if (index == 0) {
-            this.type = (DataType) ((Cst) e).getValue();
+            this.dataType = (DataType) ((Cst) e).getValue();
         } else {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -78,7 +78,7 @@ public final class NullVal extends FunctionExpression
         if (index != 0) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        return new Cst(type);
+        return new Cst(dataType);
     }
 
     //    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
@@ -93,14 +93,14 @@ public final class NullVal extends FunctionExpression
 
     @Override
     public Expression copy() {
-        NullVal o = new NullVal(type);
+        NullVal o = new NullVal(dataType);
         return o;
     }
 
     public String toString() {
-        Class javaClass = type.getPlatformType();
-        int length = type.getScale();
-        int precision = type.getPrecision();
+        Class javaClass = dataType.getPlatformType();
+        int length = dataType.getScale();
+        int precision = dataType.getPrecision();
 
         String tname = TypesFactory.getTypeName(javaClass);
         if (tname == null) {

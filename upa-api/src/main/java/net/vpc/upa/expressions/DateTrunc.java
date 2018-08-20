@@ -43,7 +43,7 @@ import java.util.Date;
 public class DateTrunc extends FunctionExpression {
 
     private static final long serialVersionUID = 1L;
-    private DatePartType type;
+    private DatePartType datePartType;
     private Expression value;
 
     public DateTrunc(Expression[] expressions) {
@@ -64,12 +64,12 @@ public class DateTrunc extends FunctionExpression {
     }
 
     private void init(DatePartType type, Expression val) {
-        this.type = type;
+        this.datePartType = type;
         this.value = val;
     }
 
     public DatePartType getDatePartType() {
-        return type;
+        return datePartType;
     }
 
     public Expression getValue() {
@@ -90,7 +90,7 @@ public class DateTrunc extends FunctionExpression {
     public Expression getArgument(int index) {
         switch (index) {
             case 0:
-                return new Cst(type);
+                return new Cst(datePartType);
             case 1:
                 return value;
         }
@@ -101,7 +101,7 @@ public class DateTrunc extends FunctionExpression {
     public void setArgument(int index, Expression e) {
         switch (index) {
             case 0: {
-                type = (DatePartType) ((Cst) e).getValue();
+                datePartType = (DatePartType) ((Cst) e).getValue();
                 break;
             }
             case 1: {
@@ -114,7 +114,7 @@ public class DateTrunc extends FunctionExpression {
 
     @Override
     public Expression copy() {
-        DateTrunc o = new DateTrunc(type, value.copy());
+        DateTrunc o = new DateTrunc(datePartType, value.copy());
         return o;
     }
 }

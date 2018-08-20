@@ -1,7 +1,6 @@
 package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.PlatformBeanType;
-import net.vpc.upa.PropertyAccessType;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.ResultMetaData;
@@ -11,12 +10,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TypeListQueryResultItemBuilder implements QueryResultItemBuilder {
-    private final Class type;
+    private final Class platformType;
     private final String[] fields;
-    private PlatformBeanType platformBeanType;
-    private Set<String> fields2;
+    private final PlatformBeanType platformBeanType;
+    private final Set<String> fields2;
     public TypeListQueryResultItemBuilder(Class type, String... fields) {
-        this.type = type;
+        this.platformType = type;
         this.fields = fields;
         platformBeanType = PlatformUtils.getBeanType(type);
         fields2=new HashSet<>();
@@ -35,7 +34,7 @@ public class TypeListQueryResultItemBuilder implements QueryResultItemBuilder {
             if(fields2.contains(c.getLabel())){
                 platformBeanType.setPropertyValue(o,c.getLabel(),c.getValue());
             }else{
-                throw new UPAIllegalArgumentException("Invalid property "+c.getLabel()+" in "+ type.getName());
+                throw new UPAIllegalArgumentException("Invalid property "+c.getLabel()+" in "+ platformType.getName());
             }
         }
         return o;

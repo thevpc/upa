@@ -5,7 +5,6 @@ import net.vpc.upa.QueryHints;
 import net.vpc.upa.Relationship;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
@@ -19,7 +18,6 @@ import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.types.ManyToOneType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -27,27 +25,27 @@ import java.util.logging.Logger;
 
 public class DefaultQueryExecutor implements QueryExecutor {
 
-    static Logger log = Logger.getLogger(DefaultQueryExecutor.class.getName());
-    private Map<String,Object> hints;
+    private static final Logger log = Logger.getLogger(DefaultQueryExecutor.class.getName());
+    private final Map<String,Object> hints;
     private String query;
     private UConnection connection;
 
-    private net.vpc.upa.impl.persistence.NativeStatementType type;
-    private HashMap<String, String> parameters;
+    private final net.vpc.upa.impl.persistence.NativeStatementType statementType;
+    private final HashMap<String, String> parameters;
     private Object returnValue;
     private int currentStatementIndex;
-    private boolean updatable;
+    private final boolean updatable;
     private String errorTrace;
-    private NativeField[] fields;
-    private ResultMetaData metaData;
+    private final NativeField[] fields;
+    private final ResultMetaData metaData;
     private List<Parameter> queryParameters;
 //    private List<Parameter> generatedValues;
-    private CompiledExpressionExt compiledExpression;
-    private boolean noTypeTransform;
-    private List<CompiledParam> compiledParams;
+    private final CompiledExpressionExt compiledExpression;
+    private final boolean noTypeTransform;
+    private final List<CompiledParam> compiledParams;
     private EntityExecutionContext context;
-    private Expression userQuery;
-    private SQLManager sqlManager;
+    private final Expression userQuery;
+    private final SQLManager sqlManager;
     private boolean forceRebuildSQL=true;
     public DefaultQueryExecutor(Expression userQuery,CompiledExpressionExt compiledExpression, Map<String, Object> hints,
                                 NativeField[] nativeFields, boolean updatable, ResultMetaData metaData,
@@ -56,7 +54,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
     ) {
         this.context = context;
         this.userQuery = userQuery;
-        this.type = context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE;
+        this.statementType = context.getOperation() == ContextOperation.FIND ? NativeStatementType.SELECT : NativeStatementType.UPDATE;
         this.updatable = updatable;
         this.metaData = metaData;
         this.sqlManager = sqlManager;
@@ -95,7 +93,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
     }
 
     public NativeStatementType getStatementType() {
-        return type;
+        return statementType;
     }
 
     @Override

@@ -45,7 +45,7 @@ import net.vpc.upa.types.PlatformUtils;
  */
 public class QLParameter {
 
-    private QLParameterType type;
+    private QLParameterType parameterType;
     private String typeName;
     private String id;
     private String title;
@@ -53,7 +53,7 @@ public class QLParameter {
     private String expression;
 
     public QLParameter(QLParameterType QLParameterType, String typeName, String expression, String name, String title, String description) {
-        this.type = QLParameterType;
+        this.parameterType = QLParameterType;
         this.typeName = typeName;
         this.expression = expression;
         this.id = name;
@@ -82,7 +82,7 @@ public class QLParameter {
     }
 
     public QLParameterType getParameterType() {
-        return type;
+        return parameterType;
     }
 
     public String getTypeName() {
@@ -95,7 +95,7 @@ public class QLParameter {
 
     public QLParameter copy() {
 
-        return new QLParameter(type, typeName, expression, id, title, description);
+        return new QLParameter(parameterType, typeName, expression, id, title, description);
     }
 
 }

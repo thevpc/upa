@@ -40,13 +40,13 @@ package net.vpc.upa.expressions;
 import java.io.Serializable;
 
 public class JoinCriteria implements Serializable, Cloneable {
-    private JoinType type;
+    private final JoinType joinType;
     private NameOrQuery entity;
     private String alias;
     private Expression condition;
 
     public JoinType getJoinType() {
-        return type;
+        return joinType;
     }
 
     public String getEntityName() {
@@ -77,7 +77,7 @@ public class JoinCriteria implements Serializable, Cloneable {
     }
 
     public JoinCriteria(JoinType type, NameOrQuery entity, String alias, Expression condition) {
-        this.type = type;
+        this.joinType = type;
         this.entity = entity;
         this.alias = alias;
         this.condition = condition;

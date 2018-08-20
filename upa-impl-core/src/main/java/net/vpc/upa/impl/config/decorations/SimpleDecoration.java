@@ -10,7 +10,6 @@ import net.vpc.upa.config.DecorationSourceType;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.config.DecorationValue;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public final class SimpleDecoration extends AbstractDecoration {
 
     private DecorationSourceType decorationSourceType;
     private DecorationTarget targetType;
-    private String type;
+    private String locationType;
     private String name;
     private String location;
     private int position;
@@ -49,7 +48,7 @@ public final class SimpleDecoration extends AbstractDecoration {
         this.name = name;
         this.decorationSourceType = locationType;
         this.targetType = targetType;
-        this.type = type;
+        this.locationType = type;
         this.location = location;
         this.configInfo = configInfo;
         this.values = attr == null ? new HashMap<String, DecorationValue>() : new HashMap<String, DecorationValue>(attr);
@@ -96,7 +95,7 @@ public final class SimpleDecoration extends AbstractDecoration {
     }
 
     public String getLocationType() {
-        return type;
+        return locationType;
     }
 
     public ConfigInfo getConfig() {
@@ -131,7 +130,7 @@ public final class SimpleDecoration extends AbstractDecoration {
         if (targetType == null) {
             b.append("EMBEDDED").append(":");
         }
-        b.append(type);
+        b.append(locationType);
         if (targetType == DecorationTarget.METHOD || targetType == DecorationTarget.FIELD) {
             b.append(".").append(location);
         }
