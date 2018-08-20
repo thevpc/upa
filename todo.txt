@@ -1,0 +1,6 @@
+Requested Features:
+-----------------
+    [@Dec] Add simple Inheritance support
+    [@Dec] Add @NativeView support
+    [Impl] Add PostgreSQL support
+    [UPQL] Add support for + operator between String and date
