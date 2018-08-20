@@ -32,22 +32,13 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.vpc.upa;
+package net.vpc.upa.exceptions;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public interface UPAContextProvider {
-
-    UPAContext getContext();
-
-    void setContext(UPAContext newInstance);
-
-    /**
-     * Closes this instance and resets it to its initial state. 
-     * The instance becomes reusable after its closing. 
-     * If the instance is not yet initialized, calling this method has no side effects. 
-     * Multiple calls to this method has no side effects either.
-     */
-    void close();
+public class PersistenceGroupAlreadyExistsException extends PersistenceUnitException {
+    public PersistenceGroupAlreadyExistsException(String name) {
+        super("PersistenceGroupAlreadyExistsException", name);
+    }
 }

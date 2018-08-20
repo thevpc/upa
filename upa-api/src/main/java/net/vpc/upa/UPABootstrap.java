@@ -34,39 +34,92 @@
  */
 package net.vpc.upa;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.vpc.upa.exceptions.BootstrapException;
 import net.vpc.upa.exceptions.UPAException;
 
 import java.util.Map;
+import net.vpc.upa.persistence.UPAContextConfig;
 
 /**
  * Created by vpc on 8/6/16.
  */
 public class UPABootstrap {
+
     private boolean contextProviderCreated = false;
     private final Properties properties = new BootstrapProperties();
+
+    static final int CONTEXT_NOT_INITIALIZED = 0;
+    static final int CONTEXT_INITIALIZING = 1;
+    static final int CONTEXT_INITIALIZED = 2;
+    static final int CONTEXT_INITIALIZATION_ERROR = 3;
+    int bootstrapStatus = CONTEXT_NOT_INITIALIZED;
+
+    private final List<UPAContextConfig> configInstances = new ArrayList<UPAContextConfig>();
+    private final List<Class> configClasses = new ArrayList<Class>();
 
     UPABootstrap() {
         init();
     }
 
     private void init() {
-        contextProviderCreated=false;
+        contextProviderCreated = false;
+        bootstrapStatus = CONTEXT_NOT_INITIALIZED;
+        configInstances.clear();
+        configClasses.clear();
         for (Map.Entry<Object, Object> ee : System.getProperties().entrySet()) {
             properties.setString((String) ee.getKey(), (String) ee.getValue());
         }
     }
-    
+
+    /**
+     * Closes this instance and resets it to its initial state. The instance
+     * becomes reusable after its closing. If the instance is not yet
+     * initialized, calling this method has no side effects. Multiple calls to
+     * this method has no side effects either.
+     */
     public void close() {
         init();
     }
-    
+
+    public boolean isClosable() {
+        return contextProviderCreated || bootstrapStatus != CONTEXT_NOT_INITIALIZED;
+    }
+
     public boolean isContextInitialized() {
         return contextProviderCreated;
     }
 
-    void setContextInitialized() {
+    void checkUninitialized() {
+        if (bootstrapStatus == CONTEXT_INITIALIZING) {
+            throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+            throw new UPAException("UPAInitializationError.TryClose");
+        }
+    }
+
+    void setContextCreated() {
         contextProviderCreated = true;
+    }
+
+    void setContextInitializing() {
+        bootstrapStatus = CONTEXT_INITIALIZING;
+    }
+
+    void setContextInitialized() {
+        bootstrapStatus = CONTEXT_INITIALIZED;
+    }
+
+    void checkContextInitialized() {
+        if (bootstrapStatus != CONTEXT_INITIALIZED) {
+            throw new BootstrapException("UPANonInitializedContext");
+        }
+    }
+
+    void setContextError() {
+        bootstrapStatus = CONTEXT_INITIALIZATION_ERROR;
     }
 
     public ObjectFactory getFactory() {
@@ -77,26 +130,46 @@ public class UPABootstrap {
              * @PortabilityHint(target = "C#",name = "suppress")
              */
             if (e instanceof java.lang.ExceptionInInitializerError) {
-                java.lang.ExceptionInInitializerError ee = (java.lang.ExceptionInInitializerError) e;
-                if (ee.getCause() instanceof UPAException) {
-                    throw (UPAException) ee.getCause();
-                }
-                throw new BootstrapException("LoadBootstrapFactoryException", ee.getCause());
+                throw new BootstrapException("ObjectFactoryInitializationFailed",e.getCause());
             }
-            if (e instanceof UPAException) {
-                throw (UPAException) e;
-            }
-            /**
-             * @PortabilityHint(target = "C#",name = "suppress")
-             */
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            }
-            throw new BootstrapException("LoadBootstrapFactoryException", e);
+            throw new BootstrapException("ObjectFactoryInitializationFailed",e);
         }
     }
 
     public Properties getProperties() {
         return properties;
     }
+
+    public void configure(UPAContextConfig config) {
+        if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+                throw new UPAException("UPAContexError");
+            }
+            throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (config != null) {
+            configInstances.add(config);
+        }
+    }
+
+    public void configure(Class config) {
+        if (bootstrapStatus != CONTEXT_NOT_INITIALIZED) {
+            if (bootstrapStatus == CONTEXT_INITIALIZATION_ERROR) {
+                throw new UPAException("UPAContexError");
+            }
+            throw new UPAException("UPAAlreadyInitializing");
+        }
+        if (config != null) {
+            configClasses.add(config);
+        }
+    }
+
+    public UPAContextConfig[] getConfigInstances() {
+        return configInstances.toArray(new UPAContextConfig[configInstances.size()]);
+    }
+
+    public Class[] getConfigClasses() {
+        return configClasses.toArray(new Class[configClasses.size()]);
+    }
+
 }

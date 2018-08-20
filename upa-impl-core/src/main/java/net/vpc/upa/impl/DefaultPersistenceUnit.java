@@ -508,7 +508,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public void scan(ScanSource source, ScanListener listener, boolean configure) {
         log.log(Level.FINE, "[{0}] : Configuring PersistenceUnit from {1}", new Object[]{getAbsoluteName(), source});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
-        s.scan(this, source, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
+        s.scan(source, configure ? new ConfigureScanListener(listener) : listener, this, decorationRepository);
     }
 
     @Override

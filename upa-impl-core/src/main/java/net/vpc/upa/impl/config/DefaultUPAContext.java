@@ -39,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.vpc.upa.config.UPAContextConfigAnnotationParser;
+import net.vpc.upa.exceptions.PersistenceGroupAlreadyExistsException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -63,6 +64,9 @@ public class DefaultUPAContext implements UPAContext {
         listeners = new UPAContextListenerManager(this);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
         return (T) PlatformUtils.createObjectInterceptor(
@@ -70,11 +74,17 @@ public class DefaultUPAContext implements UPAContext {
                 new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T makeSessionAware(final T instance) throws UPAException {
         return makeSessionAware(instance, (MethodFilter) null);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public UPAContextConfig getBootstrapContextConfig() {
         if (bootstrapContextConfig == null) {
@@ -86,6 +96,9 @@ public class DefaultUPAContext implements UPAContext {
         return bootstrapContextConfig;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void start(ObjectFactory factory, UPAContextConfig[] contextConfig, Class[] configClasses) throws UPAException {
         log.log(Level.FINE, "Starting UPAContext");
@@ -137,7 +150,7 @@ public class DefaultUPAContext implements UPAContext {
                 addScanFilter(new ScanFilter(null, null, false, UPAContextConfig.XML_ORDER));
             }
         }
-        scan(contextConfig, getFactory().createContextScanSource().setName("UPAContext").setNoIgnore(false), null, true);
+        scan(getFactory().createContextScanSource().setName("UPAContext").setNoIgnore(false), contextConfig, null, true);
         for (PersistenceGroup g : getPersistenceGroups()) {
             for (PersistenceUnit u : g.getPersistenceUnits()) {
                 if (!u.isStarted() && u.isAutoStart()) {
@@ -147,10 +160,13 @@ public class DefaultUPAContext implements UPAContext {
         }
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
-    public void scan(UPAContextConfig contextConfig, ScanSource configurationStrategy, ScanListener listener, boolean configure) {
+    public void scan(ScanSource scanSource, UPAContextConfig contextConfig, ScanListener listener, boolean configure) {
         URLAnnotationStrategySupport support = new URLAnnotationStrategySupport();
-        support.scan(this, contextConfig, configurationStrategy, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
+        support.scan(scanSource, contextConfig, configure ? new ConfigureScanListener(listener) : listener, this, decorationRepository);
     }
 
     public boolean isContextProviderSet() {
@@ -210,7 +226,7 @@ public class DefaultUPAContext implements UPAContext {
             name = "";
         }
         if (persistenceGroups.containsKey(name)) {
-            throw new UPAIllegalArgumentException("PersistenceGroup " + name + " already exists");
+            throw new PersistenceGroupAlreadyExistsException(name);
         }
         ObjectFactory factory = getFactory();
         if (!isContextProviderSet()) {
@@ -233,6 +249,9 @@ public class DefaultUPAContext implements UPAContext {
         return persistenceGroup;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void removePersistenceGroup(String name) throws UPAException {
         if (name == null) {
@@ -253,11 +272,17 @@ public class DefaultUPAContext implements UPAContext {
         listeners.fireOnDropPersistenceGroup(event, EventPhase.AFTER);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void addPersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException {
         listeners.addPersistenceGroupDefinitionListener(persistenceGroupDefinitionListener);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void removePersistenceGroupDefinitionListener(PersistenceGroupDefinitionListener persistenceGroupDefinitionListener) throws UPAException {
         listeners.removePersistenceGroupDefinitionListener(persistenceGroupDefinitionListener);
@@ -267,21 +292,17 @@ public class DefaultUPAContext implements UPAContext {
         return listeners.getPersistenceGroupDefinitionListeners();
     }
 
-    //    @Override
-//    public <T> T makeSessionAware(final T instance) throws UPAException {
-//        return makeSessionAware(instance, (MethodFilter) null);
-//    }
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T makeSessionAware(final T instance, final Class<Annotation> sessionAwareMethodAnnotation) throws UPAException {
         return makeSessionAware(instance, sessionAwareMethodAnnotation == null ? null : new AnnotationMethodFilter(sessionAwareMethodAnnotation, decorationRepository));
     }
 
-    //    @Override
-//    public <T> T makeSessionAware(final T instance, final MethodFilter methodFilter) throws UPAException {
-//        return (T) PlatformUtils.createObjectInterceptor(
-//                instance.getClass(),
-//                new MakeSessionAwareMethodInterceptor(this, methodFilter, instance));
-//    }
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T makeSessionAware(final Class<T> type, final MethodFilter methodFilter) throws UPAException {
         return (T) PlatformUtils.createObjectInterceptor(
@@ -289,11 +310,17 @@ public class DefaultUPAContext implements UPAContext {
                 new MakeSessionAwareMethodInterceptor2<T>(methodFilter));
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T invokePrivileged(Action<T> action, InvokeContext invokeContext) throws UPAException {
         return invoke(action, invokeContext, true);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T invoke(Action<T> action, InvokeContext invokeContext) throws UPAException {
         return invoke(action, invokeContext, false);
@@ -392,37 +419,59 @@ public class DefaultUPAContext implements UPAContext {
         return ret;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T invoke(Action<T> action) throws UPAException {
         return invoke(action, null);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public <T> T invokePrivileged(Action<T> action) throws UPAException {
         return invokePrivileged(action, null);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void invoke(VoidAction action, InvokeContext invokeContext) throws UPAException {
         invoke(new VoidActionAdapter(action), invokeContext);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void invoke(VoidAction action) throws UPAException {
         invoke(new VoidActionAdapter(action));
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void invokePrivileged(VoidAction action, InvokeContext invokeContext) throws UPAException {
         invokePrivileged(new VoidActionAdapter(action), invokeContext);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void invokePrivileged(VoidAction action) throws UPAException {
         invokePrivileged(new VoidActionAdapter(action));
     }
 
-    public void close() throws UPAException {
+    /**
+     * @InheritDoc
+     */
+    @Override
+    public void close() {
         CloseListener[] li = getCloseListeners();
         for (CloseListener listener : li) {
             listener.beforeClose(this);
@@ -438,136 +487,71 @@ public class DefaultUPAContext implements UPAContext {
         setPersistenceGroup(null);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public void addCloseListener(CloseListener listener) {
         synchronized (closeListeners) {
             closeListeners.add(listener);
         }
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public void removeCloseListener(CloseListener listener) {
         synchronized (closeListeners) {
             closeListeners.remove(listener);
         }
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public CloseListener[] getCloseListeners() {
         return closeListeners.toArray(new CloseListener[closeListeners.size()]);
     }
 
-    //    public void beginInvocation(Method method, Map<String, Object> properties) {
-//        TransactionType transactionType = PlatformUtils.getUndefinedValue(TransactionType.class);
-//        Decoration r = decorationRepository.getMethodDecoration(method, Transactional.class.getName());
-//        if (r != null) {
-//            transactionType = TransactionType.valueOf(r.getString("value"));
-//        }
-//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
-//            r = decorationRepository.getMethodDecoration(method, "javax.ejb.TransactionAttribute");
-//            if (r != null) {
-//                try {
-//                    transactionType = TransactionType.valueOf(r.getString("value"));
-//                } catch (Exception e) {
-//                    //not all types are supported, so ignore...
-//                }
-//            }
-//        }
-//
-//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
-//            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), Transactional.class);
-//            if (r != null) {
-//                transactionType = TransactionType.valueOf(r.getString("value"));
-//            }
-//        }
-//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
-//            r = decorationRepository.getTypeDecoration(method.getDeclaringClass(), "javax.ejb.TransactionAttribute");
-//            if (r != null) {
-//                try {
-//                    transactionType = TransactionType.valueOf(r.getString("value"));
-//                } catch (Exception e) {
-//                    //not all types are supported, so ignore...
-//                }
-//            }
-//        }
-//        if (properties == null) {
-//            properties = new HashMap<String, Object>();
-//        }
-//        properties.put(TransactionType.class.getName(),
-//                PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)
-//                ? TransactionType.REQUIRED : transactionType
-//        );
-//        beginInvocation(properties);
-//    }
-//    public void beginInvocation(Map<String, Object> properties) {
-//        Session s = null;
-//        PersistenceGroup persistenceGroup = getPersistenceGroup();
-//        try {
-//            s = persistenceGroup.getCurrentSession();
-//        } catch (CurrentSessionNotFoundException ignore) {
-//            //ignore
-//        }
-//        boolean sessionCreated = false;
-//        if (s == null) {
-//            s = persistenceGroup.openSession();
-//            sessionCreated = true;
-//        }
-//        TransactionType transactionType = (TransactionType) properties.get(TransactionType.class.getName());
-//        if (PlatformUtils.isUndefinedEnumValue(TransactionType.class, transactionType)) {
-//            transactionType = TransactionType.REQUIRED;
-//        }
-//        boolean transactionCreated = false;
-//        PersistenceUnit pu = persistenceGroup.getPersistenceUnit();
-//        pu.beginTransaction(transactionType);
-//        transactionCreated = true;
-//
-//        properties.put("sessionCreated", sessionCreated);
-//        properties.put("transactionCreated", transactionCreated);
-//    }
-//    public void endInvocation(Throwable error, Map<String, Object> properties) {
-//        PersistenceUnit persistenceUnit = getPersistenceUnit();
-//        Boolean sessionCreated = (Boolean) properties.get("sessionCreated");
-//        if (sessionCreated == null) {
-//            sessionCreated = false;
-//        }
-//        Boolean transactionCreated = (Boolean) properties.get("transactionCreated");
-//        if (transactionCreated == null) {
-//            transactionCreated = false;
-//        }
-//        if (error == null) {
-//            persistenceUnit.commitTransaction();
-//        } else if (transactionCreated) {
-//            try {
-//                persistenceUnit.rollbackTransaction();
-//            } catch (Throwable e2) {
-//                //errors in rollback are ignored but traced
-//                log.log(Level.SEVERE, "Invocation Error", error);
-//                log.log(Level.SEVERE, "Rollback Error", e2);
-//            }
-//        }
-//        if (sessionCreated) {
-//            try {
-//                if (sessionCreated) {
-//                    getPersistenceGroup().getCurrentSession().close();
-//                }
-//            } catch (Throwable e) {
-//                log.log(Level.SEVERE, "Failed to close session after error", e);
-//            }
-//        }
-//    }
+
+    /**
+     * @InheritDoc
+     */
+    @Override
     public void addScanFilter(ScanFilter filter) {
         filters.add(filter);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public void removeScanFilter(ScanFilter filter) {
         filters.remove(filter);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public ScanFilter[] getScanFilters() {
         return filters.toArray(new ScanFilter[filters.size()]);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public Map<String, Object> getProperties() {
         return properties;
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
@@ -581,6 +565,9 @@ public class DefaultUPAContext implements UPAContext {
         return aa;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public Callback createCallback(MethodCallback methodCallback) {
         Object instance = methodCallback.getInstance();
@@ -1346,6 +1333,9 @@ public class DefaultUPAContext implements UPAContext {
         throw new UPAException("UnsupportedCallback", objectType, callbackType);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public Callback addCallback(MethodCallback methodCallback) {
         Callback c = createCallback(methodCallback);
@@ -1353,6 +1343,9 @@ public class DefaultUPAContext implements UPAContext {
         return c;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void addCallback(Callback callback) {
         if (callback.getCallbackType() == CallbackType.ON_EVAL_FUNCTION) {
@@ -1361,16 +1354,27 @@ public class DefaultUPAContext implements UPAContext {
         listeners.addCallback(callback);
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public void removeCallback(Callback callback) {
         listeners.removeCallback(callback);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
         List<Callback> callbacks = listeners.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
         return callbacks.toArray(new Callback[callbacks.size()]);
     }
 
+    /**
+     * @InheritDoc
+     */
+    @Override
     public Properties getThreadProperties() {
         Properties properties = threadProperties.get();
         if (properties == null) {
@@ -1380,6 +1384,9 @@ public class DefaultUPAContext implements UPAContext {
         return properties;
     }
 
+    /**
+     * @InheritDoc
+     */
     @Override
     public PersistenceContextInfo getInfo() {
         PersistenceContextInfo i = new PersistenceContextInfo();

@@ -41,8 +41,9 @@ import net.vpc.upa.types.I18NString;
  * @creationdate 9/7/12 9:27 PM
  */
 public class BootstrapException extends UPAException {
+
     public BootstrapException() {
-        this(null);
+        this((String) null);
     }
 
     public BootstrapException(String message) {
@@ -50,6 +51,10 @@ public class BootstrapException extends UPAException {
     }
 
     public BootstrapException(String message, Throwable throwable) {
-        super(throwable, new I18NString("BootstrapException"), message);
+        super(throwable, new I18NString("BootstrapException").appendNonNull(message));
+    }
+
+    public BootstrapException(Throwable throwable) {
+        super(throwable, new I18NString("BootstrapException"));
     }
 }

@@ -2,7 +2,6 @@ package net.vpc.upa.impl.util;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * Created by vpc on 8/6/16.

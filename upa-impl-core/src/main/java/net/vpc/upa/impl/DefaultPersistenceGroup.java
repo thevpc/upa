@@ -107,7 +107,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
         decorationRepository = new DefaultDecorationRepository("DecoRepo[pg="+getName()+"]", true);
         log.log(Level.FINE, "[{0}] : Configuring PersistenceGroup from {1}", new Object[]{getName(), scanSource});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
-        s.scan(this, scanSource, decorationRepository, configure ? new ConfigureScanListener(listener) : listener);
+        s.scan(scanSource, configure ? new ConfigureScanListener(listener) : listener, this, decorationRepository);
         if (securityManager == null) {
             securityManager = getFactory().createObject(UPASecurityManager.class);
         }

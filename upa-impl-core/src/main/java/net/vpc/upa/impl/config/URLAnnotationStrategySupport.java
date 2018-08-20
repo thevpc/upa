@@ -62,7 +62,7 @@ public class URLAnnotationStrategySupport {
         return all.toArray(new Class[all.size()]);
     }
 
-    public void scan(UPAContext context, UPAContextConfig bootstrapContextConfig, ScanSource source, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(ScanSource source, UPAContextConfig config, ScanListener listener, UPAContext context, DecorationRepository decorationRepository) throws UPAException {
         try {
 //            UPAContextConfig bootstrapContextConfig = context.getBootstrapContextConfig();
             DecorationParser parser = new DecorationParser(UPAUtils.toBaseScanSource(source).toIterable(context),
@@ -127,7 +127,7 @@ public class URLAnnotationStrategySupport {
                 }
             }
             List<OrderedIem<PersistenceUnitConfig>> persistenceUnitConfigs = new ArrayList<OrderedIem<PersistenceUnitConfig>>();
-            for (PersistenceGroupConfig persistenceGroupConfig : bootstrapContextConfig.getPersistenceGroups()) {
+            for (PersistenceGroupConfig persistenceGroupConfig : config.getPersistenceGroups()) {
                 for (PersistenceUnitConfig persistenceUnitConfig : persistenceGroupConfig.getPersistenceUnits()) {
                     persistenceUnitConfigs.add(new OrderedIem<PersistenceUnitConfig>(Integer.MAX_VALUE, persistenceUnitConfig));
                 }
@@ -154,9 +154,9 @@ public class URLAnnotationStrategySupport {
                 Decoration ignored = newDecorationRepository.getTypeDecoration(a.getLocationType(), Ignore.class.getName());
                 if (ignored == null) {
 
-                    Decoration config = a.getDecoration("config");
-                    int configOrder = config.getInt("order");
-                    String key = StringUtils.trim(config.getString("persistenceGroup")) + "/" + StringUtils.trim(config.getString("persistenceUnit")) + "/" + configOrder;
+                    Decoration config2 = a.getDecoration("config");
+                    int configOrder = config2.getInt("order");
+                    String key = StringUtils.trim(config2.getString("persistenceGroup")) + "/" + StringUtils.trim(config2.getString("persistenceUnit")) + "/" + configOrder;
                     PersistenceUnitConfig puc = partialPersistenceUnitConfig.get(key);
                     if (puc == null) {
                         puc = new PersistenceUnitConfig();
@@ -189,7 +189,7 @@ public class URLAnnotationStrategySupport {
             }
             for (PersistenceGroup g : createdPersistenceGroups) {
 //                int count = 0;
-                for (PersistenceGroupConfig pgc : bootstrapContextConfig.getPersistenceGroups()) {
+                for (PersistenceGroupConfig pgc : config.getPersistenceGroups()) {
                     if (StringUtils.matchesSimpleExpression(g.getName(), pgc.getName(), PatternType.DOT_PATH)) {
                         if (pgc.getAutoScan() != null) {
                             g.setAutoScan(pgc.getAutoScan());
@@ -264,9 +264,9 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    public void scan(PersistenceGroup persistenceGroup, ScanSource strategy, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(ScanSource source, ScanListener listener, PersistenceGroup persistenceGroup, DecorationRepository decorationRepository) throws UPAException {
         try {
-            DecorationParser parser = new DecorationParser(UPAUtils.toBaseScanSource(strategy).toIterable(persistenceGroup),
+            DecorationParser parser = new DecorationParser(UPAUtils.toBaseScanSource(source).toIterable(persistenceGroup),
                     new DefaultDecorationFilter()
                             .addDecorations(
                                     Callback.class,
@@ -303,10 +303,10 @@ public class URLAnnotationStrategySupport {
             /**
              * @PortabilityHint(target = "C#", name = "suppress")
              */
-            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, strategy.isNoIgnore());
+            JPAAnnotationsAdapter.processJAVAXAnnotations(repo, newrepo, source.isNoIgnore());
             for (Decoration at : newrepo.getDeclaredDecorations(Callback.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
+                Decoration ignored = source.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
                 if (ignored == null) {
                     if (PersistenceUnitDefinitionListener.class.isAssignableFrom(t)) {
                         if (listener != null) {
@@ -317,7 +317,7 @@ public class URLAnnotationStrategySupport {
             }
             for (Decoration at : newrepo.getDeclaredDecorations(SecurityContext.class.getName())) {
                 Class t = PlatformUtils.forName(at.getLocationType());
-                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
+                Decoration ignored = source.isNoIgnore() ? null : newrepo.getTypeDecoration(t, Ignore.class);
                 if (ignored == null) {
                     boolean ok = false;
                     if (PersistenceGroupSecurityManager.class.isAssignableFrom(t)) {
@@ -348,7 +348,7 @@ public class URLAnnotationStrategySupport {
         }
     }
 
-    public void scan(net.vpc.upa.PersistenceUnit persistenceUnit, ScanSource scanSource, DecorationRepository decorationRepository, ScanListener listener) throws UPAException {
+    public void scan(ScanSource scanSource, ScanListener listener, net.vpc.upa.PersistenceUnit persistenceUnit, DecorationRepository decorationRepository) throws UPAException {
         try {
             DecorationParser parser = new DecorationParser(
                     UPAUtils.toBaseScanSource(scanSource).toIterable(persistenceUnit),

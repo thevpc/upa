@@ -95,6 +95,13 @@ public class I18NString {
         return new I18NString(a.toArray(new String[a.size()]));
     }
 
+    public I18NString appendNonNull(String path) {
+        if (path == null || path.isEmpty()) {
+            return this;
+        }
+        return append(path);
+    }
+    
     public I18NString append(String path) {
         if (path == null || path.isEmpty()) {
             throw new UPAIllegalArgumentException();
