@@ -371,7 +371,6 @@ public class URLAnnotationStrategySupport {
                                     net.vpc.upa.config.Init.class,
                                     net.vpc.upa.config.ManyToOne.class,
                                     net.vpc.upa.config.OneToOne.class,
-                                    //                                    net.vpc.upa.config.Partial.class,
                                     net.vpc.upa.config.Password.class,
                                     net.vpc.upa.config.ToString.class,
                                     net.vpc.upa.config.ToByteArray.class,
@@ -414,7 +413,6 @@ public class URLAnnotationStrategySupport {
                                     net.vpc.upa.config.UnionEntityEntry.class,
                                     net.vpc.upa.config.View.class,
                                     net.vpc.upa.config.Entity.class,
-                                    net.vpc.upa.config.Partial.class,
                                     net.vpc.upa.config.Table.class,
                                     net.vpc.upa.config.Tables.class,
                                     net.vpc.upa.config.Column.class,
@@ -465,17 +463,10 @@ public class URLAnnotationStrategySupport {
                     }
                 }
             }
-//            Map<Class, Set<Class>> entityClassesByType = new LinkedHashMap<Class, Set<Class>>();
-//            Map<Class, String> classNameToEntityName = new LinkedHashMap<Class, String>();
-
-//            Map<Class, Class> partialEntities = new LinkedHashMap<Class, Class>();
             Set<Class> classWithEntityAnnotations = new HashSet<>();
             for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.Entity.class.getName())) {
                 classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
             }
-//            for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.Partial.class.getName())) {
-//                classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
-//            }            
             for (Decoration at : newrepo.getDeclaredDecorations(net.vpc.upa.config.View.class.getName())) {
                 classWithEntityAnnotations.add(PlatformUtils.forName(at.getLocationType()));
             }
@@ -499,74 +490,8 @@ public class URLAnnotationStrategySupport {
                     ));
                 }
             }
-//            for (Map.Entry<Class, Set<Class>> entry : entityClassesByType.entrySet()) {
-//                Set<Class> v = entry.getValue();
-//                for (Class class1 : v) {
-//                    
-//                }
-//            }
-
-//            for (Decoration entityDecoration : newrepo.getDeclaredDecorations(net.vpc.upa.config.Entity.class.getName())) {
-//                Class tt = PlatformUtils.forName(entityDecoration.getLocationType());
-//                Decoration ignored = strategy.isNoIgnore() ? null : newrepo.getTypeDecoration(tt, Ignore.class);
-//                if (ignored != null) {
-//                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
-//                    continue;
-//                }
-//                Class entityType = entityDecoration.getType("entityType");
-//                if (entityType != null && (Void.TYPE.equals(entityType) || Void.class.equals(entityType))) {
-//                    entityType = tt;
-//                }
-//                Set<Class> s = entityClasses.get(entityType);
-//                if (s == null) {
-//                    s = new LinkedHashSet<Class>();
-//                    entityClasses.put(entityType, s);
-//                }
-//                if (tt.equals(entityType)) {
-//                    log.log(Level.FINEST, "\t Detect Entity {0}", tt);
-//                } else {
-//                    log.log(Level.FINEST, "\t Detect Entity {0} as {1}", entityType);
-//                }
-//                if (listener != null) {
-//                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, net.vpc.upa.config.Entity.class, tt,
-//                            null
-//                    ));
-//                }
-//                s.add(tt);
-//            }
-//
-//            for (Decoration at : newrepo.getDeclaredDecorations(Partial.class.getName())) {
-//                Class tt = PlatformUtils.forName(at.getLocationType());
-//                Decoration ignored = newrepo.getTypeDecoration(tt, Ignore.class);
-//                if (ignored != null) {
-//                    log.log(Level.FINE, "\t Ignored Entity {0}", tt);
-//                    continue;
-//                }
-//                Decoration entityAnnotation = newrepo.getTypeDecoration(tt, net.vpc.upa.config.Entity.class);
-//                if (entityAnnotation == null) {
-//                    throw new UPAIllegalArgumentException("Missing @Entity along with @Partial for " + tt);
-//                }
-//                partialEntities.put(tt, at.getType("value"));
-//                entityClasses.remove(tt);
-//                log.log(Level.FINE, "\t Detect Partial Entity {0} as {1}", new Object[]{at.getType("value"), tt});
-//                if (listener != null) {
-//                    listener.persistenceUnitItemScanned(new ScanEvent(persistenceUnit.getPersistenceGroup().getContext(), persistenceUnit.getPersistenceGroup(), persistenceUnit, Partial.class, tt,
-//                            null
-//                    ));
-//                }
-//            }
-//
-//            for (Map.Entry<Class, Class> entry : partialEntities.entrySet()) {
-//                Class rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
-//                if (rootEntity == null) {
-////                    rootEntity = getRootEntity(entry.getKey(), entityClasses, partialEntities);
-//                    throw new UPAIllegalArgumentException("Partial Entity " + entry.getKey() + " references invalid Entity or Partial (" + entry.getValue() + ")");
-//                }
-//                entityClasses.get(rootEntity).add(entry.getKey());
-//            }
             Map<String, String> typeToEntityNameMap = new HashMap<>();
             if (listener != null) {
-//                EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, decorationRepository);
                 EntityDescriptorResolver r = new EntityDescriptorResolver(persistenceUnit, newrepo);
                 for (EntityDescriptor resolved : r.resolveAll(classWithEntityAnnotations.toArray())) {
                     Object source = resolved.getSource();

@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.impl.util.EntityNameAndType;
 import net.vpc.upa.exceptions.UPAIllegalArgumentException;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.EntityDescriptor;
@@ -7,9 +8,7 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.config.annotationparser.DecorationEntityDescriptorResolver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,10 +17,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.config.Decoration;
-import net.vpc.upa.impl.config.annotationparser.DecorationComparator;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
-import net.vpc.upa.impl.util.StringUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -47,27 +44,11 @@ public class EntityDescriptorResolver {
             if (item instanceof Class) {
                 Class tt = (Class) item;
                 log.log(Level.FINE, "\t Detected Entity Class {0}", tt);
-                Object[] nameAndType = resolveEntityNameAndType(tt);
-                String foundName = (String) nameAndType[0];
-                Class foundType = (Class) nameAndType[1];
-                if (!StringUtils.isNullOrEmpty(foundName)) {
-                    //okkay
-                } else if (foundType != null) {
-                    Object[] nameAndType2 = resolveEntityNameAndType(foundType);
-                    String foundName2 = (String) nameAndType2[0];
-                    Class foundType2 = (Class) nameAndType2[1];
-                    if (foundName2 == null && foundType2 == null) {
-                        //this is a link to a plain type!
-                        foundName = tt.getSimpleName();
-                    }
-                } else {
-                    foundName = tt.getSimpleName();
-                    foundType = tt;
-                }
-                Set<Class> s = entityClassesByName.get(foundName);
+                EntityNameAndType nameAndType = UPAUtils.resolveEntityNameAndType(tt,decorationRepository);
+                Set<Class> s = entityClassesByName.get(nameAndType.getName());
                 if (s == null) {
                     s = new HashSet<>();
-                    entityClassesByName.put(foundName, s);
+                    entityClassesByName.put(nameAndType.getName(), s);
                 }
                 s.add(tt);
             } else if (item instanceof EntityDescriptor) {
@@ -81,28 +62,6 @@ public class EntityDescriptorResolver {
             all.add(y);
         }
         return all.toArray(new EntityDescriptor[all.size()]);
-    }
-
-    private Object[] resolveEntityNameAndType(Class tt) {
-        List<Decoration> all = new ArrayList<>();
-        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.Entity.class.getName())));
-        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.View.class.getName())));
-        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.UnionEntity.class.getName())));
-        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.Singleton.class.getName())));
-        Collections.sort(all, DecorationComparator.INSTANCE);
-        String foundName = null;
-        Class foundType = null;
-        for (Decoration decoration : all) {
-            if (decoration.contains("name") && !StringUtils.isNullOrEmpty(decoration.getString("name"))) {
-                foundName = StringUtils.trim(decoration.getString("name"));
-            } else if (decoration.contains("entityType") && decoration.getType("entityType") != null) {
-                foundType = decoration.getType("entityType");
-            }
-        }
-        if (all.size() > 0 && foundName == null) {
-            foundName = tt.getSimpleName();
-        }
-        return new Object[]{foundName, foundType};
     }
 
     public EntityDescriptor resolve(Object source) throws UPAException {

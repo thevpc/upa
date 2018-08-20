@@ -441,13 +441,13 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         if (fields.size() > 1) {
             Collections.sort(fields, FIELD_COMPARATOR);
         }
-        Decoration lastPathDeco=(Decoration) ctx.get("Entity.lastPathDeco");
+        Decoration lastPathDeco = (Decoration) ctx.get("Entity.lastPathDeco");
         for (Field someField : fields) {
             Decoration searchDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Search.class);
             if (searchDeco != null) {
                 overriddenSearchOperator.setBetterValue(searchDeco.getEnum("op", SearchOperator.class)
                         == SearchOperator.DEFAULT ? PlatformUtils.getUndefinedValue(SearchOperator.class)
-                        : searchDeco.getEnum("op", SearchOperator.class), searchDeco.getConfig().getOrder());
+                                : searchDeco.getEnum("op", SearchOperator.class), searchDeco.getConfig().getOrder());
             }
             for (net.vpc.upa.config.Index indexAnn : findIndexAnnotation(someField)) {
                 List<String> rr = new ArrayList<String>();
@@ -467,9 +467,9 @@ class DecorationFieldDescriptor implements FieldDescriptor {
             Decoration pathDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Path.class);
             if (pathDeco != null) {
                 AnnotationParserUtils.validStr(pathDeco.getString("value"), overriddenPath, pathDeco.getConfig().getOrder());
-                lastPathDeco=pathDeco;
-                ctx.put("Entity.lastPathDeco",lastPathDeco);
-            }else if(lastPathDeco!=null){ // path is transitive on successive fields in the same class!
+                lastPathDeco = pathDeco;
+                ctx.put("Entity.lastPathDeco", lastPathDeco);
+            } else if (lastPathDeco != null) { // path is transitive on successive fields in the same class!
                 AnnotationParserUtils.validStr(lastPathDeco.getString("value"), overriddenPath, lastPathDeco.getConfig().getOrder());
             }
             if (someField.getType().equals(FieldDesc.class)) {
@@ -554,6 +554,12 @@ class DecorationFieldDescriptor implements FieldDescriptor {
             Decoration propertyAccess = repo.getFieldDecoration(someField, PropertyAccess.class);
             if (propertyAccess != null) {
                 overriddenPropertyAccessType.setBetterValue(propertyAccess.getEnum("value", PropertyAccessType.class), propertyAccess.getConfig().getOrder());
+            } else {
+                //check if defined on class
+                propertyAccess = repo.getTypeDecoration(someField.getDeclaringClass(), PropertyAccess.class);
+                if (propertyAccess != null) {
+                    overriddenPropertyAccessType.setBetterValue(propertyAccess.getEnum("value", PropertyAccessType.class), propertyAccess.getConfig().getOrder());
+                }
             }
         }
         nativeClass = overriddenNativeType.getValue(fields.get(0).getType());
@@ -563,10 +569,10 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         if (overriddenNullable.specified && (overriddenNullable.value != BoolEnum.DEFAULT)) {
             nullableOk = overriddenNullable.value.equals(BoolEnum.TRUE);
             if (nullableOk && (!PlatformUtils.isNullableType(nativeClass) || modifiers.contains(UserFieldModifier.ID))) {
-                throw new UPAException("NonNullableTypeForcedToNull",entityName+"."+name);
+                throw new UPAException("NonNullableTypeForcedToNull", entityName + "." + name);
             }
             if (nullableOk && (modifiers.contains(UserFieldModifier.ID))) {
-                throw new UPAException("NullableId",entityName+"."+name);
+                throw new UPAException("NullableId", entityName + "." + name);
             }
         }
         if (!PlatformUtils.isNullableType(nativeClass) || modifiers.contains(UserFieldModifier.ID)) {
@@ -643,13 +649,13 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                         throw new UPAIllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
                     if (!f.foreignInfo.isSpecified()) {
-                        if(f.foreignInfo.isManyToOne()) {
+                        if (f.foreignInfo.isManyToOne()) {
                             ManyToOneType manyToOneType = new ManyToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
                             f.overriddenDataType.setValue(manyToOneType);
-                        }else if(f.foreignInfo.isOneToOne()){
+                        } else if (f.foreignInfo.isOneToOne()) {
                             OneToOneType manyToOneType = new OneToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
                             f.overriddenDataType.setValue(manyToOneType);
-                        }else{
+                        } else {
                             throw new UPAIllegalArgumentException(f.name + " has invalid foreign reference");
                         }
                     } else {

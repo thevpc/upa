@@ -16,6 +16,7 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
    StructurePathUC.class,
+   StructurePartialsTest1UC.class,
 })
 public class UPASuiteTestStructure {
     

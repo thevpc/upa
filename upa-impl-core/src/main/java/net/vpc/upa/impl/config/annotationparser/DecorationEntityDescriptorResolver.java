@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
-import net.vpc.upa.expressions.Expression;
-import net.vpc.upa.expressions.QueryStatement;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -67,10 +65,7 @@ public class DecorationEntityDescriptorResolver {
                     }
                     parseEntityType(entityInfo, descriptorType, true, true, true, factory);
                 } else {
-                    Decoration p = repo.getTypeDecoration(descriptorType, Partial.class);
-                    if (p == null) {
-                        entityInfo.entityType.setBetterValue(descriptorType, configOrder);
-                    }
+                    entityInfo.entityType.setBetterValue(descriptorType, configOrder);
                     parseEntityType(entityInfo, descriptorType, true, true, true, factory);
                 }
 
@@ -83,6 +78,7 @@ public class DecorationEntityDescriptorResolver {
                 }
 
             }
+            entityInfo.name=UPAUtils.resolveEntityNameAndType(classes[0], repo).getName();
             for (Property parameterInfo : parameterInfos) {
                 entityInfo.getProperties().put(parameterInfo.getName(), UPAUtils.createValue(parameterInfo));
             }

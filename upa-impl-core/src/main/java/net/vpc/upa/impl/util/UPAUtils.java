@@ -34,6 +34,8 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.config.annotationparser.DecorationComparator;
+import net.vpc.upa.impl.config.decorations.DecorationRepository;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -885,4 +887,69 @@ public class UPAUtils {
         }
         return id;
     }
+
+    public static EntityNameAndType resolveEntityNameAndType(Class tt, DecorationRepository decorationRepository) {
+        EntityNameAndType nameAndType = resolveEntityNameAndType0(tt, decorationRepository);
+        if (nameAndType == null) {
+            nameAndType = new EntityNameAndType(null, null);
+        }
+        if (!StringUtils.isNullOrEmpty(nameAndType.getName())) {
+            //okkay
+        } else if (nameAndType.getEntityType() != null) {
+            EntityNameAndType nameAndType2 = resolveEntityNameAndType0(nameAndType.getEntityType(), decorationRepository);
+            if (nameAndType2 == null) {
+                //this is a plain class
+                nameAndType.setName(tt.getSimpleName());
+            } else if (!StringUtils.isNullOrEmpty(nameAndType2.getName())) {
+                nameAndType.setName(nameAndType2.getName());
+            } else if (nameAndType2.getEntityType() != null) {
+                //check third level
+                EntityNameAndType nameAndType3 = resolveEntityNameAndType0(nameAndType2.getEntityType(), decorationRepository);
+                if (nameAndType3 == null) {
+                    //okkay level2 is a root Entity
+                    //A(B) B(C)
+                    nameAndType.setName(nameAndType2.getEntityType().getSimpleName());
+                } else {
+                    log.log(Level.WARNING, "Class Entity {0} references non root Entity class {0}. "
+                            + "Will be considered as plain class", new Object[]{tt.getName(), nameAndType.getEntityType()});
+                    nameAndType.setName(tt.getName());
+                }
+            } else {
+                //this is a root Entity
+                nameAndType.setName(nameAndType.getEntityType().getSimpleName());
+            }
+        } else {
+            nameAndType.setName(tt.getSimpleName());
+        }
+        return nameAndType;
+    }
+
+    private static EntityNameAndType resolveEntityNameAndType0(Class tt, DecorationRepository decorationRepository) {
+        List<Decoration> all = new ArrayList<>();
+        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.Entity.class.getName())));
+        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.View.class.getName())));
+        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.UnionEntity.class.getName())));
+        all.addAll(Arrays.asList(decorationRepository.getTypeDecorations(tt.getName(), net.vpc.upa.config.Singleton.class.getName())));
+        Collections.sort(all, DecorationComparator.INSTANCE);
+        String foundName = null;
+        Class foundType = null;
+        for (Decoration decoration : all) {
+            if (decoration.contains("name") && !StringUtils.isNullOrEmpty(decoration.getString("name"))) {
+                foundName = StringUtils.trim(decoration.getString("name"));
+            } else if (decoration.contains("entityType") && decoration.getType("entityType") != null) {
+                foundType = decoration.getType("entityType");
+                if (foundType != null) {
+                    if (foundType.equals(Object.class) || foundType.equals(void.class) || foundType.equals(Void.class)) {
+                        foundType = null;
+                    }
+                }
+            }
+        }
+
+        if (all.size() > 0) {
+            return new EntityNameAndType(foundName, foundType);
+        }
+        return null;
+    }
+
 }

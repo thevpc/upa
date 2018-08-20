@@ -14,8 +14,7 @@ import net.vpc.upa.tutorial.model.Product;
  * and modifies 'name' and 'quantity' fields
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-@Partial(Product.class)
-@Entity
+@Entity(entityType = Product.class)
 public class ProductMO {
 
     /**

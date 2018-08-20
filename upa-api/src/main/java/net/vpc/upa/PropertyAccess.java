@@ -49,7 +49,7 @@ import net.vpc.upa.config.ItemConfig;
  * @Id
  * @creationdate 8/28/12 10:17 PM
  */
-@Target(value = {ElementType.METHOD, ElementType.FIELD})
+@Target(value = {ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface PropertyAccess {
 
