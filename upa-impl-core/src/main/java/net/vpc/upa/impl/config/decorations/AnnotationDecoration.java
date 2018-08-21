@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.vpc.upa.config.ConfigAction;
 import net.vpc.upa.config.ConfigInfo;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.config.ItemConfig;
 
@@ -127,7 +127,7 @@ public final class AnnotationDecoration extends AbstractDecoration {
                         Object v = declaredMethod.invoke(ann,new Object[0]);
                         map.put(declaredMethod.getName(), convert(v,pos));
                     } catch (Exception ex) {
-                        throw new UPAIllegalArgumentException(ex);
+                        throw new IllegalUPAArgumentException(ex);
                     }
                 }
                 pos++;

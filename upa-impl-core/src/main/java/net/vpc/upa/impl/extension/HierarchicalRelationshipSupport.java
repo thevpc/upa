@@ -2,7 +2,7 @@ package net.vpc.upa.impl.extension;
 
 import java.util.ArrayList;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
@@ -108,7 +108,7 @@ public class HierarchicalRelationshipSupport implements HierarchyExtension {
         } else {
             Expression r = getEntity().getPersistenceUnit().getExpressionManager().parseExpression(alias);
             if (!(r instanceof Var)) {
-                throw new UPAIllegalArgumentException("Only var expressions are supported");
+                throw new IllegalUPAArgumentException("Only var expressions are supported");
             }
             v = new Var((Var) r, getHierarchyPathField());
         }

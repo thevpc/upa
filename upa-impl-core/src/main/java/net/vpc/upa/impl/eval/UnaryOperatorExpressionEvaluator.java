@@ -7,7 +7,7 @@ package net.vpc.upa.impl.eval;
 
 import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
 import net.vpc.upa.expressions.UnaryOperatorExpression;
@@ -65,7 +65,7 @@ class UnaryOperatorExpressionEvaluator implements QLTypeEvaluator {
                 return Literal.valueOf(a==null);
             }
         }
-        throw new UPAIllegalArgumentException("Not supported");
+        throw new IllegalUPAArgumentException("Not supported");
     }
 
 }

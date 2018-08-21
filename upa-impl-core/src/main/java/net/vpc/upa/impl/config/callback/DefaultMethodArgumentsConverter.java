@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.config.callback;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 
@@ -59,7 +59,7 @@ public final class DefaultMethodArgumentsConverter implements MethodArgumentsCon
                             aa = apiArgument;
                             break;
                         } else {
-                            throw new UPAIllegalArgumentException(m.toString()+" : Invalid argument type : " + ut + " " + un + " at position " + up);
+                            throw new IllegalUPAArgumentException(m.toString()+" : Invalid argument type : " + ut + " " + un + " at position " + up);
                         }
                     }
                 }
@@ -69,14 +69,14 @@ public final class DefaultMethodArgumentsConverter implements MethodArgumentsCon
                             aa = implicitArgument;
                             break;
                         } else {
-                            throw new UPAIllegalArgumentException(m.toString()+" : Invalid argument type : " + ut + " " + un + " at position " + up);
+                            throw new IllegalUPAArgumentException(m.toString()+" : Invalid argument type : " + ut + " " + un + " at position " + up);
                         }
                     }
                 }
                 if (aa != null) {
                     eval[i] = aa;
                 } else {
-                    throw new UPAIllegalArgumentException(m.toString()+" : Missing argument " + ut + " " + un + " at position " + up);
+                    throw new IllegalUPAArgumentException(m.toString()+" : Missing argument " + ut + " " + un + " at position " + up);
                 }
             } else {
                 if (isAssignableFrom(apiArguments[i],ut)) {
@@ -97,9 +97,9 @@ public final class DefaultMethodArgumentsConverter implements MethodArgumentsCon
                         }
                     }
                     if (possible.size() == 0) {
-                        throw new UPAIllegalArgumentException(m.toString()+" : Missing argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
+                        throw new IllegalUPAArgumentException(m.toString()+" : Missing argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
                     } else if (possible.size() > 1) {
-                        throw new UPAIllegalArgumentException(m.toString()+" : Ambiguous argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
+                        throw new IllegalUPAArgumentException(m.toString()+" : Ambiguous argument " + apiArguments[i].getPlatformType() + " " + apiArguments[i].getName() + " at position " + up);
                     } else {
                         eval[i] = possible.get(0);
                     }

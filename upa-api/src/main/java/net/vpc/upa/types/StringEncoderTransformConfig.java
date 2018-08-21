@@ -35,7 +35,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.config.StringEncoderType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.io.Serializable;
 
@@ -65,7 +65,7 @@ public class StringEncoderTransformConfig implements DataTypeTransformConfig, Se
                 || stringifyStrategy instanceof Class
                 || stringifyStrategy instanceof StringEncoder
                 || (stringifyStrategy instanceof StringEncoderType && !stringifyStrategy.equals(StringEncoderType.CUSTOM)))) {
-            throw new UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+            throw new IllegalUPAArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
         }
         this.encoder = stringifyStrategy;
     }

@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence.result;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.persistence.ResultMetaData;
 
 public class ValueByNameListQueryResultItemBuilder implements QueryResultItemBuilder {
@@ -9,7 +9,7 @@ public class ValueByNameListQueryResultItemBuilder implements QueryResultItemBui
     public ValueByNameListQueryResultItemBuilder(String name) {
         this.name = name;
         if(name==null){
-            throw new UPAIllegalArgumentException("Empty name");
+            throw new IllegalUPAArgumentException("Empty name");
         }
     }
 

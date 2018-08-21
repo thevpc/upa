@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.Properties;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.upql.*;
 import net.vpc.upa.impl.DefaultProperties;
@@ -35,13 +35,13 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
             CompiledExpressionExt x = parent;
             while (x != null) {
                 if (x == this) {
-                    throw new UPAIllegalArgumentException("Recursive Tree");
+                    throw new IllegalUPAArgumentException("Recursive Tree");
                 }
                 x = x.getParentExpression();
             }
         }
         if (this.parent != null && parent != null && this.parent!=parent) {
-            throw new UPAIllegalArgumentException("Unexpected changing parent of "+this+" from "+this.parent+" to "+parent);
+            throw new IllegalUPAArgumentException("Unexpected changing parent of "+this+" from "+this.parent+" to "+parent);
         }
         this.parent = parent;
     }
@@ -382,7 +382,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
                 if (e != null) {
                     CompiledExpressionExt oldParent = e.getParentExpression();
                     if (oldParent != null && oldParent!=this) {
-                        throw new UPAIllegalArgumentException("Expression already bound : "+e+" bound to "+oldParent+" <> "+this);
+                        throw new IllegalUPAArgumentException("Expression already bound : "+e+" bound to "+oldParent+" <> "+this);
                     }
                     e.setParentExpression(this);
                 }
@@ -474,7 +474,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
         if (subExpressions != null) {
             for (CompiledExpressionExt e : subExpressions) {
                 if (e.getParentExpression() != this) {
-                    throw new UPAIllegalArgumentException("Illegal Hierarchy");
+                    throw new IllegalUPAArgumentException("Illegal Hierarchy");
                 }
                 e.validate();
             }
@@ -486,6 +486,6 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
     }
 
     public void removeSubExpression(int pos) {
-        throw new UPAIllegalArgumentException("Not Implemented");
+        throw new IllegalUPAArgumentException("Not Implemented");
     }
 }

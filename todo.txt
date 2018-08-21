@@ -4,3 +4,5 @@ Requested Features:
     [@Dec] Add @NativeView support
     [Impl] Add PostgreSQL support
     [UPQL] Add support for + operator between String and date
+    [Impl] Connection should have the list of all open ResultSets to close them
+           when it is closed

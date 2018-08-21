@@ -3,6 +3,7 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.PortabilityHint;
 
 import java.io.*;
+import net.vpc.upa.exceptions.UnexpectedException;
 
 @PortabilityHint(target = "C#",name = "partial")
 public class CacheFile implements net.vpc.upa.Closeable{
@@ -109,10 +110,10 @@ public class CacheFile implements net.vpc.upa.Closeable{
             inputStream = new ObjectInputStream(new FileInputStream(getFile()));
             o = inputStream.readObject();
         } catch (Exception e) {
-            throw new RuntimeException(e.toString());
+            throw new CacheException("UnableToLoadCache",e);
         }
         if (!START_FILE.equals(o)) {
-            throw new CacheException("Bad cache file");
+            throw new CacheException("InvalidCacheFile");
         } else {
             objectRead = true;
             return;
@@ -124,7 +125,7 @@ public class CacheFile implements net.vpc.upa.Closeable{
             hasNext();
         }
         if (END_FILE.equals(lastExtractedObject)) {
-            throw new CacheException("End Of Cache File Reached");
+            throw new CacheException("EndOfCacheFileReached");
         } else {
             objectRead = true;
             return lastExtractedObject;

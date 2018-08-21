@@ -5,7 +5,6 @@
  */
 package net.vpc.upa.impl.eval;
 
-import java.util.NoSuchElementException;
 import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
 import net.vpc.upa.expressions.Expression;
@@ -22,7 +21,7 @@ class NotFoundEvaluatorQLTypeEvaluator implements QLTypeEvaluator {
 
     @Override
     public Expression evalObject(Expression e, QLEvaluator evaluator, Object context) {
-        return e;//throw new NoSuchElementException("No evaluator for " + e);
+        return e;
     }
     
 }

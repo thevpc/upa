@@ -7,7 +7,7 @@ import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.ValueConverter;
 import net.vpc.upa.bulk.ValueValidator;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.StringType;
 
@@ -77,7 +77,7 @@ public abstract class AbstractDataReader implements DataReader {
     public Object readObject() {
         DataDeserializer od = getObjectDeserializer();
         if (od == null) {
-            throw new UPAIllegalArgumentException("Missing Object deserializer");
+            throw new IllegalUPAArgumentException("Missing Object deserializer");
         }
         return od.rowToObject(readRow());
     }

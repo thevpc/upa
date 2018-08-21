@@ -4,7 +4,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.Package;
 import net.vpc.upa.exceptions.NoSuchPackageException;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.ListUtils;
 
 import java.util.ArrayList;
@@ -168,18 +168,18 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
     public void checkValidIdentifier(String s) {
         // an empty or null string cannot be a valid identifier
         if (s == null) {
-            throw new UPAIllegalArgumentException("Empty name");
+            throw new IllegalUPAArgumentException("Empty name");
         }
         //s=="" is accepted for default package
         if (!s.trim().equals(s)) {
-            throw new UPAIllegalArgumentException(s);
+            throw new IllegalUPAArgumentException(s);
         }
 
         // Select lf from LigneFacture lf where lf.facture.date=:dte
         char[] c = s.toCharArray();
         for (int i = 1; i < c.length; i++) {
             if (c[i] == '/') {
-                throw new UPAIllegalArgumentException("Invalid name char '" + c[i] + "' in name " + s);
+                throw new IllegalUPAArgumentException("Invalid name char '" + c[i] + "' in name " + s);
             }
         }
     }

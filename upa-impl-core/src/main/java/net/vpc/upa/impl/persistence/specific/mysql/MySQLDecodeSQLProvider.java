@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.specific.derby.*;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.upql.ext.expr.CompiledDecode;
@@ -24,7 +24,7 @@ class MySQLDecodeSQLProvider extends DerbyFunctionSQLProvider {
     @Override
     public String simplify(String functionName, String[] params, Map<String, Object> context) {
         if (params.length < 4 || params.length % 2 != 0) {
-            throw new UPAIllegalArgumentException("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + StringUtils.format(params) + ")");
+            throw new IllegalUPAArgumentException("bad number of params for function '" + functionName + "' .\n Error near " + functionName + "(" + StringUtils.format(params) + ")");
         }
         StringBuilder sb = new StringBuilder("case");
         for (int i = 1; i < params.length; i += 2) {

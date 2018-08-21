@@ -55,7 +55,7 @@ public class EnumAsNameMarshaller
             }
             try {
                 return Enum.valueOf(platformType, n);
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 return null;
             }
         }

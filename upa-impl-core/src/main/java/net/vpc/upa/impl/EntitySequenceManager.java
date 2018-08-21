@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.impl.sysentities.PrivateSequence;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.Entity;
@@ -34,7 +34,7 @@ public class EntitySequenceManager implements SequenceManager {
     @Override
     public synchronized PrivateSequence createSequence(String name, String pattern, int initialValue, int increment) throws UPAException {
         if (increment == 0) {
-            throw new UPAIllegalArgumentException("increment zero");
+            throw new IllegalUPAArgumentException("increment zero");
         }
         PrivateSequence r = entity.getBuilder().createObject();
         r.setName(name);

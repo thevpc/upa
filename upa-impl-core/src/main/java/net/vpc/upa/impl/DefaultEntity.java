@@ -258,10 +258,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             this.compositionRelation = null;
         } else {
             if (compositionRelation.getRelationshipType() != RelationshipType.COMPOSITION) {
-                throw new UPAIllegalArgumentException("Invalid Relationship type " + compositionRelation);
+                throw new IllegalUPAArgumentException("Invalid Relationship type " + compositionRelation);
             }
 //            if (this.compositionRelation != null) {
-//                throw new UPAIllegalArgumentException("Entity " + getName()
+//                throw new IllegalUPAArgumentException("Entity " + getName()
 //                        + " is already composing " + getParentEntity() + " via "
 //                        + this.compositionRelation
 //                        + ". It could not accept new Composition via "
@@ -281,7 +281,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public Index addIndex(String indexName, boolean unique, String... fields) throws UPAException {
         if (fields == null || fields.length == 0) {
-            throw new UPAIllegalArgumentException("Index Fields Count == 0");
+            throw new IllegalUPAArgumentException("Index Fields Count == 0");
         }
         List<String> fieldList = new ArrayList<String>(new LinkedHashSet<String>(Arrays.asList(fields)));
         Index index = getPersistenceUnit().getFactory().createObject(Index.class);
@@ -493,7 +493,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
         if (canonicalPathArray.length == 0) {
-            throw new UPAIllegalArgumentException("Emty Name");
+            throw new IllegalUPAArgumentException("Emty Name");
         }
         Section parentSection = null;
         for (int i = 0, canonicalPathArrayLength = canonicalPathArray.length; i < canonicalPathArrayLength - 1; i++) {
@@ -621,7 +621,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(path);
         if (canonicalPathArray.length == 0) {
-            throw new UPAIllegalArgumentException("invalid module path " + path);
+            throw new IllegalUPAArgumentException("invalid module path " + path);
         }
         Section module = null;
         for (String n : canonicalPathArray) {
@@ -801,12 +801,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                 } else if (selectFormula instanceof Sequence) {
                     if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                        throw new UPAIllegalArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
+                        throw new IllegalUPAArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
                     }
                     fmc.add(FieldModifier.SELECT_DEFAULT);
                 } else {
                     if (fmc.contains(UserFieldModifier.LIVE) || fmc.contains(UserFieldModifier.COMPILED)) {
-                        throw new UPAIllegalArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
+                        throw new IllegalUPAArgumentException("LIVE and COMPILED selector are supported solely for ExpressionFormula");
                     }
                     if (f.isManyToOne()) {
                         fmc.add(FieldModifier.SELECT_DEFAULT);
@@ -850,12 +850,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
             // check constraints
             if (selectFormula instanceof Sequence) {
-                throw new UPAIllegalArgumentException("Select Formula could not be a sequence");
+                throw new IllegalUPAArgumentException("Select Formula could not be a sequence");
             }
             if (((f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)
                     || (f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)
                     || (f.getPersistProtectionLevel() == ProtectionLevel.PRIVATE)) && fmc.getEffective().contains(FieldModifier.MAIN)) {
-                throw new UPAIllegalArgumentException("Field " + getAbsoluteName() + " could not be define Main and PRIVATE");
+                throw new IllegalUPAArgumentException("Field " + getAbsoluteName() + " could not be define Main and PRIVATE");
             }
 
             //
@@ -897,7 +897,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //                if (defaultValue == null) {
 //                    Object defaultNonNullValue = dt.getDefaultNonNullValue();
 //                    if (defaultNonNullValue == null) {
-//                        throw new UPAIllegalArgumentException("Field " + f + " is not nullable but could not resolve a valid default value to use");
+//                        throw new IllegalUPAArgumentException("Field " + f + " is not nullable but could not resolve a valid default value to use");
 //                    }
 //                }
 //            }
@@ -1207,7 +1207,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         } else if (trigger instanceof UpdateFormulaInterceptor) {
             return (new FormulaUpdaterInterceptorSupport((UpdateFormulaInterceptor) trigger));
         } else {
-            throw new UPAIllegalArgumentException("Unsupported Entity Trigger Type " + trigger.getClass());
+            throw new IllegalUPAArgumentException("Unsupported Entity Trigger Type " + trigger.getClass());
         }
     }
 
@@ -1215,7 +1215,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         PersistenceUnitExt pu = (PersistenceUnitExt) getPersistenceUnit();
         Trigger tr = triggers.get(triggerName);
         if (tr == null) {
-            throw new UPAIllegalArgumentException("Trigger Not found " + triggerName);
+            throw new IllegalUPAArgumentException("Trigger Not found " + triggerName);
         }
         pu.getPersistenceUnitListenerManager().fireOnDropTrigger(tr, EventPhase.BEFORE);
         triggers.remove(triggerName);
@@ -1376,12 +1376,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public Field bindField(Field field, String sectionPath) throws UPAException {
 
         if (StringUtils.isNullOrEmpty(field.getName())) {
-            throw new UPAIllegalArgumentException("Field name is Null or Empty");
+            throw new IllegalUPAArgumentException("Field name is Null or Empty");
         }
         if (field.getDataType() == null) {
             //may be a foreign reference,
             //data type could not be resolved at creation time
-            //throw new UPAIllegalArgumentException("Field " + getName()+"."+field.getName() + " has null DataType");
+            //throw new IllegalUPAArgumentException("Field " + getName()+"."+field.getName() + " has null DataType");
         } else if (field.getUserModifiers().contains(UserFieldModifier.ID) && field.getDataType().isNullable()) {
             log.log(Level.WARNING, "Field {0}.{1} is ID but has nullable Type. Forced to non nullable (type reference changed).", new Object[]{getName(), field.getName()});
             DataType t = (DataType) field.getDataType().copy();
@@ -1399,7 +1399,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 a = getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
             }
             if (!(a instanceof Sequence)) {
-                throw new UPAIllegalArgumentException("Field " + getName() + "."
+                throw new IllegalUPAArgumentException("Field " + getName() + "."
                         + field.getName() + " is a FORMULA field. Thus it must be nullable");
             }
         }
@@ -3499,7 +3499,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //            fieldsMap.put(uniformValue, f);
 //            fieldsList.add(f);
 //        } else {
-//            throw new UPAIllegalArgumentException(getName()
+//            throw new IllegalUPAArgumentException(getName()
 //                    + " : field '" + f.getName()
 //                    + "' already exists");
 //        }
@@ -3612,7 +3612,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             throw new NullPointerException("Object Filter Null");
         }
         if (objectfilters.containsKey(name)) {
-            throw new UPAIllegalArgumentException("Object Filter Already Exists " + name);
+            throw new IllegalUPAArgumentException("Object Filter Already Exists " + name);
         }
         objectfilters.put(name, expression);
     }
@@ -3634,7 +3634,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public Expression getFilter(String name) {
         Expression expression = objectfilters.get(name);
         if (expression == null) {
-            throw new UPAIllegalArgumentException("Object Filter Not Found " + name);
+            throw new IllegalUPAArgumentException("Object Filter Not Found " + name);
         }
         return expression;
     }

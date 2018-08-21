@@ -3,7 +3,7 @@ package net.vpc.upa.impl.util;
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.filters.ObjectFilter;
 import net.vpc.upa.impl.config.decorations.AnnotationDecoration;
 import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
@@ -190,7 +190,7 @@ public class PlatformUtils {
             Class t = (w1 >= w2) ? numberClass1 : numberClass2;
             return nullable ? toRefType(t) : toPrimitiveType(t);
         }
-        throw new UPAIllegalArgumentException("Invalid Number Expr " + numberClass1 + " , " + numberClass2);
+        throw new IllegalUPAArgumentException("Invalid Number Expr " + numberClass1 + " , " + numberClass2);
     }
 
     public static int getIntWeight(Class clazz) {
@@ -226,7 +226,7 @@ public class PlatformUtils {
             return pos;
         }
 
-        throw new UPAIllegalArgumentException("Not an integer");
+        throw new IllegalUPAArgumentException("Not an integer");
     }
 
     public static int getFloatWeight(Class clazz) {
@@ -244,7 +244,7 @@ public class PlatformUtils {
         if (isBigFloat(clazz)) {
             return pos;
         }
-        throw new UPAIllegalArgumentException("Not an integer");
+        throw new IllegalUPAArgumentException("Not an integer");
     }
 
     public static boolean isTime(Class clazz) {
@@ -278,8 +278,7 @@ public class PlatformUtils {
     }
 
     public static boolean isIntAny(Class clazz) {
-        return 
-                   clazz.equals(Byte.class)
+        return clazz.equals(Byte.class)
                 || clazz.equals(Byte.TYPE)
                 || clazz.equals(Short.class)
                 || clazz.equals(Short.TYPE)
@@ -287,23 +286,19 @@ public class PlatformUtils {
                 || clazz.equals(Integer.TYPE)
                 || clazz.equals(Long.class)
                 || clazz.equals(Long.TYPE)
-                || clazz.equals(BigInteger.class)
-                ;
+                || clazz.equals(BigInteger.class);
     }
 
     public static boolean isFloatAny(Class clazz) {
-        return 
-                   clazz.equals(Float.class)
+        return clazz.equals(Float.class)
                 || clazz.equals(Float.TYPE)
                 || clazz.equals(Double.class)
                 || clazz.equals(Double.TYPE)
-                || clazz.equals(BigDecimal.class)
-                ;
+                || clazz.equals(BigDecimal.class);
     }
 
     public static boolean isString(Class clazz) {
-        return  
-                   clazz.equals(String.class)
+        return clazz.equals(String.class)
                 || clazz.equals(Character.class)
                 || clazz.equals(Character.TYPE);
     }
@@ -412,13 +407,13 @@ public class PlatformUtils {
                 } else if ((t1 & TYPE_SIZE_8) == TYPE_SIZE_8 || (t2 & TYPE_SIZE_8) == TYPE_SIZE_8) {
                     return nullable ? Byte.class : Byte.TYPE;
                 } else {
-                    throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+                    throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
                 }
             } else {
-                throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+                throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
             }
         } else {
-            throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+            throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
         }
     }
 
@@ -484,10 +479,10 @@ public class PlatformUtils {
                 } else if ((t1 & TYPE_SIZE_8) == TYPE_SIZE_8 || (t2 & TYPE_SIZE_8) == TYPE_SIZE_8) {
                     return nullable ? Byte.class : Byte.TYPE;
                 } else {
-                    throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+                    throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
                 }
             } else {
-                throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+                throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
             }
         } else if ((t1 & TYPE_MAJOR_NUMBER) == TYPE_MAJOR_NUMBER && (t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING) {
             return String.class;
@@ -496,7 +491,7 @@ public class PlatformUtils {
         } else if ((t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING && (t1 & TYPE_MAJOR_STRING) == TYPE_MAJOR_STRING) {
             return String.class;
         } else {
-            throw new IllegalArgumentException("Unsupported " + cls1 + "/" + cls2);
+            throw new IllegalUPAArgumentException("UnsupportedImplicitConversion", cls1, cls2);
         }
     }
 
@@ -693,7 +688,7 @@ public class PlatformUtils {
                 break;
             }
             default: {
-                throw new UPAIllegalArgumentException("Unsupported Temperal " + temporalOption);
+                throw new IllegalUPAArgumentException("Unsupported Temperal " + temporalOption);
             }
         }
         if (baseType == null) {

@@ -4,7 +4,7 @@ import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
 import net.vpc.upa.Key;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +56,7 @@ public class DefaultKey extends AbstractKey {
                 return value[i];
             }
         }
-        throw new UPAIllegalArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
+        throw new IllegalUPAArgumentException("Either key " + toString() + " or fieldName " + fieldName + " does not refer to entity " + entity.getName());
     }
 
     public Object[] getValue() {

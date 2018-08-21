@@ -36,7 +36,7 @@ package net.vpc.upa.types;
 
 import net.vpc.upa.SecretStrategy;
 import net.vpc.upa.SecretStrategyType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.io.Serializable;
 
@@ -75,7 +75,7 @@ public class SecretTransformConfig implements DataTypeTransformConfig, Serializa
             throw new NullPointerException();
         }
         if (!(secretStrategy instanceof String || secretStrategy instanceof Class || secretStrategy instanceof SecretStrategy || (secretStrategy instanceof SecretStrategyType && !secretStrategy.equals(SecretStrategyType.CUSTOM)))) {
-            throw new UPAIllegalArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
+            throw new IllegalUPAArgumentException("secretStrategy should be of type String (as SecretStrategy class name), Class (SecretStrategy implementing class) or SecretStrategy (instance)");
         }
         this.secretStrategy = secretStrategy;
     }

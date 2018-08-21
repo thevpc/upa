@@ -3,7 +3,7 @@ package net.vpc.upa.impl.config;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.*;
 import net.vpc.upa.impl.util.xml.*;
 import net.vpc.upa.persistence.*;
@@ -193,7 +193,7 @@ public class DefaultUPAContextLoader {
 //        return all;
     }
 
-    public boolean parseResource(String resource, ContextElement context, VarContext varContext) throws UPAException, IOException{
+    public boolean parseResource(String resource, ContextElement context, VarContext varContext) throws UPAException, IOException {
 
         boolean someInclusion = false;
         for (URL url : PlatformUtils.listURLs(resource)) {
@@ -202,7 +202,7 @@ public class DefaultUPAContextLoader {
         return someInclusion;
     }
 
-    public boolean parseURL(URL url, ContextElement contextElement, VarContext varContext) throws UPAException, IOException{
+    public boolean parseURL(URL url, ContextElement contextElement, VarContext varContext) throws UPAException, IOException {
         log.log(Level.FINE, "Parsing upa.xml URL at {0}", url);
         InputStream is = url.openStream();
         boolean someInclusion = false;
@@ -216,7 +216,7 @@ public class DefaultUPAContextLoader {
         return someInclusion;
     }
 
-    private boolean parseStream(InputStream is, ContextElement contextElement, VarContext varContext) throws UPAException, IOException{
+    private boolean parseStream(InputStream is, ContextElement contextElement, VarContext varContext) throws UPAException, IOException {
         boolean someContent = false;
         if (is == null) {
             return false;
@@ -231,70 +231,69 @@ public class DefaultUPAContextLoader {
         return someContent;
     }
 
-    private boolean parseDocElement(XmlDomElement docEle, ContextElement contextElement, VarContext varContext) throws UPAException, IOException{
+    private boolean parseDocElement(XmlDomElement docEle, ContextElement contextElement, VarContext varContext) throws UPAException, IOException {
         boolean someContent = false;
         /**
          * @PortabilityHint(target = "C#",name = "ignore")
          */
         {
             for (XmlDomNode item : docEle.getChildren()) {
-                    if (item instanceof XmlDomElement) {
-                        XmlDomElement el = (XmlDomElement) item;
-                        String tagName = el.getName();
-                        if (XMLUtils.equalsUniform(tagName, "include")) {
-                            someContent |= parseInclude(el, contextElement, varContext);
-                        } else if (XMLUtils.equalsUniform(tagName, "persistenceGroup")) {
-                            someContent = true;
-                            parsePersistenceGroup(el, contextElement, varContext);
-                        } else if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            parsePersistenceUnit(el, pg, varContext);
-                        } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                            someContent = true;
-                            contextElement.addScanElement(parseScan(el, varContext));
-                        } else if (XMLUtils.equalsUniform(tagName, "connection")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            pu.connectionElements.add(parseConnection(el, varContext));
-                        } else if (XMLUtils.equalsUniform(tagName, "connectionString")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            ConnectionElement c = new ConnectionElement();
-                            final Map<String, String> attrs = XMLUtils.getAttributes(el, connectionElementFilter);
-                            c.connectionString = trimToNull(parseXmlTextContent(el));
-                            pu.connectionElements.add(c);
-                        } else if (XMLUtils.equalsUniform(tagName, "rootconnectionString")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            ConnectionElement c = new ConnectionElement();
-                            final Map<String, String> attrs = XMLUtils.getAttributes(el, connectionElementFilter);
-                            c.connectionString = trimToNull(parseXmlTextContent(el));
-                            pu.rootConnectionElements.add(c);
-                        } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
-                            pu.rootConnectionElements.add(parseConnection(el, varContext));
-                        } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                            someContent = true;
-                            PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
-                            Property p = parseProperty(el, varContext);
-                            Object t = UPAUtils.createValue(p);
-                            String svalue = t == null ? null : String.valueOf(t);
-                            varContext.declare(p.getName(), svalue);
-                            pg.properties.add(p);
-                        } else {
-                            throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getName() + ". valid tags are "
-                                    + "include, persistenceGroup, persistenceUnit, "
-                                    + "scan, connection, rootConnection, property");
-                        }
+                if (item instanceof XmlDomElement) {
+                    XmlDomElement el = (XmlDomElement) item;
+                    String tagName = el.getName();
+                    if (XMLUtils.equalsUniform(tagName, "include")) {
+                        someContent |= parseInclude(el, contextElement, varContext);
+                    } else if (XMLUtils.equalsUniform(tagName, "persistenceGroup")) {
+                        someContent = true;
+                        parsePersistenceGroup(el, contextElement, varContext);
+                    } else if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        parsePersistenceUnit(el, pg, varContext);
+                    } else if (XMLUtils.equalsUniform(tagName, "scan")) {
+                        someContent = true;
+                        contextElement.addScanElement(parseScan(el, varContext));
+                    } else if (XMLUtils.equalsUniform(tagName, "connection")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
+                        pu.connectionElements.add(parseConnection(el, varContext));
+                    } else if (XMLUtils.equalsUniform(tagName, "connectionString")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
+                        ConnectionElement c = new ConnectionElement();
+                        final Map<String, String> attrs = XMLUtils.getAttributes(el, connectionElementFilter);
+                        c.connectionString = trimToNull(parseXmlTextContent(el));
+                        pu.connectionElements.add(c);
+                    } else if (XMLUtils.equalsUniform(tagName, "rootconnectionString")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
+                        ConnectionElement c = new ConnectionElement();
+                        final Map<String, String> attrs = XMLUtils.getAttributes(el, connectionElementFilter);
+                        c.connectionString = trimToNull(parseXmlTextContent(el));
+                        pu.rootConnectionElements.add(c);
+                    } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");
+                        pu.rootConnectionElements.add(parseConnection(el, varContext));
+                    } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                        someContent = true;
+                        PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
+                        Property p = parseProperty(el, varContext);
+                        Object t = UPAUtils.createValue(p);
+                        String svalue = t == null ? null : String.valueOf(t);
+                        varContext.declare(p.getName(), svalue);
+                        pg.properties.add(p);
+                    } else {
+                        throw new IllegalUPAArgumentException("Unsupported tag " + tagName + " for " + docEle.getName() + ". valid tags are "
+                                + "include, persistenceGroup, persistenceUnit, "
+                                + "scan, connection, rootConnection, property");
                     }
                 }
-
+            }
 
         }
         return someContent;
@@ -311,127 +310,128 @@ public class DefaultUPAContextLoader {
         return s;
     }
 
-    private boolean parseInclude(XmlDomElement docEle, ContextElement contextElement, VarContext varContext) throws UPAException, IOException{
+    private boolean parseInclude(XmlDomElement docEle, ContextElement contextElement, VarContext varContext) throws UPAException, IOException {
         List<XmlDomNode> nl = docEle.getChildren();
         boolean someContent = false;
         Map<String, String> attrs0 = XMLUtils.getAttributes(docEle, includeFilter);
         boolean failSafe0 = parseBoolean(attrs0.get(XMLUtils.uniformName("failSafe")), true, varContext);
         boolean defaultVisited = false;
 
-            for (XmlDomNode item:nl) {
-                if (item instanceof XmlDomElement) {
-                    XmlDomElement el = (XmlDomElement) item;
-                    String tagName = el.getName();
-                    if (defaultVisited) {
-                        throw new UPAIllegalArgumentException("tag 'default' should be the very last tag in include");
-                    }
-                    if (XMLUtils.equalsUniform(tagName, "url")) {
-                        Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
-                        String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
-                        boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), true, varContext);
-                        boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
-                        Exception error = null;
-                        if (StringUtils.isNullOrEmpty(value)) {
-                            error = new IllegalArgumentException("Empty URL");
-                        } else {
-                            try {
-                                URL url = new URL(value);
-                                someContent |= parseURL(url, contextElement, varContext);
-                            } catch (Exception ex) {
-                                error = ex;
-                            }
-                        }
-                        if (error != null) {
-                            if (failSafe) {
-                                log.log(Level.WARNING, "Unable to include URL " + value);
-                            } else {
-                                log.log(Level.SEVERE, "Unable to include URL " + value, error);
-                                throw new UPAException("InvalidInclude", value);
-                            }
-                        } else {
-                            if (skipOthers) {
-                                break;
-                            }
-                        }
-                    } else if (XMLUtils.equalsUniform(tagName, "file")) {
-                        Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
-                        String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
-                        boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), false, varContext);
-                        boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
-                        Exception error = null;
-                        if (StringUtils.isNullOrEmpty(value)) {
-                            error = new IllegalArgumentException("Empty File");
-                        }
-                        File fileObj = IOUtils.createFile(value.trim());
-                        if (!fileObj.isFile() || !fileObj.exists()) {
-                            error = new IllegalArgumentException("File does not exist " + value);
-                        } else {
-                            FileInputStream is = null;
-                            try {
-                                try {
-                                    is = new FileInputStream(fileObj);
-                                    someContent |= parseStream(is, contextElement, varContext);
-                                } finally {
-                                    if (is != null) {
-                                        is.close();
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                error = ex;
-                            }
-                        }
-
-                        if (error != null) {
-                            if (failSafe) {
-                                log.log(Level.WARNING, "Unable to include File " + value);
-                            } else {
-                                log.log(Level.SEVERE, "Unable to include File " + value, error);
-                                throw new UPAException("InvalidInclude", value);
-                            }
-                        } else {
-                            if (skipOthers) {
-                                break;
-                            }
-                        }
-                    } else if (XMLUtils.equalsUniform(tagName, "resource")) {
-                        Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
-                        String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
-                        boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), false, varContext);
-                        boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
-                        Exception error = null;
-                        if (StringUtils.isNullOrEmpty(value)) {
-                            error = new IllegalArgumentException("Empty Resource");
-                        } else {
-                            try {
-                                someContent |= parseURL(new URL(value), contextElement, varContext);
-                            } catch (Exception ex) {
-                                error = ex;
-                            }
-                        }
-
-                        if (error != null) {
-                            if (failSafe) {
-                                log.log(Level.WARNING, "Unable to include Resource " + value);
-                            } else {
-                                log.log(Level.SEVERE, "Unable to include Resource " + value, error);
-                                throw new UPAException("InvalidInclude", value);
-                            }
-                        } else {
-                            if (skipOthers) {
-                                break;
-                            }
-                        }
-                    } else if (XMLUtils.equalsUniform(tagName, "default")) {
-                        if (!someContent) {
-                            someContent |= parseDocElement(el, contextElement, varContext);
-                        }
-                        defaultVisited = true;
+        for (XmlDomNode item : nl) {
+            if (item instanceof XmlDomElement) {
+                XmlDomElement el = (XmlDomElement) item;
+                String tagName = el.getName();
+                if (defaultVisited) {
+                    throw new IllegalUPAArgumentException("XmlParseError.DefaultTagMustBeLast");
+                }
+                if (XMLUtils.equalsUniform(tagName, "url")) {
+                    Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
+                    String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
+                    boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), true, varContext);
+                    boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
+                    Exception error = null;
+                    if (StringUtils.isNullOrEmpty(value)) {
+                        error = new IllegalUPAArgumentException("XmlParseError.EmptyURL");
                     } else {
-                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for " + docEle.getName() + ". valid tags are "
-                                + "file, url, resource, default");
+                        try {
+                            URL url = new URL(value);
+                            someContent |= parseURL(url, contextElement, varContext);
+                        } catch (Exception ex) {
+                            error = ex;
+                        }
                     }
+                    if (error != null) {
+                        if (failSafe) {
+                            log.log(Level.WARNING, "Unable to include URL {0}", value);
+                        } else {
+                            log.log(Level.SEVERE, "Unable to include URL " + value, error);
+                            throw new IllegalUPAArgumentException("XmlParseError.InvalidInclude", value);
+                        }
+                    } else {
+                        if (skipOthers) {
+                            break;
+                        }
+                    }
+                } else if (XMLUtils.equalsUniform(tagName, "file")) {
+                    Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
+                    String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
+                    boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), false, varContext);
+                    boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
+                    Exception error = null;
+                    if (StringUtils.isNullOrEmpty(value)) {
+                        error = new IllegalUPAArgumentException("XmlParseError.EmptyFile");
+                    }
+                    File fileObj = IOUtils.createFile(value.trim());
+                    if (!fileObj.isFile() || !fileObj.exists()) {
+                        error = new IllegalUPAArgumentException("XmlParseError.FileDoesNotExist", value);
+                    } else {
+                        FileInputStream is = null;
+                        try {
+                            try {
+                                is = new FileInputStream(fileObj);
+                                someContent |= parseStream(is, contextElement, varContext);
+                            } finally {
+                                if (is != null) {
+                                    is.close();
+                                }
+                            }
+                        } catch (Exception ex) {
+                            error = ex;
+                        }
+                    }
+
+                    if (error != null) {
+                        if (failSafe) {
+                            log.log(Level.WARNING, "Unable to include File {0}", value);
+                        } else {
+                            log.log(Level.SEVERE, "Unable to include File " + value, error);
+                            throw new IllegalUPAArgumentException("XmlParseError.InvalidInclude", value);
+                        }
+                    } else {
+                        if (skipOthers) {
+                            break;
+                        }
+                    }
+                } else if (XMLUtils.equalsUniform(tagName, "resource")) {
+                    Map<String, String> attrs = XMLUtils.getAttributes(el, includeElementFilter);
+                    String value = nullify(varContext.eval(attrs.get(XMLUtils.uniformName("path"))));
+                    boolean failSafe = parseBoolean(attrs.get(XMLUtils.uniformName("failSafe")), false, varContext);
+                    boolean skipOthers = parseBoolean(attrs.get(XMLUtils.uniformName("skipOthers")), true, varContext);
+                    Exception error = null;
+                    if (StringUtils.isNullOrEmpty(value)) {
+                        error = new IllegalUPAArgumentException("XmlParseError.EmptyResource", value);
+                    } else {
+                        try {
+                            someContent |= parseURL(new URL(value), contextElement, varContext);
+                        } catch (Exception ex) {
+                            error = ex;
+                        }
+                    }
+
+                    if (error != null) {
+                        if (failSafe) {
+                            log.log(Level.WARNING, "Unable to include Resource {0}", value);
+                        } else {
+                            log.log(Level.SEVERE, "Unable to include Resource " + value, error);
+                            throw new IllegalUPAArgumentException("XmlParseError.InvalidInclude", value);
+                        }
+                    } else {
+                        if (skipOthers) {
+                            break;
+                        }
+                    }
+                } else if (XMLUtils.equalsUniform(tagName, "default")) {
+                    if (!someContent) {
+                        someContent |= parseDocElement(el, contextElement, varContext);
+                    }
+                    defaultVisited = true;
+                } else {
+                    log.log(Level.SEVERE, "Unsupported tag " + tagName + " for " + docEle.getName() + ". valid tags are "
+                            + "file, url, resource, default");
+                    throw new IllegalUPAArgumentException("XmlParseError.UnsupportedTag", tagName, docEle.getName());
                 }
             }
+        }
 
         if (!someContent) {
             if (!failSafe0) {
@@ -453,26 +453,26 @@ public class DefaultUPAContextLoader {
         c.autoScan = parseBoolean(attrs.get(XMLUtils.uniformName("autoScan")), c.autoScan, gvarContext);
         c.inheritScanFilters = parseBoolean(attrs.get(XMLUtils.uniformName("inheritScanFilters")), c.autoScan, gvarContext);
         List<XmlDomNode> nl = e.getChildren();
-            for (XmlDomNode item:nl) {
-                if (item instanceof XmlDomElement) {
-                    XmlDomElement el = (XmlDomElement) item;
-                    String tagName = el.getName();
-                    if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
-                        parsePersistenceUnit(el, c, varContext);
-                    } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                        c.addScanElement(parseScan(el, gvarContext));
-                    } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                        Property p = parseProperty(el, gvarContext);
-                        Object t = UPAUtils.createValue(p);
-                        String svalue = t == null ? null : String.valueOf(t);
-                        gvarContext.declare(p.getName(), svalue);
-                        c.properties.add(p);
-                    } else {
-                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for PersistenceGroup. "
-                                + "valid tags are persistenceUnit, scan, property");
-                    }
+        for (XmlDomNode item : nl) {
+            if (item instanceof XmlDomElement) {
+                XmlDomElement el = (XmlDomElement) item;
+                String tagName = el.getName();
+                if (XMLUtils.equalsUniform(tagName, "persistenceUnit")) {
+                    parsePersistenceUnit(el, c, varContext);
+                } else if (XMLUtils.equalsUniform(tagName, "scan")) {
+                    c.addScanElement(parseScan(el, gvarContext));
+                } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                    Property p = parseProperty(el, gvarContext);
+                    Object t = UPAUtils.createValue(p);
+                    String svalue = t == null ? null : String.valueOf(t);
+                    gvarContext.declare(p.getName(), svalue);
+                    c.properties.add(p);
+                } else {
+                    throw new IllegalUPAArgumentException("Unsupported tag " + tagName + " for PersistenceGroup. "
+                            + "valid tags are persistenceUnit, scan, property");
                 }
             }
+        }
         return c;
     }
 
@@ -503,48 +503,48 @@ public class DefaultUPAContextLoader {
         s.inheritScanFilters = parseBoolean(attrs.get(XMLUtils.uniformName("inheritScanFilters")), s.inheritScanFilters, uvarContext);
 
         List<XmlDomNode> nl = e.getChildren();
-            for (XmlDomNode item:nl) {
+        for (XmlDomNode item : nl) {
 
-                if (item instanceof XmlDomElement) {
-                    XmlDomElement el = (XmlDomElement) item;
-                    //add it to list
-                    String tagName = el.getName();
-                    if (XMLUtils.equalsUniform(tagName, "connection")) {
-                        s.connectionElements.add(parseConnection(el, uvarContext));
-                    } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
-                        s.rootConnectionElements.add(parseConnection(el, uvarContext));
-                    } else if (XMLUtils.equalsUniform(tagName, "connectionString")) {
-                        ConnectionElement c = new ConnectionElement();
-                        final Map<String, String> attrs2 = XMLUtils.getAttributes(el, connectionElementFilter);
-                        c.connectionString = trimToNull(attrs2.get("connectionString"));
-                        s.connectionElements.add(parseConnection(el, uvarContext));
-                    } else if (XMLUtils.equalsUniform(tagName, "rootConnectionString")) {
-                        s.rootConnectionElements.add(parseConnection(el, uvarContext));
-                    } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                        Property p = parseProperty(el, uvarContext);
-                        Object t = UPAUtils.createValue(p);
-                        String svalue = t == null ? null : String.valueOf(t);
-                        uvarContext.declare(p.getName(), svalue);
-                        s.properties.add(p);
-                    } else if (XMLUtils.equalsUniform(tagName, "scan")) {
-                        s.scanElements.add(parseScan(el, uvarContext));
-                    } else {
-                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for PersistenceUnit. "
-                                + "valid tags are connection, rootConnection, property, scan");
-                    }
+            if (item instanceof XmlDomElement) {
+                XmlDomElement el = (XmlDomElement) item;
+                //add it to list
+                String tagName = el.getName();
+                if (XMLUtils.equalsUniform(tagName, "connection")) {
+                    s.connectionElements.add(parseConnection(el, uvarContext));
+                } else if (XMLUtils.equalsUniform(tagName, "rootConnection")) {
+                    s.rootConnectionElements.add(parseConnection(el, uvarContext));
+                } else if (XMLUtils.equalsUniform(tagName, "connectionString")) {
+                    ConnectionElement c = new ConnectionElement();
+                    final Map<String, String> attrs2 = XMLUtils.getAttributes(el, connectionElementFilter);
+                    c.connectionString = trimToNull(attrs2.get("connectionString"));
+                    s.connectionElements.add(parseConnection(el, uvarContext));
+                } else if (XMLUtils.equalsUniform(tagName, "rootConnectionString")) {
+                    s.rootConnectionElements.add(parseConnection(el, uvarContext));
+                } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                    Property p = parseProperty(el, uvarContext);
+                    Object t = UPAUtils.createValue(p);
+                    String svalue = t == null ? null : String.valueOf(t);
+                    uvarContext.declare(p.getName(), svalue);
+                    s.properties.add(p);
+                } else if (XMLUtils.equalsUniform(tagName, "scan")) {
+                    s.scanElements.add(parseScan(el, uvarContext));
                 } else {
-//                    System.out.println(item);
+                    throw new IllegalUPAArgumentException("Unsupported tag " + tagName + " for PersistenceUnit. "
+                            + "valid tags are connection, rootConnection, property, scan");
                 }
+            } else {
+//                    System.out.println(item);
             }
+        }
 
         return s;
     }
 
     private String parseXmlTextContent(XmlDomElement e) {
         List<XmlDomNode> children = e.getChildren();
-        if(children.size()>0){
-            XmlDomNode n= children.get(0);
-            if(n instanceof XmlDomText){
+        if (children.size() > 0) {
+            XmlDomNode n = children.get(0);
+            if (n instanceof XmlDomText) {
                 return ((XmlDomText) n).getText();
             }
         }
@@ -580,37 +580,37 @@ public class DefaultUPAContextLoader {
         }
         List<XmlDomNode> nl = e.getChildren();
 
-            for (XmlDomNode item:nl) {
+        for (XmlDomNode item : nl) {
 
-                if (item instanceof XmlDomElement) {
-                    XmlDomElement el = (XmlDomElement) item;
-                    //add it to list
-                    String tagName = el.getName();
-                    if (XMLUtils.equalsUniform(tagName, "connectionString")) {
-                        s.connectionString = trimToNull(parseXmlTextContent(el));
-                    } else if (XMLUtils.equalsUniform(tagName, "userName")) {
-                        s.userName = trimToNull(parseXmlTextContent(el));
-                    } else if (XMLUtils.equalsUniform(tagName, "password")) {
-                        s.password = trimToNull(parseXmlTextContent(el));
-                    } else if (XMLUtils.equalsUniform(tagName, "structure")) {
-                        s.structure = trimToNull(parseXmlTextContent(el));
-                    } else if (XMLUtils.equalsUniform(tagName, "enabled")) {
-                        s.properties.put(tagName, trimToNull(parseXmlTextContent(el)));
-                    } else if (XMLUtils.equalsUniform(tagName, "property")) {
-                        Property p = parseProperty(el, varContext2);
-                        Object t = UPAUtils.createValue(p);
-                        String svalue = t == null ? null : String.valueOf(t);
-                        varContext2.declare(p.getName(), svalue);
-                        s.properties.put(p.getName(), svalue);
-                    } else {
-                        throw new UPAIllegalArgumentException("Unsupported tag " + tagName + " for Connection and RootConnection. "
-                                + "valid tags are connectionString, userName, password, "
-                                + "structure, enabled, property");
-                    }
+            if (item instanceof XmlDomElement) {
+                XmlDomElement el = (XmlDomElement) item;
+                //add it to list
+                String tagName = el.getName();
+                if (XMLUtils.equalsUniform(tagName, "connectionString")) {
+                    s.connectionString = trimToNull(parseXmlTextContent(el));
+                } else if (XMLUtils.equalsUniform(tagName, "userName")) {
+                    s.userName = trimToNull(parseXmlTextContent(el));
+                } else if (XMLUtils.equalsUniform(tagName, "password")) {
+                    s.password = trimToNull(parseXmlTextContent(el));
+                } else if (XMLUtils.equalsUniform(tagName, "structure")) {
+                    s.structure = trimToNull(parseXmlTextContent(el));
+                } else if (XMLUtils.equalsUniform(tagName, "enabled")) {
+                    s.properties.put(tagName, trimToNull(parseXmlTextContent(el)));
+                } else if (XMLUtils.equalsUniform(tagName, "property")) {
+                    Property p = parseProperty(el, varContext2);
+                    Object t = UPAUtils.createValue(p);
+                    String svalue = t == null ? null : String.valueOf(t);
+                    varContext2.declare(p.getName(), svalue);
+                    s.properties.put(p.getName(), svalue);
                 } else {
-//                    System.out.println(item);
+                    throw new IllegalUPAArgumentException("Unsupported tag " + tagName + " for Connection and RootConnection. "
+                            + "valid tags are connectionString, userName, password, "
+                            + "structure, enabled, property");
                 }
+            } else {
+//                    System.out.println(item);
             }
+        }
 
         return s;
     }

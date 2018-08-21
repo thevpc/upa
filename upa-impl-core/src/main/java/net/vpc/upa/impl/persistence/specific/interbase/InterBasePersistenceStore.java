@@ -15,11 +15,11 @@ public class InterBasePersistenceStore extends DefaultPersistenceStore {
     public void configureStore(){
         super.configureStore();
         Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", Boolean.FALSE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);
-        map.setBoolean("isReferencingSupported", Boolean.FALSE);
-        map.setBoolean("isViewSupported", Boolean.FALSE);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, Boolean.FALSE);
         getSqlManager().register(new InterBaseTypeNameSQLProvider());
         getSqlManager().register(new InterBaseSelectSQLProvider());
     }

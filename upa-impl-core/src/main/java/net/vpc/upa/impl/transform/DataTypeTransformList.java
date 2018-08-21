@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.DataType;
 
@@ -28,7 +28,7 @@ public class DataTypeTransformList implements DataTypeTransform, Iterable<DataTy
             if (i != null) {
                 if (src != null) {
                     if(!i.getSourceType().isAssignableFrom(src)){
-                        throw new UPAIllegalArgumentException("Invalid "+src+" expected "+i.getSourceType());
+                        throw new IllegalUPAArgumentException("Invalid "+src+" expected "+i.getSourceType());
                     }
                 }
                 src = i.getTargetType();

@@ -8,7 +8,7 @@
  */
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 class StringFormatter implements Formatter {
     public static final byte LEFT_ALIGN = 0;
@@ -35,7 +35,7 @@ class StringFormatter implements Formatter {
         this.white = white;
         this.position = position;
         if (position != LEFT_ALIGN && position != RIGTH_ALIGN && position != CENTER_ALIGN) {
-            throw new UPAIllegalArgumentException("Expected StringFormatter.LEFT_ALIGN | RIGTH_ALIGN | CENTER_ALIGN");
+            throw new IllegalUPAArgumentException("Expected StringFormatter.LEFT_ALIGN | RIGTH_ALIGN | CENTER_ALIGN");
         }
     }
 

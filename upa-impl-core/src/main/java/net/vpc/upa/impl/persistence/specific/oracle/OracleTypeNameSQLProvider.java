@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
@@ -11,14 +11,12 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vpc
- * Date: 8/15/12
- * Time: 11:46 PM
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
+ * this template use File | Settings | File Templates.
  */
 @PortabilityHint(target = "C#", name = "suppress")
 public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
+
     public OracleTypeNameSQLProvider() {
         super(CompiledTypeName.class);
     }
@@ -38,8 +36,9 @@ public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
         int length = datatype.getScale();
         int precision = datatype.getPrecision();
         if (PlatformUtils.isString(platformType)) {
-            if (length <= 0)
+            if (length <= 0) {
                 length = 256;
+            }
             if (length <= 8000) {
                 return "VARCHAR2(" + length + ")";
             } else {
@@ -76,20 +75,26 @@ public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
             return "INT";
         }
 
-        if(datatype instanceof TemporalType){
+        if (datatype instanceof TemporalType) {
             TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
-            if(temporalOption==null){
-                temporalOption=TemporalOption.DEFAULT;
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
             }
-            switch (temporalOption){
-                case DATE: return "DATE";
-                case DATETIME: return "TIMESTAMP";
-                case TIMESTAMP: return "TIMESTAMP";
-                case TIME: return "TIME";
-                case MONTH: return "DATE";
-                case YEAR: return "DATE";
-                default:{
-                    throw new IllegalArgumentException("Unsupported "+datatype);
+            switch (temporalOption) {
+                case DATE:
+                    return "DATE";
+                case DATETIME:
+                    return "TIMESTAMP";
+                case TIMESTAMP:
+                    return "TIMESTAMP";
+                case TIME:
+                    return "TIME";
+                case MONTH:
+                    return "DATE";
+                case YEAR:
+                    return "DATE";
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
                 }
             }
         }
@@ -100,7 +105,7 @@ public class OracleTypeNameSQLProvider extends AbstractSQLProvider {
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new UPAIllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

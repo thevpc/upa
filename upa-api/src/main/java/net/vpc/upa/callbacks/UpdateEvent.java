@@ -100,7 +100,7 @@ public class UpdateEvent extends EntityEvent {
     public <T> List<T> loadUpdatedIds() {
         List<T> object = (List<T>) this.getContext().<List<T>>getObject("updated_ids_" + this.getEntity().getName());
         if (object == null) {
-            throw new IllegalArgumentException("storeUpdatedIds should be called in preUpdate");
+            throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("StoreUpdatedIdsRequiresPreUpdateToBeInvoked");
         }
         return object;
     }

@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,9 +90,9 @@ public class If extends FunctionExpression implements Cloneable {
             state = EXPECT_CONDITION;
             return this;
         } else if (state == VALID) {
-            throw new UPAIllegalArgumentException("No more tokens are expected");
+            throw new IllegalUPAArgumentException("No more tokens are expected");
         } else {
-            throw new UPAIllegalArgumentException("Expected a value");
+            throw new IllegalUPAArgumentException("Expected a value");
         }
     }
 
@@ -105,9 +105,9 @@ public class If extends FunctionExpression implements Cloneable {
             state = VALID;
             return this;
         } else if (state == VALID) {
-            throw new UPAIllegalArgumentException("No more tokens are expected");
+            throw new IllegalUPAArgumentException("No more tokens are expected");
         } else {
-            throw new UPAIllegalArgumentException("Expected a value");
+            throw new IllegalUPAArgumentException("Expected a value");
         }
     }
 
@@ -120,9 +120,9 @@ public class If extends FunctionExpression implements Cloneable {
             state = EXPECT_VALUE;
             return this;
         } else if (state == VALID) {
-            throw new UPAIllegalArgumentException("No more tokens are expected");
+            throw new IllegalUPAArgumentException("No more tokens are expected");
         } else {
-            throw new UPAIllegalArgumentException("Expected a condition");
+            throw new IllegalUPAArgumentException("Expected a condition");
         }
     }
 

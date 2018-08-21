@@ -7,7 +7,7 @@ import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.PersistenceNameFormat;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.config.decorations.DefaultDecorationFilter;
 import net.vpc.upa.impl.jpa.JPAAnnotationsAdapter;

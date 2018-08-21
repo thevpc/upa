@@ -13,7 +13,7 @@ import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.marshallers.FloatAsDoubleMarshaller;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.marshallers.StringToBlobDataMarshallerFactory;
+import net.vpc.upa.impl.persistence.shared.marshallers.StringToBlobUTFMarshallerFactory;
 import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
@@ -34,10 +34,10 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
         super.configureStore();
 
         Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", false);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, false);
         map.setBoolean("isFromClauseInDeleteStatementSupported", false);
         map.setBoolean("isReferencingSupported", Boolean.TRUE);
         map.setBoolean("isViewSupported", Boolean.TRUE);
@@ -61,8 +61,8 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
 //        getSqlManager().register(new DerbyTypeNameSQLProvider());
 //        getSqlManager().register(new DerbySelectSQLProvider());
         getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller(getMarshallManager()));
-        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(getMarshallManager(), 32672));
-        map.setInt("maxQueryColumnsCount", 1012);
+        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobUTFMarshallerFactory(getMarshallManager(), 32672));
+        map.setInt(PARAM_MAX_QUERY_COLUMN_COUNT, 1012);
 
     }
 

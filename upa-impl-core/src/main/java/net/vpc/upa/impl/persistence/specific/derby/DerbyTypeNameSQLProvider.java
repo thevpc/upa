@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.types.*;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
@@ -62,7 +62,7 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
             return "FLOAT";
         }
         if (PlatformUtils.isFloat64(platformType)) {
-                return "DOUBLE";
+            return "DOUBLE";
         }
         if (PlatformUtils.isAnyNumber(platformType)) {
             return "NUMBER";
@@ -71,20 +71,26 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
             return "INT";
         }
 
-        if(datatype instanceof TemporalType){
+        if (datatype instanceof TemporalType) {
             TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
-            if(temporalOption==null){
-                temporalOption=TemporalOption.DEFAULT;
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
             }
-            switch (temporalOption){
-                case DATE: return "DATE";
-                case DATETIME: return "TIMESTAMP";
-                case TIMESTAMP: return "TIMESTAMP";
-                case TIME: return "TIME";
-                case MONTH: return "DATE";
-                case YEAR: return "DATE";
-                default:{
-                    throw new IllegalArgumentException("Unsupported "+datatype);
+            switch (temporalOption) {
+                case DATE:
+                    return "DATE";
+                case DATETIME:
+                    return "TIMESTAMP";
+                case TIMESTAMP:
+                    return "TIMESTAMP";
+                case TIME:
+                    return "TIME";
+                case MONTH:
+                    return "DATE";
+                case YEAR:
+                    return "DATE";
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
                 }
             }
         }
@@ -96,7 +102,7 @@ public class DerbyTypeNameSQLProvider extends AbstractSQLProvider {
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new UPAIllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

@@ -13,6 +13,7 @@ public class TypeMarshallerNames {
     public static final String BIG_DECIMAL="bigdecimal";
     public static final String OBJECT="object";
     public static final String STRING_TO_BLOB="string2blob";
+    public static final String STRING_TO_CLOB="stringcblob";
     public static final String BOOLEAN_TO_INTEGER="boolean2integer";
     public static final String SERIALIZABLE="serializable";
     public static final String CHARACTER = "character";

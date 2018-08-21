@@ -33,7 +33,7 @@ import net.vpc.upa.impl.upql.ext.toext.CompiledExpressionToExpressionTranslator;
 import net.vpc.upa.impl.upql.ext.toext.MinusExpressionTranslator;
 import net.vpc.upa.impl.upql.ext.toext.MonthExpressionTranslator;
 import net.vpc.upa.impl.upql.ext.toext.HourExpressionTranslator;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.ext.toext.CurrentTimeExpressionTranslator;
@@ -221,7 +221,7 @@ public class ExpressionTranslationManager {
         while (true) {
             ExpressionTranslator p = expressionProviders.get(o0.getClass());
             if (p == null) {
-                throw new UPAIllegalArgumentException("No compiler found for " + o0.getClass());
+                throw new IllegalUPAArgumentException("No compiler found for " + o0.getClass());
             }
             CompiledExpressionExt e = p.translateExpression(o0, this, declarations);
             if (e == null) {

@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
 import net.vpc.upa.impl.persistence.NativeField;
@@ -13,9 +13,9 @@ import net.vpc.upa.impl.util.*;
 import net.vpc.upa.persistence.QueryResult;
 import net.vpc.upa.persistence.ResultMetaData;
 
-import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
+import net.vpc.upa.exceptions.UnexpectedException;
 
 /**
  * Created by vpc on 6/18/16.
@@ -104,12 +104,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 } else {
                     ancestor = bindingToTypeInfos0.get(parentBinding.getParent());
                     if (ancestor == null) {
-                        throw new UPAIllegalArgumentException("Unexpected");
+                        throw new IllegalUPAArgumentException("Unexpected");
                     }
                 }
                 if (ancestor != null) {
                     if (ancestor.entity == null) {
-                        throw new UPAIllegalArgumentException("Unsupported");
+                        throw new IllegalUPAArgumentException("Unsupported");
                     } else {
                         Field field = ancestor.entity.getField(parentBinding.getName());
                         Relationship manyToOneRelationship = field.getManyToOneRelationship();
@@ -118,7 +118,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                             columnFamily.documentType = itemAsDocument;
                             bindingToTypeInfos0.put(parentBinding, columnFamily);
                         } else {
-                            throw new UPAIllegalArgumentException("Unsupported");
+                            throw new IllegalUPAArgumentException("Unsupported");
                         }
                     }
                 } else {
@@ -164,7 +164,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         expectedIds.remove(fieldName);
                     } else {
                         //should never happen
-                        throw new UPAIllegalArgumentException("Should never Happen");
+                        throw new IllegalUPAArgumentException("Should never Happen");
                     }
                 }
                 ResultFieldParseData[] nonOrderedIdFields = columnFamily.idFields.toArray(new ResultFieldParseData[columnFamily.idFields.size()]);
@@ -202,7 +202,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             } else if (columnFamily.entity != null && !columnFamily.identifiable) {
                 columnFamily.parser = ColumnFamilyParserNoIdEntityResult.INSTANCE;
             } else {
-                throw new UPAIllegalArgumentException("Unsupported binding " + columnFamily.binding);
+                throw new IllegalUPAArgumentException("Unsupported binding " + columnFamily.binding);
             }
         }
         for (ResultFieldFamily columnFamily : columnFamilies) {
@@ -260,7 +260,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         }
                         int count = loadElementsToCache(referencesCache, entity, itemsToReduce2);
                         if (count != itemsToReduce2.size()) {
-                            throw new UPAIllegalArgumentException("Problem");
+                            throw new IllegalUPAArgumentException("Problem");
                         }
                     }
                 }
@@ -294,7 +294,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 workspace_hasTodos = !workspace_todos.isEmpty();
             }
             if(workspace_hasTodos){
-                throw new IllegalArgumentException("Should not have remaining Todos. This is a bug.");
+                throw new UnexpectedException("ShouldNoHaveRemainingTodos");
             }
         }
     }

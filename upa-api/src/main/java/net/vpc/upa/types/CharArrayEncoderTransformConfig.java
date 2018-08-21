@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.types;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.io.Serializable;
 
@@ -60,7 +60,7 @@ public class CharArrayEncoderTransformConfig implements DataTypeTransformConfig,
                 || encoder instanceof Class
                 || encoder instanceof CharArrayEncoder
         )) {
-            throw new UPAIllegalArgumentException("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
+            throw new IllegalUPAArgumentException("CharArrayEncoder shoud be of type String (as class/bean name), Class (implementing class) or CharArrayEncoder instance");
         }
         this.encoder = encoder;
     }

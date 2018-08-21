@@ -41,22 +41,22 @@ public abstract class AbstractProperties implements Properties {
     //////////////////////////////////////
     @Override
     public int getInt(String key) {
-        return getNumber(key,null).intValue();
+        return getNumber(key, null).intValue();
     }
 
     @Override
     public int getInt(String key, int defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof Number){
-            return ((Number)value).intValue();
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return Integer.parseInt(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type int");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "int");
     }
 
     @Override
@@ -78,16 +78,16 @@ public abstract class AbstractProperties implements Properties {
     @Override
     public long getLong(String key, long defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof Number){
-            return ((Number)value).longValue();
+        if (value instanceof Number) {
+            return ((Number) value).longValue();
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return Long.parseLong(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type long");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "long");
     }
 
     @Override
@@ -103,22 +103,22 @@ public abstract class AbstractProperties implements Properties {
     //////////////////////////////////////
     @Override
     public double getDouble(String key) {
-        return getNumber(key,null).doubleValue();
+        return getNumber(key, null).doubleValue();
     }
 
     @Override
     public double getDouble(String key, double defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof Number){
-            return ((Number)value).doubleValue();
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return Double.parseDouble(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type double");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "double");
     }
 
     @Override
@@ -134,22 +134,22 @@ public abstract class AbstractProperties implements Properties {
     //////////////////////////////////////
     @Override
     public float getFloat(String key) {
-        return getNumber(key,null).floatValue();
+        return getNumber(key, null).floatValue();
     }
 
     @Override
     public float getFloat(String key, float defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof Number){
-            return ((Number)value).floatValue();
+        if (value instanceof Number) {
+            return ((Number) value).floatValue();
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return Float.parseFloat(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type float");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "float");
     }
 
     @Override
@@ -166,26 +166,26 @@ public abstract class AbstractProperties implements Properties {
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public BigDecimal getBigDecimal(String key) {
-        return getBigDecimal(key,null);
+        return getBigDecimal(key, null);
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
     @Override
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof BigDecimal){
+        if (value instanceof BigDecimal) {
             return (BigDecimal) value;
         }
-        if(value instanceof BigInteger){
+        if (value instanceof BigInteger) {
             return new BigDecimal((BigInteger) value);
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return new BigDecimal(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type big decimal");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "decimal");
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
@@ -203,22 +203,22 @@ public abstract class AbstractProperties implements Properties {
 
     @Override
     public BigInteger getBigInteger(String key) {
-        return getBigInteger(key,null);
+        return getBigInteger(key, null);
     }
 
     @Override
     public BigInteger getBigInteger(String key, BigInteger defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof BigInteger){
+        if (value instanceof BigInteger) {
             return (BigInteger) value;
         }
-        if(value instanceof String){
+        if (value instanceof String) {
             return new BigInteger(String.valueOf(value));
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type big intege");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "bigint");
     }
 
     @Override
@@ -242,31 +242,31 @@ public abstract class AbstractProperties implements Properties {
     @Override
     public Number getNumber(String key, Number defaultValue) {
         Object value = getObject(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
-        if(value instanceof Number){
+        if (value instanceof Number) {
             return (Number) value;
         }
-        if(value instanceof String){
-            if(((String) value).contains(".")){
-                try{
+        if (value instanceof String) {
+            if (((String) value).contains(".")) {
+                try {
                     return Double.parseDouble(String.valueOf(value));
-                }catch(Exception ex){
+                } catch (Exception ex) {
                     return new BigDecimal(String.valueOf(value));
                 }
             }
-            try{
+            try {
                 try {
                     return Integer.parseInt(String.valueOf(value));
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     return Double.parseDouble(String.valueOf(value));
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 return new BigDecimal(String.valueOf(value));
             }
         }
-        throw new IllegalArgumentException("Property "+key+" was expected to be of type Number");
+        throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("PropertyExpectedOfType", key, "number");
     }
 
     @PortabilityHint(target = "C#", name = "suppress")
@@ -350,7 +350,6 @@ public abstract class AbstractProperties implements Properties {
         setAll(other.toMap(), keys);
     }
 
-    public abstract String getSinglePropertyName() ;
-
+    public abstract String getSinglePropertyName();
 
 }

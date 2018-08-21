@@ -7,7 +7,7 @@ package net.vpc.upa.impl.upql.util;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.util.StringUtils;
 
@@ -195,7 +195,7 @@ public class UPQLUtils {
 
         Entity entity = o.getEntity();
         if (entity == null) {
-            throw new UPAIllegalArgumentException("Key enumeration must by associated to and entity");
+            throw new IllegalUPAArgumentException("Key enumeration must by associated to and entity");
         }
 
         Key key = entity.getBuilder().idToKey(o.getId());
@@ -238,7 +238,7 @@ public class UPQLUtils {
         }
         if (ret == null) {
 //            ret = new Equals(new Literal(1), new Literal(1));
-            throw new UPAIllegalArgumentException("Unable to resolve Id from " + o);
+            throw new IllegalUPAArgumentException("Unable to resolve Id from " + o);
         }
         return ret;
     }

@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.persistence.NativeResult;
 
 /**
@@ -59,12 +60,17 @@ public class DefaultUConnection extends AbstractUConnection {
             }
         }
         final PreparedSQLUPQLStatement finalS = s;
-        NativeResult resultSet = UPADeadLock.monitor("executeQuery " + tableDebugString, query, 20, new Throwable(), new UPADeadLock.TAction<NativeResult, RuntimeException>() {
-            @Override
-            public NativeResult run() throws RuntimeException {
-                return finalS.executeQuery();
-            }
-        });
+        NativeResult resultSet;
+        if (UPAImplDefaults.DEBUG_MODE) {
+            resultSet = UPADeadLock.monitor("executeQuery " + tableDebugString, query, 20, new Throwable(), new UPADeadLock.TAction<NativeResult, RuntimeException>() {
+                @Override
+                public NativeResult run() {
+                    return finalS.executeQuery();
+                }
+            });
+        } else {
+            resultSet = finalS.executeQuery();
+        }
         if (types == null) {
 
             int columnCount;

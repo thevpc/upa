@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.derby;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.upql.ext.expr.CompiledToString;
 import net.vpc.upa.impl.util.StringUtils;
 
@@ -26,7 +26,7 @@ class DerbyToStringSQLProvider extends DerbyFunctionSQLProvider {
 
     public String simplify(EntityExecutionContext ctx, SQLManager sqlManager, ExpressionDeclarationList declarations, CompiledExpressionExt... params) throws UPAException {
         if (params.length != 1) {
-            throw new UPAIllegalArgumentException("bad number of params for function '" + getExpressionType().getSimpleName() + "' .\n Error near " + getExpressionType().getSimpleName() + "(" + StringUtils.format(params) + ")");
+            throw new IllegalUPAArgumentException("bad number of params for function '" + getExpressionType().getSimpleName() + "' .\n Error near " + getExpressionType().getSimpleName() + "(" + StringUtils.format(params) + ")");
         }
         DataTypeTransform t = params[0].getTypeTransform();
         int len = 255;

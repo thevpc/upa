@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     SyntaxGrammarUC.class,
     SyntaxReservedWordsUC.class,
-    SyntaxUpaXmlValidatorUC.class,
+    SyntaxUPAXmlValidatorUC.class,
 })
 public class UPASuiteTestSyntax {
     

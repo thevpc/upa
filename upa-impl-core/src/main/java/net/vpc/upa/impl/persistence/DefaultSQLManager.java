@@ -7,7 +7,6 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
-import java.util.NoSuchElementException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -84,7 +83,7 @@ public class DefaultSQLManager implements SQLManager {
                 return p.getSQL(expression, context, this, declarations);
             }
         }
-        throw new NoSuchElementException(String.valueOf(expression));
+        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingSqlProvider",(expression==null?"null":expression.getClass().getName()));
     }
 
     @Override

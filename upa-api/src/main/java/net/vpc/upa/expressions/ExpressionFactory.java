@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -68,13 +68,13 @@ public class ExpressionFactory {
                 try {
                     c = defaultInstance.getConstructor(new Class[]{Object.class});
                 } catch (NoSuchMethodException e2) {
-                    throw new UPAIllegalArgumentException("Could not cast " + e + " as Expression", e1);
+                    throw new IllegalUPAArgumentException("Could not cast " + e + " as Expression", e1);
                 }
             }
             try {
                 return (Expression) c.newInstance(new Object[]{e});
             } catch (Throwable e1) {
-                throw new UPAIllegalArgumentException(e1.toString());
+                throw new IllegalUPAArgumentException(e1.toString());
             }
         }
     }

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.config;
 
 import net.vpc.upa.impl.util.EntityNameAndType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.EntityDescriptor;
 import net.vpc.upa.exceptions.UPAException;
@@ -54,7 +54,7 @@ public class EntityDescriptorResolver {
             } else if (item instanceof EntityDescriptor) {
                 all.add((EntityDescriptor) item);
             } else {
-                throw new UPAIllegalArgumentException("Unsupported");
+                throw new IllegalUPAArgumentException("Unsupported");
             }
         }
         for (Set<Class> set : entityClassesByName.values()) {
@@ -66,7 +66,7 @@ public class EntityDescriptorResolver {
 
     public EntityDescriptor resolve(Object source) throws UPAException {
         if (source == null) {
-            throw new UPAIllegalArgumentException("null entity descriptor");
+            throw new IllegalUPAArgumentException("null entity descriptor");
         }
         if (source instanceof EntityDescriptor) {
             return (EntityDescriptor) source;

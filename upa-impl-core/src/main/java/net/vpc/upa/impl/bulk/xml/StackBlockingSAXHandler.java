@@ -134,7 +134,7 @@ public class StackBlockingSAXHandler<E> implements XmlSAXParser, StackBlockingSA
             throw new RuntimeException();
         } catch (EOFException ex) {
             //never happens
-            throw new NoSuchElementException();
+            throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingElement","NextToRemove");
         }
     }
 

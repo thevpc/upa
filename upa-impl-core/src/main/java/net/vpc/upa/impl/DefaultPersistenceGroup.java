@@ -300,7 +300,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     public void setCurrentSession(Session session) throws UPAException {
         synchronized (sessions) {
             if (!sessions.contains(session)) {
-                throw new NoSuchElementException("Session not found");
+                throw new net.vpc.upa.exceptions.NoSuchUPAElementException("Session not found");
             }
         }
         checkManagedSession(session);
@@ -336,7 +336,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     public void close() throws UPAException {
         log.log(Level.FINE, "PersistenceGroup {0} Closing", getName());
         synchronized (sessions) {
-            for (Session next : sessions) {
+            for (Session next : sessions.toArray(new Session[sessions.size()])) {
                 next.close();
             }
             sessions.clear();

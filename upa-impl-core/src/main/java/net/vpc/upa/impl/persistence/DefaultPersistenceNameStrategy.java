@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import net.vpc.upa.*;
 import net.vpc.upa.config.PersistenceNameType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
@@ -500,11 +500,11 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
                     }
                     return pattern.replace("{OBJECT_NAME}", s.toString());
                 } else {
-                    throw new UPAIllegalArgumentException("Unsupported format. User one of objectName,ObjectName,objectname,OBJECTNAME,object_name,OBJECT_NAME");
+                    throw new IllegalUPAArgumentException("Unsupported format. User one of objectName,ObjectName,objectname,OBJECTNAME,object_name,OBJECT_NAME");
                 }
             }
         } else {
-            throw new UPAIllegalArgumentException("Unsupported format. User one of *,{},{objectName},{ObjectName},{objectname},{OBJECTNAME},{object_name},{OBJECT_NAME} patterns");
+            throw new IllegalUPAArgumentException("Unsupported format. User one of *,{},{objectName},{ObjectName},{objectname},{OBJECTNAME},{object_name},{OBJECT_NAME} patterns");
         }
         return objectName;
     }

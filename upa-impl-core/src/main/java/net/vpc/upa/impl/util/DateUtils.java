@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.awt.image.TileObserver;
 import java.sql.Time;
@@ -27,7 +27,7 @@ public class DateUtils {
         try {
             return UNIVERSAL_DATE_TIME_FORMAT.parse(date);
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -39,7 +39,7 @@ public class DateUtils {
         try {
             return UNIVERSAL_YEAR_FORMAT.parse(date);
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -51,7 +51,7 @@ public class DateUtils {
         try {
             return UNIVERSAL_TIMESTAMP_FORMAT.parse(date);
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -63,7 +63,7 @@ public class DateUtils {
         try {
             return UNIVERSAL_MONTH_YEAR_FORMAT.parse(date);
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -75,7 +75,7 @@ public class DateUtils {
         try {
             return new java.sql.Date(UNIVERSAL_DATE_FORMAT.parse(date).getTime());
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -87,7 +87,7 @@ public class DateUtils {
         try {
             return new Time(UNIVERSAL_TIME_FORMAT.parse(date).getTime());
         } catch (ParseException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 

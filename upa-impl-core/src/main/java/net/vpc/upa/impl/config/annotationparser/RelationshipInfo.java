@@ -12,7 +12,7 @@ import java.util.List;
 import net.vpc.upa.RelationshipDescriptor;
 import net.vpc.upa.config.Hierarchy;
 import net.vpc.upa.config.OneToOne;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.config.Decoration;
@@ -138,7 +138,7 @@ class RelationshipInfo implements RelationshipDescriptor {
             }
             Class<?> nativeClass = getFieldType();
             if (!nativeClass.equals(entityType)) {
-                throw new UPAIllegalArgumentException("Hierarchy Relationship invalid as " + nativeClass + " <> " + entityType);
+                throw new IllegalUPAArgumentException("Hierarchy Relationship invalid as " + nativeClass + " <> " + entityType);
             }
             if (gid.getString("path").length() > 0) {
                 hierarchyPathField = gid.getString("path");
@@ -167,13 +167,13 @@ class RelationshipInfo implements RelationshipDescriptor {
             oneToOne = manyToOne?false:true;
             Class<?> nativeClass = getFieldType();
             if (nativeClass.isArray()) {
-                throw new UPAIllegalArgumentException("Invalid Array type " + nativeClass + " for ManyToOne");
+                throw new IllegalUPAArgumentException("Invalid Array type " + nativeClass + " for ManyToOne");
             }
             if (Collection.class.isAssignableFrom(nativeClass)) {
-                throw new UPAIllegalArgumentException("Invalid Collection type " + nativeClass + " for ManyToOne");
+                throw new IllegalUPAArgumentException("Invalid Collection type " + nativeClass + " for ManyToOne");
             }
             if (nativeClass.isEnum()) {
-                throw new UPAIllegalArgumentException("Enumerations are not supported in Relations");
+                throw new IllegalUPAArgumentException("Enumerations are not supported in Relations");
             }
 
             if (gid.getString("name").length() > 0) {
@@ -194,7 +194,7 @@ class RelationshipInfo implements RelationshipDescriptor {
             Class _targetEntityType = gid.getType("targetEntityType");
             if (_targetEntity.length() > 0 && !_targetEntityType.equals(void.class)) {
                 //problem
-                throw new UPAIllegalArgumentException("Could not support both targetEntity and targetEntityType");
+                throw new IllegalUPAArgumentException("Could not support both targetEntity and targetEntityType");
             } else if (_targetEntity.length() > 0) {
                 targetEntity = _targetEntity;
                 targetEntityType = null;
@@ -205,7 +205,7 @@ class RelationshipInfo implements RelationshipDescriptor {
             if (UPAUtils.isSimpleFieldType(nativeClass)) {
                 if ((targetEntityType == null || targetEntityType.equals(void.class))
                         && targetEntity == null) {
-                    throw new UPAIllegalArgumentException("Missing targetEntityType in field " + baseFieldInfo.getEntityInfo().getName() + "." + name);
+                    throw new IllegalUPAArgumentException("Missing targetEntityType in field " + baseFieldInfo.getEntityInfo().getName() + "." + name);
                 }
             }
             if (gid.getConfig().getOrder() > manyToOneConfigOrder) {

@@ -4,26 +4,14 @@
  */
 package net.vpc.upa.impl.persistence;
 
-import java.lang.annotation.Annotation;
 import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.Properties;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.persistence.ConnectionProfile;
-import net.vpc.upa.persistence.DatabaseProduct;
-import net.vpc.upa.impl.persistence.specific.derby.DerbyPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.interbase.InterBasePersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mckoi.McKoiPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mssqlserver.MSSQLServerPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mysql.MySQLPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.oracle.OraclePersistenceStore;
 import net.vpc.upa.persistence.PersistenceStoreFactory;
 import net.vpc.upa.persistence.PersistenceStore;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import net.vpc.upa.Property;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -89,7 +77,7 @@ public class DefaultPersistenceStoreFactory implements PersistenceStoreFactory {
             }
         }
         if(best==null){
-            throw new UPAIllegalArgumentException("Unsupported profile. Unable to create Store for "+connectionProfile);
+            throw new IllegalUPAArgumentException("Unsupported profile. Unable to create Store for "+connectionProfile);
         }
         return best;
     }

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.vpc.upa.config.PersistenceNameType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -45,10 +45,10 @@ class StructureCommitComparator implements Comparator<StructureCommit> {
         Integer p1 = pos.get(oo1);
         Integer p2 = pos.get(oo2);
         if(p1==null){
-            throw new UPAIllegalArgumentException("Unknown order for "+oo1);
+            throw new IllegalUPAArgumentException("Unknown order for "+oo1);
         }
         if(p2==null){
-            throw new UPAIllegalArgumentException("Unknown order for "+oo2);
+            throw new IllegalUPAArgumentException("Unknown order for "+oo2);
         }
         return p1 - p2;
     }

@@ -2,7 +2,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.extensions.HierarchyExtension;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
@@ -65,7 +65,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
                         treeEntity = (Entity) childReferrer;
                     } else {
                         if (!treeEntity.getName().equals(((Entity) childReferrer).getName())) {
-                            throw new UPAIllegalArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + o);
+                            throw new IllegalUPAArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + o);
                         }
                     }
                 }
@@ -89,7 +89,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
                         treeEntity = (Entity) parentReferrer;
                     } else {
                         if (!treeEntity.getName().equals(((Entity) parentReferrer).getName())) {
-                            throw new UPAIllegalArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + o);
+                            throw new IllegalUPAArgumentException("Ambiguous or Invalid Type " + treeEntity.getName() + " in TreeEntity near " + o);
                         }
                     }
                 }
@@ -103,7 +103,7 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
                 }
                 ((CompiledParam) p).setValue(rr.getBuilder().objectToId(co));
                 if (rr.getIdFields().size() > 1) {
-                    throw new UPAIllegalArgumentException("Not supported");
+                    throw new IllegalUPAArgumentException("Not supported");
                 }
                 ((CompiledParam) p).setTypeTransform((rr.getIdFields().get(0)).getEffectiveTypeTransform());
             }
@@ -114,19 +114,19 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
             if (expectedEntity != null) {
                 treeEntity = expectedEntity;
             } else {
-                throw new UPAIllegalArgumentException("Unable to resolve Hierarchy Entity in " + o);
+                throw new IllegalUPAArgumentException("Unable to resolve Hierarchy Entity in " + o);
             }
         } else if (expectedEntity != null && !expectedEntity.getName().equals(treeEntity.getName())) {
-            throw new UPAIllegalArgumentException("Expected " + expectedEntity.getName() + " but found " + treeEntity.getName() + " in " + o);
+            throw new IllegalUPAArgumentException("Expected " + expectedEntity.getName() + " but found " + treeEntity.getName() + " in " + o);
         }
 
         ManyToOneRelationship t = HierarchicalRelationshipSupport.getTreeRelation(treeEntity);
         if (t == null) {
-            throw new UPAIllegalArgumentException("Hierarchy Relationship not found");
+            throw new IllegalUPAArgumentException("Hierarchy Relationship not found");
         }
         HierarchyExtension s = t.getHierarchyExtension();
         if (s == null) {
-            throw new UPAIllegalArgumentException("Not a valid TreeEntity");
+            throw new IllegalUPAArgumentException("Not a valid TreeEntity");
         }
         Field pathField = treeEntity.getField(s.getHierarchyPathField());
         String pathSep = s.getHierarchyPathSeparator();
@@ -148,15 +148,15 @@ public final class IsHierarchyDescendantCompiled extends CompiledQLFunctionExpre
                 CompiledVar v = new CompiledVar(field.getName());
                 finest.setChild(v);
             } else {
-                throw new UPAIllegalArgumentException("Expected " + field.getEntity().getName() + " var name");
+                throw new IllegalUPAArgumentException("Expected " + field.getEntity().getName() + " var name");
             }
         } else {
-            throw new UPAIllegalArgumentException("Expected " + field.getEntity().getName() + " var name");
+            throw new IllegalUPAArgumentException("Expected " + field.getEntity().getName() + " var name");
         }
         id = id.copy();
         List<Field> primaryFields = field.getEntity().getIdFields();
         if (primaryFields.size() > 1) {
-            throw new UPAIllegalArgumentException("Composite ID unsupported for function isHierarchyDescendant");
+            throw new IllegalUPAArgumentException("Composite ID unsupported for function isHierarchyDescendant");
         }
         DataType pkType = primaryFields.get(0).getDataType();
         CompiledExpressionExt strId = null;

@@ -131,8 +131,8 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
             } catch (Exception ee) {
                 ee.printStackTrace();
             }
-            isUpdateComplexValuesStatementSupported = getStoreParameters().getBoolean("isUpdateComplexValuesStatementSupported", false);
-            isUpdateComplexValuesIncludingUpdatedTableSupported = getStoreParameters().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+            isUpdateComplexValuesStatementSupported = getStoreParameters().getBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, false);
+            isUpdateComplexValuesIncludingUpdatedTableSupported = getStoreParameters().getBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, false);
         }
 
     }

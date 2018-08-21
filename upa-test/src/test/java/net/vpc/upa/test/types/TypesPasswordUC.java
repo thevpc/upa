@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Ignore;
+import net.vpc.upa.impl.util.UPADeadLock;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -32,6 +33,8 @@ public class TypesPasswordUC {
     @Test
     public void process() {
         bo.process();
+        System.out.println(UPADeadLock.getCurrentMonitorsCount());
+        UPADeadLock.checkDeadLocks();
     }
 
     public static class Business {

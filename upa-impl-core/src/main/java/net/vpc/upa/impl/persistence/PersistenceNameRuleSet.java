@@ -17,31 +17,31 @@ public class PersistenceNameRuleSet {
         if (r instanceof ColumnPersistenceNameRule) {
             ColumnPersistenceNameRule cr = (ColumnPersistenceNameRule) r;
             if (StringUtils.isNullOrEmpty(cr.getEntityName())) {
-                throw new IllegalArgumentException("InvalidColumnPersistenceNameRule");
+                throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("InvalidColumnPersistenceNameRule");
             }
             if (StringUtils.isNullOrEmpty(cr.getFieldName())) {
-                throw new IllegalArgumentException("InvalidColumnPersistenceNameRule");
+                throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("InvalidColumnPersistenceNameRule");
             }
             return "ColumnPersistenceNameRule:" + cr.getEntityName() + ":" + cr.getFieldName();
         }
         if (r instanceof TablePersistenceNameRule) {
             TablePersistenceNameRule cr = (TablePersistenceNameRule) r;
             if (StringUtils.isNullOrEmpty(cr.getEntityName())) {
-                throw new IllegalArgumentException("InvalidColumnPersistenceNameRule");
+                throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("InvalidColumnPersistenceNameRule");
             }
             return "TablePersistenceNameRule:" + cr.getEntityName();
         }
         if (r instanceof IndexPersistenceNameRule) {
             IndexPersistenceNameRule cr = (IndexPersistenceNameRule) r;
             if (StringUtils.isNullOrEmpty(cr.getEntityName())) {
-                throw new IllegalArgumentException("InvalidColumnPersistenceNameRule");
+                throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("InvalidColumnPersistenceNameRule");
             }
             return "IndexPersistenceNameRule:" + cr.getEntityName() + ":" + cr.getIndexName();
         }
         if (r instanceof RelationshipPersistenceNameRule) {
             RelationshipPersistenceNameRule cr = (RelationshipPersistenceNameRule) r;
             if (StringUtils.isNullOrEmpty(cr.getRelationName())) {
-                throw new IllegalArgumentException("InvalidColumnPersistenceNameRule");
+                throw new net.vpc.upa.exceptions.IllegalUPAArgumentException("InvalidColumnPersistenceNameRule");
             }
             return "RelationshipPersistenceNameRule:" + cr.getRelationName();
         }

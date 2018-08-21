@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 
@@ -30,7 +30,7 @@ public class CriteriaBuilder {
             return byId(UPAUtils.castId(entity, objects[0]));
         }
         if (entity == null) {
-            throw new UPAIllegalArgumentException("Missing Entity");
+            throw new IllegalUPAArgumentException("Missing Entity");
         }
         return byExpression(entity.getBuilder().idListToExpression(ids, UPQLUtils.THIS));
     }
@@ -56,7 +56,7 @@ public class CriteriaBuilder {
             return byId(objects[0]);
         }
         if (entity == null) {
-            throw new UPAIllegalArgumentException("Missing Entity");
+            throw new IllegalUPAArgumentException("Missing Entity");
         }
         return byExpression(entity.getBuilder().keyListToExpression(ids, UPQLUtils.THIS));
     }

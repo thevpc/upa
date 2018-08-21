@@ -17,7 +17,7 @@ import net.vpc.upa.config.Property;
 import net.vpc.upa.config.ScanConfig;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.UPAContextConfigAnnotationParser;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -55,7 +55,7 @@ public class DefaultUPAContextConfigAnnotationParser implements UPAContextConfig
             }
         }
         if (!ok) {
-            throw new UPAIllegalArgumentException("Missing config annotation for " + clazz);
+            throw new IllegalUPAArgumentException("Missing config annotation for " + clazz);
         }
         return c;
     }

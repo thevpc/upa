@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 //            Expression, Select
 public final class IsHierarchyDescendant extends FunctionExpression
@@ -63,7 +63,7 @@ public final class IsHierarchyDescendant extends FunctionExpression
             } else if (entityName instanceof Var) {
                 Var v = (Var) entityName;
                 if (v.getApplier() != null) {
-                    throw new UPAIllegalArgumentException("Invalid EntityName");
+                    throw new IllegalUPAArgumentException("Invalid EntityName");
                 }
                 this.entityName = new EntityName(v.getName());
             } else if (entityName instanceof Literal) {
@@ -73,10 +73,10 @@ public final class IsHierarchyDescendant extends FunctionExpression
                 } else if ((v.getValue() instanceof String)) {
                     this.entityName = new EntityName((String) v.getValue());
                 } else {
-                    throw new UPAIllegalArgumentException("Invalid EntityName");
+                    throw new IllegalUPAArgumentException("Invalid EntityName");
                 }
             } else {
-                throw new UPAIllegalArgumentException("Invalid EntityName");
+                throw new IllegalUPAArgumentException("Invalid EntityName");
             }
         } else {
             this.entityName = new EntityName("");

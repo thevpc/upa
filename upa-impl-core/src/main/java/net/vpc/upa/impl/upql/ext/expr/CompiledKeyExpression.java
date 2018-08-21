@@ -15,7 +15,7 @@ import net.vpc.upa.exceptions.UPAException;
 
 import java.util.List;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -33,7 +33,7 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
 
     public CompiledKeyExpression(Entity entity, Object key, String alias) {
         if (key == null) {
-            throw new UPAIllegalArgumentException("Key could not be null");
+            throw new IllegalUPAArgumentException("Key could not be null");
         }
 //        entity.getIdType().cast(key);
         this.key = key;

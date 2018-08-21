@@ -22,7 +22,6 @@ import net.vpc.upa.impl.util.xml.DefaultXmlFactory;
 import net.vpc.upa.impl.util.xml.XmlFactory;
 import net.vpc.upa.persistence.*;
 
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -155,10 +154,10 @@ public class RootObjectFactory extends AbstractObjectFactory {
 
     @Override
     public <T> T createObject(Class<T> type, String name) {
-        return createObject(type, name,null);
+        return createObject(type, name, null);
     }
 
-    protected <T> T createObject(Class<T> type, String name,PlatformObjectFactory platformObjectFactory) {
+    protected <T> T createObject(Class<T> type, String name, PlatformObjectFactory platformObjectFactory) {
         T s = (T) singletons.get(type.getName());
         if (s != null) {
             return s;
@@ -169,15 +168,15 @@ public class RootObjectFactory extends AbstractObjectFactory {
                 return parentFactory.createObject(type, name);
             }
             if (PlatformUtils.isAbstract(type) || PlatformUtils.isInterface(type)) {
-                throw new NoSuchElementException(type.getSimpleName());
+                throw new net.vpc.upa.exceptions.NoSuchUPAElementException("NoSuchObject", type.getSimpleName());
             }
             best = type;
         }
         if (best == null) {
-            best=type;
+            best = type;
         }
-        if(platformObjectFactory!=null){
-            return (T) platformObjectFactory.createObject(best,name);
+        if (platformObjectFactory != null) {
+            return (T) platformObjectFactory.createObject(best, name);
         }
         try {
             return (T) createPlatformInstance(best, name);
@@ -222,13 +221,12 @@ public class RootObjectFactory extends AbstractObjectFactory {
     protected Object createPlatformInstance(Class cls, String name) {
         if (platformObjectFactory == null) {
             if (cls.equals(PlatformObjectFactory.class) || cls.equals(DefaultPlatformObjectFactory.class)) {
-                platformObjectFactory= DefaultPlatformObjectFactory.INSTANCE;
-            }else {
-                platformObjectFactory = createObject(PlatformObjectFactory.class,null,DefaultPlatformObjectFactory.INSTANCE);
+                platformObjectFactory = DefaultPlatformObjectFactory.INSTANCE;
+            } else {
+                platformObjectFactory = createObject(PlatformObjectFactory.class, null, DefaultPlatformObjectFactory.INSTANCE);
             }
         }
         return platformObjectFactory.createObject(cls, name);
     }
-
 
 }

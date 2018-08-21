@@ -9,7 +9,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.Properties;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.*;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
@@ -41,6 +41,17 @@ import java.util.logging.Logger;
 //@PortabilityHint(target = "C#", name = "partial")
 public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
+    public static final String PARAM_MAX_QUERY_COLUMN_COUNT = "maxQueryColumnsCount";
+    public static final String PARAM_MAX_QUERY_JOIN_COUNT = "maxQueryJoinCount";
+    public static final String PARAM_IS_COMPLEX_SELECT_SUPPORTED = "isComplexSelectSupported";
+    public static final String PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED = "isUpdateComplexValuesStatementSupported";
+    public static final String PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED = "isUpdateComplexValuesIncludingUpdatedTableSupported";
+    public static final String PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED = "isFromClauseInUpdateStatementSupported";
+    public static final String PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED = "isFromClauseInDeleteStatementSupported";
+    public static final String PARAM_IS_REFERENCING_SUPPORTED = "isReferencingSupported";
+    public static final String PARAM_IS_VIEW_SUPPORTED = "isViewSupported";
+    public static final String PARAM_IS_TOP_SUPPORTED = "isTopSupported";
+    
     public static final String DRIVER_TYPE_EMBEDDED = "EMBEDDED";
     public static final String DRIVER_TYPE_DEFAULT = "DEFAULT";
     public static final String DRIVER_TYPE_DATASOURCE = "DATASOURCE";
@@ -132,14 +143,14 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     public void configureStore() {
         net.vpc.upa.Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", false);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", false);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", false);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
-        map.setBoolean("isReferencingSupported", true);
-        map.setBoolean("isViewSupported", false);
-        map.setBoolean("isTopSupported", false);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_TOP_SUPPORTED, false);
     }
 
     public final MarshallManager getMarshallManager() {
@@ -177,27 +188,27 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public boolean isComplexSelectSupported() {
-        return getStoreParameters().getBoolean("isComplexSelectSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, false);
     }
 
     public boolean isFromClauseInUpdateStatementSupported() {
-        return getStoreParameters().getBoolean("isFromClauseInUpdateStatementSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, false);
     }
 
     public boolean isFromClauseInDeleteStatementSupported() {
-        return getStoreParameters().getBoolean("isFromClauseInDeleteStatementSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, false);
     }
 
     public boolean isReferencingSupported() {
-        return getStoreParameters().getBoolean("isReferencingSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_REFERENCING_SUPPORTED, false);
     }
 
     public boolean isViewSupported() {
-        return getStoreParameters().getBoolean("isViewSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_VIEW_SUPPORTED, false);
     }
 
     public boolean isTopSupported() {
-        return getStoreParameters().getBoolean("isTopSupported", false);
+        return getStoreParameters().getBoolean(PARAM_IS_TOP_SUPPORTED, false);
     }
 
     //    @Override
@@ -411,11 +422,11 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     protected int getMaxQueryJoinCount() {
-        return getStoreParameters().getInt("maxQueryJoinCount", -1);
+        return getStoreParameters().getInt(PARAM_MAX_QUERY_JOIN_COUNT, -1);
     }
 
     protected int getMaxQueryColumnsCount() {
-        return getStoreParameters().getInt("maxQueryColumnsCount", -1);
+        return getStoreParameters().getInt(PARAM_MAX_QUERY_COLUMN_COUNT, -1);
     }
 
     public QueryExecutor createExecutor(
@@ -485,7 +496,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
                 List<Expression> params = statement.findAll(ExpressionFilterFactory.forParam(name));
                 if (params.isEmpty()) {
-                    throw new UPAIllegalArgumentException("Parameter not found " + name);
+                    throw new IllegalUPAArgumentException("Parameter not found " + name);
                 }
                 for (Expression e : params) {
                     Param p = (Param) e;
@@ -500,11 +511,11 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 Integer index = entry.getKey();
                 Object value = entry.getValue();
                 if (params.size() <= index) {
-                    throw new UPAIllegalArgumentException("Parameter not found " + index);
+                    throw new IllegalUPAArgumentException("Parameter not found " + index);
                 }
                 Param p = (Param) params.get(index);
                 if (p == null) {
-                    throw new UPAIllegalArgumentException("Parameter not found " + index);
+                    throw new IllegalUPAArgumentException("Parameter not found " + index);
                 }
                 p.setValue(value);
                 p.setUnspecified(false);
@@ -615,7 +626,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                     c = expression1 == null ? null : UPAUtils.resolveDataTypeTransform(expression1);
                 }
                 if (c == null) {
-                    throw new UPAIllegalArgumentException("Unable to resolve type for expression : " + expression1);
+                    throw new IllegalUPAArgumentException("Unable to resolve type for expression : " + expression1);
                 }
 
                 boolean fieldNoTypeTransform = noTypeTransform;
@@ -1225,7 +1236,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } else if (object instanceof String) {
             return persistenceNameStrategy.getIdentifierPersistenceName((String) object, e.getSpec(), condition);
         } else {
-            throw new UPAIllegalArgumentException("UnsupportedPersistenceNameType");
+            throw new IllegalUPAArgumentException("UnsupportedPersistenceNameType");
         }
 
     }
@@ -1289,7 +1300,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public void alterPersistenceUnitRemoveObject(UPAObject object) throws UPAException {
-        throw new UPAIllegalArgumentException("No supported");
+        throw new IllegalUPAArgumentException("No supported");
 //        StructureStrategy option = persistenceManager.getConnectionProfile().getStructureStrategy();
 //        switch (option) {
 //            case DROP:
@@ -1328,7 +1339,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 
     @Override
     public void alterPersistenceUnitUpdateObject(UPAObject oldObject, UPAObject newObject, Set<String> updates) throws UPAException {
-        throw new UPAIllegalArgumentException("No supported");
+        throw new IllegalUPAArgumentException("No supported");
 //        StructureStrategy option = persistenceManager.getConnectionProfile().getStructureStrategy();
 //        switch (option) {
 //            case DROP:
@@ -1408,7 +1419,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         if (object instanceof Index) {
             return getIndexPersistenceState((Index) object, spec, entityExecutionContext, connection);
         }
-        throw new UPAIllegalArgumentException("Unknown type " + object);
+        throw new IllegalUPAArgumentException("Unknown type " + object);
         //log.log(Level.FINE,"getPersistenceState " + object + " " + PersistenceState.TRANSIENT);
         //return PersistenceState.TRANSIENT;
     }
@@ -1436,7 +1447,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             }
             return persistenceState;
         } else {
-            throw new UPAIllegalArgumentException("Unknown Spec for Entity : " + spec);
+            throw new IllegalUPAArgumentException("Unknown Spec for Entity : " + spec);
         }
     }
 
@@ -1489,7 +1500,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
             return status;
         } else {
-            throw new UPAIllegalArgumentException("Unknown Spec for Entity : " + spec);
+            throw new IllegalUPAArgumentException("Unknown Spec for Entity : " + spec);
         }
     }
 

@@ -26,16 +26,16 @@ public class FormulaUpdateProcessor {
 
     boolean nothingToValidate = false;
     boolean forceExpressionTypeCasting = false;
-    private Map<Integer, ValidationPass[]> orderedPasses = new HashMap<Integer, ValidationPass[]>(1);
+    private final Map<Integer, ValidationPass[]> orderedPasses = new HashMap<Integer, ValidationPass[]>(1);
     // private TreeSet passIndexes = new TreeSet();
-    private Set<Field> inUseFields = new HashSet<Field>();
+    private final Set<Field> inUseFields = new HashSet<Field>();
     private int size = 0;
-    private EntityOperationManager entityOperationManager;
-    private PersistenceUnit persistenceUnit;
-    private Entity entity;
-    private boolean onPersist;
-    private Expression expr;
-    private EntityExecutionContext context;
+    private final EntityOperationManager entityOperationManager;
+    private final PersistenceUnit persistenceUnit;
+    private final Entity entity;
+    private final boolean onPersist;
+    private final Expression expr;
+    private final EntityExecutionContext context;
     private List<Object> keysToUpdate = null;
     boolean isUpdateComplexValuesStatementSupported;
     boolean isUpdateComplexValuesIncludingUpdatedTableSupported;
@@ -50,8 +50,8 @@ public class FormulaUpdateProcessor {
         for (Field field : fields) {
             addField(field);
         }
-        isUpdateComplexValuesStatementSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean("isUpdateComplexValuesStatementSupported", false);
-        isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
+        isUpdateComplexValuesStatementSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean(AbstractPersistenceStore.PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, false);
+        isUpdateComplexValuesIncludingUpdatedTableSupported = persistenceUnit.getPersistenceStore().getStoreParameters().getBoolean(AbstractPersistenceStore.PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, false);
     }
 
     private static Expression getFieldExpression(Field field, boolean forPersist) {
@@ -66,7 +66,7 @@ public class FormulaUpdateProcessor {
         if (inUseFields.contains(f)) {
             return false;
         }
-        Formula formula = UPAUtils.getFormula(f,onPersist);
+        Formula formula = UPAUtils.getFormula(f, onPersist);
         ValidationPass pass = null;
         int formulaPassInteger = onPersist ? f.getPersistFormulaOrder() : f.getUpdateFormulaOrder();
         // passIndexes.add(formulaPassInteger);
@@ -228,7 +228,7 @@ public class FormulaUpdateProcessor {
     protected int validateCustomMultiFormula(Set<Field> fields) throws UPAException {
         LinkedHashSet<CustomMultiFormula> unique = new LinkedHashSet<CustomMultiFormula>();
         for (Field field : fields) {
-            CustomMultiFormula c = (CustomMultiFormula) UPAUtils.getFormula(field,onPersist);
+            CustomMultiFormula c = (CustomMultiFormula) UPAUtils.getFormula(field, onPersist);
             unique.add(c);
         }
         DefaultCustomMultiFormulaContext context = new DefaultCustomMultiFormulaContext(fields, expr, this.context);
@@ -259,7 +259,7 @@ public class FormulaUpdateProcessor {
             // "+keysToUpdate[r]);
             Document u = entity.getBuilder().createDocument();
             for (Field field : fields) {
-                CustomFormula cf = (CustomFormula) UPAUtils.getFormula(field,onPersist);
+                CustomFormula cf = (CustomFormula) UPAUtils.getFormula(field, onPersist);
                 Object v = cf.getValue(new DefaultCustomFormulaContext(field, aKeysToUpdate, context));
                 u.setObject(field.getName(), new Cast(new Param(null, v), field.getDataType()));
             }
@@ -354,8 +354,8 @@ public class FormulaUpdateProcessor {
 //        EntityBuilder eb = entity.getBuilder();
 //        // System.out.println("DEFAULT_VALIDATION = " +
 //        // validationPass.pass+" : "+ validationPass.fields);
-////        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
-////        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
+////        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, Boolean.TRUE);
+////        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, Boolean.TRUE);
 //        Document u = eb.createDocument();
 //        LinkedHashMap<String, Expression> selectBasedFields = new LinkedHashMap<String, Expression>();
 //
@@ -465,5 +465,4 @@ public class FormulaUpdateProcessor {
 //        }
 //        return Math.max(count, count2);
 //    }
-
 }

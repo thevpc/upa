@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -70,7 +69,7 @@ public class XLSXFile {
     public XLSXPackagePart getEntry(String path) {
         XLSXPackagePart t = findEntry(path);
         if(t==null){
-            throw new NoSuchElementException("Part Nor Found "+path);
+            throw new net.vpc.upa.exceptions.NoSuchUPAElementException("XlsxPartNotFound",path);
         }
         return t;
     }

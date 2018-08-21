@@ -2,7 +2,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 
 
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
@@ -43,7 +43,7 @@ public final class CompiledConcat extends CompiledFunction
 
     public CompiledConcat add(CompiledExpressionExt expression) {
         if (expression == this) {
-            throw new UPAIllegalArgumentException("NullExpression");
+            throw new IllegalUPAArgumentException("NullExpression");
         } else {
             protectedAddArgument(expression);
             return this;

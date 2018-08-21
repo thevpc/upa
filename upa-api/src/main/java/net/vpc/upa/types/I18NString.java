@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.types;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.*;
 
@@ -63,7 +63,7 @@ public class I18NString {
 
     public I18NString(List<String> keys) {
         if (keys == null) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         this.keys = new ArrayList<String>(keys);
     }
@@ -81,7 +81,7 @@ public class I18NString {
 
     public I18NString append(I18NString path) {
         if (path == null) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         LinkedHashSet<String> a = new LinkedHashSet<String>();
         for (String key1 : keys) {
@@ -104,7 +104,7 @@ public class I18NString {
     
     public I18NString append(String path) {
         if (path == null || path.isEmpty()) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         ArrayList<String> a = new ArrayList<String>(keys.size());
         for (String key : keys) {
@@ -128,7 +128,7 @@ public class I18NString {
 
     public I18NString union(String other) {
         if (other == null || other.isEmpty()) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         ArrayList<String> a = new ArrayList<String>(this.keys.size() + 1);
         a.addAll(this.keys);

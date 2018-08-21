@@ -3,9 +3,6 @@ package net.vpc.upa.impl.persistence.shared.marshallers;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import net.vpc.upa.persistence.NativeResult;
 import net.vpc.upa.persistence.NativeStatement;
 
@@ -15,6 +12,7 @@ import net.vpc.upa.persistence.NativeStatement;
 */
 public class StringToBlobUTFMarshaller extends SimpleTypeMarshaller {
 
+    @Override
     public Object read(int index, net.vpc.upa.persistence.NativeResult resultSet)
              {
         /**
@@ -27,6 +25,7 @@ public class StringToBlobUTFMarshaller extends SimpleTypeMarshaller {
         return null;
     }
 
+    @Override
     public void write(Object object, int i, NativeResult updatableResultSet)  {
         /**@PortabilityHint(target = "C#",name = "suppress")*/
         updatableResultSet.updateBytes(i, object==null?null:((String) object).getBytes());

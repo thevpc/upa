@@ -169,6 +169,11 @@ public class AndroidSqliteNativeStatement implements NativeStatement {
     }
 
     @Override
+    public void setClob(int parameterIndex, String x) {
+        setObject(parameterIndex, x);
+    }
+
+    @Override
     public void setObject(int i, Object object) {
         while (args.size() < i) {
             args.add(null);

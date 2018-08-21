@@ -35,7 +35,7 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.DataTypeInfo;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class YearType extends TemporalType implements Cloneable {
     public YearType(String name, Class<? extends java.util.Date> type, Year min, Year max, boolean nullable) {
         super(name, type == null ? Year.class : type, 0, 0, nullable);
         if (type != null && !type.equals(Year.class) && !type.equals(java.util.Date.class)) {
-            throw new UPAIllegalArgumentException("Invalid Temporal Type " + type);
+            throw new IllegalUPAArgumentException("Invalid Temporal Type " + type);
         }
         this.min = min;
         this.max = max;
@@ -133,7 +133,7 @@ public class YearType extends TemporalType implements Cloneable {
         } else if (java.util.Date.class.isAssignableFrom(type)) {
             return new java.util.Date(time);
         } else {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
     }
 

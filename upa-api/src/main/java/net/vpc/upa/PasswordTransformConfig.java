@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.types.DataTypeTransformConfig;
 
 import java.io.Serializable;
@@ -82,7 +82,7 @@ public class PasswordTransformConfig implements DataTypeTransformConfig, Seriali
             throw new NullPointerException();
         }
         if (!(cipherStrategy instanceof String || cipherStrategy instanceof Class || cipherStrategy instanceof PasswordStrategy || (cipherStrategy instanceof PasswordStrategyType && !cipherStrategy.equals(PasswordStrategyType.CUSTOM)))) {
-            throw new UPAIllegalArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any value but custom)");
+            throw new IllegalUPAArgumentException("cipherStrategy should be of type String (as CipherStrategy class name), Class (CipherStrategy implementing class), CipherStrategy (instance), or CipherStrategyType (any value but custom)");
         }
         this.cipherStrategy = cipherStrategy;
     }

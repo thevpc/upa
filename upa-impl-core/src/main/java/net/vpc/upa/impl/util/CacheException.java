@@ -1,10 +1,12 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.exceptions.UPAException;
+
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>
 * @creationdate 1/5/13 9:59 PM
 */
-public class CacheException extends RuntimeException {
+public class CacheException extends UPAException {
     private Throwable error;
 
     public Throwable getError() {

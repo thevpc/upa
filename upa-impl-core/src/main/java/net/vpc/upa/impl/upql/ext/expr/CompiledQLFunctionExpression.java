@@ -3,7 +3,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 import net.vpc.upa.FunctionEvalContext;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Function;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.ExpressionCompiler;
 import net.vpc.upa.types.DataTypeTransform;
@@ -70,7 +70,7 @@ public class CompiledQLFunctionExpression extends CompiledFunction {
         if(o instanceof CompiledParam){
             return ((CompiledParam)o).getValue();
         }
-        throw new UPAIllegalArgumentException("Unable to evaluate type "+o.getClass()+" :: "+o);
+        throw new IllegalUPAArgumentException("Unable to evaluate type "+o.getClass()+" :: "+o);
     }
 
     

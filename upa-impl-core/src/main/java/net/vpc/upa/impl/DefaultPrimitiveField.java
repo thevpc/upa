@@ -184,7 +184,7 @@ public class DefaultPrimitiveField extends AbstractField implements PrimitiveFie
 //
 //    public String toSQL(String tableVarName, HashMap context) {
 //        return isQueryField()
-//                ? (getEntity().getPersistenceUnit().getPersistenceManager().getProperties().get("isComplexSelectSupported", false)
+//                ? (getEntity().getPersistenceUnit().getPersistenceManager().getProperties().get(PARAM_IS_COMPLEX_SELECT_SUPPORTED, false)
 //                ? getAlias(tableVarName, context)
 //                : "0")
 //                : (tableVarName != null

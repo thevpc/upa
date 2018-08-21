@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
@@ -332,7 +332,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     @Override
     public QueryBuilder setParameter(String name, Object value) {
         if (query != null) {
-            throw new UPAIllegalArgumentException("Query is already executed");
+            throw new IllegalUPAArgumentException("Query is already executed");
         }
         paramsByName.put(name, value);
         return this;
@@ -341,7 +341,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     public QueryBuilder setParameters(Map<String, Object> parameters) {
         if (parameters != null) {
             if (query != null) {
-                throw new UPAIllegalArgumentException("Query is already executed");
+                throw new IllegalUPAArgumentException("Query is already executed");
             }
             paramsByName.putAll(parameters);
         }
@@ -351,7 +351,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     @Override
     public QueryBuilder setParameter(int index, Object value) {
         if (query != null) {
-            throw new UPAIllegalArgumentException("Query is already executed");
+            throw new IllegalUPAArgumentException("Query is already executed");
         }
         paramsByIndex.put(index, value);
         return this;
@@ -395,7 +395,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     public void updateCurrent() {
         if (query == null) {
-            throw new UPAIllegalArgumentException("Not yet executed");
+            throw new IllegalUPAArgumentException("Not yet executed");
         }
         query.updateCurrent();
     }
@@ -420,7 +420,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
             return byId(objects[0]);
         }
         if (entity == null) {
-            throw new UPAIllegalArgumentException("Missing Entity");
+            throw new IllegalUPAArgumentException("Missing Entity");
         }
         return byExpression(entity.getBuilder().idListToExpression(ids, UPQLUtils.THIS));
     }
@@ -474,7 +474,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     @Override
     public QueryBuilder setHint(String key, Object value) {
         if (query != null) {
-            throw new UPAIllegalArgumentException("Query is already executed");
+            throw new IllegalUPAArgumentException("Query is already executed");
         }
         if (value == null) {
             hints.remove(key);

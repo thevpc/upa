@@ -3,7 +3,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 
 import java.util.Date;
 import net.vpc.upa.Field;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
@@ -92,7 +92,7 @@ public final class CompiledLiteral extends DefaultCompiledExpressionImpl
     public void setDataTypeTransform(DataTypeTransform dataTypeTransform) {
         this.dataTypeTransform = dataTypeTransform;
         if(dataTypeTransform==null){
-            throw new UPAIllegalArgumentException("Type cannot be null");
+            throw new IllegalUPAArgumentException("Type cannot be null");
         }
     }
 

@@ -26,48 +26,48 @@ public class DefaultMarshallManager implements MarshallManager {
 
     public DefaultMarshallManager() {
         this.nullMarshaller = new NullMarshaller(this);
-        setTypeMarshaller0(TypeMarshallerNames.STRING_TO_BLOB,new StringToBlobUTFMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BOOLEAN_TO_INTEGER,new BooleanToNumberMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.SERIALIZABLE,new SerializablePlatformObjectMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.STRING_TO_BLOB, new StringToBlobUTFMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.STRING_TO_CLOB, new StringToClobUTFMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BOOLEAN_TO_INTEGER, new BooleanToNumberMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.SERIALIZABLE, new SerializablePlatformObjectMarshaller(this));
 
-        setTypeMarshaller0(TypeMarshallerNames.STRING,String.class, new StringMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.OBJECT,new Class[]{Object.class,FileData.class}, TypeMarshallerNames.SERIALIZABLE);
-        setTypeMarshaller0(TypeMarshallerNames.FLOAT,new Class[]{Float.class,Float.TYPE}, new FloatMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.CHARACTER,new Class[]{Character.class,Character.TYPE}, TypeMarshallerNames.STRING);
-        setTypeMarshaller0(TypeMarshallerNames.DOUBLE,new Class[]{Double.class,Double.TYPE}, new DoubleMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.INTEGER,new Class[]{Integer.class,Integer.TYPE}, new IntegerMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.LONG,new Class[]{Long.class,Long.TYPE}, new LongMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.SHORT,new Class[]{Short.class,Short.TYPE}, new ShortMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BYTE,new Class[]{Byte.class,Byte.TYPE}, new ByteMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BOOLEAN,new Class[]{Boolean.class,Boolean.TYPE}, TypeMarshallerNames.BOOLEAN_TO_INTEGER);
+        setTypeMarshaller0(TypeMarshallerNames.STRING, String.class, new StringMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.OBJECT, new Class[]{Object.class, FileData.class}, TypeMarshallerNames.SERIALIZABLE);
+        setTypeMarshaller0(TypeMarshallerNames.FLOAT, new Class[]{Float.class, Float.TYPE}, new FloatMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.CHARACTER, new Class[]{Character.class, Character.TYPE}, TypeMarshallerNames.STRING);
+        setTypeMarshaller0(TypeMarshallerNames.DOUBLE, new Class[]{Double.class, Double.TYPE}, new DoubleMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.INTEGER, new Class[]{Integer.class, Integer.TYPE}, new IntegerMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.LONG, new Class[]{Long.class, Long.TYPE}, new LongMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.SHORT, new Class[]{Short.class, Short.TYPE}, new ShortMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BYTE, new Class[]{Byte.class, Byte.TYPE}, new ByteMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BOOLEAN, new Class[]{Boolean.class, Boolean.TYPE}, TypeMarshallerNames.BOOLEAN_TO_INTEGER);
 
-        setTypeMarshaller0(TypeMarshallerNames.BIG_INTEGER,BigInteger.class, new BigIntegerMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BIG_DECIMAL,BigDecimal.class, new BigDecimalMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BIG_INTEGER, BigInteger.class, new BigIntegerMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BIG_DECIMAL, BigDecimal.class, new BigDecimalMarshaller(this));
 
-        setTypeMarshaller0(TypeMarshallerNames.UTIL_DATE,java.util.Date.class, new UtilDateMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.SQL_DATE,java.sql.Date.class, new SqlDateMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.SQL_TIME,java.sql.Time.class, new SqlTimeMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.SQL_TIMESTAMP,java.sql.Timestamp.class, new TimeStampMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.UTIL_DATE, java.util.Date.class, new UtilDateMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.SQL_DATE, java.sql.Date.class, new SqlDateMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.SQL_TIME, java.sql.Time.class, new SqlTimeMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.SQL_TIMESTAMP, java.sql.Timestamp.class, new TimeStampMarshaller(this));
 
-        setTypeMarshaller0(TypeMarshallerNames.DATE,net.vpc.upa.types.Date.class, new DateOnlyMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.MONTH,net.vpc.upa.types.Month.class, new MonthYearMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.YEAR,net.vpc.upa.types.Year.class, new YearMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.TIME,net.vpc.upa.types.Time.class, new VpcTimeMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.DATETIME,net.vpc.upa.types.DateTime.class, new DateTimeMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.TIMESTAMP,net.vpc.upa.types.Timestamp.class, new TimestampMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BYTES,byte[].class, new ByteArrayToBlobMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.BYTE_REFS,Byte[].class, new ByteRefArrayToBlobMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.CHARS,char[].class, new CharArrayToClobMarshaller(this));
-        setTypeMarshaller0(TypeMarshallerNames.CHAR_REFS,Character[].class, new CharRefArrayToClobMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.DATE, net.vpc.upa.types.Date.class, new DateOnlyMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.MONTH, net.vpc.upa.types.Month.class, new MonthYearMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.YEAR, net.vpc.upa.types.Year.class, new YearMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.TIME, net.vpc.upa.types.Time.class, new VpcTimeMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.DATETIME, net.vpc.upa.types.DateTime.class, new DateTimeMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.TIMESTAMP, net.vpc.upa.types.Timestamp.class, new TimestampMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BYTES, byte[].class, new ByteArrayToBlobMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.BYTE_REFS, Byte[].class, new ByteRefArrayToBlobMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.CHARS, char[].class, new CharArrayToClobMarshaller(this));
+        setTypeMarshaller0(TypeMarshallerNames.CHAR_REFS, Character[].class, new CharRefArrayToClobMarshaller(this));
 
+        setTypeMarshallerFactory0(StringType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.STRING));
+        setTypeMarshallerFactory0(BooleanType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.BOOLEAN));
+        setTypeMarshallerFactory0(DataType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.OBJECT));
+        setTypeMarshallerFactory0(SerializableType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.SERIALIZABLE));
 
-        setTypeMarshallerFactory0(StringType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.STRING));
-        setTypeMarshallerFactory0(BooleanType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.BOOLEAN));
-        setTypeMarshallerFactory0(DataType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.OBJECT));
-        setTypeMarshallerFactory0(SerializableType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.SERIALIZABLE));
-
-        setTypeMarshallerFactory0(ImageType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.SERIALIZABLE));
-        setTypeMarshallerFactory0(FileType.class, new ConstantDataMarshallerFactory(this,TypeMarshallerNames.SERIALIZABLE));
+        setTypeMarshallerFactory0(ImageType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.SERIALIZABLE));
+        setTypeMarshallerFactory0(FileType.class, new ConstantDataMarshallerFactory(this, TypeMarshallerNames.SERIALIZABLE));
         setTypeMarshallerFactory0(TemporalType.class, new TemporalDataMarshallerFactory(this));
         setTypeMarshallerFactory0(NumberType.class, new NumberDataMarshallerFactory(this));
         setTypeMarshallerFactory0(ListType.class, new ListDataMarshallerFactory(this));
@@ -85,43 +85,43 @@ public class DefaultMarshallManager implements MarshallManager {
     }
 
     @Override
-    public void setTypeMarshaller(Class platformType, TypeMarshaller wrapper) {
-        setTypeMarshaller0(null,platformType, wrapper);
+    public void setTypeMarshaller(Class platformType, TypeMarshaller typeMarshaller) {
+        setTypeMarshaller0(null, platformType, typeMarshaller);
     }
 
-    private void setTypeMarshaller0(String id,Class platformType, String fromId) {
-        setTypeMarshaller0(id,platformType,getTypeMarshaller(fromId));
+    private void setTypeMarshaller0(String id, Class platformType, String fromId) {
+        setTypeMarshaller0(id, platformType, getTypeMarshaller(fromId));
     }
 
-    private void setTypeMarshaller0(String id, TypeMarshaller wrapper) {
-        wrapper.setMarshallManager(this);
-        if(id!=null){
-            idToMarshallerMap.put(id,wrapper);
+    private void setTypeMarshaller0(String id, TypeMarshaller typeMarshaller) {
+        typeMarshaller.setMarshallManager(this);
+        if (id != null) {
+            idToMarshallerMap.put(id, typeMarshaller);
         }
     }
 
-    private void setTypeMarshaller0(String id,Class[] platformType, String wrapper) {
-        setTypeMarshaller0(id,platformType,getTypeMarshaller(wrapper));
+    private void setTypeMarshaller0(String id, Class[] platformType, String typeMarshallerId) {
+        setTypeMarshaller0(id, platformType, getTypeMarshaller(typeMarshallerId));
     }
 
-    private void setTypeMarshaller0(String id,Class[] platformType, TypeMarshaller wrapper) {
+    private void setTypeMarshaller0(String id, Class[] platformType, TypeMarshaller wrapper) {
         wrapper.setMarshallManager(this);
-        if(id!=null){
-            idToMarshallerMap.put(id,wrapper);
+        if (id != null) {
+            idToMarshallerMap.put(id, wrapper);
         }
-        if(platformType!=null) {
+        if (platformType != null) {
             for (Class atype : platformType) {
                 typeToMarshallerMap.put(atype, wrapper);
             }
         }
     }
 
-    private void setTypeMarshaller0(String id,Class platformType, TypeMarshaller wrapper) {
+    private void setTypeMarshaller0(String id, Class platformType, TypeMarshaller wrapper) {
         wrapper.setMarshallManager(this);
-        if(id!=null){
-            idToMarshallerMap.put(id,wrapper);
+        if (id != null) {
+            idToMarshallerMap.put(id, wrapper);
         }
-        if(platformType!=null) {
+        if (platformType != null) {
             typeToMarshallerMap.put(platformType, wrapper);
         }
     }
@@ -136,21 +136,21 @@ public class DefaultMarshallManager implements MarshallManager {
         typeToMarshallerFactory.put(platformType, wrapperFactory);
     }
 
-
     public TypeMarshaller getTypeMarshaller0(Class platformType) {
         TypeMarshaller c = typeToMarshallerMap.get(platformType);
         if (c != null) {
             return c;
         }
-        throw new IllegalArgumentException("Type Marshaller Not Found");
+        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("NuSuchTypeMarshallerForType", platformType.getName());
     }
 
-    public TypeMarshaller getTypeMarshaller(String id) {
-        TypeMarshaller c = idToMarshallerMap.get(id);
+    @Override
+    public TypeMarshaller getTypeMarshaller(String typeMarshallerId) {
+        TypeMarshaller c = idToMarshallerMap.get(typeMarshallerId);
         if (c != null) {
             return c;
         }
-        throw new IllegalArgumentException("Type Marshaller Not Found");
+        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("NoSuchTypeMarshaller", typeMarshallerId);
     }
 
     @Override
@@ -160,7 +160,7 @@ public class DefaultMarshallManager implements MarshallManager {
             return c;
         }
         if (platformType.isEnum()) {
-            return EnumMarshallerFactory.getSharedTypeMarshaller(platformType,this);
+            return EnumMarshallerFactory.getSharedTypeMarshaller(platformType, this);
         }
         Class[] interfaces = platformType.getInterfaces();
         for (Class anInterface : interfaces) {
@@ -183,9 +183,9 @@ public class DefaultMarshallManager implements MarshallManager {
     @Override
     public TypeMarshaller getTypeMarshaller(DataTypeTransform p) {
         TypeMarshaller mm = dataTypeTransformToMarshaller.get(p);
-        if(mm==null){
-            mm=new DataTypeTransformMarshaller(this,p, getTypeMarshaller(p.getTargetType()));
-            dataTypeTransformToMarshaller.put(p,mm);
+        if (mm == null) {
+            mm = new DataTypeTransformMarshaller(this, p, getTypeMarshaller(p.getTargetType()));
+            dataTypeTransformToMarshaller.put(p, mm);
         }
         return mm;
     }

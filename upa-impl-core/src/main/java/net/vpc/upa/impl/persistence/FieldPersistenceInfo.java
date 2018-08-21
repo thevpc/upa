@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.upql.util.ThisFilter;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -120,9 +120,9 @@ public class FieldPersistenceInfo {
             if (selectFormula instanceof ExpressionFormula) {
                 findtExpression = ((ExpressionFormula) selectFormula).getExpression();
             } else if (selectFormula instanceof Sequence) {
-                throw new UPAIllegalArgumentException("Sequences are not supported as Select Expressions");
+                throw new IllegalUPAArgumentException("Sequences are not supported as Select Expressions");
             } else if (updateFormula instanceof CustomMultiFormula) {
-                throw new UPAIllegalArgumentException("CustomUpdaterFormulas are not supported as Select Expressions");
+                throw new IllegalUPAArgumentException("CustomUpdaterFormulas are not supported as Select Expressions");
             }
         }
     }

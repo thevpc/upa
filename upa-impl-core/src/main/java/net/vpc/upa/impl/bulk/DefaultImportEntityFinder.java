@@ -12,7 +12,7 @@ import java.util.Map;
 import net.vpc.upa.*;
 import net.vpc.upa.bulk.ImportEntityFinder;
 import net.vpc.upa.bulk.ImportEntityMapper;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.And;
 import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
@@ -39,7 +39,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
         if (c.isEmpty()) {
             List<Index> indexes = entity.getIndexes(true);
             if (indexes.isEmpty()) {
-                throw new UPAIllegalArgumentException("No Index found for entity " + entity);
+                throw new IllegalUPAArgumentException("No Index found for entity " + entity);
             }
             for (Index index : indexes) {
                 String[] indexedFieldNames = index.getFieldNames();
@@ -49,7 +49,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                     return m;
                 }
             }
-            throw new UPAIllegalArgumentException("Unsupported Multiple Field Index on import");
+            throw new IllegalUPAArgumentException("Unsupported Multiple Field Index on import");
 
         } else {
             Map<String, Object> map = new HashMap<String, Object>();

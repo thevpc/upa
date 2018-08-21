@@ -4,7 +4,6 @@
  */
 package net.vpc.upa.impl.persistence;
 
-import java.sql.ResultSetMetaData;
 import net.vpc.upa.exceptions.FindException;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.util.UPADeadLock;
@@ -24,14 +23,14 @@ import net.vpc.upa.persistence.NativeResult;
 public class DefaultQueryResult implements QueryResult {
 
     private static final Logger log = Logger.getLogger(DefaultQueryResult.class.getName());
-    private NativeResult resultSet;
-    private TypeMarshaller[] marshallers;
-    private DataTypeTransform[] types;
+    private final NativeResult resultSet;
+    private final TypeMarshaller[] marshallers;
+    private final DataTypeTransform[] types;
     private boolean closed;
-    private int[] nativePos;
-    private Map<Integer, Object> updates = new HashMap<Integer, Object>();
-    private String query;
-    private String nameDebugString;
+    private final int[] nativePos;
+    private final Map<Integer, Object> updates = new HashMap<Integer, Object>();
+    private final String query;
+    private final String nameDebugString;
     private UPADeadLock.VrDeadLockInfo mon;
 
     public DefaultQueryResult(String nameDebugString, String query, NativeResult resultSet, TypeMarshaller[] marshallers, DataTypeTransform[] types) {
@@ -49,7 +48,7 @@ public class DefaultQueryResult implements QueryResult {
             np++;
         }
         if (UPAImplDefaults.DEBUG_MODE) {
-            mon = UPADeadLock.addMonitor("QueryResult", query, 20, new Throwable());
+            mon = UPADeadLock.addMonitor("QueryResult", query, 20, new UPALockDetectedException(query));
         }
 //        try {
 //            System.out.println("create ResultSet " + resultSet + " for connection " + resultSet.getStatement().getConnection());

@@ -31,7 +31,7 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledAnd;
 import net.vpc.upa.impl.upql.ext.expr.CompiledEntityName;
 import net.vpc.upa.impl.upql.ext.expr.CompiledNameOrSelect;
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.Expression;
@@ -185,7 +185,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         } else if (e instanceof CompiledInsert) {
             return updateCompiledInsert((CompiledInsert) e, updateContext);
         } else if (e instanceof CompiledQueryField) {
-            throw new UPAIllegalArgumentException("Should have been processed elsewhere");
+            throw new IllegalUPAArgumentException("Should have been processed elsewhere");
         } else if (e instanceof CompiledVar) {
             return updateCompiledVar((CompiledVar) e, updateContext);
         } else if (e instanceof CompiledParam) {
@@ -318,7 +318,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             enclosingStmt = (CompiledEntityStatement) tt.getParentExpression();
         }
         if (enclosingStmt == null) {
-            throw new UPAIllegalArgumentException("No Enclosing Select for " + tt);
+            throw new IllegalUPAArgumentException("No Enclosing Select for " + tt);
         }
         boolean again = true;
         CompiledExpressionExt ttExpr = tt.getExpression();
@@ -345,7 +345,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         if (e2 instanceof CompiledVar) {
             CompiledVar cv = (CompiledVar) e2;
             if (cv.getChild() != null && cv.getChild().getChild() != null) {
-                throw new UPAIllegalArgumentException("Unexpected!!");
+                throw new IllegalUPAArgumentException("Unexpected!!");
             }
             CompiledVar finest = (CompiledVar) cv.getDeepest();
             List<Field> fieldsToExpand = new ArrayList<Field>();
@@ -362,7 +362,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 }
                 if (oldReferrerEntity == null) {
                     oldReferrerEntity = ((Field) referrer).getEntity();
-//                    throw new UPAIllegalArgumentException("Unexpected");
+//                    throw new IllegalUPAArgumentException("Unexpected");
                 }
                 ManyToOneRelationship manyToOneRelationship = field.getManyToOneRelationship();
                 if (manyToOneRelationship != null) {
@@ -375,7 +375,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             Field tfield = tfields.get(i);
                             CompiledExpressionExt pp = finest.getParentExpression();
                             if (pp == null || (pp.getParentExpression() != null && !(pp.getParentExpression() instanceof CompiledQueryField))) {
-                                throw new UPAIllegalArgumentException("Unexpected");
+                                throw new IllegalUPAArgumentException("Unexpected");
                             }
                             pp = pp.copy();
                             BindingId lbinding = BindingId.createChild(tt.getBinding(), tfield.getName());
@@ -406,7 +406,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             joinAlias = ((CompiledVar) pp).getName();
                         }
                         if (StringUtils.isNullOrEmpty(joinAlias)) {
-                            throw new UPAIllegalArgumentException("Unable to resolve join alias : " + cv);
+                            throw new IllegalUPAArgumentException("Unable to resolve join alias : " + cv);
                         }
                         BindingJoinInfo bindingJoinInfo = addBindingJoin(enclosingStmt, field, joinAlias, tt.getBinding());
                         finest = new CompiledVar(
@@ -421,7 +421,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             updateContext.put("depth", depth);
                         }
                     } else {
-                        throw new UPAIllegalArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
+                        throw new IllegalUPAArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
                     }
                 } else {
                     if (someUpdates) {
@@ -435,7 +435,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     return ReplaceResult.NO_UPDATES_STOP;
                 }
             } else {
-                throw new UPAIllegalArgumentException("Unexpected");
+                throw new IllegalUPAArgumentException("Unexpected");
             }
 
             for (Field field : fieldsToExpand) {
@@ -480,7 +480,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             if (tuple.getItems().size() == 1) {
                 return ReplaceResult.stopWithNewObj(tuple.getItems().get(0));
             } else if (tuple.getItems().size() == 0) {
-                throw new UPAIllegalArgumentException("Unexpected");
+                throw new IllegalUPAArgumentException("Unexpected");
             } else {
                 return ReplaceResult.stopWithNewObj(tuple);
             }
@@ -508,7 +508,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             if (o.getImplicitDeclaration().getName() != null) {
                 ExpressionDeclaration idec = o.getImplicitDeclaration();
                 if (idec.getValidName() == null) {
-                    throw new UPAIllegalArgumentException("Unexpected null name");
+                    throw new IllegalUPAArgumentException("Unexpected null name");
                 }
                 CompiledVar v2 = new CompiledVar(idec.getValidName());
                 switch (idec.getReferrerType()) {
@@ -517,13 +517,13 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         break;
                     }
                     case FIELD: {
-                        throw new UPAIllegalArgumentException("Unexpected field declaration");
+                        throw new IllegalUPAArgumentException("Unexpected field declaration");
                     }
                     case SELECT: {
-                        throw new UPAIllegalArgumentException("Unexpected Select declaration");
+                        throw new IllegalUPAArgumentException("Unexpected Select declaration");
                     }
                     default: {
-                        throw new UPAIllegalArgumentException("Unexpected unknown declaration");
+                        throw new IllegalUPAArgumentException("Unexpected unknown declaration");
                     }
                 }
                 CompiledExpressionExt p = o.getParentExpression();
@@ -541,7 +541,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             enclosingStmt = UPQLCompiledUtils.findEnclosingStatement(o, persistenceUnit);
         }
         if (enclosingStmt == null) {
-            throw new UPAIllegalArgumentException("No Enclosing Statement for " + o);
+            throw new IllegalUPAArgumentException("No Enclosing Statement for " + o);
         }
         updateContext.put("rootStatement", rootStatement);
         updateContext.put("enclosingStmt", enclosingStmt);
@@ -552,14 +552,14 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 rootStatement = UPQLCompiledUtils.findRootStatement(o, persistenceUnit);
             }
             if (rootStatement == null) {
-                throw new UPAIllegalArgumentException("No Root Statement for " + o);
+                throw new IllegalUPAArgumentException("No Root Statement for " + o);
             }
             updateContext.put("rootStatement", rootStatement);
             if (rootStatement.getEntityAlias() == null) {
                 CompiledVarOrMethod child = o.getChild();
                 if (child == null) {
                     if (rootStatement.getEntityName() == null) {
-                        throw new UPAIllegalArgumentException("Missing Alias for " + rootStatement);
+                        throw new IllegalUPAArgumentException("Missing Alias for " + rootStatement);
                     }
                     o.setName(rootStatement.getEntityName());
                     return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
@@ -581,7 +581,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         String entityAlias = enclosingStmt.getEntityAlias();
 //        if (entityAlias == null) {
-//            throw new UPAIllegalArgumentException("Missing entityAlias for "+enclosingStmt);
+//            throw new IllegalUPAArgumentException("Missing entityAlias for "+enclosingStmt);
 //        }
         if (ref instanceof Field) {
 
@@ -590,7 +590,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 Formula liveFormula = UPAUtils.getSelectFormula(field);
                 if (liveFormula instanceof CustomFormula) {
                     //do nothing, should be processed as custom formula later
-                    throw new UPAIllegalArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
+                    throw new IllegalUPAArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
                 } else if (liveFormula instanceof ExpressionFormula) {
                     ExpressionFormula ef = (ExpressionFormula) liveFormula;
                     Expression expr = ef.getExpression();
@@ -610,10 +610,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         expression.setParentExpression(UPQLCompiledUtils.findRootNonVar(o));
                         return ReplaceResult.continueWithNewDirtyObj(expression);
                     } else {
-                        throw new UPAIllegalArgumentException("Should replace this with some thing else");
+                        throw new IllegalUPAArgumentException("Should replace this with some thing else");
                     }
                 } else {
-                    throw new UPAIllegalArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
+                    throw new IllegalUPAArgumentException("Unsupported Live Formula for " + field + " : " + liveFormula);
                 }
             } else {
                 Relationship manyToOneRelationship = field.getManyToOneRelationship();
@@ -639,7 +639,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 newVar.setClientProperty("UPA.Flattened.BaseField", field);
                                 return ReplaceResult.stopWithNewObj(newVar);
                             } else {
-                                throw new UPAIllegalArgumentException("Unsupported multi Id Entity " + manyToOneRelationship.getSourceRole().getEntity());
+                                throw new IllegalUPAArgumentException("Unsupported multi Id Entity " + manyToOneRelationship.getSourceRole().getEntity());
                             }
                         } else {
                             return ReplaceResult.NO_UPDATES_STOP;
@@ -713,7 +713,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             return ReplaceResult.UPDATE_AND_STOP;
                         }
                     }
-                    throw new UPAIllegalArgumentException("Unexpected");
+                    throw new IllegalUPAArgumentException("Unexpected");
                 }
                 case UPDATE: {
                     return ReplaceResult.UPDATE_AND_STOP;
@@ -735,7 +735,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
             Field f = (Field) resolveReferrer(fvar);
             if (f == null) {
-                throw new UPAIllegalArgumentException("Field not found " + fvar + " in " + s.getEntity().getName());
+                throw new IllegalUPAArgumentException("Field not found " + fvar + " in " + s.getEntity().getName());
             }
             if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
                 vv.setTypeTransform(f.getEffectiveTypeTransform());
@@ -744,10 +744,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
             if (fvar.getChild() != null) {
                 if (!(fvar.getChild() instanceof CompiledVar)) {
-                    throw new UPAIllegalArgumentException();
+                    throw new IllegalUPAArgumentException();
                 }
                 if (fvar.getChild().getChild() != null) {
-                    throw new UPAIllegalArgumentException();
+                    throw new IllegalUPAArgumentException();
                 }
             }
         }
@@ -760,7 +760,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             CompiledExpressionExt vv = s.getFieldValue(i);
             Field f = (Field) resolveReferrer(fvar);
             if (f == null) {
-                throw new UPAIllegalArgumentException("Field not found " + fvar + " in " + s.getEntity().getName());
+                throw new IllegalUPAArgumentException("Field not found " + fvar + " in " + s.getEntity().getName());
             }
             if (vv.getTypeTransform() == null || vv.getTypeTransform().getTargetType().getPlatformType().equals(Object.class)) {
                 vv.setTypeTransform(f.getEffectiveTypeTransform());
@@ -788,7 +788,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
         } else {
             if (s.getFields().size() == 0) {
-                throw new UPAIllegalArgumentException("Inner Select Should have at least one selected field");
+                throw new IllegalUPAArgumentException("Inner Select Should have at least one selected field");
             }
         }
         updateContext = updateContext == null ? new HashMap<String, Object>() : new HashMap<String, Object>(updateContext);
@@ -1051,7 +1051,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
     private BindingJoinInfo addBindingJoin(CompiledEntityStatement qs, Field field, String entityAlias, BindingId binding) {
         if (entityAlias == null) {
-            throw new UPAIllegalArgumentException("Null Join Alias");
+            throw new IllegalUPAArgumentException("Null Join Alias");
         }
         ExprContext context = ExprContext.get(qs);
         BindingJoinInfo ret = new BindingJoinInfo();
@@ -1096,10 +1096,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             } else if (qs instanceof CompiledUpdate) {
                 ((CompiledUpdate) qs).leftJoin(ret.entity.getName(), ret.alias, ret.cond);
             } else if (qs instanceof CompiledDelete) {
-                throw new UPAIllegalArgumentException("Unsupported");
+                throw new IllegalUPAArgumentException("Unsupported");
                 //((CompiledDelete) qs).leftJoin(ret.entity.getName(), ret.alias, ret.cond);
             } else {
-                throw new UPAIllegalArgumentException("Unsupported");
+                throw new IllegalUPAArgumentException("Unsupported");
             }
 //            qs.getDeclarationList().push(masterAliasString, masterEntity);
         }
@@ -1124,7 +1124,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
         }
         if (selectedEntry == null) {
-            throw new UPAIllegalArgumentException("Unknown alias " + name);
+            throw new IllegalUPAArgumentException("Unknown alias " + name);
         }
         return selectedEntry;
     }
@@ -1224,7 +1224,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     if (thisAlias != null) {
                         var.setName(thisAlias);
                     } else {
-//                    throw new UPAIllegalArgumentException("Incountered this alias but never declared");
+//                    throw new IllegalUPAArgumentException("Incountered this alias but never declared");
                     }
                     ExpressionDeclaration declaration = getDeclaration(var.getName(), var);
                     if (declaration != null) {
@@ -1235,7 +1235,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                             }
                         }
                     }
-                    throw new UPAIllegalArgumentException("'this' alias is not declared");
+                    throw new IllegalUPAArgumentException("'this' alias is not declared");
                 }
                 //check if field
                 List<ExpressionDeclaration> values = getDeclarations(null, var);
@@ -1291,7 +1291,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 return var.getReferrer();
                             }
                         }
-                        throw new UPAIllegalArgumentException("Problem");
+                        throw new IllegalUPAArgumentException("Problem");
                     }
                 }
                 //check if entity
@@ -1394,7 +1394,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 return ReplaceResult.continueWithNewDirtyObj((CompiledExpressionExt) v);
             }
             if (v instanceof Expression) {
-                throw new UPAIllegalArgumentException("Function should return literals of compiled expressions (CompiledExpression type)");
+                throw new IllegalUPAArgumentException("Function should return literals of compiled expressions (CompiledExpression type)");
             }
             return ReplaceResult.continueWithNewCleanObj(new CompiledParam(v, null, o.getTypeTransform(), false));
         } else {

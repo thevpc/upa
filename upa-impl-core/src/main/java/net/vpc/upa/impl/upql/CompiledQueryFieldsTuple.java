@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.upql;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.ext.expr.CompiledQueryField;
 import net.vpc.upa.impl.upql.ext.expr.DefaultCompiledExpressionImpl;
@@ -23,7 +23,7 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
 
     @Override
     public CompiledExpressionExt copy() {
-        throw new UPAIllegalArgumentException("Unsupported. Should I?");
+        throw new IllegalUPAArgumentException("Unsupported. Should I?");
     }
 
     public CompiledQueryField[] getCompiledQueryFields() {
@@ -32,7 +32,7 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
 
     @Override
     public CompiledExpressionExt[] getSubExpressions() {
-        throw new UPAIllegalArgumentException("Unsupported. Should I?");
+        throw new IllegalUPAArgumentException("Unsupported. Should I?");
     }
 
     public List<CompiledQueryField> getItems() {
@@ -41,6 +41,6 @@ public class CompiledQueryFieldsTuple extends DefaultCompiledExpressionImpl {
 
     @Override
     public void setSubExpression(int index, CompiledExpressionExt expression) {
-        throw new UPAIllegalArgumentException("Unsupported. Should I?");
+        throw new IllegalUPAArgumentException("Unsupported. Should I?");
     }
 }

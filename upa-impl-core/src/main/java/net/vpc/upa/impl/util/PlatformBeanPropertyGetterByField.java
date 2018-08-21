@@ -2,7 +2,6 @@ package net.vpc.upa.impl.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
@@ -28,10 +28,10 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) {
         CompiledTypeName o = (CompiledTypeName) oo;
-        return getSqlTypeName(o.getTypeTransform().getTargetType(),qlContext);
+        return getSqlTypeName(o.getTypeTransform().getTargetType(), qlContext);
     }
 
-    public String getSqlTypeName(DataType datatype,EntityExecutionContext qlContext) {
+    public String getSqlTypeName(DataType datatype, EntityExecutionContext qlContext) {
 //        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
 //        if(databaseProductVersion==null){
 //            databaseProductVersion="";
@@ -44,22 +44,22 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
                 length = 255;
             }
             /**
-             * Values in VARCHAR columns are variable-length strings.
-             * The length can be specified as a value from 0 to 255 before MySQL 5.0.3,
-             * and 0 to 65,535 in 5.0.3 and later versions.
-             * The effective maximum length of a VARCHAR in MySQL
-             * 5.0.3 and later is subject to the maximum
-             * row size (65,535 bytes, which is shared among all columns)
-             * and the character set used.
+             * Values in VARCHAR columns are variable-length strings. The length
+             * can be specified as a value from 0 to 255 before MySQL 5.0.3, and
+             * 0 to 65,535 in 5.0.3 and later versions. The effective maximum
+             * length of a VARCHAR in MySQL 5.0.3 and later is subject to the
+             * maximum row size (65,535 bytes, which is shared among all
+             * columns) and the character set used.
              */
-                //will consider mysql>=5.0.3
-            if(length<=4096){
+            //will consider mysql>=5.0.3
+            if (length <= 4096) {
                 return "VARCHAR(" + length + ")";
-            }if(length <= 65535) {
+            }
+            if (length <= 65535) {
                 return "TEXT";
-            }else if(length <= 1677215){
+            } else if (length <= 1677215) {
                 return "MEDIUMTEXT";
-            }else {
+            } else {
                 return "LONGTEXT";
             }
         }
@@ -88,20 +88,26 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
             return "INT";
         }
 
-        if(datatype instanceof TemporalType){
+        if (datatype instanceof TemporalType) {
             TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
-            if(temporalOption==null){
-                temporalOption=TemporalOption.DEFAULT;
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
             }
-            switch (temporalOption){
-                case DATE: return "DATE";
-                case DATETIME: return "DATETIME";
-                case TIMESTAMP: return "TIMESTAMP";
-                case TIME: return "TIME";
-                case MONTH: return "DATE";
-                case YEAR: return "DATE";
-                default:{
-                    throw new IllegalArgumentException("Unsupported "+datatype);
+            switch (temporalOption) {
+                case DATE:
+                    return "DATE";
+                case DATETIME:
+                    return "DATETIME";
+                case TIMESTAMP:
+                    return "TIMESTAMP";
+                case TIME:
+                    return "TIME";
+                case MONTH:
+                    return "DATE";
+                case YEAR:
+                    return "DATE";
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
                 }
             }
         }
@@ -113,7 +119,7 @@ public class MySQLTypeNameSQLProvider extends AbstractSQLProvider {
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new UPAIllegalArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

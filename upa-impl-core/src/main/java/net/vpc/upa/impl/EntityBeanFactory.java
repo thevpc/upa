@@ -5,7 +5,7 @@ import net.vpc.upa.*;
 import java.util.List;
 
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -38,7 +38,7 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         try {
             return (R) entity.getPlatformBeanType().newInstance();
         } catch (Exception e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 

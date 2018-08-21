@@ -12,7 +12,7 @@ import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.InvocationException;
 import net.vpc.upa.exceptions.NoSuchPersistenceGroupException;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.DefaultUPAContextFactory;
 import net.vpc.upa.impl.config.callback.DefaultCallback;
 import net.vpc.upa.impl.config.callback.DefaultMethodArgumentsConverter;
@@ -191,7 +191,7 @@ public class DefaultUPAContext implements UPAContext {
 
     private PersistenceGroupProvider getPersistenceGroupProvider() {
         if (persistenceGroupProvider == null) {
-            throw new UPAIllegalArgumentException("PersistenceGroupProvider not found");
+            throw new IllegalUPAArgumentException("PersistenceGroupProvider not found");
         }
         return persistenceGroupProvider;
     }
@@ -660,7 +660,7 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(UpdateObjectEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -668,7 +668,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaObjectEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
@@ -676,7 +676,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -684,7 +684,7 @@ public class DefaultUPAContext implements UPAContext {
                             }
                             if (parameterType.equals(UpdateFormulaEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;
@@ -745,14 +745,14 @@ public class DefaultUPAContext implements UPAContext {
                         for (Class<?> parameterType : method.getParameterTypes()) {
                             if (parameterType.equals(RemoveObjectEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = true;
                             }
                             if (parameterType.equals(RemoveEvent.class)) {
                                 if (found) {
-                                    throw new UPAIllegalArgumentException("Ambiguous");
+                                    throw new IllegalUPAArgumentException("Ambiguous");
                                 }
                                 found = true;
                                 obj = false;

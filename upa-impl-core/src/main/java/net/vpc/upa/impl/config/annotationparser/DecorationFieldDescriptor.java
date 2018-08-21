@@ -8,7 +8,7 @@ import net.vpc.upa.Sequence;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.Properties;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.SerializableOrManyToOneType;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.PlatformUtils;
@@ -123,7 +123,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                     try {
                         fieldDescContainerInstance = PlatformUtils.newInstance(javaField.getDeclaringClass());
                     } catch (Exception e) {
-                        throw new UPAIllegalArgumentException(e);
+                        throw new IllegalUPAArgumentException(e);
                     }
                     ctx.put("FieldDescContainerInstance" + javaField.getDeclaringClass().getName(), fieldDescContainerInstance);
                 }
@@ -131,7 +131,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 try {
                     fieldDesc = (FieldDesc) javaField.get(fieldDescContainerInstance);
                 } catch (Exception e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             }
             if (fieldDesc != null) {
@@ -170,7 +170,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 }
             }
         } catch (IllegalAccessException e) {
-            throw new UPAIllegalArgumentException(e);
+            throw new IllegalUPAArgumentException(e);
         }
     }
 
@@ -257,7 +257,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (Year) AnnotationParserUtils.parseDate(Year.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (Month.class.isAssignableFrom(asType)) {
                 try {
@@ -267,7 +267,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (Month) AnnotationParserUtils.parseDate(Month.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Date.class.isAssignableFrom(asType)) {
                 try {
@@ -277,7 +277,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (DateTime.class.isAssignableFrom(asType)) {
                 try {
@@ -287,7 +287,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (DateTime) AnnotationParserUtils.parseDate(DateTime.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Timestamp.class.isAssignableFrom(asType) || java.sql.Timestamp.class.isAssignableFrom(asType)) {
                 try {
@@ -297,7 +297,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (Timestamp) AnnotationParserUtils.parseDate(Timestamp.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (net.vpc.upa.types.Time.class.isAssignableFrom(asType)) {
                 try {
@@ -307,7 +307,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (Time) AnnotationParserUtils.parseDate(Time.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (java.sql.Date.class.isAssignableFrom(asType)) {
                 try {
@@ -317,7 +317,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (net.vpc.upa.types.Date) AnnotationParserUtils.parseDate(net.vpc.upa.types.Date.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else if (java.sql.Time.class.isAssignableFrom(asType)) {
                 try {
@@ -327,7 +327,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (net.vpc.upa.types.Time) AnnotationParserUtils.parseDate(net.vpc.upa.types.Time.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             } else {
                 try {
@@ -337,7 +337,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             (DateTime) AnnotationParserUtils.parseDate(DateTime.class, overriddenMaxValue, overriddenFormat),
                             nullableOk));
                 } catch (ParseException e) {
-                    throw new UPAIllegalArgumentException(e);
+                    throw new IllegalUPAArgumentException(e);
                 }
             }
         } else if (Boolean.TYPE.equals(nativeClass)) {
@@ -646,7 +646,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 if (length == 1) {
                     DecorationFieldDescriptor f = entityInfo.fieldsMap.get(foreignInfo.getMappedTo()[0]);
                     if (f == null) {
-                        throw new UPAIllegalArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
+                        throw new IllegalUPAArgumentException("Field " + foreignInfo.getMappedTo()[0] + " not found");
                     }
                     if (!f.foreignInfo.isSpecified()) {
                         if (f.foreignInfo.isManyToOne()) {
@@ -656,13 +656,13 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                             OneToOneType manyToOneType = new OneToOneType(f.name, f.nativeClass, foreignInfo.getTargetEntity(), false, f.nullableOk);
                             f.overriddenDataType.setValue(manyToOneType);
                         } else {
-                            throw new UPAIllegalArgumentException(f.name + " has invalid foreign reference");
+                            throw new IllegalUPAArgumentException(f.name + " has invalid foreign reference");
                         }
                     } else {
-                        throw new UPAIllegalArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
+                        throw new IllegalUPAArgumentException(f.name + " already mapped by " + name + ". Should not define relations on its own.");
                     }
                 } else if (length > 1) {
-                    throw new UPAIllegalArgumentException("Illegal mapping for " + name);
+                    throw new IllegalUPAArgumentException("Illegal mapping for " + name);
                 }
             }
         }
@@ -977,7 +977,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                         } else if (stringStrategyType == StringEncoderType.DEFAULT) {
                             s2.setEncoder(fieldDecoration.getString("customTypeName"));
                         } else {
-                            throw new UPAIllegalArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
+                            throw new IllegalUPAArgumentException("Invalid Converter definition : converter defined as custom and " + stringStrategyType);
                         }
                     }
                     transforms.add(s2);
@@ -1002,9 +1002,9 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                     String type = fieldDecoration.getString("valueType");
                     String expression = fieldDecoration.getString("expression");
                     if (type.length() > 0 && expression.length() > 0) {
-                        throw new UPAIllegalArgumentException("Invalid Converter definition : both type and expression are mentioned");
+                        throw new IllegalUPAArgumentException("Invalid Converter definition : both type and expression are mentioned");
                     } else if (type.length() == 0 && expression.length() == 0) {
-                        throw new UPAIllegalArgumentException("Invalid Converter definition : none of type and expression are mentioned");
+                        throw new IllegalUPAArgumentException("Invalid Converter definition : none of type and expression are mentioned");
                     } else if (type.length() > 0) {
                         CustomTypeDataTypeTransform s2 = new CustomTypeDataTypeTransform(type);
                         transforms.add(s2);

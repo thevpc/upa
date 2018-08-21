@@ -4,7 +4,7 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledConcat;
 import net.vpc.upa.impl.upql.ext.expr.CompiledPlus;
 import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;

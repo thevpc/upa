@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  */
 class PlatformBeanPropertyGetterByMethod implements PlatformBeanPropertyGetter{
 
-    private Method getter;
+    private final Method getter;
 
     PlatformBeanPropertyGetterByMethod(Method getter) {
         this.getter = getter;

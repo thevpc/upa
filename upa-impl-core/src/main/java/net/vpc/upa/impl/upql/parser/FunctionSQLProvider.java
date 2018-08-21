@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.upql.parser;
 
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.SQLProvider;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
@@ -43,18 +43,18 @@ public abstract class FunctionSQLProvider implements SQLProvider {
         return expressionType;
     }
 
-    public void checkFunctionSignature(int requiredCount, String[] params) throws IllegalArgumentException {
+    public void checkFunctionSignature(int requiredCount, String[] params) {
         if (requiredCount != params.length) {
             error("requires " + requiredCount + " params", params);
         }
     }
 
-    public void checkFunctionSignature(String[] paramNames, String[] params) throws IllegalArgumentException {
+    public void checkFunctionSignature(String[] paramNames, String[] params){
         checkFunctionSignature(paramNames.length, params);
     }
 
-    public String error(String msg, String[] params) throws IllegalArgumentException {
-        throw new UPAIllegalArgumentException("Error in function '" + getExpressionType().getSimpleName() + "' params\n" + msg + "\n.Error near " + getExpressionType().getSimpleName() + "(" + Arrays.toString(params) + ")");
+    public String error(String msg, String[] params) {
+        throw new IllegalUPAArgumentException("Error in function '" + getExpressionType().getSimpleName() + "' params\n" + msg + "\n.Error near " + getExpressionType().getSimpleName() + "(" + Arrays.toString(params) + ")");
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class FunctionSQLProvider implements SQLProvider {
      * @return
      */
     public String simplify(String functionName, String[] params, Map<String, Object> context){
-        throw new UPAIllegalArgumentException("Never");
+        throw new IllegalUPAArgumentException("Never");
     }
 
 

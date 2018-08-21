@@ -226,5 +226,7 @@ public interface NativeStatement {
     void setClob(int i, Reader reader);
 
     void setClob(int i, net.vpc.upa.types.Clob reader);
+    
+    void setClob(int i, String str);
 
 }

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.PlatformBeanType;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.persistence.ResultMetaData;
 
@@ -34,7 +34,7 @@ public class TypeListQueryResultItemBuilder implements QueryResultItemBuilder {
             if(fields2.contains(c.getLabel())){
                 platformBeanType.setPropertyValue(o,c.getLabel(),c.getValue());
             }else{
-                throw new UPAIllegalArgumentException("Invalid property "+c.getLabel()+" in "+ platformType.getName());
+                throw new IllegalUPAArgumentException("Invalid property "+c.getLabel()+" in "+ platformType.getName());
             }
         }
         return o;

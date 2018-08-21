@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.shared.sql.AbstractSQLProvider;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
@@ -87,7 +87,7 @@ public class BinaryOperatorExpressionSQLProvider extends AbstractSQLProvider {
                 return "/";
             }
             default: {
-                throw new UPAIllegalArgumentException("Not Supported Yet");
+                throw new IllegalUPAArgumentException("Not Supported Yet");
             }
         }
     }

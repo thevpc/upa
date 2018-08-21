@@ -39,7 +39,7 @@ public class EnumToStringByteArrayEncoder implements ByteArrayEncoder {
         }
         try {
             return Enum.valueOf(enumClass, sval);
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             log.log(Level.SEVERE, "Unable to parse" + sval + " as enum " + enumClass.getName(),ex);
             return null;
         }

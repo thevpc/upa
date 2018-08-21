@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.*;
 import net.vpc.upa.Properties;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.QueryScript;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
@@ -62,7 +62,7 @@ public abstract class AbstractUConnection implements UConnection {
     @Override
     public QueryResult executeQuery(String query, DataTypeTransform[] types, List<Parameter> queryParameters, boolean updatable) throws UPAException {
         if (closed) {
-            throw new UPAIllegalArgumentException("Connection closed");
+            throw new IllegalUPAArgumentException("Connection closed");
         }
         if (UPAImplDefaults.DEBUG_MODE) {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_Query, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_Query, 0) + 1);
@@ -98,7 +98,7 @@ public abstract class AbstractUConnection implements UConnection {
 
     public int executeNonQuery(String query, List<Parameter> queryParameters, List<Parameter> generatedKeys) throws UPAException {
         if (closed) {
-            throw new UPAIllegalArgumentException("Connection closed");
+            throw new IllegalUPAArgumentException("Connection closed");
         }
         if (UPAImplDefaults.DEBUG_MODE) {
             perfProperties.setLong(UPAImplKeys.System_Perf_Connection_NonQuery, perfProperties.getLong(UPAImplKeys.System_Perf_Connection_NonQuery, 0) + 1);
@@ -133,7 +133,7 @@ public abstract class AbstractUConnection implements UConnection {
 
     public int executeScript(QueryScript script, boolean exitOnError) throws UPAException {
         if (closed) {
-            throw new UPAIllegalArgumentException("Connection closed");
+            throw new IllegalUPAArgumentException("Connection closed");
         }
         //ExecutionContext qlContext = createContext(ContextOperation.CREATE_PERSISTENCE_NAME);
         try {
@@ -204,7 +204,7 @@ public abstract class AbstractUConnection implements UConnection {
 //            }
 //            return new UnionResultSetDelegate(resultSets, 1, true, null, null);
 //        } else {
-//            throw new UPAIllegalArgumentException("Unsupported");
+//            throw new IllegalUPAArgumentException("Unsupported");
 //        }
 //    }
     private UPAException createUPAException(Exception ex, String mgId, Object... parameters) {
@@ -239,7 +239,7 @@ public abstract class AbstractUConnection implements UConnection {
         try {
             closePlatformConnection();
         } catch (Exception ex) {
-            throw new UPAIllegalArgumentException("Connection could not be closed",ex);
+            throw new IllegalUPAArgumentException("Connection could not be closed",ex);
         }
         closed = true;
         support.afterClose(this);

@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  *
@@ -33,7 +33,7 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
             return file.toURI().toURL();
         } catch (MalformedURLException ex) {
             log.log(Level.SEVERE, null, ex);
-            throw new UPAIllegalArgumentException(ex);
+            throw new IllegalUPAArgumentException(ex);
         }
     }
 

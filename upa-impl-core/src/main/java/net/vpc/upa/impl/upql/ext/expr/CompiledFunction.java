@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
 
     protected void protectedSetArgument(int i, CompiledExpressionExt e) {
         if (e == null) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         if(i<expressions.size()){
             unbindChildren(this.expressions.get(i));
@@ -63,7 +63,7 @@ public abstract class CompiledFunction extends DefaultCompiledExpressionImpl {
 
     protected void protectedAddArgument(CompiledExpressionExt e) {
         if (e == null) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
         expressions.add(e);
         bindChildren(e);

@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.shared.marshallers;
 
 import java.io.CharArrayReader;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
@@ -55,7 +55,7 @@ public class CharArrayToClobMarshaller
         if(object==null){
             return super.toSQLLiteral(object);
         }
-        throw new UPAIllegalArgumentException("Unsupported");
+        throw new IllegalUPAArgumentException("Unsupported");
     }
 
     public void write(Object object, int i, NativeStatement preparedStatement)

@@ -7,7 +7,7 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.util.PrimitiveIdImpl;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -160,7 +160,7 @@ public class DefaultEntityBuilder implements EntityBuilder {
             return null;
         }
         if (!entity.isIdInstance(id)) {
-            throw new UPAIllegalArgumentException("Invalid Id of type " + id.getClass().getName() + " for entity " + entity.getName() + ". Exptected " + entity.getIdType().getName());
+            throw new IllegalUPAArgumentException("Invalid Id of type " + id.getClass().getName() + " for entity " + entity.getName() + ". Exptected " + entity.getIdType().getName());
         }
         List<PrimitiveField> idFields = entity.getIdPrimitiveFields();
         List<Field> idFields2 = new ArrayList<>();

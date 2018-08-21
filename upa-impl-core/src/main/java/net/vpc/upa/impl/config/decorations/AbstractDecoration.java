@@ -12,7 +12,7 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
@@ -33,7 +33,7 @@ public abstract class AbstractDecoration extends AbstractDecorationValue impleme
         Map<String, DecorationValue> a = getAttributes();
         DecorationValue v = a.get(name);
         if (v == null) {
-            throw new UPAIllegalArgumentException("Attribute not found " + getName() + "." + name);
+            throw new IllegalUPAArgumentException("Attribute not found " + getName() + "." + name);
         }
         return v;
     }

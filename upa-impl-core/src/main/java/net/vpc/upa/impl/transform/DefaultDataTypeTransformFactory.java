@@ -18,7 +18,7 @@ import net.vpc.upa.SecretStrategy;
 import net.vpc.upa.SecretStrategyType;
 import net.vpc.upa.config.StringEncoderType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.*;
 
@@ -64,7 +64,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                                 break;
                             }
                             default: {
-                                throw new UPAIllegalArgumentException("Expected name");
+                                throw new IllegalUPAArgumentException("Expected name");
                             }
                         }
                         break;
@@ -80,7 +80,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                                 break;
                             }
                             default: {
-                                throw new UPAIllegalArgumentException("Expected name");
+                                throw new IllegalUPAArgumentException("Expected name");
                             }
                         }
                         break;
@@ -109,7 +109,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                                 break;
                             }
                             default: {
-                                throw new UPAIllegalArgumentException("Expected arg or close par");
+                                throw new IllegalUPAArgumentException("Expected arg or close par");
                             }
                         }
                         break;
@@ -125,7 +125,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                                 break;
                             }
                             default: {
-                                throw new UPAIllegalArgumentException("Expected , or )");
+                                throw new IllegalUPAArgumentException("Expected , or )");
                             }
                         }
                         break;
@@ -149,7 +149,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                                 break;
                             }
                             default: {
-                                throw new UPAIllegalArgumentException("Expected arg or close par");
+                                throw new IllegalUPAArgumentException("Expected arg or close par");
                             }
                         }
                         break;
@@ -164,14 +164,14 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                         break;
                     }
                     default: {
-                        throw new UPAIllegalArgumentException("Un Expected " + st.sval);
+                        throw new IllegalUPAArgumentException("Un Expected " + st.sval);
                     }
 
                 }
             }
             return createDataTypeTransformConfig(name, args.toArray(new String[args.size()]));
         }
-        throw new UPAIllegalArgumentException("Unsupported converter expression");
+        throw new IllegalUPAArgumentException("Unsupported converter expression");
     }
 
     private DataTypeTransformConfig createDataTypeTransformConfig(String name, String[] args) throws UPAException {
@@ -193,7 +193,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 }
                 return c;
             } else {
-                throw new UPAIllegalArgumentException("ToString: Invalid argument count");
+                throw new IllegalUPAArgumentException("ToString: Invalid argument count");
             }
         }
         if (name.equalsIgnoreCase("ToByteArray")) {
@@ -204,14 +204,14 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 c.setEncoder(args[0]);
                 return c;
             } else {
-                throw new UPAIllegalArgumentException("ToByteArray: Invalid argument count");
+                throw new IllegalUPAArgumentException("ToByteArray: Invalid argument count");
             }
         }
         if (name.equalsIgnoreCase("Converter")) {
             if (args.length == 1) {
                 return new CustomTypeDataTypeTransform(args[0]);
             } else {
-                throw new UPAIllegalArgumentException("Config: Invalid argument count");
+                throw new IllegalUPAArgumentException("Config: Invalid argument count");
             }
         }
         if (name.equalsIgnoreCase("Password")) {
@@ -247,7 +247,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 c.setCipherValue(args[1]);
                 return c;
             } else {
-                throw new UPAIllegalArgumentException("Password: Invalid argument count");
+                throw new IllegalUPAArgumentException("Password: Invalid argument count");
             }
         }
         if (name.equalsIgnoreCase("Secret")) {
@@ -317,10 +317,10 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 c.setDecodeKey(args[3]);
                 return c;
             } else {
-                throw new UPAIllegalArgumentException("Password: Invalid argument count");
+                throw new IllegalUPAArgumentException("Password: Invalid argument count");
             }
         } else {
-            throw new UPAIllegalArgumentException("Invalid converter " + name);
+            throw new IllegalUPAArgumentException("Invalid converter " + name);
         }
     }
 
@@ -418,7 +418,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                     break;
                 }
                 default: {
-                    throw new UPAIllegalArgumentException("Unsupported CipherStrategy " + s);
+                    throw new IllegalUPAArgumentException("Unsupported CipherStrategy " + s);
                 }
             }
         } else if (s instanceof String) {
@@ -432,7 +432,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         } else if (s instanceof PasswordStrategy) {
             s = (PasswordStrategy) s;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported CipherStrategy " + s);
+            throw new IllegalUPAArgumentException("Unsupported CipherStrategy " + s);
         }
         p.setCipherStrategy((PasswordStrategy) s);
         DataTypeTransform t = null;
@@ -480,7 +480,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         } else if (s instanceof SecretStrategy) {
             s = (SecretStrategy) s;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported SecretStrategy " + s);
+            throw new IllegalUPAArgumentException("Unsupported SecretStrategy " + s);
         }
         SecretStrategy st = (SecretStrategy) s;
         st.init(pu, p.getEncodeKey(), p.getDecodeKey());
@@ -537,7 +537,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 }
             }
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
         if (baseSize <= 0) {
             baseSize = 255;
@@ -549,7 +549,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 set = StringEncoderType.PLAIN;
             }
             if (set == StringEncoderType.CUSTOM) {
-                throw new UPAIllegalArgumentException("Unsupported");
+                throw new IllegalUPAArgumentException("Unsupported");
             }
             switch (set) {
                 case BASE64: {
@@ -577,16 +577,16 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                     if (p.getSize() <= 0) {
                         p.setSize(baseSize);
                     }
-                    throw new UPAIllegalArgumentException("Unsupported yet " + set + " Encoder");
+                    throw new IllegalUPAArgumentException("Unsupported yet " + set + " Encoder");
                 }
                 case JSON: {
                     if (p.getSize() <= 0) {
                         p.setSize(baseSize);
                     }
-                    throw new UPAIllegalArgumentException("Unsupported yet " + set + " Encoder");
+                    throw new IllegalUPAArgumentException("Unsupported yet " + set + " Encoder");
                 }
                 default: {
-                    throw new UPAIllegalArgumentException("Unsupported yet " + set + " Encoder");
+                    throw new IllegalUPAArgumentException("Unsupported yet " + set + " Encoder");
                 }
             }
         } else if (encoderObject instanceof String) {
@@ -594,7 +594,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         } else if (encoderObject instanceof Class) {
             return (DataTypeTransform) pu.getFactory().createObject((Class) encoderObject);
         } else {
-            throw new UPAIllegalArgumentException("Unsupported Encoder " + encoderObject);
+            throw new IllegalUPAArgumentException("Unsupported Encoder " + encoderObject);
         }
         return new StringEncoderDataTypeTransform(encoder, source, p.getSize(), toStringEncoder);
     }
@@ -636,7 +636,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
                 }
             }
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
         Object postEncoderObject = p.getEncoder();
         ByteArrayEncoder postEncoder = null;
@@ -652,7 +652,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         } else if (postEncoderObject instanceof ByteArrayEncoder) {
             postEncoder = (ByteArrayEncoder) postEncoderObject;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
 
         if (p.getSize() <= 0) {
@@ -697,7 +697,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
             preEncoder = null;
             baseSize = 255;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
         Object postEncoderObject = p.getEncoder();
 
@@ -714,7 +714,7 @@ public class DefaultDataTypeTransformFactory implements DataTypeTransformFactory
         } else if (postEncoderObject instanceof ByteArrayEncoder) {
             postEncoder = (CharArrayEncoder) postEncoderObject;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
 
         if (p.getSize() <= 0) {

@@ -43,15 +43,15 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     public void configureStore(){
         super.configureStore();
         Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", true);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", true);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", false);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", true);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
-        map.setBoolean("isReferencingSupported", true);
-        map.setBoolean("isViewSupported", true);
-        map.setBoolean("isTopSupported", true);
-        map.setInt("maxQueryJoinCount", 60); //actually 61=table+61joins!
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, true);
+        map.setBoolean(PARAM_IS_TOP_SUPPORTED, true);
+        map.setInt(PARAM_MAX_QUERY_JOIN_COUNT, 60); //actually 61=table+60joins!
         getSqlManager().register(new MySQLCoalesceSQLProvider());
         getSqlManager().register(new CastANSISQLProvider());
         getSqlManager().register(new MySQLConcatSQLProvider());

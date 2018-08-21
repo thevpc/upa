@@ -35,14 +35,14 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     public void configureStore(){
         super.configureStore();
         Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.FALSE);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.FALSE);
-        map.setBoolean("isReferencingSupported", Boolean.TRUE);
-        map.setBoolean("isViewSupported", Boolean.TRUE);
-        map.setBoolean("isTopSupported", Boolean.FALSE);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, Boolean.FALSE);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_TOP_SUPPORTED, Boolean.FALSE);
         getSqlManager().register(new OracleCoalesceSQLProvider());
         getSqlManager().register(new OracleConcatSQLProvider());
         getSqlManager().register(new OracleDateTruncSQLProvider());

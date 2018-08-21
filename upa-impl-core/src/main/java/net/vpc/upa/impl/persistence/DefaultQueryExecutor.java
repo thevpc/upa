@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.Field;
 import net.vpc.upa.QueryHints;
 import net.vpc.upa.Relationship;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
@@ -241,7 +241,7 @@ public class DefaultQueryExecutor implements QueryExecutor {
         List<Parameter> nullParameters=new ArrayList<Parameter>();
         for (CompiledParam e : compiledParams) {
             if (e.isUnspecified()) {
-                throw new UPAIllegalArgumentException("Unspecified Param " + e);
+                throw new IllegalUPAArgumentException("Unspecified Param " + e);
             }
             boolean isnull=false;
             if(e.getValue()==null && e.getParentExpression() instanceof CompiledBinaryOperatorExpression && e==((CompiledBinaryOperatorExpression) e.getParentExpression()).getRight()){

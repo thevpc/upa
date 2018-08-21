@@ -11,26 +11,32 @@ Version 1.2.0.48 :
     [API ] Added Entity.findDocumentById utility method
     [API ] Added UPA.close() to support reinitialization of UPAContext (for test 
            purposes)
-    [API ] Changed 'Part' naming with 'Item' naming. Particularly Entity.getParts() 
-           become Entity.getItems()
     [API ] Added support for @PropertyAccess on Entity (default for @PropertyAccess 
            for all fields/methods)
     [Test] Added Test Suite Use Cases
     [DOC ] Added /changes.txt (this file) to the project folder.This file will 
            trace all changes for all versions
-    [DOC ] Added /todo.txt (this file) to the project folder.This file will 
+    [DOC ] Added /todo.txt to the project folder.This file will 
            trace all feature requests on the pipe
 
-## Other Changes
-    [@Dec] [REMOVED] Removed support for @Partial, replaced by @Entity(entityType=...) or 
+## Features removed
+    [@Dec] Removed support for @Partial, replaced by @Entity(entityType=...) or 
         @Entity(name=...) if that name is already defined
-    [UPQL] [REMOVED] Removed upql functions d2v(...) and i2v(...). Both replaced by 
+    [UPQL] Removed upql functions d2v(...) and i2v(...). Both replaced by 
            toString(...)
-    [API ] [REMOVED] Removed uql names and replaced (package names included) by upql
-    [API ] [CHANGED] replaced all 'type' fields not to fail in C# generation process
-    [API ] [CHANGED] scan method has as first parameter 'source' instead of config
+    [API ] Removed uql names and replaced (package names included) by upql
+
+## Other Changes
+    [API ] Changed 'Part' naming with 'Item' naming. Particularly Entity.getParts() 
+           become Entity.getItems()
+    [API ] replaced all 'type' fields not to fail in C# generation process
+    [API ] scan method has as first parameter 'source' instead of config
                      (params order changed)
-    [Impl] [CHANGED] replaced all 'type' fields not to fail in C# generation process
+    [Impl] replaced all 'type' fields not to fail in C# generation process
+    [Impl] removed references to java.util.IllegalArgumentException
+    [Impl] removed references to java.util.NoSuchElementException, replaced by
+           NoSuchUPAElementException
+    [Impl] UPAIllegalArgumentException replaced by IllegalUPAArgumentException
 
 ## Bug Fixes
     [Impl] Fixed support for View entities

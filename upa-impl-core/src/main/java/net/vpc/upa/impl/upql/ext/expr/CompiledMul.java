@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.BinaryOperator;
 
 import java.math.BigDecimal;

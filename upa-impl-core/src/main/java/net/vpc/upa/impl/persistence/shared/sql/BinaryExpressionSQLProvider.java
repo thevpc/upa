@@ -38,7 +38,7 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledConcat;
 import net.vpc.upa.impl.upql.ext.expr.CompiledBinaryOperatorExpression;
 import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.BinaryOperator;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
@@ -184,7 +184,7 @@ public class BinaryExpressionSQLProvider extends AbstractSQLProvider {
                 break;
             }
             default: {
-                throw new UPAIllegalArgumentException("Not Supported Binay Operator " + o.getOperator());
+                throw new IllegalUPAArgumentException("Not Supported Binay Operator " + o.getOperator());
             }
         }
         return "(" + s + ")";

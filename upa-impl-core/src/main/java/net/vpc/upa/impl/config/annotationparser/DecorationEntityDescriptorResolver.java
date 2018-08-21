@@ -6,7 +6,7 @@ import net.vpc.upa.config.*;
 import net.vpc.upa.config.Entity;
 import net.vpc.upa.config.Properties;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.extensions.*;
 import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
@@ -38,7 +38,7 @@ public class DecorationEntityDescriptorResolver {
 
     public EntityDescriptor resolve(Class[] classes) throws UPAException {
         if (classes.length == 0) {
-            throw new UPAIllegalArgumentException("Empty Class Array");
+            throw new IllegalUPAArgumentException("Empty Class Array");
         } else {
             if (classes.length > 1) {
                 CompareUtils.sort(classes, new ClassIndexedComparator(repo));
@@ -96,7 +96,7 @@ public class DecorationEntityDescriptorResolver {
                     try {
                         fieldInfo.prepare(ctx, entityInfo.name);
                     } catch (UPAException ex) {
-                        throw new UPAIllegalArgumentException("UnableToPrepareField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
+                        throw new IllegalUPAArgumentException("UnableToPrepareField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
                     }
                 }
             }
@@ -106,7 +106,7 @@ public class DecorationEntityDescriptorResolver {
                     try {
                         fieldInfo.build(ctx, entityInfo.name);
                     } catch (UPAException ex) {
-                        throw new UPAIllegalArgumentException("UnableToBuildField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
+                        throw new IllegalUPAArgumentException("UnableToBuildField " + fieldInfo.getEntityInfo().getName() + "." + fieldInfo.getName(), ex);
                     }
                 }
             }
@@ -149,7 +149,7 @@ public class DecorationEntityDescriptorResolver {
 //            }
             return entityInfo;
         } catch (Exception e) {
-            throw new UPAIllegalArgumentException("UnableToBuildEntity " + entityInfo.getName(), e);
+            throw new IllegalUPAArgumentException("UnableToBuildEntity " + entityInfo.getName(), e);
         }
     }
 
@@ -260,7 +260,7 @@ public class DecorationEntityDescriptorResolver {
                 String name = fieldInfo.name;
                 DecorationFieldDescriptor old = entityInfo.fieldsMap.get(name);
                 if (old != null) {
-                    throw new UPAIllegalArgumentException("Should never happen");
+                    throw new IllegalUPAArgumentException("Should never happen");
                 }
                 entityInfo.fieldsMap.put(name, fieldInfo);
             }

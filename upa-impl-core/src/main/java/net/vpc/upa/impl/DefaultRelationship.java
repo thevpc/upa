@@ -2,7 +2,7 @@ package net.vpc.upa.impl;
 
 import java.util.*;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.upql.util.ThatExpressionReplacer;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
@@ -78,13 +78,13 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
 
         // some checks
         if (sourceFields.length == 0) {
-            throw new UPAIllegalArgumentException("No source fields are specified");
+            throw new IllegalUPAArgumentException("No source fields are specified");
         }
         if (targetFields.length == 0) {
-            throw new UPAIllegalArgumentException("Target Entity " + targetEntity.getName() + " has no primary fields");
+            throw new IllegalUPAArgumentException("Target Entity " + targetEntity.getName() + " has no primary fields");
         }
         if (sourceFields.length != targetFields.length) {
-            throw new UPAIllegalArgumentException("source fields and target fields have not the same count");
+            throw new IllegalUPAArgumentException("source fields and target fields have not the same count");
         }
         sourceEntity.addDependencyOnEntity(targetEntity.getName());
         if (dataType == null) {
@@ -171,10 +171,10 @@ public class DefaultRelationship extends AbstractUPAObject implements Relationsh
         UPAUtils.prepare(getPersistenceUnit(), sourceRole, this.getName() + "_" + sourceRole.getRelationshipRoleType());
 
         if (((getTargetRole().getEntity().isView()) || (getSourceRole().getEntity().isView())) && relationType != RelationshipType.TRANSIENT) {
-            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
+            throw new IllegalUPAArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
         }
         if (((getTargetRole().getEntity().getShield().isTransient()) || (getSourceRole().getEntity().getShield().isTransient())) && relationType != RelationshipType.TRANSIENT) {
-            throw new UPAIllegalArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
+            throw new IllegalUPAArgumentException(this + " : Relationship Type must be TRANSIENT. Found " + relationType);
         }
 
         FlagSet<FieldModifier> modifierstoRemove = FlagSets.ofType(FieldModifier.class)

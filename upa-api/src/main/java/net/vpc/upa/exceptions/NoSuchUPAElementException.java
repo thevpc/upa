@@ -40,26 +40,13 @@ import net.vpc.upa.types.I18NString;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/7/12 9:27 PM
  */
-public class UPAIllegalArgumentException extends UPAException {
+public class NoSuchUPAElementException extends UPAException {
 
-    public UPAIllegalArgumentException() {
-        this((String) null);
+    public NoSuchUPAElementException(String name) {
+        this((String) null, name);
     }
 
-    public UPAIllegalArgumentException(String message) {
-        this(message, (Throwable) null);
+    public NoSuchUPAElementException(String message, String name) {
+        super(new I18NString(message == null ? "NoSuchElement" : message), (Throwable) null, name);
     }
-
-    public UPAIllegalArgumentException(String message, Object... args) {
-        super(new I18NString(message), args);
-    }
-
-    public UPAIllegalArgumentException(String message, Throwable throwable) {
-        super(throwable, new I18NString("UPAIllegalArgumentException"), message);
-    }
-
-    public UPAIllegalArgumentException(Throwable throwable) {
-        super(throwable, new I18NString("UPAIllegalArgumentException"));
-    }
-
 }

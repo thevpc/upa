@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -41,7 +41,7 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
             add(newValue);
             return this;
         } else {
-            throw new UPAIllegalArgumentException("No more tokens are expected");
+            throw new IllegalUPAArgumentException("No more tokens are expected");
         }
     }
 
@@ -54,7 +54,7 @@ public class CompiledDecode extends CompiledFunction implements Cloneable {
             state = VALID;
             return this;
         } else {
-            throw new UPAIllegalArgumentException("Expected a value");
+            throw new IllegalUPAArgumentException("Expected a value");
         }
     }
 

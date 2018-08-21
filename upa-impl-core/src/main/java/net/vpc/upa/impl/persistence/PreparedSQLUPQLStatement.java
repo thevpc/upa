@@ -7,6 +7,7 @@ package net.vpc.upa.impl.persistence;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -226,5 +227,15 @@ public class PreparedSQLUPQLStatement implements NativeStatement {
             throw new UPAException(ex.getMessage(), ex);
         }
     }
+
+    @Override
+    public void setClob(int index, String string) {
+        try {
+            s.setClob(index, string==null?null:new StringReader(string));
+        } catch (SQLException ex) {
+            throw new UPAException(ex.getMessage(), ex);
+        }
+    }
+    
 
 }

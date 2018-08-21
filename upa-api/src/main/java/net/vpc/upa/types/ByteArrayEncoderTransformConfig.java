@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.types;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.io.Serializable;
 
@@ -60,7 +60,7 @@ public class ByteArrayEncoderTransformConfig implements DataTypeTransformConfig,
                 || encoder instanceof Class
                 || encoder instanceof ByteArrayEncoder
         )) {
-            throw new UPAIllegalArgumentException("secretStrategy should be of type String (as class/bean name), Class (implementing class) or ByteArrayEncoder instance");
+            throw new IllegalUPAArgumentException("secretStrategy should be of type String (as class/bean name), Class (implementing class) or ByteArrayEncoder instance");
         }
         this.encoder = encoder;
     }

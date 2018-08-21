@@ -6,7 +6,6 @@
 package net.vpc.upa.impl.eval;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import net.vpc.upa.QLEvaluator;
 import net.vpc.upa.QLTypeEvaluator;
 import net.vpc.upa.expressions.Expression;
@@ -17,6 +16,7 @@ import net.vpc.upa.expressions.FunctionExpression;
  * @author taha.bensalah@gmail.com
  */
 class FunctionDispatchEvaluatorQLTypeEvaluator implements QLTypeEvaluator {
+
     private Map<String, QLTypeEvaluator> functionsEvaluators;
 
     public FunctionDispatchEvaluatorQLTypeEvaluator(Map<String, QLTypeEvaluator> functionsEvaluators) {
@@ -28,9 +28,9 @@ class FunctionDispatchEvaluatorQLTypeEvaluator implements QLTypeEvaluator {
         FunctionExpression fct = (FunctionExpression) e;
         QLTypeEvaluator fe = functionsEvaluators.get(fct.getName().toLowerCase());
         if (fe == null) {
-            throw new NoSuchElementException("function not found " + fct.getName());
+            throw new net.vpc.upa.exceptions.NoSuchUPAElementException("NoSuchFunction", fct.getName());
         }
         return fe.evalObject(fct, evaluator, context);
     }
-    
+
 }

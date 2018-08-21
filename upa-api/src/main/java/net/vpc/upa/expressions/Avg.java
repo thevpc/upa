@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 public final class Avg extends FunctionExpression
         implements Cloneable {
@@ -57,7 +57,7 @@ public final class Avg extends FunctionExpression
         if (index == 0) {
             this.expression = e;
         } else {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
     }
 

@@ -219,6 +219,7 @@ public class PUUtils {
             out.println(" |");
         }
         out.println(br);
+        r.close();
     }
 
     public static String formatLeft(Object str, int len) {

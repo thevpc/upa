@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.upql.BindingId;
 import net.vpc.upa.types.DataTypeTransform;
 
@@ -33,7 +33,7 @@ public class NativeField {
         this.expanded = expanded;
         this.index = index;
         if (index < 0) {
-            throw new UPAIllegalArgumentException("Invalid index < " + index);
+            throw new IllegalUPAArgumentException("Invalid index < " + index);
         }
 //        this.exprString = exprString;
         this.name = name;
@@ -47,7 +47,7 @@ public class NativeField {
         this.typeTransform = typeChain;
         //REMOVE ME
         if (typeChain == null) {
-            throw new UPAIllegalArgumentException("Null DataType");
+            throw new IllegalUPAArgumentException("Null DataType");
         }
     }
 

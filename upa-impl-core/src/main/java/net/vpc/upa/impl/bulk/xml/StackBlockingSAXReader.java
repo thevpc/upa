@@ -4,10 +4,8 @@
  */
 package net.vpc.upa.impl.bulk.xml;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import net.vpc.upa.PortabilityHint;
 
@@ -47,7 +45,7 @@ public interface StackBlockingSAXReader<E> {
      * empty.
      *
      * @return the head of this queue
-     * @throws NoSuchElementException if this queue is empty
+     * @throws net.vpc.upa.exceptions.NoSuchElementException if this queue is empty
      */
     E remove() throws IOException;
 

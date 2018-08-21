@@ -49,12 +49,12 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         keywords = UPAUtils.loadLinesSet(resourcePath);
 
         net.vpc.upa.Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", Boolean.TRUE);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", Boolean.TRUE);
-        map.setBoolean("isReferencingSupported", Boolean.TRUE);
-        map.setBoolean("isViewSupported", Boolean.TRUE);
-        map.setBoolean("isTopSupported", Boolean.TRUE);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_TOP_SUPPORTED, Boolean.TRUE);
         getSqlManager().register(new CoalesceANSISQLProvider());
         getSqlManager().register(new CastAsSQLProvider());
         getSqlManager().register(new MSSQLServerConcatSQLProvider());

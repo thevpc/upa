@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public abstract class UnaryOperatorExpression extends OperatorExpression
         if (tag.equals(EXPR)) {
             this.expression = e;
         } else {
-            throw new UPAIllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
     }
 

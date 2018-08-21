@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.types;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -48,7 +48,7 @@ public class StringTypeCharRewriter implements TypeValueRewriter {
         this.from = from;
         this.to = to;
         if (from == null || to == null || from.length() == 0 || from.length() != to.length()) {
-            throw new UPAIllegalArgumentException();
+            throw new IllegalUPAArgumentException();
         }
     }
 

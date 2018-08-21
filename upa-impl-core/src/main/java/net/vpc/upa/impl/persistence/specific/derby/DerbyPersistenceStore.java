@@ -13,7 +13,7 @@ import net.vpc.upa.impl.persistence.*;
 import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.marshallers.FloatAsDoubleMarshaller;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
-import net.vpc.upa.impl.persistence.shared.marshallers.StringToBlobDataMarshallerFactory;
+import net.vpc.upa.impl.persistence.shared.marshallers.StringToClobUTFMarshallerFactory;
 import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
@@ -39,14 +39,14 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
     public void configureStore(){
         super.configureStore();
         Properties map = getStoreParameters();
-        map.setBoolean("isComplexSelectSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesStatementSupported", Boolean.TRUE);
-        map.setBoolean("isUpdateComplexValuesIncludingUpdatedTableSupported", Boolean.TRUE);
-        map.setBoolean("isFromClauseInUpdateStatementSupported", false);
-        map.setBoolean("isFromClauseInDeleteStatementSupported", false);
-        map.setBoolean("isReferencingSupported", Boolean.TRUE);
-        map.setBoolean("isViewSupported", Boolean.TRUE);
-        map.setBoolean("isTopSupported", Boolean.FALSE);
+        map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_STATEMENT_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_UPDATE_COMPLEX_VALUES_INCLUDING_UPDATED_TABLE_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_UPDATE_STATMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_FROM_CLAUSE_IN_DELETE_STATMENT_SUPPORTED, false);
+        map.setBoolean(PARAM_IS_REFERENCING_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_VIEW_SUPPORTED, Boolean.TRUE);
+        map.setBoolean(PARAM_IS_TOP_SUPPORTED, Boolean.FALSE);
         getSqlManager().register(new DerbyCoalesceSQLProvider());
         getSqlManager().register(new CastANSISQLProvider());
         getSqlManager().register(new DerbyConcatSQLProvider());
@@ -66,8 +66,8 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new DerbyTypeNameSQLProvider());
         getSqlManager().register(new DerbySelectSQLProvider());
         getMarshallManager().setTypeMarshaller(Float.class, new FloatAsDoubleMarshaller(getMarshallManager()));
-        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToBlobDataMarshallerFactory(getMarshallManager(),32672));
-        map.setInt("maxQueryColumnsCount", 1012);
+        getMarshallManager().setTypeMarshallerFactory(StringType.class, new StringToClobUTFMarshallerFactory(getMarshallManager(),32672));
+        map.setInt(PARAM_MAX_QUERY_COLUMN_COUNT, 1012);
     }
 
     @Override

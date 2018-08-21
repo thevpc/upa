@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Function;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.UPAImplDefaults;
@@ -113,7 +113,7 @@ public class DefaultExpressionManager implements ExpressionManager {
             throw new NullPointerException();
         }
         if (containsFunction(name)) {
-            throw new UPAIllegalArgumentException("Function already exists " + name);
+            throw new IllegalUPAArgumentException("Function already exists " + name);
         }
         FunctionDefinition q = new DefaultFunction(name, type, function);
         addFunction(q);
@@ -123,7 +123,7 @@ public class DefaultExpressionManager implements ExpressionManager {
     public void addFunction(FunctionDefinition function) {
         String name = NamingStrategyHelper.getNamingStrategy(persistenceUnit.isCaseSensitiveIdentifiers()).getUniformValue(function.getName());
         if (qlFunctionMap.containsKey(name)) {
-            throw new UPAIllegalArgumentException("Function Already defined " + name);
+            throw new IllegalUPAArgumentException("Function Already defined " + name);
         }
         qlFunctionMap.put(name, function);
     }
@@ -131,7 +131,7 @@ public class DefaultExpressionManager implements ExpressionManager {
     public void removeFunction(String name) {
         name = NamingStrategyHelper.getNamingStrategy(persistenceUnit.isCaseSensitiveIdentifiers()).getUniformValue(name);
         if (!qlFunctionMap.containsKey(name)) {
-            throw new UPAIllegalArgumentException("No Such Function " + name);
+            throw new IllegalUPAArgumentException("No Such Function " + name);
         }
         qlFunctionMap.remove(name);
     }
@@ -157,7 +157,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         name = NamingStrategyHelper.getNamingStrategy(persistenceUnit.isCaseSensitiveIdentifiers()).getUniformValue(name);
         FunctionDefinition qlFunction = qlFunctionMap.get(name);
         if (qlFunction == null) {
-            throw new UPAIllegalArgumentException("No Such QLFunction " + name);
+            throw new IllegalUPAArgumentException("No Such QLFunction " + name);
         }
         return qlFunction;
     }

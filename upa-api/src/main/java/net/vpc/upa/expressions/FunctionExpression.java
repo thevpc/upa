@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +99,7 @@ public abstract class FunctionExpression extends DefaultExpression {
 
     protected static void checkArgCount(String name, Expression[] args, int count) {
         if (args.length != count) {
-            throw new UPAIllegalArgumentException("function " + name + " expects " + count + " argument(s) but found " + args.length);
+            throw new IllegalUPAArgumentException("function " + name + " expects " + count + " argument(s) but found " + args.length);
         }
     }
 }

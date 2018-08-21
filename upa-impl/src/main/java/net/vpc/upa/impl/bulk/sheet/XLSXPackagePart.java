@@ -9,7 +9,6 @@ import net.vpc.upa.impl.bulk.xml.StackBlockingSAXReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -59,7 +58,7 @@ public class XLSXPackagePart {
             for (XLSXPackageRel r : t) {
                 try {
                     r.part = container.getEntry(r.path);
-                } catch (NoSuchElementException e) {
+                } catch (Exception e) {
                     log.log(Level.FINE, "Unable to resolve path {0} in {1}, ignored!", new Object[]{r.path, container});
                 }
             }

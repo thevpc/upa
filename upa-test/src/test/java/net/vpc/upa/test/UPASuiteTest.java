@@ -14,6 +14,7 @@ import net.vpc.upa.test.importexport.UPASuiteTestImportExport;
 import net.vpc.upa.test.listeners.UPASuiteTestListeners;
 import net.vpc.upa.test.perf.UPASuiteTestPerf;
 import net.vpc.upa.test.relations.UPASuiteTestRelations;
+import net.vpc.upa.test.runtime.UPASuiteTestRuntime;
 import net.vpc.upa.test.structure.UPASuiteTestStructure;
 import net.vpc.upa.test.syntax.UPASuiteTestSyntax;
 import net.vpc.upa.test.types.UPASuiteTestTypes;
@@ -39,6 +40,7 @@ import org.junit.runners.Suite;
     UPASuiteTestPattern.class,
     UPASuiteTestSyntax.class,
     UPASuiteTestTypes.class,
+    UPASuiteTestRuntime.class,
     UPASuiteTestPerf.class,
 })
 public class UPASuiteTest {

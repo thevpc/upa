@@ -25,6 +25,7 @@ import net.vpc.common.vfs.impl.DefaultFile;
 import net.vpc.common.vfs.impl.DefaultVFSSecurityManager;
 import net.vpc.common.vfs.impl.DefaultVirtualFileACL;
 import net.vpc.common.vfs.VirtualFileACL;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  *
@@ -192,7 +193,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
         if (!append) {
             return getOutputStream(path);
         } else {
-            throw new IllegalArgumentException("Unsupported");
+            throw new IllegalUPAArgumentException("Unsupported");
         }
     }
 

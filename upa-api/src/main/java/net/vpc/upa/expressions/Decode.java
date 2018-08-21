@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +87,7 @@ public class Decode extends FunctionExpression implements Cloneable {
             add(newValue);
             return this;
         } else {
-            throw new UPAIllegalArgumentException("No more tokens are expected");
+            throw new IllegalUPAArgumentException("No more tokens are expected");
         }
     }
 
@@ -100,7 +100,7 @@ public class Decode extends FunctionExpression implements Cloneable {
             state = VALID;
             return this;
         } else {
-            throw new UPAIllegalArgumentException("Expected a value");
+            throw new IllegalUPAArgumentException("Expected a value");
         }
     }
 
@@ -114,7 +114,7 @@ public class Decode extends FunctionExpression implements Cloneable {
     }
 
     //    public String toSQL(boolean flag, PersistenceUnit database) {
-//        throw new UPAIllegalArgumentException("Not supported");
+//        throw new IllegalUPAArgumentException("Not supported");
 //    }
     @Override
     public String getName() {

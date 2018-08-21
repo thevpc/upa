@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  *
@@ -143,7 +143,7 @@ public class SubList<E> extends AbstractList<E> implements List<E> {
             throw new IndexOutOfBoundsException("toIndex = " + toIndex);
         }
         if (fromIndex > toIndex) {
-            throw new UPAIllegalArgumentException("fromIndex(" + fromIndex
+            throw new IllegalUPAArgumentException("fromIndex(" + fromIndex
                     + ") > toIndex(" + toIndex + ")");
         }
     }

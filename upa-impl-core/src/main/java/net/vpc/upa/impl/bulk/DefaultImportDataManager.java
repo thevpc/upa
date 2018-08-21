@@ -14,7 +14,7 @@ import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.ImportDataConfig;
 import net.vpc.upa.bulk.ImportDataManager;
 import net.vpc.upa.bulk.ImportDataMode;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.ManyToOneType;
 
@@ -103,7 +103,7 @@ public class DefaultImportDataManager implements ImportDataManager {
                 break;
             }
             default: {
-                throw new UPAIllegalArgumentException("Unsupported");
+                throw new IllegalUPAArgumentException("Unsupported");
             }
         }
         return entityValue;

@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.config.BoolEnum;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.util.regexp.PortablePattern;
 import net.vpc.upa.impl.util.regexp.PortablePatternMatcher;
@@ -526,7 +526,7 @@ public final class StringUtils {
                             break;
                         }
                         default: {
-                            throw new UPAIllegalArgumentException("Unsupported");
+                            throw new IllegalUPAArgumentException("Unsupported");
                         }
                     }
                     break;

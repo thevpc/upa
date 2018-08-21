@@ -11,7 +11,7 @@ import net.vpc.upa.Package;
 import net.vpc.upa.config.Decoration;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Cst;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Literal;
@@ -267,7 +267,7 @@ public class UPAUtils {
                     return h.equals(o1, o2);
                 }
             }
-            throw new UPAIllegalArgumentException("could not compare primitive arrays");
+            throw new IllegalUPAArgumentException("could not compare primitive arrays");
             //return false;
         }
         Object[] o1arr = (Object[]) o1;
@@ -589,12 +589,12 @@ public class UPAUtils {
             return null;
         }
         if (type == null) {
-            throw new UPAIllegalArgumentException("Null Parameter type ");
+            throw new IllegalUPAArgumentException("Null Parameter type ");
         }
 
         StringValueParser p = typeToParser.get(type);
         if (p == null) {
-            throw new UPAIllegalArgumentException("Unsupported Parameter type " + type);
+            throw new IllegalUPAArgumentException("Unsupported Parameter type " + type);
         }
         return p.parse(value, format);
     }
@@ -609,17 +609,17 @@ public class UPAUtils {
 
         Class type = getNamedType(ptype);
         if (type == null) {
-            throw new UPAIllegalArgumentException("Unsupported Parameter type " + ptype);
+            throw new IllegalUPAArgumentException("Unsupported Parameter type " + ptype);
         }
         return createValue(value, type, format);
     }
 
     public static BaseScanSource toBaseScanSource(ScanSource source) {
         if (source == null) {
-            throw new UPAIllegalArgumentException("ScanSource could not be null; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
+            throw new IllegalUPAArgumentException("ScanSource could not be null; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
         }
         if (!(source instanceof BaseScanSource)) {
-            throw new UPAIllegalArgumentException("ScanSource (" + source.getClass() + ") is of invalid or unsupported type; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
+            throw new IllegalUPAArgumentException("ScanSource (" + source.getClass() + ") is of invalid or unsupported type; you may use UPAContext.getFactory().create*ScanSource(...) methods to get a valid instance.");
         }
         return (BaseScanSource) source;
     }
@@ -883,7 +883,7 @@ public class UPAUtils {
             return id;
         }
         if (!PlatformUtils.isInstance(entity.getIdType(), id)) {
-            throw new UPAIllegalArgumentException("InvalidEntityIdType", entity.getName(), entity.getIdType().getName(), id.getClass().getName());
+            throw new IllegalUPAArgumentException("InvalidEntityIdType", entity.getName(), entity.getIdType().getName(), id.getClass().getName());
         }
         return id;
     }

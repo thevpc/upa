@@ -8,7 +8,7 @@ import net.vpc.upa.exceptions.UPAException;
 
 import java.util.ArrayList;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.filters.FieldFilters;
 
 public class DefaultIndex extends AbstractUPAObject implements Index {
@@ -32,14 +32,14 @@ public class DefaultIndex extends AbstractUPAObject implements Index {
 
     public Field[] getFields() {
         if (fields == null) {
-            throw new UPAIllegalArgumentException("Model Changes are not yet committed");
+            throw new IllegalUPAArgumentException("Model Changes are not yet committed");
         }
         return fields;
     }
 
     public Entity getEntity() {
         if (entity == null) {
-            throw new UPAIllegalArgumentException("Model Changes are not yet committed");
+            throw new IllegalUPAArgumentException("Model Changes are not yet committed");
         }
         return entity;
     }

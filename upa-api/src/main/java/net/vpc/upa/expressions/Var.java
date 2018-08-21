@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.expressions;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class Var extends DefaultExpression {
         this.applier = applier;
         this.name = name;
         if (name.contains(".")) {
-            throw new UPAIllegalArgumentException("Name could not contain dots");
+            throw new IllegalUPAArgumentException("Name could not contain dots");
         }
     }
 
@@ -81,7 +81,7 @@ public class Var extends DefaultExpression {
         if (tag.equals(PARENT)) {
             this.applier = e;
         } else {
-            throw new UPAIllegalArgumentException("Not supported yet.");
+            throw new IllegalUPAArgumentException("Not supported yet.");
         }
     }
 

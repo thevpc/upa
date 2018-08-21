@@ -4,7 +4,7 @@
  */
 package net.vpc.upa.impl.util.xml;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class XMLUtils {
             if (n2 != null) {
                 values.put(n2, e.getAttributeValueAt(i));
             } else {
-                throw new UPAIllegalArgumentException("Unsupported attribute " + n + " for tag " + e.getName());
+                throw new IllegalUPAArgumentException("Unsupported attribute " + n + " for tag " + e.getName());
             }
         }
         return values;

@@ -9,7 +9,7 @@ import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.*;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.*;
 import net.vpc.upa.filters.DefaultEntityFilter;
@@ -203,7 +203,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new NullPointerException();
         }
         if (name.contains("/")) {
-            throw new UPAIllegalArgumentException("Name cannot contain '/'");
+            throw new IllegalUPAArgumentException("Name cannot contain '/'");
         }
         String[] canonicalPathArray = UPAUtils.getCanonicalPathArray(parentPath);
         Package parentModule = null;
@@ -650,7 +650,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public Entity getEntity(String entityName, boolean check) {
         if (entityName == null) {
             if (check) {
-                throw new UPAIllegalArgumentException("NullEntityName");
+                throw new IllegalUPAArgumentException("NullEntityName");
             }
             return null;
         }
@@ -686,7 +686,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 detailUpdateType = RelationshipUpdateType.COMPOSED;
             } else if (relationDescriptor.getMappedTo() != null && relationDescriptor.getMappedTo().length > 0) {
                 if (relationDescriptor.getMappedTo().length > 1) {
-                    throw new UPAIllegalArgumentException("mappedTo cannot only apply to single Entity Field");
+                    throw new IllegalUPAArgumentException("mappedTo cannot only apply to single Entity Field");
                 }
                 detailEntityFieldName = getEntity(detailEntityName).getField(relationDescriptor.getMappedTo()[0]).getName();
             }
@@ -726,7 +726,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
         if (detailEntityFieldName == null) {
             if (PlatformUtils.isUndefinedEnumValue(RelationshipUpdateType.class, detailUpdateType) && detailUpdateType != RelationshipUpdateType.FLAT) {
-                throw new UPAIllegalArgumentException("MissingDetailEntityFieldName");
+                throw new IllegalUPAArgumentException("MissingDetailEntityFieldName");
             }
             if (PlatformUtils.isUndefinedEnumValue(RelationshipUpdateType.class, detailUpdateType)) {
                 detailUpdateType = RelationshipUpdateType.FLAT;
@@ -743,7 +743,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         } else if (relationDescriptor.isManyToOne()) {
             r = new DefaultManyToOneRelationship();
         } else {
-            throw new UPAIllegalArgumentException("Invalid Relationship descriptor. Expected ManyToOne, OneToOne or Hierarchy");
+            throw new IllegalUPAArgumentException("Invalid Relationship descriptor. Expected ManyToOne, OneToOne or Hierarchy");
         }
         DefaultBeanAdapter adapter = UPAUtils.preparePreAdd(this, null, r, name);
         Entity detailEntity = getEntity(detailEntityName);
@@ -1711,7 +1711,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (SingletonExtensionDefinition.class.equals(entityExtensionDefinitionType)) {
             return SingletonExtension.class;
         }
-        throw new UPAIllegalArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
+        throw new IllegalUPAArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
     }
 
     public void setName(String name) {
@@ -2123,7 +2123,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public <T> T reloadObject(T object) {
         if (object == null) {
-            throw new UPAIllegalArgumentException("NullObject");
+            throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(object.getClass());
         return (T) entity.findById(entity.getBuilder().objectToId(object));
@@ -2132,7 +2132,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public <T> T reloadObject(String entityName, Object object) {
         if (object == null) {
-            throw new UPAIllegalArgumentException("NullObject");
+            throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(entityName);
         return (T) entity.findById(entity.getBuilder().objectToId(object));
@@ -2141,7 +2141,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public Document reloadDocument(String entityName, Object object) {
         if (object == null) {
-            throw new UPAIllegalArgumentException("NullObject");
+            throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(entityName);
         return findDocumentById(entityName, entity.getBuilder().objectToId(object));
@@ -2849,7 +2849,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         String uname = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(), name);
         NamedFormulaDefinition f = namedFormulas.get(uname);
         if (f == null) {
-            throw new UPAIllegalArgumentException("Formula Not Found " + name);
+            throw new IllegalUPAArgumentException("Formula Not Found " + name);
         }
         return f;
     }
@@ -2866,7 +2866,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new UPAException("InvalidCustomFormula", formula);
         }
         if (namedFormulas.containsKey(name)) {
-            throw new UPAIllegalArgumentException("Formula Already defined " + name);
+            throw new IllegalUPAArgumentException("Formula Already defined " + name);
         }
         if (formula instanceof CustomFormula) {
             namedFormulas.put(name, new DefaultNamedFormulaDefinition(name, formula));
@@ -2879,7 +2879,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public void removeNamedFormula(String name) {
         name = NamingStrategyHelper.getUniformValue(isCaseSensitiveIdentifiers(), name);
         if (namedFormulas.containsKey(name)) {
-            throw new UPAIllegalArgumentException("No Such Function " + name);
+            throw new IllegalUPAArgumentException("No Such Function " + name);
         }
     }
 

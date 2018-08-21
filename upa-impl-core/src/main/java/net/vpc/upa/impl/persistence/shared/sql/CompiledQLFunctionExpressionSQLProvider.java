@@ -2,7 +2,7 @@ package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.FunctionEvalContext;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.persistence.SQLProvider;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
@@ -50,7 +50,7 @@ public class CompiledQLFunctionExpressionSQLProvider implements SQLProvider {
         if (o instanceof CompiledParam) {
             return ((CompiledParam) o).getValue();
         }
-        throw new UPAIllegalArgumentException("Unable to evaluate type " + o.getClass() + " :: " + o);
+        throw new IllegalUPAArgumentException("Unable to evaluate type " + o.getClass() + " :: " + o);
     }
 
     @Override

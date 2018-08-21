@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
@@ -61,20 +61,26 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
             return "INT";
         }
 
-        if(datatype instanceof TemporalType){
+        if (datatype instanceof TemporalType) {
             TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
-            if(temporalOption==null){
-                temporalOption=TemporalOption.DEFAULT;
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
             }
-            switch (temporalOption){
-                case DATE: return "DATE";
-                case DATETIME: return "DATETIME";
-                case TIMESTAMP: return "TIMESTAMP";
-                case TIME: return "TIME";
-                case MONTH: return "DATE";
-                case YEAR: return "DATE";
-                default:{
-                    throw new IllegalArgumentException("Unsupported "+datatype);
+            switch (temporalOption) {
+                case DATE:
+                    return "DATE";
+                case DATETIME:
+                    return "DATETIME";
+                case TIMESTAMP:
+                    return "TIMESTAMP";
+                case TIME:
+                    return "TIME";
+                case MONTH:
+                    return "DATE";
+                case YEAR:
+                    return "DATE";
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
                 }
             }
         }
@@ -82,7 +88,7 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
                 .equals(platformType) || PlatformUtils.isSerializable(platformType)) {
             return "BLOB"; // serialized form
         }
-        throw new UPAIllegalArgumentException(
+        throw new IllegalUPAArgumentException(
                 "UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 

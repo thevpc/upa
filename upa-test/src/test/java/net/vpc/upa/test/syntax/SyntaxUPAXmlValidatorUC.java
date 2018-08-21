@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 /**
  * Created by vpc on 1/29/17.
  */
-public class SyntaxUpaXmlValidatorUC {
+public class SyntaxUPAXmlValidatorUC {
 
     @BeforeClass
     public static void setup() {
@@ -29,7 +29,7 @@ public class SyntaxUpaXmlValidatorUC {
         DefaultUPAContextLoader loader = new DefaultUPAContextLoader(null);
         ContextElement contextElement = new ContextElement();
         URL xsdURL = UPA.class.getResource("/net/vpc/upa/upa-1.0.xsd");
-        URL xmlURL = SyntaxUpaXmlValidatorUC.class.getResource("/test-resources/upa-bloated.xml");
+        URL xmlURL = SyntaxUPAXmlValidatorUC.class.getResource("/test-resources/upa-bloated.xml");
         boolean b = loader.parseURL(
                 xmlURL,
                 contextElement,

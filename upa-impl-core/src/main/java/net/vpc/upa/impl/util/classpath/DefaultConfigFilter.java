@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.config.ScanFilter;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.config.DefaultConfigFilterItem;
 
 /**
@@ -130,7 +130,7 @@ public class DefaultConfigFilter implements ClassPathFilter {
             if (Character.isJavaIdentifierPart(c) || Character.isWhitespace(c) || c == '.' || c == ',' || c == ';' || c == '|' || c == '*' || c == '?') {
                 //ok accep this
             } else {
-                throw new UPAIllegalArgumentException("Invalid type pattern " + filter.getTypes());
+                throw new IllegalUPAArgumentException("Invalid type pattern " + filter.getTypes());
             }
         }
         String[] types = filter.getTypes().split("[,; \n\r\t|]");

@@ -15,7 +15,7 @@ import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.TextFixedWidthParser;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.exceptions.UPAIllegalArgumentException;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
  *
@@ -28,7 +28,7 @@ public class DefaultTextFixedWidthParser extends TextFixedWidthParser {
 
     public void configure(Object source) throws IOException {
         if (source == null) {
-            throw new UPAIllegalArgumentException("Missing configuration");
+            throw new IllegalUPAArgumentException("Missing configuration");
         }
         if (source instanceof File) {
             this.source = new FileReader((File) source);
@@ -39,7 +39,7 @@ public class DefaultTextFixedWidthParser extends TextFixedWidthParser {
         } else if (source instanceof Reader) {
             this.source = ((Reader) source);
         } else {
-            throw new UPAIllegalArgumentException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL|Reader");
+            throw new IllegalUPAArgumentException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL|Reader");
         }
     }
 
