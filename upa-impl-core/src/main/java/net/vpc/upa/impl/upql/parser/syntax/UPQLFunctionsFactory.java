@@ -6,7 +6,7 @@ package net.vpc.upa.impl.upql.parser.syntax;
 
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.upql.QLFunctionExpression;
 
@@ -57,21 +57,21 @@ public class UPQLFunctionsFactory {
             if (type instanceof Var) {
                 final String s = ((Var) type).getName();
                 if ("string".equals(s)) {
-                    d = TypesFactory.STRING;
+                    d = DataTypeFactory.STRING;
                 } else if ("int".equals(s)) {
-                    d = TypesFactory.INT;
+                    d = DataTypeFactory.INT;
                 } else if ("double".equals(s)) {
-                    d = TypesFactory.DOUBLE;
+                    d = DataTypeFactory.DOUBLE;
                 } else if ("float".equals(s)) {
-                    d = TypesFactory.FLOAT;
+                    d = DataTypeFactory.FLOAT;
                 } else if ("long".equals(s)) {
-                    d = TypesFactory.LONG;
+                    d = DataTypeFactory.LONG;
                 } else if ("date".equals(s)) {
-                    d = TypesFactory.DATE;
+                    d = DataTypeFactory.DATE;
                 } else if ("datetime".equals(s)) {
-                    d = TypesFactory.DATETIME;
+                    d = DataTypeFactory.DATETIME;
                 } else if ("boolean".equals(s)) {
-                    d = TypesFactory.BOOLEAN;
+                    d = DataTypeFactory.BOOLEAN;
                 } else {
                     d = new ManyToOneType(name, null, name, true, true);
                 }

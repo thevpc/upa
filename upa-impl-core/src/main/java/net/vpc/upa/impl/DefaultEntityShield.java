@@ -30,11 +30,11 @@ public class DefaultEntityShield implements EntityShield {
         this.entity = entity;
     }
 
-    public Expression getNonDeletableDocumentsExpression() {
+    public Expression getNonRemovableDocumentsExpression() {
         return nonDeletableDocumentsExpression;
     }
 
-    public void setNonDeletableDocumentsExpression(Expression expression) {
+    public void setNonRemovableDocumentsExpression(Expression expression) {
         this.nonDeletableDocumentsExpression = expression;
     }
 
@@ -78,9 +78,9 @@ public class DefaultEntityShield implements EntityShield {
         return (a == null || !a.isValid()) ? null : a;
     }
 
-    public Expression getFullNonDeletableDocumentsExpression() throws UPAException {
+    public Expression getFullNonRemovableDocumentsExpression() throws UPAException {
         Entity parent = entity.getParentEntity();
-        Expression a = getNonDeletableDocumentsExpression();
+        Expression a = getNonRemovableDocumentsExpression();
         Expression b = parent == null ? null : entity.parentToChildExpression(parent.getShield().getFullNonUpdatableDocumentsExpression());
         a = (a == null) ? b : new Or(a, b);
         return (a == null || !a.isValid()) ? null : a;
@@ -138,7 +138,7 @@ public class DefaultEntityShield implements EntityShield {
         return !isTransient() && getEffectiveModifiers().contains(EntityModifier.UPDATE);
     }
 
-    public final boolean isDeleteSupported() {
+    public final boolean isRemoveSupported() {
         return !isTransient() && getEffectiveModifiers().contains(EntityModifier.REMOVE);
     }
 
@@ -166,8 +166,8 @@ public class DefaultEntityShield implements EntityShield {
         return isUpdateSupported() && entity.getPersistenceUnit().getSecurityManager().isAllowedUpdate(entity) && isNoVeto(VetoableOperation.updateEnabled);
     }
 
-    public boolean isDeleteEnabled() throws UPAException {
-        return isDeleteSupported() && entity.getPersistenceUnit().getSecurityManager().isAllowedRemove(entity) && isNoVeto(VetoableOperation.removeEnabled);
+    public boolean isRemoveEnabled() throws UPAException {
+        return isRemoveSupported() && entity.getPersistenceUnit().getSecurityManager().isAllowedRemove(entity) && isNoVeto(VetoableOperation.removeEnabled);
     }
 
     public boolean isRenameEnabled() throws UPAException {
@@ -239,13 +239,13 @@ public class DefaultEntityShield implements EntityShield {
             //nothing to remove!!
             return;
         }
-        if (!isDeleteSupported()) {
+        if (!isRemoveSupported()) {
             throw new RemoveDocumentNotSupportedException(entity);
         }
         if (!entity.getPersistenceUnit().getSecurityManager().isAllowedRemove(entity)) {
             throw new RemoveDocumentNotAllowedException(entity);
         }
-        Expression e = getFullNonDeletableDocumentsExpression();
+        Expression e = getFullNonRemovableDocumentsExpression();
         if (e != null && e.isValid()) {
             Expression a = (condition == null) ? e : new And(condition, e);
             if (entity.getEntityCount(a) > 0) {
@@ -430,7 +430,7 @@ public class DefaultEntityShield implements EntityShield {
 
     @Override
     public void checkClear() throws UPAException {
-        if (!isDeleteSupported()) {
+        if (!isRemoveSupported()) {
             throw new RemoveDocumentNotSupportedException(entity);
         }
     }
@@ -440,7 +440,7 @@ public class DefaultEntityShield implements EntityShield {
 ////        if(!isResetSupported()){
 ////
 ////        }
-////        if (!isDeleteSupported()) {
+////        if (!isRemoveSupported()) {
 ////            throw new RemoveDocumentNotSupportedException(entity);
 ////        }
 ////        if (!isPersistSupported()) {
@@ -566,12 +566,12 @@ public class DefaultEntityShield implements EntityShield {
     //    public final boolean isPrintSupported() {
 //        return printSupported;
 //    }
-    public boolean isDeletableDocument(Object k, boolean recurse) {
+    public boolean isRemovableDocument(Object k, boolean recurse) {
         try {
             if (!entity.getPersistenceUnit().getSecurityManager().isAllowedRemove(entity)) {
                 return false;
             }
-            Expression e = getFullNonDeletableDocumentsExpression();
+            Expression e = getFullNonRemovableDocumentsExpression();
             if (e != null && e.isValid()) {
                 Expression a = new And(entity.getBuilder().idToExpression(k, UPQLUtils.THIS), e);
                 if (entity.getEntityCount(a) > 0) {

@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 public class UserExpression extends DefaultExpression
         implements Cloneable {
@@ -58,7 +59,7 @@ public class UserExpression extends DefaultExpression
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
 
     public UserExpression setParameters(Map<String, Object> parameters) {

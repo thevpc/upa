@@ -39,7 +39,7 @@ public class ContextConnectionProfileParserUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
     }
 
     @Test

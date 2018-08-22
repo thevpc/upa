@@ -26,7 +26,7 @@ public class RelationFormulaUC2 {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC2.class);
 //        pu.scan(null);
         pu.addEntity(Person.class);

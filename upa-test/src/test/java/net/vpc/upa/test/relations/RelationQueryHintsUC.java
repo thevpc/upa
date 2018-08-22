@@ -21,7 +21,7 @@ public class RelationQueryHintsUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationQueryHintsUC.class, "embedded");
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);

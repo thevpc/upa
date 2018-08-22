@@ -8,7 +8,7 @@ import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPAContext;
 import net.vpc.upa.config.ScanFilter;
-import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.util.classpath.ClassPathUtils;
 import net.vpc.upa.impl.util.classpath.DefaultConfigFilter;
 import net.vpc.upa.impl.util.classpath.URLClassIterable;
@@ -73,7 +73,7 @@ public class ContextScanSource extends BaseScanSource {
             }
             contextString = "PersistenceUnit[" + pu.getAbsoluteName() + "]";
         } else {
-            throw new IllegalUPAArgumentException("Unsupported context " + context);
+            throw new UnsupportedUPAFeatureException("Unsupported context " + context);
         }
         return new URLClassIterable(getName() + ":" + contextString, getUrls(),
                 new DefaultConfigFilter(_filters.toArray(new ScanFilter[_filters.size()])),

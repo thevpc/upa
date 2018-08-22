@@ -34,6 +34,8 @@
  */
 package net.vpc.upa;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 
 import java.util.List;
@@ -75,6 +77,59 @@ public class DefaultEntityDescriptor implements EntityDescriptor {
     public List<RelationshipDescriptor> relationshipDescriptors;
 
     public Map<String, Object> properties;
+
+    public DefaultEntityDescriptor() {
+
+    }
+
+    public DefaultEntityDescriptor(EntityDescriptor other) {
+        copyFrom(other);
+    }
+
+    public DefaultEntityDescriptor copyFrom(EntityDescriptor other) {
+        if (other != null) {
+            setName(other.getName());
+            setArchivingOrder(other.getArchivingOrder());
+            setListOrder(other.getListOrder());
+            setPackagePath(other.getPackagePath());
+            setShortName(other.getShortName());
+            setEntityType(other.getEntityType());
+            setIdType(other.getIdType());
+            setModifiers(other.getModifiers());
+            setPosition(other.getPosition());
+            setSource(other.getSource());
+
+            List<EntityExtensionDefinition> e = other.getEntityExtensions();
+            if (e != null) {
+                for (EntityExtensionDefinition item : e) {
+                    addEntityExtension(item);
+                }
+            }
+            List<IndexDescriptor> il = other.getIndexDescriptors();
+            if (il != null) {
+                for (IndexDescriptor item : il) {
+                    addIndexDescriptor(new DefaultIndexDescriptor(item));
+                }
+            }
+            List<FieldDescriptor> fl = other.getFieldDescriptors();
+            if (fl != null) {
+                for (FieldDescriptor item : fl) {
+                    addFieldDescriptor(new DefaultFieldDescriptor(item));
+                }
+            }
+            List<RelationshipDescriptor> rl = other.getRelationshipDescriptors();
+            if (rl != null) {
+                for (RelationshipDescriptor item : rl) {
+                    addRelationshipDescriptor(new DefaultRelationshipDescriptor(item));
+                }
+            }
+            Map<String, Object> p = other.getProperties();
+            if (p != null) {
+                addProperties(p);
+            }
+        }
+        return this;
+    }
 
     public String getName() {
         return name;
@@ -157,6 +212,32 @@ public class DefaultEntityDescriptor implements EntityDescriptor {
         return this;
     }
 
+    public DefaultEntityDescriptor addEntityExtension(EntityExtensionDefinition d) {
+        if (d != null) {
+            if (this.entityExtensions == null) {
+                this.entityExtensions = new ArrayList<EntityExtensionDefinition>();
+            }
+            this.entityExtensions.add(d);
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeAllEntityExtensions() {
+        if (this.entityExtensions != null) {
+            this.entityExtensions.clear();
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeEntityExtension(EntityExtensionDefinition d) {
+        if (d != null) {
+            if (this.entityExtensions != null) {
+                this.entityExtensions.remove(d);
+            }
+        }
+        return this;
+    }
+
     public Object getSource() {
         return source;
     }
@@ -175,6 +256,32 @@ public class DefaultEntityDescriptor implements EntityDescriptor {
         return this;
     }
 
+    public DefaultEntityDescriptor addFieldDescriptor(FieldDescriptor field) {
+        if (field != null) {
+            if (this.fieldDescriptors == null) {
+                this.fieldDescriptors = new ArrayList<FieldDescriptor>();
+            }
+            this.fieldDescriptors.add(field);
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeFieldDescriptor(FieldDescriptor field) {
+        if (field != null) {
+            if (this.fieldDescriptors != null) {
+                this.fieldDescriptors.remove(field);
+            }
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeAllsFieldDescriptors() {
+        if (this.fieldDescriptors != null) {
+            this.fieldDescriptors.clear();
+        }
+        return this;
+    }
+
     public List<IndexDescriptor> getIndexDescriptors() {
         return indexDescriptors;
     }
@@ -184,12 +291,64 @@ public class DefaultEntityDescriptor implements EntityDescriptor {
         return this;
     }
 
+    public DefaultEntityDescriptor addIndexDescriptor(IndexDescriptor index) {
+        if (index != null) {
+            if (this.indexDescriptors == null) {
+                this.indexDescriptors = new ArrayList<IndexDescriptor>();
+            }
+            this.indexDescriptors.add(index);
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeIndexDescriptor(IndexDescriptor index) {
+        if (index != null) {
+            if (this.indexDescriptors != null) {
+                this.indexDescriptors.remove(index);
+            }
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeAllIndexDescriptors() {
+        if (this.indexDescriptors != null) {
+            this.indexDescriptors.clear();
+        }
+        return this;
+    }
+
     public List<RelationshipDescriptor> getRelationshipDescriptors() {
         return relationshipDescriptors;
     }
 
     public DefaultEntityDescriptor setRelationshipDescriptors(List<RelationshipDescriptor> relationshipDescriptors) {
         this.relationshipDescriptors = relationshipDescriptors;
+        return this;
+    }
+
+    public DefaultEntityDescriptor addRelationshipDescriptor(RelationshipDescriptor relationship) {
+        if (relationship != null) {
+            if (this.relationshipDescriptors == null) {
+                this.relationshipDescriptors = new ArrayList<RelationshipDescriptor>();
+            }
+            this.relationshipDescriptors.add(relationship);
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeRelationshipDescriptor(RelationshipDescriptor relationship) {
+        if (relationship != null) {
+            if (this.relationshipDescriptors != null) {
+                this.relationshipDescriptors.remove(relationship);
+            }
+        }
+        return this;
+    }
+
+    public DefaultEntityDescriptor removeAllRelationshipDescriptors() {
+        if (this.relationshipDescriptors != null) {
+            this.relationshipDescriptors.clear();
+        }
         return this;
     }
 
@@ -214,6 +373,16 @@ public class DefaultEntityDescriptor implements EntityDescriptor {
 
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    public DefaultEntityDescriptor addProperties(Map<String, Object> other) {
+        if (other != null) {
+            if (properties == null) {
+                properties = new HashMap<String, Object>();
+            }
+            properties.putAll(other);
+        }
+        return this;
     }
 
     public DefaultEntityDescriptor setProperties(Map<String, Object> properties) {

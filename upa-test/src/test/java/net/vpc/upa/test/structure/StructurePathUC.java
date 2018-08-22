@@ -22,7 +22,7 @@ public class StructurePathUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(StructurePathUC.class);
         //pu.addEntity(Data.class);
         pu.start();

@@ -22,7 +22,7 @@ public class TypesLobUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesLobUC.class);
         pu.addEntity(DBFile.class);
         pu.start();

@@ -13,6 +13,7 @@ import net.vpc.upa.*;
 import net.vpc.upa.bulk.ImportEntityFinder;
 import net.vpc.upa.bulk.ImportEntityMapper;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.expressions.And;
 import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
@@ -49,7 +50,7 @@ public class DefaultImportEntityFinder implements ImportEntityFinder, ImportEnti
                     return m;
                 }
             }
-            throw new IllegalUPAArgumentException("Unsupported Multiple Field Index on import");
+            throw new UnsupportedUPAFeatureException("Unsupported Multiple Field Index on import");
 
         } else {
             Map<String, Object> map = new HashMap<String, Object>();

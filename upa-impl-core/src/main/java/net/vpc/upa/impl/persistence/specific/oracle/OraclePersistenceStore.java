@@ -1,5 +1,9 @@
 package net.vpc.upa.impl.persistence.specific.oracle;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.DatabaseProduct;
@@ -14,25 +18,29 @@ import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.impl.persistence.DefaultViewKeyPersistenceDefinition;
+import net.vpc.upa.impl.persistence.SqlTypeName;
 
 import net.vpc.upa.persistence.EntityExecutionContext;
+import net.vpc.upa.persistence.ViewPersistenceDefinition;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class OraclePersistenceStore extends DefaultPersistenceStore {
 
-
     public OraclePersistenceStore() {
     }
+
     @Override
     public int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters) {
         DatabaseProduct p = connectionProfile.getDatabaseProduct();
-        if(p==DatabaseProduct.ORACLE){
+        if (p == DatabaseProduct.ORACLE) {
             return 10;
         }
         return -1;
     }
 
-    public void configureStore(){
+    public void configureStore() {
         super.configureStore();
         Properties map = getStoreParameters();
         map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, Boolean.TRUE);
@@ -59,7 +67,6 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new OracleCastSQLProvider());
         getSqlManager().register(new OracleD2VSQLProvider());
         getSqlManager().register(new NullValANSISQLProvider());
-        getSqlManager().register(new OracleTypeNameSQLProvider());
         getSqlManager().register(new OracleSelectSQLProvider());
 
         OracleSerializablePlatformObjectMarshaller oracleSerializablePlatformObjectWrapper = new OracleSerializablePlatformObjectMarshaller(getMarshallManager());
@@ -69,7 +76,7 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         getMarshallManager().setTypeMarshaller(Object.class, oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshaller(FileData.class, oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshaller(DataType.class, oracleSerializablePlatformObjectWrapper);
-        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(getMarshallManager(),oracleSerializablePlatformObjectWrapper);
+        ConstantDataMarshallerFactory blobfactory = new ConstantDataMarshallerFactory(getMarshallManager(), oracleSerializablePlatformObjectWrapper);
         getMarshallManager().setTypeMarshallerFactory(DataType.class, blobfactory);
 
         getMarshallManager().setTypeMarshallerFactory(ImageType.class, blobfactory);
@@ -91,8 +98,8 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
-        String s = super.getFieldDeclaration(field,entityPersistenceContext);
+    public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
+        String s = super.getColumnDeclaration(field, entityPersistenceContext);
 //        if (field.isAutoIncrement()) {
         //throw new UPAIllegalArgumentException("Not yet supported");
         //s += " IDENTITY(" + field.getAutoIncrement().getSeed() + "," + field.getAutoIncrement().getIncrement() + ")";
@@ -147,6 +154,153 @@ public class OraclePersistenceStore extends DefaultPersistenceStore {
         }
         sb.append(")");
         return (sb.toString());
+    }
+
+    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
+        try {
+            ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+             * System.Data.IDbConnection connection =
+             * entityExecutionContext.GetConnection().GetPlatformConnection();
+             * if (connection is System.Data.Common.DbConnection) {
+             * System.Data.Common.DbConnection dconnection =
+             * (System.Data.Common.DbConnection)connection;
+             * System.Data.DataTable found = dconnection.GetSchema("Tables", new
+             * string[] { null, null, persistenceName, "VIEW" }); return
+             * (found.Rows.Count != 0); }
+             */
+            try {
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                String catalog = connection.getCatalog();
+                String schema = connection.getSchema();
+                rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
+                if (rs.next()) {
+                    String n = rs.getString("TABLE_NAME");
+                    String t = rs.getString("TYPE_NAME");
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getViewDefinition(n, connection));
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
+        }
+        return null;
+    }
+
+    protected String getViewDefinition(String viewName, Connection conn) {
+        String definition = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            try {
+                ps = conn.prepareStatement(
+                        "SELECT text FROM all_views WHERE view_name  = ?");
+                ps.setString(1, viewName);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    definition = rs.getString(1);
+                }
+                rs.close();
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new UPAException(ex);
+        }
+        return definition;
+    }
+
+    public SqlTypeName getSqlTypeName(DataType datatype) {
+//        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
+//        if(databaseProductVersion==null){
+//            databaseProductVersion="";
+//        }
+        Class platformType = datatype.getPlatformType();
+        int length = datatype.getScale();
+        int precision = datatype.getPrecision();
+        if (net.vpc.upa.impl.util.PlatformUtils.isString(platformType)) {
+            if (length <= 0) {
+                length = 256;
+            }
+            if (length <= 8000) {
+                return new SqlTypeName("VARCHAR2", length);
+            } else {
+                return new SqlTypeName("CLOB");
+            }
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt8(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt16(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt32(platformType)) {
+            return new SqlTypeName("INT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt64(platformType)) {
+            return new SqlTypeName("NUMBER");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isFloat32(platformType)) {
+            return new SqlTypeName("NUMBER");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isFloat64(platformType)) {
+            if (datatype instanceof NumberType) {
+                DoubleType n = ((DoubleType) datatype);
+                return n.isFixedDigits()
+                        ? new SqlTypeName("NUMBER", (n.getMaximumIntegerDigits() + n.getMaximumFractionDigits()), n.getMaximumFractionDigits())
+                        : new SqlTypeName("NUMBER");
+            } else {
+                return new SqlTypeName("NUMBER");
+            }
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isAnyNumber(platformType)) {
+            return new SqlTypeName("NUMBER");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isBool(platformType)) {
+            return new SqlTypeName("INT");
+        }
+
+        if (datatype instanceof TemporalType) {
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
+            }
+            switch (temporalOption) {
+                case DATE:
+                    return new SqlTypeName("DATE");
+                case DATETIME:
+                    return new SqlTypeName("TIMESTAMP");
+                case TIMESTAMP:
+                    return new SqlTypeName("TIMESTAMP");
+                case TIME:
+                    return new SqlTypeName("TIME");
+                case MONTH:
+                    return new SqlTypeName("DATE");
+                case YEAR:
+                    return new SqlTypeName("DATE");
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+                }
+            }
+        }
+        if (datatype instanceof EnumType) {
+            //TODO should support marshalling types
+            return new SqlTypeName("INT");
+        }
+        if (Object.class.equals(platformType) || net.vpc.upa.impl.util.PlatformUtils.isSerializable(platformType)) {
+            return new SqlTypeName("BLOB"); // serialized form
+        }
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

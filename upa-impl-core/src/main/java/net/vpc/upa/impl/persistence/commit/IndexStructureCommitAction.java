@@ -11,10 +11,9 @@ import net.vpc.upa.Index;
 import net.vpc.upa.PersistenceState;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
-import net.vpc.upa.impl.persistence.StructureCommit;
+import net.vpc.upa.impl.persistence.StructureCommitAction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.UConnection;
 
@@ -22,12 +21,12 @@ import net.vpc.upa.persistence.UConnection;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class IndexStructureCommit extends StructureCommit {
+public class IndexStructureCommitAction extends StructureCommitAction {
 
-    protected static Logger log = Logger.getLogger(IndexStructureCommit.class.getName());
+    protected static final Logger log = Logger.getLogger(IndexStructureCommitAction.class.getName());
 
-    public IndexStructureCommit(Index object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Index.class, PersistenceNameType.INDEX);
+    public IndexStructureCommitAction(Index object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
+        super(persistenceUnitCommitManager, object, PersistenceNameType.INDEX);
     }
 
     @Override
@@ -35,7 +34,7 @@ public class IndexStructureCommit extends StructureCommit {
         Index index = (Index) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (!store.isView(index.getEntity())) {
-            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
+            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, persistenceNameType, status});
             UConnection b = executionContext.getConnection();
             if(status== PersistenceState.DIRTY){
                 b.executeNonQuery(store.getDropIndexStatement(index), null, null);

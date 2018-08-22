@@ -10,8 +10,8 @@ import net.vpc.upa.impl.util.ListUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.vpc.upa.exceptions.NoSuchEntityItemException;
 import net.vpc.upa.exceptions.UnexpectedException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -139,7 +139,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }
@@ -159,7 +159,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }

@@ -4,17 +4,15 @@
  */
 package net.vpc.upa.impl.persistence.commit;
 
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PersistenceState;
 import net.vpc.upa.Relationship;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
-import net.vpc.upa.impl.persistence.StructureCommit;
+import net.vpc.upa.impl.persistence.StructureCommitAction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.UConnection;
 import net.vpc.upa.types.I18NString;
@@ -23,12 +21,12 @@ import net.vpc.upa.types.I18NString;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class RelationshipStructureCommit extends StructureCommit {
+public class RelationshipStructureCommitAction extends StructureCommitAction {
 
-    protected static Logger log = Logger.getLogger(RelationshipStructureCommit.class.getName());
+    protected static Logger log = Logger.getLogger(RelationshipStructureCommitAction.class.getName());
 
-    public RelationshipStructureCommit(Relationship object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Relationship.class, PersistenceNameType.FK_CONSTRAINT);
+    public RelationshipStructureCommitAction(Relationship object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
+        super(persistenceUnitCommitManager, object, PersistenceNameType.FK_CONSTRAINT);
     }
 
     @Override
@@ -36,7 +34,7 @@ public class RelationshipStructureCommit extends StructureCommit {
         Relationship relation = (Relationship) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
 
-        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
+        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, persistenceNameType, status});
         if (!relation.isTransient() && store.isReferencingSupported()) {
             UConnection b = executionContext.getConnection();
             try {

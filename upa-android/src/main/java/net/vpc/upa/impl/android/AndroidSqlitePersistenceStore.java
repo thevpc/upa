@@ -30,7 +30,7 @@ import java.util.logging.Level;
 @PortabilityHint(target = "C#", name = "suppress")
 public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
 
-    public void configureStore(){
+    public void configureStore() {
         super.configureStore();
 
         Properties map = getStoreParameters();
@@ -69,7 +69,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
     @Override
     public int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters) {
         DatabaseProduct p = connectionProfile.getDatabaseProduct();
-        if(p==DatabaseProduct.SQLITE){
+        if (p == DatabaseProduct.SQLITE) {
             return 10;
         }
         return -1;
@@ -161,7 +161,7 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
     }
 
     @Override
-    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
+    public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
         DataTypeTransform cr = field.getEffectiveTypeTransform();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
@@ -189,7 +189,6 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
         }
         return sb.toString();
     }
-
 
     @Override
     public void createStorage(EntityExecutionContext context) throws UPAException {
@@ -251,11 +250,12 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
     }
 
     @Override
-    public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
+    public String getCreateViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
+        QueryStatement statement=getViewQueryStatement(entity);
         StringBuilder sb = new StringBuilder();
-        sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager)));
+        sb.append("Create View ").append(getValidIdentifier(getTableName(entity)));
         sb.append("(");
-        List<PrimitiveField> keys = entityManager.getPrimitiveFields();
+        List<PrimitiveField> keys = entity.getPrimitiveFields();
         for (int i = 0; i < keys.size(); i++) {
             PrimitiveField field = keys.get(i);
             if (i > 0) {
@@ -331,7 +331,6 @@ public class AndroidSqlitePersistenceStore extends AbstractPersistenceStore {
                     1,
                     getMarshallManager(),
                     persistenceUnit.getProperties()
-
             );
         }
         throw new UPAException("NotSupported");

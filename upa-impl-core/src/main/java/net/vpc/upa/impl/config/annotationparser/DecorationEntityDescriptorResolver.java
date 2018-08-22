@@ -313,7 +313,7 @@ public class DecorationEntityDescriptorResolver {
                 Class<ViewEntityExtensionDefinition> spec = view.getType("spec");
                 if (spec.equals(ViewEntityExtensionDefinition.class)) {
                     String query = view.getString("query");
-                    entityInfo.specs.add(new SimpleViewEntityExtensionDefinition(query));
+                    entityInfo.specs.add(new DefaultViewEntityExtensionDefinition(query));
                 } else {
                     entityInfo.specs.add(factory.createObject(spec));
                 }

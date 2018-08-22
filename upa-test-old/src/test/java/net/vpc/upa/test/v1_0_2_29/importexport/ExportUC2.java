@@ -46,8 +46,8 @@ public class ExportUC2 {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             Assert.assertEquals(ExportUC2.class.getName(),pu.getName());
 
-            Entity entityManager = pu.getEntity("Client");
-            Client c = entityManager.createObject();
+            Entity entity = pu.getEntity("Client");
+            Client c = entity.createObject();
             c.setFirstName("Ahmed");
             c.setLastName("Gharbi");
 

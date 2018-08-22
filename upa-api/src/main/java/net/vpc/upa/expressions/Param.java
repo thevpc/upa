@@ -36,6 +36,7 @@ package net.vpc.upa.expressions;
 
 import java.util.Collections;
 import java.util.List;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 
 /**
@@ -73,7 +74,7 @@ public class Param extends DefaultExpression {
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
 
     public String getName() {

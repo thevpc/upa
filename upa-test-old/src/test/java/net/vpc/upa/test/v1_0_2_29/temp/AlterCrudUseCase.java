@@ -33,12 +33,12 @@
 //        Session s=sm.openSession();
 //
 //        sm.beginStructureModification();
-//        Entity entityManager = sm.getEntity("SharedClient");
-//        entityManager.addField("extra", null,null, null, new IntType(null,null,true));
+//        Entity entity = sm.getEntity("SharedClient");
+//        entity.addField("extra", null,null, null, new IntType(null,null,true));
 //        sm.commitStructureModification();
 //
-//        Client client=entityManager.createEntity();
-//        int key = entityManager.nextId();
+//        Client client=entity.createEntity();
+//        int key = entity.nextId();
 //        log.info("Next Id is " + key);
 //        client.setId(key);
 //        client.setFirstName("Hammadi");
@@ -50,7 +50,7 @@
 //        log.info("Found " + clientByKeyRecord);
 //        clientByKeyRecord.setString("firstName", "Alia");
 //
-//        Client clientByKey = entityManager.getConverter().documentToObject(clientByKeyRecord);
+//        Client clientByKey = entity.getConverter().documentToObject(clientByKeyRecord);
 //
 //        assertEquals(clientByKey.getFirstName(),"Alia");
 //
@@ -59,7 +59,7 @@
 //        Document clientUpdatedRecord=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(clientUpdatedRecord);
-//        Client clientUpdated = entityManager.getConverter().documentToObject(clientUpdatedRecord);
+//        Client clientUpdated = entity.getConverter().documentToObject(clientUpdatedRecord);
 //        assertEquals(clientUpdated,clientByKey);
 //
 //        sm.delete(key);
@@ -83,9 +83,9 @@
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("SharedClient");
-//        Document record=entityManager.createDocument();
-//        int key = entityManager.nextId();
+//        Entity entity = sm.getEntity("SharedClient");
+//        Document record=entity.createDocument();
+//        int key = entity.nextId();
 //        log.info("Next Id is " + key);
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");
@@ -100,8 +100,8 @@
 //        Document found=sm.createQueryBuilder("SharedClient").setId(key).objectToDocument();
 //
 //        Assert.assertNotNull(found);
-//        Client foundEntity = entityManager.getConverter().documentToObject(found);
-//        Client recordEntity = entityManager.getConverter().documentToObject(record);
+//        Client foundEntity = entity.getConverter().documentToObject(found);
+//        Client recordEntity = entity.getConverter().documentToObject(record);
 //        Assert.assertEquals(foundEntity, recordEntity);
 //
 //        sm.delete(key);

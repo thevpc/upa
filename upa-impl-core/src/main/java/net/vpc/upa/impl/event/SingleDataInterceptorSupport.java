@@ -62,7 +62,7 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
             throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
         for (Object aK : resolveIdList(event, event.getFilterExpression())) {
-            keyInterceptor.beforeDelete(context, aK);
+            keyInterceptor.beforeRemove(context, aK);
         }
     }
 
@@ -71,7 +71,7 @@ public class SingleDataInterceptorSupport extends EntityListenerAdapter {
             throws UPAException {
         DefaultEntityTriggerContext context = new DefaultEntityTriggerContext(event.getEntity(), event.getTrigger(), event.getContext());
         for (Object aK : resolveIdList(event, event.getFilterExpression())) {
-            keyInterceptor.afterDelete(context, aK);
+            keyInterceptor.afterRemove(context, aK);
         }
     }
 

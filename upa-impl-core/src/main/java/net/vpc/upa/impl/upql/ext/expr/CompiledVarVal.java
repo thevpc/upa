@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
@@ -38,7 +39,7 @@ public class CompiledVarVal extends DefaultCompiledExpressionImpl {
                 return;
             }
         }
-        throw new UnsupportedOperationException("Invalid index");
+        throw new UnsupportedUPAFeatureException("Invalid index");
     }
 
     public CompiledExpressionExt copy() {

@@ -35,11 +35,12 @@
 package net.vpc.upa.expressions;
 
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 public final class Literal extends DefaultExpression
         implements Cloneable {
@@ -103,9 +104,9 @@ public final class Literal extends DefaultExpression
 
         if (type == null) {
             if (value == null) {
-                type = TypesFactory.OBJECT;
+                type = DataTypeFactory.OBJECT;
             } else {
-                type = TypesFactory.forPlatformType(value.getClass());
+                type = DataTypeFactory.forPlatformType(value.getClass());
             }
         }
         this.dataType = type;
@@ -120,7 +121,7 @@ public final class Literal extends DefaultExpression
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
 
     public static boolean isNull(Expression e) {
@@ -142,9 +143,9 @@ public final class Literal extends DefaultExpression
     private void setValue(Object o) {
         this.value = o;
         if (o == null) {
-            dataType = TypesFactory.OBJECT;
+            dataType = DataTypeFactory.OBJECT;
         } else {
-            dataType = TypesFactory.forPlatformType(o.getClass());
+            dataType = DataTypeFactory.forPlatformType(o.getClass());
         }
     }
 

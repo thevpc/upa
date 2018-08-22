@@ -64,9 +64,9 @@ public class ListenersUC {
         public void process() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 
-            Entity entityManager = pu.getEntity("SharedClient");
-            SharedClient c = entityManager.createObject();
-            int key = entityManager.nextId();
+            Entity entity = pu.getEntity("SharedClient");
+            SharedClient c = entity.createObject();
+            int key = entity.nextId();
             log.info("Next Id is " + key);
             c.setId(key);
             c.setFirstName("Hammadi");
@@ -78,7 +78,7 @@ public class ListenersUC {
             log.info("Found " + found0);
             found0.setString("firstName", "Alia");
 
-            SharedClient c2 = entityManager.getBuilder().documentToObject(found0);
+            SharedClient c2 = entity.getBuilder().documentToObject(found0);
 
             Assert.assertEquals(c2.getFirstName(), "Alia");
 
@@ -115,9 +115,9 @@ public class ListenersUC {
                 sm.start();
             }
 
-            Entity entityManager = sm.getEntity("SharedClient");
-            Document c = entityManager.createDocument();
-            int key = entityManager.nextId();
+            Entity entity = sm.getEntity("SharedClient");
+            Document c = entity.createDocument();
+            int key = entity.nextId();
             log.info("Next Id is " + key);
             c.setInt("id", key);
             c.setString("firstName", "Hammadi");

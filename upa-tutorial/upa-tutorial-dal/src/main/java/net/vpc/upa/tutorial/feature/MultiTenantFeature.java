@@ -9,7 +9,7 @@ import net.vpc.upa.callbacks.EntityEvent;
 import net.vpc.upa.Entity;
 import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.OnCreate;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 /**
  * This class adds multi tenant support to the application. All Entities will
@@ -32,7 +32,7 @@ public class MultiTenantFeature {
     public void entityAdded(EntityEvent event) {
         Entity entity = event.getEntity();
 
-        entity.addField(new DefaultFieldBuilder().setName("tenantId").setPath("MultiTenant").setDataType(TypesFactory.INT)
+        entity.addField(new DefaultFieldBuilder().setName("tenantId").setPath("MultiTenant").setDataType(DataTypeFactory.INT)
         .setPersistFormula("CurrentTenant()"));
 
         // filter entities by tenantId

@@ -12,7 +12,7 @@ import java.util.Comparator;
  * @author taha.bensalah@gmail.com
  */
 class OnHoldCommitActionComparator implements Comparator<OnHoldCommitAction> {
-
+    public static final OnHoldCommitActionComparator INSTANCE=new OnHoldCommitActionComparator();
     public OnHoldCommitActionComparator() {
     }
 

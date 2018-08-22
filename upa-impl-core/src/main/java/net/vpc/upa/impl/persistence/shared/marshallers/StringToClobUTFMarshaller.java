@@ -14,8 +14,8 @@ public class StringToClobUTFMarshaller extends SimpleTypeMarshaller {
 
     @Override
     public Object read(int index, net.vpc.upa.persistence.NativeResult resultSet){
-            byte[] b = resultSet.getBytes(index);
-            return b==null?null:new String(b);
+            return resultSet.getString(index);
+//            return b==null?null:new String(b);
     }
 
     @Override

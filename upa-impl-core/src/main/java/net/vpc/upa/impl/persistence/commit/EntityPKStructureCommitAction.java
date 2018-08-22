@@ -5,7 +5,6 @@
 package net.vpc.upa.impl.persistence.commit;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.Entity;
@@ -13,11 +12,10 @@ import net.vpc.upa.PersistenceState;
 import net.vpc.upa.PrimitiveField;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.filters.FieldFilters;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.ColumnDesc;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
-import net.vpc.upa.impl.persistence.StructureCommit;
+import net.vpc.upa.impl.persistence.StructureCommitAction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.UConnection;
 
@@ -25,12 +23,12 @@ import net.vpc.upa.persistence.UConnection;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class EntityPKStructureCommit extends StructureCommit {
+public class EntityPKStructureCommitAction extends StructureCommitAction {
 
-    protected static Logger log = Logger.getLogger(EntityPKStructureCommit.class.getName());
+    protected static final Logger log = Logger.getLogger(EntityPKStructureCommitAction.class.getName());
 
-    public EntityPKStructureCommit(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Entity.class, PersistenceNameType.PK_CONSTRAINT);
+    public EntityPKStructureCommitAction(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
+        super(persistenceUnitCommitManager, object, PersistenceNameType.PK_CONSTRAINT);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class EntityPKStructureCommit extends StructureCommit {
         Entity entity = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
         if (entity.getIdFields().size() > 0) {
-            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
+            log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, persistenceNameType, status});
             UConnection b = executionContext.getConnection();
             for (PrimitiveField primaryField : entity.getPrimitiveFields(FieldFilters.id())) {
                 ColumnDesc cd = store.loadColumnDesc(primaryField, (Connection)b.getMetadataAccessibleConnection());
@@ -52,6 +50,6 @@ public class EntityPKStructureCommit extends StructureCommit {
 
     @Override
     protected PersistenceState getObjectStatus(net.vpc.upa.persistence.EntityExecutionContext entityExecutionContext) {
-        return getPersistenceUnitCommitManager().getPersistenceUnitManager().getPersistenceState(getObject(), getTypedObject().getSpec(), entityExecutionContext);
+        return getPersistenceUnitCommitManager().getPersistenceStore().getPersistenceState(getObject(), getPersistenceNameType(), entityExecutionContext);
     }
 }

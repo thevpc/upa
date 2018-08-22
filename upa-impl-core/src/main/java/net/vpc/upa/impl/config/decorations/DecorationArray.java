@@ -53,7 +53,7 @@ public class DecorationArray extends AbstractDecorationValue implements Decorati
         for (DecorationValue alternative : alternatives) {
             DecorationArray d = (DecorationArray) alternative;
             switch (d.getConfig().getConfigAction()) {
-                case DELETE: {
+                case REMOVE: {
                     ok.clear();
                     break;
                 }
@@ -69,7 +69,7 @@ public class DecorationArray extends AbstractDecorationValue implements Decorati
         if (ok.isEmpty()) {
             values = null;
             configInfo = new ConfigInfo(last.getConfig().getOrder(),
-                    ConfigAction.DELETE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
+                    ConfigAction.REMOVE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
         } else {
             values = (DecorationValue[]) ok.get(ok.size() - 1);
             configInfo = new ConfigInfo(last.getConfig().getOrder(),

@@ -49,9 +49,9 @@ public class UnstructuredCrudUseCase {
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("SharedClient");
-//        Client c=entityManager.getBuilder().createObject();
-//        int key = entityManager.nextId();
+//        Entity entity = sm.getEntity("SharedClient");
+//        Client c=entity.getBuilder().createObject();
+//        int key = entity.nextId();
 //        log.info("Next Id is " + key);
 //        c.setId(key);
 //        c.setFirstName("Hammadi");
@@ -63,7 +63,7 @@ public class UnstructuredCrudUseCase {
 //        log.info("Found " + found0);
 //        found0.setString("firstName","Alia");
 //
-//        Client c2 = entityManager.getConverter().documentToObject(found0);
+//        Client c2 = entity.getConverter().documentToObject(found0);
 //
 //        assertEquals(c2.getFirstName(),"Alia");
 //
@@ -72,7 +72,7 @@ public class UnstructuredCrudUseCase {
 //        Document found=sm.createQueryBuilder(Client.class).setId(key).setFieldFilter(fieldFilter).objectToDocument();
 //
 //        Assert.assertNotNull(found);
-//        Assert.assertEquals(found, entityManager.getConverter().objectToDocument(c2));
+//        Assert.assertEquals(found, entity.getConverter().objectToDocument(c2));
 //
 //        sm.delete(key);
 //
@@ -98,9 +98,9 @@ public class UnstructuredCrudUseCase {
 //
 //        Session s=sm.openSession();
 //        sm.beginTransaction(TransactionType.REQUIRED);
-//        Entity entityManager = sm.getEntity("SharedClient");
-//        Document record=entityManager.createDocument();
-//        int key = entityManager.nextId();
+//        Entity entity = sm.getEntity("SharedClient");
+//        Document record=entity.createDocument();
+//        int key = entity.nextId();
 //        log.info("Next Id is " + key);
 //        record.setInt("id", key);
 //        record.setString("firstName", "Hammadi");

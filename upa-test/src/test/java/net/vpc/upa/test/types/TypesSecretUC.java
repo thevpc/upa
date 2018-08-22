@@ -26,7 +26,7 @@ public class TypesSecretUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesSecretUC.class);
         pu.addEntity(Data.class);
         pu.start();

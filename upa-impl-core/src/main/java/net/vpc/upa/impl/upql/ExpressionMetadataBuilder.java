@@ -10,12 +10,13 @@ import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.ResultField;
 import net.vpc.upa.persistence.ResultMetaData;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  * Created by vpc on 6/28/16.
@@ -39,11 +40,10 @@ public class ExpressionMetadataBuilder {
         DefaultResultMetaData m=new DefaultResultMetaData();
         if(baseExpression instanceof NonQueryStatement){
             m.setStatement((EntityStatement) baseExpression);
-            m.addField(
-                    new DefaultResultField(
+            m.addField(new DefaultResultField(
                             null,
                             "result",
-                            TypesFactory.INT,
+                            DataTypeFactory.INT,
                             null,null
                     )
             );
@@ -132,7 +132,7 @@ public class ExpressionMetadataBuilder {
                     }
                 }
             } else {
-                throw new UnsupportedOperationException();
+                throw new UnsupportedUPAFeatureException();
             }
         }
         return m;
@@ -182,10 +182,10 @@ public class ExpressionMetadataBuilder {
                                 results.add(new DefaultResultField(v, alias, field.getDataType(), field, null));
                             }
                         }else{
-                            results.add(new DefaultResultField(v,alias,TypesFactory.OBJECT, null,null));
+                            results.add(new DefaultResultField(v,alias,DataTypeFactory.OBJECT, null,null));
                         }
                     }else{
-                        results.add(new DefaultResultField(v,alias,TypesFactory.OBJECT, null,null));
+                        results.add(new DefaultResultField(v,alias,DataTypeFactory.OBJECT, null,null));
                     }
                 }
             }else{
@@ -197,7 +197,7 @@ public class ExpressionMetadataBuilder {
                         Entity entity = pu.getEntity(((EntityName) r).getName());
                         results.add(new DefaultResultField(v,alias,entity.getDataType(), null,entity));
                     }else{
-                        results.add(new DefaultResultField(v,alias,TypesFactory.OBJECT, null,null));
+                        results.add(new DefaultResultField(v,alias,DataTypeFactory.OBJECT, null,null));
                     }
                 }else{
                     if("*".equals(name)){
@@ -223,14 +223,14 @@ public class ExpressionMetadataBuilder {
                         if (field != null) {
                             results.add(new DefaultResultField(v, alias, field.getDataType(), field, null));
                         } else {
-                            results.add(new DefaultResultField(v, alias, TypesFactory.OBJECT, null, null));
+                            results.add(new DefaultResultField(v, alias, DataTypeFactory.OBJECT, null, null));
                         }
                     }
                 }
             }
             return results;
         }
-        results.add(new DefaultResultField(expression, alias, TypesFactory.OBJECT, null, null));
+        results.add(new DefaultResultField(expression, alias, DataTypeFactory.OBJECT, null, null));
         return results;
     }
 

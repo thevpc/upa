@@ -7,12 +7,11 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
 import net.vpc.upa.extensions.UnionQueryInfo;
-import net.vpc.upa.impl.DefaultEntity;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.persistence.UnionEntityExtension;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +37,11 @@ public class DefaultUnionEntityExtension extends AbstractEntityExtension impleme
             list.add(updatableTable.getName());
         }
         if (discriminator != null) {
-            Field field = getEntity().addField(
-                    new DefaultFieldDescriptor()
+            Field field = getEntity().addField(new DefaultFieldDescriptor()
                             .setName(discriminator)
                             .setModifiers(FlagSets.of(UserFieldModifier.SUMMARY))
                             .setDefaultObject(updatableTables.get(0).getName())
-                            .setDataType(TypesFactory.forList(entity.getName() + "." + discriminator, list, TypesFactory.STRING, false))
+                            .setDataType(DataTypeFactory.forList(entity.getName() + "." + discriminator, list, DataTypeFactory.STRING, false))
             );
             field.setPersistFormula(new Sequence(SequenceStrategy.AUTO));
         }

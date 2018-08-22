@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.shared.sql;
 
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
 import net.vpc.upa.impl.persistence.SQLManager;
 import net.vpc.upa.impl.upql.ExpressionDeclarationList;
 import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
@@ -23,7 +24,8 @@ public class TypeNameSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) {
         CompiledTypeName o = (CompiledTypeName) oo;
-        return getSqlTypeName(o.getTypeTransform().getTargetType());
+        PersistenceStoreExt store = (PersistenceStoreExt) qlContext.getPersistenceStore();
+        return store.getSqlTypeName(o.getTypeTransform().getTargetType()).getFullName();
     }
 
     public String getSqlTypeName(DataType datatype) {

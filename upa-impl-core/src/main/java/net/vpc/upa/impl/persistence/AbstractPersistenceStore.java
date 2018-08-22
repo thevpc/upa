@@ -51,7 +51,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public static final String PARAM_IS_REFERENCING_SUPPORTED = "isReferencingSupported";
     public static final String PARAM_IS_VIEW_SUPPORTED = "isViewSupported";
     public static final String PARAM_IS_TOP_SUPPORTED = "isTopSupported";
-    
+
     public static final String DRIVER_TYPE_EMBEDDED = "EMBEDDED";
     public static final String DRIVER_TYPE_DEFAULT = "DEFAULT";
     public static final String DRIVER_TYPE_DATASOURCE = "DATASOURCE";
@@ -667,7 +667,36 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 //        }
     }
 
-    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
+    public ColumnPersistenceDefinition getExpectedColumnPersistenceDefinition(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
+        String TABLE_SCHEM = null;
+        String TABLE_CAT = null;
+        String TABLE_NAME = getValidIdentifier(getTableName(field.getEntity()));
+        String COLUMN_DEF = null;
+        Object defaultObject = field.getDefaultObject();
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
+        SqlTypeName sqlTypeName = getSqlTypeName(cr.getTargetType());
+        if (defaultObject == null && !cr.getTargetType().isNullable()) {
+            defaultObject = cr.getTargetType().getDefaultValue();
+//            if (defaultObject == null) {
+//                defaultObject = cr.getTargetType().getDefaultValue();
+//            }
+        }
+        if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
+            COLUMN_DEF = (sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
+        }
+        Boolean NULLABLE = cr.getTargetType().isNullable();
+        Boolean IS_AUTOINCREMENT = field.isGeneratedId();
+        int DATA_TYPE = -1;
+        return new DefaultColumnPersistenceDefinition(
+                getValidIdentifier(getColumnName(field)),
+                TABLE_NAME, TABLE_SCHEM, TABLE_CAT,
+                DATA_TYPE, sqlTypeName.getName(), sqlTypeName.getSize(), sqlTypeName.getScale(),
+                NULLABLE,
+                IS_AUTOINCREMENT,
+                COLUMN_DEF);
+    }
+
+    public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
         DataTypeTransform cr = field.getEffectiveTypeTransform();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
@@ -690,19 +719,20 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return sb.toString();
     }
 
-    public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
+    public String getCreateViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
+        QueryStatement statement = getViewQueryStatement(entity);
         StringBuilder sb = new StringBuilder();
-        sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager))).append(" As ").append("\n").append("\t");
+        sb.append("Create View ").append(getValidIdentifier(getTableName(entity))).append(" As ").append("\n").append("\t");
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
         sb.append(sqlManager.getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
         return sb.toString();
     }
 
     //FIX ME
-    public String getCreateImplicitViewStatement(Entity table, EntityExecutionContext executionContext) throws UPAException {
+    public String getCreateImplicitViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
         StringBuilder sb = new StringBuilder();
-        sb.append("Create View ").append(getValidIdentifier(getImplicitViewName(table))).append(" As ").append("\n");
-        List<PrimitiveField> keys = table.getPrimitiveFields();
+        sb.append("Create View ").append(getValidIdentifier(getImplicitViewName(entity))).append(" As ").append("\n");
+        List<PrimitiveField> keys = entity.getPrimitiveFields();
         Select s = new Select();
         for (PrimitiveField key : keys) {
             FlagSet<FieldModifier> modifiers = key.getModifiers();
@@ -710,7 +740,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 Expression expression = ((ExpressionFormula) UPAUtils.getSelectFormula(key)).getExpression();
                 s.field(expression, getColumnName(key));
             } else if (modifiers.contains(FieldModifier.SELECT_DEFAULT)) {
-                s.field(new Var(new Var(table.getName()), key.getName()));
+                s.field(new Var(new Var(entity.getName()), key.getName()));
             }
         }
 
@@ -855,6 +885,20 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return (sb.toString());
     }
 
+    public String getDropViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
+        StringBuilder sb = new StringBuilder("Drop");
+        sb.append(" View ");
+        sb.append(getValidIdentifier(getTableName(entity)));
+        return sb.toString();
+    }
+
+    public String getDropTableStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
+        StringBuilder sb = new StringBuilder("Drop");
+        sb.append(" Table ");
+        sb.append(getValidIdentifier(getTableName(entity)));
+        return sb.toString();
+    }
+
     private void fillPrimitiveField(Field f, List<PrimitiveField> list) {
         if (f instanceof PrimitiveField) {
             PrimitiveField pf = (PrimitiveField) f;
@@ -957,15 +1001,15 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return sb.toString();
     }
 
-    public String getCreateTablePKConstraintStatement(Entity entityManager) throws UPAException {
+    public String getCreateTablePKConstraintStatement(Entity entity) throws UPAException {
         StringBuilder sb = new StringBuilder();
-        if (!entityManager.getShield().isTransient()) {
+        if (!entity.getShield().isTransient()) {
             List<PrimitiveField> pk = new ArrayList<PrimitiveField>();
-            for (PrimitiveField primitiveField : entityManager.getPrimitiveFields(FieldFilters.id())) {
+            for (PrimitiveField primitiveField : entity.getPrimitiveFields(FieldFilters.id())) {
                 fillPrimitiveField(primitiveField, pk);
             }
             if (pk.size() > 0) {
-                sb.append("Alter Table ").append(getValidIdentifier(getTableName(entityManager))).append(" Add Constraint ").append(getValidIdentifier(getTablePKName(entityManager))).append(" Primary Key (");
+                sb.append("Alter Table ").append(getValidIdentifier(getTableName(entity))).append(" Add Constraint ").append(getValidIdentifier(getTablePKName(entity))).append(" Primary Key (");
                 boolean first = true;
                 for (PrimitiveField primitiveField : pk) {
                     if (first) {
@@ -986,7 +1030,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         StringBuilder s = new StringBuilder("Alter Table ")
                 .append(getTableName(field.getEntity()))
                 .append(" Add Column ")
-                .append(getFieldDeclaration(field, context));
+                .append(getColumnDeclaration(field, context));
         return s.toString();
     }
 
@@ -1008,7 +1052,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                     } else {
                         sb.append(",").append("\n").append("\t");
                     }
-                    sb.append(getFieldDeclaration(key, context));
+                    sb.append(getColumnDeclaration(key, context));
                 }
             }
 
@@ -1041,21 +1085,15 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     public void createStructure(EntityExecutionContext executionContext) throws UPAException {
         QueryScript script = new QueryScript();
         List<Entity> entities = persistenceUnit.getEntities();
-        List<Entity> queries = new ArrayList<Entity>();
-        List<Entity> unions = new ArrayList<Entity>();
-        List<Entity> updatableQueries = new ArrayList<Entity>();
-        List<Entity> viewForEntities = new ArrayList<Entity>();
+        List<Entity> views = new ArrayList<Entity>();
+        List<Entity> implicitViews = new ArrayList<Entity>();
         for (Entity entity : entities) {
-            if (entity.getExtensionDefinitions(FilterEntityExtensionDefinition.class).size() > 0) {
-                updatableQueries.add(entity);
-            } else if (entity.isView()) {
-                queries.add(entity);
-            } else if (entity.isUnion()) {
-                unions.add(entity);
+            if (isView(entity)) {
+                views.add(entity);
             } else {
                 script.addStatement(getCreateTableStatement(entity, executionContext));
                 if (entity.hasAssociatedView()) {
-                    viewForEntities.add(entity);
+                    implicitViews.add(entity);
                 }
                 List<Index> indexes = entity.getIndexes(null);
                 for (Index index : indexes) {
@@ -1072,22 +1110,30 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             }
         }
         if (isViewSupported()) {
-            for (Entity entity : viewForEntities) {
+            for (Entity entity : implicitViews) {
                 script.addStatement(getCreateImplicitViewStatement(entity, executionContext));
             }
-            for (Entity entity : updatableQueries) {
-                //not yet supported
-            }
-            for (Entity entity : queries) {
-                ViewEntityExtension specSupport = (ViewEntityExtension) entity.getExtension(ViewEntityExtension.class);
-                script.addStatement(getCreateViewStatement(entity, specSupport.getQuery(), executionContext));
-            }
-            for (Entity entity : unions) {
-                UnionEntityExtension specSupport = (UnionEntityExtension) entity.getExtension(UnionEntityExtension.class);
-                script.addStatement(getCreateViewStatement(entity, specSupport.getQuery(), executionContext));
+            for (Entity entity : views) {
+                script.addStatement(getCreateViewStatement(entity, executionContext));
             }
         }
         executionContext.getConnection().executeScript(script, true);
+    }
+
+    public QueryStatement getViewQueryStatement(Entity entity) {
+        ViewEntityExtension specSupport = (ViewEntityExtension) entity.getExtension(ViewEntityExtension.class);
+        if (specSupport != null) {
+            return specSupport.getQuery();
+        }
+        UnionEntityExtension specSupport2 = (UnionEntityExtension) entity.getExtension(UnionEntityExtension.class);
+        if (specSupport2 != null) {
+            return specSupport2.getQuery();
+        }
+        FilterEntityExtension specSupport3 = (FilterEntityExtension) entity.getExtension(FilterEntityExtension.class);
+        if (specSupport3 != null) {
+//            return specSupport3.getQuery();
+        }
+        return null;
     }
 
     protected QueryScript getCreateRelationshipsScript(PersistenceUnit persistenceUnit) throws UPAException {
@@ -1232,7 +1278,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } else if (object instanceof Index) {
             return persistenceNameStrategy.getIndexPersistenceName((Index) object, e.getSpec(), condition);
         } else if (object instanceof Relationship) {
-            return persistenceNameStrategy.getRelationshipPersistenceName((Relationship) object, e.getSpec(),condition);
+            return persistenceNameStrategy.getRelationshipPersistenceName((Relationship) object, e.getSpec(), condition);
         } else if (object instanceof String) {
             return persistenceNameStrategy.getIdentifierPersistenceName((String) object, e.getSpec(), condition);
         } else {
@@ -1424,40 +1470,79 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         //return PersistenceState.TRANSIENT;
     }
 
-    public PersistenceState getEntityPersistenceState(Entity object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        String persistenceName = getPersistenceName(object, spec);
-        if (spec == PersistenceNameType.TABLE) {
-            PersistenceState persistenceState = PersistenceState.DEFAULT;
-            if (tableExists(persistenceName, entityExecutionContext)) {
-                persistenceState = PersistenceState.VALID;
-            }
-            //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
-            return persistenceState;
-        } else if (PersistenceNameType.IMPLICIT_VIEW.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.DEFAULT;
-            if (viewExists(persistenceName, entityExecutionContext)) {
-                persistenceState = PersistenceState.VALID;
-            }
-            //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
-            return persistenceState;
-        } else if (PersistenceNameType.PK_CONSTRAINT.equals(spec)) {
-            PersistenceState persistenceState = PersistenceState.DEFAULT;
-            if (pkConstraintsExists(getPersistenceName(object, null), persistenceName, entityExecutionContext)) {
-                persistenceState = PersistenceState.VALID;
-            }
-            return persistenceState;
-        } else {
+    public PersistenceState getEntityPersistenceState(Entity entity, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
+        String persistenceName = getPersistenceName(entity, spec);
+        if (null == spec) {
             throw new IllegalUPAArgumentException("Unknown Spec for Entity : " + spec);
+        } else {
+            switch (spec) {
+                case TABLE:
+                case VIEW: {
+                    if (isView(entity)) {
+                        ViewPersistenceDefinition d = getViewPersistenceDefinition(persistenceName, entityExecutionContext);
+                        if (d == null) {
+                            return PersistenceState.MISSING;
+                        }
+                        String newDef = getCreateViewStatement(entity, entityExecutionContext);
+                        String storedDef = d.getViewDefinition();
+                        if (storedDef.equals(newDef)) {
+                            return PersistenceState.VALID;
+                        } else {
+                            return PersistenceState.DIRTY;
+                        }
+                    } else {
+                        TablePersistenceDefinition tableDef = getTablePersistenceDefinition(persistenceName, entityExecutionContext);
+                        if (tableDef == null) {
+                            return PersistenceState.MISSING;
+                        }
+                        return PersistenceState.VALID;
+                    }
+                }
+                case IMPLICIT_VIEW: {
+                    ViewPersistenceDefinition d = getViewPersistenceDefinition(persistenceName, entityExecutionContext);
+                    if (d == null) {
+                        return PersistenceState.MISSING;
+                    }
+                    String newDef = getCreateImplicitViewStatement(entity, entityExecutionContext);
+                    String storedDef = d.getViewDefinition();
+                    if (storedDef.equals(newDef)) {
+                        return PersistenceState.VALID;
+                    } else {
+                        return PersistenceState.DIRTY;
+                    }
+                }
+                case PK_CONSTRAINT: {
+                    PrimaryKeyPersistenceDefinition pkDef = getPrimaryKeyPersistenceDefinition(getPersistenceName(entity, null), persistenceName, entityExecutionContext);
+                    if (pkDef == null) {
+                        return PersistenceState.MISSING;
+                    }
+                    return PersistenceState.VALID;
+                }
+                default: {
+                    throw new IllegalUPAArgumentException("Unknown Spec for Entity : " + spec);
+                }
+            }
         }
     }
 
     public PersistenceState getIndexPersistenceState(Index object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
+        String indexName = getPersistenceName(object, spec);
+        String tableName = getPersistenceName(object.getEntity(), null);
+        boolean unique = object.isUnique();
+        IndexPersistenceDefinition d = getIndexPersistenceDefinition(indexName, tableName, spec, entityExecutionContext, connection);
+        if (d == null) {
+            return PersistenceState.MISSING;
+        }
+        if (d.isUnique() != unique) {
+            log.log(Level.SEVERE, "Index {0} found but its unicity is invalid (expected={1})", new Object[]{indexName, unique});
+            return PersistenceState.DIRTY;
+        }
+        return PersistenceState.VALID;
+    }
+
+    public IndexPersistenceDefinition getIndexPersistenceDefinition(String indexName, String tableName, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
         if (spec == PersistenceNameType.INDEX) {
             ResultSet rs = null;
-            PersistenceState status = PersistenceState.DEFAULT;
-            String indexName = getPersistenceName(object, spec);
-            String tableName = getPersistenceName(object.getEntity(), null);
-            boolean unique = object.isUnique();
             {
                 try {
                     /**
@@ -1479,13 +1564,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                             String n = rs.getString("INDEX_NAME");
                             boolean u = !rs.getBoolean("NON_UNIQUE");
                             if (getIdentifierStoreTranslator().translateIdentifier(indexName).equals(n)) {
-                                if (u != unique) {
-                                    log.log(Level.SEVERE, "Index {0} found but its unicity is invalid (expected={1})", new Object[]{indexName, unique});
-                                    status = PersistenceState.DIRTY;
-                                } else {
-                                    status = PersistenceState.VALID;
-                                }
-                                break;
+                                return new DefaultIndexPersistenceDefinition(indexName, tableName, u);
                             }
                         }
                     } finally {
@@ -1498,63 +1577,129 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 }
             }
             //log.log(Level.FINE,"getEntityPersistenceState " + object + " " + status);
-            return status;
+            return null;
         } else {
             throw new IllegalUPAArgumentException("Unknown Spec for Entity : " + spec);
         }
     }
 
-    public PersistenceState getFieldPersistenceState(Field object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.DEFAULT;
-        FlagSet<FieldModifier> fieldModifiers = object.getModifiers();
-        if (object.isManyToOne()) {
-//            status = PersistenceState.VALID;
-            status = PersistenceState.TRANSIENT;
-        } else if (fieldModifiers.contains(FieldModifier.TRANSIENT)) {
-            status = PersistenceState.TRANSIENT;
-        } else {
-            String tableName = getPersistenceName(object.getEntity());
-            String columnName = getPersistenceName(object);
-            status = PersistenceState.DEFAULT;
-            /**
-             * @PortabilityHint(target = "C#", name = "todo")
-             */
-            try {
-                ResultSet rs = null;
-                try {
-//                    Connection connection = getConnection().getNativeConnection();
-                    String catalog = connection.getCatalog();
-                    String schema = connection.getSchema();
-                    rs = connection.getMetaData().getColumns(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), getIdentifierStoreTranslator().translateIdentifier(columnName));
-                    if (rs.next()) {
-                        String COLUMN_NAME = rs.getString("COLUMN_NAME");
-                        int DATA_TYPE = rs.getInt("DATA_TYPE");
-                        //TODO, check datatype and constraints
-                        status = PersistenceState.VALID;
+    public PersistenceState getFieldPersistenceState(Field field, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
+        if ((field instanceof DynamicField)) {
+            return PersistenceState.TRANSIENT;
+        }
+        if ((field instanceof CompoundField)) {
+            boolean transientField = false;
+            boolean dirtyField = false;
+            boolean notFoundField = false;
+            for (PrimitiveField field1 : ((CompoundField) field).getFields()) {
+                PersistenceState s = getFieldPersistenceState(field1, spec, entityExecutionContext, connection);
+                switch (s) {
+                    case DEFAULT: 
+                    case MISSING: 
+                    {
+                        notFoundField = true;
+                        break;
                     }
-                } finally {
-                    if (rs != null) {
-                        rs.close();
+                    case TRANSIENT: {
+                        transientField = true;
+                        break;
+                    }
+                    case DIRTY: {
+                        dirtyField = true;
+                        break;
                     }
                 }
-            } catch (SQLException ex) {
-                throw createUPAException(ex, "UnableToGetEntityStorageStatus", "Column " + tableName + "." + columnName);
+                if (dirtyField) {
+                    return PersistenceState.DIRTY;
+                } else if (notFoundField) {
+                    return PersistenceState.MISSING;
+                } else if (transientField) {
+                    return PersistenceState.TRANSIENT;
+                } else {
+                    return PersistenceState.VALID;
+                }
             }
         }
-        if (status != PersistenceState.VALID && status != PersistenceState.TRANSIENT) {
-            log.log(Level.FINE, "FieldStorageStatus {0} {1}", new Object[]{object, status});
+        FlagSet<FieldModifier> fieldModifiers = field.getModifiers();
+        if (field.isManyToOne() || fieldModifiers.contains(FieldModifier.TRANSIENT)) {
+            log.log(Level.FINE, "FieldStorageStatus {0} {1}", new Object[]{field, PersistenceState.TRANSIENT});
+            return PersistenceState.TRANSIENT;
         }
-        return status;
+        String tableName = getPersistenceName(field.getEntity());
+        String columnName = getPersistenceName(field);
+        ColumnPersistenceDefinition d = getColumnPersistenceDefinition(tableName, columnName, entityExecutionContext, connection);
+        if (d == null) {
+            return PersistenceState.MISSING;
+        }
+        ColumnPersistenceDefinition e = getExpectedColumnPersistenceDefinition((PrimitiveField) field, entityExecutionContext);
+        PersistenceState s = PersistenceState.VALID;
+        if (!e.getColumnTypeName().equals(e.getColumnTypeName())) {
+            s = PersistenceState.DIRTY;
+        }
+        if (e.getSize() != -1 && e.getSize() != d.getSize()) {
+            s = PersistenceState.DIRTY;
+        }
+        if (e.getScale() != -1 && e.getScale() != d.getScale()) {
+            s = PersistenceState.DIRTY;
+        }
+        if (s == PersistenceState.DIRTY) {
+            log.log(Level.CONFIG, "FieldStorageStatus {0} {1} \n\t Found    {2}\n\t Expected {3}", new Object[]{field, s, d, e});
+        } else {
+            log.log(Level.CONFIG, "FieldStorageStatus {0} {1} \n\t", new Object[]{field, s});
+        }
+        return s;
+    }
+
+    public ColumnPersistenceDefinition getColumnPersistenceDefinition(String tableName, String columnName, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         */
+        try {
+            ResultSet rs = null;
+            try {
+//                    Connection connection = getConnection().getNativeConnection();
+                String catalog = connection.getCatalog();
+                String schema = connection.getSchema();
+                rs = connection.getMetaData().getColumns(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), getIdentifierStoreTranslator().translateIdentifier(columnName));
+                if (rs.next()) {
+                    String TABLE_CAT = rs.getString("TABLE_CAT");
+                    String TABLE_SCHEM = rs.getString("TABLE_SCHEM");
+                    String TABLE_NAME = rs.getString("TABLE_NAME");
+                    String TYPE_NAME = rs.getString("TYPE_NAME");
+                    String COLUMN_NAME = rs.getString("COLUMN_NAME");
+                    int COLUMN_SIZE = rs.getInt("COLUMN_SIZE");
+                    int DECIMAL_DIGITS = rs.getInt("DECIMAL_DIGITS");
+                    int NULLABLE = rs.getInt("NUM_PREC_RADIX");
+                    int DATA_TYPE = rs.getInt("DATA_TYPE");
+                    String COLUMN_DEF = rs.getString("COLUMN_DEF");
+                    String IS_AUTOINCREMENT = rs.getString("IS_AUTOINCREMENT");
+                    //TODO, check datatype and constraints
+                    return new DefaultColumnPersistenceDefinition(COLUMN_NAME, TABLE_NAME, TABLE_SCHEM, TABLE_CAT,
+                            DATA_TYPE, TYPE_NAME, COLUMN_SIZE, DECIMAL_DIGITS,
+                            NULLABLE == DatabaseMetaData.columnNoNulls ? Boolean.FALSE : NULLABLE == DatabaseMetaData.columnNullable ? Boolean.TRUE : null,
+                            "NO".equalsIgnoreCase(IS_AUTOINCREMENT) ? Boolean.FALSE : "YES".equalsIgnoreCase(IS_AUTOINCREMENT) ? Boolean.TRUE : null,
+                            COLUMN_DEF);
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw createUPAException(ex, "UnableToGetEntityStorageStatus", "Column " + tableName + "." + columnName);
+        }
+        return null;
     }
 
     public PersistenceState getRelationshipPersistenceState(Relationship object, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
-        PersistenceState status = PersistenceState.DEFAULT;
+        PersistenceState status = PersistenceState.MISSING;
         if (isView(object.getTargetRole().getEntity()) || isView(object.getSourceRole().getEntity())) {
             status = PersistenceState.TRANSIENT;
         } else {
             String tablePersistenceName = getPersistenceName(object.getSourceRole().getEntity());
             String persistenceName = getPersistenceName(object);
-            if (foreignKeyExists(tablePersistenceName, persistenceName, entityExecutionContext)) {
+            ForeignKeyPersistenceDefinition d = foreignKeyExists(tablePersistenceName, persistenceName, entityExecutionContext);
+            if (d != null) {
                 status = PersistenceState.VALID;
             }
         }
@@ -1594,7 +1739,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return IdentifierStoreTranslators.UPPER;
     }
 
-    protected boolean tableExists(String persistenceName, EntityExecutionContext entityExecutionContext) {
+    protected TablePersistenceDefinition getTablePersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -1618,7 +1763,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 if (rs.next()) {
                     String n = rs.getString("TABLE_NAME");
                     String t = rs.getString("TYPE_NAME");
-                    return true;
+                    return new DefaultTableKeyPersistenceDefinition(n, catalog, schema);
                 }
             } finally {
                 if (rs != null) {
@@ -1628,14 +1773,14 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } catch (SQLException ex) {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
         }
-        return false;
+        return null;
     }
 
     public IdentifierStoreTranslator getIdentifierStoreTranslator() throws SQLException {
         return identifierStoreTranslator;
     }
 
-    protected boolean viewExists(String persistenceName, EntityExecutionContext entityExecutionContext) {
+    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -1658,7 +1803,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 if (rs.next()) {
                     String n = rs.getString("TABLE_NAME");
                     String t = rs.getString("TYPE_NAME");
-                    return true;
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, null);
                 }
             } finally {
                 if (rs != null) {
@@ -1668,10 +1813,10 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } catch (SQLException ex) {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
         }
-        return false;
+        return null;
     }
 
-    protected boolean pkConstraintsExists(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
+    protected PrimaryKeyPersistenceDefinition getPrimaryKeyPersistenceDefinition(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -1696,10 +1841,10 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                     String n = rs.getString("PK_NAME");
                     String expectedName = getIdentifierStoreTranslator().translateIdentifier(constraintsName);
                     if (expectedName.equals(n)) {
-                        return true;
+                        return new DefaultPrimaryKeyPersistenceDefinition(n);
                     } else {
-                        log.log(Level.WARNING, "Found Conflicting PK Constraints " + n + " instead of " + expectedName+" in table "+tableName+". Will use it anyway...");
-                        return true;
+                        log.log(Level.WARNING, "Found Conflicting PK Constraints {0} instead of {1} in table {2}. Will use it anyway...", new Object[]{n, expectedName, tableName});
+                        return new DefaultPrimaryKeyPersistenceDefinition(n);
                     }
                 }
             } finally {
@@ -1710,10 +1855,10 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } catch (SQLException ex) {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "PK Constraints " + tableName + "." + constraintsName);
         }
-        return false;
+        return null;
     }
 
-    protected boolean foreignKeyExists(String tableName, String constraintName, EntityExecutionContext entityExecutionContext) {
+    protected ForeignKeyPersistenceDefinition foreignKeyExists(String tableName, String constraintName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -1738,7 +1883,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 while (rs.next()) {
                     String FK_NAME = rs.getString("FK_NAME");
                     if (constraintNameIdentifier.equals(FK_NAME)) {
-                        return true;
+                        return new DefaultForeignKeyPersistenceDefinition(FK_NAME);
                     }
                 }
 
@@ -1752,7 +1897,6 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
 //                        return true;
 //                    }
 //                }
-
             } finally {
                 if (rs != null) {
                     rs.close();
@@ -1761,7 +1905,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         } catch (SQLException ex) {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Column " + tableName + "." + constraintName);
         }
-        return false;
+        return null;
     }
 
     public String getIdentifierQuoteString() throws UPAException {
@@ -1782,7 +1926,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     protected UConnection createRootUConnection(EntityExecutionContext context) throws UPAException {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         Properties p2 = new DefaultProperties(getProperties());
-        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING,true);
+        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING, true);
         if (all.size() == 0) {
             throw new RootConnectionStringNotFoundException();
         }
@@ -1832,4 +1976,70 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     protected abstract UConnection createConnection(ConnectionProfile profile);
+
+    public SqlTypeName getSqlTypeName(DataType datatype) {
+        Class platformType = datatype.getPlatformType();
+        int length = datatype.getScale();
+        int precision = datatype.getPrecision();
+        if (platformType.equals(String.class)) {
+            if (length <= 0) {
+                length = 255;
+            }
+            return new SqlTypeName("VARCHAR", length);
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt32(platformType)) {
+            return new SqlTypeName("INT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt8(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt16(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isInt64(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isFloat32(platformType)) {
+            return new SqlTypeName("FLOAT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isFloat64(platformType)) {
+            return new SqlTypeName("FLOAT");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isAnyNumber(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (net.vpc.upa.impl.util.PlatformUtils.isBool(platformType)) {
+            return new SqlTypeName("INT");
+        }
+
+        if (datatype instanceof TemporalType) {
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
+            }
+            switch (temporalOption) {
+                case DATE:
+                    return new SqlTypeName("DATE");
+                case DATETIME:
+                    return new SqlTypeName("DATETIME");
+                case TIMESTAMP:
+                    return new SqlTypeName("TIMESTAMP");
+                case TIME:
+                    return new SqlTypeName("TIME");
+                case MONTH:
+                    return new SqlTypeName("DATE");
+                case YEAR:
+                    return new SqlTypeName("DATE");
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+                }
+            }
+        }
+        if (Object.class
+                .equals(platformType) || net.vpc.upa.impl.util.PlatformUtils.isSerializable(platformType)) {
+            return new SqlTypeName("BLOB"); // serialized form
+        }
+        throw new IllegalUPAArgumentException(
+                "UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+    }
 }

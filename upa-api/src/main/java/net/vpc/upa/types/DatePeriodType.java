@@ -122,7 +122,7 @@ public class DatePeriodType extends DefaultDataType implements CompoundDataType 
         for (int i = 0; i < fieldDescriptors.length; i++) {
             DefaultFieldDescriptor d = new DefaultFieldDescriptor();
             d.setReadProtectionLevel(ProtectionLevel.PRIVATE);
-            d.setDataType(i == 0 ? TypesFactory.INT : TypesFactory.INT);
+            d.setDataType(i == 0 ? DataTypeFactory.INT : DataTypeFactory.INT);
             d.setDefaultObject(def == null ? null : def[i]);
             d.setUnspecifiedObject(uns == null ? null : uns[i]);
             d.setPersistAccessLevel(fieldDescriptor.getPersistAccessLevel());

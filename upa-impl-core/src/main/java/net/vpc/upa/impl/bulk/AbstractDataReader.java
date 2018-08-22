@@ -8,6 +8,7 @@ import net.vpc.upa.bulk.DataRow;
 import net.vpc.upa.bulk.ValueConverter;
 import net.vpc.upa.bulk.ValueValidator;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.StringType;
 
@@ -147,6 +148,6 @@ public abstract class AbstractDataReader implements DataReader {
     }
 
     public void remove() {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
 }

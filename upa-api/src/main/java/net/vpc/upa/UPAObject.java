@@ -34,7 +34,6 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.types.I18NString;
 
 import java.beans.PropertyChangeListener;

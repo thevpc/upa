@@ -65,7 +65,7 @@ public interface DataType extends Cloneable {
 
     void check(Object value, String name, String description) throws ConstraintsException;
 
-    Object copy();
+    DataType copy();
 
     List<TypeValueValidator> getValueValidators();
 

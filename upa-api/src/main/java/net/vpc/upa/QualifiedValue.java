@@ -39,16 +39,16 @@ package net.vpc.upa;
  * @creationdate 9/3/12 1:19 AM
  */
 public class QualifiedValue {
-    private Entity entityManager;
-    private Object value;
+    private final Entity entity;
+    private final Object value;
 
-    public QualifiedValue(Entity entityManager, Object value) {
-        this.entityManager = entityManager;
+    public QualifiedValue(Entity entity, Object value) {
+        this.entity = entity;
         this.value = value;
     }
 
     public Entity getEntity() {
-        return entityManager;
+        return entity;
     }
 
     public Object getValue() {

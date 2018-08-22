@@ -7,15 +7,16 @@ import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.persistence.*;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.ext.persistence.PersistenceStoreExt;
-import net.vpc.upa.impl.persistence.commit.EntityImplicitViewStructureCommit;
-import net.vpc.upa.impl.persistence.commit.EntityPKStructureCommit;
-import net.vpc.upa.impl.persistence.commit.EntityStructureCommit;
-import net.vpc.upa.impl.persistence.commit.IndexStructureCommit;
-import net.vpc.upa.impl.persistence.commit.PrimitiveFieldStructureCommit;
-import net.vpc.upa.impl.persistence.commit.RelationshipStructureCommit;
-import net.vpc.upa.impl.persistence.commit.ViewStructureCommit;
+import net.vpc.upa.impl.persistence.commit.EntityImplicitViewStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.EntityPKStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.EntityStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.IndexStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.PrimitiveFieldStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.RelationshipStructureCommitAction;
+import net.vpc.upa.impl.persistence.commit.ViewStructureCommitAction;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -24,9 +25,9 @@ import net.vpc.upa.impl.persistence.commit.ViewStructureCommit;
 public class DefaultPersistenceUnitCommitManager {
 
     protected static Logger log = Logger.getLogger(DefaultPersistenceUnitCommitManager.class.getName());
-    List<StructureCommit> storage = new ArrayList<StructureCommit>();
-    PersistenceStoreExt persistenceStore;
-    static StructureCommitComparator structureCommitComparator = new StructureCommitComparator();
+    private static final StructureCommitComparator STRUCTURE_COMMIT_COMPARATOR = new StructureCommitComparator();
+    private Set<StructureCommitAction> storage = new HashSet<StructureCommitAction>();
+    private PersistenceStoreExt persistenceStore;
     private Map<UPAObject, UPAPersistenceInfo> persistenceInfoMap = new HashMap<UPAObject, UPAPersistenceInfo>();
 
     public void init(PersistenceStoreExt persistenceStore) {
@@ -58,7 +59,17 @@ public class DefaultPersistenceUnitCommitManager {
 
     public void alterPersistenceUnitAddObject(UPAObject object) throws UPAException {
         if (object instanceof PrimitiveField) {
-            storage.add(new PrimitiveFieldStructureCommit((PrimitiveField) object, this));
+            PrimitiveField p = (PrimitiveField) object;
+            Entity e = p.getEntity();
+            if (persistenceStore.isView(e)) {
+                storage.add(new ViewStructureCommitAction(e, this));
+            } else {
+                if (e.hasAssociatedView() && p.getModifiers().contains(FieldModifier.SELECT_COMPILED)) {
+                    storage.add(new EntityImplicitViewStructureCommitAction(e, this));
+                } else {
+                    storage.add(new PrimitiveFieldStructureCommitAction(p, this));
+                }
+            }
             return;
         }
         if (object instanceof CompoundField) {
@@ -77,30 +88,40 @@ public class DefaultPersistenceUnitCommitManager {
             return;
         }
         if (object instanceof Entity) {
-            if (persistenceStore.isView((Entity) object)) {
-                storage.add(new ViewStructureCommit((Entity) object, this));
+            Entity e = (Entity) object;
+            if (persistenceStore.isView(e)) {
+                storage.add(new ViewStructureCommitAction(e, this));
             } else {
-                storage.add(new EntityStructureCommit((Entity) object, this));
-                storage.add(new EntityPKStructureCommit((Entity) object, this));
-                storage.add(new EntityImplicitViewStructureCommit((Entity) object, this));
+                storage.add(new EntityStructureCommitAction(e, this));
+                storage.add(new EntityPKStructureCommitAction(e, this));
+                if (e.hasAssociatedView()) {
+                    storage.add(new EntityImplicitViewStructureCommitAction(e, this));
+                }
             }
             return;
         }
 
         if (object instanceof Relationship) {
-            storage.add(new RelationshipStructureCommit((Relationship) object, this));
+            storage.add(new RelationshipStructureCommitAction((Relationship) object, this));
             return;
         }
         if (object instanceof Index) {
-            storage.add(new IndexStructureCommit((Index) object, this));
+            storage.add(new IndexStructureCommitAction((Index) object, this));
         }
     }
 
     public boolean commitStructure(PersistenceUnit persistenceUnit) throws UPAException {
         EntityExecutionContext context = ((PersistenceUnitExt) persistenceUnit).createContext(ContextOperation.CREATE_PERSISTENCE_NAME, null);
-        Collections.sort(storage, structureCommitComparator);
+        StructureCommitAction[] storageArray = storage.toArray(new StructureCommitAction[storage.size()]);
+        Arrays.sort(storageArray, STRUCTURE_COMMIT_COMPARATOR);
+        if (log.isLoggable(Level.FINEST)) {
+            for (int i = 0; i < storageArray.length; i++) {
+                StructureCommitAction structureCommit = storageArray[i];
+                log.log(Level.FINEST, STRUCTURE_COMMIT_COMPARATOR.get(structureCommit.persistenceNameType) + " :: " + structureCommit);
+            }
+        }
         boolean someCommit = false;
-        for (StructureCommit next : storage) {
+        for (StructureCommitAction next : storageArray) {
             if (next.commit(context)) {
                 someCommit = true;
             }
@@ -109,7 +130,7 @@ public class DefaultPersistenceUnitCommitManager {
         return someCommit;
     }
 
-    public PersistenceStoreExt getPersistenceUnitManager() {
+    public PersistenceStoreExt getPersistenceStore() {
         return persistenceStore;
     }
 }

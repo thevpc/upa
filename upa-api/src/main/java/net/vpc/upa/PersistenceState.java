@@ -35,6 +35,9 @@
 package net.vpc.upa;
 
 /**
+ * Persisted Object State. This class defines state of the Store Objects
+ * (Table,Column, View, Foreign Key, Primary Key, ...)
+ *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 9/9/12 3:25 PM
  */
@@ -43,7 +46,22 @@ public enum PersistenceState {
      * Undefined value, treated as null
      */
     DEFAULT,
+    /**
+     * Object is missing in the Store (Not Found)
+     */
+    MISSING,
+    /**
+     * Object is found in the Store but has a different definition than expected
+     */
     DIRTY,
+    /**
+     * Object is not found in the Store and should not be either (it is non
+     * persistable)
+     */
     TRANSIENT,
-    VALID,
+    /**
+     * Object is found in the Store and has a valid definition (either equal or
+     * compatible with expected)
+     */
+    VALID
 }

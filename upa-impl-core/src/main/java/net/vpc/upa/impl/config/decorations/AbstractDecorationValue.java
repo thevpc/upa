@@ -58,7 +58,7 @@ public abstract class AbstractDecorationValue implements DecorationValue {
                     ok.add(alternative);
                     break;
                 }
-                case DELETE: {
+                case REMOVE: {
                     ok.clear();
                     break;
                 }

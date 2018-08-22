@@ -22,7 +22,7 @@ public class RelationUC1 {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationUC1.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);

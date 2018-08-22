@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 public final class NullVal extends FunctionExpression
         implements Cloneable {
@@ -102,7 +102,7 @@ public final class NullVal extends FunctionExpression
         int length = dataType.getScale();
         int precision = dataType.getPrecision();
 
-        String tname = TypesFactory.getTypeName(javaClass);
+        String tname = DataTypeFactory.getTypeName(javaClass);
         if (tname == null) {
             tname = ("UNKNOWN_TYPE(" + javaClass.getName() + "," + length + "," + precision + ")");
         }

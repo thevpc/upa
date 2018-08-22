@@ -13,7 +13,6 @@ import net.vpc.upa.SequenceStrategy;
 import net.vpc.upa.callbacks.PersistenceUnitEvent;
 import net.vpc.upa.callbacks.PersistenceUnitListener;
 import net.vpc.upa.callbacks.PersistenceUnitListenerAdapter;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -21,6 +20,7 @@ import net.vpc.upa.types.DataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -72,7 +72,7 @@ class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements
                             } else if (String.class.equals(platformType)) {
                                 privateSeq = true;
                             } else {
-                                throw new UPAException("UnsupportedGeneratedValueTypeException", field, platformType);
+                                throw new UnsupportedUPAFeatureException("UnsupportedGeneratedValueTypeException", field, platformType);
                             }
                             break;
                         }
@@ -85,7 +85,7 @@ class UPASystemEntitiesTrigger extends PersistenceUnitListenerAdapter implements
                             break;
                         }
                         default: {
-                            throw new UPAException("UnsupportedGeneratedValueStrategyException", field);
+                            throw new UnsupportedUPAFeatureException("UnsupportedGeneratedValueStrategyException", field);
                         }
                     }
                     if (privateSeq) {

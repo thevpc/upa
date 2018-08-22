@@ -51,9 +51,9 @@ public interface SingleEntityListener extends EntityInterceptor {
 
     void afterUpdate(EntityTriggerContext context, Object id, Document document) ;
 
-    void beforeDelete(EntityTriggerContext context, Object id) ;
+    void beforeRemove(EntityTriggerContext context, Object id);
 
-    void afterDelete(EntityTriggerContext context, Object id) ;
+    void afterRemove(EntityTriggerContext context, Object id);
 
     void beforeUpdateFormulas(EntityTriggerContext context, Object id, Document document) ;
 

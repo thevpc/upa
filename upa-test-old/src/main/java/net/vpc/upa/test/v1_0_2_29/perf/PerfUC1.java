@@ -119,8 +119,8 @@
 //        public void testPerf() {
 //            PersistenceUnit pu = UPA.getPersistenceUnit();
 //
-//            Entity entityManager = pu.getEntity(Client.class);
-//            Client c = entityManager.createObject();
+//            Entity entity = pu.getEntity(Client.class);
+//            Client c = entity.createObject();
 //            c.setFirstName("Ahmed");
 //            c.setLastName("Gharbi");
 //

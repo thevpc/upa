@@ -21,7 +21,7 @@ public class SyntaxUPAXmlValidatorUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
     }
 
     @Test

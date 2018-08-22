@@ -185,7 +185,7 @@ public abstract class DefaultDataType implements DataType {
     }
 
     @Override
-    public Object copy() {
+    public DataType copy() {
         try {
             DefaultDataType cloned = (DefaultDataType) super.clone();
             cloned.valueValidators = new ArrayList<TypeValueValidator>(valueValidators);
@@ -251,7 +251,7 @@ public abstract class DefaultDataType implements DataType {
         if (object == null) {
             return true;
         }
-        return isAssignableFrom(TypesFactory.forPlatformType(object.getClass()));
+        return isAssignableFrom(DataTypeFactory.forPlatformType(object.getClass()));
     }
 
     @Override

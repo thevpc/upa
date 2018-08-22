@@ -32,10 +32,10 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     private LinkedHashMap<String, Field> fields = new LinkedHashMap<String, Field>();
     private LinkedHashMap<String, Section> sections = new LinkedHashMap<String, Section>();
     private PersistenceUnitExt unit;
-    private HashSet<Class> entityManagerByEntityTypeAmbiguity = new HashSet<Class>();
-    private HashMap<Class, Entity> entityManagerByEntityType = new HashMap<Class, Entity>();
-    private HashSet<Class> entityManagerByIdTypeAmbiguity = new HashSet<Class>();
-    private HashMap<Class, Entity> entityManagerByIdType = new HashMap<Class, Entity>();
+    private HashSet<Class> entityByEntityTypeAmbiguity = new HashSet<Class>();
+    private HashMap<Class, Entity> entityByEntityType = new HashMap<Class, Entity>();
+    private HashSet<Class> entityByIdTypeAmbiguity = new HashSet<Class>();
+    private HashMap<Class, Entity> entityByIdType = new HashMap<Class, Entity>();
     private Map<String, List<Index>> indexesByEntity = new HashMap<String, List<Index>>();
 //    private Map<String, Relationship> cache_relationsByName;
 
@@ -91,22 +91,22 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         entities.put(s, item);
 
         Class<?> entityType = entity.getEntityType();
-        if (!entityManagerByEntityTypeAmbiguity.contains(entityType)) {
-            if (entityManagerByEntityType.containsKey(entityType)) {
-                entityManagerByEntityType.remove(entityType);
-                entityManagerByEntityTypeAmbiguity.add(entityType);
+        if (!entityByEntityTypeAmbiguity.contains(entityType)) {
+            if (entityByEntityType.containsKey(entityType)) {
+                entityByEntityType.remove(entityType);
+                entityByEntityTypeAmbiguity.add(entityType);
             } else {
-                entityManagerByEntityType.put(entityType, entity);
+                entityByEntityType.put(entityType, entity);
             }
         }
 
         Class<?> idType = PlatformUtils.toRefType(entity.getIdType());
-        if (!entityManagerByIdTypeAmbiguity.contains(idType)) {
-            if (entityManagerByIdType.containsKey(idType)) {
-                entityManagerByIdType.remove(idType);
-                entityManagerByIdTypeAmbiguity.add(idType);
+        if (!entityByIdTypeAmbiguity.contains(idType)) {
+            if (entityByIdType.containsKey(idType)) {
+                entityByIdType.remove(idType);
+                entityByIdTypeAmbiguity.add(idType);
             } else {
-                entityManagerByIdType.put(idType, entity);
+                entityByIdType.put(idType, entity);
             }
         }
     }
@@ -254,12 +254,12 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
 
     public Entity getEntityByIdType(Class idType) throws UPAException {
         idType=PlatformUtils.toRefType(idType);
-        Entity entity = entityManagerByIdType.get(idType);
+        Entity entity = entityByIdType.get(idType);
         if (entity != null) {
             return entity;
         }
-        if (entityManagerByIdTypeAmbiguity.contains(idType)) {
-            throw new MultipleEntityMatchForTypeException(entityManagerByIdTypeAmbiguity.toArray(new Class[0])[0], new String[0]);
+        if (entityByIdTypeAmbiguity.contains(idType)) {
+            throw new MultipleEntityMatchForTypeException(entityByIdTypeAmbiguity.toArray(new Class[0])[0], new String[0]);
         }
         throw new NoSuchEntityException(idType.getName());
     }
@@ -276,15 +276,15 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public boolean containsEntity(Class entityType) throws UPAException {
-        Entity entityManager = entityManagerByEntityType.get(entityType);
-        if (entityManager != null) {
+        Entity entity = entityByEntityType.get(entityType);
+        if (entity != null) {
             return true;
         }
-        if (entityManagerByEntityTypeAmbiguity.contains(entityType)) {
+        if (entityByEntityTypeAmbiguity.contains(entityType)) {
             HashSet<String> entityNamesSet = new HashSet<String>();
-            for (Entity entity : getEntities()) {
-                if (entity.getEntityType().equals(entityType)) {
-                    entityNamesSet.add(entity.getName());
+            for (Entity entity2 : getEntities()) {
+                if (entity2.getEntityType().equals(entityType)) {
+                    entityNamesSet.add(entity2.getName());
                 }
             }
             return true;
@@ -301,16 +301,16 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         if (entityType == null) {
             return all;
         }
-        Entity entityManager = entityManagerByEntityType.get(entityType);
-        if (entityManager != null) {
-            all.add(entityManager);
+        Entity entity = entityByEntityType.get(entityType);
+        if (entity != null) {
+            all.add(entity);
         }
-        if (entityManagerByEntityTypeAmbiguity.contains(entityType)) {
-            for (Entity entity : getEntities()) {
-                if (entity.getEntityType().equals(entityType)
-                        && (entityManager == null
-                        || !entity.getName().equals(entityManager.getName()))) {
-                    all.add(entity);
+        if (entityByEntityTypeAmbiguity.contains(entityType)) {
+            for (Entity entity2 : getEntities()) {
+                if (entity2.getEntityType().equals(entityType)
+                        && (entity == null
+                        || !entity2.getName().equals(entity.getName()))) {
+                    all.add(entity2);
                 }
             }
         }
@@ -321,15 +321,15 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         if (entityType == null) {
             return null;
         }
-        Entity entityManager = entityManagerByEntityType.get(entityType);
-        if (entityManager != null) {
-            return entityManager;
+        Entity entity = entityByEntityType.get(entityType);
+        if (entity != null) {
+            return entity;
         }
-        if (entityManagerByEntityTypeAmbiguity.contains(entityType)) {
+        if (entityByEntityTypeAmbiguity.contains(entityType)) {
             HashSet<String> entityNames = new HashSet<String>();
-            for (Entity entity : getEntities()) {
-                if (entity.getEntityType().equals(entityType)) {
-                    entityNames.add(entity.getName());
+            for (Entity entity2 : getEntities()) {
+                if (entity2.getEntityType().equals(entityType)) {
+                    entityNames.add(entity2.getName());
                 }
             }
             throw new MultipleEntityMatchForTypeException(entityType, entityNames.toArray(new String[entityNames.size()]));

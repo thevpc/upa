@@ -61,8 +61,8 @@ public class UpdateSQLProvider extends AbstractSQLProvider {
             CompiledExpressionExt fieldValue = o.getFieldValue(i);
 //            Object referrer = vv.getReferrer();
             Field f = ((Field) fv.getReferrer());
-            Entity entityManager = f.getEntity();
-            List<PrimitiveField> primFields = entityManager.toPrimitiveFields(Arrays.asList((EntityItem) f));
+            Entity entity2 = f.getEntity();
+            List<PrimitiveField> primFields = entity2.toPrimitiveFields(Arrays.asList((EntityItem) f));
 
             for (PrimitiveField primField : primFields) {
                 if (isFirst) {

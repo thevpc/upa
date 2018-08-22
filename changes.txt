@@ -13,6 +13,9 @@ Version 1.2.0.48 :
            purposes)
     [API ] Added support for @PropertyAccess on Entity (default for @PropertyAccess 
            for all fields/methods)
+    [API ] Added copy constructors for Field/Index/Entity/Relation Descriptors
+    [API ] Added NativeObjectPersistenceDefinition interface Hierarchy and Impls
+    [API ] Added PersistenceState.MISSING
     [Test] Added Test Suite Use Cases
     [DOC ] Added /changes.txt (this file) to the project folder.This file will 
            trace all changes for all versions
@@ -25,21 +28,32 @@ Version 1.2.0.48 :
     [UPQL] Removed upql functions d2v(...) and i2v(...). Both replaced by 
            toString(...)
     [API ] Removed uql names and replaced (package names included) by upql
+    [Impl] Removed ObjectAndType
 
 ## Other Changes
     [API ] Changed 'Part' naming with 'Item' naming. Particularly Entity.getParts() 
            become Entity.getItems()
+    [API ] Replacing *TypeNameSQLProvider classes by Periststencestore.getSqlTypeName
+    [API ] Changed 'delete' naming with 'remove' naming.
     [API ] replaced all 'type' fields not to fail in C# generation process
+    [API ] replaced all 'entityManager' references by 'entity'
     [API ] scan method has as first parameter 'source' instead of config
                      (params order changed)
+    [API ] renamed TypesFactory to DataTypeFactory
     [Impl] replaced all 'type' fields not to fail in C# generation process
     [Impl] removed references to java.util.IllegalArgumentException
     [Impl] removed references to java.util.NoSuchElementException, replaced by
            NoSuchUPAElementException
     [Impl] UPAIllegalArgumentException replaced by IllegalUPAArgumentException
+    [Impl] Renamed StructureCommit (and inheritors) to StructureCommitAction
+    [Impl] Added better Schema Modification Support (View Def changed, Column 
+           Def Changed...)
 
 ## Bug Fixes
     [Impl] Fixed support for View entities
     [Impl] Fixed Query builder issue that duplicates where clause for Id 
            expressions
+    [Impl] Drop View before creating it (if it exists)
+    [Impl] When a field in View has changed, the hole view is updated (fixing
+           an issue where ALTER TABLE is fired against a VIEW)
     [Test] Fixed Test all use cases

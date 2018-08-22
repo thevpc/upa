@@ -21,7 +21,7 @@ public class RelationUC3 {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationUC3.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);

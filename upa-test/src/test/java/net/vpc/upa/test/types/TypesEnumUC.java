@@ -16,12 +16,12 @@ import org.junit.Test;
  */
 public class TypesEnumUC {
 
-    static Logger log = Logger.getLogger(TypesEnumUC.class.getName());
+    private static final Logger log = Logger.getLogger(TypesEnumUC.class.getName());
 
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesEnumUC.class);
         pu.addEntity(Data.class);
         pu.start();

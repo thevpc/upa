@@ -35,7 +35,7 @@
 package net.vpc.upa.expressions;
 
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 /**
  * Created by IntelliJ IDEA. User: root Date: 22 mai 2003 Time: 12:21:56 To
@@ -109,7 +109,7 @@ public class Cast extends FunctionExpression {
         Class javaClass = targetType.getPlatformType();
         int length = targetType.getScale();
         int precision = targetType.getPrecision();
-        String tname = TypesFactory.getTypeName(javaClass);
+        String tname = DataTypeFactory.getTypeName(javaClass);
         if (tname == null) {
             tname = ("UNKNOWN_TYPE(" + javaClass.getName() + "," + length + "," + precision + ")");
         }

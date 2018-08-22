@@ -21,7 +21,7 @@ public class FormulaStringConcatUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(FormulaStringConcatUC.class);
         pu.addEntity(Client.class);
         pu.start();

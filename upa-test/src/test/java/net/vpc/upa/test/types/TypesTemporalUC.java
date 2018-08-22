@@ -22,7 +22,7 @@ public class TypesTemporalUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesTemporalUC.class);
         pu.addEntity(TemporalData.class);
         pu.start();

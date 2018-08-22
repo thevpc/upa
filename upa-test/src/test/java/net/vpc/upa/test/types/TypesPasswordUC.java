@@ -22,7 +22,7 @@ public class TypesPasswordUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesPasswordUC.class);
         pu.addEntity(Data.class);
         pu.start();

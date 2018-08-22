@@ -2,7 +2,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 import java.util.List;
 import net.vpc.upa.types.DataTypeTransform;
@@ -35,7 +35,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
     
     public CompiledIf(CompiledExpressionExt condition) {
         this();
-        condition.getTypeTransform().getSourceType().cast(TypesFactory.BOOLEAN);
+        condition.getTypeTransform().getSourceType().cast(DataTypeFactory.BOOLEAN);
         add(condition);
         state=EXPECT_VALUE;
     }
@@ -78,7 +78,7 @@ public class CompiledIf extends CompiledFunction implements Cloneable {
 
     public CompiledIf ElseIf(CompiledExpressionExt condition){
         if(state==EXPECT_CONDITION){
-            condition.getTypeTransform().getSourceType().cast(TypesFactory.BOOLEAN);
+            condition.getTypeTransform().getSourceType().cast(DataTypeFactory.BOOLEAN);
             add(condition);
             state=EXPECT_VALUE;
             return this;

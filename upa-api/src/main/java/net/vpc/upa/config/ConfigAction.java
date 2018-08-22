@@ -45,6 +45,6 @@ public enum ConfigAction {
      */
     DEFAULT, 
     MERGE, 
-    DELETE, 
+    REMOVE, 
     REPLACE
 }

@@ -10,6 +10,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.List;
 import net.vpc.upa.Query;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.expressions.Delete;
 
 /**
@@ -26,7 +27,7 @@ class EntityRemoveOperationHelper implements EntityRemoveOperation {
     }
 
     @Override
-    public int delete(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException {
+    public int remove(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException {
         for (int i = 0; i < updatableTables.size(); i++) {
             updatableTables.get(i).remove(RemoveOptions
                     .forExpression(defaultUnionEntityExtensionSupport.getViewElementExpressionAt(i, condition))
@@ -39,7 +40,7 @@ class EntityRemoveOperationHelper implements EntityRemoveOperation {
     }
 
     public Query createQuery(Entity e, Delete query, EntityExecutionContext context) throws UPAException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
     
 }

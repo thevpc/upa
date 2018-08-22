@@ -39,7 +39,7 @@ public class DecorationPrimitiveValue extends AbstractDecorationValue implements
         for (DecorationValue alternative : alternatives) {
             DecorationPrimitiveValue d = (DecorationPrimitiveValue) alternative;
             switch (d.getConfig().getConfigAction()) {
-                case DELETE: {
+                case REMOVE: {
                     ok.clear();
                     break;
                 }
@@ -55,7 +55,7 @@ public class DecorationPrimitiveValue extends AbstractDecorationValue implements
         if (ok.isEmpty()) {
             value = null;
             configInfo = new ConfigInfo(last.getConfig().getOrder(),
-                    ConfigAction.DELETE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
+                    ConfigAction.REMOVE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
         } else {
             value = ok.get(ok.size() - 1);
             configInfo = new ConfigInfo(last.getConfig().getOrder(),

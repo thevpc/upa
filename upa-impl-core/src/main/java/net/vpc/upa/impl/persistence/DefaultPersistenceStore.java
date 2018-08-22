@@ -32,8 +32,6 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
     protected Boolean embeddedDataSourceSupported = null;
     private final Map<String, DataSource> embeddedDataSources = new HashMap<String, DataSource>();
 
-
-
     @Override
     public void init(PersistenceUnit persistenceUnit, boolean readOnly, ConnectionProfile connectionProfile) throws UPAException {
         embeddedDataSourceSupported = null;
@@ -47,8 +45,6 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
         embeddedDatasourceFactories.add(DBCPv2EmbeddedDatasourceFactory.INSTANCE);
         super.init(persistenceUnit, readOnly, connectionProfile);
     }
-
-
 
     public UConnection createRootUConnection(EntityExecutionContext context) throws UPAException {
         return wrapConnection(createNativeRootConnection(context));
@@ -75,7 +71,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
         reconfigureStore(connection);
         return connection;
     }
-    
+
     public UConnection createConnection(ConnectionProfile connectionProfile) throws UPAException {
         Connection nativeConnection = createNativeConnection(connectionProfile);
         knownCreatedStores.add(connectionProfile.toString());
@@ -92,7 +88,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
              * @PortabilityHint(target = "C#",name = "todo")
              */
             try {
-                DatabaseMetaData metaData = ((Connection)connection.getMetadataAccessibleConnection()).getMetaData();
+                DatabaseMetaData metaData = ((Connection) connection.getMetadataAccessibleConnection()).getMetaData();
                 getStoreParameters().setString("configured", String.valueOf(true));
                 getStoreParameters().setString("databaseMajorVersion", String.valueOf(metaData.getDatabaseMajorVersion()));
                 getStoreParameters().setString("databaseMinorVersion", String.valueOf(metaData.getDatabaseMinorVersion()));
@@ -141,7 +137,6 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
 //    public Connection createNativeConnection() throws UPAException {
 //        return createNativeConnection(getConnectionProfile());
 //    }
-
     public Connection createNativeConnection(ConnectionProfile p) throws UPAException {
         try {
             String connectionDriver = p.getConnectionDriver();
@@ -255,7 +250,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
             String user,
             String password,
             Map<String, String> properties0) throws UPAException {
-        Map<CaseInsensitiveString, String> properties=StringUtils.toCaseInsensitiveStringMap(properties0);
+        Map<CaseInsensitiveString, String> properties = StringUtils.toCaseInsensitiveStringMap(properties0);
         try {
             net.vpc.upa.Properties uproperties = this.properties;
             PropertiesDollarConverter varConverter = new PropertiesDollarConverter(uproperties);
@@ -405,7 +400,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
     public Connection createNativeRootConnection(EntityExecutionContext context) throws UPAException {
         ConnectionProfileParser connectionProfileParser = new ConnectionProfileParser();
         DefaultProperties p2 = new DefaultProperties(context.getPersistenceUnit().getProperties());
-        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING,true);
+        List<ConnectionProfile> all = connectionProfileParser.parse(p2, context.getPersistenceUnit().getRootConnectionConfigs(), UPA.ROOT_CONNECTION_STRING, true);
         if (all.size() == 0) {
             throw new RootConnectionStringNotFoundException();
         }
@@ -428,7 +423,7 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
          * @PortabilityHint(target = "C#",name = "suppress")
          */
         try {
-            Connection nativeConnection = (Connection)connection.getPlatformConnection();
+            Connection nativeConnection = (Connection) connection.getPlatformConnection();
             customAttributes.put("AutoCommit", nativeConnection.getAutoCommit());
             nativeConnection.setAutoCommit(false);
         } catch (SQLException e) {

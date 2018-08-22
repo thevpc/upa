@@ -1,5 +1,6 @@
 package net.vpc.upa.test.crud;
 
+import java.util.logging.Level;
 import net.vpc.upa.*;
 import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.test.model.SharedClient;
@@ -64,10 +65,10 @@ public class CrudUC {
         public void process() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
 
-            Entity entityManager = pu.getEntity("SharedClient");
-            SharedClient c = entityManager.createObject();
-            int key = entityManager.nextId();
-            log.info("Next Id is " + key);
+            Entity entity = pu.getEntity("SharedClient");
+            SharedClient c = entity.createObject();
+            int key = entity.nextId();
+            log.log(Level.INFO, "Next Id is {0}", key);
             c.setId(key);
             c.setFirstName("Hammadi");
 
@@ -75,10 +76,10 @@ public class CrudUC {
 
             Document found0 = pu.createQueryBuilder(SharedClient.class).byId(key).getDocument();
             Assert.assertNotNull(found0);
-            log.info("Found " + found0);
+            log.log(Level.INFO, "Found {0}", found0);
             found0.setString("firstName", "Alia");
 
-            SharedClient c2 = entityManager.getBuilder().documentToObject(found0);
+            SharedClient c2 = entity.getBuilder().documentToObject(found0);
 
             Assert.assertEquals(c2.getFirstName(), "Alia");
 
@@ -115,9 +116,9 @@ public class CrudUC {
                 sm.start();
             }
 
-            Entity entityManager = sm.getEntity("SharedClient");
-            Document c = entityManager.createDocument();
-            int key = entityManager.nextId();
+            Entity entity = sm.getEntity("SharedClient");
+            Document c = entity.createDocument();
+            int key = entity.nextId();
             log.info("Next Id is " + key);
             c.setInt("id", key);
             c.setString("firstName", "Hammadi");

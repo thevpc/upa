@@ -36,6 +36,7 @@ package net.vpc.upa.expressions;
 
 import java.util.Collections;
 import java.util.List;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 public final class Cst extends DefaultExpression
         implements Cloneable {
@@ -55,7 +56,7 @@ public final class Cst extends DefaultExpression
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
 
     public boolean isValid() {

@@ -176,7 +176,7 @@ public abstract class AbstractDecoration extends AbstractDecorationValue impleme
             DecorationValue last = alternatives1[alternatives1.length - 1];
             mergedAttributes = new HashMap<String, DecorationValue>();
             mergedConfigInfo = new ConfigInfo(last.getConfig().getOrder(),
-                    ConfigAction.DELETE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
+                    ConfigAction.REMOVE, last.getConfig().getPersistenceGroup(), last.getConfig().getPersistenceUnit());
         } else {
             DecorationValue last = alternatives[alternatives.length - 1];
             mergedAttributes = att;

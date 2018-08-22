@@ -24,7 +24,7 @@ public class TypesTransformerUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(TypesTransformerUC.class);
         pu.addEntity(Person.class);
         pu.addEntity(Phone.class);

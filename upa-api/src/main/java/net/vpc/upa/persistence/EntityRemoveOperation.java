@@ -37,7 +37,6 @@ package net.vpc.upa.persistence;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Query;
 import net.vpc.upa.RemoveTrace;
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Delete;
 import net.vpc.upa.expressions.Expression;
 
@@ -47,7 +46,7 @@ import net.vpc.upa.expressions.Expression;
  */
 public interface EntityRemoveOperation {
 
-    int delete(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) ;
+    int remove(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo);
 
     Query createQuery(Entity e, Delete query, EntityExecutionContext context) ;
 }

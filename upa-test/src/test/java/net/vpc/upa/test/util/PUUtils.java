@@ -37,11 +37,11 @@ public class PUUtils {
         System.out.println("" + getVersion());
         System.out.println("*************************************");
         LogUtils.prepare();
-        configure();
+        reset();
     }
     private static final Logger log = Logger.getLogger(PUUtils.class.getName());
 
-    public static void configure() {
+    public static void reset() {
         //reset UPA context!
         UPA.close();
     }

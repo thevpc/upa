@@ -59,7 +59,7 @@ public interface EntityShield {
 
     boolean isUpdateSupported() ;
 
-    boolean isDeleteSupported() ;
+    boolean isRemoveSupported();
 
     boolean isCloneSupported() ;
 
@@ -71,7 +71,7 @@ public interface EntityShield {
 
     boolean isGeneratedId() ;
 
-    Expression getFullNonDeletableDocumentsExpression() ;
+    Expression getFullNonRemovableDocumentsExpression();
 
     Expression getFullNonRenamableDocumentsExpression() ;
 
@@ -79,9 +79,9 @@ public interface EntityShield {
 
     Expression getFullNonUpdatableDocumentsExpression() ;
 
-    Expression getNonDeletableDocumentsExpression() ;
+    Expression getNonRemovableDocumentsExpression();
 
-    void setNonDeletableDocumentsExpression(Expression expression) ;
+    void setNonRemovableDocumentsExpression(Expression expression);
 
     Expression getNonUpdatableDocumentsExpression() ;
 
@@ -133,7 +133,7 @@ public interface EntityShield {
 
     void checkRemove(Expression condition, boolean recurse, long toRemoveCount) ;
 
-    boolean isDeletableDocument(Object k, boolean recurse) ;
+    boolean isRemovableDocument(Object k, boolean recurse);
 
     boolean isUpdatableDocument(Object k) ;
 
@@ -141,7 +141,7 @@ public interface EntityShield {
 
     boolean isUpdateEnabled() ;
 
-    boolean isDeleteEnabled() ;
+    boolean isRemoveEnabled();
 
     boolean isRenameEnabled() ;
 

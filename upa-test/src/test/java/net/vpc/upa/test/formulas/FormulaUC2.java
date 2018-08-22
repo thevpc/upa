@@ -21,7 +21,7 @@ public class FormulaUC2 {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(FormulaUC2.class);
         pu.addEntity(Person.class);
         pu.start();

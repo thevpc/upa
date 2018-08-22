@@ -15,7 +15,7 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  */
 public class DefaultEntityRemoveOperation implements EntityRemoveOperation {
     @Override
-    public int delete(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException {
+    public int remove(Entity entity, EntityExecutionContext context, Expression condition, boolean recurse, RemoveTrace deleteInfo) throws UPAException {
         if (entity.getShield().isTransient()) {
             return 0;
         }

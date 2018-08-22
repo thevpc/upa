@@ -35,41 +35,56 @@
 package net.vpc.upa;
 
 import net.vpc.upa.expressions.Expression;
+import net.vpc.upa.types.PlatformUtils;
 
 /**
  * Created by vpc on 7/20/15.
  */
 public class DefaultRelationshipDescriptor implements RelationshipDescriptor {
+
     public int hierarchyConfigOrder;
-
     public String hierarchyPathSeparator;
-
     public boolean hierarchy;
-
     public boolean nullable;
     public boolean oneToOne;
-
     public String hierarchyPathField;
-
     public String sourceEntity;
-
     public Class sourceEntityType;
-
     public String targetEntity;
-
     public Class targetEntityType;
-
     public Expression filter;
-
     public String baseField;
-
     public String[] mappedTo;
-
     public String[] sourceFields;
-
     public String name;
-
     public RelationshipType relationshipType;
+
+    public DefaultRelationshipDescriptor() {
+    }
+
+    public DefaultRelationshipDescriptor(RelationshipDescriptor other) {
+        copyFrom(other);
+    }
+
+    public DefaultRelationshipDescriptor copyFrom(RelationshipDescriptor other) {
+        if (other != null) {
+            setHierarchyConfigOrder(other.getHierarchyConfigOrder());
+            setHierarchyPathSeparator(other.getHierarchyPathSeparator());
+            setHierarchy(other.isHierarchy());
+            setNullable(other.isNullable());
+            setOneToOne(other.isOneToOne());
+            setHierarchyPathField(other.getHierarchyPathField());
+            setSourceEntity(other.getSourceEntity());
+            setTargetEntity(other.getTargetEntity());
+            setFilter(other.getFilter());
+            setBaseField(other.getBaseField());
+            setMappedTo(PlatformUtils.copyOf(other.getMappedTo()));
+            setSourceFields(PlatformUtils.copyOf(other.getSourceFields()));
+            setName(other.getName());
+            setRelationshipType(other.getRelationshipType());
+        }
+        return this;
+    }
 
     public int getHierarchyConfigOrder() {
         return hierarchyConfigOrder;
@@ -92,8 +107,6 @@ public class DefaultRelationshipDescriptor implements RelationshipDescriptor {
     public boolean isManyToOne() {
         return !isOneToOne();
     }
-
-
 
     public DefaultRelationshipDescriptor setHierarchyConfigOrder(int hierarchyConfigOrder) {
         this.hierarchyConfigOrder = hierarchyConfigOrder;

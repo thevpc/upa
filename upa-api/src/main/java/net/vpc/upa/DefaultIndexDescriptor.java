@@ -34,15 +34,34 @@
  */
 package net.vpc.upa;
 
+import net.vpc.upa.types.PlatformUtils;
+
 /**
  * Created by vpc on 7/26/15.
  */
 public class DefaultIndexDescriptor implements IndexDescriptor {
+
     private String name;
 
     private String[] fieldNames;
 
     private boolean unique;
+
+    public DefaultIndexDescriptor() {
+    }
+
+    public DefaultIndexDescriptor(IndexDescriptor other) {
+        copyFrom(other);
+    }
+
+    public DefaultIndexDescriptor copyFrom(IndexDescriptor other) {
+        if (other != null) {
+            setName(other.getName());
+            setUnique(other.isUnique());
+            setFieldNames(PlatformUtils.copyOf(other.getFieldNames()));
+        }
+        return this;
+    }
 
     @Override
     public String getName() {

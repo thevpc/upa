@@ -648,7 +648,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }
@@ -668,7 +668,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }
@@ -1207,7 +1207,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         } else if (trigger instanceof UpdateFormulaInterceptor) {
             return (new FormulaUpdaterInterceptorSupport((UpdateFormulaInterceptor) trigger));
         } else {
-            throw new IllegalUPAArgumentException("Unsupported Entity Trigger Type " + trigger.getClass());
+            throw new UnsupportedUPAFeatureException("Unsupported Entity Trigger Type " + trigger.getClass());
         }
     }
 
@@ -1912,7 +1912,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //            throws UPAException, PrintException {
 //
 //        //new HtmlDocumentReporter(getPersistenceUnit().getApplication()).showReport(this, key);
-//        // throw new UnsupportedOperationException(
+//        // throw new UnsupportedUPAFeatureException(
 //        // getResources().getGeneric("DocumentEditor.*.printDocument.unsupported",getName())
 //        // );
 //    }
@@ -1974,8 +1974,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         // remove(toExpression(oldId, null),
-        // getPersistenceUnit().isRecurseDelete(), false, new RemoveTrace());
-        removeCore(getBuilder().idToExpression(oldId, UPQLUtils.THIS), getPersistenceUnit().isRecurseDelete(), new DefaultRemoveTrace(), context);
+        // getPersistenceUnit().isRecurseRemove(), false, new RemoveTrace());
+        removeCore(getBuilder().idToExpression(oldId, UPQLUtils.THIS), getPersistenceUnit().isRecurseRemove(), new DefaultRemoveTrace(), context);
 //        transactionSucceeded = true;
 //        return o;
 //    }
@@ -2280,7 +2280,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public int removeCore(Expression condition, boolean recurse, RemoveTrace removeInfo, EntityExecutionContext executionContext) throws UPAException {
         EntityRemoveOperation a = getEntityOperationManager().getRemoveOperation();
         if (a != null) {
-            return a.delete(this, createContext(ContextOperation.REMOVE, executionContext.getHints()), condition, recurse, removeInfo);
+            return a.remove(this, createContext(ContextOperation.REMOVE, executionContext.getHints()), condition, recurse, removeInfo);
         }
         return 0;
     }
@@ -2701,7 +2701,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (query instanceof Delete) {
             return getEntityOperationManager().getRemoveOperation().createQuery(this, (Delete) query, createContext(ContextOperation.REMOVE, hints));
         }
-        throw new UnsupportedOperationException("Not supported statement type " + query);
+        throw new UnsupportedUPAFeatureException("Not supported statement type " + query);
     }
 
     @Override
@@ -3376,6 +3376,13 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
+    public void setExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject) {
+        removeExtensionDefinitions(extensionType);
+        addExtensionDefinition(extensionType, extensionObject);
+    }
+
+    
+    @Override
     public void addExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject) throws UPAException {
         Class<? extends EntityExtension> entityExtensionSupportType = getPersistenceUnit().getEntityExtensionSupportType(extensionType);
         EntityExtension ess = (EntityExtension) getPersistenceUnit().getFactory().createObject(entityExtensionSupportType);
@@ -3389,6 +3396,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     }
 
     @Override
+    public void removeExtensionDefinitions(Class extensionType) {
+        extensionManager.removeEntityExtensions(extensionType);
+    }
+
+    @Override
     public List<EntityExtensionDefinition> getExtensionDefinitions() {
         return extensionManager.getEntityExtensions();
     }
@@ -3397,6 +3409,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type) {
         return extensionManager.getEntityExtensions(type);
     }
+    
+    @Override
+    public <S extends EntityExtensionDefinition> S getExtensionDefinition(Class<S> type) {
+        return extensionManager.getEntityExtension(type);
+    }
+    
 
     public List<EntityExtension> getExtensions() {
         return extensionManager.getEntityExtensionSupports();

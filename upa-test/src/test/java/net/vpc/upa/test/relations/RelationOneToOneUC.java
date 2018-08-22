@@ -25,7 +25,7 @@ public class RelationOneToOneUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationOneToOneUC.class);
         pu.addEntity(Client.class);
         pu.addEntity(ClientInfo.class);

@@ -339,10 +339,10 @@ public class DefaultEntityFilter extends AbstractRichEntityFilter {
             return false;
         }
 
-        if (isAcceptDeletable() && !v.isDeleteSupported()) {
+        if (isAcceptDeletable() && !v.isRemoveSupported()) {
             return false;
         }
-        if (isRejectDeletable() && v.isDeleteSupported()) {
+        if (isRejectDeletable() && v.isRemoveSupported()) {
             return false;
         }
 

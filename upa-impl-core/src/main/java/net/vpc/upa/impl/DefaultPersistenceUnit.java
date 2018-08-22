@@ -287,7 +287,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }
@@ -307,7 +307,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                             return null;
                         }
                         default: {
-                            throw new UnsupportedOperationException();
+                            throw new UnsupportedUPAFeatureException();
                         }
                     }
                 }
@@ -437,7 +437,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //        return null;
 //    }
     @Override
-    public boolean isRecurseDelete() {
+    public boolean isRecurseRemove() {
         return true;
     }
 
@@ -605,7 +605,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                     }
                 }
                 if (!ok) {
-                    throw new UPAException("UnsupportedEntityExtension", s);
+                    throw new UnsupportedUPAFeatureException("UnsupportedEntityExtension", s);
                 }
             }
         }
@@ -718,10 +718,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             }
         }
         if (!PlatformUtils.isUndefinedEnumValue(RelationshipUpdateType.class, masterUpdateType)) {
-            throw new UPAException("UnsupportedFeature", "MasterUpdateType");
+            throw new UnsupportedUPAFeatureException("UnsupportedFeature", "MasterUpdateType");
         }
         if (masterEntityFieldName != null) {
-            throw new UPAException("UnsupportedFeature", "MasterEntityFieldName");
+            throw new UnsupportedUPAFeatureException("UnsupportedFeature", "MasterEntityFieldName");
         }
 
         if (detailEntityFieldName == null) {
@@ -1562,20 +1562,20 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         return new LockInfo(this, info.getDate(), info.getUser());
     }
 
-    public void lockEntityManager(Entity entityManager, String id) {
-        _lockEntity(entityManager.getName(), id);
+    public void lockEntity(Entity entity, String id) {
+        _lockEntity(entity.getName(), id);
     }
 
-    public void unlockEntityManager(Entity entityManager, String id) {
-        _unlock(entityManager.getName(), id);
+    public void unlockEntity(Entity entity, String id) {
+        _unlock(entity.getName(), id);
     }
 
-    public LockInfo getLockingInfo(Entity entityManager) {
-        LockInfo info = _getLockInfo(entityManager.getName());
+    public LockInfo getLockingInfo(Entity entity) {
+        LockInfo info = _getLockInfo(entity.getName());
         if (info == null) {
             return null;
         }
-        return new LockInfo(entityManager, info.getDate(), info.getUser());
+        return new LockInfo(entity, info.getDate(), info.getUser());
     }
 
     public boolean isLockedDatabase(String id) {
@@ -1711,7 +1711,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (SingletonExtensionDefinition.class.equals(entityExtensionDefinitionType)) {
             return SingletonExtension.class;
         }
-        throw new IllegalUPAArgumentException("Unsupported extension definition " + entityExtensionDefinitionType);
+        throw new UnsupportedUPAFeatureException("Unsupported extension definition " + entityExtensionDefinitionType);
     }
 
     public void setName(String name) {
@@ -1798,23 +1798,23 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     @Override
-    public void persist(String entity, Object objectOrDocument, Map<String, Object> hints) {
+    public void persist(String entityName, Object objectOrDocument, Map<String, Object> hints) {
         if (!checkSession()) {
-            sessionAwarePU.persist(entity, objectOrDocument, hints);
+            sessionAwarePU.persist(entityName, objectOrDocument, hints);
             return;
         }
-        Entity entityManager = getEntity(entity);
-        entityManager.persist(objectOrDocument, hints);
+        Entity entity = getEntity(entityName);
+        entity.persist(objectOrDocument, hints);
     }
 
     @Override
-    public void persist(String entity, Object objectOrDocument) {
+    public void persist(String entityName, Object objectOrDocument) {
         if (!checkSession()) {
             sessionAwarePU.persist(objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(entity);
-        entityManager.persist(objectOrDocument);
+        Entity entity = getEntity(entityName);
+        entity.persist(objectOrDocument);
     }
 
     @Override
@@ -1823,8 +1823,8 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             sessionAwarePU.persist(objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(objectOrDocument);
-        entityManager.persist(objectOrDocument);
+        Entity entity = getEntity(objectOrDocument);
+        entity.persist(objectOrDocument);
     }
 
     /**
@@ -1837,8 +1837,8 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             sessionAwarePU.merge(objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(objectOrDocument);
-        entityManager.merge(objectOrDocument);
+        Entity entity = getEntity(objectOrDocument);
+        entity.merge(objectOrDocument);
     }
 
     @Override
@@ -1847,26 +1847,26 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             sessionAwarePU.merge(entityName, objectOrDocument);
             return;
         }
-        Entity entityManager = getEntity(entityName);
-        entityManager.merge(objectOrDocument);
+        Entity entity = getEntity(entityName);
+        entity.merge(objectOrDocument);
     }
 
     @Override
     public UpdateQuery createUpdateQuery(String entityName) {
-        Entity entityManager = getEntity(entityName);
-        return entityManager.createUpdateQuery();
+        Entity entity = getEntity(entityName);
+        return entity.createUpdateQuery();
     }
 
     @Override
     public UpdateQuery createUpdateQuery(Class entityType) {
-        Entity entityManager = getEntity(entityType);
-        return entityManager.createUpdateQuery();
+        Entity entity = getEntity(entityType);
+        return entity.createUpdateQuery();
     }
 
     @Override
     public UpdateQuery createUpdateQuery(Object object) {
-        Entity entityManager = getEntity(object);
-        return entityManager.createUpdateQuery().setValues(object);
+        Entity entity = getEntity(object);
+        return entity.createUpdateQuery().setValues(object);
     }
 
     //    @Override
@@ -1875,16 +1875,16 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //            sessionAwarePU.merge(objectOrDocument);
 //            return;
 //        }
-//        Entity entityManager = getEntity(entityName);
-//        entityManager.merge(objectOrDocument);
+//        Entity entity = getEntity(entityName);
+//        entity.merge(objectOrDocument);
 //    }
     @Override
     public RemoveTrace remove(Object objectOrDocument) {
         if (!checkSession()) {
             return sessionAwarePU.remove(objectOrDocument);
         }
-        Entity entityManager = getEntity(objectOrDocument);
-        return entityManager.remove(objectOrDocument);
+        Entity entity = getEntity(objectOrDocument);
+        return entity.remove(objectOrDocument);
     }
 
     @Override
@@ -1892,8 +1892,8 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         if (!checkSession()) {
             return sessionAwarePU.save(objectOrDocument);
         }
-        Entity entityManager = getEntity(objectOrDocument);
-        return entityManager.save(objectOrDocument);
+        Entity entity = getEntity(objectOrDocument);
+        return entity.save(objectOrDocument);
     }
 
     @Override
@@ -2344,7 +2344,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         persistenceUnitListenerManager.fireOnStorageChanged(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.BEFORE));
 
         List<OnHoldCommitAction> model = commitStorageActions;
-        Collections.sort(model, new OnHoldCommitActionComparator());
+        Collections.sort(model, OnHoldCommitActionComparator.INSTANCE);
         for (OnHoldCommitAction next : model) {
             next.commitStorage(context);
             someCommit = true;
@@ -2589,7 +2589,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //                }
 //                return;
 //            }
-            throw new UnsupportedOperationException("Invalid Logout");
+            throw new UnexpectedException("Invalid Logout");
         }
     }
 

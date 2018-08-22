@@ -55,9 +55,9 @@ public class RelationshipSourceFormulaUpdaterInterceptorSupport extends FormulaU
         if (conditionFields == null) {
             return true;
         }
-        Entity entityManager = event.getEntity();
+        Entity entity = event.getEntity();
         for (String updatedField : event.getUpdatesDocument().keySet()) {
-            if (conditionFields.accept(entityManager.getField(updatedField))) {
+            if (conditionFields.accept(entity.getField(updatedField))) {
                 return true;
             }
         }

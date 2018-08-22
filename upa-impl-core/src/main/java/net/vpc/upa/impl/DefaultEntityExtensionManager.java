@@ -4,6 +4,7 @@ import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.persistence.EntityExtension;
 
 import java.util.*;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
@@ -35,11 +36,17 @@ public class DefaultEntityExtensionManager {
         list2.add(tss);
     }
 
+    public void removeEntityExtensions(Class<? extends EntityExtensionDefinition> specType) {
+        for (EntityExtensionDefinition entityExtension : getEntityExtensions(specType)) {
+            removeEntityExtension(specType, entityExtension);
+        }
+    }
+    
     public void removeEntityExtension(Class<? extends EntityExtensionDefinition> specType, EntityExtensionDefinition specObject) {
         objectMap.remove(specObject);
         List<ExtensionSupportInfo> list = extensionsMap.get(specType);
         if (list != null) {
-            for (int i = list.size();i>=0; i--) {
+            for (int i = list.size()-1;i>=0; i--) {
                 ExtensionSupportInfo tss = list.get(i);
                 if (tss.getExtension().equals(specObject)) {
                     list.remove(i);
@@ -48,7 +55,7 @@ public class DefaultEntityExtensionManager {
         }
         for (Map.Entry<Class<? extends EntityExtension>, List<ExtensionSupportInfo>> e : new HashMap<Class<? extends EntityExtension>, List<ExtensionSupportInfo>>(extensionsSupportMap).entrySet()) {
             List<ExtensionSupportInfo> tss2 = e.getValue();
-            for (int i2 = tss2.size(); i2>=0; i2--) {
+            for (int i2 = tss2.size()-1; i2>=0; i2--) {
                 ExtensionSupportInfo tss3 = tss2.get(i2);
                 if (tss3.getExtension().equals(specObject)) {
                     tss2.remove(i2);
@@ -83,6 +90,17 @@ public class DefaultEntityExtensionManager {
         return list;
     }
 
+    public <S extends EntityExtensionDefinition> S getEntityExtension(Class<S> type) {
+        List<S> all = getEntityExtensions(type);
+        if(all.size()==0){
+            return null;
+        }
+        if(all.size()==1){
+            return all.get(0);
+        }
+        throw new IllegalUPAArgumentException("AmbigousEntityExtension",all);
+    }
+    
     public <S extends EntityExtensionDefinition> List<S> getEntityExtensions(Class<S> type) {
         List<S> list = new ArrayList<S>();
         List<ExtensionSupportInfo> entitySpecs = extensionsMap.get(type);

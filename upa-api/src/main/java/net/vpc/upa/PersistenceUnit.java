@@ -133,7 +133,7 @@ public interface PersistenceUnit extends Closeable {
 
     void setLastStartSucceeded(boolean success);
 
-    boolean isRecurseDelete();
+    boolean isRecurseRemove();
 
     boolean isLockablePersistenceUnit();
 
@@ -342,9 +342,9 @@ public interface PersistenceUnit extends Closeable {
 
     LockInfo getLockingInfo(Entity entity);
 
-    void lockEntityManager(Entity entity, String id);
+    void lockEntity(Entity entity, String id);
 
-    void unlockEntityManager(Entity entity, String id);
+    void unlockEntity(Entity entity, String id);
 
     List<LockInfo> getLockingInfo(Entity entity, Expression expression);
 

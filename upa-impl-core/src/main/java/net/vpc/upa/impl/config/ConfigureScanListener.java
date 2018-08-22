@@ -22,7 +22,7 @@ import net.vpc.upa.impl.util.EqualsStringFilter;
 import net.vpc.upa.impl.util.SimpleEntityFilter;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.TypesFactory;
+import net.vpc.upa.types.DataTypeFactory;
 
 /**
  * @author taha.bensalah@gmail.com
@@ -137,7 +137,7 @@ public class ConfigureScanListener implements ScanListener {
             Function f = (Function) persistenceUnit.getFactory().createObject(event.getVisitedType());
             Decoration d = (Decoration) event.getUserObject();
 //                net.vpc.upa.config.FunctionDefinition d = type.getAnnotation();
-            DataType dt = TypesFactory.forPlatformType(d.getType("returnType"));
+            DataType dt = DataTypeFactory.forPlatformType(d.getType("returnType"));
             String n = d.getString("name");
             if (StringUtils.isNullOrEmpty(n)) {
                 n = d.getLocationType();

@@ -183,7 +183,7 @@ public class ListType extends SeriesType implements Cloneable {
     }
 
     @Override
-    public Object copy() {
+    public DataType copy() {
         try {
             ListType l = (ListType) clone();
             l.elements = new ArrayList<Object>(l.elements);

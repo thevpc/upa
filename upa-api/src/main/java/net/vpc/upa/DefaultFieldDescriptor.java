@@ -34,10 +34,12 @@
  */
 package net.vpc.upa;
 
+import java.util.Arrays;
 import net.vpc.upa.types.DataType;
 import net.vpc.upa.types.DataTypeTransformConfig;
 
 import java.util.Map;
+import net.vpc.upa.types.PlatformUtils;
 
 /**
  * @author taha.bensalah@gmail.com
@@ -45,7 +47,7 @@ import java.util.Map;
 public class DefaultFieldDescriptor implements FieldDescriptor {
 
     private String name;
-    private String fieldPath;
+    private String path;
     private Object defaultObject;
     private Object unspecifiedObject;
     private DataType dataType;
@@ -65,7 +67,39 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int position = -1;
+    private int index = -1;
+
+    public DefaultFieldDescriptor() {
+    }
+
+    public DefaultFieldDescriptor(FieldDescriptor other) {
+        copyFrom(other);
+    }
+
+    public void copyFrom(FieldDescriptor other) {
+        setName(other.getName());
+        setPath(other.getPath());
+        setDefaultObject(other.getDefaultObject());
+        setUnspecifiedObject(other.getUnspecifiedObject());
+        setDataType(other.getDataType() == null ? null : other.getDataType().copy());
+        setTypeTransform(PlatformUtils.copyOf(other.getTypeTransform()));
+        setPersistFormula(other.getPersistFormula());
+        setUpdateFormula(other.getUpdateFormula());
+        setSelectFormula(other.getSelectFormula());
+        setPersistFormulaOrder(other.getPersistFormulaOrder());
+        setUpdateFormulaOrder(other.getUpdateFormulaOrder());
+        setModifiers(other.getModifiers());
+        setExcludeModifiers(other.getExcludeModifiers());
+        setPersistAccessLevel(other.getPersistAccessLevel());
+        setUpdateAccessLevel(other.getUpdateAccessLevel());
+        setReadAccessLevel(other.getReadAccessLevel());
+        setPersistProtectionLevel(other.getPersistProtectionLevel());
+        setUpdateProtectionLevel(other.getUpdateProtectionLevel());
+        setReadProtectionLevel(other.getReadProtectionLevel());
+        setPropertyAccessType(other.getPropertyAccessType());
+        setFieldParams(other.getFieldParams());
+        setIndex(other.getIndex());
+    }
 
     public String getName() {
         return name;
@@ -77,11 +111,11 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     }
 
     public String getPath() {
-        return fieldPath;
+        return path;
     }
 
     public DefaultFieldDescriptor setPath(String fieldPath) {
-        this.fieldPath = fieldPath;
+        this.path = fieldPath;
         return this;
     }
 
@@ -220,7 +254,6 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         return this;
     }
 
-
     public ProtectionLevel getPersistProtectionLevel() {
         return persistProtectionLevel;
     }
@@ -274,11 +307,11 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     }
 
     public int getIndex() {
-        return position;
+        return index;
     }
 
-    public DefaultFieldDescriptor setPosition(int position) {
-        this.position = position;
+    public DefaultFieldDescriptor setIndex(int index) {
+        this.index = index;
         return this;
     }
 
@@ -307,7 +340,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         setReadProtectionLevel(other.getReadProtectionLevel());
         setFieldParams(other.getFieldParams());
         setPropertyAccessType(other.getPropertyAccessType());
-        setPosition(other.getIndex());
+        setIndex(other.getIndex());
         return this;
     }
 
@@ -379,7 +412,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
             setPropertyAccessType(other.getPropertyAccessType());
         }
         if (other.getIndex() != 0) {
-            setPosition(other.getIndex());
+            setIndex(other.getIndex());
         }
         return this;
     }

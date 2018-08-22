@@ -4,6 +4,7 @@
  */
 package net.vpc.upa.impl.upql.ext.expr;
 
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 /**
@@ -33,7 +34,7 @@ public class CompiledExpressionCradle extends DefaultCompiledExpressionImpl {
             this.expression=expression;
             bindChildren(expression);
         }else{
-            throw new UnsupportedOperationException();
+            throw new UnsupportedUPAFeatureException();
         }
     }
 

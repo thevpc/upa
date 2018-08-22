@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence;
 
+import java.util.Objects;
 import net.vpc.upa.PersistenceState;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.types.I18NString;
@@ -12,24 +13,24 @@ import net.vpc.upa.persistence.StructureStrategy;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 1/8/13 1:53 AM
  */
-public abstract class StructureCommit {
+public abstract class StructureCommitAction {
 
-    protected UPAObject object;
-    protected ObjectAndType typedObject;
-    private DefaultPersistenceUnitCommitManager persistenceUnitCommitManager;
+    protected final UPAObject object;
+    protected final PersistenceNameType persistenceNameType;
+    private final DefaultPersistenceUnitCommitManager persistenceUnitCommitManager;
 
-    public StructureCommit(DefaultPersistenceUnitCommitManager defaultPersistenceUnitCommitManager, UPAObject object, Class cls, PersistenceNameType spec) {
+    public StructureCommitAction(DefaultPersistenceUnitCommitManager defaultPersistenceUnitCommitManager, UPAObject object, PersistenceNameType spec) {
         this.persistenceUnitCommitManager = defaultPersistenceUnitCommitManager;
         this.object = object;
-        this.typedObject = new ObjectAndType(cls, spec);
+        this.persistenceNameType = spec;
     }
 
     protected PersistenceState getObjectStatus(net.vpc.upa.persistence.EntityExecutionContext entityExecutionContext) {
-        return persistenceUnitCommitManager.persistenceStore.getPersistenceState(object, typedObject.getSpec(), entityExecutionContext);
+        return persistenceUnitCommitManager.getPersistenceStore().getPersistenceState(object, persistenceNameType, entityExecutionContext);
     }
 
     public boolean commit(EntityExecutionContext executionContext) throws UPAException {
-        StructureStrategy option = persistenceUnitCommitManager.persistenceStore.getConnectionProfile().getStructureStrategy();
+        StructureStrategy option = persistenceUnitCommitManager.getPersistenceStore().getConnectionProfile().getStructureStrategy();
         PersistenceState status = getObjectStatus(executionContext);
         switch (option) {
             case DROP:
@@ -41,6 +42,7 @@ public abstract class StructureCommit {
                         break;
                     }
                     case DEFAULT:
+                    case MISSING:
                     case DIRTY: {
                         //throw new UPAException(new I18NString("DirtyObject"),object);
                         try {
@@ -62,7 +64,9 @@ public abstract class StructureCommit {
             }
             case MANDATORY: {
                 switch (status) {
-                    case DEFAULT: {
+                    case DEFAULT: 
+                    case MISSING: 
+                    {
                         throw new UPAException(new I18NString("MandatoryObject"), object);
                     }
                     case VALID: {
@@ -91,8 +95,8 @@ public abstract class StructureCommit {
         return object;
     }
 
-    public ObjectAndType getTypedObject() {
-        return typedObject;
+    public PersistenceNameType getPersistenceNameType() {
+        return persistenceNameType;
     }
 
     public DefaultPersistenceUnitCommitManager getPersistenceUnitCommitManager() {
@@ -103,7 +107,41 @@ public abstract class StructureCommit {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName()+"[" + object + ", " + typedObject + ']';
+        return getClass().getSimpleName()+"[" + object + ", " + persistenceNameType + ']';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.object);
+        hash = 79 * hash + Objects.hashCode(this.persistenceNameType);
+        hash = 79 * hash + Objects.hashCode(this.persistenceUnitCommitManager);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StructureCommitAction other = (StructureCommitAction) obj;
+        if (!Objects.equals(this.object, other.object)) {
+            return false;
+        }
+        if (!Objects.equals(this.persistenceNameType, other.persistenceNameType)) {
+            return false;
+        }
+        if (!Objects.equals(this.persistenceUnitCommitManager, other.persistenceUnitCommitManager)) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }

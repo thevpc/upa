@@ -21,7 +21,7 @@ public class SyntaxReservedWordsUC {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(SyntaxReservedWordsUC.class);
         pu.addEntity(From.class);
         pu.start();

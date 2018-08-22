@@ -23,7 +23,7 @@ public class RelationIsHierarchyDescendantUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationIsHierarchyDescendantUC.class);
 //        pu.scan(null);
         pu.addEntity(Node.class);

@@ -16,9 +16,9 @@ import net.vpc.upa.exceptions.UPAException;
 import java.util.List;
 
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
 public class CompiledKeyExpression extends DefaultCompiledExpressionImpl implements Cloneable {
@@ -132,7 +132,7 @@ public class CompiledKeyExpression extends DefaultCompiledExpressionImpl impleme
 
     @Override
     public void setSubExpression(int index, CompiledExpressionExt expression) {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
     
 }

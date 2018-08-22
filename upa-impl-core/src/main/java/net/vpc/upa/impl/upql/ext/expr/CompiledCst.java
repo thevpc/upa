@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
 
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 
 public final class CompiledCst extends DefaultCompiledExpressionImpl
@@ -32,7 +33,7 @@ public final class CompiledCst extends DefaultCompiledExpressionImpl
 
     @Override
     public void setSubExpression(int index, CompiledExpressionExt expression) {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
 
     @Override

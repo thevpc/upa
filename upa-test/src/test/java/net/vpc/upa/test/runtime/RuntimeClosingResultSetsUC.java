@@ -23,7 +23,7 @@ public class RuntimeClosingResultSetsUC {
     private static Business bo;
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RuntimeClosingResultSetsUC.class);
         pu.addEntity(Data.class);
         pu.start();

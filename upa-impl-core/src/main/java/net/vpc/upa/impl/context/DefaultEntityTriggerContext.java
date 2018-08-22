@@ -10,18 +10,18 @@ import net.vpc.upa.persistence.EntityExecutionContext;
  * @creationdate 9/10/12 12:27 AM
  */
 public class DefaultEntityTriggerContext implements EntityTriggerContext {
-    private Entity entityManager;
-    private Trigger triggerObject;
-    private EntityExecutionContext executionContext;
+    private final Entity entity;
+    private final Trigger triggerObject;
+    private final EntityExecutionContext executionContext;
 
-    public DefaultEntityTriggerContext(Entity entityManager, Trigger triggerObject, EntityExecutionContext executionContext) {
-        this.entityManager = entityManager;
+    public DefaultEntityTriggerContext(Entity entity, Trigger triggerObject, EntityExecutionContext executionContext) {
+        this.entity = entity;
         this.triggerObject = triggerObject;
         this.executionContext = executionContext;
     }
 
     public Entity getEntity() {
-        return entityManager;
+        return entity;
     }
 
     public Trigger getTrigger() {

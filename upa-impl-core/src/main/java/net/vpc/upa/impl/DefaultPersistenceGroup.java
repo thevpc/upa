@@ -34,7 +34,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     private final List<Session> sessions = new ArrayList<Session>();
     private SessionContextProvider sessionContextProvider;
     private PersistenceUnitProvider persistenceUnitProvider;
-    private String name="";
+    private String name = "";
     private boolean closed;
     private boolean autoScan = true;
     private boolean inheritScanFilters = true;
@@ -55,11 +55,11 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public void init(String name, UPAContext context, ObjectFactory contextFactory) {
         properties = new DefaultProperties(getSystemParameters());
-        this.name=name==null?"":name;
-        this.context=context;
+        this.name = name == null ? "" : name;
+        this.context = context;
         ObjectFactory persistenceGroupFactory = contextFactory.createObject(ObjectFactory.class);
         persistenceGroupFactory.setParentFactory(contextFactory);
-        this.factory=persistenceGroupFactory;
+        this.factory = persistenceGroupFactory;
     }
 
     @Override
@@ -77,9 +77,9 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
     @Override
     public PersistenceGroupInfo getInfo() {
-        PersistenceGroupInfo i=new PersistenceGroupInfo();
+        PersistenceGroupInfo i = new PersistenceGroupInfo();
         i.setName(getName());
-        List<PersistenceUnitInfo> list=new ArrayList<>();
+        List<PersistenceUnitInfo> list = new ArrayList<>();
         for (PersistenceUnit persistenceUnit : getPersistenceUnits()) {
             list.add(persistenceUnit.getInfo());
         }
@@ -102,9 +102,10 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
         }
         return systemParameters;
     }
+
     @Override
     public void scan(ScanSource scanSource, ScanListener listener, boolean configure) throws UPAException {
-        decorationRepository = new DefaultDecorationRepository("DecoRepo[pg="+getName()+"]", true);
+        decorationRepository = new DefaultDecorationRepository("DecoRepo[pg=" + getName() + "]", true);
         log.log(Level.FINE, "[{0}] : Configuring PersistenceGroup from {1}", new Object[]{getName(), scanSource});
         URLAnnotationStrategySupport s = new URLAnnotationStrategySupport();
         s.scan(scanSource, configure ? new ConfigureScanListener(listener) : listener, this, decorationRepository);
@@ -134,7 +135,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     }
 
     public void setName(String name) {
-        this.name = name==null?"":name;
+        this.name = name == null ? "" : name;
     }
 
     public UPAContext getContext() {
@@ -158,7 +159,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public PersistenceUnit getPersistenceUnit() throws UPAException {
         String persistenceUnitName = getPersistenceUnitProvider().getPersistenceUnitName(this);
-        PersistenceUnit persistenceUnit=null;
+        PersistenceUnit persistenceUnit = null;
         if (persistenceUnitName == null) {
             List<PersistenceUnit> persistenceUnitsCurr = getPersistenceUnits();
             if (persistenceUnitsCurr.size() > 0) {
@@ -166,12 +167,12 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
                     persistenceUnit = s;
                     break;
                 }
-                getPersistenceUnitProvider().setPersistenceUnitName(this, persistenceUnit==null?null:persistenceUnit.getName());
+                getPersistenceUnitProvider().setPersistenceUnitName(this, persistenceUnit == null ? null : persistenceUnit.getName());
             } else {
                 throw new MissingDefaultPersistenceUnitException();
             }
-        }else{
-            persistenceUnit=getPersistenceUnit(persistenceUnitName);
+        } else {
+            persistenceUnit = getPersistenceUnit(persistenceUnitName);
         }
         return persistenceUnit;
     }
@@ -233,7 +234,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             if (persistenceUnits.containsKey(name)) {
                 throw new PersistenceUnitAlreadyExistsException(name);
             }
-            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.BEFORE));
+            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this, EventPhase.BEFORE));
 
             persistenceUnits.put(name, persistenceUnit);
 
@@ -241,7 +242,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             if (oldPersistenceUnit == null) {
                 setPersistenceUnit(persistenceUnit.getName());
             }
-            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
+            listeners.fireOnCreatePersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this, EventPhase.AFTER));
         }
         log.log(Level.FINE, "Create PersistenceUnit {0}", new Object[]{persistenceUnit.getAbsoluteName()});
         return persistenceUnit;
@@ -262,14 +263,14 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
             if (!persistenceUnit.isClosed()) {
                 persistenceUnit.close();
             }
-            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.BEFORE));
+            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this, EventPhase.BEFORE));
 
             persistenceUnits.remove(name);
 
-            if(old!=null && old.equals(name)){
+            if (old != null && old.equals(name)) {
                 getPersistenceUnitProvider().setPersistenceUnitName(this, null);
             }
-            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this,EventPhase.AFTER));
+            listeners.fireOnDropPersistenceUnit(new PersistenceUnitEvent(persistenceUnit, this, EventPhase.AFTER));
         }
 
     }
@@ -402,7 +403,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
 
     public void addCallback(Callback callback) {
         if (callback.getCallbackType() == CallbackType.ON_EVAL_FUNCTION) {
-            throw new UPAException("Unsupported", callback.getCallbackType());
+            throw new UnsupportedUPAFeatureException("Unsupported", callback.getCallbackType());
         }
         listeners.addCallback(callback);
     }
@@ -412,18 +413,18 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     }
 
     public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
-        List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, preparedOnly,phase);
+        List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, preparedOnly, phase);
         return callbackInvokers.toArray(new Callback[callbackInvokers.size()]);
     }
-    
+
     protected InvokeContext prepareInvokeContext(InvokeContext c) {
-        if(c==null){
-            c=new InvokeContext();
-        }else{
-            c=c.copy();
+        if (c == null) {
+            c = new InvokeContext();
+        } else {
+            c = c.copy();
         }
         c.setPersistenceGroup(this);
-        if(c.getPersistenceUnit()!=null && c.getPersistenceUnit().getPersistenceGroup()!=this){
+        if (c.getPersistenceUnit() != null && c.getPersistenceUnit().getPersistenceGroup() != this) {
             c.setPersistenceUnit(null);
         }
         return c;
@@ -481,8 +482,8 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     @Override
     public UPAI18n getI18nOrDefault() {
         UPAI18n i = getI18n();
-        if(i==null){
-            i=ErrI18N.INSTANCE;
+        if (i == null) {
+            i = ErrI18N.INSTANCE;
         }
         return i;
     }

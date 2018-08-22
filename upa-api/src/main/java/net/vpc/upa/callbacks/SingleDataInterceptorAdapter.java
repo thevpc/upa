@@ -59,11 +59,11 @@ public class SingleDataInterceptorAdapter implements SingleEntityListener {
     }
 
     @Override
-    public void beforeDelete(EntityTriggerContext context, Object id)  {
+    public void beforeRemove(EntityTriggerContext context, Object id)  {
     }
 
     @Override
-    public void afterDelete(EntityTriggerContext context, Object id)  {
+    public void afterRemove(EntityTriggerContext context, Object id)  {
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.vpc.upa.bulk.DataReader;
 import net.vpc.upa.bulk.TextCSVParser;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  *
@@ -42,7 +43,7 @@ public class DefaultTextCSVParser extends TextCSVParser {
         } else if (source instanceof Reader) {
             this.source = ((Reader) source);
         } else {
-            throw new IllegalUPAArgumentException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL|Reader");
+            throw new UnsupportedUPAFeatureException("Unsupported source type " + source.getClass() + ". Expected File|InputStream|URL|Reader");
         }
     }
 

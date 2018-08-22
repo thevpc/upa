@@ -26,7 +26,7 @@ public class DeleteSQLProvider extends AbstractSQLProvider {
     @Override
     public String getSQL(Object oo, EntityExecutionContext context, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
         CompiledDelete o=(CompiledDelete) oo;
-        Entity entityManager = context.getPersistenceUnit().getEntity(o.getEntity().getName());
+//        Entity entity = context.getPersistenceUnit().getEntity(o.getEntity().getName());
         StringBuilder sb = new StringBuilder("Delete From " + sqlManager.getSQL(new CompiledEntityName(o.getEntity().getName()), context, declarations));
         if (o.getEntityAlias() != null) {
             sb.append(" ").append(sqlManager.getSQL(new CompiledVar(o.getEntityAlias()), context, declarations));

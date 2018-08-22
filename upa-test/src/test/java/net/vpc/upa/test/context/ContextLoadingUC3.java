@@ -21,7 +21,7 @@ public class ContextLoadingUC3 {
 
     @BeforeClass
     public static void setup() {
-        PUUtils.configure();
+        PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(ContextLoadingUC3.class);
         pu.addEntity(SharedClient.class);
         pu.start();

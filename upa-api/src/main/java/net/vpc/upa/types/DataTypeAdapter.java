@@ -158,9 +158,9 @@ public class DataTypeAdapter implements DataType, Cloneable {
         dataType.setProperties(properties);
     }
 
-    public Object copy() {
+    public DataType copy() {
         try {
-            return super.clone();
+            return (DataType) super.clone();
         } catch (CloneNotSupportedException ex) {
             throw new UnexpectedException("Clone Not Supported", ex);
         }

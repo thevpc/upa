@@ -36,6 +36,7 @@ package net.vpc.upa.expressions;
 
 import java.util.Collections;
 import java.util.List;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/16/12 Time: 10:12 PM To change
@@ -56,7 +57,7 @@ public class EntityName extends DefaultExpression implements NameOrQuery {
 
     @Override
     public void setChild(Expression e, ExpressionTag tag) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedUPAFeatureException("Not supported yet.");
     }
 
     public String getName() {

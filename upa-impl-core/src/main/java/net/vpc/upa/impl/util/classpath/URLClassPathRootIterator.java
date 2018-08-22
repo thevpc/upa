@@ -12,6 +12,7 @@ import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  *
@@ -57,7 +58,7 @@ public class URLClassPathRootIterator implements Iterator<ClassPathResource> {
     }
 
     public void remove() {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
 
     @PortabilityHint(target = "C#", name = "ignore")

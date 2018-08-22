@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
@@ -14,8 +15,11 @@ import net.vpc.upa.impl.persistence.shared.sql.NullValANSISQLProvider;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.exceptions.UnexpectedException;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QueryStatement;
 import net.vpc.upa.expressions.Select;
@@ -30,17 +34,23 @@ import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
 import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.persistence.DefaultPrimaryKeyPersistenceDefinition;
+import net.vpc.upa.impl.persistence.DefaultViewKeyPersistenceDefinition;
+import net.vpc.upa.impl.persistence.SqlTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.I18NString;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.EnumType;
+import net.vpc.upa.types.TemporalOption;
+import net.vpc.upa.types.TemporalType;
 
 @PortabilityHint(target = "C#", name = "suppress")
 public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
-    public void configureStore(){
+    public void configureStore() {
         super.configureStore();
         Properties map = getStoreParameters();
         map.setBoolean(PARAM_IS_COMPLEX_SELECT_SUPPORTED, true);
@@ -67,7 +77,6 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new MySQLCurrentTimestampSQLProvider());
         getSqlManager().register(new MySQLCurrentDateSQLProvider());
         getSqlManager().register(new NullValANSISQLProvider());
-        getSqlManager().register(new MySQLTypeNameSQLProvider());
         getSqlManager().register(new MySQLSelectSQLProvider());
 
         getSqlManager().register(new MySQLCastSQLProvider());
@@ -78,7 +87,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     @Override
     public int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters) {
         DatabaseProduct p = connectionProfile.getDatabaseProduct();
-        if(p==DatabaseProduct.MYSQL){
+        if (p == DatabaseProduct.MYSQL) {
             return 10;
         }
         return -1;
@@ -136,7 +145,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     }
 
     public FieldPersister createSequenceGenerator(Field field, boolean insert) throws UPAException {
-        Sequence sequence = (Sequence) UPAUtils.getFormula(field,insert);
+        Sequence sequence = (Sequence) UPAUtils.getFormula(field, insert);
         SequenceStrategy strategy = SequenceStrategy.AUTO;
         String g = null;
         String f = null;
@@ -165,7 +174,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 } else if (String.class.equals(platformType)) {
                     return new TableSequenceIdentityPersisterString(field, sequence);
                 } else {
-                    throw new UPAException("UnsupportedGeneratedValueTypeException", field, platformType);
+                    throw new UnsupportedUPAFeatureException("UnsupportedGeneratedValueTypeException", field, platformType);
                 }
             }
             case SEQUENCE: {
@@ -175,21 +184,21 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 return new TableSequenceIdentityPersisterString(field, sequence);
             }
             default: {
-                throw new UPAException("UnsupportedGeneratedValueStrategyException", field);
+                throw new UnsupportedUPAFeatureException("UnsupportedGeneratedValueStrategyException", field);
             }
         }
     }
 
     @Override
-    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
+    public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
         DataTypeTransform cr = field.getEffectiveTypeTransform();
         Object defaultObject = field.getDefaultObject();
         StringBuilder sb = new StringBuilder(getValidIdentifier(getColumnName(field)));
         sb.append('\t');
-        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
-        EntityExecutionContext context = pu.createContext(ContextOperation.FIND,executionContext.getHints());
-        if(field.getDataType()==null){
-            throw new UPAException(new I18NString("MissingDataTypeException"),field);
+        PersistenceUnitExt pu = (PersistenceUnitExt) executionContext.getPersistenceUnit();
+        EntityExecutionContext context = pu.createContext(ContextOperation.FIND, executionContext.getHints());
+        if (field.getDataType() == null) {
+            throw new UPAException(new I18NString("MissingDataTypeException"), field);
         }
         sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
         if (isIdentityField(field)) {
@@ -316,11 +325,12 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     }
 
     @Override
-    public String getCreateViewStatement(Entity entityManager, QueryStatement statement, EntityExecutionContext executionContext) throws UPAException {
+    public String getCreateViewStatement(Entity entity, EntityExecutionContext executionContext) throws UPAException {
+        QueryStatement statement = getViewQueryStatement(entity);
         StringBuilder sb = new StringBuilder();
-        sb.append("Create View ").append(getValidIdentifier(getTableName(entityManager)));
+        sb.append("Create View ").append(getValidIdentifier(getTableName(entity)));
         sb.append("(");
-        List<PrimitiveField> keys = entityManager.getPrimitiveFields();
+        List<PrimitiveField> keys = entity.getPrimitiveFields();
         for (int i = 0; i < keys.size(); i++) {
             PrimitiveField field = keys.get(i);
             if (i > 0) {
@@ -360,20 +370,20 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 s.field(new Var(new Var(table.getName()), key.getName()));
             }
         }
-        PersistenceUnitExt pu = (PersistenceUnitExt)executionContext.getPersistenceUnit();
+        PersistenceUnitExt pu = (PersistenceUnitExt) executionContext.getPersistenceUnit();
 
-        EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME,executionContext.getHints());
+        EntityExecutionContext qlContext = pu.createContext(ContextOperation.CREATE_PERSISTENCE_NAME, executionContext.getHints());
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(s, null);
         sb.append(getSqlManager().getSQL(compiledExpression, qlContext, new DefaultExpressionDeclarationList(null)));
         return (sb.toString());
     }
 
     @PortabilityHint(target = "C#", name = "ignore")
-    protected boolean pkConstraintsExists(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
+    protected PrimaryKeyPersistenceDefinition getPrimaryKeyPersistenceDefinition(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             try {
-                Connection connection = (Connection)entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getPrimaryKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
@@ -381,10 +391,10 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                     String n = rs.getString("PK_NAME");
                     String expectedName = getIdentifierStoreTranslator().translateIdentifier(constraintsName);
                     if (expectedName.equals(n) || "PRIMARY".equals(n)) {
-                        return true;
+                        return new DefaultPrimaryKeyPersistenceDefinition(n);
                     } else {
-                        log.log(Level.WARNING, "Found Conflicting PK Constraints " + n + " instead of " + expectedName);
-                        return true;
+                        log.log(Level.WARNING, "Found Conflicting PK Constraints {0} instead of {1}", new Object[]{n, expectedName});
+                        return new DefaultPrimaryKeyPersistenceDefinition(n);
                     }
                 }
             } finally {
@@ -395,7 +405,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         } catch (SQLException ex) {
             throw createUPAException(ex, "UnableToGetEntityPersistenceState", "PK Constraints " + tableName + "." + constraintsName);
         }
-        return false;
+        return null;
     }
 
     public String getDropRelationshipStatement(Relationship relation) throws UPAException {
@@ -417,4 +427,165 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         return null;
     }
+
+    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
+        try {
+            ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+             * System.Data.IDbConnection connection =
+             * entityExecutionContext.GetConnection().GetPlatformConnection();
+             * if (connection is System.Data.Common.DbConnection) {
+             * System.Data.Common.DbConnection dconnection =
+             * (System.Data.Common.DbConnection)connection;
+             * System.Data.DataTable found = dconnection.GetSchema("Tables", new
+             * string[] { null, null, persistenceName, "VIEW" }); return
+             * (found.Rows.Count != 0); }
+             */
+            try {
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                String catalog = connection.getCatalog();
+                String schema = connection.getSchema();
+                rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
+                if (rs.next()) {
+                    String n = rs.getString("TABLE_NAME");
+                    String t = rs.getString("TYPE_NAME");
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getViewDefinition(n, connection));
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
+        }
+        return null;
+    }
+
+    protected String getViewDefinition(String viewName, Connection conn) {
+        String definition = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            try {
+                ps = conn.prepareStatement(
+                        "SELECT  VIEW_DEFINITION \n"
+                        + "    FROM    INFORMATION_SCHEMA.VIEWS\n"
+                        + "    WHERE TABLE_NAME      = ? \n"
+                        + "    AND TABLE_SCHEMA    = ?");
+                ps.setString(1, viewName);
+                ps.setString(2, conn.getSchema());
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    definition = rs.getString(1);
+                }
+                rs.close();
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new UnexpectedException(ex);
+        }
+        return definition;
+    }
+    
+    public SqlTypeName getSqlTypeName(DataType datatype) {
+//        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
+//        if(databaseProductVersion==null){
+//            databaseProductVersion="";
+//        }
+        Class platformType = datatype.getPlatformType();
+        int length = datatype.getScale();
+        int precision = datatype.getPrecision();
+        if (PlatformUtils.isString(platformType)) {
+            if (length <= 0) {
+                length = 255;
+            }
+            /**
+             * Values in VARCHAR columns are variable-length strings. The length
+             * can be specified as a value from 0 to 255 before MySQL 5.0.3, and
+             * 0 to 65,535 in 5.0.3 and later versions. The effective maximum
+             * length of a VARCHAR in MySQL 5.0.3 and later is subject to the
+             * maximum row size (65,535 bytes, which is shared among all
+             * columns) and the character set used.
+             */
+            //will consider mysql>=5.0.3
+            if (length <= 4096) {
+                return new SqlTypeName("VARCHAR" ,length);
+            }
+            if (length <= 65535) {
+                return new SqlTypeName("TEXT");
+            } else if (length <= 1677215) {
+                return new SqlTypeName("MEDIUMTEXT");
+            } else {
+                return new SqlTypeName("LONGTEXT");
+            }
+        }
+        if (PlatformUtils.isInt8(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (PlatformUtils.isInt16(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (PlatformUtils.isInt32(platformType)) {
+            return new SqlTypeName("INT");
+        }
+        if (PlatformUtils.isInt64(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (PlatformUtils.isFloat32(platformType)) {
+            return new SqlTypeName("FLOAT");
+        }
+        if (PlatformUtils.isFloat64(platformType)) {
+            return new SqlTypeName("FLOAT");
+        }
+        if (PlatformUtils.isAnyNumber(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (PlatformUtils.isBool(platformType)) {
+            return new SqlTypeName("INT");
+        }
+
+        if (datatype instanceof TemporalType) {
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
+            }
+            switch (temporalOption) {
+                case DATE:
+                    return new SqlTypeName("DATE");
+                case DATETIME:
+                    return new SqlTypeName("DATETIME");
+                case TIMESTAMP:
+                    return new SqlTypeName("TIMESTAMP");
+                case TIME:
+                    return new SqlTypeName("TIME");
+                case MONTH:
+                    return new SqlTypeName("DATE");
+                case YEAR:
+                    return new SqlTypeName("DATE");
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+                }
+            }
+        }
+        if (datatype instanceof EnumType) {
+            //TODO should support marshalling types
+            return new SqlTypeName("INT");
+        }
+
+        if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
+            return new SqlTypeName("BLOB"); // serialized form
+        }
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+    }
+
+
 }

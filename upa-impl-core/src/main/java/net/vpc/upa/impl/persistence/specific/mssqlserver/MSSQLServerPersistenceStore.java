@@ -21,9 +21,17 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.logging.Level;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.impl.persistence.DefaultViewKeyPersistenceDefinition;
+import net.vpc.upa.impl.persistence.SqlTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DoubleType;
+import net.vpc.upa.types.EnumType;
+import net.vpc.upa.types.TemporalOption;
+import net.vpc.upa.types.TemporalType;
 
-@PortabilityHint(target = "C#",name = "suppress")
+@PortabilityHint(target = "C#", name = "suppress")
 public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 
     private Set<String> keywords;
@@ -31,21 +39,22 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
     @Override
     public int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters) {
         DatabaseProduct p = connectionProfile.getDatabaseProduct();
-        if(p==DatabaseProduct.MSSQLSERVER){
+        if (p == DatabaseProduct.MSSQLSERVER) {
             return 10;
         }
         return -1;
     }
 
-    public void configureStore(){
+    public void configureStore() {
         super.configureStore();
         String resourcePath = null;
-        
+
         /**
-         * @PortabilityHint(target="C#",name="replace") resourcePath = "Persistence.DerbyKeywords.txt";
+         * @PortabilityHint(target="C#",name="replace") resourcePath =
+         * "Persistence.DerbyKeywords.txt";
          */
-        resourcePath="net/vpc/upa/impl/persistence/MSSQLServerKeywords.txt";
-        
+        resourcePath = "net/vpc/upa/impl/persistence/MSSQLServerKeywords.txt";
+
         keywords = UPAUtils.loadLinesSet(resourcePath);
 
         net.vpc.upa.Properties map = getStoreParameters();
@@ -69,7 +78,6 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
         getSqlManager().register(new MSSQLServerMonthEndSQLProvider());
         getSqlManager().register(new MSSQLServerCoalesceSQLProvider());
         getSqlManager().register(new NullValANSISQLProvider());
-        getSqlManager().register(new MSSQLServerTypeNameSQLProvider());
         getSqlManager().register(new MSSQLServerSelectSQLProvider());
         getSqlManager().register(new MSSQLServerDateTruncSQLProvider());
         getSqlManager().register(new MSSQLServerDecodeSQLProvider());
@@ -93,9 +101,10 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
     protected Set<String> getCustomReservedKeywords() {
         String resourcePath = null;
         /**
-         * @PortabilityHint(target="C#",name="replace") resourcePath = "Persistence.MSSQLServerKeywords.txt";
+         * @PortabilityHint(target="C#",name="replace") resourcePath =
+         * "Persistence.MSSQLServerKeywords.txt";
          */
-        resourcePath="net/vpc/upa/impl/persistence/MSSQLServerKeywords.txt";
+        resourcePath = "net/vpc/upa/impl/persistence/MSSQLServerKeywords.txt";
         return UPAUtils.loadLinesSet(resourcePath);
     }
 
@@ -107,8 +116,8 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
 //        return "replace(space("+width+"-len("+expr+")),' ','0')+"+expr;
 //    }
     @Override
-    public String getFieldDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
-        String s = super.getFieldDeclaration(field,executionContext);
+    public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext executionContext) throws UPAException {
+        String s = super.getColumnDeclaration(field, executionContext);
         Entity table = field.getEntity();
         if (field.isId() && UPAUtils.getPersistFormula(field) instanceof Sequence) {
             Sequence seq = (Sequence) UPAUtils.getPersistFormula(field);
@@ -391,6 +400,152 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
             c.set(Calendar.MILLISECOND, tens + units);
             return new Timestamp(c.getTime().getTime());
         }
+    }
+
+    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
+        try {
+            ResultSet rs = null;
+            /**
+             * @PortabilityHint(target = "C#", name = "replace")
+             *
+             * System.Data.IDbConnection connection =
+             * entityExecutionContext.GetConnection().GetPlatformConnection();
+             * if (connection is System.Data.Common.DbConnection) {
+             * System.Data.Common.DbConnection dconnection =
+             * (System.Data.Common.DbConnection)connection;
+             * System.Data.DataTable found = dconnection.GetSchema("Tables", new
+             * string[] { null, null, persistenceName, "VIEW" }); return
+             * (found.Rows.Count != 0); }
+             */
+            try {
+                Connection connection = (Connection) entityExecutionContext.getConnection().getMetadataAccessibleConnection();
+                String catalog = connection.getCatalog();
+                String schema = connection.getSchema();
+                rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
+                if (rs.next()) {
+                    String n = rs.getString("TABLE_NAME");
+                    String t = rs.getString("TYPE_NAME");
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getViewDefinition(n, connection));
+                }
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw createUPAException(ex, "UnableToGetEntityPersistenceState", "Table " + persistenceName);
+        }
+        return null;
+    }
+
+    protected String getViewDefinition(String viewName, Connection conn) {
+        String definition = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            try {
+                ps = conn.prepareStatement(
+                        "select definition\n"
+                        + "from sys.objects     o\n"
+                        + "join sys.sql_modules m on m.object_id = o.object_id\n"
+                        + "where o.object_id = object_id( ?)\n"
+                        + "  and o.type      = 'V'");
+                ps.setString(1, conn.getSchema() + "." + viewName);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    definition = rs.getString(1);
+                }
+                rs.close();
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            }
+        } catch (SQLException ex) {
+            throw new UPAException();
+        }
+        return definition;
+    }
+
+    public SqlTypeName getSqlTypeName(DataType datatype) {
+        Class platformType = datatype.getPlatformType();
+        int length = datatype.getScale();
+        int precision = datatype.getPrecision();
+        if (PlatformUtils.isString(platformType)) {
+            if (length <= 0) {
+                length = 255;
+            }
+            if (length <= 8000) {
+                return new SqlTypeName("VARCHAR", length);
+            } else {
+                return new SqlTypeName("NTEXT");
+            }
+        }
+        if (PlatformUtils.isInt32(platformType)) {
+            return new SqlTypeName("INT");
+        }
+        if (PlatformUtils.isInt8(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (PlatformUtils.isInt16(platformType)) {
+            return new SqlTypeName("SMALLINT");
+        }
+        if (PlatformUtils.isInt64(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (PlatformUtils.isFloat32(platformType)) {
+            return new SqlTypeName("FLOAT");
+        }
+        if (PlatformUtils.isFloat64(platformType)) {
+            if (datatype instanceof DoubleType) {
+                DoubleType n = ((DoubleType) datatype);
+                return n.isFixedDigits() ? new SqlTypeName("DECIMAL", (n.getMaximumIntegerDigits() + n.getMaximumFractionDigits()), n.getMaximumFractionDigits())
+                        : new SqlTypeName("FLOAT");
+            } else {
+                return new SqlTypeName("FLOAT");
+            }
+        }
+        if (PlatformUtils.isAnyNumber(platformType)) {
+            return new SqlTypeName("NUMERIC");
+        }
+        if (PlatformUtils.isBool(platformType)) {
+            return new SqlTypeName("INT");
+        }
+
+        if (datatype instanceof TemporalType) {
+            TemporalOption temporalOption = ((TemporalType) datatype).getTemporalOption();
+            if (temporalOption == null) {
+                temporalOption = TemporalOption.DEFAULT;
+            }
+            switch (temporalOption) {
+                case DATE:
+                    return new SqlTypeName("DATE");
+                case DATETIME:
+                    return new SqlTypeName("DATETIME");
+                case TIMESTAMP:
+                    return new SqlTypeName("TIMESTAMP");
+                case TIME:
+                    return new SqlTypeName("TIME");
+                case MONTH:
+                    return new SqlTypeName("DATE");
+                case YEAR:
+                    return new SqlTypeName("DATE");
+                default: {
+                    throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+                }
+            }
+        }
+        if (datatype instanceof EnumType) {
+            //TODO should support marshalling types
+            return new SqlTypeName("INT");
+        }
+        if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
+            return new SqlTypeName("IMAGE"); // serialized form
+        }
+        throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
 
 }

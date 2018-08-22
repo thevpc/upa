@@ -37,7 +37,7 @@ public class StaticConfigureUC2 {
 
     @Test
     public void testMe() {
-        PUUtils.configure();
+        PUUtils.reset();
         UPA.configure(StaticConfigureUC2.class);
         System.out.println(UPA.getPersistenceUnit());
     }

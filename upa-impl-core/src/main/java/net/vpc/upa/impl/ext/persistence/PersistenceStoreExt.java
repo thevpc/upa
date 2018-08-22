@@ -9,9 +9,11 @@ import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.impl.persistence.QueryExecutor;
+import net.vpc.upa.impl.persistence.SqlTypeName;
 import net.vpc.upa.persistence.ConnectionProfile;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.PersistenceStore;
+import net.vpc.upa.types.DataType;
 
 /**
  * Created by vpc on 7/6/17.
@@ -38,4 +40,6 @@ public interface PersistenceStoreExt extends PersistenceStore {
             EntityExecutionContext context) throws UPAException;
 
     int getSupportLevel(ConnectionProfile connectionProfile, Properties parameters);
+
+    SqlTypeName getSqlTypeName(DataType datatype);
 }

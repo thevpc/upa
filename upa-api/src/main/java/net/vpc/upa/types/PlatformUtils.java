@@ -41,6 +41,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -135,6 +136,13 @@ public class PlatformUtils {
 
     public static boolean equals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
+    }
+    
+    public static <T> T[] copyOf(T[] original) {
+        if(original==null){
+            return null;
+        }
+        return (T[]) Arrays.copyOf(original, original.length, original.getClass());
     }
 
 }

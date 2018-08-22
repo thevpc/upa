@@ -13,7 +13,7 @@ import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
-import net.vpc.upa.impl.persistence.StructureCommit;
+import net.vpc.upa.impl.persistence.StructureCommitAction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.UConnection;
 
@@ -21,12 +21,12 @@ import net.vpc.upa.persistence.UConnection;
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-public class EntityStructureCommit extends StructureCommit {
+public class EntityStructureCommitAction extends StructureCommitAction {
 
-    protected static Logger log = Logger.getLogger(EntityStructureCommit.class.getName());
+    protected static Logger log = Logger.getLogger(EntityStructureCommitAction.class.getName());
 
-    public EntityStructureCommit(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, Entity.class, PersistenceNameType.TABLE);
+    public EntityStructureCommitAction(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
+        super(persistenceUnitCommitManager, object, PersistenceNameType.TABLE);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class EntityStructureCommit extends StructureCommit {
         Entity entity = (Entity) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
 
-        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, typedObject, status});
+        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, persistenceNameType, status});
         UConnection b = executionContext.getConnection();
         b.executeNonQuery(store.getCreateTableStatement(entity,executionContext), null, null);
     }

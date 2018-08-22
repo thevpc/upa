@@ -8,6 +8,7 @@ package net.vpc.upa.impl.util.classpath;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Stack;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 
 /**
  *
@@ -54,7 +55,7 @@ public class FolderClassPathRootIterator implements Iterator<ClassPathResource> 
 
     public void remove() {
         //should remove last
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
 
 }

@@ -21,28 +21,28 @@ public final class IdentityDataTypeTransform implements DataTypeTransform {
     private static final Map<DataType,IdentityDataTypeTransform> mapByDataType=new HashMap<DataType,IdentityDataTypeTransform>();
     private static final Map<DataType,IdentityDataTypeTransform> mapByDataTypeCache=new LRUMap<DataType, IdentityDataTypeTransform>(100);
 
-    public static final DataTypeTransform VOID = register(TypesFactory.VOID);
-    public static final DataTypeTransform STRING = register(TypesFactory.STRING);
+    public static final DataTypeTransform VOID = register(DataTypeFactory.VOID);
+    public static final DataTypeTransform STRING = register(DataTypeFactory.STRING);
     public static final DataTypeTransform STRING_UNLIMITED = register(StringType.UNLIMITED);
-    public static final DataTypeTransform BOOLEAN = register(TypesFactory.BOOLEAN);
-    public static final DataTypeTransform BIGINT = register(TypesFactory.BIGINT);
-    public static final DataTypeTransform INT = register(TypesFactory.INT);
-    public static final DataTypeTransform LONG = register(TypesFactory.LONG);
+    public static final DataTypeTransform BOOLEAN = register(DataTypeFactory.BOOLEAN);
+    public static final DataTypeTransform BIGINT = register(DataTypeFactory.BIGINT);
+    public static final DataTypeTransform INT = register(DataTypeFactory.INT);
+    public static final DataTypeTransform LONG = register(DataTypeFactory.LONG);
     @PortabilityHint(target = "C#", name = "suppress") //no supported
-    public static final DataTypeTransform BIGDECIMAL = register(TypesFactory.BIGDECIMAL);
-    public static final DataTypeTransform DOUBLE = register(TypesFactory.DOUBLE);
-    public static final DataTypeTransform FLOAT = register(TypesFactory.FLOAT);
-    public static final DataTypeTransform DATE = register(TypesFactory.DATE);
-    public static final DataTypeTransform TIME = register(TypesFactory.TIME);
-    public static final DataTypeTransform DATETIME = register(TypesFactory.DATETIME);
-    public static final DataTypeTransform OBJECT = register(TypesFactory.OBJECT);
+    public static final DataTypeTransform BIGDECIMAL = register(DataTypeFactory.BIGDECIMAL);
+    public static final DataTypeTransform DOUBLE = register(DataTypeFactory.DOUBLE);
+    public static final DataTypeTransform FLOAT = register(DataTypeFactory.FLOAT);
+    public static final DataTypeTransform DATE = register(DataTypeFactory.DATE);
+    public static final DataTypeTransform TIME = register(DataTypeFactory.TIME);
+    public static final DataTypeTransform DATETIME = register(DataTypeFactory.DATETIME);
+    public static final DataTypeTransform OBJECT = register(DataTypeFactory.OBJECT);
 
     private final DataType sourceType;
 
     public static IdentityDataTypeTransform ofType(Class sourceType) {
         IdentityDataTypeTransform found = mapByType.get(sourceType);
         if(found==null){
-            found=new IdentityDataTypeTransform(TypesFactory.forPlatformType(sourceType));
+            found=new IdentityDataTypeTransform(DataTypeFactory.forPlatformType(sourceType));
             mapByType.put(sourceType,found);
         }
         return found;
@@ -56,7 +56,7 @@ public final class IdentityDataTypeTransform implements DataTypeTransform {
 
     public static IdentityDataTypeTransform register(Class sourceType) {
         IdentityDataTypeTransform value = ofType(sourceType);
-        mapByDataType.put(TypesFactory.forPlatformType(sourceType), value);
+        mapByDataType.put(DataTypeFactory.forPlatformType(sourceType), value);
         return value;
     }
 

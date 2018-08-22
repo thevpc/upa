@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.types.DataTypeTransform;
@@ -75,7 +76,7 @@ public class CompiledParam extends DefaultCompiledExpressionImpl {
 
     @Override
     public void setSubExpression(int index, CompiledExpressionExt expression) {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedUPAFeatureException("Not supported.");
     }
 
     @Override

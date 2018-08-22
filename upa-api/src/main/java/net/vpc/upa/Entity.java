@@ -347,13 +347,23 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
      */
     List<Trigger> getSoftTriggers();
 
+    /**
+     * removes all extensions of type extensionType and added this object
+     * @param extensionType
+     * @param extensionObject 
+     */
+    void setExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
     void addExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
 
     void removeExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject);
 
+    void removeExtensionDefinitions(Class extensionType);
+
     List<EntityExtensionDefinition> getExtensionDefinitions();
 
     <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type);
+
+    <S extends EntityExtensionDefinition> S getExtensionDefinition(Class<S> type);
 
     List<EntityExtension> getExtensions();
 

@@ -44,9 +44,9 @@ public class CrudUnstructuredUC {
 
         public void process() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            Entity entityManager = pu.getEntity("Titi");
-            SharedClient c = entityManager.getBuilder().createObject();
-            int id = entityManager.nextId();
+            Entity entity = pu.getEntity("Titi");
+            SharedClient c = entity.getBuilder().createObject();
+            int id = entity.nextId();
             log.info("Next Id is " + id);
             c.setId(id);
             c.setFirstName("Hammadi");
@@ -58,7 +58,7 @@ public class CrudUnstructuredUC {
             log.info("Found " + foundDoc);
             foundDoc.setString("firstName", "Alia");
 
-            SharedClient c2 = entityManager.getBuilder().documentToObject(foundDoc);
+            SharedClient c2 = entity.getBuilder().documentToObject(foundDoc);
 
             Assert.assertEquals(c2.getFirstName(), "Alia");
 
@@ -80,9 +80,9 @@ public class CrudUnstructuredUC {
 
         public void crudDocuments() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            Entity entityManager = pu.getEntity("Titi");
-            Document record = entityManager.createDocument();
-            int id = entityManager.nextId();
+            Entity entity = pu.getEntity("Titi");
+            Document record = entity.createDocument();
+            int id = entity.nextId();
             log.info("Next Id is " + id);
             record.setInt("id", id);
             record.setString("firstName", "Hammadi");

@@ -67,8 +67,8 @@ public class EntityShieldAdapter implements EntityShield {
     }
 
     @Override
-    public boolean isDeletableDocument(Object k, boolean recurse)  {
-        return base.isDeletableDocument(k, recurse);
+    public boolean isRemovableDocument(Object k, boolean recurse)  {
+        return base.isRemovableDocument(k, recurse);
     }
 
     @Override
@@ -103,8 +103,8 @@ public class EntityShieldAdapter implements EntityShield {
         return base.isUpdateSupported();
     }
 
-    public boolean isDeleteSupported()  {
-        return base.isDeleteSupported();
+    public boolean isRemoveSupported()  {
+        return base.isRemoveSupported();
     }
 
     public boolean isCloneSupported()  {
@@ -127,8 +127,8 @@ public class EntityShieldAdapter implements EntityShield {
         return base.isGeneratedId();
     }
 
-    public Expression getFullNonDeletableDocumentsExpression()  {
-        return base.getFullNonDeletableDocumentsExpression();
+    public Expression getFullNonRemovableDocumentsExpression()  {
+        return base.getFullNonRemovableDocumentsExpression();
     }
 
     public Expression getFullNonRenamableDocumentsExpression()  {
@@ -143,12 +143,12 @@ public class EntityShieldAdapter implements EntityShield {
         return base.getFullNonUpdatableDocumentsExpression();
     }
 
-    public Expression getNonDeletableDocumentsExpression()  {
-        return base.getNonDeletableDocumentsExpression();
+    public Expression getNonRemovableDocumentsExpression()  {
+        return base.getNonRemovableDocumentsExpression();
     }
 
-    public void setNonDeletableDocumentsExpression(Expression expression)  {
-        base.setNonDeletableDocumentsExpression(expression);
+    public void setNonRemovableDocumentsExpression(Expression expression)  {
+        base.setNonRemovableDocumentsExpression(expression);
     }
 
     public Expression getNonUpdatableDocumentsExpression()  {
@@ -203,8 +203,8 @@ public class EntityShieldAdapter implements EntityShield {
         return base.isUpdateEnabled();
     }
 
-    public boolean isDeleteEnabled()  {
-        return base.isDeleteEnabled();
+    public boolean isRemoveEnabled()  {
+        return base.isRemoveEnabled();
     }
 
     public boolean isRenameEnabled()  {

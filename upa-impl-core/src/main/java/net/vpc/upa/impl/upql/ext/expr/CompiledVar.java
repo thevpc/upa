@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.Field;
+import net.vpc.upa.exceptions.UnsupportedUPAFeatureException;
 import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
@@ -80,7 +81,7 @@ public class CompiledVar extends CompiledVarOrMethod {
         if (index == 0) {
             setChild((CompiledVarOrMethod) expression);
         }else {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedUPAFeatureException();
         }
     }
 

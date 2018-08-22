@@ -14,11 +14,11 @@ import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
  *
  * @author vpc
  */
-class SimpleViewEntityExtensionDefinition implements ViewEntityExtensionDefinition {
+public class DefaultViewEntityExtensionDefinition implements ViewEntityExtensionDefinition {
     
     private final String query;
 
-    public SimpleViewEntityExtensionDefinition(String query) {
+    public DefaultViewEntityExtensionDefinition(String query) {
         this.query = query;
     }
 
