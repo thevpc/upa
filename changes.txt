@@ -48,6 +48,7 @@ Version 1.2.0.48 :
     [Impl] Renamed StructureCommit (and inheritors) to StructureCommitAction
     [Impl] Added better Schema Modification Support (View Def changed, Column 
            Def Changed...)
+    [Impl] Added More verbose Exception Messages
 
 ## Bug Fixes
     [Impl] Fixed support for View entities

@@ -541,7 +541,13 @@ public class UPAUtils {
         }
         DataTypeTransform typeTransform = e.getTypeTransform();
         if (typeTransform == null) {
-            throw new NullPointerException("Unexpected Null typeTransform for " + e);
+            if (e instanceof CompiledVarOrMethod) {
+                Object r = ((CompiledVarOrMethod) e).getReferrer();
+                if (r == null) {
+                    throw new IllegalUPAArgumentException("Unresolved referrer. Expession is mot likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
+                }
+            }
+            throw new IllegalUPAArgumentException("Unexpected Null typeTransform. Expession is mot likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
         }
         if (e instanceof CompiledParam || e instanceof CompiledLiteral) {
             CompiledExpressionExt p = e.getParentExpression();
@@ -950,6 +956,13 @@ public class UPAUtils {
             return new EntityNameAndType(foundName, foundType);
         }
         return null;
+    }
+
+    public static CompiledExpressionExt getParentAtMaxLevel(CompiledExpressionExt e, int maxLevel) {
+        while (maxLevel > 0 && e != null) {
+            e = e.getParentExpression();
+        }
+        return e;
     }
 
 }
