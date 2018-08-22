@@ -83,7 +83,7 @@ public class DefaultSQLManager implements SQLManager {
                 return p.getSQL(expression, context, this, declarations);
             }
         }
-        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingSqlProvider",(expression==null?"null":expression.getClass().getName()));
+        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingSqlProvider",(expression==null?"null":expression.getClass().getName())+" :: "+(expression==null?null:expression.toString()));
     }
 
     @Override

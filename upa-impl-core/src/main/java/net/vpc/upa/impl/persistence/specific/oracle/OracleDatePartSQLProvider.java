@@ -25,28 +25,45 @@ class OracleDatePartSQLProvider extends OracleFunctionSQLProvider {
     public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
         CompiledDatePart d=(CompiledDatePart) oo;
         String format = null;
+        String date = sqlManager.getSQL(d.getValue(), qlContext, declarations);
         switch (d.getDatePartType()) {
-            case DAY: {
-                return "EXTRACT(DAY FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+            case DAY: 
+            case DAYOFMONTH: 
+            {
+                return "DAYOFMONTH("+date+")";
             }
             case YEAR: {
-                return "EXTRACT(YEAR FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+                return "YEAR("+date+")";
             }
             case MONTH: {
-                return "EXTRACT(MONTH FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+                return "MONTH("+date+")";
             }
             case HOUR: {
-                return "EXTRACT(HOUR FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+                return "HOUR("+date+")";
             }
             case MINUTE: {
-                return "EXTRACT(MINUTE FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+                return "MINUTE("+date+")";
             }
             case SECOND: {
-                return "EXTRACT(SECOND FROM "+sqlManager.getSQL(d.getValue(), qlContext, declarations)+")";
+                return "SECOND("+date+")";
             }
-            case MILLISECOND:
-            case WEEK:
-            case DAYOFYEAR:
+            case MILLISECOND:{
+                return "(MICROSECOND("+date+")/1000)";
+            }
+            case WEEK:{
+                return "WEEKOFYEAR("+date+")";
+            }
+            case DAYOFYEAR:{
+                return "DAYOFYEAR("+date+")";
+            }
+            case MONTHNAME:{
+                return "MONTHNAME("+date+")";
+            }
+            case DAYOFWEEK:{
+                return "DAYOFWEEK("+date+")";
+            }
+            case DATE: 
+            case TIME:
             default: {
                 throw new RuntimeException("Unsupported format '" + format + "' for function "+getExpressionType().getSimpleName());
             }

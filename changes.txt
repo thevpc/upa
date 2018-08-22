@@ -57,4 +57,7 @@ Version 1.2.0.48 :
     [Impl] Drop View before creating it (if it exists)
     [Impl] When a field in View has changed, the hole view is updated (fixing
            an issue where ALTER TABLE is fired against a VIEW)
-    [Test] Fixed Test all use cases
+    [Impl] Fixed View Generation in MySQL
+    [Impl] Fixed TIMESTAMP Column Type Generation (added NULL)
+    [Test] Fixed Test all use cases for Derby
+    [Test] Fixed Test all use cases for MySQL

@@ -401,6 +401,8 @@ public interface PersistenceUnit extends Closeable {
 
     void merge(String entityName, Object objectOrDocument);
 
+    void merge(Class entityType, Object objectOrDocument);
+
     void merge(Object objectOrDocument);
 
     void update(Object objectOrDocument);

@@ -200,14 +200,16 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         if (field.getDataType() == null) {
             throw new UPAException(new I18NString("MissingDataTypeException"), field);
         }
-        sb.append(getSqlManager().getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
+        SqlTypeName sqlTypeName = getSqlTypeName(cr.getTargetType());
+        sb.append(sqlTypeName.getFullName());
         if (isIdentityField(field)) {
             sb.append(" PRIMARY KEY AUTO_INCREMENT  ");
         } else {
-            if (defaultObject == null && !cr.getTargetType().isNullable()) {
-                defaultObject = cr.getTargetType().getDefaultValue();
+            DataType sourceType = cr.getSourceType();
+            if (defaultObject == null && !sourceType.isNullable()) {
+                defaultObject = sourceType.getDefaultValue();
 //                if (defaultObject == null) {
-//                    defaultObject = cr.getTargetType().getDefaultNonNullValue();
+//                    defaultObject = sourceType.getDefaultNonNullValue();
 //                }
             }
             if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
@@ -216,6 +218,10 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
 
             if (!cr.getTargetType().isNullable()) {
                 sb.append(" Not Null");
+            } else {
+                if (sqlTypeName.getName().equals("TIMESTAMP")) {
+                    sb.append(" Null");
+                }
             }
         }
         return sb.toString();
@@ -329,16 +335,16 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         QueryStatement statement = getViewQueryStatement(entity);
         StringBuilder sb = new StringBuilder();
         sb.append("Create View ").append(getValidIdentifier(getTableName(entity)));
-        sb.append("(");
-        List<PrimitiveField> keys = entity.getPrimitiveFields();
-        for (int i = 0; i < keys.size(); i++) {
-            PrimitiveField field = keys.get(i);
-            if (i > 0) {
-                sb.append(',');
-            }
-            sb.append(getValidIdentifier(getColumnName(field)));
-        }
-        sb.append(")");
+//        sb.append("(");
+//        List<PrimitiveField> keys = entity.getPrimitiveFields();
+//        for (int i = 0; i < keys.size(); i++) {
+//            PrimitiveField field = keys.get(i);
+//            if (i > 0) {
+//                sb.append(',');
+//            }
+//            sb.append(getValidIdentifier(getColumnName(field)));
+//        }
+//        sb.append(")");
         sb.append(" As ").append("\n\t");
         CompiledExpressionExt compiledExpression = (CompiledExpressionExt) executionContext.getPersistenceUnit().getExpressionManager().compileExpression(statement, null);
         sb.append(getSqlManager().getSQL(compiledExpression, executionContext, new DefaultExpressionDeclarationList(null)));
@@ -495,7 +501,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         return definition;
     }
-    
+
     public SqlTypeName getSqlTypeName(DataType datatype) {
 //        String databaseProductVersion = qlContext.getPersistenceStore().getStoreParameters().getString("databaseProductVersion");
 //        if(databaseProductVersion==null){
@@ -518,7 +524,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
              */
             //will consider mysql>=5.0.3
             if (length <= 4096) {
-                return new SqlTypeName("VARCHAR" ,length);
+                return new SqlTypeName("VARCHAR", length);
             }
             if (length <= 65535) {
                 return new SqlTypeName("TEXT");
@@ -586,6 +592,5 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         }
         throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
     }
-
 
 }

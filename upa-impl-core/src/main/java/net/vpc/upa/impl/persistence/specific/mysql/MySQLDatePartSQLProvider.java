@@ -1,56 +1,79 @@
 package net.vpc.upa.impl.persistence.specific.mysql;
 
-
 import net.vpc.upa.PortabilityHint;
 import net.vpc.upa.impl.upql.ext.expr.CompiledDatePart;
 
-import java.util.Map;
+import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.persistence.SQLManager;
+import net.vpc.upa.impl.upql.ExpressionDeclarationList;
+import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**
- * Created by IntelliJ IDEA.
- * User: vpc
- * Date: 22 mai 2003
- * Time: 17:26:10
- * 
+ * Created by IntelliJ IDEA. User: vpc Date: 22 mai 2003 Time: 17:26:10
+ *
  */
 @PortabilityHint(target = "C#", name = "suppress")
-class MySQLDatePartSQLProvider extends MySQLFunctionSQLProvider{
+class MySQLDatePartSQLProvider extends MySQLFunctionSQLProvider {
 
     MySQLDatePartSQLProvider() {
         super(CompiledDatePart.class);
     }
 
-    public String simplify(String functionName, String[] params, Map<String, Object> context) {
-        checkFunctionSignature(new String[]{"format", "date"}, params);
-        String format = params[0];
-        String date = params[1];
-        if ("date_time".equals(format)) {
-            return date;
-        } else if ("time".equals(format)) {
-            return "substring(" + date + ",11,19)";
-        } else if ("date".equals(format)) {
-            return "substring(" + date + ",0,10)";
-        } else if ("year".equals(format)) {
-            return "substring(" + date + ",0,4)";
-        } else if ("day_of_month".equals(format)) {
-            return "substring(" + date + ",8,10)";
-        } else if ("day_of_year".equals(format)) {
-            //not supported
-        } else if ("day_of_week".equals(format)) {
-            //not supported
-        } else if ("day_of_week_name".equals(format)) {
-            //not supported
-        } else if ("month".equals(format)) {
-            return "substring(" + date + ",5,7)";
-        } else if ("month_name".equals(format)) {
-            //not supported
-        } else if ("hour".equals(format)) {
-            return "substring(" + date + ",11,13)";
-        } else if ("minute".equals(format)) {
-            return "substring(" + date + ",14,16)";
-        } else if ("second".equals(format)) {
-            return "substring(" + date + ",17,19)";
+    @Override
+    public String getSQL(Object oo, EntityExecutionContext qlContext, SQLManager sqlManager, ExpressionDeclarationList declarations) throws UPAException {
+        CompiledDatePart d = (CompiledDatePart) oo;
+        String format = null;
+        String date = sqlManager.getSQL(d.getValue(), qlContext, declarations);
+        switch (d.getDatePartType()) {
+            case DAY:
+            case DAYOFMONTH: {
+                return "DAY(" + date + ")";
+            }
+            case YEAR: {
+                return "YEAR(" + date + ")";
+            }
+            case MONTH: {
+                return "MONTH(" + date + ")";
+            }
+            case HOUR: {
+                return "HOUR(" + date + ")";
+            }
+            case MINUTE: {
+                return "MINUTE(" + date + ")";
+            }
+            case SECOND: {
+                return "SECOND(" + date + ")";
+            }
+            case DAYOFWEEK: {
+                return "DAYOFWEEK(" + date + ")";
+            }
+            case MILLISECOND:{
+                return "(MICROSECOND(" + date + ")/1000)";
+            }
+            case DAYOFYEAR:{
+                return "(DAYOFYEAR(" + date + ")/1000)";
+            }
+            case WEEK:{
+                return "WEEK(" + date + ")";
+            }
+            case DAYOFWEEKNAME:{
+                return "DAYNAME(" + date + ")";
+            }
+            case MONTHNAME:{
+                return "MONTHNAME(" + date + ")";
+            }
+            case DATETIME: {
+                return "DATE_FORMAT(" + date + ",'%Y-%m-%d %H-%i-%S')";
+            }
+            case DATE: {
+                return "DATE_FORMAT(" + date + ",'%Y-%m-%d')";
+            }
+            case TIME: {
+                return "DATE_FORMAT(" + date + ",'%H-%i-%S')";
+            }
+            default: {
+                throw new RuntimeException("Unsupported format '" + format + "' for function " + getExpressionType().getSimpleName());
+            }
         }
-        throw new RuntimeException("Adapter : incorrect param for function 'datepart'");
     }
 }

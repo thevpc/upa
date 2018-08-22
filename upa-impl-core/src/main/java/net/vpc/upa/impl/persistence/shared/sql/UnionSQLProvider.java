@@ -29,6 +29,7 @@ public class UnionSQLProvider extends AbstractSQLProvider {
             }
             sb.append(sqlManager.getSQL(queryStatement,qlContext, declarations));
         }
-        return "("+sb.toString()+")";
+        return sb.toString();
+//        return "("+sb.toString()+")";
     }
 }

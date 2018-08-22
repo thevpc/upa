@@ -44,8 +44,8 @@ public enum DatePartType {
      * Undefined value, treated as null
      */
     DEFAULT,
-    TIME,
-    DATE, YEAR, MONTH, MONTHNAME,
+    TIME, DATE, DATETIME, 
+    YEAR, MONTH, MONTHNAME,
     DAYOFMONTH, DAYOFYEAR, DAYOFWEEK,
     DAYOFWEEKNAME, HOUR, MINUTE, SECOND, MILLISECOND, DAY, WEEK;
 }

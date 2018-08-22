@@ -21,7 +21,7 @@ public class RelationForViewUC {
 
     @BeforeClass
     public static void setup() {
-//        PUUtils.deleteTestPersistenceUnit(RelationForViewUC.class);
+//        PUUtils.deleteTestPersistenceUnits(RelationForViewUC.class);
         PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationForViewUC.class);
         pu.scan(UPA.getContext().getFactory().createClassScanSource(new Class[]{

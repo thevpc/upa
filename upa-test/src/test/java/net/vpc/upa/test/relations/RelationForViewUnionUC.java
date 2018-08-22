@@ -23,7 +23,7 @@ public class RelationForViewUnionUC {
 
     @BeforeClass
     public static void setup() {
-//        PUUtils.deleteTestPersistenceUnit(RelationForViewUnionUC.class);
+//        PUUtils.deleteTestPersistenceUnits(RelationForViewUnionUC.class);
         PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationForViewUnionUC.class);
         pu.scan(UPA.getContext().getFactory().createClassScanSource(new Class[]{

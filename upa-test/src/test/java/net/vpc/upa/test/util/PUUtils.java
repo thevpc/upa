@@ -14,6 +14,8 @@ import net.vpc.upa.persistence.ConnectionConfig;
 import net.vpc.upa.persistence.QueryResult;
 
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,11 @@ import net.vpc.upa.impl.UPAImplDefaults;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class PUUtils {
+
+    public static Store DEFAULT_STORE = Store.DERBY;
+    //Should move this to external file
+    public static String mySqlAdminLogin = "root";
+    public static String mySqlAdminPassword = "";
 
     public static final String getVersion() {
         return "1.2.0.48";
@@ -54,13 +61,6 @@ public class PUUtils {
         }
     }
 
-    public static void deleteTestPersistenceUnits() {
-        String v = getVersion().replace(".", "_");
-        File folder = new File("db-embedded/upatest" + v);
-        log.log(Level.WARNING, "Delete Local Database at " + getFullPath(folder));
-        deleteFile(folder);
-    }
-
     public static PersistenceUnit createTestPersistenceUnit(Class clz, String desc) {
         return createTestPersistenceUnit(clz, null, desc);
     }
@@ -86,29 +86,92 @@ public class PUUtils {
         log.fine(new String(row));
     }
 
-    public static void deleteTestPersistenceUnit(Store type) {
-        if (type == null) {
-            type = Store.EMBEDDED;
+    public static void runJdbcScript(Store type, String... script) {
+        String driverName = null;
+        String url = null;
+        switch (getStoreType(type)) {
+            case MYSQL: {
+                driverName = "com.mysql.jdbc.Driver";
+                url = "jdbc:mysql://localhost/mysql?user=" + mySqlAdminLogin + "&password=" + mySqlAdminPassword;
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Unsupported");
+            }
         }
-        if (Store.MYSQL.equals(type)) {
-            //cc.setConnectionString("mysql:default://localhost/UPA_TEST"+v+";structure=create;userName=root;password=''");
-            throw new IllegalArgumentException("Not Supported Delete " + type);
-        } else if (Store.DERBY.equals(type)) {
-            //cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
-            throw new IllegalArgumentException("Not Supported Delete " + type);
-        } else if (Store.EMBEDDED.equals(type)) {
-            deleteTestPersistenceUnits();
-        } else {
-            throw new IllegalArgumentException("Not Supported " + type);
+
+        Connection c = null;
+        try {
+            Class.forName(driverName).newInstance();
+            try {
+                c = DriverManager.getConnection(url);
+                for (String sql : script) {
+                    log.log(Level.CONFIG,"[SQL]["+type+"] "+sql);
+                    try {
+                        c.createStatement().executeUpdate(sql);
+                    } catch (Exception any) {
+                        log.log(Level.SEVERE,"[SQL]["+type+"] Failed : "+any.toString()+" . Query = "+sql,any);
+                    }
+                }
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
-    public static PersistenceUnit createTestPersistenceUnit(Class clz, Store type, String desc) {
-        String v = getVersion().replace(".", "_");
-        String puId = clz == null ? "test" : clz.getSimpleName();
+    public static void deleteTestPersistenceUnits() {
+        deleteTestPersistenceUnits(null);
+    }
+    
+    public static void deleteTestPersistenceUnits(Store type) {
+        type = getStoreType(type);
+        switch (type) {
+            case MYSQL: {
+                runJdbcScript(Store.MYSQL,
+                        "DROP DATABASE IF EXISTS " + getDBName() ,
+                        "CREATE DATABASE " + getDBName() + " DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci",
+                        "CREATE USER IF NOT EXISTS 'upatest'@'localhost' IDENTIFIED BY 'upatest'",
+                        "GRANT ALL PRIVILEGES ON " + getDBName() + " . * TO 'upatest'@'localhost'",
+                        "FLUSH PRIVILEGES"
+                );
+                break;
+            }
+            case DERBY:
+                //cc.setConnectionString("derby:default://localhost/upatest"+v+";structure=create;userName=upatest;password=upatest");
+                throw new IllegalArgumentException("Not Supported Delete " + type);
+            case EMBEDDED:
+                File folder = new File("db-embedded/" + getDBName());
+                log.log(Level.WARNING, "Delete Local Database at {0}", getFullPath(folder));
+                deleteFile(folder);
+                break;
+            default:
+                throw new IllegalArgumentException("Not Supported " + type);
+        }
+    }
+
+    private static Store getStoreType(Store type) {
+        if (type == null) {
+            type = DEFAULT_STORE;
+        }
         if (type == null) {
             type = Store.EMBEDDED;
         }
+        return type;
+    }
+
+    public static String getDBName() {
+        String v = getVersion().replace(".", "_");
+        return "UPA_TEST" + v;
+    }
+
+    public static PersistenceUnit createTestPersistenceUnit(Class clz, Store type, String desc) {
+//        String v = getVersion().replace(".", "_");
+        String puId = clz == null ? "test" : clz.getSimpleName();
+        type = getStoreType(type);
         StringBuilder header = new StringBuilder();
         header.append("Create Persistence Unit ").append(puId);
         if (desc != null && desc.trim().length() > 0) {
@@ -126,12 +189,18 @@ public class PUUtils {
 //        pu.scan(null);
         final ConnectionConfig cc = new ConnectionConfig();
         if (Store.MYSQL.equals(type)) {
-            cc.setConnectionString("mysql:default://localhost/UPA_TEST" + v + ";structure=create;userName=root;password=''");
+            /*
+                CREATE DATABASE UPA_TEST DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+                CREATE USER 'upatest'@'localhost' IDENTIFIED BY 'upatest';
+                GRANT ALL PRIVILEGES ON enisoinfodb . * TO 'upatest'@'localhost';
+                FLUSH PRIVILEGES;
+             */
+            cc.setConnectionString("mysql:default://localhost/" + getDBName() + ";structure=create;userName=upatest;password='upatest'");
         } else if (Store.DERBY.equals(type)) {
-            cc.setConnectionString("derby:default://localhost/upatest" + v + ";structure=create;userName=upatest;password=upatest");
+            cc.setConnectionString("derby:default://localhost/" + getDBName() + ";structure=create;userName=upatest;password=upatest");
         } else if (Store.EMBEDDED.equals(type)) {
-            cc.setConnectionString("derby:embedded://db-embedded/upatest" + v + ";structure=create;userName=upatest;password=upatest");
-            File embedded = new File("db-embedded/upatest" + v);
+            cc.setConnectionString("derby:embedded://db-embedded/" + getDBName() + ";structure=create;userName=upatest;password=upatest");
+            File embedded = new File("db-embedded/" + getDBName());
             System.out.println("Local Database at " + getFullPath(embedded));
         } else {
             throw new IllegalArgumentException("Not Supported " + type);

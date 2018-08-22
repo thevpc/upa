@@ -75,7 +75,13 @@ public class DefaultPersistenceStore extends AbstractPersistenceStore {
     public UConnection createConnection(ConnectionProfile connectionProfile) throws UPAException {
         Connection nativeConnection = createNativeConnection(connectionProfile);
         knownCreatedStores.add(connectionProfile.toString());
-        log.log(Level.FINE, "Connection created {0}", nativeConnection);
+        String url = null;
+        try{
+            url=nativeConnection.getMetaData().getURL();
+        }catch(Exception ex){
+            //
+        }
+        log.log(Level.FINE, "Connection created {0} : {1}", new Object[]{nativeConnection, url});
         final Map<String, Object> customAttributes = new HashMap<String, Object>();
         UConnection connection = wrapConnection(nativeConnection);
         prepareNativeConnection(connection, customAttributes, connectionProfile);

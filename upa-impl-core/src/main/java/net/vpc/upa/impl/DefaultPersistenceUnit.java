@@ -1242,10 +1242,9 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         this.persistenceName = persistenceName;
     }
 
-   public void dropStorage(EntityExecutionContext context) {
+    public void dropStorage(EntityExecutionContext context) {
     }
 
- 
     @Override
     public boolean isValidPersistenceUnit() {
         //TODO
@@ -1848,6 +1847,16 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             return;
         }
         Entity entity = getEntity(entityName);
+        entity.merge(objectOrDocument);
+    }
+
+    @Override
+    public void merge(Class entityType, Object objectOrDocument) {
+        if (!checkSession()) {
+            sessionAwarePU.merge(entityType, objectOrDocument);
+            return;
+        }
+        Entity entity = getEntity(entityType);
         entity.merge(objectOrDocument);
     }
 

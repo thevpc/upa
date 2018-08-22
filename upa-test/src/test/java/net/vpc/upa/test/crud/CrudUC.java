@@ -1,10 +1,14 @@
 package net.vpc.upa.test.crud;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.vpc.upa.*;
 import net.vpc.upa.expressions.UserExpression;
 import net.vpc.upa.test.model.SharedClient;
 import net.vpc.upa.test.util.PUUtils;
+import net.vpc.upa.types.PlatformUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,9 +20,11 @@ import static org.junit.Assert.assertEquals;
  * @creationdate 9/16/12 10:02 PM
  */
 public class CrudUC {
+
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(CrudUC.class.getName());
 
     private static Business bo;
+
     @BeforeClass
     public static void setup() {
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(CrudUC.class);
@@ -32,18 +38,22 @@ public class CrudUC {
     public void process() {
         bo.process();
     }
+
     @Test
     public void crudSimple() {
         bo.crudSimple();
     }
+
     @Test
     public void testInc() {
         bo.testInc();
     }
+
     @Test
     public void crudDocuments() {
         bo.crudDocuments();
     }
+
     @Test
     public void testQueryEmpty() {
         bo.testQueryEmpty();
@@ -53,12 +63,12 @@ public class CrudUC {
 
         public void init() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            pu.clear(SharedClient.class,null);
+            pu.clear(SharedClient.class, null);
         }
 
         public void testQueryEmpty() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
-            SharedClient c=pu.findById(SharedClient.class,-123456);
+            SharedClient c = pu.findById(SharedClient.class, -123456);
             Assert.assertNull(c);
         }
 
@@ -95,12 +105,12 @@ public class CrudUC {
             Assert.assertNotNull(found);
             Assert.assertEquals(found, c2);
 
-            found = pu.createQuery("Select a from SharedClient a where a.integerValue=:param").setParameter("param",null).getFirstResultOrNull();
+            found = pu.createQuery("Select a from SharedClient a where a.integerValue=:param").setParameter("param", null).getFirstResultOrNull();
 
             Assert.assertNotNull(found);
             Assert.assertEquals(found, c2);
 
-            pu.remove(SharedClient.class,RemoveOptions.forId(key));
+            pu.remove(SharedClient.class, RemoveOptions.forId(key));
 
             Document foundDocument = pu.createQueryBuilder(SharedClient.class).byId(key).getDocument();
 
@@ -109,10 +119,10 @@ public class CrudUC {
 
         public void crudDocuments() {
             PersistenceUnit sm = UPA.getPersistenceUnit();
-            if(!sm.containsEntity(SharedClient.class)) {
+            if (!sm.containsEntity(SharedClient.class)) {
                 sm.addEntity(SharedClient.class);
             }
-            if(!sm.isStarted()) {
+            if (!sm.isStarted()) {
                 sm.start();
             }
 
@@ -121,22 +131,26 @@ public class CrudUC {
             int key = entity.nextId();
             log.info("Next Id is " + key);
             c.setInt("id", key);
-            c.setString("firstName", "Hammadi");
+            c.setString("firstName", "Hammadi Aguerbi");
 
-            sm.persist("SharedClient",c);
+            sm.persist("SharedClient", c);
 
             Document found0 = sm.createQueryBuilder(SharedClient.class).byId(key).getDocument();
+            System.out.println("Expected [01] : "+c);
+            System.out.println("Found    [01] : "+found0);
+            Assert.assertEquals(c,found0);
+
             log.info("Found " + found0);
             c.setString("firstName", "Alia");
 
-            sm.update(SharedClient.class,c);
+            sm.update(SharedClient.class, c);
 
             Document found = sm.createQueryBuilder(SharedClient.class).byId(key).getDocument();
 
             Assert.assertNotNull(found);
             Assert.assertEquals(found, c);
 
-            sm.remove(SharedClient.class,RemoveOptions.forId(key));
+            sm.remove(SharedClient.class, RemoveOptions.forId(key));
 
             found = sm.createQueryBuilder(SharedClient.class).byId(key).getDocument();
 
@@ -168,10 +182,10 @@ public class CrudUC {
         public void crudSimple() {
 
             PersistenceUnit sm = UPA.getPersistenceUnit();
-            if(!sm.containsEntity(SharedClient.class)) {
+            if (!sm.containsEntity(SharedClient.class)) {
                 sm.addEntity(SharedClient.class);
             }
-            if(!sm.isStarted()) {
+            if (!sm.isStarted()) {
                 sm.start();
             }
 
@@ -195,7 +209,7 @@ public class CrudUC {
             assertEquals(found.getFirstName(), c.getFirstName());
             assertEquals(found.getId(), c.getId());
 
-            sm.remove(SharedClient.class,RemoveOptions.forId(id));
+            sm.remove(SharedClient.class, RemoveOptions.forId(id));
 
             found = sm.createQueryBuilder(SharedClient.class).byId(id).getFirstResultOrNull();
 

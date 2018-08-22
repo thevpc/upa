@@ -22,7 +22,7 @@ public class StructurePartialsTest1UC {
 
     @BeforeClass
     public static void setup() {
-//        PUUtils.deleteTestPersistenceUnit(StructurePartialsTest1UC.class);
+//        PUUtils.deleteTestPersistenceUnits(StructurePartialsTest1UC.class);
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(StructurePartialsTest1UC.class);
         pu.scan(UPA.getContext().getFactory().createClassScanSource(new Class[]{
             A.class,
