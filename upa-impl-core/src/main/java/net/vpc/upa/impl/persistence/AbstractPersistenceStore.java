@@ -1610,20 +1610,21 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                         break;
                     }
                 }
+                PersistenceState state = PersistenceState.VALID;
                 if (dirtyField) {
-                    return PersistenceState.DIRTY;
+                    state = PersistenceState.DIRTY;
                 } else if (notFoundField) {
-                    return PersistenceState.MISSING;
+                    state = PersistenceState.MISSING;
                 } else if (transientField) {
-                    return PersistenceState.TRANSIENT;
-                } else {
-                    return PersistenceState.VALID;
+                    state = PersistenceState.TRANSIENT;
                 }
+                log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{state, field});
+                return state;
             }
         }
         FlagSet<FieldModifier> fieldModifiers = field.getModifiers();
         if (field.isManyToOne() || fieldModifiers.contains(FieldModifier.TRANSIENT)) {
-            log.log(Level.FINE, "FieldStorageStatus {0} {1}", new Object[]{field, PersistenceState.TRANSIENT});
+            log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{PersistenceState.TRANSIENT, field});
             return PersistenceState.TRANSIENT;
         }
         String tableName = getPersistenceName(field.getEntity());
@@ -1644,9 +1645,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             s = PersistenceState.DIRTY;
         }
         if (s == PersistenceState.DIRTY) {
-            log.log(Level.CONFIG, "FieldStorageStatus {0} {1} \n\t Found    {2}\n\t Expected {3}", new Object[]{field, s, d, e});
+            log.log(Level.CONFIG, "Field Persistence State {0} {1} \n\t Found    {2}\n\t Expected {3}", new Object[]{s, field, d, e});
         } else {
-            log.log(Level.CONFIG, "FieldStorageStatus {0} {1} \n\t", new Object[]{field, s});
+            log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{s, field});
         }
         return s;
     }

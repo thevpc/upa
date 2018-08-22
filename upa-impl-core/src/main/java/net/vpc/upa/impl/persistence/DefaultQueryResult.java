@@ -124,9 +124,9 @@ public class DefaultQueryResult implements QueryResult {
                 if (!closed) {
                     mon.release();
 //                log.log(Level.FINE, nameDebugString+" executeQuery     : "+query);
-                    log.log(Level.FINE, "{0} Query Result closed   {1}", new Object[]{nameDebugString, query});
+                    log.log(Level.FINE   , "{0} Query Result closed    {1}", new Object[]{nameDebugString, query});
                 } else {
-                    log.log(Level.WARNING, "       {0} ResultSet re-closed: {1}", new Object[]{nameDebugString, query});
+                    log.log(Level.WARNING, "{0} Query Result re-closed {1}", new Object[]{nameDebugString, query});
                 }
             }
             closed = true;
