@@ -668,32 +668,30 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public ColumnPersistenceDefinition getExpectedColumnPersistenceDefinition(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
-        String TABLE_SCHEM = null;
-        String TABLE_CAT = null;
-        String TABLE_NAME = getValidIdentifier(getTableName(field.getEntity()));
-        String COLUMN_DEF = null;
+        String tableSchema = null; //TODO
+        String tableCatalog = null; //TODO
+        int columnDataType = -1; //TODO
+        String tableName = getValidIdentifier(getTableName(field.getEntity()));
+        String columnDefault = null;
         Object defaultObject = field.getDefaultObject();
         DataTypeTransform cr = field.getEffectiveTypeTransform();
         SqlTypeName sqlTypeName = getSqlTypeName(cr.getTargetType());
         if (defaultObject == null && !cr.getTargetType().isNullable()) {
-            defaultObject = cr.getTargetType().getDefaultValue();
-//            if (defaultObject == null) {
-//                defaultObject = cr.getTargetType().getDefaultValue();
-//            }
+            columnDefault = (sqlManager.getSQL(new CompiledLiteral(
+                    cr.getTargetType().getDefaultValue(),
+                    IdentityDataTypeTransform.ofType(cr.getTargetType())), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
+        } else if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
+            columnDefault = (sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
         }
-        if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
-            COLUMN_DEF = (sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
-        }
-        Boolean NULLABLE = cr.getTargetType().isNullable();
-        Boolean IS_AUTOINCREMENT = field.isGeneratedId();
-        int DATA_TYPE = -1;
+        Boolean columnNullable = cr.getTargetType().isNullable();
+        Boolean columnAutoIncrement = field.isGeneratedId();
         return new DefaultColumnPersistenceDefinition(
                 getValidIdentifier(getColumnName(field)),
-                TABLE_NAME, TABLE_SCHEM, TABLE_CAT,
-                DATA_TYPE, sqlTypeName.getName(), sqlTypeName.getSize(), sqlTypeName.getScale(),
-                NULLABLE,
-                IS_AUTOINCREMENT,
-                COLUMN_DEF);
+                tableName, tableSchema, tableCatalog,
+                columnDataType, sqlTypeName.getName(), sqlTypeName.getSize(), sqlTypeName.getScale(),
+                columnNullable,
+                columnAutoIncrement,
+                columnDefault);
     }
 
     public String getColumnDeclaration(PrimitiveField field, net.vpc.upa.persistence.EntityExecutionContext entityPersistenceContext) throws UPAException {
@@ -703,14 +701,18 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         sb.append('\t');
         EntityExecutionContext context = ((PersistenceUnitExt) entityPersistenceContext.getPersistenceUnit()).createContext(ContextOperation.FIND, entityPersistenceContext.getHints());
         sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
+        String columnDefault = null;
+
         if (defaultObject == null && !cr.getTargetType().isNullable()) {
-            defaultObject = cr.getTargetType().getDefaultValue();
-//            if (defaultObject == null) {
-//                defaultObject = cr.getTargetType().getDefaultValue();
-//            }
+            columnDefault = (sqlManager.getSQL(new CompiledLiteral(
+                    cr.getTargetType().getDefaultValue(),
+                    IdentityDataTypeTransform.ofType(cr.getTargetType())), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
+        } else if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
+            columnDefault = (sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
         }
-        if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
-            sb.append(" Default ").append(sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), context, new DefaultExpressionDeclarationList(null)));
+
+        if (columnDefault != null) {
+            sb.append(" Default ").append(columnDefault);
         }
 
         if (!cr.getTargetType().isNullable()) {
@@ -1594,9 +1596,8 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             for (PrimitiveField field1 : ((CompoundField) field).getFields()) {
                 PersistenceState s = getFieldPersistenceState(field1, spec, entityExecutionContext, connection);
                 switch (s) {
-                    case DEFAULT: 
-                    case MISSING: 
-                    {
+                    case DEFAULT:
+                    case MISSING: {
                         notFoundField = true;
                         break;
                     }
@@ -1657,28 +1658,27 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         try {
             ResultSet rs = null;
             try {
-//                    Connection connection = getConnection().getNativeConnection();
                 String catalog = connection.getCatalog();
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getColumns(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName), getIdentifierStoreTranslator().translateIdentifier(columnName));
                 if (rs.next()) {
-                    String TABLE_CAT = rs.getString("TABLE_CAT");
-                    String TABLE_SCHEM = rs.getString("TABLE_SCHEM");
-                    String TABLE_NAME = rs.getString("TABLE_NAME");
-                    String TYPE_NAME = rs.getString("TYPE_NAME");
-                    String COLUMN_NAME = rs.getString("COLUMN_NAME");
-                    int COLUMN_SIZE = rs.getInt("COLUMN_SIZE");
-                    int DECIMAL_DIGITS = rs.getInt("DECIMAL_DIGITS");
-                    int NULLABLE = rs.getInt("NUM_PREC_RADIX");
-                    int DATA_TYPE = rs.getInt("DATA_TYPE");
-                    String COLUMN_DEF = rs.getString("COLUMN_DEF");
-                    String IS_AUTOINCREMENT = rs.getString("IS_AUTOINCREMENT");
+                    String tableCat = rs.getString("TABLE_CAT");
+                    String tableSchem = rs.getString("TABLE_SCHEM");
+                    String tableSchem2 = rs.getString("TABLE_NAME");
+                    String typeName = rs.getString("TYPE_NAME");
+                    String columnName2 = rs.getString("COLUMN_NAME");
+                    int columnSize = rs.getInt("COLUMN_SIZE");
+                    int decimalDigits = rs.getInt("DECIMAL_DIGITS");
+                    int nullable = rs.getInt("NULLABLE");
+                    int dataType = rs.getInt("DATA_TYPE");
+                    String columnDef = rs.getString("COLUMN_DEF");
+                    String isAutoIncrement = rs.getString("IS_AUTOINCREMENT");
                     //TODO, check datatype and constraints
-                    return new DefaultColumnPersistenceDefinition(COLUMN_NAME, TABLE_NAME, TABLE_SCHEM, TABLE_CAT,
-                            DATA_TYPE, TYPE_NAME, COLUMN_SIZE, DECIMAL_DIGITS,
-                            NULLABLE == DatabaseMetaData.columnNoNulls ? Boolean.FALSE : NULLABLE == DatabaseMetaData.columnNullable ? Boolean.TRUE : null,
-                            "NO".equalsIgnoreCase(IS_AUTOINCREMENT) ? Boolean.FALSE : "YES".equalsIgnoreCase(IS_AUTOINCREMENT) ? Boolean.TRUE : null,
-                            COLUMN_DEF);
+                    return new DefaultColumnPersistenceDefinition(columnName2, tableSchem2, tableSchem, tableCat,
+                            dataType, typeName, columnSize, decimalDigits,
+                            nullable == DatabaseMetaData.columnNoNulls ? Boolean.FALSE : nullable == DatabaseMetaData.columnNullable ? Boolean.TRUE : null,
+                            "NO".equalsIgnoreCase(isAutoIncrement) ? Boolean.FALSE : "YES".equalsIgnoreCase(isAutoIncrement) ? Boolean.TRUE : null,
+                            columnDef);
                 }
             } finally {
                 if (rs != null) {
@@ -1761,9 +1761,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
                 if (rs.next()) {
-                    String n = rs.getString("TABLE_NAME");
-                    String t = rs.getString("TYPE_NAME");
-                    return new DefaultTableKeyPersistenceDefinition(n, catalog, schema);
+                    String tableName = rs.getString("TABLE_NAME");
+                    String typeName = rs.getString("TYPE_NAME");
+                    return new DefaultTableKeyPersistenceDefinition(tableName, catalog, schema);
                 }
             } finally {
                 if (rs != null) {
@@ -1801,9 +1801,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getTables(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(persistenceName), null);
                 if (rs.next()) {
-                    String n = rs.getString("TABLE_NAME");
-                    String t = rs.getString("TYPE_NAME");
-                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, null);
+                    String tableName = rs.getString("TABLE_NAME");
+//                    String typeName = rs.getString("TYPE_NAME");
+                    return new DefaultViewKeyPersistenceDefinition(tableName, catalog, schema, null);
                 }
             } finally {
                 if (rs != null) {
@@ -1838,13 +1838,13 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getPrimaryKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
                 while (rs.next()) {
-                    String n = rs.getString("PK_NAME");
+                    String pkName = rs.getString("PK_NAME");
                     String expectedName = getIdentifierStoreTranslator().translateIdentifier(constraintsName);
-                    if (expectedName.equals(n)) {
-                        return new DefaultPrimaryKeyPersistenceDefinition(n);
+                    if (expectedName.equals(pkName)) {
+                        return new DefaultPrimaryKeyPersistenceDefinition(pkName);
                     } else {
-                        log.log(Level.WARNING, "Found Conflicting PK Constraints {0} instead of {1} in table {2}. Will use it anyway...", new Object[]{n, expectedName, tableName});
-                        return new DefaultPrimaryKeyPersistenceDefinition(n);
+                        log.log(Level.WARNING, "Found Conflicting PK Constraints {0} instead of {1} in table {2}. Will use it anyway...", new Object[]{pkName, expectedName, tableName});
+                        return new DefaultPrimaryKeyPersistenceDefinition(pkName);
                     }
                 }
             } finally {
@@ -1881,9 +1881,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 rs = connection.getMetaData().getImportedKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
                 String constraintNameIdentifier = getIdentifierStoreTranslator().translateIdentifier(constraintName);
                 while (rs.next()) {
-                    String FK_NAME = rs.getString("FK_NAME");
-                    if (constraintNameIdentifier.equals(FK_NAME)) {
-                        return new DefaultForeignKeyPersistenceDefinition(FK_NAME);
+                    String fkName = rs.getString("FK_NAME");
+                    if (constraintNameIdentifier.equals(fkName)) {
+                        return new DefaultForeignKeyPersistenceDefinition(fkName);
                     }
                 }
 
@@ -1931,9 +1931,9 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             throw new RootConnectionStringNotFoundException();
         }
         UPAException lastEx = null;
-        for (ConnectionProfile connectionProfile : all) {
+        for (ConnectionProfile prof : all) {
             try {
-                UConnection connection = createConnection(connectionProfile);
+                return createConnection(prof);
             } catch (UPAException ex) {
                 if (lastEx == null) {
                     lastEx = ex;
