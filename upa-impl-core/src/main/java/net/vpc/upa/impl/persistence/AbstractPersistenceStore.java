@@ -1036,6 +1036,46 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
         return s.toString();
     }
 
+    public String getAlterTableModifyColumnStatement(PrimitiveField field, EntityExecutionContext context) throws UPAException {
+        String tableName = getPersistenceName(field.getEntity());
+        String columnName = getPersistenceName(field);
+        ColumnPersistenceDefinition persistenceDefinition = getColumnPersistenceDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
+        ColumnPersistenceDefinition expected = getExpectedColumnPersistenceDefinition(field, context);
+        StringBuilder sb = new StringBuilder("Alter Table ")
+                .append(getTableName(field.getEntity()))
+                .append(" Alter Column ")
+                .append(getValidIdentifier(getColumnName(field)))
+                .append(" ");
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
+        if (!expected.getColumnTypeName().equals(persistenceDefinition.getColumnTypeName())
+                || expected.getSize() != -1 && expected.getSize() != persistenceDefinition.getSize()
+                || expected.getScale() != -1 && expected.getScale() != persistenceDefinition.getScale()) {
+            sb.append(" SET DATA TYPE ");
+            sb.append(getSqlTypeName(cr.getTargetType()).getFullName());
+        }
+
+//        Object defaultObject = field.getDefaultObject();
+//        sb.append(sqlManager.getSQL(new CompiledTypeName(cr), context, new DefaultExpressionDeclarationList(null)));
+//        String columnDefault = null;
+//
+//        if (defaultObject == null && !cr.getTargetType().isNullable()) {
+//            columnDefault = (sqlManager.getSQL(new CompiledLiteral(
+//                    cr.getTargetType().getDefaultValue(),
+//                    IdentityDataTypeTransform.ofType(cr.getTargetType())), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
+//        } else if (defaultObject != null && !(defaultObject instanceof CustomDefaultObject)) {
+//            columnDefault = (sqlManager.getSQL(new CompiledLiteral(defaultObject, cr), entityPersistenceContext, new DefaultExpressionDeclarationList(null)));
+//        }
+//
+//        if (columnDefault != null) {
+//            sb.append(" Default ").append(columnDefault);
+//        }
+//
+//        if (!cr.getTargetType().isNullable()) {
+//            sb.append(" Not Null");
+//        }
+        return sb.toString();
+    }
+
     //    @Override
     public String getCreateTableStatement(Entity entity, EntityExecutionContext context) throws UPAException {
         StringBuilder sb = new StringBuilder();

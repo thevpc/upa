@@ -37,10 +37,14 @@ public class PrimitiveFieldStructureCommitAction extends StructureCommitAction {
     public void persist(EntityExecutionContext executionContext, PersistenceState status) throws SQLException, UPAException {
         PrimitiveField field = (PrimitiveField) object;
         DefaultPersistenceStore store = (DefaultPersistenceStore) executionContext.getPersistenceStore();
-        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(),object, persistenceNameType, status});
-        String q=store.getAlterTableAddColumnStatement(field, executionContext);
+        log.log(Level.FINE, "[{0}] Commit {1} / {2} : found {3}, persist", new Object[]{executionContext.getPersistenceUnit().getAbsoluteName(), object, persistenceNameType, status});
         UConnection b = executionContext.getConnection();
-        b.executeNonQuery(q, null, null);
-
+        if (status == PersistenceState.MISSING || status == PersistenceState.DEFAULT) {
+            String q = store.getAlterTableAddColumnStatement(field, executionContext);
+            b.executeNonQuery(q, null, null);
+        } else if (status == PersistenceState.DIRTY) {
+            String q = store.getAlterTableModifyColumnStatement(field, executionContext);
+            b.executeNonQuery(q, null, null);
+        }
     }
 }

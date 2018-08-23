@@ -26,6 +26,7 @@ import net.vpc.upa.impl.persistence.DefaultViewKeyPersistenceDefinition;
 import net.vpc.upa.impl.persistence.SqlTypeName;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataType;
+import net.vpc.upa.types.DataTypeTransform;
 import net.vpc.upa.types.DoubleType;
 import net.vpc.upa.types.EnumType;
 import net.vpc.upa.types.TemporalOption;
@@ -546,6 +547,25 @@ public class MSSQLServerPersistenceStore extends DefaultPersistenceStore {
             return new SqlTypeName("IMAGE"); // serialized form
         }
         throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+    }
+
+    public String getAlterTableModifyColumnStatement(PrimitiveField field, EntityExecutionContext context) throws UPAException {
+        String tableName = getPersistenceName(field.getEntity());
+        String columnName = getPersistenceName(field);
+        ColumnPersistenceDefinition persistenceDefinition = getColumnPersistenceDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
+        ColumnPersistenceDefinition expected = getExpectedColumnPersistenceDefinition(field, context);
+        StringBuilder sb = new StringBuilder("Alter Table ")
+                .append(getTableName(field.getEntity()))
+                .append(" Modify ")
+                .append(getValidIdentifier(getColumnName(field)))
+                .append(" ");
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
+        if (!expected.getColumnTypeName().equals(persistenceDefinition.getColumnTypeName())
+                || expected.getSize() != -1 && expected.getSize() != persistenceDefinition.getSize()
+                || expected.getScale() != -1 && expected.getScale() != persistenceDefinition.getScale()) {
+            sb.append(getSqlTypeName(cr.getTargetType()).getFullName());
+        }
+        return sb.toString();
     }
 
 }

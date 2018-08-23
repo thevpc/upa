@@ -46,8 +46,6 @@ Version 1.2.0.48 :
            NoSuchUPAElementException
     [Impl] UPAIllegalArgumentException replaced by IllegalUPAArgumentException
     [Impl] Renamed StructureCommit (and inheritors) to StructureCommitAction
-    [Impl] Added better Schema Modification Support (View Def changed, Column 
-           Def Changed...)
     [Impl] Added More verbose Exception Messages
 
 ## Bug Fixes
@@ -61,3 +59,5 @@ Version 1.2.0.48 :
     [Impl] Fixed TIMESTAMP Column Type Generation (added NULL)
     [Test] Fixed Test all use cases for Derby
     [Test] Fixed Test all use cases for MySQL
+    [Impl] Fixed Schema Modification Support for Views
+    [Impl] Fixed Schema Modification Support for Column Changes (Added Modify Column)

@@ -509,7 +509,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 length = 255;
             }
             if (length <= 32672) {
-                return new SqlTypeName("VARCHAR" ,length);
+                return new SqlTypeName("VARCHAR", length);
             } else {
                 return new SqlTypeName("CLOB");
             }
@@ -571,6 +571,26 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             return new SqlTypeName("BLOB"); // serialized form
         }
         throw new IllegalUPAArgumentException("UNKNOWN_TYPE<" + platformType.getName() + "," + length + "," + precision + ">");
+    }
+
+    public String getAlterTableModifyColumnStatement(PrimitiveField field, EntityExecutionContext context) throws UPAException {
+        String tableName = getPersistenceName(field.getEntity());
+        String columnName = getPersistenceName(field);
+        ColumnPersistenceDefinition persistenceDefinition = getColumnPersistenceDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
+        ColumnPersistenceDefinition expected = getExpectedColumnPersistenceDefinition(field, context);
+        StringBuilder sb = new StringBuilder("Alter Table ")
+                .append(getTableName(field.getEntity()))
+                .append(" Alter Column ")
+                .append(getValidIdentifier(getColumnName(field)))
+                .append(" ");
+        DataTypeTransform cr = field.getEffectiveTypeTransform();
+        if (!expected.getColumnTypeName().equals(persistenceDefinition.getColumnTypeName())
+                || expected.getSize() != -1 && expected.getSize() != persistenceDefinition.getSize()
+                || expected.getScale() != -1 && expected.getScale() != persistenceDefinition.getScale()) {
+            sb.append(" SET DATA TYPE ");
+            sb.append(getSqlTypeName(cr.getTargetType()).getFullName());
+        }
+        return sb.toString();
     }
 
 }
