@@ -1322,7 +1322,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 }
                 //TODO remove me
 //            validateCompiledVar(v, config);
-                throw new net.vpc.upa.exceptions.NoSuchFieldException(null, var.toString(), var.getName());
+                throw new net.vpc.upa.exceptions.NoSuchFieldException("?", var.toString(), var.getName());
             } else {
                 String before = p.toString();
                 /*p =*/

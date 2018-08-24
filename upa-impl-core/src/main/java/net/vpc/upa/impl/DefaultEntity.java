@@ -2131,7 +2131,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         expression = toIdListExpression(expression);
         long initialCount = getEntityCount(expression);
-
+        if(initialCount==0){
+            return removeInfo;
+        }
         if (isCheckSecurity()) {
             getShield().checkRemove(expression, recurse, initialCount);
         }

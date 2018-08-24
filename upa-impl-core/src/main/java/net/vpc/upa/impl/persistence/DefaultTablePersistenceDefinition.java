@@ -11,14 +11,14 @@ import net.vpc.upa.persistence.TablePersistenceDefinition;
  *
  * @author vpc
  */
-public class DefaultTableKeyPersistenceDefinition implements TablePersistenceDefinition {
+public class DefaultTablePersistenceDefinition implements TablePersistenceDefinition {
 
     private final String tableName;
     private final String catalogName;
     private final String schemaName;
 
-    public DefaultTableKeyPersistenceDefinition(String foreignKeyName, String catalogName, String schemaName) {
-        this.tableName = foreignKeyName;
+    public DefaultTablePersistenceDefinition(String tableName, String catalogName, String schemaName) {
+        this.tableName = tableName;
         this.schemaName = schemaName;
         this.catalogName = catalogName;
     }

@@ -431,7 +431,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         return b.toString();
     }
 
-    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
+    protected ViewPersistenceDefinition getStoreViewDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -454,7 +454,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
                 if (rs.next()) {
                     String n = rs.getString("TABLE_NAME");
                     String t = rs.getString("TYPE_NAME");
-                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getViewDefinition(n, connection));
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getStoreViewDefinitionSQL(n, connection));
                 }
             } finally {
                 if (rs != null) {
@@ -467,7 +467,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         return null;
     }
 
-    protected String getViewDefinition(String viewName, Connection conn) {
+    protected String getStoreViewDefinitionSQL(String viewName, Connection conn) {
         String definition = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -576,8 +576,8 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
     public String getAlterTableModifyColumnStatement(PrimitiveField field, EntityExecutionContext context) throws UPAException {
         String tableName = getPersistenceName(field.getEntity());
         String columnName = getPersistenceName(field);
-        ColumnPersistenceDefinition persistenceDefinition = getColumnPersistenceDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
-        ColumnPersistenceDefinition expected = getExpectedColumnPersistenceDefinition(field, context);
+        ColumnPersistenceDefinition persistenceDefinition = getStoreColumnDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
+        ColumnPersistenceDefinition expected = getModelColumnPersistenceDefinition(field, context);
         StringBuilder sb = new StringBuilder("Alter Table ")
                 .append(getTableName(field.getEntity()))
                 .append(" Alter Column ")

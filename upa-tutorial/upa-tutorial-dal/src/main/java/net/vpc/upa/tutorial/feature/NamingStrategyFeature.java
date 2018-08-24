@@ -23,7 +23,7 @@ import net.vpc.upa.config.PersistenceNameType;
             ),
                 //foreign constraints will start with 'FK_' and will be capitalized
             @PersistenceNameFormat(
-                    persistenceNameType = PersistenceNameType.FK_CONSTRAINT,
+                    persistenceNameType = PersistenceNameType.FOREIGN_KEY_CONSTRAINT,
                     value = "FK_{OBJECT_NAME}"
             )
         }

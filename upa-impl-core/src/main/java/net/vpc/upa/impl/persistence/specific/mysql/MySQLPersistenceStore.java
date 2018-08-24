@@ -32,7 +32,6 @@ import net.vpc.upa.impl.persistence.shared.sql.CastANSISQLProvider;
 import net.vpc.upa.impl.persistence.shared.sql.SignANSISQLProvider;
 import net.vpc.upa.impl.upql.DefaultExpressionDeclarationList;
 import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
-import net.vpc.upa.impl.upql.ext.expr.CompiledTypeName;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.persistence.DefaultPrimaryKeyPersistenceDefinition;
 import net.vpc.upa.impl.persistence.DefaultViewKeyPersistenceDefinition;
@@ -385,7 +384,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     }
 
     @PortabilityHint(target = "C#", name = "ignore")
-    protected PrimaryKeyPersistenceDefinition getPrimaryKeyPersistenceDefinition(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
+    protected PrimaryKeyPersistenceDefinition getStorePrimaryKeyDefinition(String tableName, String constraintsName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             try {
@@ -394,13 +393,14 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 String schema = connection.getSchema();
                 rs = connection.getMetaData().getPrimaryKeys(catalog, schema, getIdentifierStoreTranslator().translateIdentifier(tableName));
                 while (rs.next()) {
+                    String tn = rs.getString("TABLE_NAME");
                     String n = rs.getString("PK_NAME");
                     String expectedName = getIdentifierStoreTranslator().translateIdentifier(constraintsName);
                     if (expectedName.equals(n) || "PRIMARY".equals(n)) {
-                        return new DefaultPrimaryKeyPersistenceDefinition(n);
+                        return new DefaultPrimaryKeyPersistenceDefinition(tn, n);
                     } else {
                         log.log(Level.WARNING, "Found Conflicting PK Constraints {0} instead of {1}", new Object[]{n, expectedName});
-                        return new DefaultPrimaryKeyPersistenceDefinition(n);
+                        return new DefaultPrimaryKeyPersistenceDefinition(tn, n);
                     }
                 }
             } finally {
@@ -434,7 +434,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         return null;
     }
 
-    protected ViewPersistenceDefinition getViewPersistenceDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
+    protected ViewPersistenceDefinition getStoreViewDefinition(String persistenceName, EntityExecutionContext entityExecutionContext) {
         try {
             ResultSet rs = null;
             /**
@@ -457,7 +457,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
                 if (rs.next()) {
                     String n = rs.getString("TABLE_NAME");
                     String t = rs.getString("TYPE_NAME");
-                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getViewDefinition(n, connection));
+                    return new DefaultViewKeyPersistenceDefinition(n, catalog, schema, getStoreViewDefinitionSQL(n, connection));
                 }
             } finally {
                 if (rs != null) {
@@ -470,7 +470,7 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
         return null;
     }
 
-    protected String getViewDefinition(String viewName, Connection conn) {
+    protected String getStoreViewDefinitionSQL(String viewName, Connection conn) {
         String definition = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -596,8 +596,8 @@ public class MySQLPersistenceStore extends DefaultPersistenceStore {
     public String getAlterTableModifyColumnStatement(PrimitiveField field, EntityExecutionContext context) throws UPAException {
         String tableName = getPersistenceName(field.getEntity());
         String columnName = getPersistenceName(field);
-        ColumnPersistenceDefinition persistenceDefinition = getColumnPersistenceDefinition(tableName, columnName, context, (Connection)context.getConnection().getPlatformConnection());
-        ColumnPersistenceDefinition expected = getExpectedColumnPersistenceDefinition(field, context);
+        ColumnPersistenceDefinition persistenceDefinition = getStoreColumnDefinition(tableName, columnName, context, (Connection) context.getConnection().getPlatformConnection());
+        ColumnPersistenceDefinition expected = getModelColumnPersistenceDefinition(field, context);
         StringBuilder sb = new StringBuilder("Alter Table ")
                 .append(getTableName(field.getEntity()))
                 .append(" Modify ")

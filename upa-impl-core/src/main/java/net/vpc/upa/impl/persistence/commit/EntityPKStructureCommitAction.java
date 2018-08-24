@@ -28,7 +28,7 @@ public class EntityPKStructureCommitAction extends StructureCommitAction {
     protected static final Logger log = Logger.getLogger(EntityPKStructureCommitAction.class.getName());
 
     public EntityPKStructureCommitAction(Entity object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, PersistenceNameType.PK_CONSTRAINT);
+        super(persistenceUnitCommitManager, object, PersistenceNameType.PRIMARY_KEY_CONSTRAINT);
     }
 
     @Override

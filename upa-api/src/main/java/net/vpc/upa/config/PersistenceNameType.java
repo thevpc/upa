@@ -49,8 +49,8 @@ public enum PersistenceNameType {
     VIEW,
     IMPLICIT_VIEW,
     COLUMN,
-    FK_CONSTRAINT,
-    PK_CONSTRAINT,
+    FOREIGN_KEY_CONSTRAINT,
+    PRIMARY_KEY_CONSTRAINT,
     INDEX,
     ALIAS,
     CUSTOM

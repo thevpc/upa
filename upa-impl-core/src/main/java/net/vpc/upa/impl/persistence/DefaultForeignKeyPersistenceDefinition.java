@@ -11,16 +11,23 @@ import net.vpc.upa.persistence.ForeignKeyPersistenceDefinition;
  *
  * @author vpc
  */
-public class DefaultForeignKeyPersistenceDefinition implements ForeignKeyPersistenceDefinition{
+public class DefaultForeignKeyPersistenceDefinition implements ForeignKeyPersistenceDefinition {
+
+    private final String tableName;
     private final String foreignKeyName;
 
-    public DefaultForeignKeyPersistenceDefinition(String foreignKeyName) {
+    public DefaultForeignKeyPersistenceDefinition(String tableName, String foreignKeyName) {
         this.foreignKeyName = foreignKeyName;
+        this.tableName = tableName;
     }
-    
+
+    public String getTableName() {
+        return tableName;
+    }
+
     @Override
     public String getForeignKeyName() {
         return foreignKeyName;
     }
-    
+
 }

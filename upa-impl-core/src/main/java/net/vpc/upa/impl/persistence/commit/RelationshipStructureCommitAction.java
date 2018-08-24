@@ -26,7 +26,7 @@ public class RelationshipStructureCommitAction extends StructureCommitAction {
     protected static Logger log = Logger.getLogger(RelationshipStructureCommitAction.class.getName());
 
     public RelationshipStructureCommitAction(Relationship object, DefaultPersistenceUnitCommitManager persistenceUnitCommitManager) {
-        super(persistenceUnitCommitManager, object, PersistenceNameType.FK_CONSTRAINT);
+        super(persistenceUnitCommitManager, object, PersistenceNameType.FOREIGN_KEY_CONSTRAINT);
     }
 
     @Override

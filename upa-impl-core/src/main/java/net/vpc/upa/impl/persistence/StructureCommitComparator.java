@@ -17,9 +17,9 @@ class StructureCommitComparator implements Comparator<StructureCommitAction> {
     StructureCommitComparator() {
         pos.put(PersistenceNameType.TABLE, 100);
         pos.put(PersistenceNameType.COLUMN, 200);
-        pos.put(PersistenceNameType.PK_CONSTRAINT, 300);
+        pos.put(PersistenceNameType.PRIMARY_KEY_CONSTRAINT, 300);
         pos.put(PersistenceNameType.INDEX, 400);
-        pos.put(PersistenceNameType.FK_CONSTRAINT, 500);
+        pos.put(PersistenceNameType.FOREIGN_KEY_CONSTRAINT, 500);
         pos.put(PersistenceNameType.IMPLICIT_VIEW, 800);
         pos.put(PersistenceNameType.VIEW, 900);
     }

@@ -94,10 +94,10 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
     public String getTablePKPersistenceName(Entity source, PersistenceNameType spec, PersistenceNameStrategyCondition condition) throws UPAException {
         List<PersistenceNameType> types = new ArrayList<PersistenceNameType>();
         String tableName = getTablePersistenceName0(source, PersistenceNameType.TABLE, condition);
-        UPAObjectAndSpec upaObjectAndSpec = new UPAObjectAndSpec(source, PersistenceNameType.PK_CONSTRAINT);
+        UPAObjectAndSpec upaObjectAndSpec = new UPAObjectAndSpec(source, PersistenceNameType.PRIMARY_KEY_CONSTRAINT);
         String p = getBestName(getTablePKPersistencePreferredName(source, condition), "PK_" + tableName);
-        types.add(PersistenceNameType.PK_CONSTRAINT);
-        return validatePersistenceName(p, PersistenceNameType.PK_CONSTRAINT, source.getName(), upaObjectAndSpec, types);
+        types.add(PersistenceNameType.PRIMARY_KEY_CONSTRAINT);
+        return validatePersistenceName(p, PersistenceNameType.PRIMARY_KEY_CONSTRAINT, source.getName(), upaObjectAndSpec, types);
     }
 
     @Override
@@ -193,8 +193,8 @@ public class DefaultPersistenceNameStrategy implements PersistenceNameStrategy {
         if (p == null) {
             p = relationship.getName();
         }
-        types.add(PersistenceNameType.FK_CONSTRAINT);
-        return validatePersistenceName(p, PersistenceNameType.FK_CONSTRAINT, relationship.getName(), upaObjectAndSpec, types);
+        types.add(PersistenceNameType.FOREIGN_KEY_CONSTRAINT);
+        return validatePersistenceName(p, PersistenceNameType.FOREIGN_KEY_CONSTRAINT, relationship.getName(), upaObjectAndSpec, types);
     }
 
     @Override

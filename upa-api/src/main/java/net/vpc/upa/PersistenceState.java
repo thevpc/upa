@@ -47,21 +47,31 @@ public enum PersistenceState {
      */
     DEFAULT,
     /**
-     * Object is missing in the Store (Not Found)
+     * Object of the  model missing in the Store (Not Found)
      */
     MISSING,
     /**
-     * Object is found in the Store but has a different definition than expected
+     * Object of the model is found in the Store but has a different 
+     * definition than expected
      */
     DIRTY,
     /**
-     * Object is not found in the Store and should not be either (it is non
-     * persistable)
+     * Object of the model is not found in the Store and should not be 
+     * either (it is non persistable)
      */
     TRANSIENT,
     /**
-     * Object is found in the Store and has a valid definition (either equal or
-     * compatible with expected)
+     * Object of the model is found in the Store and has a valid definition 
+     * (either equal or compatible with expected)
      */
-    VALID
+    VALID,
+    /**
+     * Object is found in the Store and has no corresponding definition 
+     * in he model
+     */
+    SUPERFLUOUS,
+    /**
+     * Object is found in the Store but could never be bound to object model
+     */
+    ERRONOUS
 }

@@ -3,20 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.vpc.upa.impl.persistence;
-
-import net.vpc.upa.persistence.PrimaryKeyPersistenceDefinition;
+package net.vpc.upa.impl.persistence.tree;
 
 /**
  *
  * @author vpc
  */
-public class DefaultPrimaryKeyPersistenceDefinition implements PrimaryKeyPersistenceDefinition {
+public class NativeObjectPersistencePrimaryKey extends NativeObjectPersistenceNode{
+    private String tableName;
+    private String primaryKeyName;
 
-    private final String tableName;
-    private final String primaryKeyName;
-
-    public DefaultPrimaryKeyPersistenceDefinition(String tableName, String primaryKeyName) {
+    public NativeObjectPersistencePrimaryKey(String tableName, String primaryKeyName) {
         this.tableName = tableName;
         this.primaryKeyName = primaryKeyName;
     }
@@ -25,9 +22,8 @@ public class DefaultPrimaryKeyPersistenceDefinition implements PrimaryKeyPersist
         return tableName;
     }
 
-    @Override
     public String getPrimaryKeyName() {
         return primaryKeyName;
     }
-
+    
 }
