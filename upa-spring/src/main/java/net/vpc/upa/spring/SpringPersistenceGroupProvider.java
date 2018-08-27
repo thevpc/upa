@@ -1,7 +1,6 @@
 package net.vpc.upa.spring;
 
 import net.vpc.upa.PersistenceGroupProvider;
-import org.springframework.stereotype.Component;
 
 public class SpringPersistenceGroupProvider implements PersistenceGroupProvider {
     private String name;
@@ -13,6 +12,6 @@ public class SpringPersistenceGroupProvider implements PersistenceGroupProvider 
 
     @Override
     public void setPersistenceGroup(String current) {
-        this.name = name;
+        this.name = current;
     }
 }

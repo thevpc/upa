@@ -63,3 +63,4 @@ Version 1.2.0.48 :
     [Test] Fixed Test all use cases for MySQL
     [Impl] Fixed Schema Modification Support for Views
     [Impl] Fixed Schema Modification Support for Column Changes (Added Modify Column)
+    [Impl] Fixed INT==>INTEGER for Derby RDBMS

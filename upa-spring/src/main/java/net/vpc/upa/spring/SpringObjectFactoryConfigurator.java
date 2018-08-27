@@ -7,9 +7,6 @@ package net.vpc.upa.spring;
 
 import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.ObjectFactoryConfigurator;
-import net.vpc.upa.impl.context.DefaultPersistenceUnitProvider;
-import net.vpc.upa.impl.util.classpath.ClassFileIteratorFactory;
-import net.vpc.upa.persistence.PersistenceStore;
 
 /**
  *
