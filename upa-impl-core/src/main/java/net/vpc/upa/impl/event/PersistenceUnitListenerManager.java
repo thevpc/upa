@@ -1,8 +1,25 @@
 package net.vpc.upa.impl.event;
 
+import net.vpc.upa.events.FieldEvent;
+import net.vpc.upa.events.RelationshipDefinitionListener;
+import net.vpc.upa.events.Trigger;
+import net.vpc.upa.events.TriggerEvent;
+import net.vpc.upa.events.TriggerDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitEvent;
+import net.vpc.upa.events.EntityDefinitionListener;
+import net.vpc.upa.events.FieldDefinitionListener;
+import net.vpc.upa.events.SectionDefinitionListener;
+import net.vpc.upa.events.IndexDefinitionListener;
+import net.vpc.upa.events.SectionEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.PackageDefinitionListener;
+import net.vpc.upa.events.DefinitionListener;
+import net.vpc.upa.events.RelationshipEvent;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.IndexEvent;
+import net.vpc.upa.events.PackageEvent;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.Init;
 import net.vpc.upa.exceptions.EntityAlreadyExistsException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
@@ -381,17 +398,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 for (EntityDefinitionListener listener : interceptorList) {
                     listener.onPreMoveEntity(event);
                 }
-                for (Callback invoker : getPreCallbacks(CallbackType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPreCallbacks(EventType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
-                for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
+                for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
                     callback.prepare(event);
                 }
             } else {
                 for (EntityDefinitionListener listener : interceptorList) {
                     listener.onMoveEntity(event);
                 }
-                for (Callback invoker : getPostCallbacks(CallbackType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPostCallbacks(EventType.ON_MOVE, ObjectType.ENTITY, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
             }
@@ -406,17 +423,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 for (FieldDefinitionListener listener : interceptorList) {
                     listener.onPreMoveField(event);
                 }
-                for (Callback invoker : getPreCallbacks(CallbackType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPreCallbacks(EventType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
-                for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
+                for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
                     callback.prepare(event);
                 }
             } else {
                 for (FieldDefinitionListener listener : interceptorList) {
                     listener.onMoveField(event);
                 }
-                for (Callback invoker : getPostCallbacks(CallbackType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPostCallbacks(EventType.ON_MOVE, ObjectType.FIELD, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
             }
@@ -431,17 +448,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 for (SectionDefinitionListener listener : interceptorList) {
                     listener.onPreMoveSection(event);
                 }
-                for (Callback invoker : getPreCallbacks(CallbackType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPreCallbacks(EventType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
-                for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
+                for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
                     callback.prepare(event);
                 }
             } else {
                 for (SectionDefinitionListener listener : interceptorList) {
                     listener.onMoveSection(event);
                 }
-                for (Callback invoker : getPostCallbacks(CallbackType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
+                for (Callback invoker : getPostCallbacks(EventType.ON_MOVE, ObjectType.SECTION, entity.getName(), entity.isSystem())) {
                     invoker.invoke(event);
                 }
             }
@@ -453,17 +470,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                 for (PackageDefinitionListener listener : interceptorList) {
                     listener.onPreMovePackage(event);
                 }
-                for (Callback invoker : getPreCallbacks(CallbackType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
+                for (Callback invoker : getPreCallbacks(EventType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
                     invoker.invoke(event);
                 }
-                for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
+                for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
                     callback.prepare(event);
                 }
             } else {
                 for (PackageDefinitionListener listener : interceptorList) {
                     listener.onMovePackage(event);
                 }
-                for (Callback invoker : getPostCallbacks(CallbackType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
+                for (Callback invoker : getPostCallbacks(EventType.ON_MOVE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
                     invoker.invoke(event);
                 }
             }
@@ -476,17 +493,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
                 li.onPreCreateTrigger(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
                 callback.invoke(evt);
             }
         } else {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
                 li.onCreateTrigger(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.TRIGGER, trigger.getEntity().getName(), trigger.getEntity().isSystem())) {
                 callback.invoke(evt);
             }
         }
@@ -499,17 +516,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
                 li.onPreDropTrigger(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (TriggerDefinitionListener li : entityTriggers.getAllListeners(false, trigger.getEntity().getName())) {
                 li.onDropTrigger(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.TRIGGER, trigger.getEntity().getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -523,17 +540,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onPreCreateEntity(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onCreateEntity(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -547,17 +564,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
 //            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
 //                listener.onPrePrepareEntity(evt);
 //            }
-//            for (Callback callback : getPreCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (Callback callback : getPreCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.invoke(evt);
 //            }
-//            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.prepare(evt);
 //            }
 //        } else {
 //            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
 //                listener.onPrepareEntity(evt);
 //            }
-//            for (Callback callback : getPostCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (Callback callback : getPostCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.invoke(evt);
 //            }
 //        }
@@ -570,17 +587,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onPrePrepareEntity(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onPrepareEntity(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_PREPARE, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -596,17 +613,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (FieldDefinitionListener listener : fields.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onPreCreateField(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (FieldDefinitionListener listener : fields.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onCreateField(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.FIELD, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -621,17 +638,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (IndexDefinitionListener listener : indexes.getAllListeners(system, index.getEntity().getName(), entityTypeListenerId)) {
                 listener.onPreCreateIndex(event);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
                 callback.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
                 callback.prepare(event);
             }
         } else {
             for (IndexDefinitionListener listener : indexes.getAllListeners(system, index.getEntity().getName(), entityTypeListenerId)) {
                 listener.onCreateIndex(event);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.INDEX, entity.getName(), system)) {
                 callback.invoke(event);
             }
         }
@@ -647,17 +664,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (SectionDefinitionListener listener : sections.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onPreCreateSection(event);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
                 callback.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
                 callback.prepare(event);
             }
         } else {
             for (SectionDefinitionListener listener : sections.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onCreateSection(event);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.SECTION, entity.getName(), system)) {
                 callback.invoke(event);
             }
         }
@@ -673,7 +690,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     listener.onPreCreatePackage(evt);
                 }
             }
-            List<Callback> callbackInvokers = getPreCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
+            List<Callback> callbackInvokers = getPreCallbacks(EventType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
             if (!callbackInvokers.isEmpty()) {
                 if (evt == null) {
                     evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
@@ -682,7 +699,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     callback.invoke(evt);
                 }
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM)) {
                 if (evt == null) {
                     evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
                 }
@@ -696,7 +713,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
                     listener.onCreatePackage(evt);
                 }
             }
-            List<Callback> callbackInvokers = getPostCallbacks(CallbackType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
+            List<Callback> callbackInvokers = getPostCallbacks(EventType.ON_CREATE, ObjectType.PACKAGE, persistenceUnit.getName(), DEFAULT_SYSTEM);
             if (!callbackInvokers.isEmpty()) {
                 if (evt == null) {
                     evt = new PackageEvent(module, module.getPersistenceUnit(), parent, position, null, -1, phase);
@@ -715,10 +732,10 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (RelationshipDefinitionListener listener : interceptorList) {
                 listener.onPreCreateRelationship(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
                 callback.prepare(evt);
             }
         } else {
@@ -727,7 +744,7 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (RelationshipDefinitionListener listener : interceptorList) {
                 listener.onCreateRelationship(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_CREATE, ObjectType.RELATIONSHIP, relation.getSourceEntity().getName(), false)) {
                 callback.invoke(evt);
             }
         }
@@ -741,17 +758,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onPreDropEntity(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
                 listener.onDropEntity(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.ENTITY, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -767,17 +784,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (FieldDefinitionListener listener : fields.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onPreDropField(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (FieldDefinitionListener listener : fields.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onDropField(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.FIELD, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -793,17 +810,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (IndexDefinitionListener listener : indexes.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onPreDropIndex(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (IndexDefinitionListener listener : indexes.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onDropIndex(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.INDEX, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -819,17 +836,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (SectionDefinitionListener listener : sections.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onPreDropSection(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
                 callback.prepare(evt);
             }
         } else {
             for (SectionDefinitionListener listener : sections.getAllListeners(system, entityName, entityTypeId)) {
                 listener.onDropSection(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.SECTION, entity.getName(), system)) {
                 callback.invoke(evt);
             }
         }
@@ -842,17 +859,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PackageDefinitionListener listener : interceptorList) {
                 listener.onPreDropPackage(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(evt);
             }
         } else {
             for (PackageDefinitionListener listener : interceptorList) {
                 listener.onDropPackage(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.PACKAGE, module.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(evt);
             }
         }
@@ -864,17 +881,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (RelationshipDefinitionListener listener : getRelationshipListeners(relation.getSourceRole().getEntity().getName(), relation.getTargetRole().getEntity().getName())) {
                 listener.onPreDropRelationship(evt);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
+            for (Callback callback : getPreCallbacks(EventType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
                 callback.invoke(evt);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
                 callback.prepare(evt);
             }
         } else {
             for (RelationshipDefinitionListener listener : getRelationshipListeners(relation.getSourceRole().getEntity().getName(), relation.getTargetRole().getEntity().getName())) {
                 listener.onDropRelationship(evt);
             }
-            for (Callback callback : getPostCallbacks(CallbackType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
+            for (Callback callback : getPostCallbacks(EventType.ON_DROP, ObjectType.RELATIONSHIP, relation.getSourceRole().getEntity().getName(), relation.getSourceRole().getEntity().isSystem())) {
                 callback.invoke(evt);
             }
         }
@@ -986,17 +1003,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreModelChanged(event);
             }
-            for (Callback invoker : getPreCallbacks(CallbackType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPreCallbacks(EventType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onModelChanged(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_MODEL_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1008,14 +1025,14 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreStorageChanged(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onStorageChanged(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_STORAGE_CHANGED, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1027,17 +1044,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreClear(event);
             }
-            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPreCallbacks(EventType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onClear(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_CLEAR, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1049,17 +1066,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreClose(event);
             }
-            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPreCallbacks(EventType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onClose(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_CLOSE, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1071,17 +1088,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreReset(event);
             }
-            for (Callback invoker : getPreCallbacks(CallbackType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPreCallbacks(EventType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onReset(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_RESET, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1093,17 +1110,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreStart(event);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.prepare(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onStart(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_START, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }
@@ -1121,36 +1138,36 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
         callbackManager.removeCallback(callback);
     }
 
-    public List<Callback> getPreCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE);
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
+    public List<Callback> getPreCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system) {
+        List<Callback> allCallbacks = callbackManager.getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.BEFORE);
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.BEFORE)));
         return allCallbacks;
     }
 
-    public List<Callback> getPostCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER);
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)));
-        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)));
+    public List<Callback> getPostCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system) {
+        List<Callback> allCallbacks = callbackManager.getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.AFTER);
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.AFTER)));
+        allCallbacks.addAll(Arrays.asList(persistenceUnit.getPersistenceGroup().getContext().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.AFTER)));
         return allCallbacks;
     }
 
-    public List<PreparedCallback> getPostPreparedCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
+    public List<PreparedCallback> getPostPreparedCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system) {
         List<PreparedCallback> callbacks = new ArrayList<PreparedCallback>();
-        for (Callback callback : callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, true, EventPhase.AFTER)) {
+        for (Callback callback : callbackManager.getCallbacks(eventType, objectType, nameFilter, system, true, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
-        for (Callback callback : persistenceUnit.getPersistenceGroup().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
+        for (Callback callback : persistenceUnit.getPersistenceGroup().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
-        for (Callback callback : persistenceUnit.getPersistenceGroup().getContext().getCallbacks(callbackType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
+        for (Callback callback : persistenceUnit.getPersistenceGroup().getContext().getCallbacks(eventType, objectType, nameFilter, system, false, EventPhase.AFTER)) {
             callbacks.add((PreparedCallback) callback);
         }
         return callbacks;
     }
 
-    public Callback[] getCurrentCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
-        List<Callback> callbacks = callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly, phase);
+    public Callback[] getCurrentCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
+        List<Callback> callbacks = callbackManager.getCallbacks(eventType, objectType, nameFilter, system, preparedOnly, phase);
         return callbacks.toArray(new Callback[callbacks.size()]);
     }
 
@@ -1160,17 +1177,17 @@ public class PersistenceUnitListenerManager implements UPAObjectListener {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onPreUpdateFormulas(event);
             }
-            for (Callback callback : getPreCallbacks(CallbackType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getPreCallbacks(EventType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
-            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
             for (PersistenceUnitListener listener : persistenceUnitListeners) {
                 listener.onUpdateFormulas(event);
             }
-            for (Callback invoker : getPostCallbacks(CallbackType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+            for (Callback invoker : getPostCallbacks(EventType.ON_UPDATE_FORMULAS, ObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
                 invoker.invoke(event);
             }
         }

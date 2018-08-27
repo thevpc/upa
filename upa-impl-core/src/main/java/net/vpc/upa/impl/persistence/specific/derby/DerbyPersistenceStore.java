@@ -521,7 +521,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             return new SqlTypeName("SMALLINT");
         }
         if (PlatformUtils.isInt32(platformType)) {
-            return new SqlTypeName("INT");
+            return new SqlTypeName("INTEGER");
         }
         if (PlatformUtils.isInt64(platformType)) {
             return new SqlTypeName("BIGINT");

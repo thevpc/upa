@@ -35,13 +35,13 @@
 package net.vpc.upa.types;
 
 import java.util.Calendar;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:02:55
+ * User: taha Date: 5 sept. 2003 Time: 13:02:55
  */
 public class Year extends Temporal {
+
     public static final long serialVersionUID = 1L;
 
     public Year() {
@@ -51,7 +51,6 @@ public class Year extends Temporal {
     public Year(int gregorianYear) {
         this(validateTime(gregorianYear));
     }
-
 
     public Year(java.util.Date date) {
         this(date.getTime());
@@ -110,6 +109,12 @@ public class Year extends Temporal {
         return new Year(calendar.getTime());
     }
 
+    public int getYearValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.YEAR);
+    }
+
     public Year previousYear() {
         return getRelativeYear(-1);
     }
@@ -121,6 +126,16 @@ public class Year extends Temporal {
 //            return new Year(this, start);
 //        }
 //    }
+    public static Year valueOf(String value) {
+        if (value == null || value.length() != 4) {
+            throw new IllegalUPAArgumentException("Invalid Year format (expected yyyy-MM-dd)");
+        }
+        try {
+            return new Year(Integer.parseInt(value));
+        } catch (Exception ex) {
+            throw new IllegalUPAArgumentException("Invalid Year format (expected yyyy-MM-dd)", ex);
+        }
+    }
 
     @Override
     public String toString() {

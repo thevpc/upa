@@ -1,16 +1,16 @@
 package net.vpc.upa.impl.event;
 
 
-import net.vpc.upa.callbacks.SingleEntityListener;
+import net.vpc.upa.events.SingleEntityListener;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.EntityListenerAdapter;
-import net.vpc.upa.callbacks.PersistEvent;
-import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.callbacks.UpdateEvent;
-import net.vpc.upa.callbacks.UpdateFormulaEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.EntityListenerAdapter;
+import net.vpc.upa.events.PersistEvent;
+import net.vpc.upa.events.RemoveEvent;
+import net.vpc.upa.events.UpdateEvent;
+import net.vpc.upa.events.UpdateFormulaEvent;
 import net.vpc.upa.impl.context.DefaultEntityTriggerContext;
 
 /**

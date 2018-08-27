@@ -37,23 +37,21 @@ package net.vpc.upa.types;
 import net.vpc.upa.PortabilityHint;
 
 import java.util.Calendar;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:02:55
+ * User: taha Date: 5 sept. 2003 Time: 13:02:55
  */
 @PortabilityHint(target = "C#", name = "partial")
 public class Date extends Temporal {
+
     @PortabilityHint(target = "C#", name = "ignore")
     public static final long serialVersionUID = 1L;
-
 
     @PortabilityHint(target = "C#", name = "ignore")
     public Date() {
         this(System.currentTimeMillis());
     }
-
 
     @PortabilityHint(target = "C#", name = "ignore")
     public Date(java.util.Date date) {
@@ -70,6 +68,24 @@ public class Date extends Temporal {
 
     public Date previousDay() {
         return getRelativeDay(-1);
+    }
+
+    public int getYearValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public int getMonthValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public int getDateValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.DATE);
     }
 
     @PortabilityHint(target = "C#", name = "ignore")
@@ -89,6 +105,27 @@ public class Date extends Temporal {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime().getTime();
+    }
+
+    public static Date valueOf(String value) {
+        if (value == null || value.length() != 10
+                || value.charAt(4) != '-'
+                || value.charAt(7) != '-') {
+            throw new IllegalUPAArgumentException("Invalid Date format (expected yyyy-MM-dd)");
+        }
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, Integer.parseInt(value.substring(0, 4)));
+            calendar.set(Calendar.MONTH, Integer.parseInt(value.substring(5, 7)));
+            calendar.set(Calendar.DATE, Integer.parseInt(value.substring(8, 10)));
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            return new Date(calendar.getTime().getTime());
+        } catch (Exception ex) {
+            throw new IllegalUPAArgumentException("Invalid Date format (expected yyyy-MM-dd)", ex);
+        }
     }
 
     @Override

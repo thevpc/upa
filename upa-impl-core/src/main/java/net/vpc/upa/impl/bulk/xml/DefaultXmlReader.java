@@ -24,7 +24,7 @@ import net.vpc.upa.bulk.DataColumn;
 import net.vpc.upa.bulk.XmlColumn;
 import net.vpc.upa.bulk.XmlParser;
 import net.vpc.upa.impl.bulk.AbstractDataReader;
-import net.vpc.upa.impl.util.xml.XmlFactory;
+import net.vpc.upa.impl.XmlFactory;
 
 /**
  *

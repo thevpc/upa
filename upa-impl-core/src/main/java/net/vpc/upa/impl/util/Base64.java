@@ -180,7 +180,7 @@ public final class Base64 {
         int encodedIndex = 0;
         int dataIndex = 0;
         int i = 0;
-        log.log(Level.FINEST, "number of triplets = " + numberTriplets);
+//        log.log(Level.FINEST, "number of triplets = " + numberTriplets);
 
         for (int line = 0; line < numberLines - 1; line++) {
             for (int quartet = 0; quartet < 19; quartet++) {
@@ -188,7 +188,7 @@ public final class Base64 {
                 b2 = binaryData[dataIndex++];
                 b3 = binaryData[dataIndex++];
 
-                log.log(Level.FINEST, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
+//                log.log(Level.FINEST, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3);
 
                 l = (byte) (b2 & 0x0f);
                 k = (byte) (b1 & 0x03);
@@ -198,11 +198,11 @@ public final class Base64 {
                 byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
                 byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
 
-                if (log.isLoggable(Level.FINEST)) {
-                    log.log(Level.FINEST, "val2 = " + val2);
-                    log.log(Level.FINEST, "k4   = " + (k << 4));
-                    log.log(Level.FINEST, "vak  = " + (val2 | (k << 4)));
-                }
+//                if (log.isLoggable(Level.FINEST)) {
+//                    log.log(Level.FINEST, "val2 = " + val2);
+//                    log.log(Level.FINEST, "k4   = " + (k << 4));
+//                    log.log(Level.FINEST, "vak  = " + (val2 | (k << 4)));
+//                }
 
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
@@ -229,11 +229,11 @@ public final class Base64 {
             byte val2 = ((b2 & SIGN) == 0) ? (byte) (b2 >> 4) : (byte) ((b2) >> 4 ^ 0xf0);
             byte val3 = ((b3 & SIGN) == 0) ? (byte) (b3 >> 6) : (byte) ((b3) >> 6 ^ 0xfc);
 
-            if (log.isLoggable(Level.FINEST)) {
-                log.log(Level.FINEST, "val2 = " + val2);
-                log.log(Level.FINEST, "k4   = " + (k << 4));
-                log.log(Level.FINEST, "vak  = " + (val2 | (k << 4)));
-            }
+//            if (log.isLoggable(Level.FINEST)) {
+//                log.log(Level.FINEST, "val2 = " + val2);
+//                log.log(Level.FINEST, "k4   = " + (k << 4));
+//                log.log(Level.FINEST, "vak  = " + (val2 | (k << 4)));
+//            }
 
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
@@ -245,10 +245,10 @@ public final class Base64 {
         if (fewerThan24bits == EIGHTBIT) {
             b1 = binaryData[dataIndex];
             k = (byte) (b1 & 0x03);
-            if (log.isLoggable(Level.FINEST)) {
-                log.log(Level.FINEST, "b1=" + b1);
-                log.log(Level.FINEST, "b1<<2 = " + (b1 >> 2));
-            }
+//            if (log.isLoggable(Level.FINEST)) {
+//                log.log(Level.FINEST, "b1=" + b1);
+//                log.log(Level.FINEST, "b1<<2 = " + (b1 >> 2));
+//            }
             byte val1 = ((b1 & SIGN) == 0) ? (byte) (b1 >> 2) : (byte) ((b1) >> 2 ^ 0xc0);
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[k << 4];

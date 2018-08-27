@@ -34,7 +34,6 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.extensions.EntityExtensionDefinition;
 
 import java.io.Serializable;
 import java.util.List;

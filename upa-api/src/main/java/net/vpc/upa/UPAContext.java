@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.callbacks.PersistenceGroupDefinitionListener;
+import net.vpc.upa.events.PersistenceGroupDefinitionListener;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.persistence.UPAContextConfig;
@@ -366,7 +366,7 @@ public interface UPAContext {
 
     /**
      * get all callbacks matching filter.
-     * @param callbackType
+     * @param eventType
      * @param objectType
      * @param nameFilter
      * @param system
@@ -374,7 +374,7 @@ public interface UPAContext {
      * @param phase
      * @return
      */
-    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase);
 
     /**
      * Useful Thread local Properties instance.

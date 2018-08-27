@@ -13,7 +13,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 import java.util.List;
-import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.HierarchyExtension;
 
 import net.vpc.upa.filters.FieldFilters;
 

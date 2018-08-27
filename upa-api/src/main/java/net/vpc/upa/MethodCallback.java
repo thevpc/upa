@@ -46,25 +46,25 @@ public class MethodCallback {
     private Object instance;
     private Method method;
     private ObjectType objectType;
-    private CallbackType callbackType;
+    private EventType eventType;
     private EventPhase phase;
     private Map<String, Object> configuration;
 
     public MethodCallback() {
     }
 
-    public MethodCallback(Object instance, Method method, CallbackType callbackType, EventPhase phase) {
+    public MethodCallback(Object instance, Method method, EventType eventType, EventPhase phase) {
         this.instance = instance;
         this.method = method;
         this.phase = phase;
-        this.callbackType = callbackType;
+        this.eventType = eventType;
     }
 
-    public MethodCallback(Object instance, Method method, ObjectType objectType,CallbackType callbackType, EventPhase phase, Map<String, Object> configuration) {
+    public MethodCallback(Object instance, Method method, ObjectType objectType,EventType eventType, EventPhase phase, Map<String, Object> configuration) {
         this.instance = instance;
         this.objectType = objectType;
         this.method = method;
-        this.callbackType = callbackType;
+        this.eventType = eventType;
         this.phase = phase;
         this.configuration = configuration;
     }
@@ -95,12 +95,12 @@ public class MethodCallback {
         return this;
     }
 
-    public CallbackType getCallbackType() {
-        return callbackType;
+    public EventType getEventType() {
+        return eventType;
     }
 
-    public MethodCallback setCallbackType(CallbackType callbackType) {
-        this.callbackType = callbackType;
+    public MethodCallback setEventType(EventType eventType) {
+        this.eventType = eventType;
         return this;
     }
 
@@ -127,7 +127,7 @@ public class MethodCallback {
                 "instance=" + instance +
                 ", method=" + method +
                 ", objectType=" + objectType +
-                ", callbackType=" + callbackType +
+                ", eventType=" + eventType +
                 ", phase=" + phase +
                 ", configuration=" + configuration +
                 '}';

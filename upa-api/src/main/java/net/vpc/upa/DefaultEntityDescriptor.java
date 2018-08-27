@@ -36,7 +36,6 @@ package net.vpc.upa;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
 
 import java.util.List;
 import java.util.Map;

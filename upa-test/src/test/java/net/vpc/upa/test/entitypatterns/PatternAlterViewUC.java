@@ -12,8 +12,8 @@ import org.junit.Test;
 import java.util.List;
 import net.vpc.upa.DefaultFieldBuilder;
 import net.vpc.upa.Session;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
-import net.vpc.upa.impl.config.annotationparser.DefaultViewEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
+import net.vpc.upa.impl.config.DefaultViewEntityExtensionDefinition;
 import net.vpc.upa.types.DataTypeFactory;
 
 /**

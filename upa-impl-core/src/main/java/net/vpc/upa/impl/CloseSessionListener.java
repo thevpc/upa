@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.Session;
-import net.vpc.upa.callbacks.SessionListenerAdapter;
+import net.vpc.upa.events.SessionListenerAdapter;
 
 /**
 * @author Taha BEN SALAH <taha.bensalah@gmail.com>

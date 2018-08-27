@@ -1,5 +1,11 @@
 package net.vpc.upa.impl.config.annotationparser;
 
+import net.vpc.upa.impl.config.DefaultViewEntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.DefaultUnionEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
+import net.vpc.upa.persistence.UnionQueryInfo;
+import net.vpc.upa.UnionEntityExtensionDefinition;
 import net.vpc.upa.*;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.*;
@@ -7,7 +13,6 @@ import net.vpc.upa.config.Entity;
 import net.vpc.upa.config.Properties;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
-import net.vpc.upa.extensions.*;
 import net.vpc.upa.impl.config.decorations.DecorationPrimitiveValue;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.util.CompareUtils;

@@ -7,8 +7,8 @@ package net.vpc.upa.impl.config;
 import java.util.ArrayList;
 import java.util.List;
 import net.vpc.upa.Entity;
-import net.vpc.upa.callbacks.EntityInterceptor;
-import net.vpc.upa.callbacks.Trigger;
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.Trigger;
 import net.vpc.upa.impl.config.annotationparser.AnnotationParserUtils;
 
 /**

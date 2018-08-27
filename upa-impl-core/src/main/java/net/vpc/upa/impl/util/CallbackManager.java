@@ -18,7 +18,7 @@ public class CallbackManager {
 //        if (conf == null) {
 //            conf = new HashMap<String, Object>();
 //        }
-        boolean fireBefore = callback.getPhase() == EventPhase.BEFORE;
+        boolean fireBefore = callback.getEventPhase() == EventPhase.BEFORE;
         String nameFilter = null;
         boolean trackSystemObjects = true;
         if (conf != null && conf.containsKey("trackSystemObjects")) {
@@ -29,7 +29,7 @@ public class CallbackManager {
             nameFilter = null;
         }
         if (fireBefore) {
-            CallbackInvokerKey k = createCallbackInvokerKey(callback.getCallbackType(), callback.getObjectType(), nameFilter, trackSystemObjects);
+            CallbackInvokerKey k = createCallbackInvokerKey(callback.getEventType(), callback.getObjectType(), nameFilter, trackSystemObjects);
             List<Callback> ss = this.before.get(k);
             if (ss == null) {
                 ss = new ArrayList<Callback>();
@@ -37,7 +37,7 @@ public class CallbackManager {
             }
             ss.add(callback);
         } else {
-            CallbackInvokerKey k = createCallbackInvokerKey(callback.getCallbackType(), callback.getObjectType(), nameFilter, trackSystemObjects);
+            CallbackInvokerKey k = createCallbackInvokerKey(callback.getEventType(), callback.getObjectType(), nameFilter, trackSystemObjects);
             List<Callback> ss = this.after.get(k);
             if (ss == null) {
                 ss = new ArrayList<Callback>();
@@ -82,7 +82,7 @@ public class CallbackManager {
             nameFilter = null;
         }
 
-        CallbackInvokerKey k = createCallbackInvokerKey(callback.getCallbackType(), callback.getObjectType(), nameFilter, trackSystemObjects);
+        CallbackInvokerKey k = createCallbackInvokerKey(callback.getEventType(), callback.getObjectType(), nameFilter, trackSystemObjects);
         List<Callback> ss = before.get(k);
         if (ss != null) {
             ss.remove(callback);
@@ -99,8 +99,8 @@ public class CallbackManager {
         }
     }
 
-    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
-        CallbackInvokerKey k = createCallbackInvokerKey(callbackType, objectType, nameFilter, system);
+    public List<Callback> getCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system, boolean preparedOnly, EventPhase phase) {
+        CallbackInvokerKey k = createCallbackInvokerKey(eventType, objectType, nameFilter, system);
         List<Callback> found = new ArrayList<Callback>();
         if (preparedOnly) {
             Map<CallbackInvokerKey, List<PreparedCallback>> list = null;
@@ -110,21 +110,21 @@ public class CallbackManager {
                 found.addAll(ss);
             }
             if (nameFilter != null) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, null, system);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, null, system);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
                 }
             }
             if (!system) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, nameFilter, true);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, nameFilter, true);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
                 }
             }
             if (nameFilter != null && !system) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, null, true);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, null, true);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
@@ -139,21 +139,21 @@ public class CallbackManager {
                 found.addAll(ss);
             }
             if (nameFilter != null) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, null, system);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, null, system);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
                 }
             }
             if (!system) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, nameFilter, true);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, nameFilter, true);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
                 }
             }
             if (nameFilter != null && !system) {
-                CallbackInvokerKey k2 = createCallbackInvokerKey(callbackType, objectType, null, true);
+                CallbackInvokerKey k2 = createCallbackInvokerKey(eventType, objectType, null, true);
                 ss = list.get(k2);
                 if (ss != null) {
                     found.addAll(ss);
@@ -164,8 +164,8 @@ public class CallbackManager {
         return found;
     }
 
-    public List<PreparedCallback> getPostPreparedCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
-        CallbackInvokerKey k = createCallbackInvokerKey(callbackType, objectType, nameFilter, system);
+    public List<PreparedCallback> getPostPreparedCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system, EventPhase phase) {
+        CallbackInvokerKey k = createCallbackInvokerKey(eventType, objectType, nameFilter, system);
         List<PreparedCallback> found = new ArrayList<PreparedCallback>();
         Map<CallbackInvokerKey, List<PreparedCallback>> list = this.preparedAfter;
         List<PreparedCallback> ss = list.get(k);
@@ -173,11 +173,11 @@ public class CallbackManager {
             found.addAll(ss);
         }
         if (nameFilter != null) {
-            found.addAll(getPostPreparedCallbacks(callbackType, objectType, null, system, phase));
+            found.addAll(getPostPreparedCallbacks(eventType, objectType, null, system, phase));
         }
 
         if (!system) {
-            found.addAll(getPostPreparedCallbacks(callbackType, objectType, null, true, phase));
+            found.addAll(getPostPreparedCallbacks(eventType, objectType, null, true, phase));
         }
         return found;
     }
@@ -186,23 +186,23 @@ public class CallbackManager {
 
         Map<String, CallbackInvokerKey> keys;
     }
-    private HashCallbackInvokerKey[][][] hash = new HashCallbackInvokerKey[2][CallbackType.values().length][ObjectType.values().length];
+    private HashCallbackInvokerKey[][][] hash = new HashCallbackInvokerKey[2][EventType.values().length][ObjectType.values().length];
 
-    public CallbackInvokerKey createCallbackInvokerKey(CallbackType callbackType, ObjectType objectType, String name, boolean system) {
-        HashCallbackInvokerKey t = hash[system ? 1 : 0][callbackType.ordinal()][objectType.ordinal()];
+    public CallbackInvokerKey createCallbackInvokerKey(EventType eventType, ObjectType objectType, String name, boolean system) {
+        HashCallbackInvokerKey t = hash[system ? 1 : 0][eventType.ordinal()][objectType.ordinal()];
         if (t == null) {
             t = new HashCallbackInvokerKey();
-            hash[system ? 1 : 0][callbackType.ordinal()][objectType.ordinal()] = t;
+            hash[system ? 1 : 0][eventType.ordinal()][objectType.ordinal()] = t;
         }
         if (t.keys == null) {
             t.keys = new HashMap<String, CallbackInvokerKey>(3);
         }
         CallbackInvokerKey m = t.keys.get(name);
         if (m == null) {
-            m = new CallbackInvokerKey(callbackType, objectType, name, system);
+            m = new CallbackInvokerKey(eventType, objectType, name, system);
             t.keys.put(name, m);
         }
-        return m;//new CallbackInvokerKey(callbackType, objectType, name, system);
+        return m;//new CallbackInvokerKey(eventType, objectType, name, system);
     }
 
     private List<Callback> getAllBeforeCallbacks() {

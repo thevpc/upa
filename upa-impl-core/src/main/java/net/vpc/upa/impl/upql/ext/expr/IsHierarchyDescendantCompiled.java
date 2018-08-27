@@ -3,7 +3,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
-import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.HierarchyExtension;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.extension.HierarchicalRelationshipSupport;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;

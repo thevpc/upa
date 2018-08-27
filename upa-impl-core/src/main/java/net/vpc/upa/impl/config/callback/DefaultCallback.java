@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.config.callback;
 
 import net.vpc.upa.Callback;
-import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventType;
 import net.vpc.upa.ObjectType;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,32 +18,32 @@ public class DefaultCallback implements Callback {
     protected MethodArgumentsConverter converter;
     protected Object instance;
     protected Method method;
-    private CallbackType callbackType;
+    private EventType eventType;
     private ObjectType objectType;
     private Map<String, Object> configuration;
-    private EventPhase phase;
+    private EventPhase eventPhase;
 
-    public DefaultCallback(Object o, Method m, CallbackType callbackType, EventPhase phase,ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
+    public DefaultCallback(Object o, Method m, EventType eventType, EventPhase phase,ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
         this.converter = converter;
         this.instance = o;
         this.method = m;
         this.method.setAccessible(true);
         this.objectType = objectType;
-        this.callbackType = callbackType;
+        this.eventType = eventType;
         this.configuration = configuration;
-        this.phase = phase;
+        this.eventPhase = phase;
     }
 
-    public EventPhase getPhase() {
-        return phase;
+    public EventPhase getEventPhase() {
+        return eventPhase;
     }
 
     public Map<String, Object> getConfiguration() {
         return configuration;
     }
 
-    public CallbackType getCallbackType() {
-        return callbackType;
+    public EventType getEventType() {
+        return eventType;
     }
 
     public ObjectType getObjectType() {

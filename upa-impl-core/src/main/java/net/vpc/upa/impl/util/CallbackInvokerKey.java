@@ -1,26 +1,26 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventType;
 import net.vpc.upa.ObjectType;
 
 /**
  * Created by vpc on 7/25/15.
  */
 public final class CallbackInvokerKey {
-    private CallbackType callbackType;
+    private EventType eventType;
     private ObjectType objectType;
     private boolean system;
     private String name;
 
-    public CallbackInvokerKey(CallbackType callbackType, ObjectType objectType, String name, boolean system) {
-        this.callbackType = callbackType;
+    public CallbackInvokerKey(EventType eventType, ObjectType objectType, String name, boolean system) {
+        this.eventType = eventType;
         this.objectType = objectType;
         this.system = system;
         this.name = name;
     }
 
-    public CallbackType getCallbackType() {
-        return callbackType;
+    public EventType getEventType() {
+        return eventType;
     }
 
     public ObjectType getObjectType() {
@@ -43,7 +43,7 @@ public final class CallbackInvokerKey {
         CallbackInvokerKey that = (CallbackInvokerKey) o;
 
         if (system != that.system) return false;
-        if (callbackType != that.callbackType) return false;
+        if (eventType != that.eventType) return false;
         if (objectType != that.objectType) return false;
         return !(name != null ? !name.equals(that.name) : that.name != null);
 
@@ -51,7 +51,7 @@ public final class CallbackInvokerKey {
 
     @Override
     public int hashCode() {
-        int result = callbackType != null ? callbackType.hashCode() : 0;
+        int result = eventType != null ? eventType.hashCode() : 0;
         result = 31 * result + (objectType != null ? objectType.hashCode() : 0);
         result = 31 * result + (system ? 1 : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);

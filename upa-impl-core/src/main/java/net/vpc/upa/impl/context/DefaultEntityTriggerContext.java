@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.context;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.callbacks.Trigger;
-import net.vpc.upa.callbacks.EntityTriggerContext;
+import net.vpc.upa.events.Trigger;
+import net.vpc.upa.events.EntityTriggerContext;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
 /**

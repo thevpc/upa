@@ -1,12 +1,12 @@
 package net.vpc.upa.impl.extension;
 
-import net.vpc.upa.extensions.SingletonExtensionDefinition;
+import net.vpc.upa.SingletonExtensionDefinition;
 import net.vpc.upa.persistence.EntityOperationManager;
 import net.vpc.upa.types.IntType;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
-import net.vpc.upa.persistence.SingletonExtension;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.SingletonExtension;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

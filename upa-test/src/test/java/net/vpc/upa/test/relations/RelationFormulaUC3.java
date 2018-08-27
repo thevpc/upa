@@ -1,7 +1,7 @@
 package net.vpc.upa.test.relations;
 
 import net.vpc.upa.*;
-import net.vpc.upa.callbacks.EntityEvent;
+import net.vpc.upa.events.EntityEvent;
 import net.vpc.upa.config.Id;
 import net.vpc.upa.config.Main;
 import net.vpc.upa.filters.FieldFilters;
@@ -25,7 +25,7 @@ public class RelationFormulaUC3 {
     public static void setup() {
         PUUtils.reset();
         PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC3.class);
-        pu.addCallback(new AbstractCallback(CallbackType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
+        pu.addCallback(new AbstractCallback(EventType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
             @Override
             public Object invoke(Object... arguments) {
                 EntityEvent event=(EntityEvent) arguments[0];

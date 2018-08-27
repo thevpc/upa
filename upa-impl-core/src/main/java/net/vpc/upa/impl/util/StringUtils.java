@@ -375,6 +375,29 @@ public final class StringUtils {
             return new StringFormatter(width, ' ', align).format(value);
         }
     }
+    public static String formatLeftAlign(String value, int width) {
+        if (width < 0) {
+            return value;
+        } else {
+            return new StringFormatter(width, ' ', StringFormatter.LEFT_ALIGN).format(value);
+        }
+    }
+
+    public static String formatRightAlign(String value, int width) {
+        if (width < 0) {
+            return value;
+        } else {
+            return new StringFormatter(width, ' ', StringFormatter.RIGTH_ALIGN).format(value);
+        }
+    }
+
+    public static String formatCenter(String value, int width) {
+        if (width < 0) {
+            return value;
+        } else {
+            return new StringFormatter(width, ' ', StringFormatter.CENTER_ALIGN).format(value);
+        }
+    }
 
     public static boolean isNullOrEmpty(String s) {
         return s == null || s.trim().length() == 0 || s.equals(net.vpc.upa.UPA.UNDEFINED_STRING);

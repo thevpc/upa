@@ -38,11 +38,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:01:29
+ * User: taha Date: 5 sept. 2003 Time: 13:01:29
  */
 public class DateTime extends Temporal {
+
     public static final long serialVersionUID = 1L;
 
     public DateTime() {
@@ -79,5 +78,47 @@ public class DateTime extends Temporal {
         c.set(Calendar.SECOND, seconds);
         c.set(Calendar.MILLISECOND, millis);
         return new DateTime(c.getTimeInMillis());
+    }
+
+    public int getYearValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public int getMonthValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public int getDateValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.DATE);
+    }
+
+    public int getHourValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinuteValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public int getSecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.SECOND);
+    }
+
+    public int getMillisecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MILLISECOND);
     }
 }

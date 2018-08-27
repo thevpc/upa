@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.callbacks.EntityInterceptor;
+import net.vpc.upa.events.EntityInterceptor;
 
 import java.util.*;
 

@@ -9,10 +9,10 @@
 package net.vpc.upa.impl.event;
 
 import net.vpc.upa.Entity;
-import net.vpc.upa.callbacks.UpdateFormulaInterceptor;
-import net.vpc.upa.callbacks.PersistEvent;
-import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.callbacks.UpdateEvent;
+import net.vpc.upa.events.UpdateFormulaInterceptor;
+import net.vpc.upa.events.PersistEvent;
+import net.vpc.upa.events.RemoveEvent;
+import net.vpc.upa.events.UpdateEvent;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;

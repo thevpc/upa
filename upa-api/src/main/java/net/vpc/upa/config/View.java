@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.config;
 
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

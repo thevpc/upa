@@ -3,7 +3,7 @@ package net.vpc.upa.impl.persistence;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Session;
 import net.vpc.upa.SessionContext;
-import net.vpc.upa.callbacks.SessionListenerAdapter;
+import net.vpc.upa.events.SessionListenerAdapter;
 import net.vpc.upa.impl.SessionParams;
 import net.vpc.upa.persistence.UConnection;
 

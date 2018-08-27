@@ -35,10 +35,10 @@
 package net.vpc.upa;
 
 import net.vpc.upa.bulk.ImportExportManager;
-import net.vpc.upa.callbacks.DefinitionListener;
-import net.vpc.upa.callbacks.EntityInterceptor;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.Trigger;
+import net.vpc.upa.events.DefinitionListener;
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.Trigger;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.expressions.EntityStatement;
@@ -46,7 +46,6 @@ import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.QLParameterProcessor;
 import net.vpc.upa.filters.EntityFilter;
 import net.vpc.upa.persistence.*;
-import net.vpc.upa.types.DataTypeTransformFactory;
 import net.vpc.upa.types.I18NString;
 
 import java.beans.PropertyChangeListener;
@@ -550,7 +549,7 @@ public interface PersistenceUnit extends Closeable {
 
     void removeCallback(Callback callback);
 
-    Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(EventType eventType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
 
     UConnection getConnection();
 

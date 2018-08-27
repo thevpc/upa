@@ -34,8 +34,8 @@
  */
 package net.vpc.upa.persistence;
 
+import net.vpc.upa.EntityExtensionDefinition;
 import net.vpc.upa.Entity;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

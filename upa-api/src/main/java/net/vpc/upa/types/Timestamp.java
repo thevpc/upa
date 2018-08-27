@@ -37,11 +37,10 @@ package net.vpc.upa.types;
 import java.util.Calendar;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:02:55
+ * User: taha Date: 5 sept. 2003 Time: 13:02:55
  */
 public class Timestamp extends Temporal {
+
     public static final long serialVersionUID = 1L;
     private int nanos;
 
@@ -65,6 +64,48 @@ public class Timestamp extends Temporal {
     public long getTime() {
         long time = super.getTime();
         return (time + (nanos / 1000000));
+    }
+
+    public int getYearValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public int getMonthValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MONTH);
+    }
+
+    public int getDateValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.DATE);
+    }
+
+    public int getHourValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinuteValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public int getSecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.SECOND);
+    }
+
+    public int getMillisecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MILLISECOND);
     }
 
     @Override
@@ -99,8 +140,8 @@ public class Timestamp extends Temporal {
         if (year < 1000) {
             // Add leading zeros
             yearString = "" + year;
-            yearString = yearZeros.substring(0, (4 - yearString.length())) +
-                    yearString;
+            yearString = yearZeros.substring(0, (4 - yearString.length()))
+                    + yearString;
         } else {
             yearString = "" + year;
         }
@@ -135,8 +176,8 @@ public class Timestamp extends Temporal {
             nanosString = Integer.toString(nanos);
 
             // Add leading zeros
-            nanosString = zeros.substring(0, (9 - nanosString.length())) +
-                    nanosString;
+            nanosString = zeros.substring(0, (9 - nanosString.length()))
+                    + nanosString;
 
             // Truncate trailing zeros
             char[] nanosChar = new char[nanosString.length()];

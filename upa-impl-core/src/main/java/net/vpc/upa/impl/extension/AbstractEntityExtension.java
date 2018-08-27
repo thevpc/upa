@@ -3,7 +3,7 @@ package net.vpc.upa.impl.extension;
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
 import net.vpc.upa.persistence.EntityExtension;
 import net.vpc.upa.persistence.EntityOperationManager;
 

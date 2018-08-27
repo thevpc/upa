@@ -12,8 +12,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.util.xml.XmlSAXElement;
-import net.vpc.upa.impl.util.xml.XmlSAXParser;
+import net.vpc.upa.impl.xml.XmlSAXElement;
+import net.vpc.upa.impl.xml.XmlSAXParser;
 
 /**
  *

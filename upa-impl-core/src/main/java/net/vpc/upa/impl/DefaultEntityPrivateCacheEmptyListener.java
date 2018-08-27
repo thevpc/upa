@@ -1,9 +1,9 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.callbacks.EntityListenerAdapter;
-import net.vpc.upa.callbacks.PersistEvent;
-import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.callbacks.UpdateEvent;
+import net.vpc.upa.events.EntityListenerAdapter;
+import net.vpc.upa.events.PersistEvent;
+import net.vpc.upa.events.RemoveEvent;
+import net.vpc.upa.events.UpdateEvent;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

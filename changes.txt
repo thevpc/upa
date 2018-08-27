@@ -40,6 +40,8 @@ Version 1.2.0.48 :
     [API ] scan method has as first parameter 'source' instead of config
                      (params order changed)
     [API ] renamed TypesFactory to DataTypeFactory
+    [API ] renamed package callbacks to events
+    [API ] renamed CallbackType tp EventType
     [Impl] replaced all 'type' fields not to fail in C# generation process
     [Impl] removed references to java.util.IllegalArgumentException
     [Impl] removed references to java.util.NoSuchElementException, replaced by

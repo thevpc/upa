@@ -1,51 +1,9 @@
 package net.vpc.upa;
 
-import net.vpc.upa.extensions.HierarchyExtension;
-
-import net.vpc.upa.bulk.*;
-import net.vpc.upa.impl.*;
-import net.vpc.upa.impl.bulk.text.DefaultTextFixedWidthFormatter;
-import net.vpc.upa.impl.bulk.text.DefaultTextFixedWidthParser;
-import net.vpc.upa.impl.bulk.xml.DefaultXmlFormatter;
-import net.vpc.upa.impl.config.DefaultUPAContext;
-import net.vpc.upa.impl.context.*;
-import net.vpc.upa.impl.extension.*;
-import net.vpc.upa.impl.persistence.DefaultEntityOperationManager;
-import net.vpc.upa.impl.persistence.DefaultExecutionContext;
-import net.vpc.upa.impl.persistence.DefaultPersistenceStoreFactory;
-import net.vpc.upa.impl.persistence.DefaultPersistenceNameStrategy;
-import net.vpc.upa.impl.security.DefaultSecurityManager;
-import net.vpc.upa.impl.transaction.DefaultTransactionManager;
-import net.vpc.upa.impl.transaction.DefaultTransactionManagerFactory;
 import net.vpc.upa.impl.util.ClassMap;
-import net.vpc.upa.impl.util.xml.DefaultXmlFactory;
-import net.vpc.upa.impl.util.xml.XmlFactory;
-import net.vpc.upa.persistence.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import net.vpc.upa.config.UPAContextConfigAnnotationParser;
-import net.vpc.upa.impl.bulk.DefaultImportEntityFinder;
-import net.vpc.upa.impl.bulk.DefaultImportDataManager;
-import net.vpc.upa.impl.bulk.DefaultImportExportManager;
-import net.vpc.upa.impl.bulk.DefaultParseFormatManager;
-import net.vpc.upa.impl.bulk.text.DefaultTextCSVFormatter;
-import net.vpc.upa.impl.bulk.text.DefaultTextCSVParser;
-import net.vpc.upa.impl.bulk.xml.DefaultXmlParser;
-import net.vpc.upa.impl.config.DefaultUPAContextConfigAnnotationParser;
-import net.vpc.upa.impl.util.PlatformUtils;
-import net.vpc.upa.impl.transform.DefaultDataTypeTransformFactory;
-import net.vpc.upa.impl.eval.DefaultQLEvaluator;
-import net.vpc.upa.impl.persistence.specific.derby.DerbyPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.interbase.InterBasePersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mckoi.McKoiPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mssqlserver.MSSQLServerPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.mysql.MySQLPersistenceStore;
-import net.vpc.upa.impl.persistence.specific.oracle.OraclePersistenceStore;
-import net.vpc.upa.impl.upql.DefaultQLExpressionParser;
-import net.vpc.upa.impl.util.DefaultBeanAdapterFactory;
-import net.vpc.upa.types.DataTypeTransformFactory;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -53,94 +11,99 @@ import net.vpc.upa.types.DataTypeTransformFactory;
  */
 public class RootObjectFactory extends AbstractObjectFactory {
 
-    final Logger log = Logger.getLogger(RootObjectFactory.class.getName());
+    public static final Logger log = Logger.getLogger(RootObjectFactory.class.getName());
     private ObjectFactory parentFactory;
     private ClassMap<Class> map = new ClassMap<Class>();
     private PlatformObjectFactory platformObjectFactory;
 
     public RootObjectFactory() {
-        register(PlatformObjectFactory.class, DefaultPlatformObjectFactory.class);
-        register(UPAContext.class, DefaultUPAContext.class);
-        register(UPAContextProvider.class, DefaultUPAContextProvider.class);
-        register(ObjectFactory.class, DefaultTypedFactory.class);
-        register(PersistenceUnitProvider.class, DefaultPersistenceUnitProvider.class);
-        register(PersistenceGroupProvider.class, DefaultPersistenceGroupProvider.class);
-        register(PersistenceGroup.class, DefaultPersistenceGroup.class);
-        register(PersistenceUnit.class, DefaultPersistenceUnit.class);
-        register(I18NStringStrategy.class, DefaultI18NStringStrategy.class);
-        register(Key.class, DefaultKey.class);
-        register(Document.class, DefaultDocument.class);
-        register(PersistenceStoreFactory.class, DefaultPersistenceStoreFactory.class);
-        register(SessionContextProvider.class, DefaultSessionContextProvider.class);
-//        register(PropertiesConnectionProfileManager.class,DefaultPropertiesConnectionProfileManager.class);
-        register(EntityExecutionContext.class, DefaultExecutionContext.class);
-        register(EntityShield.class, DefaultEntityShield.class);
-        register(DefaultEntityExtensionManager.class, DefaultEntityExtensionManager.class);
-        register(EntityOperationManager.class, DefaultEntityOperationManager.class);
-        register(DataTypeTransformFactory.class, DefaultDataTypeTransformFactory.class);
-        register(Index.class, DefaultIndex.class);
-        register(Entity.class, DefaultEntity.class);
-        register(Package.class, DefaultPackage.class);
-        register(Section.class, DefaultSection.class);
-        register(UPASecurityManager.class, DefaultSecurityManager.class);
-        register(TransactionManagerFactory.class, DefaultTransactionManagerFactory.class);
-        register(TransactionManager.class, DefaultTransactionManager.class);
-        register(Session.class, DefaultSession.class);
-//        register(Modifiers.class, DefaultModifiers.class);
-        register(PersistenceNameStrategy.class, DefaultPersistenceNameStrategy.class);
-        register(HierarchyExtension.class, HierarchicalRelationshipSupport.class);
-        register(UnionEntityExtension.class, DefaultUnionEntityExtension.class);
-        register(SingletonExtension.class, DefaultSingletonExtension.class);
-        register(ViewEntityExtension.class, DefaultViewEntityExtension.class);
-        register(FilterEntityExtension.class, DefaultFilterEntityExtension.class);
-        register(QLExpressionParser.class, DefaultQLExpressionParser.class);
-        register(BeanAdapterFactory.class, DefaultBeanAdapterFactory.class);
-        register(QLEvaluator.class, DefaultQLEvaluator.class);
-        register(Properties.class, DefaultProperties.class);
-        register(UPAContextConfigAnnotationParser.class, DefaultUPAContextConfigAnnotationParser.class);
+        register(PlatformObjectFactory.class, net.vpc.upa.impl.DefaultPlatformObjectFactory.class);
+        register(UPAContext.class, net.vpc.upa.impl.config.DefaultUPAContext.class);
+        register(UPAContextProvider.class, net.vpc.upa.impl.context.DefaultUPAContextProvider.class);
+        register(ObjectFactory.class, net.vpc.upa.impl.DefaultTypedFactory.class);
+        register(PersistenceUnitProvider.class, net.vpc.upa.impl.context.DefaultPersistenceUnitProvider.class);
+        register(PersistenceGroupProvider.class, net.vpc.upa.impl.context.DefaultPersistenceGroupProvider.class);
+        register(PersistenceGroup.class, net.vpc.upa.impl.DefaultPersistenceGroup.class);
+        register(PersistenceUnit.class, net.vpc.upa.impl.DefaultPersistenceUnit.class);
+        register(I18NStringStrategy.class, net.vpc.upa.impl.DefaultI18NStringStrategy.class);
+        register(Key.class, net.vpc.upa.impl.DefaultKey.class);
+        register(Document.class, net.vpc.upa.impl.DefaultDocument.class);
+        register(SessionContextProvider.class, net.vpc.upa.impl.context.DefaultSessionContextProvider.class);
+        register(EntityShield.class, net.vpc.upa.impl.DefaultEntityShield.class);
+        register(DataTypeTransformFactory.class, net.vpc.upa.impl.transform.DefaultDataTypeTransformFactory.class);
+        register(Index.class, net.vpc.upa.impl.DefaultIndex.class);
+        register(Entity.class, net.vpc.upa.impl.DefaultEntity.class);
+        register(Package.class, net.vpc.upa.impl.DefaultPackage.class);
+        register(Section.class, net.vpc.upa.impl.DefaultSection.class);
+        register(UPASecurityManager.class, net.vpc.upa.impl.security.DefaultSecurityManager.class);
+        register(TransactionManager.class, net.vpc.upa.impl.persistence.DefaultTransactionManager.class);
+        register(Session.class, net.vpc.upa.impl.context.DefaultSession.class);
+        register(HierarchyExtension.class, net.vpc.upa.impl.extension.HierarchicalRelationshipSupport.class);
+        register(UnionEntityExtension.class, net.vpc.upa.impl.extension.DefaultUnionEntityExtension.class);
+        register(SingletonExtension.class, net.vpc.upa.impl.extension.DefaultSingletonExtension.class);
+        register(ViewEntityExtension.class, net.vpc.upa.impl.extension.DefaultViewEntityExtension.class);
+        register(FilterEntityExtension.class, net.vpc.upa.impl.extension.DefaultFilterEntityExtension.class);
+        register(QLExpressionParser.class, net.vpc.upa.impl.upql.DefaultQLExpressionParser.class);
+        register(BeanAdapterFactory.class, net.vpc.upa.impl.DefaultBeanAdapterFactory.class);
+        register(QLEvaluator.class, net.vpc.upa.impl.eval.DefaultQLEvaluator.class);
+        register(Properties.class, net.vpc.upa.impl.DefaultProperties.class);
+        register(net.vpc.upa.config.UPAContextConfigAnnotationParser.class, net.vpc.upa.impl.config.DefaultUPAContextConfigAnnotationParser.class);
+        register(net.vpc.upa.persistence.PersistenceStoreFactory.class, net.vpc.upa.impl.persistence.DefaultPersistenceStoreFactory.class);
+        register(net.vpc.upa.persistence.EntityExecutionContext.class, net.vpc.upa.impl.persistence.DefaultExecutionContext.class);
+        register(net.vpc.upa.persistence.EntityOperationManager.class, net.vpc.upa.impl.persistence.DefaultEntityOperationManager.class);
+        register(net.vpc.upa.persistence.TransactionManagerFactory.class, net.vpc.upa.impl.persistence.DefaultTransactionManagerFactory.class);
+        register(net.vpc.upa.persistence.PersistenceNameStrategy.class, net.vpc.upa.impl.persistence.DefaultPersistenceNameStrategy.class);
 
+
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.mssqlserver.MSSQLServerPersistenceStore.class);
+
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         */
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.oracle.OraclePersistenceStore.class);
+        /**
+         * @PortabilityHint(target = "C#", name = "todo")
+         */
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.mysql.MySQLPersistenceStore.class);
+
+        /**
+         * @PortabilityHint(target = "C#", name = "suppress")
+         */
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.derby.DerbyPersistenceStore.class);
+        /**
+         * @PortabilityHint(target = "C#", name = "suppress")
+         */
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.mckoi.McKoiPersistenceStore.class);
+        /**
+         * @PortabilityHint(target = "C#", name = "suppress")
+         */
+        addAlternative(net.vpc.upa.persistence.PersistenceStore.class, net.vpc.upa.impl.persistence.specific.interbase.InterBasePersistenceStore.class);
+
+        
         /**
          * @PortabilityHint(target = "C#",name = "todo")
          */
         {
-            register(XmlFactory.class, DefaultXmlFactory.class);
-            register(TextFixedWidthParser.class, DefaultTextFixedWidthParser.class);
-            register(TextCSVParser.class, DefaultTextCSVParser.class);
-            register(XmlParser.class, DefaultXmlParser.class);
-            register(TextCSVFormatter.class, DefaultTextCSVFormatter.class);
-            register(TextFixedWidthFormatter.class, DefaultTextFixedWidthFormatter.class);
-            register(XmlFormatter.class, DefaultXmlFormatter.class);
-            register(ImportDataManager.class, DefaultImportDataManager.class);
-            register(ParseFormatManager.class, DefaultParseFormatManager.class);
-            register(ImportExportManager.class, DefaultImportExportManager.class);
-            register(ImportEntityFinder.class, DefaultImportEntityFinder.class);
-            register(ImportEntityMapper.class, DefaultImportEntityFinder.class);
+            register(net.vpc.upa.bulk.TextFixedWidthParser.class, net.vpc.upa.impl.bulk.text.DefaultTextFixedWidthParser.class);
+            register(net.vpc.upa.bulk.TextCSVParser.class, net.vpc.upa.impl.bulk.text.DefaultTextCSVParser.class);
+            register(net.vpc.upa.bulk.XmlParser.class, net.vpc.upa.impl.bulk.xml.DefaultXmlParser.class);
+            register(net.vpc.upa.bulk.TextCSVFormatter.class, net.vpc.upa.impl.bulk.text.DefaultTextCSVFormatter.class);
+            register(net.vpc.upa.bulk.TextFixedWidthFormatter.class, net.vpc.upa.impl.bulk.text.DefaultTextFixedWidthFormatter.class);
+            register(net.vpc.upa.bulk.XmlFormatter.class, net.vpc.upa.impl.bulk.xml.DefaultXmlFormatter.class);
+            register(net.vpc.upa.bulk.ImportDataManager.class, net.vpc.upa.impl.bulk.DefaultImportDataManager.class);
+            register(net.vpc.upa.bulk.ParseFormatManager.class, net.vpc.upa.impl.bulk.DefaultParseFormatManager.class);
+            register(net.vpc.upa.bulk.ImportExportManager.class, net.vpc.upa.impl.bulk.DefaultImportExportManager.class);
+            register(net.vpc.upa.bulk.ImportEntityFinder.class, net.vpc.upa.impl.bulk.DefaultImportEntityFinder.class);
+            register(net.vpc.upa.bulk.ImportEntityMapper.class, net.vpc.upa.impl.bulk.DefaultImportEntityFinder.class);
         }
 
-        addAlternative(PersistenceStore.class, MSSQLServerPersistenceStore.class);
 
+        register(net.vpc.upa.impl.DefaultEntityExtensionManager.class, net.vpc.upa.impl.DefaultEntityExtensionManager.class);
         /**
-         * @PortabilityHint(target = "C#", name = "todo")
+         * @PortabilityHint(target = "C#",name = "todo")
          */
-        addAlternative(PersistenceStore.class, OraclePersistenceStore.class);
-        /**
-         * @PortabilityHint(target = "C#", name = "todo")
-         */
-        addAlternative(PersistenceStore.class, MySQLPersistenceStore.class);
-
-        /**
-         * @PortabilityHint(target = "C#", name = "suppress")
-         */
-        addAlternative(PersistenceStore.class, DerbyPersistenceStore.class);
-        /**
-         * @PortabilityHint(target = "C#", name = "suppress")
-         */
-        addAlternative(PersistenceStore.class, McKoiPersistenceStore.class);
-        /**
-         * @PortabilityHint(target = "C#", name = "suppress")
-         */
-        addAlternative(PersistenceStore.class, InterBasePersistenceStore.class);
-
+        register(net.vpc.upa.impl.XmlFactory.class, net.vpc.upa.impl.DefaultXmlFactory.class);
+        
     }
 
     public final void register(Class contract, Class impl) {
@@ -167,12 +130,9 @@ public class RootObjectFactory extends AbstractObjectFactory {
             if (parentFactory != null) {
                 return parentFactory.createObject(type, name);
             }
-            if (PlatformUtils.isAbstract(type) || PlatformUtils.isInterface(type)) {
+            if (net.vpc.upa.impl.util.PlatformUtils.isAbstract(type) || net.vpc.upa.impl.util.PlatformUtils.isInterface(type)) {
                 throw new net.vpc.upa.exceptions.NoSuchUPAElementException("NoSuchObject", type.getSimpleName());
             }
-            best = type;
-        }
-        if (best == null) {
             best = type;
         }
         if (platformObjectFactory != null) {
@@ -189,7 +149,7 @@ public class RootObjectFactory extends AbstractObjectFactory {
     public <T> T createObject(String typeName, String name) {
         Class<T> c;
         try {
-            c = PlatformUtils.forName(typeName);
+            c = net.vpc.upa.impl.util.PlatformUtils.forName(typeName);
         } catch (ClassNotFoundException ex) {
             log.log(Level.SEVERE, null, ex);
             throw new RuntimeException(typeName);
@@ -210,7 +170,7 @@ public class RootObjectFactory extends AbstractObjectFactory {
     @Override
     public <T> T createObject(String typeName) {
         try {
-            Class<T> c = (Class<T>) PlatformUtils.forName(typeName);
+            Class<T> c = (Class<T>) net.vpc.upa.impl.util.PlatformUtils.forName(typeName);
             return (T) createObject(c);
         } catch (ClassNotFoundException ex) {
             log.log(Level.SEVERE, null, ex);
@@ -220,10 +180,10 @@ public class RootObjectFactory extends AbstractObjectFactory {
 
     protected Object createPlatformInstance(Class cls, String name) {
         if (platformObjectFactory == null) {
-            if (cls.equals(PlatformObjectFactory.class) || cls.equals(DefaultPlatformObjectFactory.class)) {
-                platformObjectFactory = DefaultPlatformObjectFactory.INSTANCE;
+            if (cls.equals(PlatformObjectFactory.class) || cls.equals(net.vpc.upa.impl.DefaultPlatformObjectFactory.class)) {
+                platformObjectFactory = net.vpc.upa.impl.DefaultPlatformObjectFactory.INSTANCE;
             } else {
-                platformObjectFactory = createObject(PlatformObjectFactory.class, null, DefaultPlatformObjectFactory.INSTANCE);
+                platformObjectFactory = createObject(PlatformObjectFactory.class, null, net.vpc.upa.impl.DefaultPlatformObjectFactory.INSTANCE);
             }
         }
         return platformObjectFactory.createObject(cls, name);

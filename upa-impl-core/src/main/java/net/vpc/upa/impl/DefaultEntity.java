@@ -1,11 +1,18 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.Trigger;
+import net.vpc.upa.events.DefinitionListener;
+import net.vpc.upa.events.EntityListener;
+import net.vpc.upa.events.SingleEntityListener;
+import net.vpc.upa.events.UpdateFormulaInterceptor;
+import net.vpc.upa.events.UpdateRelationshipSourceFormulaInterceptor;
+import net.vpc.upa.events.UpdateRelationshipTargetFormulaInterceptor;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
@@ -36,9 +43,9 @@ import net.vpc.upa.types.I18NString;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.extensions.SingletonExtensionDefinition;
-import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.SingletonExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 
 public class DefaultEntity extends AbstractUPAObject implements // for simple
         // use

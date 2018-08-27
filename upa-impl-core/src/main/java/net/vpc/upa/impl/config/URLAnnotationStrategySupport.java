@@ -1,8 +1,18 @@
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.PersistenceGroupDefinitionListener;
+import net.vpc.upa.events.SectionDefinitionListener;
+import net.vpc.upa.events.RelationshipDefinitionListener;
+import net.vpc.upa.events.IndexDefinitionListener;
+import net.vpc.upa.events.PackageDefinitionListener;
+import net.vpc.upa.events.TriggerDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitDefinitionListener;
+import net.vpc.upa.events.EntityDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.FieldDefinitionListener;
 import net.vpc.upa.*;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.*;
 import net.vpc.upa.config.PersistenceNameFormat;

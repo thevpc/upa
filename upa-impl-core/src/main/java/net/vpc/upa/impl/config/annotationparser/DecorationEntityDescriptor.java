@@ -1,7 +1,7 @@
 package net.vpc.upa.impl.config.annotationparser;
 
 import net.vpc.upa.*;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
 
 import java.util.*;
 

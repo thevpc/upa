@@ -38,7 +38,7 @@ import java.util.Map;
 
 /**
  * Callback are Framework hooks to object (@see {@link ObjectType}) manipulation phases (@see {@link EventPhase}).
- * They are invoked before or after un object action (@see {@link CallbackType})
+ * They are invoked before or after un object action (@see {@link EventType})
  * @author taha.bensalah@gmail.com on 7/25/15.
  * @see UPAContext#addCallback(Callback)
  * @see UPAContext#addCallback(MethodCallback)
@@ -51,9 +51,9 @@ public interface Callback {
 
     Object invoke(Object... arguments);
 
-    CallbackType getCallbackType();
+    EventType getEventType();
 
-    EventPhase getPhase();
+    EventPhase getEventPhase();
 
     ObjectType getObjectType();
 

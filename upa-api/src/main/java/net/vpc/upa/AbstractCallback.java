@@ -40,7 +40,7 @@ import java.util.Map;
  * Created by vpc on 6/9/17.
  */
 public abstract class AbstractCallback implements Callback {
-    private CallbackType callbackType;
+    private EventType eventType;
 
     private EventPhase phase;
 
@@ -48,20 +48,20 @@ public abstract class AbstractCallback implements Callback {
 
     private Map<String, Object> configuration;
 
-    public AbstractCallback(CallbackType callbackType, EventPhase phase, ObjectType objectType, Map<String, Object> configuration) {
-        this.callbackType = callbackType;
+    public AbstractCallback(EventType eventType, EventPhase phase, ObjectType objectType, Map<String, Object> configuration) {
+        this.eventType = eventType;
         this.phase = phase;
         this.objectType = objectType;
         this.configuration = configuration;
     }
 
     @Override
-    public CallbackType getCallbackType() {
-        return callbackType;
+    public EventType getEventType() {
+        return eventType;
     }
 
     @Override
-    public EventPhase getPhase() {
+    public EventPhase getEventPhase() {
         return phase;
     }
 

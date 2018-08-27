@@ -14,14 +14,14 @@ import net.vpc.upa.PersistenceState;
 import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryStatement;
-import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
+import net.vpc.upa.FilterEntityExtensionDefinition;
 import net.vpc.upa.impl.persistence.DefaultPersistenceStore;
 import net.vpc.upa.impl.persistence.DefaultPersistenceUnitCommitManager;
 import net.vpc.upa.impl.persistence.StructureCommitAction;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.UConnection;
-import net.vpc.upa.persistence.UnionEntityExtension;
-import net.vpc.upa.persistence.ViewEntityExtension;
+import net.vpc.upa.UnionEntityExtension;
+import net.vpc.upa.ViewEntityExtension;
 
 /**
  *

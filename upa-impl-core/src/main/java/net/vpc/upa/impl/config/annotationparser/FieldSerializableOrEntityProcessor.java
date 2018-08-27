@@ -4,11 +4,11 @@
  */
 package net.vpc.upa.impl.config.annotationparser;
 
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.DefinitionListenerAdapter;
-import net.vpc.upa.callbacks.PersistenceUnitEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.EntityDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.DefinitionListenerAdapter;
+import net.vpc.upa.events.PersistenceUnitEvent;
 import net.vpc.upa.DefaultRelationshipDescriptor;
 import net.vpc.upa.Entity;
 import net.vpc.upa.Field;

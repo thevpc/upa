@@ -5,8 +5,8 @@
  */
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.impl.util.xml.XMLUtils;
-import net.vpc.upa.impl.util.xml.XmlAttrListFilter;
+import net.vpc.upa.impl.xml.XMLUtils;
+import net.vpc.upa.impl.xml.XmlAttrListFilter;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -12,7 +12,7 @@ import net.vpc.upa.types.I18NString;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 import net.vpc.upa.expressions.IdCollectionExpression;
 import net.vpc.upa.expressions.IdExpression;
 import net.vpc.upa.impl.util.UPAUtils;

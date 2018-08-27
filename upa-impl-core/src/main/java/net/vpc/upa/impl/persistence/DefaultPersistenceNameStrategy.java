@@ -11,9 +11,9 @@ import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.exceptions.UPAException;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
-import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.persistence.PersistenceNameFormat;
 

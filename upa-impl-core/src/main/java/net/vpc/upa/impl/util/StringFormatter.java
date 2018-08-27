@@ -10,7 +10,7 @@ package net.vpc.upa.impl.util;
 
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
-class StringFormatter implements Formatter {
+public class StringFormatter implements Formatter {
     public static final byte LEFT_ALIGN = 0;
     public static final byte RIGTH_ALIGN = 1;
     public static final byte CENTER_ALIGN = 2;

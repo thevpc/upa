@@ -1,8 +1,8 @@
 package net.vpc.upa.impl.extension;
 
-import net.vpc.upa.callbacks.PersistenceUnitEvent;
-import net.vpc.upa.callbacks.PersistenceUnitListener;
-import net.vpc.upa.callbacks.PersistenceUnitListenerAdapter;
+import net.vpc.upa.events.PersistenceUnitEvent;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.PersistenceUnitListenerAdapter;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

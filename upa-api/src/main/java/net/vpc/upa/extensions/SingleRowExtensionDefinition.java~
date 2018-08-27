@@ -1,9 +1,0 @@
-package net.vpc.upa.extensions;
-
-/**
- * @author Taha BEN SALAH <taha.bensalah@gmail.com>
- * @creationdate 8/28/12 8:28 PM
- */
-public interface SingleRowExtensionDefinition extends EntityExtensionDefinition {
-    public boolean isAutoCreate();
-}

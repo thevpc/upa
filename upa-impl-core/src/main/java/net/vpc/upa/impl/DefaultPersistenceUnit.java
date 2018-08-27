@@ -1,17 +1,32 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.Trigger;
+import net.vpc.upa.events.DefinitionListener;
+import net.vpc.upa.events.TriggerDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitEvent;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.DataTypeTransformFactory;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.FilterEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
+import net.vpc.upa.SingletonExtensionDefinition;
+import net.vpc.upa.SingletonExtension;
+import net.vpc.upa.FilterEntityExtension;
+import net.vpc.upa.ViewEntityExtension;
+import net.vpc.upa.UnionEntityExtension;
+import net.vpc.upa.HierarchyExtension;
 import net.vpc.upa.impl.sysentities.LockInfoDesc;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
 import net.vpc.upa.Properties;
 import net.vpc.upa.bulk.ImportExportManager;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.extensions.*;
 import net.vpc.upa.filters.DefaultEntityFilter;
 import net.vpc.upa.filters.EntityFilter;
 import net.vpc.upa.filters.FieldFilter;
@@ -1097,10 +1112,12 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     protected Session openSystemSession() {
         Session currentSession = null;
-        try {
-            currentSession = getCurrentSession();
-        } catch (CurrentSessionNotFoundException ignore) {
-            //
+        if (getPersistenceGroup().currentSessionExists()) {
+            try {
+                currentSession = getCurrentSession();
+            } catch (CurrentSessionNotFoundException ignore) {
+                //
+            }
         }
         if (currentSession != null) {
             final Session session = currentSession;
@@ -2622,7 +2639,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void addCallback(Callback callback) {
         Map<String, Object> c = callback.getConfiguration();
-        if (callback.getCallbackType() == CallbackType.ON_EVAL_FUNCTION) {
+        if (callback.getEventType() == EventType.ON_EVAL_FUNCTION) {
             String functionName = c == null ? null : (String) c.get("functionName");
             if (StringUtils.isNullOrEmpty(functionName)) {
                 throw new UPAException("MissingCallbackFunctionName");
@@ -2632,7 +2649,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 throw new UPAException("MissingCallbackReturnType");
             }
             getExpressionManager().addFunction(functionName, returnType, new FunctionCallback(callback));
-        } else if (callback.getCallbackType() == CallbackType.ON_EVAL_FORMULA) {
+        } else if (callback.getEventType() == EventType.ON_EVAL_FORMULA) {
             String formulaName = c == null ? null : (String) c.get("formulaName");
             if (StringUtils.isNullOrEmpty(formulaName)) {
                 throw new UPAException("MissingCallbackFormulaName");
@@ -2656,7 +2673,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void removeCallback(Callback callback) {
         Map<String, Object> c = callback.getConfiguration();
-        if (callback.getCallbackType() == CallbackType.ON_EVAL_FUNCTION) {
+        if (callback.getEventType() == EventType.ON_EVAL_FUNCTION) {
             String functionName = c == null ? null : (String) c.get("functionName");
             if (StringUtils.isNullOrEmpty(functionName)) {
                 throw new UPAException("MissingCallbackFunctionName");
@@ -2667,9 +2684,9 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     }
 
     @Override
-    public Callback[] getCallbacks(CallbackType callbackType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
+    public Callback[] getCallbacks(EventType eventType, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
 
-        if (callbackType == CallbackType.ON_EVAL_FUNCTION) {
+        if (eventType == EventType.ON_EVAL_FUNCTION) {
             ArrayList<Callback> all = new ArrayList<Callback>();
             for (FunctionDefinition function : getExpressionManager().getFunctions()) {
                 if (function.getFunction() instanceof FunctionCallback) {
@@ -2678,7 +2695,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             }
             return all.toArray(new Callback[all.size()]);
         }
-        return persistenceUnitListenerManager.getCurrentCallbacks(callbackType, objectType, name, system, preparedOnly, phase);
+        return persistenceUnitListenerManager.getCurrentCallbacks(eventType, objectType, name, system, preparedOnly, phase);
     }
 
     @Override

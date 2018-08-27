@@ -1,7 +1,13 @@
 package net.vpc.upa.impl.util;
 
+import net.vpc.upa.events.Trigger;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.UpdateEvent;
+import net.vpc.upa.events.EntityListener;
+import net.vpc.upa.events.PersistEvent;
+import net.vpc.upa.events.RemoveEvent;
+import net.vpc.upa.events.UpdateFormulaEvent;
 import net.vpc.upa.*;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.DefaultTrigger;
@@ -59,13 +65,13 @@ public class DocumentListenerSupport {
             event = new PersistEvent(objectId, document, context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_PERSIST,
+                EventType.ON_PERSIST,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_PERSIST,
+                EventType.ON_PERSIST,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.prepare(event);
@@ -116,7 +122,7 @@ public class DocumentListenerSupport {
             event = new PersistEvent(objectId, document, context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_PERSIST,
+                EventType.ON_PERSIST,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -166,13 +172,13 @@ public class DocumentListenerSupport {
             event = new UpdateEvent(updates, condition, context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_UPDATE,
+                EventType.ON_UPDATE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_UPDATE,
+                EventType.ON_UPDATE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.prepare(event);
@@ -208,7 +214,7 @@ public class DocumentListenerSupport {
             event = new UpdateEvent(updates, condition, context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_UPDATE,
+                EventType.ON_UPDATE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -245,13 +251,13 @@ public class DocumentListenerSupport {
             event = new RemoveEvent(condition, context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_REMOVE,
+                EventType.ON_REMOVE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_REMOVE,
+                EventType.ON_REMOVE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.prepare(event);
@@ -287,7 +293,7 @@ public class DocumentListenerSupport {
             event = new RemoveEvent(condition, context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_REMOVE,
+                EventType.ON_REMOVE,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -325,13 +331,13 @@ public class DocumentListenerSupport {
             event = new UpdateFormulaEvent(updates, condition, context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_UPDATE_FORMULAS,
+                EventType.ON_UPDATE_FORMULAS,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_UPDATE_FORMULAS,
+                EventType.ON_UPDATE_FORMULAS,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.prepare(event);
@@ -367,7 +373,7 @@ public class DocumentListenerSupport {
             event = new UpdateFormulaEvent(updates, condition, context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_UPDATE_FORMULAS,
+                EventType.ON_UPDATE_FORMULAS,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -402,13 +408,13 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
         for (Callback callback : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_INIT,
+                EventType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             callback.invoke(event);
         }
         for (PreparedCallback callback : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_INIT,
+                EventType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             callback.prepare(event);
@@ -421,17 +427,17 @@ public class DocumentListenerSupport {
 //            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
 //                listener.onPrePrepareEntity(evt);
 //            }
-//            for (Callback callback : getPreCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (Callback callback : getPreCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.invoke(evt);
 //            }
-//            for (PreparedCallback callback : getPostPreparedCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (PreparedCallback callback : getPostPreparedCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.prepare(evt);
 //            }
 //        } else {
 //            for (EntityDefinitionListener listener : entities.getAllListeners(system, entity.getName(), entityTypeListenerId)) {
 //                listener.onPrepareEntity(evt);
 //            }
-//            for (Callback callback : getPostCallbacks(CallbackType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
+//            for (Callback callback : getPostCallbacks(EventType.ON_INIT, ObjectType.ENTITY, entity.getName(), system)) {
 //                callback.invoke(evt);
 //            }
 //        }
@@ -467,7 +473,7 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_INIT,
+                EventType.ON_INIT,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -502,13 +508,13 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_CLEAR,
+                EventType.ON_CLEAR,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_CLEAR,
+                EventType.ON_CLEAR,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -543,7 +549,7 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_CLEAR,
+                EventType.ON_CLEAR,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
@@ -578,13 +584,13 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.BEFORE);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPreCallbacks(
-                CallbackType.ON_RESET,
+                EventType.ON_RESET,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);
         }
         for (PreparedCallback invoker : persistenceUnitListenerManager.getPostPreparedCallbacks(
-                CallbackType.ON_RESET,
+                EventType.ON_RESET,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.prepare(event);
@@ -619,7 +625,7 @@ public class DocumentListenerSupport {
             event = new EntityEvent(context, EventPhase.AFTER);
         }
         for (Callback invoker : persistenceUnitListenerManager.getPostCallbacks(
-                CallbackType.ON_RESET,
+                EventType.ON_RESET,
                 ObjectType.ENTITY,
                 event.getEntity().getName(), PersistenceUnitListenerManager.DEFAULT_SYSTEM)) {
             invoker.invoke(event);

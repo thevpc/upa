@@ -34,13 +34,12 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.callbacks.DefinitionListener;
-import net.vpc.upa.callbacks.EntityInterceptor;
-import net.vpc.upa.callbacks.Trigger;
+import net.vpc.upa.events.DefinitionListener;
+import net.vpc.upa.events.EntityInterceptor;
+import net.vpc.upa.events.Trigger;
 import net.vpc.upa.expressions.EntityStatement;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Order;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.persistence.EntityExtension;
 import net.vpc.upa.persistence.EntityOperationManager;

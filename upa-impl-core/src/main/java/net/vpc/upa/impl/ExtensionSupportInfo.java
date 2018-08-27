@@ -1,6 +1,6 @@
 package net.vpc.upa.impl;
 
-import net.vpc.upa.extensions.EntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
 import net.vpc.upa.persistence.EntityExtension;
 
 /**

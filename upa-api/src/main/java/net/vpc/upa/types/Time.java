@@ -35,19 +35,18 @@
 package net.vpc.upa.types;
 
 import java.util.Calendar;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:02:55
+ * User: taha Date: 5 sept. 2003 Time: 13:02:55
  */
 public class Time extends Temporal {
+
     public static final long serialVersionUID = 1L;
 
     public Time() {
         this(System.currentTimeMillis());
     }
-
 
     public Time(java.util.Date date) {
         this(date.getTime());
@@ -67,6 +66,49 @@ public class Time extends Temporal {
         return calendar.getTime().getTime();
     }
 
+    public static Time valueOf(String value) {
+        if (value == null || value.length() != 12) {
+            throw new IllegalUPAArgumentException("Invalid Time format (expected HH:mm:ss.SSS)");
+        }
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            calendar.set(Calendar.MONTH, 0);
+            calendar.set(Calendar.YEAR, 1900);
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(value.substring(0, 2)));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(value.substring(3, 5)));
+            calendar.set(Calendar.SECOND, Integer.parseInt(value.substring(6, 8)));
+            calendar.set(Calendar.MILLISECOND, Integer.parseInt(value.substring(9, 12)));
+            return new Time(calendar.getTime().getTime());
+        } catch (Exception ex) {
+            throw new IllegalUPAArgumentException("Invalid Time format (expected yyyy-MM-dd)", ex);
+        }
+    }
+
+    public int getHourValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public int getMinuteValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public int getSecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.SECOND);
+    }
+
+    public int getMillisecondValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MILLISECOND);
+    }
+
     @Override
     public String toString() {
         Calendar c = Calendar.getInstance();
@@ -74,9 +116,11 @@ public class Time extends Temporal {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         int second = c.get(Calendar.SECOND);
+        int millisecond = c.get(Calendar.MILLISECOND);
         String hourString;
         String minuteString;
         String secondString;
+        String millisecondString;
 
         if (hour < 10) {
             hourString = "0" + hour;
@@ -93,6 +137,13 @@ public class Time extends Temporal {
         } else {
             secondString = Integer.toString(second);
         }
-        return (hourString + ":" + minuteString + ":" + secondString);
+        if (second < 10) {
+            millisecondString = "00" + millisecond;
+        } else if (second < 100) {
+            millisecondString = "0" + millisecond;
+        } else {
+            millisecondString = Integer.toString(second);
+        }
+        return (hourString + ":" + minuteString + ":" + secondString + "." + millisecondString);
     }
 }

@@ -4,8 +4,13 @@
  */
 package net.vpc.upa.impl.config.annotationparser;
 
+import net.vpc.upa.events.FieldEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.PersistenceUnitEvent;
+import net.vpc.upa.events.EntityDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitListener;
+import net.vpc.upa.events.FieldDefinitionListener;
 import net.vpc.upa.*;
-import net.vpc.upa.callbacks.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.Expression;

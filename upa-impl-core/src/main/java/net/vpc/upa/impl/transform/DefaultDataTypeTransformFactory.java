@@ -5,6 +5,7 @@
  */
 package net.vpc.upa.impl.transform;
 
+import net.vpc.upa.DataTypeTransformFactory;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;

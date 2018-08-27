@@ -7,13 +7,13 @@ package net.vpc.upa.impl.event;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventType;
 import net.vpc.upa.EventPhase;
 import net.vpc.upa.ObjectType;
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.RemoveEvent;
-import net.vpc.upa.callbacks.RemoveObjectEvent;
-import net.vpc.upa.callbacks.UPAEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.RemoveEvent;
+import net.vpc.upa.events.RemoveObjectEvent;
+import net.vpc.upa.events.UPAEvent;
 import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
 
 /**
@@ -22,8 +22,8 @@ import net.vpc.upa.impl.config.callback.MethodArgumentsConverter;
  */
 public class RemoveObjectEventCallback extends SingleEntityObjectEventCallback {
 
-    public RemoveObjectEventCallback(Object o, Method m, CallbackType callbackType, EventPhase phase, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
-        super(o, m, callbackType, phase,objectType, converter,configuration);
+    public RemoveObjectEventCallback(Object o, Method m, EventType eventType, EventPhase phase, ObjectType objectType, MethodArgumentsConverter converter, Map<String, Object> configuration) {
+        super(o, m, eventType, phase,objectType, converter,configuration);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class RemoveObjectEventCallback extends SingleEntityObjectEventCallback {
     public Object invoke(Object... arguments) {
         RemoveEvent ev = (RemoveEvent) arguments[0];
         for (Object id : resolveIdList(ev, ev.getFilterExpression())) {
-            RemoveObjectEvent oe = new RemoveObjectEvent(id, ev.getFilterExpression(), ev.getContext(),getPhase());
+            RemoveObjectEvent oe = new RemoveObjectEvent(id, ev.getFilterExpression(), ev.getContext(),getEventPhase());
             invokeSingle(oe);
         }
         return null;

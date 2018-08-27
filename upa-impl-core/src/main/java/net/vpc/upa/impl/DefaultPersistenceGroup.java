@@ -2,8 +2,8 @@ package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
 import net.vpc.upa.Properties;
-import net.vpc.upa.callbacks.PersistenceUnitDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceUnitEvent;
+import net.vpc.upa.events.PersistenceUnitDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitEvent;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 import net.vpc.upa.exceptions.*;
@@ -402,8 +402,8 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
     }
 
     public void addCallback(Callback callback) {
-        if (callback.getCallbackType() == CallbackType.ON_EVAL_FUNCTION) {
-            throw new UnsupportedUPAFeatureException("Unsupported", callback.getCallbackType());
+        if (callback.getEventType() == EventType.ON_EVAL_FUNCTION) {
+            throw new UnsupportedUPAFeatureException("Unsupported", callback.getEventType());
         }
         listeners.addCallback(callback);
     }
@@ -412,7 +412,7 @@ public class DefaultPersistenceGroup implements PersistenceGroupExt {
         listeners.removeCallback(callback);
     }
 
-    public Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
+    public Callback[] getCallbacks(EventType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase) {
         List<Callback> callbackInvokers = listeners.getCallbacks(nameFilter, objectType, name, system, preparedOnly, phase);
         return callbackInvokers.toArray(new Callback[callbackInvokers.size()]);
     }

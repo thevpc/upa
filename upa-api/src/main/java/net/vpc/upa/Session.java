@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.callbacks.SessionListener;
+import net.vpc.upa.events.SessionListener;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

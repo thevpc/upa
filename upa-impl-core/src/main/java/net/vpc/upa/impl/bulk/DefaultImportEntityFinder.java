@@ -18,7 +18,7 @@ import net.vpc.upa.expressions.And;
 import net.vpc.upa.expressions.Equals;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Var;
-import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.HierarchyExtension;
 
 /**
  *

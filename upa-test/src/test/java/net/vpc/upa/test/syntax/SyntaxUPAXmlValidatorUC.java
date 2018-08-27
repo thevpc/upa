@@ -4,7 +4,7 @@ import net.vpc.upa.UPA;
 import net.vpc.upa.impl.config.ContextElement;
 import net.vpc.upa.impl.config.DefaultUPAContextLoader;
 import net.vpc.upa.impl.util.DefaultVarContext;
-import net.vpc.upa.impl.util.xml.DefaultXmlFactory;
+import net.vpc.upa.impl.DefaultXmlFactory;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -5,11 +5,8 @@
  */
 package net.vpc.upa.tutorial.feature;
 
-import net.vpc.upa.callbacks.DefinitionListenerAdapter;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.EntityEvent;
-import net.vpc.upa.callbacks.FieldDefinitionListener;
-import net.vpc.upa.callbacks.FieldEvent;
+import net.vpc.upa.events.EntityEvent;
+import net.vpc.upa.events.FieldEvent;
 import net.vpc.upa.config.Callback;
 import net.vpc.upa.config.OnCreate;
 import net.vpc.upa.config.OnDrop;

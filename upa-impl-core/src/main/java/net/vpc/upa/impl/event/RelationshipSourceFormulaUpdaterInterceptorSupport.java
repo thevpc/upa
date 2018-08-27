@@ -11,10 +11,10 @@ package net.vpc.upa.impl.event;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.Relationship;
-import net.vpc.upa.callbacks.UpdateRelationshipSourceFormulaInterceptor;
-import net.vpc.upa.callbacks.EntityTriggerContext;
-import net.vpc.upa.callbacks.PersistEvent;
-import net.vpc.upa.callbacks.UpdateEvent;
+import net.vpc.upa.events.UpdateRelationshipSourceFormulaInterceptor;
+import net.vpc.upa.events.EntityTriggerContext;
+import net.vpc.upa.events.PersistEvent;
+import net.vpc.upa.events.UpdateEvent;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.filters.FieldFilter;

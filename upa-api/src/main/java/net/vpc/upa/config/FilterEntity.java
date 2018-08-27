@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.config;
 
-import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
+import net.vpc.upa.FilterEntityExtensionDefinition;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

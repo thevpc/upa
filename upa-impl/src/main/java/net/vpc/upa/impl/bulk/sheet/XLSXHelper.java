@@ -16,8 +16,8 @@ import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.PortabilityHint;
 
 import net.vpc.upa.impl.util.IOUtils;
-import net.vpc.upa.impl.util.xml.XmlFactory;
-import net.vpc.upa.impl.util.xml.XmlSAXParser;
+import net.vpc.upa.impl.XmlFactory;
+import net.vpc.upa.impl.xml.XmlSAXParser;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;

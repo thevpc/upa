@@ -4,8 +4,8 @@
  */
 package net.vpc.upa.impl.bulk.xml;
 
-import net.vpc.upa.impl.util.xml.XmlSAXElement;
-import net.vpc.upa.impl.util.xml.XmlSAXParser;
+import net.vpc.upa.impl.xml.XmlSAXElement;
+import net.vpc.upa.impl.xml.XmlSAXParser;
 
 import java.io.EOFException;
 import java.io.IOException;

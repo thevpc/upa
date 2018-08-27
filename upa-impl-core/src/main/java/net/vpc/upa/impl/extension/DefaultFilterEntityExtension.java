@@ -1,6 +1,6 @@
 package net.vpc.upa.impl.extension;
 
-import net.vpc.upa.persistence.FilterEntityExtension;
+import net.vpc.upa.FilterEntityExtension;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

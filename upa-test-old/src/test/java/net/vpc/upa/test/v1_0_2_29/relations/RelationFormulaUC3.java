@@ -25,7 +25,7 @@
 //    @BeforeClass
 //    public static void setup() {
 //        PersistenceUnit pu = PUUtils.createTestPersistenceUnit(RelationFormulaUC3.class);
-//        pu.addCallback(new AbstractCallback(CallbackType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
+//        pu.addCallback(new AbstractCallback(EventType.ON_CREATE,EventPhase.BEFORE,ObjectType.ENTITY,null) {
 //            @Override
 //            public Object invoke(Object... arguments) {
 //                EntityEvent event=(EntityEvent) arguments[0];

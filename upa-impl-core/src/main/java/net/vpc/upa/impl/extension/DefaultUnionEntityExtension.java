@@ -4,13 +4,13 @@ import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
-import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
-import net.vpc.upa.extensions.UnionQueryInfo;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
+import net.vpc.upa.persistence.UnionQueryInfo;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.util.filters.FieldFilters2;
 import net.vpc.upa.persistence.EntityOperationManager;
-import net.vpc.upa.persistence.UnionEntityExtension;
+import net.vpc.upa.UnionEntityExtension;
 import net.vpc.upa.types.DataTypeFactory;
 
 import java.util.ArrayList;

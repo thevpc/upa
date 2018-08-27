@@ -35,19 +35,18 @@
 package net.vpc.upa.types;
 
 import java.util.Calendar;
+import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 
 /**
- * User: taha
- * Date: 5 sept. 2003
- * Time: 13:02:55
+ * User: taha Date: 5 sept. 2003 Time: 13:02:55
  */
 public class Month extends Temporal {
+
     public static final long serialVersionUID = 1L;
 
     public Month() {
         this(System.currentTimeMillis());
     }
-
 
     public Month(int year, int month) {
         this(validateTime(year, month));
@@ -59,7 +58,18 @@ public class Month extends Temporal {
 
     public Month(long date) {
         super(validateTime(date));
+    }
 
+    public int getYearValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public int getMonthValue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(getTime());
+        return calendar.get(Calendar.MONTH);
     }
 
     public static long validateTime(int year, int month) {
@@ -93,7 +103,6 @@ public class Month extends Temporal {
         return calendar.getTime().getTime();
     }
 
-
     public Month getRelativeMonthYear(int relative) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getTime());
@@ -101,11 +110,22 @@ public class Month extends Temporal {
         return new Month(calendar.getTime());
     }
 
+    public static Month valueOf(String value) {
+        if (value == null || value.length() != 7 || value.charAt(4) != '-') {
+            throw new IllegalUPAArgumentException("Invalid Month format (expected yyyy-MM)");
+        }
+        try {
+            return new Month(Integer.parseInt(value.substring(0, 4)), Integer.parseInt(value.substring(5, 7)));
+        } catch (Exception ex) {
+            throw new IllegalUPAArgumentException("Invalid Month format (expected yyyy-MM)", ex);
+        }
+    }
+
     @Override
     public String toString() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getTime());
-        int year = calendar.get(Calendar.YEAR) ;//+ 1900;
+        int year = calendar.get(Calendar.YEAR);//+ 1900;
         int month = calendar.get(Calendar.MONTH) + 1;
         char[] buf = "2000-00".toCharArray();
         buf[0] = (char) ('0' + (year / 1000));

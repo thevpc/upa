@@ -1,11 +1,17 @@
 package net.vpc.upa.impl.config;
 
+import net.vpc.upa.impl.xml.XmlDomNode;
+import net.vpc.upa.impl.xml.XMLUtils;
+import net.vpc.upa.impl.xml.XmlDomElement;
+import net.vpc.upa.impl.xml.XmlAttrListFilter;
+import net.vpc.upa.impl.xml.XmlDomText;
+import net.vpc.upa.impl.XmlFactory;
+import net.vpc.upa.impl.DefaultXmlFactory;
 import net.vpc.upa.Property;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.util.*;
-import net.vpc.upa.impl.util.xml.*;
 import net.vpc.upa.persistence.*;
 import net.vpc.upa.types.I18NString;
 

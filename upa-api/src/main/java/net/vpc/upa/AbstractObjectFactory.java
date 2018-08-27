@@ -121,6 +121,7 @@ public abstract class AbstractObjectFactory implements ObjectFactory {
         return all.toArray(new Class[all.size()]);
     }
 
+    final
     @Override
     public <T> void addAlternative(Class<T> type, Class<? extends T> impl) {
         Set found = alternatives.get(type);

@@ -5,11 +5,11 @@ import net.vpc.upa.EntityModifier;
 import net.vpc.upa.FlagSet;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.QueryStatement;
-import net.vpc.upa.extensions.EntityExtensionDefinition;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.EntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.persistence.EntityOperationManager;
-import net.vpc.upa.persistence.ViewEntityExtension;
+import net.vpc.upa.ViewEntityExtension;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

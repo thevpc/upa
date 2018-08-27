@@ -1,5 +1,8 @@
 package net.vpc.upa.impl.persistence;
 
+import net.vpc.upa.FilterEntityExtension;
+import net.vpc.upa.ViewEntityExtension;
+import net.vpc.upa.UnionEntityExtension;
 import net.vpc.upa.impl.upql.ext.expr.CompiledQueryField;
 import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
 import net.vpc.upa.impl.upql.ext.expr.CompiledSelect;
@@ -11,9 +14,9 @@ import net.vpc.upa.config.PersistenceNameType;
 import net.vpc.upa.exceptions.*;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.expressions.*;
-import net.vpc.upa.extensions.FilterEntityExtensionDefinition;
-import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
-import net.vpc.upa.extensions.ViewEntityExtensionDefinition;
+import net.vpc.upa.FilterEntityExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
+import net.vpc.upa.ViewEntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
 import net.vpc.upa.impl.DefaultProperties;
@@ -1620,13 +1623,16 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
     }
 
     public PersistenceState getFieldPersistenceState(Field field, PersistenceNameType spec, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {
+        PersistenceState state = PersistenceState.DEFAULT;
+        ColumnPersistenceDefinition storedDef = null;
+        ColumnPersistenceDefinition modelDef = null;
         if ((field instanceof DynamicField)) {
-            return PersistenceState.TRANSIENT;
-        }
-        if ((field instanceof CompoundField)) {
+            state = PersistenceState.TRANSIENT;
+        } else if ((field instanceof CompoundField)) {
             boolean transientField = false;
             boolean dirtyField = false;
             boolean notFoundField = false;
+            state = PersistenceState.VALID;
             for (PrimitiveField field1 : ((CompoundField) field).getFields()) {
                 PersistenceState s = getFieldPersistenceState(field1, spec, entityExecutionContext, connection);
                 switch (s) {
@@ -1644,7 +1650,6 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                         break;
                     }
                 }
-                PersistenceState state = PersistenceState.VALID;
                 if (dirtyField) {
                     state = PersistenceState.DIRTY;
                 } else if (notFoundField) {
@@ -1652,29 +1657,29 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 } else if (transientField) {
                     state = PersistenceState.TRANSIENT;
                 }
-                log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{state, field});
-                return state;
+            }
+        } else {
+            FlagSet<FieldModifier> fieldModifiers = field.getModifiers();
+            if (field.isManyToOne() || fieldModifiers.contains(FieldModifier.TRANSIENT)) {
+                state = PersistenceState.TRANSIENT;
+            } else {
+                String tableName = getPersistenceName(field.getEntity());
+                String columnName = getPersistenceName(field);
+                storedDef = getStoreColumnDefinition(tableName, columnName, entityExecutionContext, connection);
+                if (storedDef == null) {
+                    state = PersistenceState.MISSING;
+                } else {
+                    modelDef = getModelColumnPersistenceDefinition((PrimitiveField) field, entityExecutionContext);
+                    state = isNativeObjectPersistenceDefinitionMatch(storedDef, modelDef) ? PersistenceState.VALID : PersistenceState.DIRTY;
+                }
             }
         }
-        FlagSet<FieldModifier> fieldModifiers = field.getModifiers();
-        if (field.isManyToOne() || fieldModifiers.contains(FieldModifier.TRANSIENT)) {
-            log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{PersistenceState.TRANSIENT, field});
-            return PersistenceState.TRANSIENT;
+        if (state == PersistenceState.DIRTY && storedDef != null && modelDef != null) {
+            log.log(Level.CONFIG, "Field Persistence State {0} {1} \n\t Found    {2}\n\t Expected {3}", new Object[]{StringUtils.formatLeftAlign(state.toString(), 12), field, storedDef, modelDef});
+        } else if (state != PersistenceState.VALID && state != PersistenceState.TRANSIENT) {
+            log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{StringUtils.formatLeftAlign(state.toString(), 12), field});
         }
-        String tableName = getPersistenceName(field.getEntity());
-        String columnName = getPersistenceName(field);
-        ColumnPersistenceDefinition d = getStoreColumnDefinition(tableName, columnName, entityExecutionContext, connection);
-        if (d == null) {
-            return PersistenceState.MISSING;
-        }
-        ColumnPersistenceDefinition e = getModelColumnPersistenceDefinition((PrimitiveField) field, entityExecutionContext);
-        PersistenceState s = isNativeObjectPersistenceDefinitionMatch(d, e) ? PersistenceState.VALID : PersistenceState.DIRTY;
-        if (s == PersistenceState.DIRTY) {
-            log.log(Level.CONFIG, "Field Persistence State {0} {1} \n\t Found    {2}\n\t Expected {3}", new Object[]{s, field, d, e});
-        } else {
-            log.log(Level.CONFIG, "Field Persistence State {0} {1}", new Object[]{s, field});
-        }
-        return s;
+        return state;
     }
 
     public ColumnPersistenceDefinition getStoreColumnDefinition(String tableName, String columnName, EntityExecutionContext entityExecutionContext, Connection connection) throws UPAException {

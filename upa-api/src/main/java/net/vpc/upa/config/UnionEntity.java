@@ -34,7 +34,7 @@
  */
 package net.vpc.upa.config;
 
-import net.vpc.upa.extensions.UnionEntityExtensionDefinition;
+import net.vpc.upa.UnionEntityExtensionDefinition;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

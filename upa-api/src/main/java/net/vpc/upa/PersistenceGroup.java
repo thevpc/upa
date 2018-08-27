@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.callbacks.PersistenceUnitDefinitionListener;
+import net.vpc.upa.events.PersistenceUnitDefinitionListener;
 import net.vpc.upa.config.ScanFilter;
 import net.vpc.upa.config.ScanSource;
 
@@ -116,7 +116,7 @@ public interface PersistenceGroup extends Closeable {
 
     void removeCallback(Callback callback);
 
-    Callback[] getCallbacks(CallbackType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
+    Callback[] getCallbacks(EventType nameFilter, ObjectType objectType, String name, boolean system, boolean preparedOnly, EventPhase phase);
 
     <T> T invoke(Action<T> action, InvokeContext invokeContext);
 

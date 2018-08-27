@@ -1,7 +1,7 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.ManyToOneRelationship;
-import net.vpc.upa.extensions.HierarchyExtension;
+import net.vpc.upa.HierarchyExtension;
 
 public class DefaultManyToOneRelationship extends DefaultRelationship implements ManyToOneRelationship{
     private HierarchyExtension hierarchyExtension;

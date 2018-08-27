@@ -4,7 +4,7 @@ import net.vpc.upa.PersistenceGroup;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.Session;
 import net.vpc.upa.SessionContext;
-import net.vpc.upa.callbacks.SessionListener;
+import net.vpc.upa.events.SessionListener;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.callbacks.UPAEvent;
+import net.vpc.upa.events.UPAEvent;
 
 /**
  * Created by vpc on 7/25/15.

@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import net.vpc.upa.ObjectFactory;
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.util.xml.XmlFactory;
+import net.vpc.upa.impl.XmlFactory;
 
 /**
  *

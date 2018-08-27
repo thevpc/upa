@@ -7,9 +7,9 @@ package net.vpc.upa.impl.config;
 
 import net.vpc.upa.Entity;
 import net.vpc.upa.PersistenceUnit;
-import net.vpc.upa.callbacks.DefinitionListenerAdapter;
-import net.vpc.upa.callbacks.EntityDefinitionListener;
-import net.vpc.upa.callbacks.EntityEvent;
+import net.vpc.upa.events.DefinitionListenerAdapter;
+import net.vpc.upa.events.EntityDefinitionListener;
+import net.vpc.upa.events.EntityEvent;
 import net.vpc.upa.filters.EntityFilter;
 
 import java.util.HashSet;

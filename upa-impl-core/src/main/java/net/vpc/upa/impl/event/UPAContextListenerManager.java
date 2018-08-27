@@ -1,11 +1,11 @@
 package net.vpc.upa.impl.event;
 
 import net.vpc.upa.Callback;
-import net.vpc.upa.CallbackType;
+import net.vpc.upa.EventType;
 import net.vpc.upa.EventPhase;
 import net.vpc.upa.ObjectType;
-import net.vpc.upa.callbacks.PersistenceGroupDefinitionListener;
-import net.vpc.upa.callbacks.PersistenceGroupEvent;
+import net.vpc.upa.events.PersistenceGroupDefinitionListener;
+import net.vpc.upa.events.PersistenceGroupEvent;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.config.DefaultUPAContext;
 import net.vpc.upa.impl.util.CallbackManager;
@@ -37,14 +37,14 @@ public class UPAContextListenerManager {
             for (PersistenceGroupDefinitionListener listener : interceptorList) {
                 listener.onPreCreatePersistenceGroup(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_CREATE, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(EventType.ON_CREATE, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
             for (PersistenceGroupDefinitionListener listener : interceptorList) {
                 listener.onCreatePersistenceGroup(event);
             }
-            for (Callback callback : getCallbackPostInvokers(CallbackType.ON_CREATE, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPostInvokers(EventType.ON_CREATE, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         }
@@ -56,14 +56,14 @@ public class UPAContextListenerManager {
             for (PersistenceGroupDefinitionListener listener : interceptorList) {
                 listener.onPreDropPersistenceGroup(event);
             }
-            for (Callback callback : getCallbackPreInvokers(CallbackType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPreInvokers(EventType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         } else {
             for (PersistenceGroupDefinitionListener listener : interceptorList) {
                 listener.onDropPersistenceGroup(event);
             }
-            for (Callback callback : getCallbackPostInvokers(CallbackType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
+            for (Callback callback : getCallbackPostInvokers(EventType.ON_DROP, ObjectType.PERSISTENCE_GROUP, event.getPersistenceGroup().getName(), DEFAULT_SYSTEM)) {
                 callback.invoke(event);
             }
         }
@@ -86,14 +86,14 @@ public class UPAContextListenerManager {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onPreClose(event);
 //            }
-//            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(EventType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        } else {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onClose(event);
 //            }
-//            for (Callback invoker : getPreCallbacks(CallbackType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(EventType.ON_CLOSE, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        }
@@ -103,14 +103,14 @@ public class UPAContextListenerManager {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onPreStart(event);
 //            }
-//            for (Callback invoker : getPreCallbacks(CallbackType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(EventType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        } else {
 //            for (PersistenceUnitListener listener : persistenceUnitListeners) {
 //                listener.onStart(event);
 //            }
-//            for (Callback invoker : getPreCallbacks(CallbackType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
+//            for (Callback invoker : getPreCallbacks(EventType.ON_START, AnyObjectType.PERSISTENCE_UNIT, event.getPersistenceUnit().getName(), DEFAULT_SYSTEM)) {
 //                invoker.invoke(event);
 //            }
 //        }
@@ -127,24 +127,24 @@ public class UPAContextListenerManager {
         callbackManager.removeCallback(callback);
     }
 
-//    public List<Callback> getCallbacks(CallbackType callbackType, AnyObjectType objectType, String name, EventPhase phase, boolean system) {
-//        List<Callback> allCallbacks = callbackManager.getCallbacks(callbackType, objectType, name, phase, system);
-//        allCallbacks.addAll(((DefaultPersistenceGroup) persistenceUnit.getPersistenceGroup()).getCallbacks(callbackType, objectType, name, phase, system));
+//    public List<Callback> getCallbacks(EventType eventType, AnyObjectType objectType, String name, EventPhase phase, boolean system) {
+//        List<Callback> allCallbacks = callbackManager.getCallbacks(eventType, objectType, name, phase, system);
+//        allCallbacks.addAll(((DefaultPersistenceGroup) persistenceUnit.getPersistenceGroup()).getCallbacks(eventType, objectType, name, phase, system));
 //        return allCallbacks;
 //    }
-    public List<Callback> getCallbackPreInvokers(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        return getEffectiveCallbacks(callbackType, objectType, nameFilter, system, false,EventPhase.BEFORE);
+    public List<Callback> getCallbackPreInvokers(EventType eventType, ObjectType objectType, String nameFilter, boolean system) {
+        return getEffectiveCallbacks(eventType, objectType, nameFilter, system, false,EventPhase.BEFORE);
     }
 
-    public List<Callback> getCallbackPostInvokers(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system) {
-        return getEffectiveCallbacks(callbackType, objectType, nameFilter, system, false,EventPhase.AFTER);
+    public List<Callback> getCallbackPostInvokers(EventType eventType, ObjectType objectType, String nameFilter, boolean system) {
+        return getEffectiveCallbacks(eventType, objectType, nameFilter, system, false,EventPhase.AFTER);
     }
 
-    public List<Callback> getEffectiveCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system,boolean preparedOnly, EventPhase phase) {
-        return callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly,phase);
+    public List<Callback> getEffectiveCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system,boolean preparedOnly, EventPhase phase) {
+        return callbackManager.getCallbacks(eventType, objectType, nameFilter, system, preparedOnly,phase);
     }
 
-    public List<Callback> getCallbacks(CallbackType callbackType, ObjectType objectType, String nameFilter, boolean system,boolean preparedOnly, EventPhase phase) {
-        return callbackManager.getCallbacks(callbackType, objectType, nameFilter, system, preparedOnly,phase);
+    public List<Callback> getCallbacks(EventType eventType, ObjectType objectType, String nameFilter, boolean system,boolean preparedOnly, EventPhase phase) {
+        return callbackManager.getCallbacks(eventType, objectType, nameFilter, system, preparedOnly,phase);
     }
 }
