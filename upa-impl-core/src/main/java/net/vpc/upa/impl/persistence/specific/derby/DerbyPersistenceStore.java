@@ -536,7 +536,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
             return new SqlTypeName("NUMBER");
         }
         if (PlatformUtils.isBool(platformType)) {
-            return new SqlTypeName("INT");
+            return new SqlTypeName("INTEGER");
         }
 
         if (datatype instanceof TemporalType) {
@@ -564,7 +564,7 @@ public class DerbyPersistenceStore extends DefaultPersistenceStore {
         }
         if (datatype instanceof EnumType) {
             //TODO should support marshalling types
-            return new SqlTypeName("INT");
+            return new SqlTypeName("INTEGER");
         }
 
         if (Object.class.equals(platformType) || PlatformUtils.isSerializable(platformType)) {
