@@ -14,7 +14,7 @@ import java.util.*;
  * @creationdate 8/25/12 1:31 AM
  */
 public abstract class AbstractDocument implements Document {
-    protected LinkedHashSet<String> updated;
+    protected transient LinkedHashSet<String> updated;
 
     protected AbstractDocument() {
     }

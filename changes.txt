@@ -1,3 +1,11 @@
+Version 1.2.0.48.1 :
+-----------------
+## New Features
+## Features removed
+## Other Changes
+## Bug Fixes
+    set transient Property change listener in DefaultDocument to enable Serialization
+
 Version 1.2.0.48 :
 -----------------
 ## New Features

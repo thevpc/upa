@@ -960,7 +960,12 @@ public class UPAUtils {
 
     public static CompiledExpressionExt getParentAtMaxLevel(CompiledExpressionExt e, int maxLevel) {
         while (maxLevel > 0 && e != null) {
-            e = e.getParentExpression();
+            if (e.getParentExpression() != null) {
+                e = e.getParentExpression();
+            } else {
+                break;
+            }
+            maxLevel++;
         }
         return e;
     }

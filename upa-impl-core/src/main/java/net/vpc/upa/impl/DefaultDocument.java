@@ -12,54 +12,51 @@ import java.util.Set;
  * @creationdate 8/23/12 1:26 PM
  */
 public class DefaultDocument extends AbstractDocument {
-    private Map<String, Object> base = new HashMap<String, Object>();
-    private PropertyChangeSupport propertyChangeSupport;
+
+    private Map<String, Object> values = new HashMap<String, Object>();
+    private transient PropertyChangeSupport propertyChangeSupport;
 
     public DefaultDocument() {
-        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     //////////////////////////////////////
-
     @Override
     public <T> T getObject(String key) {
-        return (T) base.get(key);
+        return (T) values.get(key);
     }
 
     @Override
     public void setObject(String key, Object value) {
         setUpdated(key);
-        Object oldValue = base.put(key, value);
+        Object oldValue = values.put(key, value);
         fireChange(key, oldValue, value);
     }
 
     @Override
     public <T> T getSingleResult() {
-        for (Object o : base.values()) {
+        for (Object o : values.values()) {
             return (T) o;
         }
         return null;
     }
 
-
     //////////////////////////////////////
-
     @Override
     public boolean isSet(String key) {
-        return base.containsKey(key);
+        return values.containsKey(key);
     }
 
     @Override
     public void remove(String key) {
-        base.remove(key);
+        values.remove(key);
     }
 
     @Override
     public boolean retainAll(Set<String> keys) {
         boolean modified = false;
-        for (String s : new HashSet<String>(base.keySet())) {
+        for (String s : new HashSet<String>(values.keySet())) {
             if (!keys.contains(s)) {
-                base.remove(s);
+                values.remove(s);
                 modified = true;
             }
         }
@@ -68,46 +65,55 @@ public class DefaultDocument extends AbstractDocument {
 
     @Override
     public Set<String> keySet() {
-        return base.keySet();
+        return values.keySet();
     }
 
     @Override
     public int size() {
-        return base.size();
+        return values.size();
     }
-
 
     @Override
     public Map<String, Object> toMap() {
-        return new HashMap<String, Object>(base);
+        return new HashMap<String, Object>(values);
     }
 
     @Override
     public Set<Map.Entry<String, Object>> entrySet() {
-        return base.entrySet();
+        return values.entrySet();
     }
 
     @Override
     public void addPropertyChangeListener(String key, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(key, listener);
+        getPropertyChangeSupport().addPropertyChangeListener(key, listener);
     }
 
     @Override
     public void removePropertyChangeListener(String key, PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(key, listener);
+        getPropertyChangeSupport().removePropertyChangeListener(key, listener);
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+        getPropertyChangeSupport().addPropertyChangeListener(listener);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+        getPropertyChangeSupport().removePropertyChangeListener(listener);
     }
 
     protected void fireChange(String property, Object oldVal, Object newVal) {
-        propertyChangeSupport.firePropertyChange(property, oldVal, newVal);
+        if (propertyChangeSupport != null) {
+            propertyChangeSupport.firePropertyChange(property, oldVal, newVal);
+        }
     }
+
+    protected PropertyChangeSupport getPropertyChangeSupport() {
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
+        }
+        return propertyChangeSupport;
+    }
+
 }
