@@ -227,17 +227,18 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             if (parentModule == null) {
                 next = getPackage(n);
             } else {
-                next = parentModule.getPart(n);
+                next = parentModule.getItem(n);
             }
             parentModule = next;
         }
 
         Package currentModule = getFactory().createObject(Package.class);
+        currentModule.setPreferredPosition(index);
         UPAUtils.preparePreAdd(this, null, currentModule, name);
         if (parentModule == null) {
-            getPackage(null).addPart(currentModule, index);
+            getPackage(null).addItem(currentModule);
         } else {
-            parentModule.addPart(currentModule, index);
+            parentModule.addItem(currentModule);
         }
         invalidate();
         return currentModule;
@@ -281,7 +282,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         for (String n : canonicalPathArray) {
             Package next = null;
             if (module == null) {
-                for (PersistenceUnitPart persistenceUnitItem : getDefaultPackage().getParts()) {
+                for (PersistenceUnitItem persistenceUnitItem : getDefaultPackage().getItems()) {
                     if (persistenceUnitItem instanceof Package) {
                         if (persistenceUnitItem.getName().equals(n)) {
                             next = (Package) persistenceUnitItem;
@@ -308,7 +309,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                 }
             } else {
                 try {
-                    next = module.getPart(n);
+                    next = module.getItem(n);
                 } catch (NoSuchPackageException e) {
                     switch (missingStrategy) {
                         case ERROR: {
@@ -549,6 +550,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             }
         }
         t.setName(desc.getName());
+        t.setPreferredPosition(desc.getPosition());
         t.setShortName(desc.getShortName());
         if (desc.getProperties() != null) {
             for (Map.Entry<String, Object> e : desc.getProperties().entrySet()) {
@@ -578,14 +580,15 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         t.setUserExcludeModifiers(currentModifiers);
 
         Package parent = (desc.getPackagePath() == null || desc.getPackagePath().length() == 0) ? null : getPackage(desc.getPackagePath(), MissingStrategy.CREATE);
-        int pos = -1;
-        if (desc.getPosition() != 0) {
-            pos = desc.getPosition();
-        }
+        int pos = desc.getPosition();
+//        if (desc.getPosition() != 0) {
+//            pos = desc.getPosition();
+//        }
+        t.setPreferredPosition(pos);
         if (parent != null) {
-            parent.addPart(t, pos);
+            parent.addItem(t);
         } else {
-            getDefaultPackage().addPart(t, pos);
+            getDefaultPackage().addItem(t);
         }
         t.addPropertyChangeListener("name", EventPhase.BEFORE, new PropertyChangeListener() {
             @Override
@@ -856,7 +859,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
                     .setName(s.getHierarchyPathField())
                     .addModifier(UserFieldModifier.SYSTEM)
                     .setDataType(new StringType("PathFieldName", 0, 2048, true))
-                    .setIndex(-1)
+                    .setPosition(Integer.MIN_VALUE)
                     .setPath("system")
             );
             detailEntity.addTrigger(detailEntity.getName() + "_" + s.getHierarchyPathField() + "_TRIGGER", new HierarchicalRelationshipDataInterceptor(r));
@@ -967,11 +970,31 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public List<Entity> getEntities() {
-        return registrationModel.getEntities();
+        return getEntities(true);
+    }
+
+    @Override
+    public List<Entity> getEntities(boolean includeAll) {
+        if (true) {
+            return registrationModel.getEntities();
+        }
+        return getDefaultPackage().getEntities(false);
     }
 
     public List<Package> getPackages() {
-        return registrationModel.getPackages();
+        return getPackages(true);
+    }
+
+    @Override
+    public List<Package> getPackages(boolean includeAll) {
+        if (includeAll) {
+            List<Package> all = new ArrayList<>();
+            all.add(getDefaultPackage());
+            all.addAll(getDefaultPackage().getPackages(includeAll));
+            return all;
+        } else {
+            return getDefaultPackage().getPackages(false);
+        }
     }
 
     @Override

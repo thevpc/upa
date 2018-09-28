@@ -33,6 +33,10 @@ public class UPQLFunctionsFactory {
             checkArgCount(name, args, 1);
             return new Max(args.get(0));
         }
+        if (uniformName.equals("avg")) {
+            checkArgCount(name, args, 1);
+            return new Avg(args.get(0));
+        }
         if (uniformName.equals("sum")) {
             checkArgCount(name, args, 1);
             return new Sum(args.get(0));
@@ -105,6 +109,18 @@ public class UPQLFunctionsFactory {
         if (uniformName.equals("currentuser")) {
             checkArgCount(name, args, 0);
             return new CurrentUser();
+        }
+        if (uniformName.equals("currentyear")) {
+            checkArgCount(name, args, 0);
+            return new DatePart(DatePartType.YEAR, new CurrentDate());
+        }
+        if (uniformName.equals("currentmonth")) {
+            checkArgCount(name, args, 0);
+            return new DatePart(DatePartType.MONTH, new CurrentDate());
+        }
+        if (uniformName.equals("currentday")) {
+            checkArgCount(name, args, 0);
+            return new DatePart(DatePartType.DAY, new CurrentDate());
         }
         if (uniformName.equals("dateadd")) {
             checkArgCount(name, args, 3);
@@ -195,12 +211,16 @@ public class UPQLFunctionsFactory {
             return new Exists((QueryStatement) args.get(0));
         }
         if (uniformName.equals("ishierarchydescendant")) {
-            if (args.size() == 3) {
-                return new IsHierarchyDescendant(args.get(0), args.get(1), args.get(2));
-            } else if (args.size() == 2) {
-                return new IsHierarchyDescendant(args.get(0), args.get(1), null);
-            } else {
-                throw new RuntimeException("function " + name + " expects 2 or 3 argument(s) but found " + args.size());
+            switch (args.size()) {
+                case 3:{
+                    return new IsHierarchyDescendant(args.get(0), args.get(1), args.get(2));
+                }
+                case 2:{
+                    return new IsHierarchyDescendant(args.get(0), args.get(1), null);
+                }
+                default:{
+                    throw new RuntimeException("function " + name + " expects 2 or 3 argument(s) but found " + args.size());
+                }
             }
         }
         return new QLFunctionExpression(name, args.toArray(new Expression[args.size()]));

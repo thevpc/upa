@@ -36,35 +36,35 @@ package net.vpc.upa;
 
 import java.util.List;
 
-public interface Package extends PersistenceUnitPart {
+public interface Package extends PersistenceUnitItem {
 
     PackageInfo getInfo();
 
     String getPath();
 
-    void addPart(PersistenceUnitPart child);
+    void addItem(PersistenceUnitItem child);
 
-    void addPart(PersistenceUnitPart child, int index);
+    void removeItemAt(int index);
 
-    void removePartAt(int index);
+    void moveItem(String itemName, int newIndex);
 
-    void movePart(String itemName, int newIndex);
+    void moveItem(int index, int newIndex);
 
-    void movePart(int index, int newIndex);
+    int getItemsCount();
 
-    int getPartsCount();
-
-    List<PersistenceUnitPart> getParts();
+    List<PersistenceUnitItem> getItems();
 
     List<Entity> getEntities();
-
+    
     List<Entity> getEntities(boolean includeSubPackages);
 
     List<Package> getPackages();
+    
+    List<Package> getPackages(boolean includeSubPackages);
 
-    Package getPart(String name);
+    Package getItem(String name);
 
-    int indexOfPart(PersistenceUnitPart child);
+    int indexOfItem(PersistenceUnitItem child);
 
-    int indexOfPart(String childName);
+    int indexOfItem(String childName);
 }

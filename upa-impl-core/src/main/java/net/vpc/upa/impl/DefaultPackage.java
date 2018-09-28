@@ -13,59 +13,46 @@ import java.util.List;
 public class DefaultPackage extends AbstractUPAObject implements Package {
 
     private Package parent;
-    private List<PersistenceUnitPart> parts;
+    private List<PersistenceUnitItem> items;
     private boolean closed;
 
     public DefaultPackage() {
         this.parent = null;
-        this.parts = new ArrayList<PersistenceUnitPart>(3);
+        this.items = new ArrayList<PersistenceUnitItem>(3);
     }
 
     @Override
     public String getAbsoluteName() {
-        PersistenceUnitPart parentPersistenceUnitItem = getParent();
+        PersistenceUnitItem parentPersistenceUnitItem = getParent();
         if (parentPersistenceUnitItem == null) {
             return getName();
         }
         return parentPersistenceUnitItem.getAbsoluteName() + "/" + getName();
     }
 
-    public void addPart(PersistenceUnitPart child) {
-        addPart(child, getPartsCount());
+    public void addItem(PersistenceUnitItem child) {
+        ListUtils.add(items, child, this, this, new DefaultPackagePrivateAddPartInterceptor(this));
     }
 
-    public void addPart(PersistenceUnitPart part, int index) {
-        if (index < 0) {
-            index = getPartsCount() + index + 1;
-        }
-        if (index < 0) {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
-        if (index > parts.size()) {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
-        ListUtils.add(parts, part, index, this, this, new DefaultPackagePrivateAddPartInterceptor(this),true);
+    public void removeItemAt(int index) {
+        ListUtils.remove(items, index, this, new DefaultPackagePrivateRemovePartInterceptor());
     }
 
-    public void removePartAt(int index) {
-        ListUtils.remove(parts, index, this, new DefaultPackagePrivateRemovePartInterceptor());
+    public void moveItem(String itemName, int newIndex) {
+        moveItem(indexOfItem(itemName), newIndex);
     }
 
-    public void movePart(String itemName, int newIndex) {
-        movePart(indexOfPart(itemName), newIndex);
+    public void moveItem(int index, int newIndex) {
+        ListUtils.moveTo(items, index, newIndex, this, null);
     }
 
-    public void movePart(int index, int newIndex) {
-        ListUtils.moveTo(parts, index, newIndex, this, null);
-    }
-
-    public List<PersistenceUnitPart> getParts() {
-        return new ArrayList<PersistenceUnitPart>(parts);
+    public List<PersistenceUnitItem> getItems() {
+        return new ArrayList<PersistenceUnitItem>(items);
     }
 
     public List<Entity> getEntities() {
         List<Entity> all = new ArrayList<Entity>();
-        for (PersistenceUnitPart item : parts) {
+        for (PersistenceUnitItem item : items) {
             if (item instanceof Entity) {
                 all.add((Entity) item);
             }
@@ -76,22 +63,36 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
     @Override
     public List<Entity> getEntities(boolean includeSubPackages) {
         List<Entity> all = new ArrayList<Entity>();
-        for (PersistenceUnitPart item : parts) {
+        for (PersistenceUnitItem item : items) {
             if (item instanceof Entity) {
                 all.add((Entity) item);
-            }else if(includeSubPackages){
-                if(item instanceof net.vpc.upa.Package){
-                    all.addAll(((net.vpc.upa.Package)item).getEntities(includeSubPackages));
+            } else if (includeSubPackages) {
+                if (item instanceof net.vpc.upa.Package) {
+                    all.addAll(((net.vpc.upa.Package) item).getEntities(includeSubPackages));
                 }
             }
         }
         return all;
     }
-    
+
+    @Override
+    public List<Package> getPackages(boolean includeSubPackages) {
+        List<Package> all = new ArrayList<Package>();
+        for (PersistenceUnitItem item : items) {
+            if (item instanceof Package) {
+                all.add((Package) item);
+            } else if (includeSubPackages) {
+                if (item instanceof net.vpc.upa.Package) {
+                    all.addAll(((net.vpc.upa.Package) item).getPackages(includeSubPackages));
+                }
+            }
+        }
+        return all;
+    }
 
     public List<Package> getPackages() {
         List<Package> all = new ArrayList<Package>();
-        for (PersistenceUnitPart item : parts) {
+        for (PersistenceUnitItem item : items) {
             if (item instanceof Package) {
                 all.add((Package) item);
             }
@@ -99,13 +100,13 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
         return all;
     }
 
-    public int indexOfPart(PersistenceUnitPart child) {
-        return parts.indexOf(child);
+    public int indexOfItem(PersistenceUnitItem child) {
+        return items.indexOf(child);
     }
 
-    public int indexOfPart(String childName) {
+    public int indexOfItem(String childName) {
         int index = 0;
-        for (PersistenceUnitPart child : parts) {
+        for (PersistenceUnitItem child : items) {
             if (childName.equals(child.getName())) {
                 return index;
             }
@@ -130,8 +131,8 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
         return p + getName();
     }
 
-    public Package getPart(String name) {
-        for (PersistenceUnitPart persistenceUnitItem : parts) {
+    public Package getItem(String name) {
+        for (PersistenceUnitItem persistenceUnitItem : items) {
             if (persistenceUnitItem instanceof Package) {
                 Package m = (Package) persistenceUnitItem;
                 if (m.getName().equals(name)) {
@@ -139,17 +140,17 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
                 }
             }
         }
-        throw new NoSuchPackageException(name,null);
+        throw new NoSuchPackageException(name, null);
     }
 
     @Override
-    public int getPartsCount() {
-        return parts.size();
+    public int getItemsCount() {
+        return items.size();
     }
 
     @Override
     public void close() throws UPAException {
-        for (PersistenceUnitPart child : parts) {
+        for (PersistenceUnitItem child : items) {
             child.close();
         }
         this.closed = true;
@@ -186,13 +187,13 @@ public class DefaultPackage extends AbstractUPAObject implements Package {
 
     @Override
     public PackageInfo getInfo() {
-        PackageInfo i=new PackageInfo();
+        PackageInfo i = new PackageInfo();
         fillObjectInfo(i);
-        List<PersistenceUnitPartInfo> parts=new ArrayList<>();
-        for (PersistenceUnitPart part : this.parts) {
-            if(part instanceof Entity){
+        List<PersistenceUnitPartInfo> parts = new ArrayList<>();
+        for (PersistenceUnitItem part : this.items) {
+            if (part instanceof Entity) {
                 parts.add(((Entity) part).getInfo());
-            }else if(part instanceof Package){
+            } else if (part instanceof Package) {
                 parts.add(((Package) part).getInfo());
             }
         }

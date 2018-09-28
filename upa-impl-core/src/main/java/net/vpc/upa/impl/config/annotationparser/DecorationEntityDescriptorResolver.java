@@ -80,6 +80,7 @@ public class DecorationEntityDescriptorResolver {
                 Decoration pathDeco = repo.getTypeDecoration(descriptorType, net.vpc.upa.config.Path.class);
                 if (pathDeco != null) {
                     AnnotationParserUtils.validStr(pathDeco.getString("value"), entityInfo.path, pathDeco.getConfig().getOrder());
+                    AnnotationParserUtils.validInt(pathDeco.getInt("position"), entityInfo.pathPosition, Integer.MIN_VALUE,pathDeco.getConfig().getOrder());
                 }
 
             }

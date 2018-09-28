@@ -57,12 +57,7 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     }
 
     public void addItem(EntityItem child) throws UPAException {
-        DefaultSection.this.addItem(child, -1);
-    }
-
-    @Override
-    public void addItem(EntityItem child, int index) throws UPAException {
-        ListUtils.add(items, child, index, this, this, new DefaultSectionPrivateAddItemInterceptor(this), true);
+        ListUtils.add(items, child, this, this, new DefaultSectionPrivateAddItemInterceptor(this));
     }
 
     public EntityItem removeItem(String name) throws UPAException {
@@ -286,12 +281,25 @@ public class DefaultSection extends AbstractUPAObject implements Section {
     }
 
     public List<Field> getFields() {
+        return getFields(true);
+    }
+
+    @Override
+    public List<Field> getFields(boolean includeAll) {
         List<Field> fields = new ArrayList<Field>();
-        for (EntityItem item : getItems()) {
-            if (item instanceof Field) {
-                fields.add((Field) item);
-            } else if (item instanceof Section) {
-                fields.addAll(((Section) item).getFields());
+        if (includeAll) {
+            for (EntityItem item : getItems()) {
+                if (item instanceof Field) {
+                    fields.add((Field) item);
+                } else if (item instanceof Section) {
+                    fields.addAll(((Section) item).getFields());
+                }
+            }
+        } else {
+            for (EntityItem item : getItems()) {
+                if (item instanceof Field) {
+                    fields.add((Field) item);
+                }
             }
         }
         return fields;
@@ -347,6 +355,20 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         return sections;
     }
 
+    public List<Section> getSections(boolean includeSubSections) {
+        List<Section> sections = new ArrayList<Section>();
+        for (EntityItem item : getItems()) {
+            if (item instanceof Section) {
+                Section s = (Section) item;
+                sections.add(s);
+                if (includeSubSections) {
+                    sections.addAll(s.getSections(true));
+                }
+            }
+        }
+        return sections;
+    }
+
     @Override
     public Section addSection(String path, int index) throws UPAException {
         if (path == null) {
@@ -369,12 +391,13 @@ public class DefaultSection extends AbstractUPAObject implements Section {
         }
 
         Section currentModule = getPersistenceUnit().getFactory().createObject(Section.class);
+        currentModule.setPreferredPosition(index);
         DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), this, currentModule, canonicalPathArray[canonicalPathArray.length - 1]);
 
         if (parentModule == null) {
-            DefaultSection.this.addItem(currentModule, index);
+            DefaultSection.this.addItem(currentModule);
         } else {
-            parentModule.addItem(currentModule, index);
+            parentModule.addItem(currentModule);
         }
         //invalidateStructureCache();
         return currentModule;

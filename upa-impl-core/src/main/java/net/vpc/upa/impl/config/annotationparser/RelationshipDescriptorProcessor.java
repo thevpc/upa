@@ -373,6 +373,7 @@ public class RelationshipDescriptorProcessor implements EntityDefinitionListener
             if (!StringUtils.isNullOrEmpty(relationDescriptor.getName())) {
                 relation.setName(relationDescriptor.getName());
             }
+            relation.setPreferredPosition(Integer.MIN_VALUE); //FIX ME
             relation.setRelationshipType(relationDescriptor.getRelationshipType() == null ? RelationshipType.DEFAULT : relationDescriptor.getRelationshipType());
             relation.getSourceRole().setEntityField(manyToOneField);
             relation.getSourceRole().setRelationshipUpdateType(sourceUpdateType);

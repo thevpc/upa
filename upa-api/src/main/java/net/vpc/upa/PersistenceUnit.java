@@ -210,9 +210,24 @@ public interface PersistenceUnit extends Closeable {
 
     void reset(Map<String, Object> hints);
 
+    /**
+     * return all entities.
+     * same as <pre>getEntities(true)</pre>
+     * @return all entities. 
+     */
     List<Entity> getEntities();
+    
+    /**
+     * when includeAll is true will return all entities (all packages included), 
+     * otherwise will return root only entities.
+     * @param includeAll when true will return all entities (all packages included), otherwise
+     * @return 
+     */
+    List<Entity> getEntities(boolean includeAll);
 
     List<Package> getPackages();
+    
+    List<Package> getPackages(boolean includeAll);
 
     List<Entity> getEntities(EntityFilter entityFilter);
 

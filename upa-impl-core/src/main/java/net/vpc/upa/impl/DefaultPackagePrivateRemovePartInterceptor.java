@@ -4,25 +4,25 @@
  */
 package net.vpc.upa.impl;
 
-import net.vpc.upa.PersistenceUnitPart;
 import net.vpc.upa.impl.util.DefaultBeanAdapter;
 import net.vpc.upa.impl.util.ItemInterceptor;
+import net.vpc.upa.PersistenceUnitItem;
 
 /**
  *
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
-class DefaultPackagePrivateRemovePartInterceptor implements ItemInterceptor<PersistenceUnitPart> {
+class DefaultPackagePrivateRemovePartInterceptor implements ItemInterceptor<PersistenceUnitItem> {
 
     public DefaultPackagePrivateRemovePartInterceptor() {
     }
 
     @Override
-    public void before(PersistenceUnitPart persistenceUnitItem, int index) {
+    public void before(PersistenceUnitItem persistenceUnitItem, int index) {
     }
 
     @Override
-    public void after(PersistenceUnitPart persistenceUnitItem, int index) {
+    public void after(PersistenceUnitItem persistenceUnitItem, int index) {
         DefaultBeanAdapter a = new DefaultBeanAdapter(persistenceUnitItem);
         a.injectNull("parent");
     }

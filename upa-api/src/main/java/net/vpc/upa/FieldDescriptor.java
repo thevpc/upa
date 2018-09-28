@@ -48,6 +48,8 @@ public interface FieldDescriptor {
 
     String getPath();
 
+    int getPathPosition();
+
     Object getDefaultObject();
 
     Object getUnspecifiedObject();
@@ -86,6 +88,6 @@ public interface FieldDescriptor {
 
     PropertyAccessType getPropertyAccessType();
 
-    int getIndex();
+    int getPosition();
 
 }

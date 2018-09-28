@@ -1,5 +1,6 @@
 package net.vpc.upa.impl.persistence.shared.marshallers;
 
+import java.sql.Types;
 import net.vpc.upa.impl.persistence.MarshallManager;
 import net.vpc.upa.impl.persistence.SimpleTypeMarshaller;
 
@@ -7,34 +8,39 @@ import net.vpc.upa.persistence.NativeResult;
 import net.vpc.upa.persistence.NativeStatement;
 
 /**
-* @author Taha BEN SALAH <taha.bensalah@gmail.com>
-* @creationdate 12/20/12 2:46 AM
-*/
+ * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * @creationdate 12/20/12 2:46 AM
+ */
 public class StringToBlobUTFMarshaller extends SimpleTypeMarshaller {
 
     @Override
-    public Object read(int index, net.vpc.upa.persistence.NativeResult resultSet)
-             {
+    public Object read(int index, net.vpc.upa.persistence.NativeResult resultSet) {
         /**
          * @PortabilityHint(target = "C#",name = "todo")
-         **/
-        if(true) {
+         *
+         */
+        if (true) {
             byte[] b = resultSet.getBytes(index);
-            return b==null?null:new String(b);
+            return b == null ? null : new String(b);
         }
         return null;
     }
 
     @Override
-    public void write(Object object, int i, NativeResult updatableResultSet)  {
-        /**@PortabilityHint(target = "C#",name = "suppress")*/
-        updatableResultSet.updateBytes(i, object==null?null:((String) object).getBytes());
+    public void write(Object object, int i, NativeResult updatableResultSet) {
+        if (object == null) {
+            updatableResultSet.updateNull(i);
+        } else {
+            /**
+             * @PortabilityHint(target = "C#",name = "suppress")
+             */
+            updatableResultSet.updateBytes(i, ((String) object).getBytes());
+        }
     }
-
 
     @Override
     public String toSQLLiteral(Object object) {
-        if(object==null){
+        if (object == null) {
             return super.toSQLLiteral(object);
         }
         StringBuilder s = new StringBuilder();
@@ -55,10 +61,15 @@ public class StringToBlobUTFMarshaller extends SimpleTypeMarshaller {
         return s.toString();
     }
 
-    public void write(Object object, int i, NativeStatement preparedStatement)
-             {
-        /**@PortabilityHint(target = "C#",name = "todo")*/
-        preparedStatement.setBytes(i, object==null?null:((String) object).getBytes());
+    public void write(Object object, int i, NativeStatement preparedStatement) {
+        /**
+         * @PortabilityHint(target = "C#",name = "todo")
+         */
+        if (object == null) {
+            preparedStatement.setNull(i, Types.BLOB);
+        } else {
+            preparedStatement.setBytes(i, ((String) object).getBytes());
+        }
     }
 
     public StringToBlobUTFMarshaller(MarshallManager marshallManager) {

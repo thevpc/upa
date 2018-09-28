@@ -157,9 +157,11 @@ public interface FieldBuilder {
 
     FieldBuilder setPropertyAccessType(PropertyAccessType propertyAccessType);
 
-    int getIndex();
+    int getPosition();
 
-    FieldBuilder setIndex(int position);
+    FieldBuilder setPosition(int position);
+    
+    FieldBuilder setPathPosition(int pathPosition);
 
     FieldDescriptor build();
 }

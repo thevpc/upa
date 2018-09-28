@@ -34,7 +34,7 @@
  */
 package net.vpc.upa;
 
-public interface PersistenceUnitPart extends UPAObject {
+public interface PersistenceUnitItem extends UPAObject {
 
     Package getParent();
 

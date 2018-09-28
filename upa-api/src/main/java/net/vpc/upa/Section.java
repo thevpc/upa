@@ -34,20 +34,17 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.filters.FieldFilter;
 
 import java.util.List;
 
 public interface Section extends EntityItem {
 
-    Field addField(FieldBuilder fieldBuilder) ;
+    Field addField(FieldBuilder fieldBuilder);
 
-    Field addField(FieldDescriptor fieldDescriptor) ;
+    Field addField(FieldDescriptor fieldDescriptor);
 
     void addItem(EntityItem child);
-
-    void addItem(EntityItem child, int index);
 
     EntityItem removeItemAt(int index);
 
@@ -61,9 +58,11 @@ public interface Section extends EntityItem {
      * @return this section (and it subsequent sub sections) fields
      * @
      */
-    List<Field> getFields() ;
+    List<Field> getFields();
+    
+    List<Field> getFields(boolean includeAll);
 
-    List<Field> getFields(FieldFilter fieldFilter) ;
+    List<Field> getFields(FieldFilter fieldFilter);
 
     /**
      * @return
@@ -72,7 +71,9 @@ public interface Section extends EntityItem {
 
     List<Field> getImmediateFields(FieldFilter fieldFilter);
 
-    List<Section> getSections() ;
+    List<Section> getSections();
+
+    List<Section> getSections(boolean includeSubSections);
 
     List<EntityItem> getItems();
 
@@ -80,7 +81,7 @@ public interface Section extends EntityItem {
 
     EntityItem getItemAt(int index);
 
-    Section getSection(String name) ;
+    Section getSection(String name);
 
     int indexOfItem(EntityItem part);
 
@@ -88,14 +89,13 @@ public interface Section extends EntityItem {
 
     int getItemsCount();
 
+    Section findSection(String path);
 
-    Section findSection(String path) ;
+    Section getSection(String path, MissingStrategy missingStrategy);
 
-    Section getSection(String path, MissingStrategy missingStrategy) ;
+    Section addSection(String path, int index);
 
-    Section addSection(String path, int index) ;
-
-    Section addSection(String path) ;
+    Section addSection(String path);
 
     SectionInfo getInfo();
 }

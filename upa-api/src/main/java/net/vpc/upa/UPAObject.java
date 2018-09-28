@@ -47,6 +47,16 @@ public interface UPAObject {
 
     void setName(String name);
 
+    /**
+     * object preferred position weight in the immediate parent.
+     * the higher preferred position is, the later it will be present in 
+     * parent's items list
+     * @return 
+     */
+    public int getPreferredPosition();
+
+    public void setPreferredPosition(int preferredProsition);
+
     String getAbsoluteName();
 
 //    String getPersistenceName();
@@ -59,6 +69,7 @@ public interface UPAObject {
 
     /**
      * localized title
+     *
      * @return localized title
      * @see #getI18NTitle()
      * @see net.vpc.upa.UPAI18n
@@ -67,6 +78,7 @@ public interface UPAObject {
 
     /**
      * localized description
+     *
      * @return localized description
      * @see #getI18NTitle()
      * @see net.vpc.upa.UPAI18n
@@ -108,5 +120,5 @@ public interface UPAObject {
     @Override
     int hashCode();
 
-    void close() ;
+    void close();
 }

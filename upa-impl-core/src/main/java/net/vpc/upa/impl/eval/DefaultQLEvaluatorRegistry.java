@@ -30,6 +30,9 @@ public class DefaultQLEvaluatorRegistry implements QLEvaluatorRegistry{
         registerFunctionEvaluator("file_exists", FileExistsEvaluator.INSTANCE);
         registerFunctionEvaluator("coalesce", CoalesceEvaluator.INSTANCE);
         registerFunctionEvaluator("concat", ConcatEvaluator.INSTANCE);
+        registerFunctionEvaluator("currentYear", CurrentYearEvaluator.INSTANCE);
+        registerFunctionEvaluator("currentMonth", CurrentMonthEvaluator.INSTANCE);
+        registerFunctionEvaluator("currentDay", CurrentDayEvaluator.INSTANCE);
         registerFunctionEvaluator("currentDate", CurrentDateEvaluator.INSTANCE);
         registerFunctionEvaluator("currentTime", CurrentTimeEvaluator.INSTANCE);
         registerFunctionEvaluator("currentTimestamp", CurrentTimestampEvaluator.INSTANCE);

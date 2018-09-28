@@ -42,7 +42,6 @@ import net.vpc.upa.impl.config.decorations.DecorationRepository;
  * @creationdate 8/26/12 2:12 AM
  */
 public class UPAUtils {
-
     public static final Object[] UNDEFINED_ARRAY = new Object[0];
     protected static Logger log = Logger.getLogger(UPAUtils.class.getName());
     public static final HashSet<Class> simpleFieldTypes = new HashSet<Class>();
@@ -544,10 +543,10 @@ public class UPAUtils {
             if (e instanceof CompiledVarOrMethod) {
                 Object r = ((CompiledVarOrMethod) e).getReferrer();
                 if (r == null) {
-                    throw new IllegalUPAArgumentException("Unresolved referrer. Expession is mot likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
+                    throw new IllegalUPAArgumentException("Unresolved referrer. Expession is most likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
                 }
             }
-            throw new IllegalUPAArgumentException("Unexpected Null typeTransform. Expession is mot likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
+            throw new IllegalUPAArgumentException("Unexpected Null typeTransform. Expession is most likely to be incorrect : " + e + " in " + UPAUtils.getParentAtMaxLevel(e, 4));
         }
         if (e instanceof CompiledParam || e instanceof CompiledLiteral) {
             CompiledExpressionExt p = e.getParentExpression();

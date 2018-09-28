@@ -22,6 +22,7 @@ public abstract class AbstractUPAObject implements UPAObject {
     private String name;
 //    private String persistenceName;
     private I18NString title;
+    private int preferredProsition;
     private I18NString description;
 //    private I18NString i18NString;
     private PersistenceUnit persistenceUnit;
@@ -288,6 +289,7 @@ public abstract class AbstractUPAObject implements UPAObject {
         UPAObject f = this;
         i.setName(f.getName());
         i.setTitle(getTitle());
+        i.setPreferredPosition(getPreferredPosition());
         Map<String, Object> sp = new HashMap<String, Object>();
         for (Map.Entry<String, Object> e : f.getProperties().toMap().entrySet()) {
             String k = e.getKey();
@@ -298,4 +300,16 @@ public abstract class AbstractUPAObject implements UPAObject {
         }
         i.setSimpleProperties(sp);
     }
+
+    public int getPreferredPosition() {
+        return preferredProsition;
+    }
+
+    public void setPreferredPosition(int preferredProsition) {
+        int old=preferredProsition;
+        beforePropertyChangeSupport.firePropertyChange("preferredPosition", old, preferredProsition);
+        this.preferredProsition = preferredProsition;
+        afterPropertyChangeSupport.firePropertyChange("preferredPosition", old, preferredProsition);
+    }
+    
 }

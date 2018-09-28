@@ -42,7 +42,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
     private PropertyAccessType accessType;
     private List<Relationship> manyToOneRelationships;
     private List<Relationship> oneToOneRelationships;
-    private int preferredIndex = -1;
     private boolean _customDefaultObject = false;
     private Object _typeDefaultObject = false;
 
@@ -485,15 +484,6 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         this.searchOperator = searchOperator;
     }
 
-    @Override
-    public int getPreferredIndex() {
-        return preferredIndex;
-    }
-
-    public void setPreferredIndex(int preferredIndex) {
-        this.preferredIndex = preferredIndex;
-    }
-
     public FieldPersister getFieldPersister() {
         return fieldPersister;
     }
@@ -685,6 +675,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, pl)) {
             pl = ProtectionLevel.PUBLIC;
         }
+        boolean hasFormula = getPersistFormula() != null;
+        if (al == AccessLevel.READ_WRITE && hasFormula) {
+            al = AccessLevel.READ_ONLY;
+        }
         switch (al) {
             case INACCESSIBLE: {
                 break;
@@ -746,6 +740,10 @@ public abstract class AbstractField extends AbstractUPAObject implements Field, 
         }
         if (PlatformUtils.isUndefinedEnumValue(ProtectionLevel.class, pl)) {
             pl = ProtectionLevel.PUBLIC;
+        }
+        boolean hasFormula = getUpdateFormula() != null;
+        if (al == AccessLevel.READ_WRITE && hasFormula) {
+            al = AccessLevel.READ_ONLY;
         }
         switch (al) {
             case INACCESSIBLE: {

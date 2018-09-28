@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
+public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitItem {
 
     EntitySecurityManager getEntitySecurityManager();
 
@@ -112,12 +112,14 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
             boolean countFieldsInSections);
 
     List<Section> getSections();
+    
+    List<Section> getSections(boolean includeAll);
 
     Section getSection(String sectionPath);
 
     Section findSection(String path);
 
-    Section getSection(String path, MissingStrategy missingStrategy);
+    Section getSection(String path, MissingStrategy missingStrategy, int position);
 
 //    Section addSection(String name, String parentPath);
 //    Section addSection(String name, String parentPath, int index);
@@ -287,6 +289,8 @@ public interface Entity extends /*Comparable<Entity>,*/ PersistenceUnitPart {
     List<Field> getValidFields(String... fieldNames);
 
     List<Field> getFields();
+    
+    List<Field> getFields(boolean includeAll);
 
     List<Field> getFields(String... fieldNames);
 

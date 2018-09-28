@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.vpc.upa.EventPhase;
@@ -13,24 +14,29 @@ import net.vpc.upa.UPAObjectListener;
  */
 public class ListUtils {
 
-    public static <T extends UPAObject> void add(List<T> items, T child, int index, UPAObject newParent, UPAObject obj, ItemInterceptor<T> interceptor,boolean lenient) {
-        if (index < 0) {
-            index = items.size() + index + 1;
-        }
-        if (index < 0) {
-            if(lenient){
-               index=0;
-            }else {
-                throw new ArrayIndexOutOfBoundsException(index);
-            }
-        }
-        if (index > items.size()) {
-            if(lenient){
-                index=items.size();
-            }else {
-                throw new ArrayIndexOutOfBoundsException(index);
-            }
-        }
+    public static <T extends UPAObject> void add(List<T> items, T child, UPAObject newParent, UPAObject obj, ItemInterceptor<T> interceptor) {
+        int index=child.getPreferredPosition();
+//        int[] old=new int[items.size()];
+//        for (int i = 0; i < old.length; i++) {
+//            old[i]=child.getPreferredPosition();
+//        }
+//        if (index < 0) {
+//            index = items.size() + index + 1;
+//        }
+//        if (index < 0) {
+//            if(lenient){
+//               index=0;
+//            }else {
+//                throw new ArrayIndexOutOfBoundsException(index);
+//            }
+//        }
+//        if (index > items.size()) {
+//            if(lenient){
+//                index=items.size();
+//            }else {
+//                throw new ArrayIndexOutOfBoundsException(index);
+//            }
+//        }
         if (interceptor != null) {
             interceptor.before(child, index);
         }
@@ -38,7 +44,9 @@ public class ListUtils {
         for (UPAObjectListener li : objectListeners) {
             li.itemAdded(child, index, newParent, EventPhase.BEFORE);
         }
-        items.add(index, child);
+        
+        items.add(child);
+        Collections.sort(items, UPAObjectPositionComparator.INSTANCE);
         if (interceptor != null) {
             interceptor.after(child, index);
         }

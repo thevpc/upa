@@ -45,6 +45,7 @@ import java.util.Map;
 public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     private String name;
     private String path;
+    private int pathPosition;
     private Object defaultValue;
     private Object unspecifiedObject;
     private DataType dataType;
@@ -64,7 +65,7 @@ public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int index = -1;
+    private int position = -1;
 
     @Override
     public FieldDescriptor build() {
@@ -412,13 +413,23 @@ public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     }
 
     @Override
-    public int getIndex() {
-        return index;
+    public int getPosition() {
+        return position;
     }
 
     @Override
-    public FieldBuilder setIndex(int position) {
-        this.index = position;
+    public FieldBuilder setPosition(int position) {
+        this.position = position;
         return this;
     }
+
+    public int getPathPosition() {
+        return pathPosition;
+    }
+
+    public FieldBuilder setPathPosition(int pathPosition) {
+        this.pathPosition = pathPosition;
+        return this;
+    }
+    
 }

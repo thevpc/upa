@@ -9,11 +9,9 @@
 package net.vpc.upa.impl;
 
 import net.vpc.upa.*;
-import net.vpc.upa.exceptions.NoSuchEntityItemException;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.impl.event.AddPrimitiveFieldItemInterceptor;
 import net.vpc.upa.impl.util.ListUtils;
-import net.vpc.upa.impl.util.UPAUtils;
 
 import java.util.*;
 
@@ -29,11 +27,7 @@ public class DefaultCompoundField extends AbstractField implements CompoundField
     }
 
     public void addField(PrimitiveField child) throws UPAException {
-        addField(child, -1);
-    }
-
-    public void addField(PrimitiveField child, int index) throws UPAException {
-        ListUtils.add(fields, child, index, this, this, new AddPrimitiveFieldItemInterceptor(this), true);
+        ListUtils.add(fields, child, this, this, new AddPrimitiveFieldItemInterceptor(this));
         fieldsMap.put(child.getName(), child);
     }
 

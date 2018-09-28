@@ -42,6 +42,7 @@ public class UPAObjectInfo implements Serializable{
     private String name;
     private String typeName;
     private String title;
+    private int preferredPosition;
 
     public UPAObjectInfo(String type) {
         this.typeName = type;
@@ -79,4 +80,13 @@ public class UPAObjectInfo implements Serializable{
         this.title = title;
     }
 
+    public int getPreferredPosition() {
+        return preferredPosition;
+    }
+
+    public void setPreferredPosition(int preferredPosition) {
+        this.preferredPosition = preferredPosition;
+    }
+
+    
 }

@@ -300,13 +300,14 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             indexName = b.toString();
         }
         index.setName(indexName);
+        index.setPreferredPosition(Integer.MIN_VALUE); //FIX ME
         DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, index, indexName);
         adapter.inject("unique", unique);
         adapter.inject("entity", this);
         adapter.inject("fieldNames", fieldList.toArray(new String[fieldList.size()]));
 
         //List<T> items, T child, int index, UPAObject newParent, UPAObject propertyChangeSupport, ItemInterceptor<T> interceptor
-        ListUtils.add(indexes, index, -1, this, this, null, true);
+        ListUtils.add(indexes, index, this, this, null);
         invalidateStructureCache();
         return index;
     }
@@ -376,8 +377,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
     }
 
-    private void addItem(EntityItem item, int index) throws UPAException {
-        ListUtils.add(items, item, index, this, this, new DefaultEntityPrivateAddItemInterceptor(this), true);
+    private void addItem(EntityItem item) throws UPAException {
+        ListUtils.add(items, item, this, this, new DefaultEntityPrivateAddItemInterceptor(this));
         itemsByName.put(item.getName(), item);
         invalidateStructureCache();
     }
@@ -515,19 +516,20 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         }
 
         Section currentSection = getPersistenceUnit().getFactory().createObject(Section.class);
+        currentSection.setPreferredPosition(index);
         DefaultBeanAdapter a = UPAUtils.prepare(getPersistenceUnit(), parentSection == null ? this : parentSection, currentSection, canonicalPathArray[canonicalPathArray.length - 1]);
 
         if (parentSection == null) {
-            addItem(currentSection, index);
+            addItem(currentSection);
         } else {
-            parentSection.addItem(currentSection, index);
+            parentSection.addItem(currentSection);
         }
         invalidateStructureCache();
         return currentSection;
     }
 
     public Section getSection(String path) {
-        return getSection(path, MissingStrategy.ERROR);
+        return getSection(path, MissingStrategy.ERROR, -1);
     }
 
     //    public void setSystem(boolean value) {
@@ -540,7 +542,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //    }
     // public void reorderField(String fieldName, int newPosition) {
     // Field f = getField(fieldName);
-    // int oldPosition = f.getIndex();
+    // int oldPosition = f.getPosition();
     // if (newPosition == oldPosition) {
     // return;
     // } else if (newPosition > oldPosition) {
@@ -618,10 +620,10 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return oldCompoundField;
 //    }
     public Section findSection(String path) throws UPAException {
-        return getSection(path, MissingStrategy.NULL);
+        return getSection(path, MissingStrategy.NULL, -1);
     }
 
-    public Section getSection(String path, MissingStrategy missingStrategy) {
+    public Section getSection(String path, MissingStrategy missingStrategy, int position) {
         if (path == null) {
             throw new NullPointerException();
         }
@@ -648,7 +650,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             throw new NoSuchSectionException(getName(), null, path);
                         }
                         case CREATE: {
-                            next = addSection(n);
+                            next = addSection(n, position);
                             break;
                         }
                         case NULL: {
@@ -668,7 +670,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                             throw new NoSuchSectionException(getName(), n, path);
                         }
                         case CREATE: {
-                            next = addSection(module.getPath() + "/" + n);
+                            next = addSection(module.getPath() + "/" + n, position);
                             break;
                         }
                         case NULL: {
@@ -690,7 +692,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return addSection(name, parentPath, -1);
 //    }
     public Section addSection(String path) throws UPAException {
-        return addSection(path, -1);
+        return addSection(path, Integer.MIN_VALUE);
     }
 
     public void invalidateStructureCache() {
@@ -1190,6 +1192,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         final DefaultTrigger triggerObject = new DefaultTrigger();
         triggerObject.setEntity(this);
         triggerObject.setName(triggerName);
+        triggerObject.setPreferredPosition(Integer.MIN_VALUE); //FIX ME
         EntityListener listener = convertInterceptorToListener(trigger);
         triggerObject.setInterceptor(trigger);
         triggerObject.setListener(listener);
@@ -1380,7 +1383,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return added;
 //    }
 //
-    public Field bindField(Field field, String sectionPath) throws UPAException {
+    public Field bindField(Field field, String sectionPath, int pathPosition) throws UPAException {
 
         if (StringUtils.isNullOrEmpty(field.getName())) {
             throw new IllegalUPAArgumentException("Field name is Null or Empty");
@@ -1430,11 +1433,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         if (sectionPath == null || sectionPath.length() == 0) {
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            addItem(field, field.getPreferredIndex());
+            addItem(field);
         } else {
-            Section section = getSection(sectionPath, MissingStrategy.CREATE);
+            Section section = getSection(sectionPath, MissingStrategy.CREATE, pathPosition);
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), section, field, field.getName());
-            section.addItem(field, field.getPreferredIndex());
+            section.addItem(field);
         }
         invalidateStructureCache();
         return field;
@@ -1609,6 +1612,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             f = new DefaultPrimitiveField();
         }
         f.setName(fieldDescriptor.getName());
+        f.setPreferredPosition(fieldDescriptor.getPosition()); //FIX ME
         f.setDefaultObject(fieldDescriptor.getDefaultObject());
         f.setDataType(fieldDescriptor.getDataType());
         f.setUserModifiers(fieldDescriptor.getModifiers());
@@ -1656,13 +1660,19 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 cf.addField((PrimitiveField) field);
             }
         }
-        f.setPreferredIndex(fieldDescriptor.getIndex());
+        f.setPreferredPosition(fieldDescriptor.getPosition());
         return f;
     }
 
     public Field addField(FieldDescriptor fieldDescriptor) throws UPAException {
         Field f = createField(fieldDescriptor);
-        bindField(f, fieldDescriptor.getPath());
+        String sectionPath = fieldDescriptor.getPath();
+        int sectionPathIndex = fieldDescriptor.getPathPosition();
+        if (!(sectionPath == null || sectionPath.length() == 0)) {
+            Section r = getSection(sectionPath, MissingStrategy.CREATE, sectionPathIndex);
+            r.setPreferredPosition(fieldDescriptor.getPathPosition());
+        }
+        bindField(f, fieldDescriptor.getPath(), fieldDescriptor.getPathPosition());
         return f;
     }
 
@@ -1692,7 +1702,8 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public String toString() {
-        return getName();
+        String n = getName();
+        return n == null ? "<<<NO_NAME>>" : n;
     }
 
     @Override
@@ -2138,7 +2149,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
         expression = toIdListExpression(expression);
         long initialCount = getEntityCount(expression);
-        if(initialCount==0){
+        if (initialCount == 0) {
             return removeInfo;
         }
         if (isCheckSecurity()) {
@@ -2785,6 +2796,42 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         return getFields(getItems());
     }
 
+    public List<Field> getFields(boolean includeAll) throws UPAException {
+        if (includeAll) {
+            return getFields(getItems());
+        } else {
+            List<Field> immediateFields = new ArrayList<>();
+            for (EntityItem item : items) {
+                if (item instanceof Field) {
+                    immediateFields.add((Field) item);
+                }
+            }
+            return immediateFields;
+        }
+    }
+
+    public List<Section> getSections(boolean includeAll) throws UPAException {
+        if (includeAll) {
+            List<Section> immediateSections = new ArrayList<>();
+            for (EntityItem item : items) {
+                if (item instanceof Section) {
+                    Section s = (Section) item;
+                    immediateSections.add(s);
+                    immediateSections.addAll(s.getSections(true));
+                }
+            }
+            return immediateSections;
+        } else {
+            List<Section> immediateSections = new ArrayList<>();
+            for (EntityItem item : items) {
+                if (item instanceof Section) {
+                    immediateSections.add((Section) item);
+                }
+            }
+            return immediateSections;
+        }
+    }
+
     //    public final void updateFormulas(Field[] fieldsToUpdate,
 //                                                  K key) throws UPAException {
 //        // if (key.getValue().length != getIdFields().length)
@@ -3390,7 +3437,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         addExtensionDefinition(extensionType, extensionObject);
     }
 
-    
     @Override
     public void addExtensionDefinition(Class extensionType, EntityExtensionDefinition extensionObject) throws UPAException {
         Class<? extends EntityExtension> entityExtensionSupportType = getPersistenceUnit().getEntityExtensionSupportType(extensionType);
@@ -3418,12 +3464,11 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public <S extends EntityExtensionDefinition> List<S> getExtensionDefinitions(Class<S> type) {
         return extensionManager.getEntityExtensions(type);
     }
-    
+
     @Override
     public <S extends EntityExtensionDefinition> S getExtensionDefinition(Class<S> type) {
         return extensionManager.getEntityExtension(type);
     }
-    
 
     public List<EntityExtension> getExtensions() {
         return extensionManager.getEntityExtensionSupports();

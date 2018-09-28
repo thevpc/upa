@@ -193,10 +193,6 @@ public interface Field extends EntityItem {
 
     void check(Object value);
 
-    int getPreferredIndex();
-
-    void setPreferredIndex(int preferredIndex);
-
     boolean isOneToOne();
 
     boolean isManyToOne();

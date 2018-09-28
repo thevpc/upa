@@ -38,6 +38,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     RelationshipInfo foreignInfo;
     DecorationEntityDescriptor entityInfo = null;
     String fieldPath = null;
+    Integer fieldPathPosition = null;
     Object defaultObject = null;
     Object unspecifiedObject = null;
     AnyFormulaInfo anyFormula;
@@ -82,6 +83,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
     OverriddenValue<String> overriddenCharsRejected = new OverriddenValue<String>();
     OverriddenValue<String> overriddenFormat = new OverriddenValue<String>();
     OverriddenValue<String> overriddenPath = new OverriddenValue<String>();
+    OverriddenValue<Integer> overriddenPathPosition = new OverriddenValue<Integer>();
     OverriddenValue<PropertyAccessType> overriddenPropertyAccessType = new OverriddenValue<PropertyAccessType>();
 //    OverriddenValue<BoolEnum> overriddenEnd = new OverriddenValue<BoolEnum>();
 
@@ -467,10 +469,12 @@ class DecorationFieldDescriptor implements FieldDescriptor {
             Decoration pathDeco = repo.getFieldDecoration(someField, net.vpc.upa.config.Path.class);
             if (pathDeco != null) {
                 AnnotationParserUtils.validStr(pathDeco.getString("value"), overriddenPath, pathDeco.getConfig().getOrder());
+                AnnotationParserUtils.validInt(pathDeco.getInt("position"), overriddenPathPosition, Integer.MIN_VALUE, pathDeco.getConfig().getOrder());
                 lastPathDeco = pathDeco;
                 ctx.put("Entity.lastPathDeco", lastPathDeco);
             } else if (lastPathDeco != null) { // path is transitive on successive fields in the same class!
                 AnnotationParserUtils.validStr(lastPathDeco.getString("value"), overriddenPath, lastPathDeco.getConfig().getOrder());
+                AnnotationParserUtils.validInt(lastPathDeco.getInt("position"), overriddenPathPosition, Integer.MIN_VALUE, lastPathDeco.getConfig().getOrder());
             }
             if (someField.getType().equals(FieldDesc.class)) {
                 prepareFieldDesc(ctx, entityName, someField);
@@ -532,6 +536,7 @@ class DecorationFieldDescriptor implements FieldDescriptor {
                 AnnotationParserUtils.validStr(fieldDeco.getString("charsRejected"), overriddenCharsRejected, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("format"), overriddenFormat, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("path"), overriddenPath, processOrder);
+                AnnotationParserUtils.validInt(fieldDeco.getInt("position"), overriddenPathPosition, Integer.MIN_VALUE, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("defaultValue"), overriddenDefaultValueStr, processOrder);
                 AnnotationParserUtils.validStr(fieldDeco.getString("unspecifiedValue"), overriddenUnspecifiedValueStr, processOrder);
             }
@@ -608,6 +613,9 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         }
         if (overriddenPath.specified) {
             this.fieldPath = overriddenPath.value;
+        }
+        if (overriddenPathPosition.specified) {
+            this.fieldPathPosition = overriddenPathPosition.value;
         }
 //        if (insertFormula.specified) {
 //            this.formulaupaField.setFormula(insertFormula.value);
@@ -759,12 +767,8 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         return updateFormulaOrder;
     }
 
-    public int getIndex() {
-        Integer value = overriddenPosition.value;
-        if (value == null) {
-            return -1;
-        }
-        return value.intValue();
+    public int getPosition() {
+        return overriddenPosition.getValue(0);
     }
 
     public int getSelectFormulaOrder() {
@@ -1022,6 +1026,11 @@ class DecorationFieldDescriptor implements FieldDescriptor {
 
     public PropertyAccessType getPropertyAccessType() {
         return overriddenPropertyAccessType.getValue(null);
+    }
+
+    @Override
+    public int getPathPosition() {
+        return this.fieldPathPosition==null?Integer.MIN_VALUE:fieldPathPosition.intValue();
     }
 
 }

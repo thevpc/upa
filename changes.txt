@@ -5,6 +5,8 @@ Version 1.2.0.48.1 :
 ## Other Changes
 ## Bug Fixes
     set transient Property change listener in DefaultDocument to enable Serialization
+    Fixed null support for Blob and Clob
+    Fixed avg function support (was not listed un function factory)
 
 Version 1.2.0.48 :
 -----------------

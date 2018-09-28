@@ -48,6 +48,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
 
     private String name;
     private String path;
+    private int pathPosition;
     private Object defaultObject;
     private Object unspecifiedObject;
     private DataType dataType;
@@ -67,7 +68,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int index = -1;
+    private int position = -1;
 
     public DefaultFieldDescriptor() {
     }
@@ -98,7 +99,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         setReadProtectionLevel(other.getReadProtectionLevel());
         setPropertyAccessType(other.getPropertyAccessType());
         setFieldParams(other.getFieldParams());
-        setIndex(other.getIndex());
+        setPosition(other.getPosition());
     }
 
     public String getName() {
@@ -306,12 +307,12 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         return this;
     }
 
-    public int getIndex() {
-        return index;
+    public int getPosition() {
+        return position;
     }
 
-    public DefaultFieldDescriptor setIndex(int index) {
-        this.index = index;
+    public DefaultFieldDescriptor setPosition(int position) {
+        this.position = position;
         return this;
     }
 
@@ -321,6 +322,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         }
         setName(other.getName());
         setPath(other.getPath());
+        setPathPosition(other.getPathPosition());
         setDefaultObject(other.getDefaultObject());
         setUnspecifiedObject(other.getUnspecifiedObject());
         setDataType(other.getDataType());
@@ -340,7 +342,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         setReadProtectionLevel(other.getReadProtectionLevel());
         setFieldParams(other.getFieldParams());
         setPropertyAccessType(other.getPropertyAccessType());
-        setIndex(other.getIndex());
+        setPosition(other.getPosition());
         return this;
     }
 
@@ -411,9 +413,18 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         if (other.getPropertyAccessType() != null) {
             setPropertyAccessType(other.getPropertyAccessType());
         }
-        if (other.getIndex() != 0) {
-            setIndex(other.getIndex());
+        if (other.getPosition() != 0) {
+            setPosition(other.getPosition());
         }
         return this;
     }
+
+    public int getPathPosition() {
+        return pathPosition;
+    }
+
+    public void setPathPosition(int pathPosition) {
+        this.pathPosition = pathPosition;
+    }
+
 }

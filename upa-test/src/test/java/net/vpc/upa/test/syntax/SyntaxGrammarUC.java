@@ -29,6 +29,7 @@ public class SyntaxGrammarUC {
 
     @Test
     public void testGrammar() throws ParseException {
+        testUPQL("Select avg(a.x) from A a");
         testUPQL("if this.vesselRatio=0 then false elseif this.vesselRatio>this.tcvShore and this.vesselRatio<this.tcvSail then true else false end");
         testUPQL("this.quality>=0");
         testUPQL("if this.quality=true then this.tcvLoad elseif 0>1 then 5 else 0 end");

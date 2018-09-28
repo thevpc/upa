@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import net.vpc.upa.*;
 import net.vpc.upa.config.Id;
+import net.vpc.upa.config.Path;
 import net.vpc.upa.test.model.SharedClientType;
 import net.vpc.upa.test.util.PUUtils;
 import net.vpc.upa.types.DateTime;
@@ -48,6 +49,13 @@ public class CrudUC2 {
             c.setFirstName("Ahmed Marouane");
 
             pu.update(c);
+            
+            Long x=pu.createQuery("Select max(a.longValue) from Client a").getLong();
+            System.out.println(x);
+            x=pu.createQuery("Select min(a.longValue) from Client a").getLong();
+            System.out.println(x);
+            x=pu.createQuery("Select avg(a.longValue) from Client a").getLong();
+            System.out.println(x);
         }
     }
 
@@ -60,11 +68,13 @@ public class CrudUC2 {
         //error if int should correct
 //        private int id;
         private String firstName;
+        @Path(value = "Section2",position = 15)
         private String lastName;
         private java.util.Date birthDate;
         private Timestamp timestampValue;
         private DateTime dateTimeValue;
         private Date dateOnlyValue;
+        @Path(value = "Section1",position = 1)
         private Month monthValue;
         private Integer integerValue;
         private Long longValue;
