@@ -621,6 +621,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
             nativeFields = new NativeField[cquery.countFields()];
             for (int i = 0; i < nativeFields.length; i++) {
                 CompiledQueryField field = cquery.getField(i);
+                boolean preferLoadLater = field.isPreferLoadLater();
                 boolean partialObject = field.isPartialObject();
 //                String fieldAlias = field.getAliasBinding();
                 CompiledExpressionExt expression1 = field.getExpression();
@@ -650,7 +651,7 @@ public abstract class AbstractPersistenceStore implements PersistenceStoreExt {
                 DataTypeTransform baseTransform = c;
                 c = fieldNoTypeTransform ? IdentityDataTypeTransform.ofType(baseTransform.getSourceType()) : baseTransform;
 //                String gn=StringUtils.isNullOrEmpty(validName)?validName:(binding+"."+validName);
-                nativeFields[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, partialObject);
+                nativeFields[i] = new NativeField(validName, binding, field.getIndex(), field.isExpanded(), field.getParentBindingEntity(), referrerField, c, preferLoadLater,partialObject);
             }
         } else {
             nativeFields = new NativeField[0];

@@ -3,8 +3,12 @@ package net.vpc.upa.impl.persistence.result;
 import net.vpc.upa.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.impl.DefaultKey;
+import net.vpc.upa.impl.DefaultPersistenceUnit;
 import net.vpc.upa.impl.UPAImplDefaults;
 import net.vpc.upa.impl.UPAImplKeys;
+import net.vpc.upa.impl.cache.EntityCollectionCache;
+import net.vpc.upa.impl.cache.LRUCacheMap;
 import net.vpc.upa.impl.persistence.NativeField;
 import net.vpc.upa.impl.persistence.QueryExecutor;
 import net.vpc.upa.impl.upql.BindingId;
@@ -15,6 +19,7 @@ import net.vpc.upa.persistence.ResultMetaData;
 
 import java.util.*;
 import java.util.logging.Logger;
+
 import net.vpc.upa.exceptions.UnexpectedException;
 
 /**
@@ -39,6 +44,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private ObjectFactory ofactory;
     private ResultFieldFamily[] columnFamilies;
     private QueryResultItemBuilder resultBuilder;
+    private EntityCollectionCache entityCollectionCache;
     private long rowIndex = -1;
 
     public DefaultObjectQueryResultLazyList(
@@ -47,9 +53,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             boolean itemAsDocument,
             boolean updatable,
             QueryResultItemBuilder resultBuilder
-    )  {
+    ) {
         super(queryExecutor);
         this.itemAsDocument = itemAsDocument;
+        this.entityCollectionCache = ((DefaultPersistenceUnit) pu).getPersistenceUnitCache();
         this.resultBuilder = resultBuilder;
         metaData = queryExecutor.getMetaData();
         hints = queryExecutor.getHints();
@@ -132,6 +139,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         bindingToTypeInfos0.put(parentBinding, columnFamily);
                     }
                 }
+                columnFamily.preferLoadLater = f.nativeField.isPreferLoadLater();
                 columnFamily.partialObject = f.nativeField.isPartialObject();
             }
             f.columnFamily = columnFamily;
@@ -186,7 +194,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             if (columnFamily.binding == null) {
                 columnFamily.parser = ColumnFamilyParserNoBindingResult.INSTANCE;
             } else if (columnFamily.entity != null && columnFamily.identifiable) {
-                if (columnFamily.partialObject) {
+                if (columnFamily.preferLoadLater) {
                     if (columnFamily.idFields.size() == 1) {
                         columnFamily.parser = ColumnFamilyParserSingleIdExternalTodoEntityResult.INSTANCE;
                     } else {
@@ -231,6 +239,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
     private void reduceWorkspace() {
         if (workspace_missingObjectsCount > 0) {
+            EntityCollectionCache c = ((DefaultPersistenceUnit) persistenceUnit).getPersistenceUnitCache();
             CacheMap<NamedId, ResultObject> referencesCache = getReferencesCache();
             while (!workspace_missingObjects.isEmpty()) {
                 for (Map.Entry<String, Set<Object>> e : workspace_missingObjects.entrySet()) {
@@ -243,7 +252,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                     //should remove already loaded objects
                     for (Object o : itemsToReduce) {
                         NamedId id = new NamedId(o, entityName);
-                        if (!referencesCache.containsKey(id)) {
+                        if (!referencesCache.containsKey(id) && c.findById(entityName, builder.idToKey(o)) == null) {
                             itemsToReduce2.add(o);
                         } else {
 //                        System.out.println(">>  Already reduced "+id);
@@ -262,10 +271,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         if (count != itemsToReduce2.size()) {
                             throw new IllegalUPAArgumentException("Problem");
                         }
+                    } else {
+                        break;
                     }
                 }
                 workspace_missingObjects.clear();
-                workspace_missingObjectsCount=0;
+                workspace_missingObjectsCount = 0;
                 for (Iterator<LazyResult> iterator = workspace_todos.iterator(); iterator.hasNext(); ) {
                     LazyResult lazyResult = iterator.next();
                     for (Iterator<Map.Entry<BindingId, NamedId>> itemTodosIterator = lazyResult.todos.entrySet().iterator(); itemTodosIterator.hasNext(); ) {
@@ -273,9 +284,19 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                         NamedId value = t.getValue();
                         ResultObject ro = referencesCache.get(value);
                         if (ro == null) {
-                            //this would happen if cache is overloaded
-                            //so let me reload this object
-                            addWorkspaceMissingObject((String) value.getName(), value.getId());
+                            String entityName = (String) value.getName();
+                            EntityBuilder eb = persistenceUnit.getEntity(entityName).getBuilder();
+                            Key k3 = eb.idToKey(value.getId());
+                            Object cachedObj = c.findById(entityName, k3);
+                            if (cachedObj != null) {
+                                ro = ResultObject.forObject(cachedObj, eb,itemAsDocument);
+                                lazyResult.values.put(t.getKey(), ro.entityResult);
+                                itemTodosIterator.remove();
+                            } else {
+                                //this would happen if cache is overloaded
+                                //so let me reload this object
+                                addWorkspaceMissingObject(entityName, value.getId());
+                            }
                         } else {
                             lazyResult.values.put(t.getKey(), ro.entityResult);
                             itemTodosIterator.remove();
@@ -284,16 +305,16 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
                 }
                 for (Iterator<LazyResult> iterator = workspace_todos.iterator(); iterator.hasNext(); ) {
                     LazyResult lazyResult = iterator.next();
-                    if(lazyResult.todos.isEmpty()){
+                    if (lazyResult.todos.isEmpty()) {
                         workspace_available.add((T) this.resultBuilder.createResult(lazyResult.build(), metaData));
                         iterator.remove();
-                    }else{
+                    } else {
                         break;
                     }
                 }
                 workspace_hasTodos = !workspace_todos.isEmpty();
             }
-            if(workspace_hasTodos){
+            if (workspace_hasTodos) {
                 throw new UnexpectedException("ShouldNoHaveRemainingTodos");
             }
         }
@@ -304,10 +325,12 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
         EntityBuilder builder = entity.getBuilder();
         QueryBuilder query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
         int count = 0;
+        EntityCollectionCache c = ((DefaultPersistenceUnit) entity.getPersistenceUnit()).getPersistenceUnitCache();
         if (itemAsDocument) {
             for (Document o : query.getDocumentList()) {
-                ResultObject resultObject = ResultObject.forDocument(null, o);
-                NamedId id = new NamedId(builder.objectToId(o), entityName);
+                ResultObject resultObject = ResultObject.forDocument(o, builder);
+                Object id1 = builder.objectToId(o);
+                NamedId id = new NamedId(id1, entityName);
                 if (!referencesCache.containsKey(id)) {
                     referencesCache.put(id, resultObject);
                 }
@@ -315,7 +338,7 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
             }
         } else {
             for (Object o : query.getResultList()) {
-                ResultObject resultObject = ResultObject.forObject(o, builder.objectToDocument(o, true));
+                ResultObject resultObject = ResultObject.forObject(o, builder);
                 NamedId id = new NamedId(builder.objectToId(o), entityName);
                 if (!referencesCache.containsKey(id)) {
                     referencesCache.put(id, resultObject);
@@ -373,5 +396,10 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
 
     public Map<String, Object> getHints() {
         return hints;
+    }
+
+    @Override
+    public EntityCollectionCache getEntityCollectionCache() {
+        return entityCollectionCache;
     }
 }

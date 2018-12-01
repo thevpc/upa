@@ -17,6 +17,8 @@ import net.vpc.upa.FilterEntityExtension;
 import net.vpc.upa.ViewEntityExtension;
 import net.vpc.upa.UnionEntityExtension;
 import net.vpc.upa.HierarchyExtension;
+import net.vpc.upa.impl.cache.EntityCollectionCache;
+import net.vpc.upa.impl.cache.PersistenceUnitCache;
 import net.vpc.upa.impl.sysentities.LockInfoDesc;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
@@ -133,6 +135,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     private HashMap<String, NamedFormulaDefinition> namedFormulas = new HashMap<String, NamedFormulaDefinition>();
     private PersistenceNameStrategy persistenceNameStrategy;
     private boolean caseSensitiveIdentifiers = false;
+    private EntityCollectionCache persistenceUnitCache;
 
     public DefaultPersistenceUnit() {
 //        this.allEntities = new LinkedHashMap<String, Entity>();
@@ -182,10 +185,16 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         getExpressionManager().addFunction("SHA256", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.SHA256));
         getExpressionManager().addFunction("HASH", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.MD5));
         this.persistenceNameStrategy = getFactory().createObject(PersistenceNameStrategy.class);
+        persistenceUnitCache=new PersistenceUnitCache(1024,this);
     }
 
     private void invalidate() {
         //needsRevalidateCache=true;
+        persistenceUnitCache.invalidate();
+    }
+
+    public EntityCollectionCache getPersistenceUnitCache() {
+        return persistenceUnitCache;
     }
 
     //    @Override
@@ -475,7 +484,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void addTrigger(String triggerName, EntityInterceptor interceptor, String entityNamePattern, boolean system) {
         EntityConfiguratorProcessor.configureTracker(this, new SimpleEntityFilter(
-                StringUtils.isNullOrEmpty(entityNamePattern) ? null : new EqualsStringFilter(entityNamePattern, false, false),
+                StringUtils.isNullOrEmpty(entityNamePattern) ? null : new EqualsStringFilter(entityNamePattern, true, false),
                 system
         ), new EntityInterceptorEntityConfigurator(interceptor, triggerName));
     }
@@ -2166,6 +2175,11 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public <T> T findById(String entityType, Object id) {
+        EntityCollectionCache c = getPersistenceUnitCache();
+        T o = (T) c.findById(entityType, createKey(id));
+        if(o!=null){
+            return o;
+        }
         return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
     }
 
@@ -2175,7 +2189,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(object.getClass());
-        return (T) entity.findById(entity.getBuilder().objectToId(object));
+        return (T) findById(entity.getName(), entity.getBuilder().objectToId(object));
     }
 
     @Override
@@ -2184,7 +2198,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(entityName);
-        return (T) entity.findById(entity.getBuilder().objectToId(object));
+        return (T) findById(entity.getName(),entity.getBuilder().objectToId(object));
     }
 
     @Override
@@ -2204,6 +2218,9 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public boolean existsById(String entityName, Object id) {
+        if(getPersistenceUnitCache().findById(entityName,createKey(id))!=null){
+            return true;
+        }
         return createQueryBuilder(entityName).byId(id).getIdList().size() > 0;
     }
 

@@ -35,8 +35,6 @@
 package net.vpc.upa.types;
 
 import net.vpc.upa.DataTypeInfo;
-import net.vpc.upa.Entity;
-import net.vpc.upa.Relationship;
 
 public class ManyToOneType extends RelationDataType implements Cloneable {
 

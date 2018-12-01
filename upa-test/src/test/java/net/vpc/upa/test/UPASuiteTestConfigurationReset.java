@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class UPASuiteTestConfigurationReset {
 
-    @BeforeClass
+    //@BeforeClass
     public static void setup() {
         PUUtils.drawBox("RESET TEST DATABASE");
         PUUtils.deleteTestPersistenceUnits();

@@ -536,7 +536,18 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
         }
         for (CompiledQueryField field : other.fields) {
             CompiledExpressionExt ee = field.getExpression();
-            addField(ee == null ? null : ee.copy(), field.getAlias());
+            CompiledQueryField f = new CompiledQueryField(
+                    field.getName(),
+                    ee == null ? null : ee.copy(),
+                   -1,
+                    field.isExpanded(),
+                    field.getAlias(),
+                    null,null,
+                    field.isPreferLoadLater(),
+                    field.isPartialObject()
+            );
+
+            addField(f);
         }
         for (CompiledOrderItem compiledOrderItem : other.order.getItems()) {
             CompiledExpressionExt ee = compiledOrderItem.getExpression();

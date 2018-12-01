@@ -6,7 +6,7 @@
 package net.vpc.upa.impl.transform;
 
 import net.vpc.upa.PortabilityHint;
-import net.vpc.upa.impl.util.LRUMap;
+import net.vpc.upa.impl.cache.LRUMap;
 import net.vpc.upa.types.*;
 
 import java.util.HashMap;

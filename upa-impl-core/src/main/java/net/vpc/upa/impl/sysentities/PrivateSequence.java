@@ -18,11 +18,11 @@ public class PrivateSequence {
 
 
     @Id
-    @Field(max = "512")
+    @Field(max = "255")
     private String name;
 
     @Id
-    @Field(max = "512")
+    @Field(max = "255")
     private String group;
 
     private boolean locked;

@@ -1,9 +1,12 @@
 package net.vpc.upa.impl.persistence.result;
 
+import net.vpc.upa.EntityBuilder;
+import net.vpc.upa.Key;
 import net.vpc.upa.NamedId;
-import net.vpc.upa.Query;
 import net.vpc.upa.QueryBuilder;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.DefaultKey;
+import net.vpc.upa.impl.cache.EntityCollectionCache;
 import net.vpc.upa.impl.util.CacheMap;
 import net.vpc.upa.persistence.QueryResult;
 
@@ -34,20 +37,31 @@ public class TypeInfoSupParserHelper {
     }
 
     public static void loadExternalObject(Object idarr, ResultFieldFamily columnFamily, LazyResult lazyResult, QueryResultParserHelper parser) throws UPAException {
+        EntityCollectionCache c = parser.getEntityCollectionCache();
         ResultObject resultObject;
         if (idarr == null) {
             resultObject = ResultObject.forNull();
         } else {
+            Key kid=new DefaultKey(idarr);
             NamedId key = new NamedId(idarr, columnFamily.entity.getName());
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
-                QueryBuilder query = columnFamily.entity.createQueryBuilder().byId(idarr).setHints(parser.getHints());
-                if (columnFamily.documentType) {
-                    o=ResultObject.forDocument(null,query.getDocument());
-                } else {
-                    Object entityObject = query.<Object>getFirstResultOrNull();
-                    o=ResultObject.forObject(entityObject,columnFamily.builder.objectToDocument(entityObject, true));
+                Object old = c.findById(columnFamily.entity.getName(),kid);
+                if(old!=null){
+                    o = ResultObject.forObject(old, columnFamily.entity.getBuilder(),columnFamily.documentType);
+                }else {
+                    EntityBuilder builder = columnFamily.entity.getBuilder();
+                    QueryBuilder query = columnFamily.entity.createQueryBuilder().byId(idarr).setHints(parser.getHints());
+                    if (columnFamily.documentType) {
+                        o = ResultObject.forDocument(query.getDocument(), builder);
+                    } else {
+                        Object entityObject = query.<Object>getFirstResultOrNull();
+                        o = ResultObject.forObject(entityObject, columnFamily.builder,columnFamily.documentType);
+                        if(!columnFamily.partialObject){
+                            c.add(columnFamily.entity.getName(),kid,o.entityObject);
+                        }
+                    }
                 }
                 referencesCache.put(key, o);
             }

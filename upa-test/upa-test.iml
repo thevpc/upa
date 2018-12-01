@@ -27,7 +27,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derby:10.10.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.derby:derbyclient:10.10.1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:5.1.35" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
   </component>
 </module>

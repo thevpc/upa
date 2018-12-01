@@ -1,8 +1,7 @@
 package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.Document;
-import net.vpc.upa.Key;
-import net.vpc.upa.ObjectFactory;
+import net.vpc.upa.EntityBuilder;
 
 /**
  * Created by vpc on 7/1/17.
@@ -20,22 +19,37 @@ public class ResultObject {
         return new ResultObject();
     }
 
-    public static ResultObject forObject(Object entityObject,Document entityDocument){
+    public static ResultObject forObject(Object entityObject, EntityBuilder builder,boolean itemAsDocument){
+        if(!itemAsDocument){
+            return forObject(entityObject,builder);
+        }else{
+            ResultObject r=new ResultObject();
+            r.entityObject = entityObject;
+            r.entityDocument = builder.objectToDocument(r.entityObject,true);
+            r.entityResult = r.entityDocument;
+            return r;
+        }
+    }
+    public static ResultObject forObject(Object entityObject, EntityBuilder builder){
         ResultObject r=new ResultObject();
         r.entityObject = entityObject;
-        r.entityDocument = entityDocument;
+        r.entityDocument = builder.objectToDocument(r.entityObject,true);
         r.entityResult = entityObject;
         return r;
     }
 
-    public static ResultObject forDocument(Object entityObject,Document entityDocument){
+    public static ResultObject forDocument(Document entityDocument, EntityBuilder builder){
         ResultObject r=new ResultObject();
-        r.entityObject = entityObject;
         r.entityDocument = entityDocument;
         r.entityResult = entityDocument;
+        r.entityObject = builder.documentToObject(r.entityDocument);
         return r;
     }
     public boolean isNull(){
         return entityDocument==null;
+    }
+
+    public Object getEntityObject() {
+        return entityObject;
     }
 }

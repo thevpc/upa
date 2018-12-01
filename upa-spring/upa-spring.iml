@@ -28,8 +28,8 @@
     <orderEntry type="module" module-name="upa-api" />
     <orderEntry type="module" module-name="upa-impl" />
     <orderEntry type="module" module-name="upa-impl-core" />
-    <orderEntry type="library" name="Maven: cglib:cglib:3.2.7" level="project" />
-    <orderEntry type="library" name="Maven: org.ow2.asm:asm:6.2" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib:3.2.8" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:6.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.9" level="project" />

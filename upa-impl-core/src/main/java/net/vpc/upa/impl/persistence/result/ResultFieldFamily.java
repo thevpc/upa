@@ -23,6 +23,10 @@ class ResultFieldFamily {
     Map<String, ResultFieldParseData> fieldsMap = new HashMap<String, ResultFieldParseData>();
     Map<String, ResultFieldParseDataSetter> setters = new HashMap<String, ResultFieldParseDataSetter>();
     ResultFieldFamilyParser parser;
+    /**
+     * if true, this column family will be loaded (based on id) in external query (later)
+     */
+    boolean preferLoadLater;
     boolean partialObject;
     ObjectFactory ofactory;
     ResultObject currentResult;
@@ -78,13 +82,31 @@ class ResultFieldFamily {
                 '}';
     }
 
+    public ResultObject importObject(Object imported){
+        ResultFieldFamily columnFamily =this;
+        if (columnFamily.documentType) {
+            return ResultObject.forDocument(columnFamily.builder.objectToDocument(imported), builder);
+        } else {
+            return ResultObject.forObject(imported, columnFamily.builder);
+        }
+    }
+
+    public ResultObject importDocument(Document imported){
+        ResultFieldFamily columnFamily =this;
+        if (columnFamily.documentType) {
+            return ResultObject.forDocument(imported, builder);
+        } else {
+            return ResultObject.forObject(columnFamily.builder.documentToObject(imported), builder);
+        }
+    }
+
     public ResultObject createResultObject(){
         ResultFieldFamily columnFamily =this;
         if (columnFamily.documentType) {
-            return ResultObject.forDocument(null,columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument());
+            return ResultObject.forDocument(columnFamily.builder == null ? ofactory.createObject(Document.class) : columnFamily.builder.createDocument(), builder);
         } else {
             Object entityObject = columnFamily.builder.createObject();
-            return ResultObject.forObject(entityObject,columnFamily.builder.objectToDocument(entityObject, true));
+            return ResultObject.forObject(entityObject, columnFamily.builder);
         }
     }
 }

@@ -1,4 +1,4 @@
-package net.vpc.upa.impl.util;
+package net.vpc.upa.impl.cache;
 
 import net.vpc.upa.PortabilityHint;
 

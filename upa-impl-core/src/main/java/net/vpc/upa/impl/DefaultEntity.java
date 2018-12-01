@@ -15,6 +15,7 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.EntityExtensionDefinition;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.filters.FieldFilters;
+import net.vpc.upa.impl.cache.LRUCacheMap;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
 import net.vpc.upa.impl.event.FormulaUpdaterInterceptorSupport;
 import net.vpc.upa.impl.event.RelationshipSourceFormulaUpdaterInterceptorSupport;

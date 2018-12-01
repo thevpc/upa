@@ -17,4 +17,8 @@ public interface CacheMap<K, V> {
     void put(K key, V value);
 
     void clear();
+
+    void remove(K key);
+
+    void updateSize(int size);
 }

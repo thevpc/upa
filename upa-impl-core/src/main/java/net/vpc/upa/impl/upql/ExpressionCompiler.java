@@ -348,11 +348,14 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 throw new IllegalUPAArgumentException("Unexpected!!");
             }
             CompiledVar finest = (CompiledVar) cv.getDeepest();
-            List<Field> fieldsToExpand = new ArrayList<Field>();
+            List<ExpressionCompilerFieldInfo> fieldsToExpand = new ArrayList<ExpressionCompilerFieldInfo>();
 //            List<Field> fieldsToPreserve = new ArrayList<>();
             Object referrer = resolveReferrer(finest);
             if (referrer instanceof Entity) {
-                fieldsToExpand.addAll(((Entity) referrer).getFields(depth == 0 ? FieldFilters2.ID : config.getExpandFieldFilter()));
+                List<Field> fields = ((Entity) referrer).getFields(depth == 0 ? FieldFilters2.ID : config.getExpandFieldFilter());
+                for (Field field : fields) {
+                    fieldsToExpand.add(new ExpressionCompilerFieldInfo(field,false,false));
+                }
             } else if (referrer instanceof Field) {
                 Field field = (Field) referrer;
                 Field oldReferrerField = tt.getReferrerField();
@@ -392,7 +395,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                     null,
                                     lbinding,
                                     null,
-                                    true
+                                    true,
+                                    false
                             );
                             item.setReferrerField(tfield);
                             item.setParentBindingEntity(oldReferrerEntity);
@@ -414,7 +418,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 bindingJoinInfo.entity,
                                 bindingJoinInfo.binding
                         );
-                        fieldsToExpand.addAll(newFields);
+                        for (Field newField : newFields) {
+                            fieldsToExpand.add(new ExpressionCompilerFieldInfo(newField,true,false));
+                        }
                         updateContext.put("columnsCount", newFields.size() + currColumnsCount);
                         if (manyToOneRelationship.getHierarchyExtension() != null && depth > 3) {
                             depth = 3;
@@ -438,7 +444,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 throw new IllegalUPAArgumentException("Unexpected");
             }
 
-            for (Field field : fieldsToExpand) {
+            for (ExpressionCompilerFieldInfo ifield : fieldsToExpand) {
+                Field field=ifield.field;
                 CompiledVar f2 = (CompiledVar) finest.copy();
                 CompiledVar f3 = new CompiledVar(field.getName(), field, BindingId.createChild(tt.getBinding(), field.getName()));
                 f2.setChild(f3);
@@ -450,7 +457,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         false,
                         null,
                         BindingId.createChild(tt.getBinding(), field.getName()),
-                        null
+                        null,
+                        ifield.preferLoadLater,
+                        ifield.partialObject
                 );
                 item.setReferrerField(field);
                 tt.setParentBindingEntity(field.getEntity());

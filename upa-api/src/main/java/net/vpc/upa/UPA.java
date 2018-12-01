@@ -191,7 +191,7 @@ public final class UPA {
                 context = contextProvider.getContext();
                 if (context == null) {
                     BOOTSTRAP.setContextInitializing();
-                    boolean succes = false;
+                    boolean success = false;
                     try {
                         long start = System.currentTimeMillis();
                         ObjectFactory bootstrapFactory = BOOTSTRAP.getFactory();
@@ -201,11 +201,11 @@ public final class UPA {
                         long end = System.currentTimeMillis();
                         log.log(Level.FINE, "UPA Context Loaded in {0} ms", end - start);
                         BOOTSTRAP.setContextInitialized();
-                        succes = true;
+                        success = true;
                     } finally {
                         //startup failed!
                         //reset status
-                        if (!succes) {
+                        if (!success) {
                             BOOTSTRAP.setContextError();
                         }
                     }

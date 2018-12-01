@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.persistence.result;
 
 import net.vpc.upa.NamedId;
+import net.vpc.upa.impl.cache.EntityCollectionCache;
 import net.vpc.upa.impl.util.CacheMap;
 
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
  */
 public interface QueryResultParserHelper {
     CacheMap<NamedId, ResultObject> getReferencesCache();
+
+    EntityCollectionCache getEntityCollectionCache();
 
     Map<String, Object> getHints();
 

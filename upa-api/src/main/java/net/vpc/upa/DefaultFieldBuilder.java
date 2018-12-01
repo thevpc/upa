@@ -65,7 +65,7 @@ public class DefaultFieldBuilder implements FieldBuilder, FieldDescriptor {
     private ProtectionLevel readProtectionLevel = ProtectionLevel.DEFAULT;
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
-    private int position = -1;
+    private int position;
 
     @Override
     public FieldDescriptor build() {

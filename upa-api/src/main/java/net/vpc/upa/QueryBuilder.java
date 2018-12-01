@@ -53,29 +53,51 @@ public interface QueryBuilder extends Serializable, Closeable {
 
     QueryBuilder byField(String field, Object value);
 
+    QueryBuilder byField(String field, Object value, boolean condition);
+
+    QueryBuilder byField(String field, SearchOperator operator,Object value);
+
+    QueryBuilder byField(String field, SearchOperator operator,Object value, boolean condition);
+
     QueryBuilder byExpression(String expression);
+
+    QueryBuilder byExpression(String expression, boolean condition);
 
     QueryBuilder byExpression(Expression expression);
 
-    QueryBuilder byExpression(Expression expression, boolean applyAndOp);
+    QueryBuilder byExpression(Expression expression, boolean condition);
 
     QueryBuilder byKeyList(List<Key> expr);
 
+    QueryBuilder byKeyList(List<Key> expr, boolean condition);
+
     QueryBuilder byExpressionList(List<Expression> expr);
+
+    QueryBuilder byExpressionList(List<Expression> expr, boolean condition);
+
+    QueryBuilder byId(Object id);
+
+    QueryBuilder byId(Object id, boolean condition);
+
+    QueryBuilder byIdList(List<Object> id);
+
+    QueryBuilder byIdList(List<Object> id, boolean condition);
+
+    QueryBuilder byKey(Key key);
+
+    QueryBuilder byKey(Key key, boolean condition);
+
+    QueryBuilder byPrototype(Object prototype);
+
+    QueryBuilder byPrototype(Object prototype, boolean condition);
+
+    QueryBuilder byDocumentPrototype(Document prototype);
+
+    QueryBuilder byDocumentPrototype(Document prototype, boolean condition);
 
     QueryBuilder orderBy(Order order);
 
     QueryBuilder setFieldFilter(FieldFilter fieldFilter);
-
-    QueryBuilder byId(Object id);
-
-    QueryBuilder byIdList(List<Object> id);
-
-    QueryBuilder byKey(Key key);
-
-    QueryBuilder byPrototype(Object prototype);
-
-    QueryBuilder byDocumentPrototype(Document prototype);
 
     QueryBuilder setUpdatable(boolean updatable);
 
@@ -128,19 +150,23 @@ public interface QueryBuilder extends Serializable, Closeable {
      *
      * @param <R> Result Type
      * @return Single result if unique
-     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
-     * @throws net.vpc.upa.exceptions.NoResultException        if no result if returned by query
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one
+     * result was returned by query
+     * @throws net.vpc.upa.exceptions.NoResultException if no result if returned
+     * by query
      */
     <R> R getSingleResult();
 
     /**
-     * Executes a Select query and returns a single result if found.
-     * If query returns no result null is returned.
-     * When Multiple results NonUniqueResultException will be thrown
+     * Executes a Select query and returns a single result if found. If query
+     * returns no result null is returned. When Multiple results
+     * NonUniqueResultException will be thrown
      *
      * @param <R> Result Type
-     * @return Single result if found. When Multiple results NonUniqueResultException will be thrown
-     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one result was returned by query
+     * @return Single result if found. When Multiple results
+     * NonUniqueResultException will be thrown
+     * @throws net.vpc.upa.exceptions.NonUniqueResultException if more thant one
+     * result was returned by query
      */
     <R> R getSingleResultOrNull();
 
@@ -151,12 +177,13 @@ public interface QueryBuilder extends Serializable, Closeable {
     <R> R getSingleResult(Class<R> type, String... fields);
 
     /**
-     * Executes a Select query and returns a single result if found.
-     * If query returns no result null is returned.
-     * When Multiple results, the first result will be returned
+     * Executes a Select query and returns a single result if found. If query
+     * returns no result null is returned. When Multiple results, the first
+     * result will be returned
      *
      * @param <R> Result Type
-     * @return Single result if found. When Multiple results, the first result will be returned. If query returns no result null is returned.
+     * @return Single result if found. When Multiple results, the first result
+     * will be returned. If query returns no result null is returned.
      */
     <R> R getFirstResultOrNull();
 
@@ -221,7 +248,6 @@ public interface QueryBuilder extends Serializable, Closeable {
     Object getHint(String hintName);
 
     Object getHint(String hintName, Object defaultValue);
-
 
     boolean isUpdatable();
 

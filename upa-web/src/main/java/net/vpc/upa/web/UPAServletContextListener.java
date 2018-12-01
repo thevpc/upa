@@ -15,6 +15,7 @@ public class UPAServletContextListener implements ServletContextListener {
             //
             Properties properties = UPA.getBootstrap().getProperties();
 
+            properties.setObject("upa.system.extra.ServletContext",sce.getServletContext());
             properties.setString("upa.system.type","web");
             properties.setString("upa.system.web.context-path",sce.getServletContext().getContextPath());
             properties.setString("upa.system.web.server-info",sce.getServletContext().getServerInfo());

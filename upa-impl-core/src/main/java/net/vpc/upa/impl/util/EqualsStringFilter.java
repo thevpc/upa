@@ -35,12 +35,7 @@ public class EqualsStringFilter implements ObjectFilter<String> {
             }
         }
         if(ignoreCase){
-            if(base0!=null){
-                base0=base0.toLowerCase();
-            }
-            if(s!=null){
-                s=s.toLowerCase();
-            }
+            return (base0==null && s==null) || (base0!=null && base0.equalsIgnoreCase(s));
         }
         return (base0==null && s==null) || (base0!=null && base0.equals(s));
     }

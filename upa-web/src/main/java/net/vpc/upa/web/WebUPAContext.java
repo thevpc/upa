@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import net.vpc.upa.UPA;
 
 /**
  *
@@ -33,6 +34,10 @@ public class WebUPAContext {
     }
 
     public ServletContext getServletContext() {
+        if(servletContext==null){
+            ServletContext sc = UPA.getBootstrap().getProperties().getObject("upa.system.extra.ServletContext");
+            return sc;
+        }
         return servletContext;
     }
 

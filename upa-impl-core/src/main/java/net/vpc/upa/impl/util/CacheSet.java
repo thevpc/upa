@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.util;
 
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.cache.LRUMap;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>

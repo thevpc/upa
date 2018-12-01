@@ -7,9 +7,6 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.filters.FieldFilter;
 import net.vpc.upa.Query;
 import net.vpc.upa.impl.ext.QueryExt;
-import net.vpc.upa.impl.upql.util.UPQLUtils;
-import net.vpc.upa.impl.util.UPAUtils;
-import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.persistence.ResultMetaData;
 
 import java.util.*;
@@ -39,7 +36,7 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     public DefaultQueryBuilder(Entity entity) {
         this.entity = entity;
-        criteriaBuilder=new CriteriaBuilder(entity);
+        criteriaBuilder = new CriteriaBuilder(entity);
     }
 
     public Entity getEntityType() {
@@ -74,8 +71,10 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
     }
 
     @Override
-    public QueryBuilder byExpression(Expression expression, boolean applyAndOp) {
-        criteriaBuilder.byExpression(expression,applyAndOp);
+    public QueryBuilder byExpression(Expression expression, boolean condition) {
+        if (condition) {
+            criteriaBuilder.byExpression(expression);
+        }
         return this;
     }
 
@@ -412,24 +411,99 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
 
     @Override
     public QueryBuilder byIdList(List<Object> ids) {
-        if (ids == null || ids.size() == 0) {
-            return byId(null);
-        }
-        Object[] objects = ids.toArray(new Object[ids.size()]);
-        if (ids.size() == 1) {
-            return byId(objects[0]);
-        }
-        if (entity == null) {
-            throw new IllegalUPAArgumentException("Missing Entity");
-        }
-        return byExpression(entity.getBuilder().idListToExpression(ids, UPQLUtils.THIS));
+        criteriaBuilder.byIdList(ids);
+        return this;
     }
 
     public QueryBuilder byField(String field, Object value) {
-        return byExpression(
-                new Equals(new Var(new Var(entity.getName()), entity.getField(field).getName()),
-                        new Param(entity.getField(field).getName(), value))
-        );
+        criteriaBuilder.byField(field, value);
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byField(String field, SearchOperator operator, Object value) {
+        criteriaBuilder.byField(field, operator,value);
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byField(String field, SearchOperator operator, Object value, boolean condition) {
+        if (condition) {
+            criteriaBuilder.byField(field, operator,value);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byField(String field, Object value, boolean condition) {
+        if (condition) {
+            return byField(field, value);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byExpression(String expression, boolean condition) {
+        if (condition) {
+            return byExpression(expression);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byKeyList(List<Key> expr, boolean condition) {
+        if (condition) {
+            return byKeyList(expr);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byExpressionList(List<Expression> expr, boolean condition) {
+        if (condition) {
+            return byExpressionList(expr);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byId(Object id, boolean condition) {
+        if (condition) {
+            return byId(id);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byIdList(List<Object> id, boolean condition) {
+        if (condition) {
+            return byIdList(id);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byKey(Key key, boolean condition) {
+        if (condition) {
+            return byKey(key);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byPrototype(Object prototype, boolean condition) {
+        if (condition) {
+            return byPrototype(prototype);
+        }
+        return this;
+    }
+
+    @Override
+    public QueryBuilder byDocumentPrototype(Document prototype, boolean condition) {
+        if (condition) {
+            return byDocumentPrototype(prototype);
+        }
+        return this;
     }
 
     @Override
@@ -443,7 +517,6 @@ public final class DefaultQueryBuilder extends AbstractQueryBuilder implements Q
         criteriaBuilder.byExpressionList(expr);
         return this;
     }
-
 
     public boolean isEmpty() throws UPAException {
         return build().isEmpty();

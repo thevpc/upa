@@ -266,7 +266,7 @@ public class DecorationEntityDescriptorResolver {
                 String name = fieldInfo.name;
                 DecorationFieldDescriptor old = entityInfo.fieldsMap.get(name);
                 if (old != null) {
-                    throw new IllegalUPAArgumentException("Should never happen");
+                    throw new IllegalUPAArgumentException("Field "+name+" is declared twice in "+entityInfo.name);
                 }
                 entityInfo.fieldsMap.put(name, fieldInfo);
             }

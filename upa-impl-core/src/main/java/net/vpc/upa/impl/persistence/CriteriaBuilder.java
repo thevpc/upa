@@ -6,9 +6,11 @@ import net.vpc.upa.expressions.*;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 
 import java.util.List;
+import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 
 public class CriteriaBuilder {
+
     private final Entity entity;
     private Object id;
     private Key key;
@@ -47,6 +49,7 @@ public class CriteriaBuilder {
         }
         return byExpression(ll);
     }
+
     public CriteriaBuilder byKeyList(List<Key> ids) {
         if (ids == null || ids.size() == 0) {
             return byId(null);
@@ -68,7 +71,49 @@ public class CriteriaBuilder {
         );
     }
 
-    public Expression createExpression(){
+    public CriteriaBuilder byField(String field, SearchOperator operator, Object value) {
+        if (operator == null) {
+            operator = SearchOperator.EQ;
+        }
+        if (operator == SearchOperator.DEFAULT) {
+            operator = SearchOperator.EQ;
+        }
+        switch (operator) {
+            case EQ:
+                return byExpression(
+                        new Equals(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+            case NE:
+                return byExpression(
+                        new Different(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+            case LT:
+                return byExpression(
+                        new LessThan(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+            case LTE:
+                return byExpression(
+                        new LessEqualThan(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+            case GT:
+                return byExpression(
+                        new GreaterThan(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+            case GTE:
+                return byExpression(
+                        new GreaterEqualThan(new Var(new Var(entity.getName()), entity.getField(field).getName()),
+                                new Param(entity.getField(field).getName(), value))
+                );
+        }
+        throw new IllegalUPAArgumentException("NotYeSupported",operator);
+    }
+
+    public Expression createExpression() {
         Expression criteria = null;
         if (getId() != null) {
             Expression e = entity.getBuilder().idToExpression(getId(), UPQLUtils.THIS);
@@ -111,8 +156,8 @@ public class CriteriaBuilder {
             this.expression = expression;
         } else if (expression != null) {
             this.expression = new And(this.expression, expression);
-        }else{
-            this.expression =null;
+        } else {
+            this.expression = null;
         }
         return this;
     }
@@ -123,6 +168,11 @@ public class CriteriaBuilder {
         } else {
             this.expression = new And(this.expression, expression);
         }
+        return this;
+    }
+
+    public CriteriaBuilder setExpression(Expression expression) {
+        this.expression = expression;
         return this;
     }
 

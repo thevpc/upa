@@ -4,6 +4,8 @@ import net.vpc.upa.Document;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.UPA;
 import net.vpc.upa.config.*;
+import net.vpc.upa.persistence.QueryResult;
+import net.vpc.upa.persistence.UConnection;
 import net.vpc.upa.test.util.PUUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -105,6 +107,7 @@ public class PatternAlterViewUC {
         entity.addField(new DefaultFieldBuilder().setName("type").setDataType(DataTypeFactory.STRING));
         pu.commitStructureModification();
         s.close();
+        bo.nativeQuery();
         bo.testMe();
     }
 
@@ -115,6 +118,22 @@ public class PatternAlterViewUC {
             pu.clear(Client.class, null);
         }
 
+        public void nativeQuery() {
+            PersistenceUnit pu = UPA.getPersistenceUnit();
+            UConnection c = pu.getConnection();
+            QueryResult q = c.executeQuery("Select ID,NAME,TYPE from PatternAlterViewUC_CLIENT_VIEW a", null, null, false);
+            for (int i = 0; i < q.getColumnsCount(); i++) {
+                System.out.print("  "+q.getColumnName(i)+" : "+q.getColumnType(i).getSimpleName());
+            }
+            System.out.println(";");
+            System.out.println("---------------------------------------------------------");
+            while (q.hasNext()){
+                for (int i = 0; i < q.getColumnsCount(); i++) {
+                    System.out.print("  "+q.read(i));
+                }
+                System.out.println(";");
+            }
+        }
         public void testMe() {
             PersistenceUnit pu = UPA.getPersistenceUnit();
             Client ic = new Client();
@@ -123,7 +142,7 @@ public class PatternAlterViewUC {
             Object uu = pu.findById(Client.class, ic.getId());
             System.out.println(uu.getClass());
             Assert.assertEquals(Client.class, uu.getClass());
-
+            nativeQuery();
             List<Document> r = pu.createQuery("Select a from ClientView a").getDocumentList();
             r.size();
             System.out.println(r);

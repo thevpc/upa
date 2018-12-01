@@ -1,7 +1,8 @@
-package net.vpc.upa.impl.util;
+package net.vpc.upa.impl.cache;
 
 import net.vpc.upa.Action;
 import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.impl.util.CacheMap;
 
 /**
  * Created by vpc on 7/9/17.
@@ -32,10 +33,25 @@ public class LRUCacheMap<K, V> implements CacheMap<K, V> {
     }
 
     public void put(K key, V value){
+        boolean found=false;
+        if(data.containsKey(key)){
+            found=true;
+        }
         data.put(key,value);
     }
 
     public void clear(){
         data.clear();
+    }
+
+    @Override
+    public void remove(K key){
+        data.remove(key);
+    }
+
+    public void updateSize(int size){
+        LRUMap<K, V> newData=new LRUMap<K, V>(size);
+        newData.putAll(data);
+        data=newData;
     }
 }

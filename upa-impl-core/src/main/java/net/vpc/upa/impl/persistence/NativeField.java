@@ -25,10 +25,16 @@ public class NativeField {
      * true if this field a key part of a partial object that should be loaded out of this query
      * mainly because it is a "SELECT" fetch strategy
      */
+    private boolean preferLoadLater;
+
+    /**
+     * true if the object is not to be load fully!! (for instance when loading only ids and names)
+     */
     private boolean partialObject;
 
-    public NativeField(String name, BindingId bindingId, int index, boolean expanded, Entity entity, Field field, DataTypeTransform typeChain, boolean partialObject) {
+    public NativeField(String name, BindingId bindingId, int index, boolean expanded, Entity entity, Field field, DataTypeTransform typeChain, boolean preferLoadLater, boolean partialObject) {
         this.bindingId = bindingId;
+        this.preferLoadLater = preferLoadLater;
         this.partialObject = partialObject;
         this.expanded = expanded;
         this.index = index;
@@ -51,12 +57,16 @@ public class NativeField {
         }
     }
 
+    public boolean isPartialObject() {
+        return partialObject;
+    }
+
     public Entity getParentBindingEntity() {
         return parentBindingEntity;
     }
 
-    public boolean isPartialObject() {
-        return partialObject;
+    public boolean isPreferLoadLater() {
+        return preferLoadLater;
     }
 
     public int getIndex() {

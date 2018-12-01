@@ -26,4 +26,14 @@ public class NoCacheMap<K, V> implements CacheMap<K, V> {
     public void clear(){
 
     }
+
+    @Override
+    public void remove(K key) {
+
+    }
+
+    @Override
+    public void updateSize(int size) {
+
+    }
 }

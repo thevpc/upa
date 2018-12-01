@@ -18,20 +18,21 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
     private String alias;
     private BindingId binding;
     private String aliasBinding;
+    private boolean preferLoadLater;
     private boolean partialObject;
     private Field referrerField;
     private Entity parentBindingEntity;
     public CompiledQueryField(String alias, CompiledExpressionExt expression/*, Object relative*/) {
-        this(resolveName(alias, expression), expression,-1,false,alias,null,null,false);
+        this(resolveName(alias, expression), expression,-1,false,alias,null,null,false,true);
         this.alias = alias;
         this.binding = resolveBinding(expression);
     }
 
-    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding) {
-        this(name, expression, index,expanded,alias,binding,aliasBinding,false);
-    }
+//    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding) {
+//        this(name, expression, index,expanded,alias,binding,aliasBinding,false,false);
+//    }
 
-    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding,boolean partialObject) {
+    public CompiledQueryField(String name, CompiledExpressionExt expression, int index, boolean expanded, String alias, BindingId binding, String aliasBinding,boolean preferLoadLater,boolean partialObject) {
 //        super(name, expression);
         this.name = name;
         setExpression(expression);
@@ -40,6 +41,7 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         this.alias = alias;
         this.binding = binding;
         this.aliasBinding = aliasBinding;
+        this.preferLoadLater = preferLoadLater;
         this.partialObject = partialObject;
         bindChildren(expression);
     }
@@ -52,8 +54,8 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         this.referrerField = referrerField;
     }
 
-    public void setPartialObject(boolean partialObject) {
-        this.partialObject = partialObject;
+    public void setPreferLoadLater(boolean preferLoadLater) {
+        this.preferLoadLater = preferLoadLater;
     }
 
     public Entity getParentBindingEntity() {
@@ -64,8 +66,16 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
         this.parentBindingEntity = parentBindingEntity;
     }
 
+    public boolean isPreferLoadLater() {
+        return preferLoadLater;
+    }
+
     public boolean isPartialObject() {
         return partialObject;
+    }
+
+    public void setPartialObject(boolean partialObject) {
+        this.partialObject = partialObject;
     }
 
     @Override
@@ -82,7 +92,7 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
 
     @Override
     public CompiledExpressionExt copy() {
-        CompiledQueryField compiledQueryField = new CompiledQueryField(name, expression, index, expanded, alias, binding, aliasBinding, partialObject);
+        CompiledQueryField compiledQueryField = new CompiledQueryField(name, expression, index, expanded, alias, binding, aliasBinding, preferLoadLater,partialObject);
         compiledQueryField.referrerField=referrerField;
         compiledQueryField.parentBindingEntity = parentBindingEntity;
         return compiledQueryField;

@@ -136,7 +136,7 @@ public class RelationUC4 {
             System.out.println(PREFIX+"after  ConnectionNonQuery     : "+(afterConnectionNonQuery-beforeConnectionNonQuery)+" / "+afterConnectionNonQuery+" <- "+beforeConnectionNonQuery);
             System.out.println(PREFIX+"after  ConnectionStatement    : "+(afterConnectionStatement-beforeConnectionStatement)+" / "+afterConnectionStatement+" <- "+beforeConnectionStatement);
             System.out.println(PREFIX+"after  ResultListMaxReduceSize: "+(afterResultListMaxReduceSize-beforeResultListMaxReduceSize)+" / "+afterResultListMaxReduceSize+" <- "+beforeResultListMaxReduceSize);
-            Assert.assertEquals(1, afterConnectionQuery-beforeConnectionQuery);
+            Assert.assertEquals(5, afterConnectionQuery-beforeConnectionQuery);
             Assert.assertEquals(0, afterResultListMaxReduceSize-beforeResultListMaxReduceSize);
 
             /// CHECK QueryFetchStrategy.JOIN with Navigation 1

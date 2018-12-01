@@ -1,7 +1,9 @@
 package net.vpc.upa.impl.persistence.result;
 
+import net.vpc.upa.Key;
 import net.vpc.upa.NamedId;
 import net.vpc.upa.exceptions.UPAException;
+import net.vpc.upa.impl.DefaultKey;
 import net.vpc.upa.impl.util.CacheMap;
 import net.vpc.upa.persistence.QueryResult;
 
@@ -24,23 +26,33 @@ class ColumnFamilyParserMultiIdEntityResult implements ResultFieldFamilyParser {
         if (idarr == null) {
             resultObject = ResultObject.forNull();
         } else {
-            NamedId key = new NamedId(idarr, columnFamily.entity.getName());
+            String entityName = columnFamily.entity.getName();
+            NamedId key = new NamedId(idarr, entityName);
             CacheMap<NamedId, ResultObject> referencesCache = parser.getReferencesCache();
             ResultObject o = referencesCache.get(key);
             if (o == null) {
-                o = columnFamily.createResultObject();
+                Key kid = new DefaultKey(idarr);
+                Object old = parser.getEntityCollectionCache().findById(entityName, kid);
+                if(old!=null){
+                    o = columnFamily.importObject(old);
+                }else {
+                    o = columnFamily.createResultObject();
+                    List<ResultFieldParseData> entityFields = columnFamily.idFields;
+                    int length = idarr.length;
+                    for (int i = 0; i < length; i++) {
+                        ResultFieldParseData idField = entityFields.get(i);
+                        o.entityDocument.setObject(idField.field.getName(), idarr[i]);
+                    }
+                    entityFields = columnFamily.nonIdFields;
+                    for (ResultFieldParseData f : entityFields) {
+                        Object fieldValue = result.read(f.dbIndex);
+                        o.entityDocument.setObject(f.name, fieldValue);
+                    }
+                    if(!columnFamily.partialObject) {
+                        parser.getEntityCollectionCache().add(entityName, kid, o.entityObject);
+                    }
+                }
                 referencesCache.put(key, o);
-                List<ResultFieldParseData> entityFields = columnFamily.idFields;
-                int length = idarr.length;
-                for (int i = 0; i < length; i++) {
-                    ResultFieldParseData idField = entityFields.get(i);
-                    o.entityDocument.setObject(idField.field.getName(), idarr[i]);
-                }
-                entityFields = columnFamily.nonIdFields;
-                for (ResultFieldParseData f : entityFields) {
-                    Object fieldValue = result.read(f.dbIndex);
-                    o.entityDocument.setObject(f.name, fieldValue);
-                }
             }
             resultObject = o;
         }

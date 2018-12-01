@@ -29,7 +29,7 @@ import net.vpc.upa.impl.UPAImplDefaults;
  */
 public class PUUtils {
 
-    public static Store DEFAULT_STORE = Store.DERBY;
+    public static Store DEFAULT_STORE = Store.EMBEDDED;
     //Should move this to external file
     public static String mySqlAdminLogin = "root";
     public static String mySqlAdminPassword = "";
