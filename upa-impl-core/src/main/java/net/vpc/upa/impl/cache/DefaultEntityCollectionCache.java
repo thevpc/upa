@@ -1,12 +1,13 @@
 package net.vpc.upa.impl.cache;
 
 import net.vpc.upa.Key;
+import net.vpc.upa.UPA;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultEntityCollectionCache implements EntityCollectionCache {
-    private Map<String, LRUCacheMap<Key, Object>> cache;
+    private final Map<String, LRUCacheMap<Key, Object>> cache;
     protected int defaultEntitySize = 1024;
 
     public DefaultEntityCollectionCache(int defaultEntitySize) {
@@ -17,8 +18,13 @@ public class DefaultEntityCollectionCache implements EntityCollectionCache {
     protected LRUCacheMap<Key, Object> getEntityCache(String entityName) {
         LRUCacheMap<Key, Object> p = cache.get(entityName);
         if (p == null) {
-            p = create(entityName);
-            cache.put(entityName,p);
+            synchronized (cache) {
+                p = cache.get(entityName);
+                if (p == null) {
+                    p = create(entityName);
+                    cache.put(entityName, p);
+                }
+            }
         }
         return p;
     }
@@ -29,7 +35,16 @@ public class DefaultEntityCollectionCache implements EntityCollectionCache {
 
     @Override
     public void add(String entityName, Key id, Object value) {
-        getEntityCache(entityName).put(id, value);
+        LRUCacheMap<Key, Object> p = getEntityCache(entityName);
+        synchronized (p) {
+            Key id2 = UPA.getPersistenceUnit().getEntity(entityName).getBuilder().objectToKey(value);
+            if(id2==null || !id2.equals(id)
+                    || (id.getObjectAt(0) instanceof Integer && id.getIntAt(0)==0)
+            ){
+                System.out.println("Unexpectd Error Error");
+            }
+            p.put(id, value);
+        }
     }
 
     @Override
@@ -38,24 +53,32 @@ public class DefaultEntityCollectionCache implements EntityCollectionCache {
         if (p == null) {
             return null;
         }
-        return p.get(id);
+        synchronized (p) {
+            return p.get(id);
+        }
     }
 
     @Override
     public void invalidate() {
-        cache.clear();
+        synchronized (cache) {
+            cache.clear();
+        }
     }
 
     @Override
     public void invalidate(String entityName) {
-        cache.remove(entityName);
+        synchronized (cache) {
+            cache.remove(entityName);
+        }
     }
 
     @Override
-    public void invalidateById(String entityName, Key id) {
+    public void invalidateByKey(String entityName, Key id) {
         LRUCacheMap<Key, Object> p = cache.get(entityName);
         if (p != null) {
-            p.remove(id);
+            synchronized (cache) {
+                p.remove(id);
+            }
         }
     }
 }

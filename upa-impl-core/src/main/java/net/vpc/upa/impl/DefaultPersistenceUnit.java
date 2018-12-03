@@ -72,7 +72,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     public static final int STATUS_INITIALIZING = 0;
     private static final Logger log = Logger.getLogger(DefaultPersistenceUnit.class.getName());
-//    public static final NamingStrategy CASE_SENSITIVE_COMPARATOR = new CaseSensitiveNamingStrategy();
+    //    public static final NamingStrategy CASE_SENSITIVE_COMPARATOR = new CaseSensitiveNamingStrategy();
 //    public static final NamingStrategy CASE_INSENSITIVE_COMPARATOR = new CaseInsensitiveNamingStrategy();
     public static final int COMMIT_ORDER_ENTITY = 10;
     public static final int COMMIT_ORDER_FIELD = 20;
@@ -82,13 +82,13 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     public static final int COMMIT_ORDER_VIEW = 30;
 
     private net.vpc.upa.Properties properties;
-//    private net.vpc.upa.Properties systemParameters;
+    //    private net.vpc.upa.Properties systemParameters;
     private ConnectionProfile connectionProfile;
     private final UUID privateUUID = UUID.randomUUID();
     private EntityDescriptorResolver entityDescriptorResolver;
     private boolean triggersEnabled = true;
     private I18NString title = new I18NString("PersistenceUnitFilter.title");
-//    private NamingStrategy namingStrategy;
+    //    private NamingStrategy namingStrategy;
     //    private LinkedHashMap<String, Entity> allEntities;
 //    private HashSet<String> entityShortNames = new HashSet<String>();
 //    private List<Relationship> relations;
@@ -185,7 +185,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         getExpressionManager().addFunction("SHA256", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.SHA256));
         getExpressionManager().addFunction("HASH", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.MD5));
         this.persistenceNameStrategy = getFactory().createObject(PersistenceNameStrategy.class);
-        persistenceUnitCache=new PersistenceUnitCache(1024,this);
+        persistenceUnitCache = new PersistenceUnitCache(1024, this);
     }
 
     private void invalidate() {
@@ -621,10 +621,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             for (EntityExtensionDefinition s : entitySpecs) {
                 boolean ok = false;
                 for (Class ext : new Class[]{
-                    ViewEntityExtensionDefinition.class,
-                    SingletonExtensionDefinition.class,
-                    FilterEntityExtensionDefinition.class,
-                    UnionEntityExtensionDefinition.class
+                        ViewEntityExtensionDefinition.class,
+                        SingletonExtensionDefinition.class,
+                        FilterEntityExtensionDefinition.class,
+                        UnionEntityExtensionDefinition.class
                 }) {
                     if (ext.isInstance(s)) {
                         ok = true;
@@ -2170,14 +2170,14 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public <T> T findById(Class entityType, Object id) {
-        return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
+        return findById(getEntity(entityType).getName(),id);
     }
 
     @Override
     public <T> T findById(String entityType, Object id) {
         EntityCollectionCache c = getPersistenceUnitCache();
         T o = (T) c.findById(entityType, createKey(id));
-        if(o!=null){
+        if (o != null) {
             return o;
         }
         return createQueryBuilder(entityType).byId(id).getFirstResultOrNull();
@@ -2198,7 +2198,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             throw new IllegalUPAArgumentException("NullObject");
         }
         Entity entity = getEntity(entityName);
-        return (T) findById(entity.getName(),entity.getBuilder().objectToId(object));
+        return (T) findById(entity.getName(), entity.getBuilder().objectToId(object));
     }
 
     @Override
@@ -2218,7 +2218,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public boolean existsById(String entityName, Object id) {
-        if(getPersistenceUnitCache().findById(entityName,createKey(id))!=null){
+        if (getPersistenceUnitCache().findById(entityName, createKey(id)) != null) {
             return true;
         }
         return createQueryBuilder(entityName).byId(id).getIdList().size() > 0;
@@ -2425,7 +2425,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             String persistenceAction = entity.getProperties().getString("persistence.PersistenceAction");
             entity.getProperties().remove("persistence.PersistenceAction");
             if ("ADD".equals(persistenceAction) //&& entity.getShield().isInitializeSupported()
-                    ) {
+            ) {
                 initializables.add(entity);
             }
             entity.commitStructureModification(persistenceStore);
@@ -2761,7 +2761,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         getPersistenceStore().setIdentityConstraintsEnabled(entity, enable, context);
     }
 
-//    public UConnection getMetadataConnection()  {
+    //    public UConnection getMetadataConnection()  {
 //        Session session = getCurrentSession();
 //        UConnection connection = session.getParam(this, UConnection.class, SessionParams.METADATA_CONNECTION, null);
 //        if (connection == null) {
@@ -2962,5 +2962,34 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
     @Override
     public void setCaseSensitiveIdentifiers(boolean caseSensitiveIdentifiers) {
         this.caseSensitiveIdentifiers = caseSensitiveIdentifiers;
+    }
+
+    @Override
+    public void invalidateCache() {
+        getPersistenceUnitCache().invalidate();
+    }
+
+    @Override
+    public void invalidateCache(String entityName) {
+        getPersistenceUnitCache().invalidate(entityName);
+    }
+
+    @Override
+    public void invalidateCacheById(String entityName, Object id) {
+        if (id == null) {
+            getPersistenceUnitCache().invalidate(entityName);
+        } else {
+            Entity e = getEntity(entityName);
+            getPersistenceUnitCache().invalidateByKey(entityName, e.getBuilder().idToKey(id));
+        }
+    }
+
+    @Override
+    public void invalidateCacheByKey(String entityName, Key id) {
+        if (id == null) {
+            getPersistenceUnitCache().invalidate(entityName);
+        } else {
+            getPersistenceUnitCache().invalidateByKey(entityName, id);
+        }
     }
 }

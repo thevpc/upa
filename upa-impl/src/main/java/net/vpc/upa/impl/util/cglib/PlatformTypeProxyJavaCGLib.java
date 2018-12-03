@@ -11,9 +11,9 @@ import net.vpc.upa.impl.util.PlatformTypeProxy;
 @PortabilityHint(target = "C#", name = "suppress")
 public class PlatformTypeProxyJavaCGLib implements PlatformTypeProxy {
     @Override
-    public <T> T create(Class<T> type, final PlatformMethodProxy pmethodProxy) {
+    public <T> T create(Class<T> type, Class[] interfaces, final PlatformMethodProxy pmethodProxy) {
         return (T) net.sf.cglib.proxy.Enhancer.create(
-                type, null,
+                type, interfaces,
                 new ProxyMethodInterceptorCGLib(pmethodProxy));
     }
 

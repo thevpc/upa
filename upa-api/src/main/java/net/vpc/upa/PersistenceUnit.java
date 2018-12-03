@@ -618,4 +618,12 @@ public interface PersistenceUnit extends Closeable {
 
     PersistenceNameStrategy getPersistenceNameStrategy();
 
+    void invalidateCache();
+
+    void invalidateCache(String entityName);
+
+    void invalidateCacheByKey(String entityName, Key id);
+
+    void invalidateCacheById(String entityName, Object id);
+
 }

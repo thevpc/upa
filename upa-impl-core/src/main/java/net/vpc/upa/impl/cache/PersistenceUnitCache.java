@@ -52,19 +52,19 @@ public class PersistenceUnitCache extends DefaultEntityCollectionCache {
             @Override
             public void afterUpdate(EntityTriggerContext context, Object id, Document document) {
                 Key k = context.getEntity().getBuilder().idToKey(id);
-                invalidateById(context.getEntity().getName(),k);
+                invalidateByKey(context.getEntity().getName(),k);
             }
 
             @Override
             public void afterRemove(EntityTriggerContext context, Object id) {
                 Key k = context.getEntity().getBuilder().idToKey(id);
-                invalidateById(context.getEntity().getName(),k);
+                invalidateByKey(context.getEntity().getName(),k);
             }
 
             @Override
             public void afterUpdateFormulas(EntityTriggerContext context, Object id, Document document) {
                 Key k = context.getEntity().getBuilder().idToKey(id);
-                invalidateById(context.getEntity().getName(),k);
+                invalidateByKey(context.getEntity().getName(),k);
             }
         }, null,true);
     }

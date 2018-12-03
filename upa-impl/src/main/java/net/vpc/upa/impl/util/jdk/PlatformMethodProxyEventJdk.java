@@ -45,4 +45,9 @@ public class PlatformMethodProxyEventJdk<T> implements PlatformMethodProxyEvent<
     public Object invokeBase(T obj, Object[] args) throws Throwable {
         return method.invoke(obj, args);
     }
+
+    @Override
+    public Object invokeSuper(T obj, Object[] args) throws Throwable {
+        throw new IllegalArgumentException("Unsupported invokeSuper in PlatformMethodProxyEventJdk");
+    }
 }

@@ -1,6 +1,7 @@
 package net.vpc.upa.impl.util;
 
-import net.vpc.upa.PortabilityHint;
+import net.vpc.upa.*;
+import net.vpc.upa.Entity;
 import net.vpc.upa.config.*;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
@@ -25,7 +26,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.UPA;
+
 import net.vpc.upa.impl.util.classpath.ClassFileIterator;
 import net.vpc.upa.impl.util.classpath.ClassFileIteratorFactory;
 import net.vpc.upa.impl.util.classpath.ClassFilter;
@@ -1188,7 +1189,7 @@ public class PlatformUtils {
     }
 
     public static <T> T createObjectInterceptor(Class<T> type, final PlatformMethodProxy<T> methodProxy) {
-        return getProxyFactory().create(type, methodProxy);
+        return getProxyFactory().create(type, null, methodProxy);
     }
 
     public static boolean isInt32(String s) {
@@ -1203,8 +1204,7 @@ public class PlatformUtils {
     public static <X> X[] addToArray(X[] arr, X x) {
         X[] arr2 = null;
         /**
-         * @PortabilityHint(target = "C#", name = "replace") arr2 = new
-         * X[arr.Length + 1];
+         * @PortabilityHint(target = "C#", name = "replace") arr2 = new X[arr.Length + 1];
          */
         arr2 = (X[]) Array.newInstance(arr.getClass().getComponentType(), arr.length + 1);
 
@@ -1223,7 +1223,7 @@ public class PlatformUtils {
         return new RuntimeException(t);
     }
 
-//    @Deprecated
+    //    @Deprecated
 //    public static PlatformBeanProperty findPlatformBeanProperty(String field, Class platformType) {
 //        String g1 = PlatformUtils.getterName(field, Object.class);
 //        String g2 = PlatformUtils.getterName(field, Boolean.TYPE);
@@ -1539,4 +1539,12 @@ public class PlatformUtils {
     private static boolean isSet(int id, int portion, int mask) {
         return (id & mask) == portion;
     }
+
+    public static <T> T createEntityBeanForDocument(final Class<T> type, final Document document, final Entity entity) {
+        return (T) getProxyFactory().create(
+                type, new Class[]{DocumentHolder.class},
+                new BeanForDocumentPlatformMethodProxy(document, entity)
+        );
+    }
+
 }

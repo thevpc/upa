@@ -68,6 +68,7 @@ public interface EntityFactory {
      */
     Document objectToDocument(Object object, boolean ignoreUnspecified) throws UPAException;
 
+    <R> R documentToObject(Document fromDocument,Object toObject) ;
 
     Object getMainProperty(Object object) throws UPAException;
 

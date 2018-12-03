@@ -33,6 +33,12 @@ public class EntitySubclassUnstructuredFactory extends AbstractEntityFactory {
         return (Document) object;
     }
 
+    @Override
+    public <R> R documentToObject(Document fromDocument, Object toObject) {
+        Document d=(Document) toObject;
+        d.setAll(fromDocument);
+        return (R) d;
+    }
 
     @Override
     public <R> R documentToObject(Document document) {

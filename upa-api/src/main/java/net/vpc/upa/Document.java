@@ -60,6 +60,8 @@ public interface Document extends Serializable {
 
     void setObject(String key, Object value);
 
+    void set(String key, Object value) ;
+
     <T> T getSingleResult();
 //    <T> T get(String key, T defaultValue);
 

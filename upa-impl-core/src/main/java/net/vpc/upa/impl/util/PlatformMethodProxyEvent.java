@@ -11,4 +11,5 @@ public interface PlatformMethodProxyEvent<T> {
     Method getMethod();
     String getMethodName();
     Object invokeBase(T obj, Object[] args) throws Throwable;
+    Object invokeSuper(T obj, Object[] args) throws Throwable;
 }

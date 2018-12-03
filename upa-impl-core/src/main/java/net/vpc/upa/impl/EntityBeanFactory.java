@@ -6,6 +6,8 @@ import java.util.List;
 
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
+import net.vpc.upa.impl.util.DocumentHolder;
+import net.vpc.upa.impl.util.PlatformUtils;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -47,24 +49,22 @@ public class EntityBeanFactory extends AbstractEntityFactory {
         if(object instanceof Document){
             return (Document) object;
         }
+        if(object instanceof DocumentHolder){
+            return ((DocumentHolder) object).$document();
+        }
         return new BeanAdapterDocument(entity.getPlatformBeanType().getPlatformType().cast(object),entity, nfo, ignoreUnspecified);
     }
 
 
     @Override
-    public <R> R documentToObject(Document document) {
-        if (document instanceof BeanAdapterDocument) {
-            BeanAdapterDocument g = (BeanAdapterDocument) document;
-            return (R) g.userObject();
-        }
-        Object obj = createObject();
-        Document ur = objectToDocument(obj, true);
-        for (String k : document.keySet()) {
-            Object o= document.getObject(k);
+    public <R> R documentToObject(Document fromDocument,Object toObject) {
+        Document ur = objectToDocument(toObject, true);
+        for (String k : fromDocument.keySet()) {
+            Object o= fromDocument.getObject(k);
             if(o instanceof Document){
-                if(o == document){
+                if(o == fromDocument){
                     //do nothing
-                    o=obj;
+                    o=toObject;
                 }else {
                     Field f = entity.findField(k);
                     Relationship manyToOneRelationship = f.getManyToOneRelationship();
@@ -77,7 +77,41 @@ public class EntityBeanFactory extends AbstractEntityFactory {
             ur.setObject(k, o);
         }
 //        ur.setAll(unstructuredDocument);
-        return (R) obj;
+        return (R) toObject;
+    }
+
+    @Override
+    public <R> R documentToObject(Document document) {
+        if (document instanceof BeanAdapterDocument) {
+            BeanAdapterDocument g = (BeanAdapterDocument) document;
+            return (R) g.userObject();
+        }
+        Class platformType = entity.getPlatformBeanType().getPlatformType();
+        if(platformType.equals(Document.class)){
+            return (R) document;
+        }
+        return (R) PlatformUtils.createEntityBeanForDocument(platformType,document,entity);
+//        Object obj = createObject();
+//        Document ur = objectToDocument(obj, true);
+//        for (String k : document.keySet()) {
+//            Object o= document.getObject(k);
+//            if(o instanceof Document){
+//                if(o == document){
+//                    //do nothing
+//                    o=obj;
+//                }else {
+//                    Field f = entity.findField(k);
+//                    Relationship manyToOneRelationship = f.getManyToOneRelationship();
+//                    if (manyToOneRelationship != null) {
+//                        Entity oe = manyToOneRelationship.getTargetEntity();
+//                        o = oe.getBuilder().documentToObject((Document) o);
+//                    }
+//                }
+//            }
+//            ur.setObject(k, o);
+//        }
+//        ur.setAll(unstructuredDocument);
+//        return (R) obj;
     }
 
     @Override

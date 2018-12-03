@@ -46,4 +46,9 @@ public class PlatformMethodProxyEventCGLib<T> implements PlatformMethodProxyEven
     public Object invokeBase(T obj, Object[] args) throws Throwable {
         return methodProxy.invoke(obj,args);
     }
+
+    @Override
+    public Object invokeSuper(T obj, Object[] args) throws Throwable {
+        return methodProxy.invokeSuper(obj,args);
+    }
 }

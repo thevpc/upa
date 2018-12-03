@@ -578,4 +578,10 @@ public abstract class AbstractDocument implements Document {
     public <T> T get(String key) {
         return getObject(key);
     }
+
+    @Override
+    public void set(String key, Object value) {
+        setObject(key,value);
+    }
+
 }
