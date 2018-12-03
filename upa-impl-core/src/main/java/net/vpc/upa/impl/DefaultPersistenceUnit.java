@@ -2175,6 +2175,9 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public <T> T findById(String entityType, Object id) {
+        if(id==null){
+            return null;
+        }
         EntityCollectionCache c = getPersistenceUnitCache();
         T o = (T) c.findById(entityType, createKey(id));
         if (o != null) {
