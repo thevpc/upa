@@ -969,6 +969,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
     public void commitModelChanges() throws UPAException {
         invalidateStructureCache();
         revalidateStructure();
+        mainRendererField = null;
         items = PlatformUtils.trimToSize(items);
         for (EntityItem item : items) {
             item.commitModelChanges();
@@ -1036,12 +1037,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             test.addAll(primaries);
             test.addAll(fs);
             for (Field field : test) {
-                FlagSet<FieldModifier> efm = field.getModifiers();
-                if (efm.contains(FieldModifier.MAIN)
-                        && field.getPersistProtectionLevel() != ProtectionLevel.PRIVATE
-                        && field.getUpdateProtectionLevel() != ProtectionLevel.PRIVATE
-                        && field.getReadProtectionLevel() != ProtectionLevel.PRIVATE
-                        && !efm.contains(FieldModifier.SYSTEM)) {
+                if (isMainFieldCandidate(field)) {
                     mainRendererField = field;
                     break;
                 }
@@ -1080,6 +1076,15 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         //if (!Utils.getBoolean(PersistenceUnitFilter.class, "productionMode", false)) {
         checkIntegrity();
         //}
+    }
+
+    private boolean isMainFieldCandidate(Field field) {
+        FlagSet<FieldModifier> efm = field.getModifiers();
+        return efm.contains(FieldModifier.MAIN)
+                && field.getPersistProtectionLevel() != ProtectionLevel.PRIVATE
+                && field.getUpdateProtectionLevel() != ProtectionLevel.PRIVATE
+                && field.getReadProtectionLevel() != ProtectionLevel.PRIVATE
+                && !efm.contains(FieldModifier.SYSTEM);
     }
 
     protected void checkIntegrity() throws UPAException {
@@ -1414,9 +1419,9 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                         + field.getName() + " is a FORMULA field. Thus it must be nullable");
             }
         }
-        FlagSet<UserFieldModifier> modifiersCopy = copy(field.getUserModifiers());
-        FlagSet<UserFieldModifier> excludedModifiersCopy = copy(field.getUserExcludeModifiers());
-        modifiersCopy.removeAll(excludedModifiersCopy);
+        FlagSet<UserFieldModifier> modifiersCopy = field.getUserModifiers();
+        FlagSet<UserFieldModifier> excludedModifiersCopy = field.getUserExcludeModifiers();
+        modifiersCopy = modifiersCopy.removeAll(excludedModifiersCopy);
         field.setUserModifiers(modifiersCopy);
         field.setUserExcludeModifiers(excludedModifiersCopy);
         //Workaround
@@ -1431,7 +1436,18 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
             tt = tt.add(FieldModifier.SYSTEM);
         }
         ((AbstractField) field).setEffectiveModifiers(tt);
-
+        //if this field contains MAIN modifiers, older fields should have their main removed
+        //override
+        if (field.getName().equals("fullTitle")) {
+            System.out.print("");
+        }
+        if (modifiersCopy.contains(UserFieldModifier.MAIN)) {
+            for (Field field1 : getFields()) {
+                if (field1.getUserModifiers().contains(UserFieldModifier.MAIN)) {
+                    field1.setUserModifiers(field1.getUserModifiers().remove(UserFieldModifier.MAIN));
+                }
+            }
+        }
         if (sectionPath == null || sectionPath.length() == 0) {
             DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
             addItem(field);
@@ -3007,7 +3023,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                 //need reload formua fields
                 List<Field> fields = getFields(FieldFilters2.UPDATE_FORMULA);
                 if (fields != null && fields.size() > 0) {
-                    final Document generatedFormulas = createQueryBuilder().setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(fields))).getDocument();
+                    final Document generatedFormulas = createQueryBuilder().setFieldFilter(FieldFilters.regular().and(FieldFilters.byList(fields))).byExpression(idExpression).getDocument();
                     if (generatedFormulas != null) {
                         updates.setAll(generatedFormulas);
                     }
@@ -3624,14 +3640,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     public boolean isClosed() {
         return closed;
-    }
-
-    private FlagSet<UserFieldModifier> copy(FlagSet<UserFieldModifier> e, UserFieldModifier... others) {
-        if (e == null) {
-            e = FlagSets.noneOf(UserFieldModifier.class);
-        }
-        e = e.addAll(Arrays.asList(others));
-        return e;
     }
 
     public Object compile(Expression expression, String alias) throws UPAException {

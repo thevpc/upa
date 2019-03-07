@@ -272,7 +272,7 @@ public class DefaultUPAContextLoader {
                         final Map<String, String> attrs = XMLUtils.getAttributes(el, connectionElementFilter);
                         c.connectionString = trimToNull(parseXmlTextContent(el));
                         pu.connectionElements.add(c);
-                    } else if (XMLUtils.equalsUniform(tagName, "rootconnectionString")) {
+                    } else if (XMLUtils.equalsUniform(tagName, "rootConnectionString")) {
                         someContent = true;
                         PersistenceGroupElement pg = contextElement.getOrAddPersistenceGroupElement("");
                         PersistenceUnitElement pu = pg.getOrAddPersistenceUnitElement("");

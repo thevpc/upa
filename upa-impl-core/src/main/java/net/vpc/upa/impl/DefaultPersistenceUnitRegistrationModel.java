@@ -18,6 +18,7 @@ import net.vpc.upa.impl.util.NamingStrategyHelper;
 import net.vpc.upa.impl.ext.EntityExt;
 import net.vpc.upa.impl.ext.PersistenceUnitExt;
 import net.vpc.upa.impl.util.PlatformUtils;
+import net.vpc.upa.impl.util.UPAUtils;
 
 /**
  *
@@ -276,6 +277,13 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public boolean containsEntity(Class entityType) throws UPAException {
+        if(entityType==null){
+            return false;
+        }
+        entityType=UPAUtils.getUserClass(entityType);
+        if (entityType == null) {
+            return false;
+        }
         Entity entity = entityByEntityType.get(entityType);
         if (entity != null) {
             return true;
@@ -301,6 +309,10 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
         if (entityType == null) {
             return all;
         }
+        entityType=UPAUtils.getUserClass(entityType);
+        if (entityType == null) {
+            return null;
+        }
         Entity entity = entityByEntityType.get(entityType);
         if (entity != null) {
             all.add(entity);
@@ -318,6 +330,10 @@ public class DefaultPersistenceUnitRegistrationModel implements ObjectRegistrati
     }
 
     public Entity findEntity(Class entityType) throws UPAException {
+        if (entityType == null) {
+            return null;
+        }
+        entityType=UPAUtils.getUserClass(entityType);
         if (entityType == null) {
             return null;
         }

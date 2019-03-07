@@ -44,6 +44,9 @@ class ColumnFamilyParserSingleIdEntityResult implements ResultFieldFamilyParser 
                     List<ResultFieldParseData> fields = columnFamily.nonIdFields;
                     for (ResultFieldParseData f : fields) {
                         Object fieldValue = result.read(f.dbIndex);
+//                        if(f.name.equals("contactEmail") || f.name.equals("subscriptionNumber")){
+//                            System.out.println();
+//                        }
                         o.entityDocument.setObject(f.name, fieldValue);
                     }
                     if(!columnFamily.partialObject){

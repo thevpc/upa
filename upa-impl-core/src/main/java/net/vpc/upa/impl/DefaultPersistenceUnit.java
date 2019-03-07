@@ -18,7 +18,6 @@ import net.vpc.upa.ViewEntityExtension;
 import net.vpc.upa.UnionEntityExtension;
 import net.vpc.upa.HierarchyExtension;
 import net.vpc.upa.impl.cache.EntityCollectionCache;
-import net.vpc.upa.impl.cache.PersistenceUnitCache;
 import net.vpc.upa.impl.sysentities.LockInfoDesc;
 import net.vpc.upa.*;
 import net.vpc.upa.Package;
@@ -66,6 +65,7 @@ import java.util.*;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.impl.cache.EntityCollectionCacheDisabled;
 
 //import net.vpc.upa.impl.util.ListUtils;
 public class DefaultPersistenceUnit implements PersistenceUnitExt {
@@ -185,7 +185,11 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         getExpressionManager().addFunction("SHA256", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.SHA256));
         getExpressionManager().addFunction("HASH", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.MD5));
         this.persistenceNameStrategy = getFactory().createObject(PersistenceNameStrategy.class);
-        persistenceUnitCache = new PersistenceUnitCache(1024, this);
+        
+        //there is an issue with global cache : how to manage an object retrived with distinct fields filters ?
+        //will disable it for now!!
+        //persistenceUnitCache = new PersistenceUnitCache(1024, this);
+        persistenceUnitCache = new EntityCollectionCacheDisabled();
     }
 
     private void invalidate() {

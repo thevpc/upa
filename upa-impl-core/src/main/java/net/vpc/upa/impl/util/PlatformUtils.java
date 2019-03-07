@@ -499,54 +499,82 @@ public class PlatformUtils {
     public static int getPlatformType(Class cls) {
         Integer value = TYPE_TO_INT_FLAGS.get(cls);
         if (value == null) {
-            if (Boolean.class.equals(cls)) {
-                value = TYPE_MAJOR_BOOLEAN | TYPE_FLAGS_NULLABLE;
-            } else if (Boolean.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_BOOLEAN;
-            } else if (Byte.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_NULLABLE;
-            } else if (Byte.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8;
-            } else if (Short.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16 | TYPE_FLAGS_NULLABLE;
-            } else if (Short.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16;
-            } else if (Integer.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
-            } else if (Integer.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32;
-            } else if (Long.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
-            } else if (Long.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64;
-            } else if (BigInteger.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
-            } else if (Float.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
-            } else if (Float.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32;
-            } else if (Double.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
-            } else if (Double.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64;
-            } else if (BigDecimal.class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_DECIMAL | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
-            } else if (String.class.equals(cls)) {
-                value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_BIG | TYPE_MINOR_CHARS;
-            } else if (Character.class.equals(cls)) {
-                value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
-            } else if (Character.TYPE.equals(cls)) {
-                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
-            } else if (char[].class.equals(cls)) {
-                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
-            } else if (Character[].class.equals(cls)) {
-                value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
-            } else if (byte[].class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
-            } else if (Byte[].class.equals(cls)) {
-                value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
-            } else {
+            final String clsName = cls.getName();
+            if (null == clsName) {
                 value = TYPE_MAJOR_OTHER | TYPE_FLAGS_NULLABLE;
+            } else switch (clsName) {
+                case "java.lang.Boolean":
+                    value = TYPE_MAJOR_BOOLEAN | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "boolean":
+                    value = TYPE_MAJOR_BOOLEAN;
+                    break;
+                case "java.lang.Byte":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "byte":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8;
+                    break;
+                case "java.lang.Short":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "short":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_16;
+                    break;
+                case "java.lang.Integer":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "int":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_32;
+                    break;
+                case "java.lang.Long":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "long":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_64;
+                    break;
+                case "java.math.BigInteger":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "java.lang.Float":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "float":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_32;
+                    break;
+                case "java.lang.Double":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64 | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "double":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_FLOAT | TYPE_SIZE_64;
+                    break;
+                case "java.math.BigDecimal":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_DECIMAL | TYPE_SIZE_BIG | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "java.lang.String":
+                    value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_BIG | TYPE_MINOR_CHARS;
+                    break;
+                case "java.lang.Character":
+                    value = TYPE_MAJOR_STRING | TYPE_FLAGS_NULLABLE | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
+                    break;
+                case "char":
+                    value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR;
+                    break;
+                case "[C":
+                    value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "[Ljava.lang.Character;":
+                    value = TYPE_MAJOR_STRING | TYPE_SIZE_16 | TYPE_MINOR_CHAR | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "[B":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+                    break;
+                case "[Ljava.lang.Byte;":
+                    value = TYPE_MAJOR_NUMBER | TYPE_MINOR_INT | TYPE_SIZE_8 | TYPE_FLAGS_ARRAY | TYPE_FLAGS_NULLABLE;
+                    break;
+                default:
+                    value = TYPE_MAJOR_OTHER | TYPE_FLAGS_NULLABLE;
+                    break;
             }
 
             TYPE_TO_INT_FLAGS.put(cls, value);

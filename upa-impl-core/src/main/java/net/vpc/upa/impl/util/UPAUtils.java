@@ -969,4 +969,13 @@ public class UPAUtils {
         return e;
     }
 
+    public static Class<?> getUserClass(Class<?> type) {
+        if (type.getName().contains("$$")) {
+            Class<?> p = type.getSuperclass();
+            if (p != null && p != Object.class) {
+                return p;
+            }
+        }
+        return type;
+    }
 }
