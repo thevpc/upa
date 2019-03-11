@@ -82,6 +82,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.impl.upql.ext.expr.CompiledExpandableExpression;
+import net.vpc.upa.impl.upql.ext.toext.DistinctExpressionTranslator;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 
@@ -125,6 +126,7 @@ public class ExpressionTranslationManager {
         register0(Avg.class, new AvgExpressionTranslator());
         register0(Min.class, new MinExpressionTranslator());
         register0(Max.class, new MaxExpressionTranslator());
+        register0(Distinct.class, new DistinctExpressionTranslator());
         register0(Sum.class, new SumExpressionTranslator());
         register0(Between.class, new BetweenExpressionTranslator());
         register0(BitAnd.class, new BitAndExpressionTranslator());

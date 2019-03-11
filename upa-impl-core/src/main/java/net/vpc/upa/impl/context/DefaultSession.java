@@ -8,9 +8,9 @@ import net.vpc.upa.events.SessionListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.impl.SessionParams;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -19,7 +19,7 @@ import net.vpc.upa.impl.SessionParams;
 public class DefaultSession implements Session {
 
     protected static final Logger log = Logger.getLogger(DefaultSession.class.getName());
-    private List<SessionContext> stack = new ArrayList<SessionContext>();
+    private Stack<SessionContext> stack = new Stack<SessionContext>();
     private List<SessionListener> sessionListeners = new ArrayList<SessionListener>();
 
     public DefaultSession() {
@@ -27,12 +27,12 @@ public class DefaultSession implements Session {
     }
 
     public SessionContext getCurrentContext() {
-        return stack.get(stack.size() - 1);
+        return stack.peek();
     }
 
     @Override
     public void pushContext() {
-        stack.add(new DefaultSessionContext());
+        stack.push(new DefaultSessionContext());
         if (sessionListeners.size() > 0) {
             for (SessionListener sessionListener : new ArrayList<SessionListener>(sessionListeners)) {
                 sessionListener.pushContext(this);
@@ -48,7 +48,7 @@ public class DefaultSession implements Session {
                 sessionListener.popContext(this);
             }
         }
-        stack.remove(stack.size() - 1);
+        stack.pop();
 //        log.log(Level.FINE,"Session {} : Context Popped", new Object[]{this});
     }
 
@@ -58,8 +58,7 @@ public class DefaultSession implements Session {
     }
 
     public <T> T getImmediateParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue) {
-        List<SessionContext> v = stack;
-        SessionContext m = v.get(v.size() - 1);
+        SessionContext m = stack.peek();
         if (m.containsParam(persistenceUnit, name)) {
             return m.getParam(persistenceUnit, type, name, defaultValue);
         }
@@ -68,9 +67,9 @@ public class DefaultSession implements Session {
 
     @Override
     public <T> T getParam(PersistenceUnit persistenceUnit, Class<T> type, String name, T defaultValue) {
-        List<SessionContext> v = stack;
-        for (int i = v.size() - 1; i >= 0; i--) {
-            SessionContext m = v.get(i);
+        SessionContext[] v = stack.toArray(new SessionContext[0]);
+        for (int i = v.length - 1; i >= 0; i--) {
+            SessionContext m = v[i];
             if (m.containsParam(persistenceUnit, name)) {
                 return m.getParam(persistenceUnit, type, name, defaultValue);
             }
@@ -80,10 +79,10 @@ public class DefaultSession implements Session {
 
     @Override
     public void close() {
-        while (stack.size() > 0) {
+        while (!stack.isEmpty()) {
             popContext();
         }
-        if (sessionListeners.size() > 0) {
+        if (!sessionListeners.isEmpty()) {
             for (SessionListener sessionListener : new ArrayList<SessionListener>(sessionListeners)) {
                 sessionListener.closeSession(this);
             }

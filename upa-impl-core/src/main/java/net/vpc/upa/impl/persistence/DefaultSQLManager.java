@@ -7,7 +7,6 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.util.ClassMap;
 import net.vpc.upa.persistence.EntityExecutionContext;
 
-
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  * @creationdate 11/6/12 12:31 AM
@@ -72,7 +71,6 @@ public class DefaultSQLManager implements SQLManager {
 //    public String getSQL(CompiledExpression expression, ExecutionContext context) throws UPAException {
 //        return getSQL(expression, context, new ExpressionDeclarationList());
 //    }
-
     public String getSQL(CompiledExpressionExt expression, EntityExecutionContext context, ExpressionDeclarationList declarations) throws UPAException {
 //        if (context == null) {
 //            context = createContext(ContextOperation.FIND);
@@ -80,10 +78,14 @@ public class DefaultSQLManager implements SQLManager {
         if (expression != null) {
             SQLProvider p = sqlProviders.get(expression.getClass());
             if (p != null) {
-                return p.getSQL(expression, context, this, declarations);
+                try {
+                    return p.getSQL(expression, context, this, declarations);
+                } catch (StackOverflowError ex) {
+                    return p.getSQL(expression, context, this, declarations);
+                }
             }
         }
-        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingSqlProvider",(expression==null?"null":expression.getClass().getName())+" :: "+(expression==null?null:expression.toString()));
+        throw new net.vpc.upa.exceptions.NoSuchUPAElementException("MissingSqlProvider", (expression == null ? "null" : expression.getClass().getName()) + " :: " + (expression == null ? null : expression.toString()));
     }
 
     @Override

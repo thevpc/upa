@@ -132,8 +132,6 @@ TOKEN :
  |
    < IN: "in" >
  |
-   < DISTINCT: "distinct" >
- |
    < TOP: "top" >
  |
    < UNION: "union" >
@@ -334,7 +332,6 @@ Select Select() :
     List<Expression> groupByList=null;
     Expression having=null;
     QueryStatement fromSelect=null;
-    boolean distinct=false;
     Token fromToken=null;
     Token fromAlias=null;
     Expression where=null;
@@ -351,7 +348,6 @@ Select Select() :
               top=(Integer.parseInt(t.image));
           }
     )?
-    (<DISTINCT> {distinct=true;})?
    exprList=NamedExpressionList()
     ( <FROM> 
             (
@@ -396,9 +392,6 @@ Select Select() :
         }
         if(having!=null){
             r.having(having);
-        }
-        if(distinct){
-            r.distinct();
         }
         r.top(top);
         return r;
@@ -942,7 +935,7 @@ Expression VarOrFunction() :
     )
     {
         if(fct){
-              return FunctionFactory.createFunction(getIdentifierName(start),parameters==null?new ArrayList<Expression>():parameters);
+              return UPQLFunctionsFactory.createFunction(getIdentifierName(start),parameters==null?new ArrayList<Expression>():parameters);
         }else if(indexer){
             if(parameters==null){
                 parameters=new ArrayList<Expression>();
@@ -1153,7 +1146,7 @@ Expression Function() :
     parameters=ExpressionList()
     <RPAREN>
     {
-        return FunctionFactory.createFunction(getIdentifierName(t),parameters);
+        return UPQLFunctionsFactory.createFunction(getIdentifierName(t),parameters);
     }
 }
 

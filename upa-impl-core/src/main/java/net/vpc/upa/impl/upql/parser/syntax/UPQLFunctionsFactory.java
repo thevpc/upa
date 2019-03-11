@@ -33,6 +33,10 @@ public class UPQLFunctionsFactory {
             checkArgCount(name, args, 1);
             return new Max(args.get(0));
         }
+        if (uniformName.equals("distinct")) {
+            checkArgCount(name, args, 1);
+            return new Distinct(args.get(0));
+        }
         if (uniformName.equals("avg")) {
             checkArgCount(name, args, 1);
             return new Avg(args.get(0));
@@ -212,13 +216,13 @@ public class UPQLFunctionsFactory {
         }
         if (uniformName.equals("ishierarchydescendant")) {
             switch (args.size()) {
-                case 3:{
+                case 3: {
                     return new IsHierarchyDescendant(args.get(0), args.get(1), args.get(2));
                 }
-                case 2:{
+                case 2: {
                     return new IsHierarchyDescendant(args.get(0), args.get(1), null);
                 }
-                default:{
+                default: {
                     throw new RuntimeException("function " + name + " expects 2 or 3 argument(s) but found " + args.size());
                 }
             }

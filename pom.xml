@@ -12,6 +12,8 @@
         <module>upa-impl</module>
         <module>upa-android</module>
         <module>upa-web</module>
+        <module>upa-xml-config</module>
+        <module>upa-box</module>
         <!-- upa-portable is ignored as it uses a non open-source (yet) dependency -->
         <!--<module>upa-portable</module>-->
         <module>upa-test</module>

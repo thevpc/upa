@@ -91,24 +91,24 @@ public class CrudUC {
 
             SharedClient c2 = entity.getBuilder().documentToObject(found0);
 
-            Assert.assertEquals(c2.getFirstName(), "Alia");
+            Assert.assertEquals("Alia",c2.getFirstName());
 
             pu.update(c2);
 
             SharedClient found = pu.createQueryBuilder(SharedClient.class).byId(key).getFirstResultOrNull();
 
             Assert.assertNotNull(found);
-            Assert.assertEquals(found, c2);
+            Assert.assertEquals(c2,found);
 
             found = pu.createQuery("Select a from SharedClient a where a.integerValue=null").getFirstResultOrNull();
 
             Assert.assertNotNull(found);
-            Assert.assertEquals(found, c2);
+            Assert.assertEquals(c2,found);
 
             found = pu.createQuery("Select a from SharedClient a where a.integerValue=:param").setParameter("param", null).getFirstResultOrNull();
 
             Assert.assertNotNull(found);
-            Assert.assertEquals(found, c2);
+            Assert.assertEquals(c2,found);
 
             pu.remove(SharedClient.class, RemoveOptions.forId(key));
 

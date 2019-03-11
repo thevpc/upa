@@ -109,9 +109,9 @@ public class SharedClient {
     @Override
     public String toString() {
         return "Client{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "id=" + getId() +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
                 '}';
     }
 
@@ -154,39 +154,39 @@ public class SharedClient {
 
         SharedClient client = (SharedClient) o;
 
-        if (id != client.id) return false;
-        if (firstName != null ? !firstName.equals(client.firstName) : client.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
-        if (birthDate != null ? !birthDate.equals(client.birthDate) : client.birthDate != null) return false;
-        if (timestampValue != null ? !timestampValue.equals(client.timestampValue) : client.timestampValue != null)
+        if (getId() != client.getId()) return false;
+        if (getFirstName() != null ? !getFirstName().equals(client.getFirstName()) : client.getFirstName() != null) return false;
+        if (getLastName() != null ? !getLastName().equals(client.getLastName()) : client.getLastName() != null) return false;
+        if (getBirthDate() != null ? !getBirthDate().equals(client.getBirthDate()) : client.getBirthDate() != null) return false;
+        if (getTimestampValue() != null ? !getTimestampValue().equals(client.getTimestampValue()) : client.getTimestampValue() != null)
             return false;
-        if (dateTimeValue != null ? !dateTimeValue.equals(client.dateTimeValue) : client.dateTimeValue != null)
+        if (getDateTimeValue() != null ? !getDateTimeValue().equals(client.getDateTimeValue()) : client.getDateTimeValue() != null)
             return false;
-        if (dateOnlyValue != null ? !dateOnlyValue.equals(client.dateOnlyValue) : client.dateOnlyValue != null)
+        if (getDateOnlyValue() != null ? !getDateOnlyValue().equals(client.getDateOnlyValue()) : client.getDateOnlyValue() != null)
             return false;
-        if (monthValue != null ? !monthValue.equals(client.monthValue) : client.monthValue != null) return false;
-        if (integerValue != null ? !integerValue.equals(client.integerValue) : client.integerValue != null)
+        if (getMonthValue() != null ? !getMonthValue().equals(client.getMonthValue()) : client.getMonthValue() != null) return false;
+        if (getIntegerValue() != null ? !getIntegerValue().equals(client.getIntegerValue()) : client.getIntegerValue() != null)
             return false;
-        if (longValue != null ? !longValue.equals(client.longValue) : client.longValue != null) return false;
-        if (clientType != client.clientType) return false;
-        return !(right != null ? !right.equals(client.right) : client.right != null);
+        if (getLongValue() != null ? !getLongValue().equals(client.getLongValue()) : client.getLongValue() != null) return false;
+        if (getClientType() != client.getClientType()) return false;
+        return !(getRight() != null ? !getRight().equals(client.getRight()) : client.getRight() != null);
 
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
-        result = 31 * result + (timestampValue != null ? timestampValue.hashCode() : 0);
-        result = 31 * result + (dateTimeValue != null ? dateTimeValue.hashCode() : 0);
-        result = 31 * result + (dateOnlyValue != null ? dateOnlyValue.hashCode() : 0);
-        result = 31 * result + (monthValue != null ? monthValue.hashCode() : 0);
-        result = 31 * result + (integerValue != null ? integerValue.hashCode() : 0);
-        result = 31 * result + (longValue != null ? longValue.hashCode() : 0);
-        result = 31 * result + (clientType != null ? clientType.hashCode() : 0);
-        result = 31 * result + (right != null ? right.hashCode() : 0);
+        result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = 31 * result + (getBirthDate() != null ? getBirthDate().hashCode() : 0);
+        result = 31 * result + (getTimestampValue() != null ? getTimestampValue().hashCode() : 0);
+        result = 31 * result + (getDateTimeValue() != null ? getDateTimeValue().hashCode() : 0);
+        result = 31 * result + (getDateOnlyValue() != null ? getDateOnlyValue().hashCode() : 0);
+        result = 31 * result + (getMonthValue() != null ? getMonthValue().hashCode() : 0);
+        result = 31 * result + (getIntegerValue() != null ? getIntegerValue().hashCode() : 0);
+        result = 31 * result + (getLongValue() != null ? getLongValue().hashCode() : 0);
+        result = 31 * result + (getClientType() != null ? getClientType().hashCode() : 0);
+        result = 31 * result + (getRight() != null ? getRight().hashCode() : 0);
         return result;
     }
 }

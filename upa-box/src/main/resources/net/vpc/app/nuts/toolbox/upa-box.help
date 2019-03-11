@@ -1,0 +1,33 @@
+configure upa maven project
+
+@@SYNOPSIS:@@
+##upa-box## [COMMAND] [OPTION]... <FILE>
+
+configures upa maven project
+
+@@COMANDS:@@
+  in | install : configure upa maven project
+  OPTIONS:
+        --override-pom-xml : force override if required without asking pom.xml file
+        --override-web-xml : force override if required without asking web.xml file
+        --override-upa-xml : force override if required without asking upa.xml file
+        --no               : enable non interactive mode, always consider 'no' response
+        --yes              : enable non interactive mode, always consider 'yes' response
+        --enable-spring    : enable spring integration
+        --recommended      : consider advanced configurations mode
+        --db-type <TYPE>   : select type (derby,derby:embedded,mysql,...)
+        --derby-embedded   : select derby:embedded db type
+        --derby            : select derby db type
+        --mysql            : select mysql db type
+  GENERAL OPTIONS:
+        --help             : show this help and exit
+        --version          : show version and exit
+        --no-colors        : disable coloring
+        --verbose          : enable verbose mode (more trace messages)
+
+@@EXAMPLES:@@
+
+##upa-box## install /path/to/maven/project
+   installs dependencies in pom.xml, web.xml and upa.xml files
+
+
