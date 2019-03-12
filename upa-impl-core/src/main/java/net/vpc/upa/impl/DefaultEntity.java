@@ -1364,7 +1364,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        updateFormulas(null,hints);
 //    }
     public void updateFormulas() throws UPAException {
-        createUpdateQuery().validateAll().execute();
+        createUpdateQuery().updateFormulas().execute();
     }
 
 //    public final void updateFormulasById(Object id) throws UPAException {
@@ -2274,7 +2274,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
                     }
                     rel.getSourceRole().getEntity()
                             .createUpdateQuery()
-                            .validate(FieldFilters.regular().and(FieldFilters.byList(rel.getSourceRole().getFields())))
+                            .updateFormulas(FieldFilters.regular().and(FieldFilters.byList(rel.getSourceRole().getFields())))
                             .byExpression(inColl).execute();
                 } else {
                     Expression[] fuplet = new Expression[rel.size()];
@@ -2295,7 +2295,7 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
                     rel.getSourceRole().getEntity()
                             .createUpdateQuery()
-                            .validate(FieldFilters.regular().and(FieldFilters.byList(rel.getSourceRole().getFields())))
+                            .updateFormulas(FieldFilters.regular().and(FieldFilters.byList(rel.getSourceRole().getFields())))
                             .byExpression(inColl)
                             .execute();
                 }

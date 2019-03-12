@@ -19,7 +19,6 @@ import net.vpc.upa.impl.upql.parser.syntax.UPQLFunctionsFactory;
 import net.vpc.upa.impl.upql.util.SimplifyVarsExpressionTransformer;
 import net.vpc.upa.impl.upql.util.UserExpressionParserVisitor;
 import net.vpc.upa.impl.upql.util.UserExpressionParametersMatcherVisitor;
-import net.vpc.upa.impl.util.NamingStrategy;
 import net.vpc.upa.impl.util.NamingStrategyHelper;
 import net.vpc.upa.persistence.ExpressionCompilerConfig;
 import net.vpc.upa.persistence.ResultMetaData;
@@ -72,7 +71,7 @@ public class DefaultExpressionManager implements ExpressionManager {
 
     public Expression parseExpression(String expression) {
         try {
-            return parser.parse(new StringReader(expression));
+            return parser.parse(expression);
         } catch (net.vpc.upa.impl.upql.parser.syntax.ParseException e) {
             log.log(Level.SEVERE, "Unable to parse Expression : " + expression, e);
             throw e;

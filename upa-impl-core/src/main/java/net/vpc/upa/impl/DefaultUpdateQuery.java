@@ -252,7 +252,7 @@ public class DefaultUpdateQuery implements UpdateQuery{
     }
 
     @Override
-    public UpdateQuery validate(FieldFilter formulaFields) {
+    public UpdateQuery updateFormulas(FieldFilter formulaFields) {
         if(formulaFields!=null) {
             if (this.formulaFieldsFilter == null) {
                 this.formulaFieldsFilter = formulaFields;
@@ -280,32 +280,32 @@ public class DefaultUpdateQuery implements UpdateQuery{
     }
 
     @Override
-    public UpdateQuery validate(Collection<String> formulaFields) {
-        return validate(FieldFilters.byName(formulaFields));
+    public UpdateQuery updateFormulas(Collection<String> formulaFields) {
+        return updateFormulas(FieldFilters.byName(formulaFields));
     }
 
 
     @Override
-    public UpdateQuery validateAll() {
-        return validate(FieldFilters2.UPDATE_FORMULA);
+    public UpdateQuery updateAllFormulas() {
+        return updateFormulas(FieldFilters2.UPDATE_FORMULA);
     }
     @Override
-    public UpdateQuery validateNone() {
+    public UpdateQuery updateNoFormulas() {
         this.formulaFieldsFilter=null;
         return this;
     }
 
     @Override
-    public UpdateQuery validate(String formulaField) {
+    public UpdateQuery updateFormulas(String formulaField) {
         if(formulaField!=null) {
-            return validate(Arrays.asList(formulaField));
+            return updateFormulas(Arrays.asList(formulaField));
         }
         return this;
     }
 
     @Override
-    public UpdateQuery validate(String... formulaFields) {
-        return validate(Arrays.asList(formulaFields));
+    public UpdateQuery updateFormulas(String... formulaFields) {
+        return updateFormulas(Arrays.asList(formulaFields));
     }
 
     @Override

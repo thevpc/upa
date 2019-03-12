@@ -43,7 +43,7 @@ public class CompiledDateAdd extends CompiledFunction {
 
     @Override
     public DataTypeTransform getTypeTransform() {
-        return IdentityDataTypeTransform.STRING;
+        return IdentityDataTypeTransform.DATE;
     }
 
     @Override

@@ -24,6 +24,7 @@ public class DefaultSQLManager implements SQLManager {
         register0(new UnaryOperatorSQLProvider());
         register0(new BinaryExpressionSQLProvider());
         register0(new LiteralSQLProvider());
+        register0(new CstSQLProvider());
         register0(new AverageSQLProvider());
         register0(new BetweenSQLProvider());
         register0(new EntityNameSQLProvider());

@@ -37,19 +37,19 @@ public class FormulaUpdaterInterceptorSupport extends ExpressionHelperIntercepto
     @Override
     public void afterDeleteHelper(RemoveEvent event, Expression updatedExpression) throws UPAException {
         Entity entity = event.getEntity();
-        entity.createUpdateQuery().validate(getFields(entity)).byExpression(updatedExpression).execute();
+        entity.createUpdateQuery().updateFormulas(getFields(entity)).byExpression(updatedExpression).execute();
     }
 
     @Override
     public void afterUpdateHelper(UpdateEvent event, Expression updatedExpression) throws UPAException {
         Entity entity = event.getEntity();
-        entity.createUpdateQuery().validate(getFields(entity)).byExpression(updatedExpression).execute();
+        entity.createUpdateQuery().updateFormulas(getFields(entity)).byExpression(updatedExpression).execute();
     }
 
     @Override
     public void afterPersistHelper(PersistEvent event, Expression translatedExpression) throws UPAException {
         Entity entity = event.getEntity();
-        entity.createUpdateQuery().validate(getFields(entity)).byExpression(translatedExpression).execute();
+        entity.createUpdateQuery().updateFormulas(getFields(entity)).byExpression(translatedExpression).execute();
     }
 
 }

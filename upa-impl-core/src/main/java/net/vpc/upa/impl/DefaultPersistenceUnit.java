@@ -185,7 +185,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         getExpressionManager().addFunction("SHA256", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.SHA256));
         getExpressionManager().addFunction("HASH", StringType.UNLIMITED, new PasswordQLFunction(DefaultPasswordStrategy.MD5));
         this.persistenceNameStrategy = getFactory().createObject(PersistenceNameStrategy.class);
-        
+
         //there is an issue with global cache : how to manage an object retrived with distinct fields filters ?
         //will disable it for now!!
         //persistenceUnitCache = new PersistenceUnitCache(1024, this);
@@ -625,10 +625,10 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             for (EntityExtensionDefinition s : entitySpecs) {
                 boolean ok = false;
                 for (Class ext : new Class[]{
-                        ViewEntityExtensionDefinition.class,
-                        SingletonExtensionDefinition.class,
-                        FilterEntityExtensionDefinition.class,
-                        UnionEntityExtensionDefinition.class
+                    ViewEntityExtensionDefinition.class,
+                    SingletonExtensionDefinition.class,
+                    FilterEntityExtensionDefinition.class,
+                    UnionEntityExtensionDefinition.class
                 }) {
                     if (ext.isInstance(s)) {
                         ok = true;
@@ -936,7 +936,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         for (Entity entity : ops) {
             entity.initialize(hints);
         }
-        updateFormulas(null, hints);
+        updateAllFormulas(null, hints);
 
         persistenceUnitListenerManager.fireOnReset(new PersistenceUnitEvent(this, getPersistenceGroup(), EventPhase.AFTER));
     }
@@ -1080,12 +1080,12 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //        getPersistenceStore().executeNativeQuery(file, separator, listener);
 //    }
     @Override
-    public void updateFormulas() {
-        updateFormulas(new DefaultEntityFilter().setAcceptValidatable(true), defaultHints);
+    public void updateAllFormulas() {
+        updateAllFormulas(new DefaultEntityFilter().setAcceptValidatable(true), defaultHints);
     }
 
     @Override
-    public void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints) {
+    public void updateAllFormulas(EntityFilter entityFilter, Map<String, Object> hints) {
         if (entityFilter == null) {
             entityFilter = new DefaultEntityFilter().setAcceptValidatable(true);
         }
@@ -1104,7 +1104,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 //            }
 //        } else {
         for (Entity tab : getEntities(entityFilter)) {
-            tab.createUpdateQuery().validateAll().setHints(hints).execute();
+            tab.createUpdateQuery().updateAllFormulas().setHints(hints).execute();
         }
 //        }
         persistenceUnitListenerManager.fireOnUpdateFormulas(new PersistenceUnitEvent(this, persistenceGroup, EventPhase.AFTER));
@@ -2174,12 +2174,12 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
 
     @Override
     public <T> T findById(Class entityType, Object id) {
-        return findById(getEntity(entityType).getName(),id);
+        return findById(getEntity(entityType).getName(), id);
     }
 
     @Override
     public <T> T findById(String entityType, Object id) {
-        if(id==null){
+        if (id == null) {
             return null;
         }
         EntityCollectionCache c = getPersistenceUnitCache();
@@ -2432,7 +2432,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             String persistenceAction = entity.getProperties().getString("persistence.PersistenceAction");
             entity.getProperties().remove("persistence.PersistenceAction");
             if ("ADD".equals(persistenceAction) //&& entity.getShield().isInitializeSupported()
-            ) {
+                    ) {
                 initializables.add(entity);
             }
             entity.commitStructureModification(persistenceStore);
@@ -2999,4 +2999,33 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
             getPersistenceUnitCache().invalidateByKey(entityName, id);
         }
     }
+
+    @Override
+    public boolean updateFormulas(String entityName, Object id) {
+        Entity entity = getEntity(entityName);
+        return entity.createUpdateQuery().byId(id).updateAllFormulas().execute() > 0;
+    }
+
+    @Override
+    public boolean updateFormulas(Class entityType, Object id) {
+        Entity entity = getEntity(entityType);
+        return updateFormulas(entity.getName(), id);
+    }
+
+    @Override
+    public <T> List<T> findAllByField(String entityName, String field, Object value) {
+        Entity entity = getEntity(entityName);
+        DataType dt = entity.getField(field).getDataType();
+        return entity.createQueryBuilder().setEntityAlias("o")
+                .byExpression(new And(new Var(new Var("o"), field), new Literal(value, dt)))
+                .orderBy(entity.getListOrder())
+                .getResultList();
+    }
+
+    @Override
+    public <T> List<T> findAllByField(Class type, String field, Object value) {
+        Entity entity = getEntity(type);
+        return findAllByField(entity.getName(), field, value);
+    }
+
 }

@@ -12,6 +12,7 @@ import net.vpc.upa.QLExpressionParser;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.impl.upql.parser.syntax.UPQLParser;
+import net.vpc.upa.types.I18NString;
 
 /**
  *
@@ -20,23 +21,31 @@ import net.vpc.upa.impl.upql.parser.syntax.UPQLParser;
 public class DefaultQLExpressionParser implements QLExpressionParser {
 
     public Expression parse(Reader text) throws UPAException {
-        return new UPQLParser(text).Any();
+        return parse(new UPQLParser(text), null);
     }
 
     public Expression parse(String reader) throws UPAException {
         /**
-         * @PortabilityHint(target = "C#", name = "todo")
-         * return null;
+         * @PortabilityHint(target = "C#", name = "todo") return null;
          */
-        return new UPQLParser(new StringReader(reader)).Any();
-    }
-    
-    public Expression parse(InputStream inputStream) throws UPAException {
-        /**
-         * @PortabilityHint(target = "C#", name = "todo")
-         * return null;
-         */
-        return new UPQLParser(inputStream).Any();
+        return parse(new UPQLParser(new StringReader(reader)), null);
     }
 
+    public Expression parse(InputStream inputStream) throws UPAException {
+        /**
+         * @PortabilityHint(target = "C#", name = "todo") return null;
+         */
+        return parse(new UPQLParser(inputStream), null);
+    }
+
+    public Expression parse(UPQLParser parser, String message) throws UPAException {
+        try {
+            return parser.Any();
+        } catch (RuntimeException ex) {
+            if (message == null) {
+                throw ex;
+            }
+            throw new UPAException(ex, new I18NString("UnableToParseQuery"), message);
+        }
+    }
 }

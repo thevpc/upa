@@ -117,17 +117,17 @@ public interface UpdateQuery {
 
     FieldFilter getFormulaFields();
 
-    UpdateQuery validate(String formulaField);
+    UpdateQuery updateFormulas(String formulaField);
 
-    UpdateQuery validate(String... formulaFields);
+    UpdateQuery updateFormulas(String... formulaFields);
 
-    UpdateQuery validate(Collection<String> formulaFields);
+    UpdateQuery updateFormulas(Collection<String> formulaFields);
 
-    UpdateQuery validate(FieldFilter formulaFields);
+    UpdateQuery updateFormulas(FieldFilter formulaFields);
 
-    UpdateQuery validateAll();
+    UpdateQuery updateAllFormulas();
 
-    UpdateQuery validateNone();
+    UpdateQuery updateNoFormulas();
 
     boolean isIgnoreUnspecified();
 

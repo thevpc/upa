@@ -211,22 +211,25 @@ public interface PersistenceUnit extends Closeable {
     void reset(Map<String, Object> hints);
 
     /**
-     * return all entities.
-     * same as <pre>getEntities(true)</pre>
-     * @return all entities. 
+     * return all entities. same as
+     * <pre>getEntities(true)</pre>
+     *
+     * @return all entities.
      */
     List<Entity> getEntities();
-    
+
     /**
-     * when includeAll is true will return all entities (all packages included), 
+     * when includeAll is true will return all entities (all packages included),
      * otherwise will return root only entities.
-     * @param includeAll when true will return all entities (all packages included), otherwise
-     * @return 
+     *
+     * @param includeAll when true will return all entities (all packages
+     * included), otherwise
+     * @return
      */
     List<Entity> getEntities(boolean includeAll);
 
     List<Package> getPackages();
-    
+
     List<Package> getPackages(boolean includeAll);
 
     List<Entity> getEntities(EntityFilter entityFilter);
@@ -431,9 +434,9 @@ public interface PersistenceUnit extends Closeable {
 
     void update(String entityName, Object objectOrDocument);
 
-    void updateFormulas();
+    void updateAllFormulas();
 
-    void updateFormulas(EntityFilter entityFilter, Map<String, Object> hints);
+    void updateAllFormulas(EntityFilter entityFilter, Map<String, Object> hints);
 
     //////// REMOVE
     RemoveTrace remove(Class entityType, Object object);
@@ -625,5 +628,13 @@ public interface PersistenceUnit extends Closeable {
     void invalidateCacheByKey(String entityName, Key id);
 
     void invalidateCacheById(String entityName, Object id);
+
+    boolean updateFormulas(String entityName, Object id);
+
+    boolean updateFormulas(Class entityType, Object id);
+
+    <T> List<T> findAllByField(String name, String field, Object value);
+
+    <T> List<T> findAllByField(Class type, String field, Object value);
 
 }

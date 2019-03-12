@@ -12,7 +12,6 @@ import net.vpc.upa.impl.util.ExprTypeInfo;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.DataTypeTransform;
-import net.vpc.upa.types.ManyToOneType;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change

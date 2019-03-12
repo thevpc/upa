@@ -20,7 +20,7 @@ class MySQLDateAddSQLProvider extends DerbyFunctionSQLProvider {
     @Override
     public String simplify(String functionName, String[] params, Map<String, Object> context) {
         checkFunctionSignature(new String[]{"format", "count", "start_date"}, params);
-        String format = params[0];
+        String format = params[0].toLowerCase();
         String count = params[1];
         String date1 = params[2];
         /**
