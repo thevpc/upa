@@ -506,11 +506,11 @@ public class CompiledSelect extends DefaultCompiledEntityStatement
 
     public synchronized CompiledSelect addHaving(CompiledExpressionExt condition) {
         if (condition != null) {
-            if (this.where == null) {
+            if (this.having == null) {
                 having(condition);
             } else {
-                this.where.unsetParent();
-                having(new CompiledAnd(this.where, condition));
+                this.having.unsetParent();
+                having(new CompiledAnd(this.having, condition));
             }
         }
         invalidate();

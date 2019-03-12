@@ -53,7 +53,7 @@ public class SyntaxGrammarUC {
         testUPQL("1");
         testUPQL("select max(15)");
         testUPQL("Select r.`right` x from ProfileRight r inner join UserProfile p on r.profileId=p.id where p.profileId=:userId and p.meetingId=:meetingId");
-        testUPQL("Select distinct r.`right` x from ProfileRight r inner join UserProfile p on r.profileId=p.id where p.profileId=:userId and p.meetingId=:meetingId");
+        testUPQL("Select distinct(r.`right`) x from ProfileRight r inner join UserProfile p on r.profileId=p.id where p.profileId=:userId and p.meetingId=:meetingId");
         testUPQL("\"Select x from AcademicCourseType x where exists((Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in ((Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false)) and u.enableCourseFeedback=true))\"");
         testUPQL("Select x from AcademicCourseType x where exists(Select u from AcademicCourseAssignment)");
         testUPQL("Select x from AcademicCourseType x where exists((Select u from AcademicCourseAssignment u  where u.teacherId=:teacherId  and  u.courseTypeId=x.id  and u.id in ((Select f.courseId from AcademicFeedback f where 1=1  and f.archived=false)) and u.enableCourseFeedback=true))");

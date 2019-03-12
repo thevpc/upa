@@ -13,6 +13,13 @@ import net.vpc.upa.impl.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.upql.ext.expr.CompiledAnd;
+import net.vpc.upa.impl.upql.ext.expr.CompiledEquals;
+import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
+import net.vpc.upa.impl.upql.ext.expr.CompiledOr;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVarOrMethod;
 
 /**
  * @author taha.bensalah@gmail.com
@@ -292,4 +299,47 @@ public class UPQLUtils {
         }
         return "";
     }
+
+    public static CompiledExpressionExt and(CompiledExpressionExt a, CompiledExpressionExt b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        return new CompiledAnd(a, b);
+    }
+
+    public static CompiledExpressionExt or(CompiledExpressionExt a, CompiledExpressionExt b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        return new CompiledOr(a, b);
+    }
+
+    public static CompiledLiteral fieldLiteral(Object val, Field f) {
+        return new CompiledLiteral(val, f.getEffectiveTypeTransform());
+    }
+
+    public static CompiledExpressionExt fieldEqLiteral(CompiledVarOrMethod compiledVar, Object literal, Field f) {
+        return new CompiledEquals(
+                UPQLUtils.fieldVar(compiledVar, f),
+                UPQLUtils.fieldLiteral(literal, f)
+        );
+    }
+
+    public static CompiledVarOrMethod fieldVar(CompiledVarOrMethod compiledVar, Field f) {
+        CompiledVar rr = new CompiledVar(f);
+        CompiledVarOrMethod p2 = compiledVar == null ? null : (CompiledVarOrMethod) compiledVar.copy();
+        if (p2 == null) {
+            p2 = rr;
+        } else {
+            p2.setChild(rr);
+        }
+        return p2;
+    }
+
 }

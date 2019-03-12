@@ -5,10 +5,8 @@
 package net.vpc.upa.impl.upql.ext.expr;
 
 import net.vpc.upa.Field;
-import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.upql.BindingId;
 import net.vpc.upa.impl.upql.ExpressionDeclaration;
-import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
 /**

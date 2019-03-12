@@ -13,14 +13,14 @@ public class CompiledVar extends CompiledVarOrMethod {
     private static final long serialVersionUID = 1L;
 
     public CompiledVar(Field field) {
-        this(field.getName(), field,null);
+        this(field.getName(), field, null);
     }
 
     public CompiledVar(String name) {
-        this(name, null,null);
+        this(name, null, null);
     }
 
-    public CompiledVar(String name, Object referrer,BindingId binding) {
+    public CompiledVar(String name, Object referrer, BindingId binding) {
         setName(name);
         setReferrer(referrer);
         setBinding(binding);
@@ -28,7 +28,7 @@ public class CompiledVar extends CompiledVarOrMethod {
 
     @Override
     public CompiledExpressionExt copy() {
-        CompiledVar o = new CompiledVar(getName(), getReferrer(),getBinding());
+        CompiledVar o = new CompiledVar(getName(), getReferrer(), getBinding());
         CompiledVarOrMethod c = getChild();
         if (c != null) {
             c = (CompiledVarOrMethod) c.copy();
@@ -41,16 +41,16 @@ public class CompiledVar extends CompiledVarOrMethod {
     }
 
     public CompiledExpression getNonVarParent() {
-        CompiledExpressionExt p=getParentExpression();
-        while(p!=null){
-            if(!(p instanceof CompiledVarOrMethod)){
+        CompiledExpressionExt p = getParentExpression();
+        while (p != null) {
+            if (!(p instanceof CompiledVarOrMethod)) {
                 return p;
             }
-            p=p.getParentExpression();
+            p = p.getParentExpression();
         }
         return null;
     }
-    
+
 //    public String getChildlessPath() {
 //        StringBuilder v = new StringBuilder();
 //        if (getParentExpression() != null) {
@@ -64,7 +64,6 @@ public class CompiledVar extends CompiledVarOrMethod {
 //        v.append(getName());
 //        return v.toString();
 //    }
-
     @Override
     public String toString() {
         StringBuilder v = new StringBuilder();
@@ -80,7 +79,7 @@ public class CompiledVar extends CompiledVarOrMethod {
     public void setSubExpression(int index, CompiledExpressionExt expression) {
         if (index == 0) {
             setChild((CompiledVarOrMethod) expression);
-        }else {
+        } else {
             throw new UnsupportedUPAFeatureException();
         }
     }
@@ -90,4 +89,5 @@ public class CompiledVar extends CompiledVarOrMethod {
         CompiledExpressionExt c = getChild();
         return c == null ? null : new CompiledExpressionExt[]{c};
     }
+
 }

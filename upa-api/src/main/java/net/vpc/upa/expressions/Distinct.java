@@ -37,32 +37,24 @@ package net.vpc.upa.expressions;
 public final class Distinct extends FunctionExpression implements Cloneable {
 
     private static final long serialVersionUID = 1L;
-    private Expression expression;
+    private Expression[] expressions;
 
     public Distinct(Expression[] expressions) {
-        checkArgCount(getName(), expressions, 1);
-        this.expression = expressions[0];
-    }
-
-    public Distinct(Expression expression) {
-        this.expression = expression;
+//        checkArgCount(getName(), expressions, 1);
+        this.expressions = expressions;
     }
 
     @Override
     public void setArgument(int index, Expression e) {
-        if (index == 0) {
-            this.expression = e;
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+        this.expressions[index] = e;
     }
 
     public int size() {
-        return 1;
+        return expressions.length;
     }
 
     public boolean isValid() {
-        return expression.isValid();
+        return expressions.length > 0;
     }
 
     //    public synchronized String toSQL(boolean integrated, PersistenceUnit database) {
@@ -75,20 +67,21 @@ public final class Distinct extends FunctionExpression implements Cloneable {
 
     @Override
     public int getArgumentsCount() {
-        return 1;
+        return expressions.length;
     }
 
     @Override
     public Expression getArgument(int index) {
-        if (index != 0) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        return expression;
+        return expressions[index];
     }
 
     @Override
     public Expression copy() {
-        Distinct o = new Distinct(expression.copy());
+        Expression[] expressions2 = new Expression[expressions.length];
+        for (int i = 0; i < expressions2.length; i++) {
+            expressions2[i] = expressions[i].copy();
+        }
+        Distinct o = new Distinct(expressions2);
         return o;
     }
 

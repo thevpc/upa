@@ -40,6 +40,7 @@ public class DefaultSQLManager implements SQLManager {
         register0(new ValueSQLProvider());
         register0(new CountANSISQLProvider());
         register0(new MaxANSISQLProvider());
+        register0(new DistinctANSISQLProvider());
         register0(new MinANSISQLProvider());
         register0(new SumANSISQLProvider());
         register0(new AvgANSISQLProvider());

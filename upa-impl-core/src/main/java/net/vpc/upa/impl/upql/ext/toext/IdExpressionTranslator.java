@@ -18,6 +18,7 @@ import java.util.List;
 import net.vpc.upa.PersistenceUnit;
 import net.vpc.upa.impl.upql.ExpressionDeclaration;
 import net.vpc.upa.impl.upql.ExpressionTranslationManager;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 
 /**
  * Created with IntelliJ IDEA. User: vpc Date: 8/15/12 Time: 11:46 PM To change
@@ -45,7 +46,7 @@ public class IdExpressionTranslator implements ExpressionTranslator {
                 for (ExpressionDeclaration ref : dvalues) {
                     switch (ref.getReferrerType()) {
                         case ENTITY: {
-                            entity = persistenceUnit.getEntity((String)ref.getReferrerName());
+                            entity = persistenceUnit.getEntity((String) ref.getReferrerName());
                             break;
                         }
                     }
@@ -64,18 +65,18 @@ public class IdExpressionTranslator implements ExpressionTranslator {
         }
 
         Key key = entity.getBuilder().idToKey(o.getId());
-        Object[] values = key==null?null:key.getValue();
+        Object[] values = key == null ? null : key.getValue();
         Entity entity1 = o.getEntity();
         List<PrimitiveField> f = entity1.toPrimitiveFields(entity1.getIdFields());
         for (int i = 0; i < f.size(); i++) {
             CompiledVar ppp = o.getAlias() == null ? null : new CompiledVar(o.getAlias());
-            if(ppp==null){
-                ppp=new CompiledVar(f.get(i).getName());
-            }else{
+            if (ppp == null) {
+                ppp = new CompiledVar(f.get(i).getName());
+            } else {
                 ppp.setChild(new CompiledVar(f.get(i).getName()));
             }
-            CompiledEquals e = new CompiledEquals(ppp, new CompiledLiteral(values==null?null:values[i], (f.get(i)).getEffectiveTypeTransform()));
-            ret = (ret == null) ? e : new CompiledAnd(ret, e);
+            CompiledEquals e = new CompiledEquals(ppp, new CompiledLiteral(values == null ? null : values[i], (f.get(i)).getEffectiveTypeTransform()));
+            ret = UPQLUtils.and(ret, e);
         }
         if (ret == null) {
             ret = new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(1));

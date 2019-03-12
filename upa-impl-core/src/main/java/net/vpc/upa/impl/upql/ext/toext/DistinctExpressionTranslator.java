@@ -16,18 +16,19 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledDistinct;
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
  */
 public class DistinctExpressionTranslator implements ExpressionTranslator {
+
     @Override
     public CompiledExpressionExt translateExpression(Object o, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
-        return compile((Distinct) o, manager,declarations);
+        return compile((Distinct) o, manager, declarations);
     }
 
     protected CompiledDistinct compile(Distinct v, ExpressionTranslationManager manager, ExpressionDeclarationList declarations) {
         if (v == null) {
             return null;
         }
-        CompiledDistinct s = new CompiledDistinct(manager.translateAny(v.getArgument(0), declarations));
+        CompiledDistinct s = new CompiledDistinct(manager.translateArray(v.getArguments(), declarations));
         //        s.setDeclarationList(declarations);
         return s;
     }
-    
+
 }

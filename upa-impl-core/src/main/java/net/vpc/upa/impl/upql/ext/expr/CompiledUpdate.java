@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 
 public final class CompiledUpdate extends DefaultCompiledEntityStatement implements CompiledUpdateStatement {
 
@@ -19,7 +20,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
     private CompiledExpressionExt condition;
     private CompiledEntityName entityName;
     private String entityAlias;
-    private List<CompiledJoinCriteria> joinsTables=new ArrayList<CompiledJoinCriteria>();
+    private List<CompiledJoinCriteria> joinsTables = new ArrayList<CompiledJoinCriteria>();
 
     public CompiledUpdate() {
         fields = new ArrayList<CompiledVarVal>();
@@ -29,7 +30,6 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
 //        this.extraFrom = extraFrom;
 //        return this;
 //    }
-
     public CompiledUpdate(CompiledUpdate other) {
         this();
         addQuery(other);
@@ -84,8 +84,8 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
         if (other.entityName != null) {
             this.entity(((CompiledEntityName) other.entityName).getName(), other.entityAlias);
         }
-        if(other.getEntityAlias()!=null){
-            entityAlias=other.getEntityAlias();
+        if (other.getEntityAlias() != null) {
+            entityAlias = other.getEntityAlias();
         }
         for (int i = 0; i < other.fields.size(); i++) {
             CompiledVar fvar = other.getField(i);
@@ -93,18 +93,14 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
             CompiledExpressionExt fieldValue = other.getFieldValue(i);
             set(field, fieldValue == null ? null : fieldValue.copy());
         }
-        if(!other.joinsTables.isEmpty()){
+        if (!other.joinsTables.isEmpty()) {
             for (CompiledJoinCriteria joinsTable : other.joinsTables) {
                 join((CompiledJoinCriteria) joinsTable.copy());
             }
         }
 
         if (other.condition != null) {
-            if (condition == null) {
-                where(other.condition.copy());
-            } else {
-                where(new CompiledAnd(condition, other.condition.copy()));
-            }
+            where(UPQLUtils.and(condition == null ? null : condition.copy(), other.condition == null ? null : other.condition.copy()));
         }
         return this;
     }
@@ -304,8 +300,7 @@ public final class CompiledUpdate extends DefaultCompiledEntityStatement impleme
                     || fieldValue instanceof CompiledParam
                     || fieldValue instanceof CompiledLiteral
                     || fieldValue instanceof CompiledVar
-                    || fieldValue instanceof CompiledCst
-                    ) {
+                    || fieldValue instanceof CompiledCst) {
                 sb.append(fieldValue);
             } else {
                 sb.append("(");

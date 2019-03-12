@@ -35,7 +35,7 @@ public class UPQLFunctionsFactory {
         }
         if (uniformName.equals("distinct")) {
             checkArgCount(name, args, 1);
-            return new Distinct(args.get(0));
+            return new Distinct(args.toArray(new Expression[0]));
         }
         if (uniformName.equals("avg")) {
             checkArgCount(name, args, 1);
@@ -55,7 +55,7 @@ public class UPQLFunctionsFactory {
             return new ToString(args.get(0));
         }
         if (uniformName.equals("concat")) {
-            return new Concat(args.toArray(new Expression[args.size()]));
+            return new Concat(args.toArray(new Expression[0]));
         }
         if (uniformName.equals("cast")) {
             checkArgCount(name, args, 2);
@@ -227,7 +227,7 @@ public class UPQLFunctionsFactory {
                 }
             }
         }
-        return new QLFunctionExpression(name, args.toArray(new Expression[args.size()]));
+        return new QLFunctionExpression(name, args.toArray(new Expression[0]));
         //throw new IllegalUPAArgumentException("Unknown Function "+name);
     }
 

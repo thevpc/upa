@@ -15,6 +15,8 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledLiteral;
 import net.vpc.upa.impl.upql.ext.expr.CompiledOr;
 import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
+import net.vpc.upa.impl.upql.ext.expr.CompiledVarOrMethod;
+import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.impl.util.UPAUtils;
 import net.vpc.upa.persistence.EntityExecutionContext;
 import net.vpc.upa.types.ManyToOneType;
@@ -56,70 +58,63 @@ public class IdEnumerationExpressionSQLProvider extends AbstractSQLProvider {
             throw new IllegalUPAArgumentException("Id enumeration must by associated to and entity");
         }
         if (ee.getKeys().isEmpty()) {
-            return sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);
+            return "1=2";//sqlManager.getSQL(new CompiledEquals(new CompiledLiteral(1), new CompiledLiteral(2)), qlContext, declarations);
         }
         List<Field> pfs = entity.getIdFields();
         CompiledExpressionExt o2 = null;
+        final boolean singleIdEntity = entity.getIdFields().size() == 1;
+        final boolean simpleIdIsEntity = entity.getPersistenceUnit().containsEntity(entity.getIdType());
+
+        if (ee.getKeys().size() > 1 && singleIdEntity) {
+            Field f = pfs.get(0);
+            StringBuilder sb = new StringBuilder();
+            sb.append(sqlManager.getSQL(UPQLUtils.fieldVar(compiledVar, f), qlContext, declarations));
+            sb.append(" in (");
+            boolean first = true;
+            for (Object key : ee.getKeys()) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+                if (simpleIdIsEntity && !entity.isIdInstance(key)) {
+                    RelationDataType et = (RelationDataType) entity.getIdFields().get(0).getDataType();
+                    List<Field> ff = et.getRelationship().getSourceRole().getFields();
+                    Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
+                    sb.append(sqlManager.getSQL(UPQLUtils.fieldLiteral(key2.getObjectAt(0), ff.get(0)), qlContext, declarations));
+                } else {
+                    Key uKey = entity.getBuilder().idToKey(key);
+                    sb.append(sqlManager.getSQL(UPQLUtils.fieldLiteral(uKey.getObjectAt(0), f), qlContext, declarations));
+                }
+            }
+            sb.append(")");
+            return sb.toString();
+        }
+
         for (Object key : ee.getKeys()) {
             CompiledExpressionExt a = null;
             boolean processed = false;
-            if (entity.getPersistenceUnit().containsEntity(entity.getIdType())) {
+            if (simpleIdIsEntity && singleIdEntity) {
                 if (!entity.isIdInstance(key)) {
                     //primitive seen as entity?
                     // A's id is A.b where b is an entity
                     //TODO fix all cases!
-                    if (entity.getIdFields().size() == 1) {
-                        RelationDataType et = (RelationDataType) entity.getIdFields().get(0).getDataType();
-                        List<Field> ff = et.getRelationship().getSourceRole().getFields();
-                        Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
-                        for (int j = 0; j < ff.size(); j++) {
-                            Field f = ff.get(j);
-                            CompiledVar rr = new CompiledVar(f);
-                            CompiledVar p2 = compiledVar == null ? null : (CompiledVar) compiledVar.copy();
-                            if (p2 == null) {
-                                p2 = rr;
-                            } else {
-                                p2.setChild(rr);
-                            }
-                            CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(key2.getObjectAt(j), f.getEffectiveTypeTransform()));
-                            if (a == null) {
-                                a = v;
-                            } else {
-                                a = new CompiledAnd(a, v);
-                            }
-                        }
-                        if (o2 == null) {
-                            o2 = a;
-                        } else {
-                            o2 = new CompiledOr(o2, a);
-                        }
-                        processed=true;
+                    RelationDataType et = (RelationDataType) entity.getIdFields().get(0).getDataType();
+                    List<Field> ff = et.getRelationship().getSourceRole().getFields();
+                    Key key2 = et.getRelationship().getTargetEntity().getBuilder().idToKey(key);
+                    for (int j = 0; j < ff.size(); j++) {
+                        a = UPQLUtils.and(a, UPQLUtils.fieldEqLiteral(compiledVar, key2.getObjectAt(j), ff.get(j)));
                     }
+                    o2 = UPQLUtils.or(o2, a);
+                    processed = true;
                 }
             }
             if (!processed) {
                 Key uKey = entity.getBuilder().idToKey(key);
                 for (int j = 0; j < pfs.size(); j++) {
-                    Field f = pfs.get(j);
-                    CompiledVar rr = new CompiledVar(f);
-                    CompiledVar p2 = compiledVar == null ? null : (CompiledVar) compiledVar.copy();
-                    if (p2 == null) {
-                        p2 = rr;
-                    } else {
-                        p2.setChild(rr);
-                    }
-                    CompiledEquals v = new CompiledEquals(p2, new CompiledLiteral(uKey.getObjectAt(j), f.getEffectiveTypeTransform()));
-                    if (a == null) {
-                        a = v;
-                    } else {
-                        a = new CompiledAnd(a, v);
-                    }
+                    a = UPQLUtils.and(a, UPQLUtils.fieldEqLiteral(compiledVar, uKey.getObjectAt(j), pfs.get(j)));
                 }
-                if (o2 == null) {
-                    o2 = a;
-                } else {
-                    o2 = new CompiledOr(o2, a);
-                }
+                o2 = UPQLUtils.or(o2, a);
             }
         }
         return sqlManager.getSQL(o2, qlContext, declarations);
