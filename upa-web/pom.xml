@@ -5,7 +5,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-web</artifactId>
     <name>net.vpc.upa.upa-web</name>
-    <version>1.2.0.49.0</version>
+    <version>1.2.0.49.1</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 

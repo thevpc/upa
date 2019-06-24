@@ -1655,8 +1655,12 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
         if (persistFormula != null && persistFormula instanceof ExpressionFormula && persistFormulaOrder == 0) {
             //check if expression contains thi. keyword. In that case will change order to 1
             Expression r = ((ExpressionFormula) persistFormula).getExpression();
+            try{
             if (UPQLUtils.containsThisVar(r, getPersistenceUnit().getExpressionManager())) {
                 persistFormulaOrder = 1;
+            }
+            }catch(Exception ex){
+                throw new IllegalArgumentException("Unable to parse expression for field "+getName()+"."+f.getName()+" : "+r,ex);
             }
         }
         f.setPersistFormula(fieldDescriptor.getPersistFormula());

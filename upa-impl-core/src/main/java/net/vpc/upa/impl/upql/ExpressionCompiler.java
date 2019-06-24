@@ -56,6 +56,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.vpc.upa.expressions.Max;
+import net.vpc.upa.impl.upql.ext.expr.CompiledAggregationFunction;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDistinct;
+import net.vpc.upa.impl.upql.ext.expr.CompiledFunction;
+import net.vpc.upa.impl.upql.ext.expr.CompiledMax;
 
 /**
  * Created by vpc on 6/28/17.
@@ -354,7 +359,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             if (referrer instanceof Entity) {
                 List<Field> fields = ((Entity) referrer).getFields(depth == 0 ? FieldFilters2.ID : config.getExpandFieldFilter());
                 for (Field field : fields) {
-                    fieldsToExpand.add(new ExpressionCompilerFieldInfo(field,false,false));
+                    fieldsToExpand.add(new ExpressionCompilerFieldInfo(field, false, false));
                 }
             } else if (referrer instanceof Field) {
                 Field field = (Field) referrer;
@@ -419,7 +424,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                                 bindingJoinInfo.binding
                         );
                         for (Field newField : newFields) {
-                            fieldsToExpand.add(new ExpressionCompilerFieldInfo(newField,true,false));
+                            fieldsToExpand.add(new ExpressionCompilerFieldInfo(newField, true, false));
                         }
                         updateContext.put("columnsCount", newFields.size() + currColumnsCount);
                         if (manyToOneRelationship.getHierarchyExtension() != null && depth > 3) {
@@ -445,7 +450,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             }
 
             for (ExpressionCompilerFieldInfo ifield : fieldsToExpand) {
-                Field field=ifield.field;
+                Field field = ifield.field;
                 CompiledVar f2 = (CompiledVar) finest.copy();
                 CompiledVar f3 = new CompiledVar(field.getName(), field, BindingId.createChild(tt.getBinding(), field.getName()));
                 f2.setChild(f3);
@@ -689,7 +694,18 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         } else if (ref instanceof Entity) {
             CompiledVarOrMethod child = o.getChild();
             if (child == null) {
-                return ReplaceResult.NO_UPDATES_STOP;
+                CompiledExpressionExt p = o.getParentExpression();
+                if (p instanceof CompiledFunction) {
+                    // a function of entity is equivalent to a function of its id!
+                    List<Field> idFields = ((Entity) ref).getIdFields();
+                    if(idFields.size()!=1){
+                        throw new IllegalArgumentException("Not Supported function of multi-id for "+((Entity) ref).getName());
+                    }
+                    o.setChild(new CompiledVar(idFields.get(0)));
+                    return ReplaceResult.UPDATE_AND_STOP;
+                } else {
+                    return ReplaceResult.NO_UPDATES_STOP;
+                }
             }
             ReplaceResult replaceChild = null;
             replaceChild = UPQLCompiledUtils.replaceExpressions(child, this, updateContext);
@@ -802,7 +818,35 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
         updateContext = updateContext == null ? new HashMap<String, Object>() : new HashMap<String, Object>(updateContext);
         expandEntityFilters(s, updateContext);
+
         List<CompiledQueryField> fields = new ArrayList<CompiledQueryField>(s.getFields());
+        //First inline top level distinct
+        int columnsCount = 0;
+        for (int i = 0; i < fields.size(); i++) {
+            CompiledQueryField qf = fields.get(i);
+            if (qf.getExpression() instanceof CompiledDistinct) {
+                if (s.isDistinct()) {
+                    throw new IllegalArgumentException("Select contains multiple distinct tuples");
+                }
+                CompiledDistinct d = (CompiledDistinct) qf.getExpression();
+                CompiledExpressionExt[] aa = d.getArguments();
+                s.setDistinct(true);
+                aa[0].unsetParent();
+                qf.setExpression(aa[0]);
+                columnsCount++;
+                if (aa.length > 1) {
+                    for (int j = aa.length - 1; j >= 0; j--) {
+                        aa[j].unsetParent();
+                        s.addField(columnsCount, aa[j], null);
+                        columnsCount++;
+                    }
+                }
+            } else {
+                columnsCount++;
+            }
+        }
+
+        fields = new ArrayList<CompiledQueryField>(s.getFields());
         List<Integer> toRemove = new ArrayList<Integer>();
         updateContext.put("columnsCount", fields.size());
         for (int i = 0; i < fields.size(); i++) {
@@ -1506,6 +1550,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
     }
 
     private static class ExprContext {
+
         private Map<String, String> upaBindingAliases = new HashMap<String, String>();
         private int upaBindingAliasIndex = 0;
 

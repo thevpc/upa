@@ -4,7 +4,6 @@
  */
 package net.vpc.upa.impl.upql;
 
-import java.io.StringReader;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,6 +55,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         return UPQLFunctionsFactory.createFunction(name,Arrays.asList(args));
     }
 
+    @Override
     public Expression parseExpression(Expression expression) {
         if(expression instanceof UserExpression){
             UserExpression ucce = (UserExpression) expression;
@@ -69,6 +69,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         }
     }
 
+    @Override
     public Expression parseExpression(String expression) {
         try {
             return parser.parse(expression);
@@ -78,6 +79,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         }
     }
 
+    @Override
     public CompiledExpression compileExpression(Expression expression, ExpressionCompilerConfig config) {
         if (config == null) {
             config = new ExpressionCompilerConfig();
@@ -87,6 +89,7 @@ public class DefaultExpressionManager implements ExpressionManager {
         return qe;
     }
 
+    @Override
     public CompiledExpression compileExpression(CompiledExpression expression, ExpressionCompilerConfig config) {
         if (config == null) {
             config = new ExpressionCompilerConfig();

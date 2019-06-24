@@ -7,7 +7,7 @@ import net.vpc.upa.expressions.ExpressionHelper;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.BindingId;
 
-public class CompiledVar extends CompiledVarOrMethod {
+public final class CompiledVar extends CompiledVarOrMethod {
 
     public static final char DOT = '.';
     private static final long serialVersionUID = 1L;

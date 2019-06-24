@@ -111,9 +111,9 @@ public class CompiledQueryField extends DefaultCompiledExpressionImpl {
     }
 
     public void setExpression(CompiledExpressionExt expression) {
-        unbindChildren(this.expression);
+        if(this.expression!=expression){unbindChildren(this.expression);
         this.expression = expression;
-        bindChildren(expression);
+        bindChildren(expression);}
     }
 
     private static String resolveName(String alias, CompiledExpressionExt expression) {

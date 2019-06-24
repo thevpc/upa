@@ -3,7 +3,7 @@ package net.vpc.upa.impl.upql.ext.expr;
 import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
-public final class CompiledMin extends CompiledFunction
+public final class CompiledMin extends CompiledAggregationFunction
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;

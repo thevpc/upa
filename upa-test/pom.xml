@@ -52,7 +52,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <github.global.server>github</github.global.server>
         <upa-api-version>1.2.0.49</upa-api-version>
-        <upa-impl-version>1.2.0.49.0</upa-impl-version>
+        <upa-impl-version>1.2.0.49.1</upa-impl-version>
         <!--<upa-api-version>1.2.0.29</upa-api-version>-->
         <!--<upa-impl-version>1.2.0.29.0</upa-impl-version>-->
     </properties>

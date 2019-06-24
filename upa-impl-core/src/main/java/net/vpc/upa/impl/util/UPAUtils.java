@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.vpc.upa.impl.config.annotationparser.DecorationComparator;
 import net.vpc.upa.impl.config.decorations.DecorationRepository;
+import net.vpc.upa.impl.upql.ext.expr.CompiledDistinct;
 
 /**
  * @author Taha BEN SALAH <taha.bensalah@gmail.com>
@@ -532,11 +533,17 @@ public class UPAUtils {
                 i.setReferrer(r);
                 i.setTransform(tr);
                 return i;
+            }else if(e instanceof Entity){
+                throw new IllegalUPAArgumentException("You are using an entity " + e + " instead of field. Cannot evaluate " + UPAUtils.getParentAtMaxLevel(e, 4));
             }
         }
         if (e instanceof CompiledVarVal) {
             CompiledVarOrMethod v = ((CompiledVarVal) e).getVar();
             return resolveExprTypeInfo(v);
+        }
+        if (e instanceof CompiledDistinct) {
+            CompiledDistinct d=(CompiledDistinct)e;
+            return resolveExprTypeInfo(d.getArgument(0));
         }
         DataTypeTransform typeTransform = e.getTypeTransform();
         if (typeTransform == null) {

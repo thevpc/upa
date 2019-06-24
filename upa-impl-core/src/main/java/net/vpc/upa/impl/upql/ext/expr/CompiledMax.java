@@ -4,7 +4,7 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.types.DataTypeTransform;
 
 
-public final class CompiledMax extends CompiledFunction
+public final class CompiledMax extends CompiledAggregationFunction
         implements Cloneable {
     private static final long serialVersionUID = 1L;
 

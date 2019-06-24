@@ -5,7 +5,7 @@ import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.types.DataTypeTransform;
 
-public final class CompiledAvg extends CompiledFunction
+public final class CompiledAvg extends CompiledAggregationFunction
         implements Cloneable {
 
     private static final long serialVersionUID = 1L;

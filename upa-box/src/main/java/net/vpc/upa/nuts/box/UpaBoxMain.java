@@ -1,13 +1,6 @@
 package net.vpc.upa.nuts.box;
 
-import net.vpc.app.nuts.NutsId;
-import net.vpc.app.nuts.NutsQuestion;
-import net.vpc.app.nuts.app.NutsApplication;
-import net.vpc.app.nuts.app.NutsApplicationContext;
-import net.vpc.common.commandline.Argument;
-import net.vpc.common.commandline.CommandLine;
 import net.vpc.common.io.IOUtils;
-import net.vpc.common.io.RuntimeIOException;
 import net.vpc.common.mvn.*;
 import net.vpc.common.webxml.WebListener;
 import net.vpc.common.webxml.WebXml;
@@ -22,64 +15,75 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.vpc.app.nuts.NutsApplication;
+import net.vpc.app.nuts.NutsApplicationContext;
+import net.vpc.app.nuts.NutsCommandLine;
+import net.vpc.app.nuts.NutsId;
+import net.vpc.app.nuts.NutsArgument;
 
 public class UpaBoxMain extends NutsApplication {
+
     public static void main(String[] args) {
-        new UpaBoxMain().launchAndExit(args);
+        new UpaBoxMain().runAndExit(args);
     }
 
     @Override
-    public int launch(NutsApplicationContext appContext) {
-        CommandLine cmd = new CommandLine(appContext);
-        if(cmd.isExecMode()) {
-            appContext.out().printf("**%s** version **%s** (c) vpc [[2018]]\n", appContext.getAppId().getName(), appContext.getAppId().getVersion());
+    public void run(NutsApplicationContext appContext) {
+        NutsCommandLine cmd = appContext.getCommandLine();
+        PrintStream out = appContext.session().out();
+        if (cmd.isExecMode()) {
+            out.printf("**%s** version **%s** (c) vpc [[2018]]\n", appContext.getAppId().getName(), appContext.getAppId().getVersion());
         }
-        cmd.requireNonEmpty();
-        Argument a;
+        cmd.required();
+        NutsArgument a;
         Options o = new Options();
         if (cmd.hasNext()) {
-            if ((a = cmd.readNonOption("in", "install")) != null) {
+            if ((a = cmd.next("in", "install")) != null) {
                 try {
                     File targetFile = null;
                     while (cmd.hasNext()) {
-                        if (appContext.configure(cmd)) {
+                        if (appContext.configureFirst(cmd)) {
                             //ok
-                        } else if ((a = cmd.readBooleanOption("--override-pom-xml")) != null) {
+                        } else if ((a = cmd.nextBoolean("--override-pom-xml")) != null) {
                             o.overridePomXml = a.getBooleanValue();
-                        } else if ((a = cmd.readBooleanOption("--override-web-xml")) != null) {
+                        } else if ((a = cmd.nextBoolean("--override-web-xml")) != null) {
                             o.overrideWebXml = a.getBooleanValue();
-                        } else if ((a = cmd.readBooleanOption("--override-upa-xml")) != null) {
+                        } else if ((a = cmd.nextBoolean("--override-upa-xml")) != null) {
                             o.overrideUpaXml = a.getBooleanValue();
-                        } else if ((a = cmd.readBooleanOption("--no")) != null) {
-                            o.interactiveValue =!a.getBooleanValue();
-                            o.interactive =false;
-                        } else if ((a = cmd.readBooleanOption("--yes")) != null) {
-                            o.interactiveValue =a.getBooleanValue();
-                            o.interactive =false;
-                        } else if ((a = cmd.readBooleanOption("--new")) != null) {
+                        } else if ((a = cmd.nextBoolean("--no")) != null) {
+                            o.interactiveValue = !a.getBooleanValue();
+                            o.interactive = false;
+                        } else if ((a = cmd.nextBoolean("--yes")) != null) {
+                            o.interactiveValue = a.getBooleanValue();
+                            o.interactive = false;
+                        } else if ((a = cmd.nextBoolean("--new")) != null) {
                             o.newFile = a.getBooleanValue();
-                        } else if ((a = cmd.readBooleanOption("--enable-spring")) != null) {
+                        } else if ((a = cmd.nextBoolean("--enable-spring")) != null) {
                             o.enableSpring = a.getBooleanValue();
-                        } else if ((a = cmd.readBooleanOption("--recommended")) != null) {
+                        } else if ((a = cmd.nextBoolean("--recommended")) != null) {
                             o.recommended = a.getBooleanValue();
-                        } else if ((a = cmd.readStringOption("--db-type")) != null) {
+                        } else if ((a = cmd.nextString("--db-type")) != null) {
                             o.dbtype = a.getStringValue();
-                        } else if ((a = cmd.readOption("--derby-embedded")) != null) {
+                        } else if ((a = cmd.next("--derby-embedded")) != null) {
                             o.dbtype = "derby:embedded";
-                        } else if ((a = cmd.readOption("--derby")) != null) {
+                        } else if ((a = cmd.next("--derby")) != null) {
                             o.dbtype = "derby";
-                        } else if ((a = cmd.readOption("--mysql")) != null) {
+                        } else if ((a = cmd.next("--mysql")) != null) {
                             o.dbtype = "mysql";
-                        } else if (!cmd.isOption()) {
+                        } else if (!cmd.peek().isOption()) {
                             if (targetFile != null) {
-                                cmd.unexpectedArgument("install");
+                                cmd.setCommandName("install").unexpectedArgument();
                             }
-                            targetFile = new File(appContext.getWorkspace().getIOManager().expandPath(cmd.read().getStringExpression()));
+                            targetFile = new File(cmd.next().getString());
                         } else {
-                            cmd.unexpectedArgument("install");
+                            cmd.setCommandName("install").unexpectedArgument();
                         }
                     }
                     if (cmd.isExecMode()) {
@@ -92,17 +96,16 @@ public class UpaBoxMain extends NutsApplication {
                 }
 
             } else {
-                cmd.unexpectedArgument("upa-box");
+                cmd.setCommandName("upa-box").unexpectedArgument();
             }
         }
-        return 0;
     }
 
-    private void installFile(NutsApplicationContext appContext, CommandLine cmd, Options o, File targetFile) throws IOException, SAXException, ParserConfigurationException {
+    private void installFile(NutsApplicationContext appContext, NutsCommandLine cmd, Options o, File targetFile) throws IOException, SAXException, ParserConfigurationException {
         File pomxml = null;
         File webxml = null;
         if (targetFile == null) {
-            targetFile = new File(appContext.getWorkspace().getIOManager().expandPath("."));
+            targetFile = new File(".").getCanonicalFile();
         }
         if (targetFile.isDirectory() && new File(targetFile, "pom.xml").isFile()) {
             pomxml = new File(targetFile, "pom.xml");
@@ -143,27 +146,27 @@ public class UpaBoxMain extends NutsApplication {
             if (o.newFile) {
                 newFile = new File(webxml.getPath() + ".new");
             }
-            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<web-app xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"3.1\" xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\"\n" +
-                    "         xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\">\n" +
-                    "    <context-param>\n" +
-                    "        <param-name>upa.web.context-url-filter</param-name>\n" +
-                    "        <param-value>*.xhtml|/fs/*|/p/*|/u/*|/ws/*|/services/rss/*</param-value>\n" +
-                    "    </context-param>\n" +
-                    "\n" +
-                    "    <listener>\n" +
-                    "        <listener-class>net.vpc.upa.web.UPAServletContextListener</listener-class>\n" +
-                    "    </listener>\n" +
-                    "\n" +
-                    "    <session-config>\n" +
-                    "        <session-timeout>\n" +
-                    "            30\n" +
-                    "        </session-timeout>\n" +
-                    "    </session-config>\n" +
-                    "    <welcome-file-list>\n" +
-                    "        <welcome-file>index.xhtml</welcome-file>\n" +
-                    "    </welcome-file-list>\n" +
-                    "</web-app>\n", newFile,appContext,o,o.overrideWebXml,"web.xml");
+            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<web-app xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"3.1\" xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\"\n"
+                    + "         xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\">\n"
+                    + "    <context-param>\n"
+                    + "        <param-name>upa.web.context-url-filter</param-name>\n"
+                    + "        <param-value>*.xhtml|/fs/*|/p/*|/u/*|/ws/*|/services/rss/*</param-value>\n"
+                    + "    </context-param>\n"
+                    + "\n"
+                    + "    <listener>\n"
+                    + "        <listener-class>net.vpc.upa.web.UPAServletContextListener</listener-class>\n"
+                    + "    </listener>\n"
+                    + "\n"
+                    + "    <session-config>\n"
+                    + "        <session-timeout>\n"
+                    + "            30\n"
+                    + "        </session-timeout>\n"
+                    + "    </session-config>\n"
+                    + "    <welcome-file-list>\n"
+                    + "        <welcome-file>index.xhtml</welcome-file>\n"
+                    + "    </welcome-file-list>\n"
+                    + "</web-app>\n", newFile, appContext, o, o.overrideWebXml, "web.xml");
             return;
         }
         WebXmlParser.parse(webxml, new WebXmlVisitorAdapter() {
@@ -209,8 +212,8 @@ public class UpaBoxMain extends NutsApplication {
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
-                }else{
-                    appContext.out().printf("Ignore existing ==%s==\n", webxml.getPath());
+                } else {
+                    appContext.session().out().printf("Ignore existing ==%s==\n", webxml.getPath());
                 }
             }
         });
@@ -287,44 +290,44 @@ public class UpaBoxMain extends NutsApplication {
                 url = dbtype + "://localhost/" + pom.getPomId().getArtifactId() + "/db;structure=create;userName=appuser;password=appsecret";
             }
 
-            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<upa xmlns=\"http://github.com/thevpc/upa/upa-1.0.xsd\" version=\"1.0\">\n" +
-                    "    <scan types=\"" + (pom.getPomId().getGroupId().replace("\"", "\\\"")) + ".**\"/>\n" +
-                    "    <connectionString>\n" +
-                    "    " + url + "\n" +
-                    "    </connectionString>\n" +
-                    "</upa>\n", upaxml, appContext, o, o.overrideUpaXml, "upa.xml");
+            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<upa xmlns=\"http://github.com/thevpc/upa/upa-1.0.xsd\" version=\"1.0\">\n"
+                    + "    <scan types=\"" + (pom.getPomId().getGroupId().replace("\"", "\\\"")) + ".**\"/>\n"
+                    + "    <connectionString>\n"
+                    + "    " + url + "\n"
+                    + "    </connectionString>\n"
+                    + "</upa>\n", upaxml, appContext, o, o.overrideUpaXml, "upa.xml");
         } else {
             if (dbtype == null) {
                 dbtype = "mysql";
             }
             String url = "derby:embedded://${user.home}/workspace/" + pom.getPomId().getArtifactId() + "/db;structure=create;userName=appuser;password=appsecret";
             if (!"derby:embedded".equals(dbtype)) {
-                url = dbtype + "://localhost/" + pom.getPomId().getArtifactId() + "/db;\n" +
-                        "                structure=create;\n" +
-                        "                userName=appuser;\n" +
-                        "                password=appsecret;\n" +
-                        "                pool=true;\n" +
-                        "                poolMaxSize=200;\n" +
-                        "                monitor=javamelody";
+                url = dbtype + "://localhost/" + pom.getPomId().getArtifactId() + "/db;\n"
+                        + "                structure=create;\n"
+                        + "                userName=appuser;\n"
+                        + "                password=appsecret;\n"
+                        + "                pool=true;\n"
+                        + "                poolMaxSize=200;\n"
+                        + "                monitor=javamelody";
             }
-            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<upa xmlns=\"http://github.com/thevpc/upa/upa-1.0.xsd\" version=\"1.0\">\n" +
-                    "    <scan types=\"" + (pom.getPomId().getGroupId().replace("\"", "\\\"")) + ".**\"/>\n" +
-                    "    <include>\n" +
-                    "        <file path=\"${user.home}/workspace/" + pom.getPomId().getArtifactId() + "/config/upa.xml\" failSafe=\"true\"/>\n" +
-                    "        <!-- this is a fallback connection if the file fails to be included -->\n" +
-                    "        <default>\n" +
-                    "            <persistenceUnit>\n" +
-                    "                <connection>\n" +
-                    "                    <connectionString>\n" +
-                    "                        " + url + "\n" +
-                    "                    </connectionString>\n" +
-                    "                </connection>\n" +
-                    "            </persistenceUnit>\n" +
-                    "        </default>\n" +
-                    "    </include>\n" +
-                    "</upa>\n", upaxml, appContext, o, o.overrideUpaXml, "upa.xml");
+            saveString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<upa xmlns=\"http://github.com/thevpc/upa/upa-1.0.xsd\" version=\"1.0\">\n"
+                    + "    <scan types=\"" + (pom.getPomId().getGroupId().replace("\"", "\\\"")) + ".**\"/>\n"
+                    + "    <include>\n"
+                    + "        <file path=\"${user.home}/workspace/" + pom.getPomId().getArtifactId() + "/config/upa.xml\" failSafe=\"true\"/>\n"
+                    + "        <!-- this is a fallback connection if the file fails to be included -->\n"
+                    + "        <default>\n"
+                    + "            <persistenceUnit>\n"
+                    + "                <connection>\n"
+                    + "                    <connectionString>\n"
+                    + "                        " + url + "\n"
+                    + "                    </connectionString>\n"
+                    + "                </connection>\n"
+                    + "            </persistenceUnit>\n"
+                    + "        </default>\n"
+                    + "    </include>\n"
+                    + "</upa>\n", upaxml, appContext, o, o.overrideUpaXml, "upa.xml");
 
         }
     }
@@ -350,11 +353,11 @@ public class UpaBoxMain extends NutsApplication {
         } else {
             return null;
         }
-        NutsId nn = appContext.getWorkspace().createQuery()
+        NutsId nn = appContext.getWorkspace().search()
                 .setSession(appContext.getSession())
-                .addId(baseId).setLatestVersions(true).findFirst();
-        if(nn!=null) {
-            appContext.out().printf("Detected version ==%s==\n", nn.getLongName());
+                .addId(baseId).latest().getResultIds().required();
+        if (nn != null) {
+            appContext.session().out().printf("Detected version ==%s==\n", nn.getLongName());
         }
         return nn;
     }
@@ -396,10 +399,8 @@ public class UpaBoxMain extends NutsApplication {
                             springElement = dependencyElement;
                         }
                     } else if (dbDriver != null) {
-                        if (
-                                dbDriver.getGroup().equals(dependency.getGroupId())
-                                        && dbDriver.getName().equals(dependency.getArtifactId())
-                        ) {
+                        if (dbDriver.getGroup().equals(dependency.getGroupId())
+                                && dbDriver.getName().equals(dependency.getArtifactId())) {
                             dbdriverElement = dependencyElement;
                         }
                     }
@@ -446,7 +447,7 @@ public class UpaBoxMain extends NutsApplication {
                                     document.getDocumentElement().appendChild(dependenciesElement);
                                 }
                                 PomDependency apiDep = new PomDependency("net.vpc.upa", "upa-api", getApiVersion());
-                                save |= PomXmlParser.appendOrReplaceDependency(apiDep,apiElement, dependenciesElement);
+                                save |= PomXmlParser.appendOrReplaceDependency(apiDep, apiElement, dependenciesElement);
                                 if (enableWeb) {
                                     save |= PomXmlParser.appendOrReplaceDependency(new PomDependency("net.vpc.upa", "upa-web", getWarVersion(apiDep.getVersion())),
                                             webElement, dependenciesElement);
@@ -484,49 +485,44 @@ public class UpaBoxMain extends NutsApplication {
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
-                    }else{
-                        appContext.out().printf("Ignore existing ==%s==\n", pomxml.getPath());
+                    } else {
+                        appContext.session().out().printf("Ignore existing ==%s==\n", pomxml.getPath());
                     }
                 }
 
-
                 private String getSpringVersion(String apiVersion) {
-                    NutsId id =
-                            appContext.getWorkspace().createQuery()
+                    NutsId id
+                            = appContext.getWorkspace().search()
                                     .setSession(appContext.getSession())
-                                    .addId("net.vpc.upa:upa-spring").setLatestVersions(true)
-                                    .findFirst()
-                    ;
-                    appContext.out().printf("Detected version ==%s==\n", id.getLongName());
+                                    .addId("net.vpc.upa:upa-spring").latest()
+                                    .getResultIds().required();
+                    appContext.session().out().printf("Detected version ==%s==\n", id.getLongName());
                     return id.getVersion().getValue();
                 }
 
                 private String getImplVersion(String apiVersion) {
-                    NutsId id = appContext.getWorkspace().createQuery().setSession(appContext.getSession())
-                                    .addId("net.vpc.upa:upa-impl").setLatestVersions(true)
-                                    .findFirst()
-                    ;
-                    appContext.out().printf("Detected version ==%s==\n", id.getLongName());
+                    NutsId id = appContext.getWorkspace().search().setSession(appContext.getSession())
+                            .addId("net.vpc.upa:upa-impl").latest()
+                            .getResultIds().required();
+                    appContext.session().out().printf("Detected version ==%s==\n", id.getLongName());
                     return id.getVersion().getValue();
                 }
 
                 private String getApiVersion() {
-                    NutsId id = appContext.getWorkspace().createQuery()
-                                    .setSession(appContext.getSession())
-                                    .addId("net.vpc.upa:upa-api").setLatestVersions(true)
-                                    .findFirst()
-                            ;
-                    appContext.out().printf("Detected version ==%s==\n", id.getLongName());
+                    NutsId id = appContext.getWorkspace().search()
+                            .setSession(appContext.getSession())
+                            .addId("net.vpc.upa:upa-api").latest()
+                            .getResultIds().required();
+                    appContext.session().out().printf("Detected version ==%s==\n", id.getLongName());
                     return id.getVersion().getValue();
                 }
 
                 private String getWarVersion(String apiVersion) {
-                    NutsId id = appContext.getWorkspace().createQuery()
+                    NutsId id = appContext.getWorkspace().search()
                             .setSession(appContext.getSession())
-                            .addId("net.vpc.upa:upa-web").setLatestVersions(true)
-                                    .findFirst()
-                    ;
-                    appContext.out().printf("Detected version ==%s==\n", id.getLongName());
+                            .addId("net.vpc.upa:upa-web").latest()
+                            .getResultIds().required();
+                    appContext.session().out().printf("Detected version ==%s==\n", id.getLongName());
                     return id.getVersion().getValue();
                 }
             });
@@ -539,6 +535,7 @@ public class UpaBoxMain extends NutsApplication {
     }
 
     private interface ExtraFilter {
+
         boolean accept(File baseFile, File newFile);
     }
 
@@ -548,31 +545,31 @@ public class UpaBoxMain extends NutsApplication {
             newFile = new File(baseFile.getPath() + ".new");
         }
         if (baseFile.isFile()) {
-            boolean canOverride=true;
+            boolean canOverride = true;
             if (overrideType) {
-                canOverride=true;
-            }else if (!o.interactive) {
-                canOverride=o.interactiveValue;
+                canOverride = true;
+            } else if (!o.interactive) {
+                canOverride = o.interactiveValue;
             }
             if (canOverride && extra != null && !extra.accept(baseFile, newFile)) {
-                canOverride=false;
+                canOverride = false;
             }
             if (canOverride) {
-                canOverride = appContext.getTerminal().ask(NutsQuestion.forBoolean("Could you @@confirm@@ override existing ==%s==", msg)
-                        .setDefautValue(false)
-                );
+                canOverride = appContext.session().terminal().ask()
+                        .forBoolean("Could you @@confirm@@ override existing ==%s==", msg)
+                        .setDefaultValue(false).getBooleanValue();
             }
             if (!canOverride) {
-                appContext.out().printf("Ignore existing ==%s==\n", baseFile.getPath());
+                appContext.session().out().printf("Ignore existing ==%s==\n", baseFile.getPath());
                 return null;
             }
-            appContext.out().printf("Override ==%s==\n", baseFile.getPath());
+            appContext.session().out().printf("Override ==%s==\n", baseFile.getPath());
         } else {
-            appContext.out().printf("Create   ==%s==\n", baseFile.getPath());
+            appContext.session().out().printf("Create   ==%s==\n", baseFile.getPath());
         }
         if (!o.newFile) {
             if (baseFile.exists()) {
-                if(newFile.getParentFile()!=null) {
+                if (newFile.getParentFile() != null) {
                     newFile.getParentFile().mkdirs();
                 }
                 Files.move(baseFile.toPath(), new File(baseFile.getPath() + ".old").toPath(), StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
@@ -581,11 +578,16 @@ public class UpaBoxMain extends NutsApplication {
         return newFile;
     }
 
-    public static void saveString(final String content, final File baseFile, final NutsApplicationContext appContext, Options o, boolean overrideType, String msg) throws RuntimeIOException, IOException {
+    public static void saveString(final String content, final File baseFile, final NutsApplicationContext appContext, Options o, boolean overrideType, String msg) throws IOException {
         File newFile = prepareCreateFile(baseFile, appContext, o, overrideType, msg, new ExtraFilter() {
             @Override
             public boolean accept(File b, File n) {
-                String pp = IOUtils.loadString(baseFile);
+                String pp;
+                try {
+                    pp = IOUtils.loadString(baseFile);
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
                 return (!content.equals(pp));
             }
         });
@@ -595,6 +597,7 @@ public class UpaBoxMain extends NutsApplication {
     }
 
     public static class Options {
+
         public boolean enableSpring = false;
         public String dbtype = null;
         public boolean recommended = false;

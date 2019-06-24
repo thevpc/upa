@@ -4,7 +4,7 @@
     <groupId>net.vpc.upa</groupId>
     <artifactId>upa-xml-config</artifactId>
     <name>net.vpc.upa.upa-xml-config</name>
-    <version>1.2.0.49.0</version>
+    <version>1.2.0.49.1</version>
     <packaging>jar</packaging>
     <url>https://github.com/thevpc/upa/wiki</url>
 
@@ -137,7 +137,9 @@
                 <version>0.11</version>
                 <!--<version>0.9</version>-->
                 <configuration>
-                    <message>Maven artifacts for ${project.groupId}:${project.artifactId}#${project.version}</message>  <!-- git commit message -->
+                    <!-- git commit message -->
+                    <!--<message>Maven artifacts for ${project.groupId}:${project.artifactId}#${project.version}</message>-->  
+                    <message>${project.version} of ${project.groupId}:${project.artifactId}</message>
                     <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
                     <outputDirectory>${project.build.directory}/vpc-public-maven
                     </outputDirectory> <!-- matches distribution management repository url above -->
