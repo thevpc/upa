@@ -323,7 +323,9 @@ public class DefaultObjectQueryResultLazyList<T> extends QueryResultLazyList<T> 
     private int loadElementsToCache(CacheMap<NamedId, ResultObject> referencesCache, Entity entity, Collection<Object> itemsToReduce2) {
         String entityName = entity.getName();
         EntityBuilder builder = entity.getBuilder();
-        QueryBuilder query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints());
+        QueryBuilder query = entity.createQueryBuilder().byIdList(new ArrayList<Object>(itemsToReduce2)).setHints(getHints())
+                //disabe filter not to break foreign key mapping
+                .setHint("upa.disable-filters", true);
         int count = 0;
         EntityCollectionCache c = ((DefaultPersistenceUnit) entity.getPersistenceUnit()).getPersistenceUnitCache();
         if (itemAsDocument) {

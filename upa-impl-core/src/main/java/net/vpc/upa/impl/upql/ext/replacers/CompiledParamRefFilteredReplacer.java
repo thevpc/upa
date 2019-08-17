@@ -11,7 +11,7 @@ import net.vpc.upa.impl.upql.ReplaceResult;
 import net.vpc.upa.impl.upql.ext.expr.CompiledParam;
 import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
 
-import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 
 /**
  *
@@ -33,7 +33,7 @@ public class CompiledParamRefFilteredReplacer implements CompiledExpressionFilte
         this.name = name;
     }
 
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         if(e instanceof CompiledParam && name.equals(((CompiledParam) e).getName())){
             return ReplaceResult.stopWithNewObj(UPQLCompiledUtils.cast(newRef).copy());
         }

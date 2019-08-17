@@ -162,7 +162,7 @@ public abstract class DefaultCompiledExpressionImpl implements CompiledExpressio
     }
 
     @Override
-    public ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
+    public ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer, net.vpc.upa.impl.upql.UpdateExpressionContext updateContext) {
         if (replacer == null) {
             return ReplaceResult.NO_UPDATES_STOP;
         }

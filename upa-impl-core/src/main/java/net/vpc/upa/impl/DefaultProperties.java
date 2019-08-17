@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import net.vpc.upa.Properties;
@@ -14,7 +15,7 @@ import net.vpc.upa.Properties;
  */
 public class DefaultProperties extends AbstractProperties {
 
-    private Map<String, Object> base = new HashMap<String, Object>();
+    private Map<String, Object> base = new LinkedHashMap<String, Object>();
     private PropertyChangeSupport propertyChangeSupport;
     private Properties parent;
 

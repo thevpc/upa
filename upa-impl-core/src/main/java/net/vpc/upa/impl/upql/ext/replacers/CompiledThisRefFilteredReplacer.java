@@ -12,7 +12,7 @@ import net.vpc.upa.impl.upql.ext.expr.CompiledVar;
 import net.vpc.upa.impl.upql.ext.expr.CompiledVarOrMethod;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 
-import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 
 /**
  *
@@ -32,7 +32,7 @@ public class CompiledThisRefFilteredReplacer implements CompiledExpressionFilter
         this.newRef = newRef;
     }
 
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         if(e instanceof CompiledVar && UPQLUtils.THIS.equals(((CompiledVar) e).getName())){
             CompiledVar t = (CompiledVar) e;
             CompiledVarOrMethod child = t.getChild();

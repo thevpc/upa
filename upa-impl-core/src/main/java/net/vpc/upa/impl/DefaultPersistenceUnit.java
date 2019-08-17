@@ -3017,7 +3017,7 @@ public class DefaultPersistenceUnit implements PersistenceUnitExt {
         Entity entity = getEntity(entityName);
         DataType dt = entity.getField(field).getDataType();
         return entity.createQueryBuilder().setEntityAlias("o")
-                .byExpression(new And(new Var(new Var("o"), field), new Literal(value, dt)))
+                .byExpression(new Equals(new Var(new Var("o"), field), new Literal(value, dt)))
                 .orderBy(entity.getListOrder())
                 .getResultList();
     }

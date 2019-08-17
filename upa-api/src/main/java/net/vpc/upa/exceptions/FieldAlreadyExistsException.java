@@ -32,64 +32,21 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * ====================================================================
  */
-package net.vpc.upa;
-
-import net.vpc.upa.types.DataType;
-import net.vpc.upa.types.DataTypeTransformConfig;
-
-import java.util.Map;
+package net.vpc.upa.exceptions;
 
 /**
- * @author Taha BEN SALAH <taha.bensalah@gmail.com>
+ * Created by IntelliJ IDEA. User: vpc Date: 25 juin 2006 Time: 15:03:00 To
+ * change this template use File | Settings | File Templates.
  */
-public interface FieldDescriptor {
+public class FieldAlreadyExistsException extends EntityException {
 
-    String getName();
-
-    String getPath();
-
-    int getPathPosition();
-
-    Object getDefaultObject();
-
-    Object getUnspecifiedObject();
-
-    DataType getDataType();
-
-    DataTypeTransformConfig[] getTypeTransform();
-
-    Formula getPersistFormula();
-
-    Formula getUpdateFormula();
-
-    Formula getSelectFormula();
-
-    int getPersistFormulaOrder();
-
-    int getUpdateFormulaOrder();
-
-    FlagSet<UserFieldModifier> getModifiers();
-
-    FlagSet<UserFieldModifier> getExcludeModifiers();
-
-    AccessLevel getPersistAccessLevel();
-
-    AccessLevel getUpdateAccessLevel();
-
-    AccessLevel getReadAccessLevel();
-
-    ProtectionLevel getPersistProtectionLevel();
-
-    ProtectionLevel getUpdateProtectionLevel();
-
-    ProtectionLevel getReadProtectionLevel();
-
-    Map<String, Object> getFieldParams();
-
-    PropertyAccessType getPropertyAccessType();
-
-    int getPosition();
-
-    boolean isIgnoreExisting();
-
+    /**
+     * @param entityName       name of the cashing Entity
+     * @param fieldName        name of the cashing Field
+     * @param source           Source for the clashing Entity
+     * @param registererSource Source for already registered Entity
+     */
+    public FieldAlreadyExistsException(String entityName, String fieldName,Object source, Object registererSource) {
+        super(entityName,"addField."+fieldName,"FieldAlreadyExists", entityName, source, registererSource);
+    }
 }

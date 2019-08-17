@@ -46,7 +46,7 @@ public interface CompiledExpressionExt extends Cloneable, java.io.Serializable, 
 
     CompiledExpressionExt replaceExpressions(CompiledExpressionFilter filter, CompiledExpressionReplacer replacer);
 
-    ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext);
+    ReplaceResult replaceExpressions(CompiledExpressionFilteredReplacer replacer, net.vpc.upa.impl.upql.UpdateExpressionContext updateContext);
 
     <T extends CompiledExpression> List<T> findExpressionsList(CompiledExpressionFilter filter);
 

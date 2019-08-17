@@ -1389,76 +1389,6 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 //        return added;
 //    }
 //
-    public Field bindField(Field field, String sectionPath, int pathPosition) throws UPAException {
-
-        if (StringUtils.isNullOrEmpty(field.getName())) {
-            throw new IllegalUPAArgumentException("Field name is Null or Empty");
-        }
-        if (field.getDataType() == null) {
-            //may be a foreign reference,
-            //data type could not be resolved at creation time
-            //throw new IllegalUPAArgumentException("Field " + getName()+"."+field.getName() + " has null DataType");
-        } else if (field.getUserModifiers().contains(UserFieldModifier.ID) && field.getDataType().isNullable()) {
-            log.log(Level.WARNING, "Field {0}.{1} is ID but has nullable Type. Forced to non nullable (type reference changed).", new Object[]{getName(), field.getName()});
-            DataType t = (DataType) field.getDataType().copy();
-            t.setNullable(false);
-            field.setDataType(t);
-        }
-
-        if (field.getPersistFormula() != null
-                && field.getDataType() != null
-                && !field.getDataType().isNullable()
-                && field.getDataType().getDefaultUnspecifiedValue() == null) {
-            //could not call UPAUtils.getPersistFormula(field) because is uses getPersistenceUnit which is not yet set!
-            Formula a = field.getPersistFormula();
-            if (a instanceof NamedFormula) {
-                a = getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
-            }
-            if (!(a instanceof Sequence)) {
-                throw new IllegalUPAArgumentException("Field " + getName() + "."
-                        + field.getName() + " is a FORMULA field. Thus it must be nullable");
-            }
-        }
-        FlagSet<UserFieldModifier> modifiersCopy = field.getUserModifiers();
-        FlagSet<UserFieldModifier> excludedModifiersCopy = field.getUserExcludeModifiers();
-        modifiersCopy = modifiersCopy.removeAll(excludedModifiersCopy);
-        field.setUserModifiers(modifiersCopy);
-        field.setUserExcludeModifiers(excludedModifiersCopy);
-        //Workaround
-        FlagSet<FieldModifier> tt = FlagSets.noneOf(FieldModifier.class);
-        if (modifiersCopy.contains(UserFieldModifier.ID)) {
-            tt = tt.add(FieldModifier.ID);
-        }
-        if (modifiersCopy.contains(UserFieldModifier.TRANSIENT)) {
-            tt = tt.add(FieldModifier.TRANSIENT);
-        }
-        if (modifiersCopy.contains(UserFieldModifier.SYSTEM)) {
-            tt = tt.add(FieldModifier.SYSTEM);
-        }
-        ((AbstractField) field).setEffectiveModifiers(tt);
-        //if this field contains MAIN modifiers, older fields should have their main removed
-        //override
-        if (field.getName().equals("fullTitle")) {
-            System.out.print("");
-        }
-        if (modifiersCopy.contains(UserFieldModifier.MAIN)) {
-            for (Field field1 : getFields()) {
-                if (field1.getUserModifiers().contains(UserFieldModifier.MAIN)) {
-                    field1.setUserModifiers(field1.getUserModifiers().remove(UserFieldModifier.MAIN));
-                }
-            }
-        }
-        if (sectionPath == null || sectionPath.length() == 0) {
-            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
-            addItem(field);
-        } else {
-            Section section = getSection(sectionPath, MissingStrategy.CREATE, pathPosition);
-            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), section, field, field.getName());
-            section.addItem(field);
-        }
-        invalidateStructureCache();
-        return field;
-    }
 
     public void beforeItemAdded(EntityItem parent, EntityItem item, int index) throws UPAException {
         if (item instanceof Field) {
@@ -1690,15 +1620,85 @@ public class DefaultEntity extends AbstractUPAObject implements // for simple
 
     @Override
     public Field addField(FieldDescriptor fieldDescriptor) throws UPAException {
-        Field f = createField(fieldDescriptor);
+        Field field = createField(fieldDescriptor);
+        Field oldField = findField(field.getName());
+        if(oldField!=null){
+            if(fieldDescriptor.isIgnoreExisting()){
+                return oldField;
+            }
+            throw new FieldAlreadyExistsException(getName(), field.getName(), oldField/*.getDescriptor()*/, fieldDescriptor);
+        }
         String sectionPath = fieldDescriptor.getPath();
         int sectionPathIndex = fieldDescriptor.getPathPosition();
         if (!(sectionPath == null || sectionPath.length() == 0)) {
             Section r = getSection(sectionPath, MissingStrategy.CREATE, sectionPathIndex);
             r.setPreferredPosition(fieldDescriptor.getPathPosition());
         }
-        bindField(f, fieldDescriptor.getPath(), fieldDescriptor.getPathPosition());
-        return f;
+        int pathPosition=fieldDescriptor.getPathPosition();
+        if (StringUtils.isNullOrEmpty(field.getName())) {
+            throw new IllegalUPAArgumentException("Field name is Null or Empty");
+        }
+        if (field.getDataType() == null) {
+            //may be a foreign reference,
+            //data type could not be resolved at creation time
+            //throw new IllegalUPAArgumentException("Field " + getName()+"."+field.getName() + " has null DataType");
+        } else if (field.getUserModifiers().contains(UserFieldModifier.ID) && field.getDataType().isNullable()) {
+            log.log(Level.WARNING, "Field {0}.{1} is ID but has nullable Type. Forced to non nullable (type reference changed).", new Object[]{getName(), field.getName()});
+            DataType t = (DataType) field.getDataType().copy();
+            t.setNullable(false);
+            field.setDataType(t);
+        }
+
+        if (field.getPersistFormula() != null
+                && field.getDataType() != null
+                && !field.getDataType().isNullable()
+                && field.getDataType().getDefaultUnspecifiedValue() == null) {
+            //could not call UPAUtils.getPersistFormula(field) because is uses getPersistenceUnit which is not yet set!
+            Formula a = field.getPersistFormula();
+            if (a instanceof NamedFormula) {
+                a = getPersistenceUnit().getNamedFormula(((NamedFormula) a).getName()).getFormula();
+            }
+            if (!(a instanceof Sequence)) {
+                throw new IllegalUPAArgumentException("Field " + getName() + "."
+                        + field.getName() + " is a FORMULA field. Thus it must be nullable");
+            }
+        }
+        FlagSet<UserFieldModifier> modifiersCopy = field.getUserModifiers();
+        FlagSet<UserFieldModifier> excludedModifiersCopy = field.getUserExcludeModifiers();
+        modifiersCopy = modifiersCopy.removeAll(excludedModifiersCopy);
+        field.setUserModifiers(modifiersCopy);
+        field.setUserExcludeModifiers(excludedModifiersCopy);
+        //Workaround
+        FlagSet<FieldModifier> tt = FlagSets.noneOf(FieldModifier.class);
+        if (modifiersCopy.contains(UserFieldModifier.ID)) {
+            tt = tt.add(FieldModifier.ID);
+        }
+        if (modifiersCopy.contains(UserFieldModifier.TRANSIENT)) {
+            tt = tt.add(FieldModifier.TRANSIENT);
+        }
+        if (modifiersCopy.contains(UserFieldModifier.SYSTEM)) {
+            tt = tt.add(FieldModifier.SYSTEM);
+        }
+        ((AbstractField) field).setEffectiveModifiers(tt);
+        //if this field contains MAIN modifiers, older fields should have their main removed
+        //override
+        if (modifiersCopy.contains(UserFieldModifier.MAIN)) {
+            for (Field field1 : getFields()) {
+                if (field1.getUserModifiers().contains(UserFieldModifier.MAIN)) {
+                    field1.setUserModifiers(field1.getUserModifiers().remove(UserFieldModifier.MAIN));
+                }
+            }
+        }
+        if (sectionPath == null || sectionPath.length() == 0) {
+            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), this, field, field.getName());
+            addItem(field);
+        } else {
+            Section section = getSection(sectionPath, MissingStrategy.CREATE, pathPosition);
+            DefaultBeanAdapter adapter = UPAUtils.prepare(getPersistenceUnit(), section, field, field.getName());
+            section.addItem(field);
+        }
+        invalidateStructureCache();
+        return field;
     }
 
     @Override

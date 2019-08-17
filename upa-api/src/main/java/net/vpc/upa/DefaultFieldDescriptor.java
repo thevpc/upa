@@ -69,6 +69,7 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
     private Map<String, Object> fieldParams;
     private PropertyAccessType propertyAccessType;
     private int position = -1;
+    private boolean ignoreExisting;
 
     public DefaultFieldDescriptor() {
     }
@@ -427,4 +428,13 @@ public class DefaultFieldDescriptor implements FieldDescriptor {
         this.pathPosition = pathPosition;
     }
 
+    public boolean isIgnoreExisting() {
+        return ignoreExisting;
+    }
+
+    public void setIgnoreExisting(boolean ignoreExisting) {
+        this.ignoreExisting = ignoreExisting;
+    }
+
+    
 }

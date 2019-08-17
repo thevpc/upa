@@ -42,7 +42,6 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.transform.IdentityDataTypeTransform;
 import net.vpc.upa.impl.upql.util.UPQLCompiledUtils;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
-import net.vpc.upa.impl.upql.*;
 import net.vpc.upa.impl.util.PlatformUtils;
 import net.vpc.upa.impl.util.StringUtils;
 import net.vpc.upa.impl.util.UPAUtils;
@@ -56,11 +55,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.vpc.upa.expressions.Max;
-import net.vpc.upa.impl.upql.ext.expr.CompiledAggregationFunction;
 import net.vpc.upa.impl.upql.ext.expr.CompiledDistinct;
 import net.vpc.upa.impl.upql.ext.expr.CompiledFunction;
-import net.vpc.upa.impl.upql.ext.expr.CompiledMax;
 
 /**
  * Created by vpc on 6/28/17.
@@ -141,9 +137,12 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 }
             }
         }
-        Map<String, Object> updateContext = new HashMap<String, Object>();
+        UpdateExpressionContext uec = new UpdateExpressionContext();
+        if (config.getHints() != null) {
+            uec.getHints().putAll(config.getHints());
+        }
 
-        ReplaceResult v2 = UPQLCompiledUtils.replaceExpressions(dce, this, updateContext);
+        ReplaceResult v2 = UPQLCompiledUtils.replaceExpressions(dce, this, uec);
         if (v2.isNewInstance()) {
             dce = v2.getExpression();
         }
@@ -181,7 +180,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return true;
     }
 
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         ReplaceResult result = ReplaceResult.NO_UPDATES_CONTINUE;
         if (e instanceof CompiledSelect) {
             return updateCompiledSelect((CompiledSelect) e, updateContext);
@@ -207,7 +206,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return result;
     }
 
-    private ReplaceResult updateCompiledBinaryOperatorExpression(CompiledBinaryOperatorExpression tt, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledBinaryOperatorExpression(CompiledBinaryOperatorExpression tt, UpdateExpressionContext updateContext) {
         UPQLCompiledUtils.replaceExpressionChildren(tt, this, updateContext);
         //process children first !!
         CompiledExpressionExt left = tt.getLeft();
@@ -314,11 +313,15 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
-    private ReplaceResult updateCompiledQueryField(CompiledQueryField tt, Map<String, Object> updateContext) {
-        updateContext = updateContext == null ? new HashMap<String, Object>() : new HashMap<String, Object>(updateContext);
-        CompiledEntityStatement enclosingStmt = (CompiledEntityStatement) updateContext.get("updateContext");
-        int depth = UPAUtils.convertToInt(updateContext.get("depth"), navigationDepth + 1);
-        int currColumnsCount = UPAUtils.convertToInt(updateContext.get("columnsCount"), 1);
+    private ReplaceResult updateCompiledQueryField(CompiledQueryField tt, UpdateExpressionContext updateContext) {
+        if (updateContext == null) {
+            updateContext = new UpdateExpressionContext();
+        } else {
+            updateContext = updateContext.copy();
+        }
+        CompiledEntityStatement enclosingStmt = (CompiledEntityStatement) updateContext.getCache().get("updateContext");
+        int depth = UPAUtils.convertToInt(updateContext.getCache().get("depth"), navigationDepth + 1);
+        int currColumnsCount = UPAUtils.convertToInt(updateContext.getCache().get("columnsCount"), 1);
         if (enclosingStmt == null) {
             enclosingStmt = (CompiledEntityStatement) tt.getParentExpression();
         }
@@ -330,11 +333,11 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         CompiledExpressionExt ttExpr0 = ttExpr;
         ReplaceResult r = null;
         boolean someUpdates = false;
-        updateContext.put("enclosingStmt", enclosingStmt);
-        updateContext.put("depth", depth);
+        updateContext.getCache().put("enclosingStmt", enclosingStmt);
+        updateContext.getCache().put("depth", depth);
         while (again) {
             again = false;
-            updateContext.put("flattenId", false);
+            updateContext.getCache().put("flattenId", false);
             r = UPQLCompiledUtils.replaceExpressions(ttExpr0, this, updateContext);
             if (r.getReplaceResultType() != ReplaceResultType.NO_UPDATES) {
                 someUpdates = true;
@@ -426,10 +429,10 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         for (Field newField : newFields) {
                             fieldsToExpand.add(new ExpressionCompilerFieldInfo(newField, true, false));
                         }
-                        updateContext.put("columnsCount", newFields.size() + currColumnsCount);
+                        updateContext.getCache().put("columnsCount", newFields.size() + currColumnsCount);
                         if (manyToOneRelationship.getHierarchyExtension() != null && depth > 3) {
                             depth = 3;
-                            updateContext.put("depth", depth);
+                            updateContext.getCache().put("depth", depth);
                         }
                     } else {
                         throw new IllegalUPAArgumentException("Unsupported Fetch Strategy " + fetchStrategy);
@@ -473,8 +476,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 item.setParentExpression(enclosingStmt);
 
                 if (depth > 0) {
-                    updateContext = new HashMap<String, Object>(updateContext);
-                    updateContext.put("depth", depth - 1);
+                    updateContext = updateContext.copy();
+                    updateContext.getCache().put("depth", depth - 1);
                     ReplaceResult replaceResult = updateCompiledQueryField(item, updateContext);
                     CompiledExpression expression = replaceResult.getExpression(item);
                     if (expression instanceof CompiledQueryFieldsTuple) {
@@ -504,19 +507,19 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
     }
 
-    private ReplaceResult updateCompiledVar(CompiledVar o, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledVar(CompiledVar o, UpdateExpressionContext updateContext) {
         if (updateContext == null) {
-            updateContext = new HashMap<String, Object>();
+            updateContext = new UpdateExpressionContext();
         }
-        CompiledEntityStatement rootStatement = (CompiledEntityStatement) updateContext.get("rootStatement");
-        CompiledEntityStatement enclosingStmt = (CompiledEntityStatement) updateContext.get("enclosingStmt");
-        Boolean flattenId = (Boolean) updateContext.get("flattenId");
+        CompiledEntityStatement rootStatement = (CompiledEntityStatement) updateContext.getCache().get("rootStatement");
+        CompiledEntityStatement enclosingStmt = (CompiledEntityStatement) updateContext.getCache().get("enclosingStmt");
+        Boolean flattenId = (Boolean) updateContext.getCache().get("flattenId");
         if (flattenId == null) {
             flattenId = true;
         }
-        updateContext.put("rootStatement", rootStatement);
-        updateContext.put("enclosingStmt", enclosingStmt);
-        updateContext.put("flattenId", flattenId);
+        updateContext.getCache().put("rootStatement", rootStatement);
+        updateContext.getCache().put("enclosingStmt", enclosingStmt);
+        updateContext.getCache().put("flattenId", flattenId);
         Object ref = resolveReferrer(o);
         if (o.getImplicitDeclaration() != null) {
             if (o.getImplicitDeclaration().getName() != null) {
@@ -557,9 +560,9 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         if (enclosingStmt == null) {
             throw new IllegalUPAArgumentException("No Enclosing Statement for " + o);
         }
-        updateContext.put("rootStatement", rootStatement);
-        updateContext.put("enclosingStmt", enclosingStmt);
-        updateContext.put("flattenId", flattenId);
+        updateContext.getCache().put("rootStatement", rootStatement);
+        updateContext.getCache().put("enclosingStmt", enclosingStmt);
+        updateContext.getCache().put("flattenId", flattenId);
         boolean isThis = !(o.getParentExpression() instanceof CompiledVar) && UPQLUtils.THIS.equals(o.getName());
         if (isThis) {
             if (rootStatement == null) {
@@ -568,7 +571,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
             if (rootStatement == null) {
                 throw new IllegalUPAArgumentException("No Root Statement for " + o);
             }
-            updateContext.put("rootStatement", rootStatement);
+            updateContext.getCache().put("rootStatement", rootStatement);
             if (rootStatement.getEntityAlias() == null) {
                 CompiledVarOrMethod child = o.getChild();
                 if (child == null) {
@@ -639,7 +642,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                         } else if (baseRoot instanceof CompiledBinaryOperatorExpression) {
                             //force flatten!
                             flattenId = true;
-                            updateContext.put("flattenId", flattenId);
+                            updateContext.getCache().put("flattenId", flattenId);
                         } else {
 
                         }
@@ -698,8 +701,8 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 if (p instanceof CompiledFunction) {
                     // a function of entity is equivalent to a function of its id!
                     List<Field> idFields = ((Entity) ref).getIdFields();
-                    if(idFields.size()!=1){
-                        throw new IllegalArgumentException("Not Supported function of multi-id for "+((Entity) ref).getName());
+                    if (idFields.size() != 1) {
+                        throw new IllegalArgumentException("Not Supported function of multi-id for " + ((Entity) ref).getName());
                     }
                     o.setChild(new CompiledVar(idFields.get(0)));
                     return ReplaceResult.UPDATE_AND_STOP;
@@ -753,7 +756,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
-    private ReplaceResult updateCompiledUpdate(CompiledUpdate s, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledUpdate(CompiledUpdate s, UpdateExpressionContext updateContext) {
         for (int i = 0; i < s.countFields(); i++) {
             CompiledVar fvar = s.getField(i);
             CompiledExpressionExt vv = s.getFieldValue(i);
@@ -779,7 +782,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
     }
 
-    private ReplaceResult updateCompiledInsert(CompiledInsert s, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledInsert(CompiledInsert s, UpdateExpressionContext updateContext) {
         for (int i = 0; i < s.countFields(); i++) {
             CompiledVar fvar = s.getField(i);
             CompiledExpressionExt vv = s.getFieldValue(i);
@@ -796,7 +799,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.UPDATE_AND_CONTINUE_CLEAN;
     }
 
-    private ReplaceResult updateCompiledSelect(CompiledSelect s, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledSelect(CompiledSelect s, UpdateExpressionContext updateContext) {
         ReplaceResult result = ReplaceResult.NO_UPDATES_STOP;
         if (s.getParentExpression() == null) {
             //this is the root select
@@ -816,7 +819,11 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                 throw new IllegalUPAArgumentException("Inner Select Should have at least one selected field");
             }
         }
-        updateContext = updateContext == null ? new HashMap<String, Object>() : new HashMap<String, Object>(updateContext);
+        if (updateContext == null) {
+            updateContext = new UpdateExpressionContext();
+        } else {
+            updateContext = updateContext.copy();
+        }
         expandEntityFilters(s, updateContext);
 
         List<CompiledQueryField> fields = new ArrayList<CompiledQueryField>(s.getFields());
@@ -848,13 +855,13 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
 
         fields = new ArrayList<CompiledQueryField>(s.getFields());
         List<Integer> toRemove = new ArrayList<Integer>();
-        updateContext.put("columnsCount", fields.size());
+        updateContext.getCache().put("columnsCount", fields.size());
         for (int i = 0; i < fields.size(); i++) {
             CompiledQueryField qf = fields.get(i);
             qf.setBinding(BindingId.create(String.valueOf(i)));
-            updateContext.put("enclosingStmt", s);
-            updateContext.put("depth", navigationDepth + 1);
-            updateContext.put("index", i);
+            updateContext.getCache().put("enclosingStmt", s);
+            updateContext.getCache().put("depth", navigationDepth + 1);
+            updateContext.getCache().put("index", i);
 
             ReplaceResult rqf = updateCompiledQueryField(qf, updateContext);
             if (rqf.getReplaceResultType() == ReplaceResultType.NEW_INSTANCE) {
@@ -866,7 +873,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
                     for (CompiledQueryField ee : subExpressions) {
                         s.addField(ee);
                     }
-                    updateContext.put("columnsCount", UPAUtils.convertToInt(updateContext.get("columnsCount"), 0) - 1 + subExpressions.length);
+                    updateContext.getCache().put("columnsCount", UPAUtils.convertToInt(updateContext.getCache().get("columnsCount"), 0) - 1 + subExpressions.length);
                 } else if (replacement instanceof CompiledQueryField) {
                     CompiledQueryField replacement1 = (CompiledQueryField) replacement;
                     s.setField(replacement1, i);
@@ -954,7 +961,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return result;
     }
 
-    private ReplaceResult updateCompiledParam(CompiledParam o, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledParam(CompiledParam o, UpdateExpressionContext updateContext) {
         DataTypeTransform d = getValidDataType(o);
         if (d != null) {
             return ReplaceResult.NO_UPDATES_STOP;
@@ -1028,7 +1035,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return ReplaceResult.NO_UPDATES_STOP;
     }
 
-    private ReplaceResult updateCompiledLiteral(CompiledLiteral o, Map<String, Object> updateContext) {
+    private ReplaceResult updateCompiledLiteral(CompiledLiteral o, UpdateExpressionContext updateContext) {
         DataTypeTransform d = getValidDataType(o);
         if (d != null) {
             return ReplaceResult.NO_UPDATES_STOP;
@@ -1435,7 +1442,7 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         return o;
     }
 
-    public ReplaceResult updateCompiledQLFunctionExpression(CompiledQLFunctionExpression o, Map<String, Object> updateContext) {
+    public ReplaceResult updateCompiledQLFunctionExpression(CompiledQLFunctionExpression o, UpdateExpressionContext updateContext) {
         int argumentsCount = o.getArgumentsCount();
         Object[] args = new Object[argumentsCount];
         for (int i = 0; i < args.length; i++) {
@@ -1455,45 +1462,57 @@ public class ExpressionCompiler implements CompiledExpressionFilteredReplacer {
         }
     }
 
-    private void expandEntityFilters(CompiledSelect compiledSelect, Map<String, Object> updateContext) {
+    private void expandEntityFilters(CompiledSelect compiledSelect, UpdateExpressionContext updateContext) {
         CompiledNameOrSelect nameOrSelect = compiledSelect.getEntity();
         if (nameOrSelect instanceof CompiledEntityName) {
             String entityName = ((CompiledEntityName) nameOrSelect).getName();
             final Entity entity = persistenceUnit.getEntity(entityName);
-            for (String filterName : entity.getFilterNames()) {
-                Expression filter = entity.getFilter(filterName);
-                ExpressionCompilerConfig conf2 = new ExpressionCompilerConfig();
-                String name = compiledSelect.getEntityAlias();
-                if (name == null) {
-                    name = entityName;
-                }
-                conf2.setTranslateOnly();
-                conf2.bindAliasToEntity(name, entityName);
-                conf2.setThisAlias(name);
-                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(filter, conf2);
-                if (compiledFilter != null) {
-                    compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":" + filterName);
-                }
-                compiledSelect.addWhere(compiledFilter);
+            boolean disableFilters = UPAUtils.getBoolean(updateContext.getHints(), "upa.disable-filters", false);
+            if (!disableFilters) {
+                disableFilters = UPAUtils.getBoolean(updateContext.getHints(), "upa.disable-filters." + entityName, false);
             }
-            Expression securityFilter = persistenceUnit.getSecurityManager().getEntityFilter(entity);
-            if (securityFilter != null) {
-                ExpressionCompilerConfig conf2 = new ExpressionCompilerConfig();
-                String name = compiledSelect.getEntityAlias();
-                if (name == null) {
-                    name = entityName;
+            if (!disableFilters) {
+                for (String filterName : entity.getFilterNames()) {
+                    Expression filter = entity.getFilter(filterName);
+                    ExpressionCompilerConfig conf2 = new ExpressionCompilerConfig();
+                    String name = compiledSelect.getEntityAlias();
+                    if (name == null) {
+                        name = entityName;
+                    }
+                    conf2.setTranslateOnly();
+                    conf2.bindAliasToEntity(name, entityName);
+                    conf2.setThisAlias(name);
+                    CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(filter, conf2);
+                    if (compiledFilter != null) {
+                        compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":" + filterName);
+                    }
+                    compiledSelect.addWhere(compiledFilter);
                 }
-                conf2.bindAliasToEntity(name, entityName);
-                conf2.setTranslateOnly();
-                conf2.setThisAlias(name);
-                CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(securityFilter, conf2);
-                compiledFilter = UPQLCompiledUtils.replaceThisVar(compiledFilter, name, updateContext).getExpression(compiledFilter);
-
-                if (compiledFilter != null) {
-                    compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":(SecurityManager)");
+                disableFilters = UPAUtils.getBoolean(updateContext.getHints(), "upa.disable-security-filters", false);
+                if (!disableFilters) {
+                    disableFilters = UPAUtils.getBoolean(updateContext.getHints(), "upa.disable-security-filters." + entityName, false);
                 }
+                if (!disableFilters) {
+                    Expression securityFilter = persistenceUnit.getSecurityManager().getEntityFilter(entity);
+                    if (securityFilter != null) {
+                        ExpressionCompilerConfig conf2 = new ExpressionCompilerConfig();
+                        String name = compiledSelect.getEntityAlias();
+                        if (name == null) {
+                            name = entityName;
+                        }
+                        conf2.bindAliasToEntity(name, entityName);
+                        conf2.setTranslateOnly();
+                        conf2.setThisAlias(name);
+                        CompiledExpressionExt compiledFilter = (CompiledExpressionExt) expressionManager.compileExpression(securityFilter, conf2);
+                        compiledFilter = UPQLCompiledUtils.replaceThisVar(compiledFilter, name, updateContext).getExpression(compiledFilter);
 
-                compiledSelect.addWhere(compiledFilter);
+                        if (compiledFilter != null) {
+                            compiledFilter.getClientParameters().setString("UPA.EntityFilter", entity.getName() + ":(SecurityManager)");
+                        }
+
+                        compiledSelect.addWhere(compiledFilter);
+                    }
+                }
             }
         }
         for (CompiledJoinCriteria join : compiledSelect.getJoins()) {

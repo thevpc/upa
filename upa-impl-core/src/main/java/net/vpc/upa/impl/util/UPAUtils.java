@@ -985,4 +985,19 @@ public class UPAUtils {
         }
         return type;
     }
+    
+    public static boolean getBoolean(Map m,String name, boolean defaultValue){
+        if(m!=null){
+            Object v = m.get(name);
+            if(v!=null){
+                if(v instanceof Boolean){
+                    return ((Boolean) v).booleanValue();
+                }
+                if(v instanceof String){
+                    return Boolean.parseBoolean(v.toString());
+                }
+            }
+        }
+        return defaultValue;
+    }
 }

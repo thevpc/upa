@@ -43,6 +43,7 @@ import java.util.Map;
  * Created by vpc on 6/9/17.
  */
 public interface FieldBuilder {
+
     String getName();
 
     FieldBuilder setName(String name);
@@ -160,8 +161,10 @@ public interface FieldBuilder {
     int getPosition();
 
     FieldBuilder setPosition(int position);
-    
+
     FieldBuilder setPathPosition(int pathPosition);
+
+    FieldBuilder setIgnoreExisting(boolean ignoreExisting);
 
     FieldDescriptor build();
 }

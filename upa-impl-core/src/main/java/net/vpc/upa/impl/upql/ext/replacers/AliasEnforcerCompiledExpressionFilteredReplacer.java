@@ -12,7 +12,7 @@ import net.vpc.upa.expressions.CompiledExpression;
 import net.vpc.upa.impl.upql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.upql.ReplaceResult;
 
-import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 
 /**
  * Created by vpc on 6/25/17.
@@ -25,7 +25,7 @@ public class AliasEnforcerCompiledExpressionFilteredReplacer implements Compiled
     }
 
     @Override
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         if(!(e instanceof CompiledEntityStatement)){
             return ReplaceResult.NO_UPDATES_CONTINUE;
         }

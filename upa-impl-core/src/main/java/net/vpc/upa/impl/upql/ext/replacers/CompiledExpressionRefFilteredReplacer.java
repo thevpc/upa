@@ -10,7 +10,7 @@ import net.vpc.upa.impl.ext.expressions.CompiledExpressionExt;
 import net.vpc.upa.impl.upql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.upql.ReplaceResult;
 
-import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 
 /**
  *
@@ -32,7 +32,7 @@ public class CompiledExpressionRefFilteredReplacer implements CompiledExpression
         this.newRef = newRef;
     }
 
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         if(oldRef==e){
             return ReplaceResult.stopWithNewObj(newRef);
         }

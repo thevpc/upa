@@ -32,6 +32,7 @@ import net.vpc.upa.impl.upql.ext.replacers.CompiledExpressionThisRemover;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 import net.vpc.upa.impl.upql.ext.replacers.AliasEnforcerCompiledExpressionFilteredReplacer;
 
 /**
@@ -229,15 +230,15 @@ public class UPQLCompiledUtils {
         return (CompiledExpressionExt) expression;
     }
 
-    public static ReplaceResult replaceThisVar(CompiledExpression expression, String newName, Map<String, Object> updateContext) {
+    public static ReplaceResult replaceThisVar(CompiledExpression expression, String newName, UpdateExpressionContext updateContext) {
         return cast(expression).replaceExpressions(new CompiledExpressionThisFilteredReplacer(newName), updateContext);
     }
 
-    public static ReplaceResult replaceThisVar(CompiledExpression expression, CompiledVarOrMethod thisReplacement, Map<String, Object> updateContext) {
+    public static ReplaceResult replaceThisVar(CompiledExpression expression, CompiledVarOrMethod thisReplacement, UpdateExpressionContext updateContext) {
         return UPQLCompiledUtils.replaceExpressions(cast(expression),new CompiledThisRefFilteredReplacer(thisReplacement), updateContext);
     }
 
-    public static ReplaceResult replaceParam(CompiledExpression expression, String paramName,CompiledExpression replacement, Map<String, Object> updateContext) {
+    public static ReplaceResult replaceParam(CompiledExpression expression, String paramName,CompiledExpression replacement, UpdateExpressionContext updateContext) {
         return UPQLCompiledUtils.replaceExpressions(cast(expression),new CompiledParamRefFilteredReplacer(paramName,replacement), updateContext);
     }
 
@@ -245,13 +246,13 @@ public class UPQLCompiledUtils {
         return cast(expression).replaceExpressions(THIS_VAR_FILTER, new CompiledExpressionThisRemover());
     }
 
-    public static void replaceRef(CompiledExpression baseExpr, CompiledExpression oldExpr, CompiledExpression newRef, Map<String, Object> updateContext) {
+    public static void replaceRef(CompiledExpression baseExpr, CompiledExpression oldExpr, CompiledExpression newRef, UpdateExpressionContext updateContext) {
         if(oldExpr!=newRef){
             UPQLCompiledUtils.replaceExpressions(cast(baseExpr),new CompiledExpressionRefFilteredReplacer(cast(oldExpr),cast(newRef)), updateContext);
         }
     }
 
-    public static ReplaceResult replaceExpressionChildren(CompiledExpressionExt newParent, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
+    public static ReplaceResult replaceExpressionChildren(CompiledExpressionExt newParent, CompiledExpressionFilteredReplacer replacer, UpdateExpressionContext updateContext) {
         List<ReplacementPosition> replacementPositions = new ArrayList<ReplacementPosition>();
         int i = 0;
         CompiledExpressionExt[] subExpressions = newParent.getSubExpressions();
@@ -307,7 +308,7 @@ public class UPQLCompiledUtils {
         return ReplaceResult.UPDATE_AND_STOP;
     }
 
-    private static ReplaceResult replaceExpressionNodeToClean(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
+    private static ReplaceResult replaceExpressionNodeToClean(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, UpdateExpressionContext updateContext) {
         ReplaceResult exprUpdate=null;
         boolean remove=false;
         boolean stop=false;
@@ -367,7 +368,7 @@ public class UPQLCompiledUtils {
         }
     }
 
-    public static ReplaceResult replaceExpressions(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, Map<String, Object> updateContext) {
+    public static ReplaceResult replaceExpressions(CompiledExpressionExt expr, CompiledExpressionFilteredReplacer replacer, UpdateExpressionContext updateContext) {
         if (replacer == null) {
             return ReplaceResult.NO_UPDATES_STOP;
         }

@@ -1033,4 +1033,10 @@ class DecorationFieldDescriptor implements FieldDescriptor {
         return this.fieldPathPosition==null?Integer.MIN_VALUE:fieldPathPosition.intValue();
     }
 
+    @Override
+    public boolean isIgnoreExisting() {
+        return false;
+    }
+
+    
 }

@@ -17,7 +17,7 @@ import net.vpc.upa.impl.upql.CompiledExpressionFilteredReplacer;
 import net.vpc.upa.impl.upql.ReplaceResult;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 
-import java.util.Map;
+import net.vpc.upa.impl.upql.UpdateExpressionContext;
 
 /**
  *
@@ -42,7 +42,7 @@ public class CompiledExpressionThisFilteredReplacer implements CompiledExpressio
         this.varOnly = varOnly;
     }
 
-    public ReplaceResult update(CompiledExpression e, Map<String, Object> updateContext) {
+    public ReplaceResult update(CompiledExpression e, UpdateExpressionContext updateContext) {
         if (e instanceof CompiledVar) {
             CompiledVar c = (CompiledVar) e;
             if (UPQLUtils.THIS.equals(c.getName())) {
