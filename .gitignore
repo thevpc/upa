@@ -12,3 +12,5 @@
 /upa-android/target/
 /runtime/
 /upa-spring/target/
+upa-xml-config/target/
+upa-box/target/
