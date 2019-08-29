@@ -61,7 +61,7 @@
         <dependency>
             <groupId>net.vpc.app.nuts</groupId>
             <artifactId>nuts</artifactId>
-            <version>0.5.6</version>
+            <version>0.5.7</version>
         </dependency>
         <dependency>
             <groupId>net.vpc.upa</groupId>
@@ -188,4 +188,10 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>vpc-public-maven</id>
+            <url>https://raw.github.com/thevpc/vpc-public-maven/master</url>
+        </repository>
+    </repositories>
 </project>

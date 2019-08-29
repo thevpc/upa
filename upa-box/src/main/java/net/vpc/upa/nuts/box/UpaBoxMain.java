@@ -39,7 +39,7 @@ public class UpaBoxMain extends NutsApplication {
         NutsCommandLine cmd = appContext.getCommandLine();
         PrintStream out = appContext.session().out();
         if (cmd.isExecMode()) {
-            out.printf("**%s** version **%s** (c) vpc [[2018]]\n", appContext.getAppId().getName(), appContext.getAppId().getVersion());
+            out.printf("**%s** version **%s** (c) vpc [[2018]]\n", appContext.getAppId().getArtifactId(), appContext.getAppId().getVersion());
         }
         cmd.required();
         NutsArgument a;
@@ -399,8 +399,8 @@ public class UpaBoxMain extends NutsApplication {
                             springElement = dependencyElement;
                         }
                     } else if (dbDriver != null) {
-                        if (dbDriver.getGroup().equals(dependency.getGroupId())
-                                && dbDriver.getName().equals(dependency.getArtifactId())) {
+                        if (dbDriver.getGroupId().equals(dependency.getGroupId())
+                                && dbDriver.getArtifactId().equals(dependency.getArtifactId())) {
                             dbdriverElement = dependencyElement;
                         }
                     }
@@ -459,7 +459,7 @@ public class UpaBoxMain extends NutsApplication {
                                             springElement, dependenciesElement);
                                 }
                                 if (dbDriver != null) {
-                                    save |= PomXmlParser.appendOrReplaceDependency(new PomDependency(dbDriver.getGroup(), dbDriver.getName(), dbDriver.getVersion().toString()),
+                                    save |= PomXmlParser.appendOrReplaceDependency(new PomDependency(dbDriver.getGroupId(), dbDriver.getArtifactId(), dbDriver.getVersion().toString()),
                                             dbdriverElement, dependenciesElement);
                                 }
                                 if (repositoriesElement == null) {
