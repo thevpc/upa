@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.jar.JarInputStream;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
 
     private static final Logger log = Logger.getLogger(ClassPathRoot.class.getName());
     private URL url;
-    private File folder;
+    private File file;
 
     private static URL toURL(File file) {
         try {
@@ -48,9 +49,7 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
             File f2;
             try {
                 f2 = new File(url.toURI());
-                if (f2.isDirectory()) {
-                    folder = f2;
-                }
+                file = f2;
             } catch (URISyntaxException ex) {
                 log.log(Level.SEVERE, null, ex);
             }
@@ -58,8 +57,14 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
     }
 
     public Iterator<ClassPathResource> iterator() {
-        if (folder != null) {
-            return new FolderClassPathRootIterator(folder);
+        if (file != null) {
+            if (file.exists()) {
+                if (file.isDirectory()) {
+                    return new FolderClassPathRootIterator(file);
+                }
+            } else {
+                return Collections.emptyIterator();
+            }
         }
         try {
             return new URLClassPathRootIterator(url);
@@ -69,12 +74,18 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
     }
 
     public ClassPathResource find(String path) throws IOException {
-        if (folder != null) {
-            File f = new File(folder, path);
-            if (f.exists()) {
-                return new FileClassPathResource(path, f);
+        if (file != null) {
+            if (file.exists()) {
+                if (file.isDirectory()) {
+                    File f = new File(file, path);
+                    if (f.exists()) {
+                        return new FileClassPathResource(path, f);
+                    }
+                    return null;
+                }
+            } else {
+                return null;
             }
-            return null;
         }
         for (ClassPathResource r : this) {
             if (r.getPath().equals(path)) {
@@ -86,17 +97,24 @@ public class ClassPathRoot implements Iterable<ClassPathResource> {
 
     public boolean contains(String path) throws IOException {
         /**
-         * @PortabilityHint(target = "C#",name = "todo")
-         * return false;
-         **/
+         * @PortabilityHint(target = "C#",name = "todo") return false;
+         *
+         */
         {
-            if (folder != null) {
-                File f = new File(folder, path);
-                if (f.exists()) {
-                    return true;
+            if (file != null) {
+                if (file.exists()) {
+                    if (file.isDirectory()) {
+                        File f = new File(file, path);
+                        if (f.exists()) {
+                            return true;
+                        }
+                        return false;
+                    }
+                } else {
+                    return false;
                 }
-                return false;
             }
+
             JarInputStream jar = null;
             try {
                 jar = new JarInputStream(url.openStream());

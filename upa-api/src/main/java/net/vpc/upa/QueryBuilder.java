@@ -34,7 +34,6 @@
  */
 package net.vpc.upa;
 
-import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.Expression;
 import net.vpc.upa.expressions.Order;
 import net.vpc.upa.filters.FieldFilter;

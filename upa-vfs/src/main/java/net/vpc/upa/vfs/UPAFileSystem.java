@@ -33,7 +33,7 @@ import net.vpc.upa.exceptions.IllegalUPAArgumentException;
  */
 public class UPAFileSystem extends AbstractVirtualFileSystem {
 
-    private DefaultFile ROOT = new DefaultFile("/", this);
+    private final VFile ROOT;
     private final PersistenceUnit persistenceUnit;
 
     public UPAFileSystem(String id) {
@@ -43,6 +43,7 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
     public UPAFileSystem(String id, PersistenceUnit persistenceUnit) {
         super(id);
         this.persistenceUnit = persistenceUnit;
+        ROOT = newFile("/");
     }
 
     @Override
@@ -248,12 +249,10 @@ public class UPAFileSystem extends AbstractVirtualFileSystem {
             return new VFile[0];
         }
         List<FileEntry> childen = getPersistenceUnit().createQueryBuilder(FileEntry.class)
-                .byField(
-                        "parentPath", path
-                ).getResultList();
+                .byField("parentPath", path).getResultList();
         List<VFile> ret = new ArrayList<>();
         for (FileEntry c : childen) {
-            DefaultFile ff = new DefaultFile(c.getPath(), this);
+            VFile ff = newFile(c.getPath());
             if (fileFilter == null || fileFilter.accept(ff)) {
                 ret.add(ff);
             }

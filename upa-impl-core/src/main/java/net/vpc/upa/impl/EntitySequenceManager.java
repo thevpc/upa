@@ -1,11 +1,13 @@
 package net.vpc.upa.impl;
 
+import net.vpc.upa.Action;
 import net.vpc.upa.impl.sysentities.PrivateSequence;
 import net.vpc.upa.exceptions.IllegalUPAArgumentException;
 import net.vpc.upa.impl.upql.util.UPQLUtils;
 import net.vpc.upa.types.DateTime;
 import net.vpc.upa.Entity;
 import net.vpc.upa.QueryBuilder;
+import net.vpc.upa.VoidAction;
 import net.vpc.upa.exceptions.UPAException;
 import net.vpc.upa.expressions.*;
 
@@ -25,7 +27,7 @@ public class EntitySequenceManager implements SequenceManager {
 //        System.out.println(">>>>>>>>>>>>>>>>>>> getOrCreateSequence("+name+","+pattern+")");
         PrivateSequence r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         if (r == null) {
-            r=createSequence(name, pattern, initialValue, increment);
+            r = createSequence(name, pattern, initialValue, increment);
             //r = entity.createQueryBuilder().byId(entity.createId(name, pattern)).getFirstResultOrNull();
         }
         return r;
@@ -36,13 +38,13 @@ public class EntitySequenceManager implements SequenceManager {
         if (increment == 0) {
             throw new IllegalUPAArgumentException("increment zero");
         }
-        PrivateSequence r = entity.getBuilder().createObject();
+        final PrivateSequence r = entity.getBuilder().createObject();
         r.setName(name);
         r.setGroup(pattern);
         r.setLocked(false);
         r.setValue(initialValue);
         r.setIncrement(increment);
-        entity.persist(r);
+        entity.getPersistenceUnit().invokePrivileged(new CreateSequenceAction(r));
         return r;
 //        System.out.println(">>>>>>>>>>>>>>>>>>> createSequence(" + name + "," + pattern + ")");
     }
@@ -74,15 +76,15 @@ public class EntitySequenceManager implements SequenceManager {
     }
 
     @Override
-    public synchronized int lockValue(String name, String pattern) throws UPAException {
-        PrivateSequence r = getSequence(name, pattern);
+    public synchronized int lockValue(final String name, final String pattern) throws UPAException {
+        final PrivateSequence r = getSequence(name, pattern);
         if (r.isLocked()) {
             throw new UPAException("Already locked");
         }
         r.setLocked(true);
         r.setLockUserId(entity.getPersistenceUnit().getUserPrincipal().getName());
         r.setLockDate(new DateTime());
-        entity.createUpdateQuery().setValues(r).byId(entity.createId(name, pattern));
+        entity.getPersistenceUnit().invokePrivileged(new LockValueAction(r, name, pattern));
         return r.getValue();
     }
 
@@ -99,10 +101,9 @@ public class EntitySequenceManager implements SequenceManager {
 //    public synchronized int nextValue(String name, String pattern) throws UPAException {
 //        return nextValue0(name, pattern, 0, 0, false);
 //    }
-
     @Override
     public synchronized int nextValue(String name, String pattern, int initialValue, int increment) throws UPAException {
-        return nextValue0(name, pattern, initialValue, increment,true);
+        return nextValue0(name, pattern, initialValue, increment, true);
     }
 
     public final int nextValue0(String name, String pattern, int initialValue, int increment, boolean autoCreate) throws UPAException {
@@ -117,38 +118,25 @@ public class EntitySequenceManager implements SequenceManager {
         r.setLockUserId(null);
         r.setLockDate(null);
         Expression idToExpression = entity.getBuilder().idToExpression(entity.createId(name, pattern), UPQLUtils.THIS);
-        And condition = new And(idToExpression.copy(), new Or(
-                new Different(new Var(new Var(UPQLUtils.THIS),"locked"), Literal.TRUE),
-                new Equals(new Var(new Var(UPQLUtils.THIS),"lockUserId"),
+        final And condition = new And(idToExpression.copy(), new Or(
+                new Different(new Var(new Var(UPQLUtils.THIS), "locked"), Literal.TRUE),
+                new Equals(new Var(new Var(UPQLUtils.THIS), "lockUserId"),
                         new Param("lockUserId", entity.getPersistenceUnit().getUserPrincipal().getName()))));
-        QueryBuilder q = null;
-        try {
-            q = entity.createQueryBuilder().byExpression(condition);
-            q.setUpdatable(true);
-            int oldValue;
-            for (PrivateSequence s : q.<PrivateSequence>getResultList()) {
-                oldValue = s.getValue();
-                s.setValue(oldValue + s.getIncrement());
-                q.updateCurrent();
-//                System.out.println(">>>>>>>>>>>>>>>>>>> nextValue(" + name + "," + pattern + ") =>> "+oldValue);
-                return oldValue;
-            }
-        } finally {
-            if (q != null) {
-                q.close();
-            }
+        Integer ii = entity.getPersistenceUnit().invokePrivileged(new NextValueAction(condition));
+        if (ii != null) {
+            return ii.intValue();
         }
         //not found !
         //check if problem of locking
-        if (entity.getEntityCount(new And(idToExpression.copy(), new Equals(new Var(new Var(UPQLUtils.THIS),"locked"), Literal.TRUE))) > 0) {
+        if (entity.getEntityCount(new And(idToExpression.copy(), new Equals(new Var(new Var(UPQLUtils.THIS), "locked"), Literal.TRUE))) > 0) {
             throw new UPAException("Already locked");
         }
         throw new UPAException("Unexpected error");
     }
 
     @Override
-    public synchronized int unlock(String name, String pattern) throws UPAException {
-        PrivateSequence r = getSequence(name, pattern);
+    public synchronized int unlock(String name, final String pattern) throws UPAException {
+        final PrivateSequence r = getSequence(name, pattern);
         if (!r.isLocked()) {
             throw new UPAException("not locked");
         }
@@ -159,7 +147,86 @@ public class EntitySequenceManager implements SequenceManager {
         r.setLocked(false);
         r.setLockUserId(null);
         r.setLockDate(null);
-        entity.createUpdateQuery().setValues(r).byId(entity.createId(pattern));
+        entity.getPersistenceUnit().invokePrivileged(new UnlockAction(r, pattern));
         return v;
+    }
+
+    private class UnlockAction implements VoidAction {
+
+        private final PrivateSequence r;
+        private final String pattern;
+
+        public UnlockAction(PrivateSequence r, String pattern) {
+            this.r = r;
+            this.pattern = pattern;
+        }
+
+        @Override
+        public void run() {
+            entity.createUpdateQuery().setValues(r).byId(entity.createId(pattern));
+        }
+    }
+
+    private class NextValueAction implements Action<Integer> {
+
+        private final And condition;
+
+        public NextValueAction(And condition) {
+            this.condition = condition;
+        }
+
+        @Override
+        public Integer run() {
+            QueryBuilder q = null;
+            try {
+                q = entity.createQueryBuilder().byExpression(condition);
+                q.setUpdatable(true);
+                int oldValue;
+                for (PrivateSequence s : q.<PrivateSequence>getResultList()) {
+                    oldValue = s.getValue();
+                    s.setValue(oldValue + s.getIncrement());
+                    q.updateCurrent();
+//                System.out.println(">>>>>>>>>>>>>>>>>>> nextValue(" + name + "," + pattern + ") =>> "+oldValue);
+return oldValue;
+                }
+            } finally {
+                if (q != null) {
+                    q.close();
+                }
+            }
+            return null;
+        }
+    }
+
+    private class LockValueAction implements VoidAction {
+
+        private final PrivateSequence r;
+        private final String name;
+        private final String pattern;
+
+        public LockValueAction(PrivateSequence r, String name, String pattern) {
+            this.r = r;
+            this.name = name;
+            this.pattern = pattern;
+        }
+
+        @Override
+        public void run() {
+            entity.createUpdateQuery().setValues(r).byId(entity.createId(name, pattern));
+        }
+    }
+
+    private class CreateSequenceAction implements VoidAction {
+
+        private final PrivateSequence r;
+
+        public CreateSequenceAction(PrivateSequence r) {
+            this.r = r;
+        }
+
+        @Override
+        public void run() {
+            entity.persist(r);
+        }
     }
 }
